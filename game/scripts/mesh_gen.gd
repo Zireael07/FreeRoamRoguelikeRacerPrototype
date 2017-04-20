@@ -9,6 +9,21 @@ func _ready():
 	# Initialization here
 	pass
 
+func addRoad(material, dx, dy, dz):
+	print("Adding road " + String(dx) + String(dy) + String(dz))
+	var surface = SurfaceTool.new()
+	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	#Create a node building that will hold the mesh
+	var node = MeshInstance.new()
+	node.set_name("road")
+	add_child(node)
+	
+	addPlaneRect(0,0,0,surface, material, dx, dy, dz)	
+	
+	#Set the created mesh to the node
+	node.set_mesh(surface.commit())
+
 func addTerrain(material, dx, dy, dz):
 	print("Adding ground " + String(dx) + String(dy) + String(dz))
 	var surface = SurfaceTool.new()

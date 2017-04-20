@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=1]
+[gd_scene load_steps=6 format=1]
 
 [ext_resource path="res://scripts/ground_gen.gd" type="Script" id=1]
 [ext_resource path="res://assets/grass_material.tres" type="Material" id=2]
+[ext_resource path="res://scripts/road_gen.gd" type="Script" id=3]
+[ext_resource path="res://assets/road_material.tres" type="Material" id=4]
 
 [sub_resource type="PlaneShape" id=1]
 
@@ -40,5 +42,12 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 1 )
 trigger = false
 _update_shape_index = 0
+
+[node name="Road" type="Spatial" parent="."]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18.7979, 0, 0 )
+script/script = ExtResource( 3 )
+material = ExtResource( 4 )
 
 
