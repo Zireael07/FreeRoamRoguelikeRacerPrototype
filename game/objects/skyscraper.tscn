@@ -1,0 +1,1054 @@
+[gd_scene load_steps=29 format=1]
+
+[sub_resource type="FixedMaterial" id=1]
+
+resource/name = "material"
+flags/visible = true
+flags/double_sided = true
+flags/invert_faces = false
+flags/unshaded = false
+flags/on_top = false
+flags/lightmap_on_uv2 = true
+flags/colarray_is_srgb = true
+params/blend_mode = 0
+params/depth_draw = 1
+params/line_width = -1.82169e-44
+fixed_flags/use_alpha = false
+fixed_flags/use_color_array = false
+fixed_flags/use_point_size = false
+fixed_flags/discard_alpha = false
+fixed_flags/use_xy_normalmap = false
+params/diffuse = Color( 1, 1, 1, 1 )
+params/specular = Color( 0.125, 0.125, 0.125, 1 )
+params/emission = Color( 0, 0, 0, 1 )
+params/specular_exp = 50.0
+params/detail_mix = 1.0
+params/normal_depth = 1
+params/shader = 0
+params/shader_param = 0.5
+params/glow = 0
+params/point_size = 1.0
+uv_xform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+textures/diffuse_tc = 0
+textures/detail_tc = 0
+textures/specular_tc = 0
+textures/emission_tc = 0
+textures/specular_exp_tc = 0
+textures/glow_tc = 0
+textures/normal_tc = 0
+textures/shade_param_tc = 0
+
+[sub_resource type="FixedMaterial" id=2]
+
+resource/name = "Color_005"
+flags/visible = true
+flags/double_sided = true
+flags/invert_faces = false
+flags/unshaded = false
+flags/on_top = false
+flags/lightmap_on_uv2 = true
+flags/colarray_is_srgb = true
+params/blend_mode = 0
+params/depth_draw = 1
+params/line_width = 0.0
+fixed_flags/use_alpha = false
+fixed_flags/use_color_array = false
+fixed_flags/use_point_size = false
+fixed_flags/discard_alpha = false
+fixed_flags/use_xy_normalmap = false
+params/diffuse = Color( 0.447059, 0.447059, 0.447059, 1 )
+params/specular = Color( 0.125, 0.125, 0.125, 1 )
+params/emission = Color( 0, 0, 0, 1 )
+params/specular_exp = 50.0
+params/detail_mix = 1.0
+params/normal_depth = 1
+params/shader = 0
+params/shader_param = 0.5
+params/glow = 0
+params/point_size = 1.0
+uv_xform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+textures/diffuse_tc = 0
+textures/detail_tc = 0
+textures/specular_tc = 0
+textures/emission_tc = 0
+textures/specular_exp_tc = 0
+textures/glow_tc = 0
+textures/normal_tc = 0
+textures/shade_param_tc = 0
+
+[sub_resource type="Mesh" id=16]
+
+resource/name = "ID15"
+surfaces/0 = {
+"alphasort": false,
+"arrays": [ Vector3Array( -758.744, 5715.07, -126.769, -952.05, 5715.07, -80.7057, -952.05, 5715.07, -126.769, -758.744, 5715.07, -80.7057 ), Vector3Array( 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0 ), null, null, null, null, null, null, IntArray( 0, 2, 1, 1, 3, 0 ) ],
+"material": SubResource( 1 ),
+"morph_arrays": [  ],
+"name": "material",
+"primitive": 4
+}
+surfaces/1 = {
+"alphasort": false,
+"arrays": [ Vector3Array( -758.744, 5715.07, -80.7057, -758.744, 5715.07, -126.769, -952.05, 5715.07, -80.7057, -952.05, 5715.07, -126.769 ), Vector3Array( 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0 ), null, null, null, null, null, null, IntArray( 0, 2, 1, 3, 1, 2 ) ],
+"material": SubResource( 2 ),
+"morph_arrays": [  ],
+"name": "Color_005",
+"primitive": 4
+}
+custom_aabb/custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+
+[sub_resource type="FixedMaterial" id=26]
+
+flags/visible = true
+flags/double_sided = false
+flags/invert_faces = false
+flags/unshaded = false
+flags/on_top = false
+flags/lightmap_on_uv2 = true
+flags/colarray_is_srgb = true
+params/blend_mode = 0
+params/depth_draw = 1
+params/line_width = -1.82169e-44
+fixed_flags/use_alpha = false
+fixed_flags/use_color_array = false
+fixed_flags/use_point_size = false
+fixed_flags/discard_alpha = false
+fixed_flags/use_xy_normalmap = false
+params/diffuse = Color( 1, 1, 1, 1 )
+params/specular = Color( 0, 0, 0, 1 )
+params/emission = Color( 0, 0, 0, 1 )
+params/specular_exp = 40
+params/detail_mix = 1.0
+params/normal_depth = 1
+params/shader = 0
+params/shader_param = 0.5
+params/glow = 0
+params/point_size = 1.0
+uv_xform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+textures/diffuse_tc = 0
+textures/detail_tc = 0
+textures/specular_tc = 0
+textures/emission_tc = 0
+textures/specular_exp_tc = 0
+textures/glow_tc = 0
+textures/normal_tc = 0
+textures/shade_param_tc = 0
+
+[sub_resource type="Mesh" id=17]
+
+resource/name = "ID21"
+surfaces/0 = {
+"alphasort": false,
+"arrays": [ Vector3Array( -757.669, 5715.07, -56.5335, -949.401, 5715.07, -1.80957, -949.401, 5715.07, -56.5335, -757.669, 5715.07, -1.80957 ), Vector3Array( 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0 ), null, null, null, null, null, null, IntArray( 0, 2, 1, 1, 3, 0 ) ],
+"material": SubResource( 1 ),
+"morph_arrays": [  ],
+"name": "material",
+"primitive": 4
+}
+surfaces/1 = {
+"alphasort": false,
+"arrays": [ Vector3Array( -757.669, 5715.07, -1.80957, -757.669, 5715.07, -56.5335, -949.401, 5715.07, -1.80957, -949.401, 5715.07, -56.5335 ), Vector3Array( 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0 ), null, null, null, null, null, null, IntArray( 0, 2, 1, 3, 1, 2 ) ],
+"material": SubResource( 2 ),
+"morph_arrays": [  ],
+"name": "Color_005",
+"primitive": 4
+}
+custom_aabb/custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+
+[sub_resource type="FixedMaterial" id=27]
+
+flags/visible = true
+flags/double_sided = false
+flags/invert_faces = false
+flags/unshaded = false
+flags/on_top = false
+flags/lightmap_on_uv2 = true
+flags/colarray_is_srgb = true
+params/blend_mode = 0
+params/depth_draw = 1
+params/line_width = 0.0
+fixed_flags/use_alpha = false
+fixed_flags/use_color_array = false
+fixed_flags/use_point_size = false
+fixed_flags/discard_alpha = false
+fixed_flags/use_xy_normalmap = false
+params/diffuse = Color( 1, 1, 1, 1 )
+params/specular = Color( 0, 0, 0, 1 )
+params/emission = Color( 0, 0, 0, 1 )
+params/specular_exp = 40
+params/detail_mix = 1.0
+params/normal_depth = 1
+params/shader = 0
+params/shader_param = 0.5
+params/glow = 0
+params/point_size = 1.0
+uv_xform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+textures/diffuse_tc = 0
+textures/detail_tc = 0
+textures/specular_tc = 0
+textures/emission_tc = 0
+textures/specular_exp_tc = 0
+textures/glow_tc = 0
+textures/normal_tc = 0
+textures/shade_param_tc = 0
+
+[sub_resource type="FixedMaterial" id=6]
+
+resource/name = "__Concrete_Block_8x8_Gray_1"
+flags/visible = true
+flags/double_sided = true
+flags/invert_faces = false
+flags/unshaded = false
+flags/on_top = false
+flags/lightmap_on_uv2 = true
+flags/colarray_is_srgb = true
+params/blend_mode = 0
+params/depth_draw = 1
+params/line_width = 0.0
+fixed_flags/use_alpha = false
+fixed_flags/use_color_array = false
+fixed_flags/use_point_size = false
+fixed_flags/discard_alpha = false
+fixed_flags/use_xy_normalmap = false
+params/diffuse = Color( 0.64, 0.64, 0.64, 1 )
+params/specular = Color( 0.125, 0.125, 0.125, 1 )
+params/emission = Color( 0, 0, 0, 1 )
+params/specular_exp = 50.0
+params/detail_mix = 1.0
+params/normal_depth = 1
+params/shader = 0
+params/shader_param = 0.5
+params/glow = 0
+params/point_size = 1.0
+uv_xform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+textures/diffuse_tc = 0
+textures/detail_tc = 0
+textures/specular_tc = 0
+textures/emission_tc = 0
+textures/specular_exp_tc = 0
+textures/glow_tc = 0
+textures/normal_tc = 0
+textures/shade_param_tc = 0
+
+[sub_resource type="Mesh" id=18]
+
+resource/name = "ID27"
+surfaces/0 = {
+"alphasort": false,
+"arrays": [ Vector3Array( -684.274, 0.110596, -344.569, -284.333, 0.110596, 517.557, -754.918, 0.110596, -304.11, 386.974, 0.110596, -344.569, 592.001, 0.110596, 7.38538 ), Vector3Array( 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0 ), null, null, Vector3Array( 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0 ), null, null, null, IntArray( 0, 2, 1, 1, 3, 0, 1, 4, 3 ) ],
+"material": SubResource( 1 ),
+"morph_arrays": [  ],
+"name": "material",
+"primitive": 4
+}
+surfaces/1 = {
+"alphasort": false,
+"arrays": [ Vector3Array( 592.001, 0.110596, 7.38538, 386.974, 0.110596, -344.569, -284.333, 0.110596, 517.557, -684.274, 0.110596, -344.569, -754.918, 0.110596, -304.11 ), Vector3Array( 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0 ), null, null, Vector3Array( 971.39, -1147.96, 0, 975.662, -1155.3, 0, 989.647, -1137.34, 0, 997.979, -1155.3, 0, 999.451, -1154.45, 0 ), null, null, null, IntArray( 0, 2, 1, 1, 2, 3, 4, 3, 2 ) ],
+"material": SubResource( 6 ),
+"morph_arrays": [  ],
+"name": "__Concrete_Block_8x8_Gray_1",
+"primitive": 4
+}
+custom_aabb/custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+
+[sub_resource type="FixedMaterial" id=28]
+
+flags/visible = true
+flags/double_sided = false
+flags/invert_faces = false
+flags/unshaded = false
+flags/on_top = false
+flags/lightmap_on_uv2 = true
+flags/colarray_is_srgb = true
+params/blend_mode = 0
+params/depth_draw = 1
+params/line_width = 0.0
+fixed_flags/use_alpha = false
+fixed_flags/use_color_array = false
+fixed_flags/use_point_size = false
+fixed_flags/discard_alpha = false
+fixed_flags/use_xy_normalmap = false
+params/diffuse = Color( 1, 1, 1, 1 )
+params/specular = Color( 0, 0, 0, 1 )
+params/emission = Color( 0, 0, 0, 1 )
+params/specular_exp = 40
+params/detail_mix = 1.0
+params/normal_depth = 1
+params/shader = 0
+params/shader_param = 0.5
+params/glow = 0
+params/point_size = 1.0
+uv_xform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+textures/diffuse_tc = 0
+textures/detail_tc = 0
+textures/specular_tc = 0
+textures/emission_tc = 0
+textures/specular_exp_tc = 0
+textures/glow_tc = 0
+textures/normal_tc = 0
+textures/shade_param_tc = 0
+
+[sub_resource type="Mesh" id=19]
+
+resource/name = "ID40"
+surfaces/0 = {
+"alphasort": false,
+"arrays": [ Vector3Array( -952.514, 5715.07, -126.768, -827.67, 5715.07, -151.272, -759.207, 5715.07, -126.768, -827.67, 5715.07, -225.682, -753.26, 5715.07, -151.272, -759.207, 5715.07, -80.7054, -757.669, 5715.07, -56.5333, -757.669, 5715.07, -56.5333, -753.26, 5715.07, -151.272, -757.669, 5715.07, -1.80939, -800.835, 5715.07, -782.629, -684.274, 5715.07, -344.568, -754.918, 5715.07, -304.109, 638.756, 5715.07, -782.629, 386.974, 5715.07, -344.568, 592.001, 5715.07, 7.38556, -1352.76, 5715.07, -466.532, -753.26, 5715.07, -225.682, -284.333, 5715.07, 517.557, -445.208, 5715.07, 1118.1, 1191.08, 5715.07, 165.508, -949.401, 5715.07, -1.80939, -952.514, 5715.07, -80.7054, -949.401, 5715.07, -56.5333, -757.669, 5715.07, -1.80939 ), Vector3Array( 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0.001, -0.999, 0, 0.001, -0.999, 0, 0.001, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0 ), null, null, null, null, null, null, IntArray( 0, 2, 1, 1, 3, 0, 2, 4, 1, 2, 5, 4, 5, 6, 4, 7, 9, 8, 10, 12, 11, 11, 13, 10, 11, 14, 13, 14, 15, 13, 10, 16, 0, 0, 3, 10, 3, 17, 10, 17, 12, 10, 17, 18, 12, 17, 4, 18, 4, 19, 18, 19, 20, 18, 20, 15, 18, 20, 13, 15, 16, 19, 21, 21, 22, 16, 22, 0, 16, 21, 23, 22, 19, 24, 21, 19, 4, 24, 5, 22, 23, 23, 6, 5 ) ],
+"material": SubResource( 1 ),
+"morph_arrays": [  ],
+"name": "material",
+"primitive": 4
+}
+surfaces/1 = {
+"alphasort": false,
+"arrays": [ Vector3Array( -757.669, 5715.07, -56.5333, -759.207, 5715.07, -80.7054, -949.401, 5715.07, -56.5333, -952.514, 5715.07, -80.7054, -753.26, 5715.07, -151.272, -757.669, 5715.07, -1.80939, -445.208, 5715.07, 1118.1, -949.401, 5715.07, -1.80939, -952.514, 5715.07, -126.768, -1352.76, 5715.07, -466.532, 638.756, 5715.07, -782.629, 592.001, 5715.07, 7.38556, 1191.08, 5715.07, 165.508, -284.333, 5715.07, 517.557, -753.26, 5715.07, -225.682, -754.918, 5715.07, -304.109, -800.835, 5715.07, -782.629, -827.67, 5715.07, -225.682, 386.974, 5715.07, -344.568, -684.274, 5715.07, -344.568, -759.207, 5715.07, -126.768, -827.67, 5715.07, -151.272 ), Vector3Array( 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0 ), null, null, null, null, null, null, IntArray( 0, 2, 1, 3, 1, 2, 4, 6, 5, 5, 6, 7, 2, 7, 3, 8, 3, 9, 3, 7, 9, 6, 9, 7, 10, 12, 11, 11, 12, 13, 12, 6, 13, 6, 4, 13, 4, 14, 13, 13, 14, 15, 15, 14, 16, 14, 17, 16, 17, 8, 16, 9, 16, 8, 11, 18, 10, 18, 19, 10, 10, 19, 16, 15, 16, 19, 5, 0, 4, 0, 1, 4, 1, 20, 4, 4, 20, 21, 17, 21, 8, 20, 8, 21 ) ],
+"material": SubResource( 2 ),
+"morph_arrays": [  ],
+"name": "Color_005",
+"primitive": 4
+}
+custom_aabb/custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+
+[sub_resource type="FixedMaterial" id=29]
+
+flags/visible = true
+flags/double_sided = false
+flags/invert_faces = false
+flags/unshaded = false
+flags/on_top = false
+flags/lightmap_on_uv2 = true
+flags/colarray_is_srgb = true
+params/blend_mode = 0
+params/depth_draw = 1
+params/line_width = 0.0
+fixed_flags/use_alpha = false
+fixed_flags/use_color_array = false
+fixed_flags/use_point_size = false
+fixed_flags/discard_alpha = false
+fixed_flags/use_xy_normalmap = false
+params/diffuse = Color( 1, 1, 1, 1 )
+params/specular = Color( 0, 0, 0, 1 )
+params/emission = Color( 0, 0, 0, 1 )
+params/specular_exp = 40
+params/detail_mix = 1.0
+params/normal_depth = 1
+params/shader = 0
+params/shader_param = 0.5
+params/glow = 0
+params/point_size = 1.0
+uv_xform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+textures/diffuse_tc = 0
+textures/detail_tc = 0
+textures/specular_tc = 0
+textures/emission_tc = 0
+textures/specular_exp_tc = 0
+textures/glow_tc = 0
+textures/normal_tc = 0
+textures/shade_param_tc = 0
+
+[sub_resource type="ConvexPolygonShape" id=30]
+
+points = Vector3Array( -952.514, 5715.07, -126.768, -827.67, 5715.07, -151.272, -759.207, 5715.07, -126.768, -827.67, 5715.07, -225.682, -753.26, 5715.07, -151.272, -759.207, 5715.07, -80.7054, -757.669, 5715.07, -56.5333, -757.669, 5715.07, -56.5333, -753.26, 5715.07, -151.272, -757.669, 5715.07, -1.80939, -800.835, 5715.07, -782.629, -684.274, 5715.07, -344.568, -754.918, 5715.07, -304.109, 638.756, 5715.07, -782.629, 386.974, 5715.07, -344.568, 592.001, 5715.07, 7.38556, -1352.76, 5715.07, -466.532, -753.26, 5715.07, -225.682, -284.333, 5715.07, 517.557, -445.208, 5715.07, 1118.1, 1191.08, 5715.07, 165.508, -949.401, 5715.07, -1.80939, -952.514, 5715.07, -80.7054, -949.401, 5715.07, -56.5333, -757.669, 5715.07, -1.80939, -757.669, 5715.07, -56.5333, -759.207, 5715.07, -80.7054, -949.401, 5715.07, -56.5333, -952.514, 5715.07, -80.7054, -753.26, 5715.07, -151.272, -757.669, 5715.07, -1.80939, -445.208, 5715.07, 1118.1, -949.401, 5715.07, -1.80939, -952.514, 5715.07, -126.768, -1352.76, 5715.07, -466.532, 638.756, 5715.07, -782.629, 592.001, 5715.07, 7.38556, 1191.08, 5715.07, 165.508, -284.333, 5715.07, 517.557, -753.26, 5715.07, -225.682, -754.918, 5715.07, -304.109, -800.835, 5715.07, -782.629, -827.67, 5715.07, -225.682, 386.974, 5715.07, -344.568, -684.274, 5715.07, -344.568, -759.207, 5715.07, -126.768, -827.67, 5715.07, -151.272 )
+
+[sub_resource type="FixedMaterial" id=9]
+
+resource/name = "material_43"
+flags/visible = true
+flags/double_sided = true
+flags/invert_faces = false
+flags/unshaded = false
+flags/on_top = false
+flags/lightmap_on_uv2 = true
+flags/colarray_is_srgb = true
+params/blend_mode = 0
+params/depth_draw = 1
+params/line_width = 0.0
+fixed_flags/use_alpha = false
+fixed_flags/use_color_array = false
+fixed_flags/use_point_size = false
+fixed_flags/discard_alpha = false
+fixed_flags/use_xy_normalmap = false
+params/diffuse = Color( 0.64, 0.64, 0.64, 1 )
+params/specular = Color( 0.125, 0.125, 0.125, 1 )
+params/emission = Color( 0, 0, 0, 1 )
+params/specular_exp = 50.0
+params/detail_mix = 1.0
+params/normal_depth = 1
+params/shader = 0
+params/shader_param = 0.5
+params/glow = 0
+params/point_size = 1.0
+uv_xform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+textures/diffuse_tc = 0
+textures/detail_tc = 0
+textures/specular_tc = 0
+textures/emission_tc = 0
+textures/specular_exp_tc = 0
+textures/glow_tc = 0
+textures/normal_tc = 0
+textures/shade_param_tc = 0
+
+[sub_resource type="Mesh" id=20]
+
+resource/name = "ID46"
+surfaces/0 = {
+"alphasort": false,
+"arrays": [ Vector3Array( 638.756, 5715.07, -782.63, 1191.08, 1015.86, 165.507, 1191.08, 5715.07, 165.507, 638.756, 1015.86, -782.63, 638.756, 5715.07, -782.63, -800.835, 1015.86, -782.63, 638.756, 1015.86, -782.63, -800.835, 5715.07, -782.63, -445.208, 5715.07, 1118.1, 1191.08, 1015.86, 165.507, -445.208, 1015.86, 1118.1, 1191.08, 5715.07, 165.507, -800.835, 5715.07, -782.63, -1352.76, 1015.86, -466.533, -800.835, 1015.86, -782.63, -1352.76, 5715.07, -466.533, -1352.76, 1015.86, -466.533, -445.208, 5715.07, 1118.1, -445.208, 1015.86, 1118.1, -1352.76, 5715.07, -466.533 ), Vector3Array( -0.863, 0, 0.502, -0.863, 0, 0.502, -0.863, 0, 0.502, -0.863, 0, 0.502, 0, 0, 0.999, 0, 0, 0.999, 0, 0, 0.999, 0, 0, 0.999, -0.502, 0, -0.864, -0.502, 0, -0.864, -0.502, 0, -0.864, -0.502, 0, -0.864, 0.497, 0, 0.867, 0.497, 0, 0.867, 0.497, 0, 0.867, 0.497, 0, 0.867, 0.868, 0, -0.497, 0.868, 0, -0.497, 0.868, 0, -0.497, 0.868, 0, -0.497 ), null, null, Vector3Array( 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0 ), null, null, null, IntArray( 0, 2, 1, 1, 3, 0, 4, 6, 5, 5, 7, 4, 8, 10, 9, 9, 11, 8, 12, 14, 13, 13, 15, 12, 16, 18, 17, 17, 19, 16 ) ],
+"material": SubResource( 1 ),
+"morph_arrays": [  ],
+"name": "material",
+"primitive": 4
+}
+surfaces/1 = {
+"alphasort": false,
+"arrays": [ Vector3Array( 638.756, 1015.86, -782.63, 638.756, 5715.07, -782.63, 1191.08, 1015.86, 165.507, 1191.08, 5715.07, 165.507, -800.835, 5715.07, -782.63, 638.756, 5715.07, -782.63, -800.835, 1015.86, -782.63, 638.756, 1015.86, -782.63, 1191.08, 5715.07, 165.507, -445.208, 5715.07, 1118.1, 1191.08, 1015.86, 165.507, -445.208, 1015.86, 1118.1, -1352.76, 5715.07, -466.533, -800.835, 5715.07, -782.63, -1352.76, 1015.86, -466.533, -800.835, 1015.86, -782.63, -1352.76, 5715.07, -466.533, -1352.76, 1015.86, -466.533, -445.208, 5715.07, 1118.1, -445.208, 1015.86, 1118.1 ), Vector3Array( 0.864, 0, -0.503, 0.864, 0, -0.503, 0.864, 0, -0.503, 0.864, 0, -0.503, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0.503, 0, 0.863, 0.503, 0, 0.863, 0.503, 0, 0.863, 0.503, 0, 0.863, -0.496, 0, -0.868, -0.496, 0, -0.868, -0.496, 0, -0.868, -0.496, 0, -0.868, -0.867, 0, 0.496, -0.867, 0, 0.496, -0.867, 0, 0.496, -0.867, 0, 0.496 ), null, null, Vector3Array( -40.5177, 0.631429, 0, -40.5177, -1.07371, 0, -39.8983, 0.631429, 0, -39.8983, -1.07371, 0, -27.1044, -1.07371, 0, -26.2918, -1.07371, 0, -27.1044, 0.631429, 0, -26.2918, 0.631429, 0, 6.83557, -1.07371, 0, 7.90428, -1.07371, 0, 6.83557, 0.631429, 0, 7.90428, 0.631429, 0, -8.18678, -1.07371, 0, -7.82777, -1.07371, 0, -8.18678, 0.631429, 0, -7.82777, 0.631429, 0, 40.8701, -1.07371, 0, 40.8701, 0.631429, 0, 39.8394, -1.07371, 0, 39.8394, 0.631429, 0 ), null, null, null, IntArray( 0, 2, 1, 3, 1, 2, 4, 6, 5, 7, 5, 6, 8, 10, 9, 11, 9, 10, 12, 14, 13, 15, 13, 14, 16, 18, 17, 19, 17, 18 ) ],
+"material": SubResource( 9 ),
+"morph_arrays": [  ],
+"name": "material_43",
+"primitive": 4
+}
+custom_aabb/custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+
+[sub_resource type="FixedMaterial" id=31]
+
+flags/visible = true
+flags/double_sided = false
+flags/invert_faces = false
+flags/unshaded = false
+flags/on_top = false
+flags/lightmap_on_uv2 = true
+flags/colarray_is_srgb = true
+params/blend_mode = 0
+params/depth_draw = 1
+params/line_width = 0.0
+fixed_flags/use_alpha = false
+fixed_flags/use_color_array = false
+fixed_flags/use_point_size = false
+fixed_flags/discard_alpha = false
+fixed_flags/use_xy_normalmap = false
+params/diffuse = Color( 1, 1, 1, 1 )
+params/specular = Color( 0, 0, 0, 1 )
+params/emission = Color( 0, 0, 0, 1 )
+params/specular_exp = 40
+params/detail_mix = 1.0
+params/normal_depth = 1
+params/shader = 0
+params/shader_param = 0.5
+params/glow = 0
+params/point_size = 1.0
+uv_xform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+textures/diffuse_tc = 0
+textures/detail_tc = 0
+textures/specular_tc = 0
+textures/emission_tc = 0
+textures/specular_exp_tc = 0
+textures/glow_tc = 0
+textures/normal_tc = 0
+textures/shade_param_tc = 0
+
+[sub_resource type="ConvexPolygonShape" id=32]
+
+points = Vector3Array( 638.756, 5715.07, -782.63, 1191.08, 1015.86, 165.507, 1191.08, 5715.07, 165.507, 638.756, 1015.86, -782.63, 638.756, 5715.07, -782.63, -800.835, 1015.86, -782.63, 638.756, 1015.86, -782.63, -800.835, 5715.07, -782.63, -445.208, 5715.07, 1118.1, 1191.08, 1015.86, 165.507, -445.208, 1015.86, 1118.1, 1191.08, 5715.07, 165.507, -800.835, 5715.07, -782.63, -1352.76, 1015.86, -466.533, -800.835, 1015.86, -782.63, -1352.76, 5715.07, -466.533, -1352.76, 1015.86, -466.533, -445.208, 5715.07, 1118.1, -445.208, 1015.86, 1118.1, -1352.76, 5715.07, -466.533, 638.756, 1015.86, -782.63, 638.756, 5715.07, -782.63, 1191.08, 1015.86, 165.507, 1191.08, 5715.07, 165.507, -800.835, 5715.07, -782.63, 638.756, 5715.07, -782.63, -800.835, 1015.86, -782.63, 638.756, 1015.86, -782.63, 1191.08, 5715.07, 165.507, -445.208, 5715.07, 1118.1, 1191.08, 1015.86, 165.507, -445.208, 1015.86, 1118.1, -1352.76, 5715.07, -466.533, -800.835, 5715.07, -782.63, -1352.76, 1015.86, -466.533, -800.835, 1015.86, -782.63, -1352.76, 5715.07, -466.533, -1352.76, 1015.86, -466.533, -445.208, 5715.07, 1118.1, -445.208, 1015.86, 1118.1 )
+
+[sub_resource type="Mesh" id=21]
+
+resource/name = "ID59"
+surfaces/0 = {
+"alphasort": false,
+"arrays": [ Vector3Array( 592.001, 5715.07, 7.38477, -284.333, 0.11084, 517.557, 592.001, 0.11084, 7.38477, -284.333, 5715.07, 517.557, 386.974, 0.11084, -344.568, 592.001, 5715.07, 7.38477, 592.001, 0.11084, 7.38477, 386.974, 5715.07, -344.568, -754.917, 5715.07, -304.11, -284.333, 0.11084, 517.557, -284.333, 5715.07, 517.557, -754.917, 0.11084, -304.11, -684.274, 5715.07, -344.568, 386.974, 0.11084, -344.568, -684.274, 0.11084, -344.568, 386.974, 5715.07, -344.568, -754.917, 5715.07, -304.11, -684.274, 0.11084, -344.568, -754.917, 0.11084, -304.11, -684.274, 5715.07, -344.568 ), Vector3Array( 0.503, 0, 0.863, 0.503, 0, 0.863, 0.503, 0, 0.863, 0.503, 0, 0.863, 0.864, 0, -0.503, 0.864, 0, -0.503, 0.864, 0, -0.503, 0.864, 0, -0.503, -0.867, 0, 0.496, -0.867, 0, 0.496, -0.867, 0, 0.496, -0.867, 0, 0.496, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, -0.496, 0, -0.868, -0.496, 0, -0.868, -0.496, 0, -0.868, -0.496, 0, -0.868 ), null, null, Vector3Array( 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0 ), null, null, null, IntArray( 0, 2, 1, 1, 3, 0, 4, 6, 5, 5, 7, 4, 8, 10, 9, 9, 11, 8, 12, 14, 13, 13, 15, 12, 16, 18, 17, 17, 19, 16 ) ],
+"material": SubResource( 1 ),
+"morph_arrays": [  ],
+"name": "material",
+"primitive": 4
+}
+surfaces/1 = {
+"alphasort": false,
+"arrays": [ Vector3Array( -284.333, 5715.07, 517.557, 592.001, 5715.07, 7.38477, -284.333, 0.11084, 517.557, 592.001, 0.11084, 7.38477, 386.974, 5715.07, -344.568, 386.974, 0.11084, -344.568, 592.001, 5715.07, 7.38477, 592.001, 0.11084, 7.38477, -754.917, 0.11084, -304.11, -754.917, 5715.07, -304.11, -284.333, 0.11084, 517.557, -284.333, 5715.07, 517.557, 386.974, 5715.07, -344.568, -684.274, 5715.07, -344.568, 386.974, 0.11084, -344.568, -684.274, 0.11084, -344.568, -684.274, 5715.07, -344.568, -754.917, 5715.07, -304.11, -684.274, 0.11084, -344.568, -754.917, 0.11084, -304.11 ), Vector3Array( -0.502, 0, -0.864, -0.502, 0, -0.864, -0.502, 0, -0.864, -0.502, 0, -0.864, -0.863, 0, 0.502, -0.863, 0, 0.502, -0.863, 0, 0.502, -0.863, 0, 0.502, 0.868, 0, -0.497, 0.868, 0, -0.497, 0.868, 0, -0.497, 0.868, 0, -0.497, 0, 0, 0.999, 0, 0, 0.999, 0, 0, 0.999, 0, 0, 0.999, 0.497, 0, 0.867, 0.497, 0, 0.867, 0.497, 0, 0.867, 0.497, 0, 0.867 ), null, null, Vector3Array( -7.65526, -1.07371, 0, -7.0829, -1.07371, 0, -7.65526, 1, 0, -7.0829, 1, 0, 40.3755, -1.07371, 0, 40.3755, 1, 0, 40.1456, -1.07371, 0, 40.1456, 1, 0, -40.6229, 1, 0, -40.6229, -1.07371, 0, -40.0884, 1, 0, -40.0884, -1.07371, 0, 26.4339, -1.07371, 0, 27.0386, -1.07371, 0, 26.4339, 1, 0, 27.0386, 1, 0, 7.89356, -1.07371, 0, 7.93951, -1.07371, 0, 7.89356, 1, 0, 7.93951, 1, 0 ), null, null, null, IntArray( 0, 2, 1, 3, 1, 2, 4, 6, 5, 7, 5, 6, 8, 10, 9, 11, 9, 10, 12, 14, 13, 15, 13, 14, 16, 18, 17, 19, 17, 18 ) ],
+"material": SubResource( 9 ),
+"morph_arrays": [  ],
+"name": "material_43",
+"primitive": 4
+}
+custom_aabb/custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+
+[sub_resource type="FixedMaterial" id=33]
+
+flags/visible = true
+flags/double_sided = false
+flags/invert_faces = false
+flags/unshaded = false
+flags/on_top = false
+flags/lightmap_on_uv2 = true
+flags/colarray_is_srgb = true
+params/blend_mode = 0
+params/depth_draw = 1
+params/line_width = 7.00649e-45
+fixed_flags/use_alpha = false
+fixed_flags/use_color_array = false
+fixed_flags/use_point_size = false
+fixed_flags/discard_alpha = false
+fixed_flags/use_xy_normalmap = false
+params/diffuse = Color( 1, 1, 1, 1 )
+params/specular = Color( 0, 0, 0, 1 )
+params/emission = Color( 0, 0, 0, 1 )
+params/specular_exp = 40
+params/detail_mix = 1.0
+params/normal_depth = 1
+params/shader = 0
+params/shader_param = 0.5
+params/glow = 0
+params/point_size = 1.0
+uv_xform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+textures/diffuse_tc = 0
+textures/detail_tc = 0
+textures/specular_tc = 0
+textures/emission_tc = 0
+textures/specular_exp_tc = 0
+textures/glow_tc = 0
+textures/normal_tc = 0
+textures/shade_param_tc = 0
+
+[sub_resource type="ConvexPolygonShape" id=34]
+
+points = Vector3Array( 592.001, 5715.07, 7.38477, -284.333, 0.11084, 517.557, 592.001, 0.11084, 7.38477, -284.333, 5715.07, 517.557, 386.974, 0.11084, -344.568, 592.001, 5715.07, 7.38477, 592.001, 0.11084, 7.38477, 386.974, 5715.07, -344.568, -754.917, 5715.07, -304.11, -284.333, 0.11084, 517.557, -284.333, 5715.07, 517.557, -754.917, 0.11084, -304.11, -684.274, 5715.07, -344.568, 386.974, 0.11084, -344.568, -684.274, 0.11084, -344.568, 386.974, 5715.07, -344.568, -754.917, 5715.07, -304.11, -684.274, 0.11084, -344.568, -754.917, 0.11084, -304.11, -684.274, 5715.07, -344.568, -284.333, 5715.07, 517.557, 592.001, 5715.07, 7.38477, -284.333, 0.11084, 517.557, 592.001, 0.11084, 7.38477, 386.974, 5715.07, -344.568, 386.974, 0.11084, -344.568, 592.001, 5715.07, 7.38477, 592.001, 0.11084, 7.38477, -754.917, 0.11084, -304.11, -754.917, 5715.07, -304.11, -284.333, 0.11084, 517.557, -284.333, 5715.07, 517.557, 386.974, 5715.07, -344.568, -684.274, 5715.07, -344.568, 386.974, 0.11084, -344.568, -684.274, 0.11084, -344.568, -684.274, 5715.07, -344.568, -754.917, 5715.07, -304.11, -684.274, 0.11084, -344.568, -754.917, 0.11084, -304.11 )
+
+[sub_resource type="FixedMaterial" id=12]
+
+resource/name = "Color_000"
+flags/visible = true
+flags/double_sided = true
+flags/invert_faces = false
+flags/unshaded = false
+flags/on_top = false
+flags/lightmap_on_uv2 = true
+flags/colarray_is_srgb = true
+params/blend_mode = 0
+params/depth_draw = 1
+params/line_width = 0.0
+fixed_flags/use_alpha = false
+fixed_flags/use_color_array = false
+fixed_flags/use_point_size = false
+fixed_flags/discard_alpha = false
+fixed_flags/use_xy_normalmap = false
+params/diffuse = Color( 1, 1, 1, 1 )
+params/specular = Color( 0.125, 0.125, 0.125, 1 )
+params/emission = Color( 0, 0, 0, 1 )
+params/specular_exp = 50.0
+params/detail_mix = 1.0
+params/normal_depth = 1
+params/shader = 0
+params/shader_param = 0.5
+params/glow = 0
+params/point_size = 1.0
+uv_xform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+textures/diffuse_tc = 0
+textures/detail_tc = 0
+textures/specular_tc = 0
+textures/emission_tc = 0
+textures/specular_exp_tc = 0
+textures/glow_tc = 0
+textures/normal_tc = 0
+textures/shade_param_tc = 0
+
+[sub_resource type="Mesh" id=22]
+
+resource/name = "ID67"
+surfaces/0 = {
+"alphasort": false,
+"arrays": [ Vector3Array( -810.473, 1015.86, -818.851, -1352.76, 1015.86, -466.533, -1402.19, 1015.86, -479.963, -800.835, 1015.86, -782.631, 659.574, 1015.86, -818.851, 638.756, 1015.86, -782.631, 1191.08, 1015.86, 165.507, 1240.62, 1015.86, 178.582, -458.51, 1015.86, 1167.76, -445.208, 1015.86, 1118.1, 659.574, 1015.86, -818.851, 1240.62, 0.110596, 178.582, 1240.62, 1015.86, 178.582, 659.574, 0.110596, -818.851 ), Vector3Array( 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, 0, -0.999, 0, -0.863, 0, 0.502, -0.863, 0, 0.502, -0.863, 0, 0.502, -0.863, 0, 0.502 ), null, null, null, null, null, null, IntArray( 0, 2, 1, 1, 3, 0, 3, 4, 0, 3, 5, 4, 5, 6, 4, 6, 7, 4, 1, 2, 8, 8, 9, 1, 8, 7, 9, 7, 6, 9, 10, 12, 11, 11, 13, 10 ) ],
+"material": SubResource( 1 ),
+"morph_arrays": [  ],
+"name": "material",
+"primitive": 4
+}
+surfaces/1 = {
+"alphasort": false,
+"arrays": [ Vector3Array( 1191.08, 1015.86, 165.507, -445.208, 1015.86, 1118.1, 1240.62, 1015.86, 178.582, -458.51, 1015.86, 1167.76, -1352.76, 1015.86, -466.533, -1402.19, 1015.86, -479.963, 659.574, 1015.86, -818.851, 638.756, 1015.86, -782.631, -800.835, 1015.86, -782.631, -810.473, 1015.86, -818.851, 659.574, 0.110596, -818.851, 659.574, 1015.86, -818.851, 1240.62, 0.110596, 178.582, 1240.62, 1015.86, 178.582 ), Vector3Array( 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0.864, 0, -0.503, 0.864, 0, -0.503, 0.864, 0, -0.503, 0.864, 0, -0.503 ), null, null, null, null, null, null, IntArray( 0, 2, 1, 2, 3, 1, 1, 3, 4, 5, 4, 3, 2, 0, 6, 0, 7, 6, 7, 8, 6, 6, 8, 9, 8, 4, 9, 5, 9, 4, 10, 12, 11, 13, 11, 12 ) ],
+"material": SubResource( 12 ),
+"morph_arrays": [  ],
+"name": "Color_000",
+"primitive": 4
+}
+custom_aabb/custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+
+[sub_resource type="FixedMaterial" id=35]
+
+flags/visible = true
+flags/double_sided = false
+flags/invert_faces = false
+flags/unshaded = false
+flags/on_top = false
+flags/lightmap_on_uv2 = true
+flags/colarray_is_srgb = true
+params/blend_mode = 0
+params/depth_draw = 1
+params/line_width = 0.0
+fixed_flags/use_alpha = false
+fixed_flags/use_color_array = false
+fixed_flags/use_point_size = false
+fixed_flags/discard_alpha = false
+fixed_flags/use_xy_normalmap = false
+params/diffuse = Color( 1, 1, 1, 1 )
+params/specular = Color( 0, 0, 0, 1 )
+params/emission = Color( 0, 0, 0, 1 )
+params/specular_exp = 40
+params/detail_mix = 1.0
+params/normal_depth = 1
+params/shader = 0
+params/shader_param = 0.5
+params/glow = 0
+params/point_size = 1.0
+uv_xform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+textures/diffuse_tc = 0
+textures/detail_tc = 0
+textures/specular_tc = 0
+textures/emission_tc = 0
+textures/specular_exp_tc = 0
+textures/glow_tc = 0
+textures/normal_tc = 0
+textures/shade_param_tc = 0
+
+[sub_resource type="ConvexPolygonShape" id=36]
+
+points = Vector3Array( -810.473, 1015.86, -818.851, -1352.76, 1015.86, -466.533, -1402.19, 1015.86, -479.963, -800.835, 1015.86, -782.631, 659.574, 1015.86, -818.851, 638.756, 1015.86, -782.631, 1191.08, 1015.86, 165.507, 1240.62, 1015.86, 178.582, -458.51, 1015.86, 1167.76, -445.208, 1015.86, 1118.1, 659.574, 1015.86, -818.851, 1240.62, 0.110596, 178.582, 1240.62, 1015.86, 178.582, 659.574, 0.110596, -818.851, 1191.08, 1015.86, 165.507, -445.208, 1015.86, 1118.1, 1240.62, 1015.86, 178.582, -458.51, 1015.86, 1167.76, -1352.76, 1015.86, -466.533, -1402.19, 1015.86, -479.963, 659.574, 1015.86, -818.851, 638.756, 1015.86, -782.631, -800.835, 1015.86, -782.631, -810.473, 1015.86, -818.851, 659.574, 0.110596, -818.851, 659.574, 1015.86, -818.851, 1240.62, 0.110596, 178.582, 1240.62, 1015.86, 178.582 )
+
+[sub_resource type="Mesh" id=23]
+
+resource/name = "ID75"
+surfaces/0 = {
+"alphasort": false,
+"arrays": [ Vector3Array( -458.51, 1015.86, 1167.76, 1240.62, 0.110657, 178.582, -458.51, 0.110657, 1167.76, 1240.62, 1015.86, 178.582, -1402.19, 0.110657, -479.962, -458.51, 1015.86, 1167.76, -458.51, 0.110657, 1167.76, -1402.19, 1015.86, -479.962, -810.473, 1015.86, -818.851, -1402.19, 0.110657, -479.962, -810.473, 0.110657, -818.851, -1402.19, 1015.86, -479.962, 659.574, 1015.86, -818.851, -810.473, 0.110657, -818.851, 659.574, 0.110657, -818.851, -810.473, 1015.86, -818.851 ), Vector3Array( -0.502, 0, -0.864, -0.502, 0, -0.864, -0.502, 0, -0.864, -0.502, 0, -0.864, 0.868, 0, -0.497, 0.868, 0, -0.497, 0.868, 0, -0.497, 0.868, 0, -0.497, 0.497, 0, 0.867, 0.497, 0, 0.867, 0.497, 0, 0.867, 0.497, 0, 0.867, 0, 0, 0.999, 0, 0, 0.999, 0, 0, 0.999, 0, 0, 0.999 ), null, null, Vector3Array( 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0 ), null, null, null, IntArray( 0, 2, 1, 1, 3, 0, 4, 6, 5, 5, 7, 4, 8, 10, 9, 9, 11, 8, 12, 14, 13, 13, 15, 12 ) ],
+"material": SubResource( 1 ),
+"morph_arrays": [  ],
+"name": "material",
+"primitive": 4
+}
+surfaces/1 = {
+"alphasort": false,
+"arrays": [ Vector3Array( 1240.62, 1015.86, 178.582, -458.51, 1015.86, 1167.76, 1240.62, 0.110657, 178.582, -458.51, 0.110657, 1167.76, -1402.19, 1015.86, -479.962, -1402.19, 0.110657, -479.962, -458.51, 1015.86, 1167.76, -458.51, 0.110657, 1167.76, -1402.19, 1015.86, -479.962, -810.473, 1015.86, -818.851, -1402.19, 0.110657, -479.962, -810.473, 0.110657, -818.851, -810.473, 1015.86, -818.851, 659.574, 1015.86, -818.851, -810.473, 0.110657, -818.851, 659.574, 0.110657, -818.851 ), Vector3Array( 0.503, 0, 0.863, 0.503, 0, 0.863, 0.503, 0, 0.863, 0.503, 0, 0.863, -0.867, 0, 0.496, -0.867, 0, 0.496, -0.867, 0, 0.496, -0.867, 0, 0.496, -0.496, 0, -0.868, -0.496, 0, -0.868, -0.496, 0, -0.868, -0.496, 0, -0.868, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1 ), null, null, Vector3Array( 6.81512, 0.631429, 0, 7.92487, 0.631429, 0, 6.81512, 1, 0, 7.92487, 1, 0, 40.8906, 0.631429, 0, 40.8906, 1, 0, 39.8188, 0.631429, 0, 39.8188, 1, 0, -8.20722, 0.631429, 0, -7.82233, 0.631429, 0, -8.20722, 1, 0, -7.82233, 1, 0, -27.1098, 0.631429, 0, -26.2801, 0.631429, 0, -27.1098, 1, 0, -26.2801, 1, 0 ), null, null, null, IntArray( 0, 2, 1, 3, 1, 2, 4, 6, 5, 7, 5, 6, 8, 10, 9, 11, 9, 10, 12, 14, 13, 15, 13, 14 ) ],
+"material": SubResource( 9 ),
+"morph_arrays": [  ],
+"name": "material_43",
+"primitive": 4
+}
+custom_aabb/custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+
+[sub_resource type="FixedMaterial" id=37]
+
+flags/visible = true
+flags/double_sided = false
+flags/invert_faces = false
+flags/unshaded = false
+flags/on_top = false
+flags/lightmap_on_uv2 = true
+flags/colarray_is_srgb = true
+params/blend_mode = 0
+params/depth_draw = 1
+params/line_width = 0.0
+fixed_flags/use_alpha = false
+fixed_flags/use_color_array = false
+fixed_flags/use_point_size = false
+fixed_flags/discard_alpha = false
+fixed_flags/use_xy_normalmap = false
+params/diffuse = Color( 1, 1, 1, 1 )
+params/specular = Color( 0, 0, 0, 1 )
+params/emission = Color( 0, 0, 0, 1 )
+params/specular_exp = 40
+params/detail_mix = 1.0
+params/normal_depth = 1
+params/shader = 0
+params/shader_param = 0.5
+params/glow = 0
+params/point_size = 1.0
+uv_xform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+textures/diffuse_tc = 0
+textures/detail_tc = 0
+textures/specular_tc = 0
+textures/emission_tc = 0
+textures/specular_exp_tc = 0
+textures/glow_tc = 0
+textures/normal_tc = 0
+textures/shade_param_tc = 0
+
+[sub_resource type="ConvexPolygonShape" id=38]
+
+points = Vector3Array( -458.51, 1015.86, 1167.76, 1240.62, 0.110657, 178.582, -458.51, 0.110657, 1167.76, 1240.62, 1015.86, 178.582, -1402.19, 0.110657, -479.962, -458.51, 1015.86, 1167.76, -458.51, 0.110657, 1167.76, -1402.19, 1015.86, -479.962, -810.473, 1015.86, -818.851, -1402.19, 0.110657, -479.962, -810.473, 0.110657, -818.851, -1402.19, 1015.86, -479.962, 659.574, 1015.86, -818.851, -810.473, 0.110657, -818.851, 659.574, 0.110657, -818.851, -810.473, 1015.86, -818.851, 1240.62, 1015.86, 178.582, -458.51, 1015.86, 1167.76, 1240.62, 0.110657, 178.582, -458.51, 0.110657, 1167.76, -1402.19, 1015.86, -479.962, -1402.19, 0.110657, -479.962, -458.51, 1015.86, 1167.76, -458.51, 0.110657, 1167.76, -1402.19, 1015.86, -479.962, -810.473, 1015.86, -818.851, -1402.19, 0.110657, -479.962, -810.473, 0.110657, -818.851, -810.473, 1015.86, -818.851, 659.574, 1015.86, -818.851, -810.473, 0.110657, -818.851, 659.574, 0.110657, -818.851 )
+
+[sub_resource type="Mesh" id=24]
+
+resource/name = "ID85"
+custom_aabb/custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+
+[sub_resource type="Mesh" id=25]
+
+resource/name = "ID89"
+custom_aabb/custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+
+[node name="skyscraper" type="Spatial"]
+
+_import_path = NodePath(".")
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+
+[node name="SketchUp_001" type="MeshInstance" parent="."]
+
+_import_path = NodePath("SketchUp_001")
+_import_transform = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588032, 0.0807227, 0.0911283 )
+transform/local = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588032, 0.0807227, 0.0911283 )
+layers = 1
+geometry/visible = true
+geometry/material_override = null
+geometry/cast_shadow = 1
+geometry/receive_shadows = true
+geometry/range_begin = 0.0
+geometry/range_end = 0.0
+geometry/extra_cull_margin = 0.0
+geometry/billboard = false
+geometry/billboard_y = false
+geometry/depth_scale = false
+geometry/visible_in_all_rooms = false
+geometry/use_baked_light = true
+geometry/baked_light_tex_id = 0
+mesh/mesh = SubResource( 16 )
+mesh/skeleton = NodePath("..")
+material/0 = SubResource( 26 )
+material/1 = null
+
+[node name="SketchUp_002" type="MeshInstance" parent="."]
+
+_import_path = NodePath("SketchUp_002")
+_import_transform = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588032, 0.0807227, 0.0911283 )
+transform/local = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588032, 0.0807227, 0.0911283 )
+layers = 1
+geometry/visible = true
+geometry/material_override = null
+geometry/cast_shadow = 1
+geometry/receive_shadows = true
+geometry/range_begin = 0.0
+geometry/range_end = 0.0
+geometry/extra_cull_margin = 0.0
+geometry/billboard = false
+geometry/billboard_y = false
+geometry/depth_scale = false
+geometry/visible_in_all_rooms = false
+geometry/use_baked_light = true
+geometry/baked_light_tex_id = 0
+mesh/mesh = SubResource( 17 )
+mesh/skeleton = NodePath("..")
+material/0 = SubResource( 27 )
+material/1 = null
+
+[node name="SketchUp_003" type="MeshInstance" parent="."]
+
+_import_path = NodePath("SketchUp_003")
+_import_transform = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588032, 0.0807232, 0.0911283 )
+transform/local = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588032, 0.0807232, 0.0911283 )
+layers = 1
+geometry/visible = true
+geometry/material_override = null
+geometry/cast_shadow = 1
+geometry/receive_shadows = true
+geometry/range_begin = 0.0
+geometry/range_end = 0.0
+geometry/extra_cull_margin = 0.0
+geometry/billboard = false
+geometry/billboard_y = false
+geometry/depth_scale = false
+geometry/visible_in_all_rooms = false
+geometry/use_baked_light = true
+geometry/baked_light_tex_id = 0
+mesh/mesh = SubResource( 18 )
+mesh/skeleton = NodePath("..")
+material/0 = SubResource( 28 )
+material/1 = null
+
+[node name="core" type="MeshInstance" parent="."]
+
+_import_path = NodePath("SketchUp_004")
+_import_transform = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588032, 0.0807232, 0.0911283 )
+transform/local = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588032, 0.0807232, 0.0911283 )
+layers = 1
+geometry/visible = true
+geometry/material_override = null
+geometry/cast_shadow = 1
+geometry/receive_shadows = true
+geometry/range_begin = 0.0
+geometry/range_end = 0.0
+geometry/extra_cull_margin = 0.0
+geometry/billboard = false
+geometry/billboard_y = false
+geometry/depth_scale = false
+geometry/visible_in_all_rooms = false
+geometry/use_baked_light = true
+geometry/baked_light_tex_id = 0
+mesh/mesh = SubResource( 19 )
+mesh/skeleton = NodePath("..")
+material/0 = SubResource( 29 )
+material/1 = null
+
+[node name="StaticBody" type="StaticBody" parent="core"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+input/ray_pickable = true
+input/capture_on_drag = false
+shape_count = 1
+shapes/0/shape = SubResource( 30 )
+shapes/0/transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+shapes/0/trigger = false
+collision/layers = 1
+collision/mask = 1
+friction = 1.0
+bounce = 0.0
+constant_linear_velocity = Vector3( 0, 0, 0 )
+constant_angular_velocity = Vector3( 0, 0, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="core/StaticBody"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+shape = SubResource( 30 )
+trigger = false
+_update_shape_index = 0
+
+[node name="pillar" type="MeshInstance" parent="."]
+
+_import_path = NodePath("SketchUp_005")
+_import_transform = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588032, 0.0807232, 0.0911283 )
+transform/local = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588032, 0.0807232, 0.0911283 )
+layers = 1
+geometry/visible = true
+geometry/material_override = null
+geometry/cast_shadow = 1
+geometry/receive_shadows = true
+geometry/range_begin = 0.0
+geometry/range_end = 0.0
+geometry/extra_cull_margin = 0.0
+geometry/billboard = false
+geometry/billboard_y = false
+geometry/depth_scale = false
+geometry/visible_in_all_rooms = false
+geometry/use_baked_light = true
+geometry/baked_light_tex_id = 0
+mesh/mesh = SubResource( 20 )
+mesh/skeleton = NodePath("..")
+material/0 = SubResource( 31 )
+material/1 = null
+
+[node name="StaticBody" type="StaticBody" parent="pillar"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+input/ray_pickable = true
+input/capture_on_drag = false
+shape_count = 1
+shapes/0/shape = SubResource( 32 )
+shapes/0/transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+shapes/0/trigger = false
+collision/layers = 1
+collision/mask = 1
+friction = 1.0
+bounce = 0.0
+constant_linear_velocity = Vector3( 0, 0, 0 )
+constant_angular_velocity = Vector3( 0, 0, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="pillar/StaticBody"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+shape = SubResource( 32 )
+trigger = false
+_update_shape_index = 0
+
+[node name="bottom" type="MeshInstance" parent="."]
+
+_import_path = NodePath("SketchUp_006")
+_import_transform = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588032, 0.0807232, 0.0911283 )
+transform/local = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588032, 0.0807232, 0.0911283 )
+layers = 1
+geometry/visible = true
+geometry/material_override = null
+geometry/cast_shadow = 1
+geometry/receive_shadows = true
+geometry/range_begin = 0.0
+geometry/range_end = 0.0
+geometry/extra_cull_margin = 0.0
+geometry/billboard = false
+geometry/billboard_y = false
+geometry/depth_scale = false
+geometry/visible_in_all_rooms = false
+geometry/use_baked_light = true
+geometry/baked_light_tex_id = 0
+mesh/mesh = SubResource( 21 )
+mesh/skeleton = NodePath("..")
+material/0 = SubResource( 33 )
+material/1 = null
+
+[node name="StaticBody" type="StaticBody" parent="bottom"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+input/ray_pickable = true
+input/capture_on_drag = false
+shape_count = 1
+shapes/0/shape = SubResource( 34 )
+shapes/0/transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+shapes/0/trigger = false
+collision/layers = 1
+collision/mask = 1
+friction = 1.0
+bounce = 0.0
+constant_linear_velocity = Vector3( 0, 0, 0 )
+constant_angular_velocity = Vector3( 0, 0, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="bottom/StaticBody"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+shape = SubResource( 34 )
+trigger = false
+_update_shape_index = 0
+
+[node name="bottom2" type="MeshInstance" parent="."]
+
+_import_path = NodePath("SketchUp_007")
+_import_transform = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588035, 0.0807232, 0.0911283 )
+transform/local = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588035, 0.0807232, 0.0911283 )
+layers = 1
+geometry/visible = true
+geometry/material_override = null
+geometry/cast_shadow = 1
+geometry/receive_shadows = true
+geometry/range_begin = 0.0
+geometry/range_end = 0.0
+geometry/extra_cull_margin = 0.0
+geometry/billboard = false
+geometry/billboard_y = false
+geometry/depth_scale = false
+geometry/visible_in_all_rooms = false
+geometry/use_baked_light = true
+geometry/baked_light_tex_id = 0
+mesh/mesh = SubResource( 22 )
+mesh/skeleton = NodePath("..")
+material/0 = SubResource( 35 )
+material/1 = null
+
+[node name="StaticBody" type="StaticBody" parent="bottom2"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+input/ray_pickable = true
+input/capture_on_drag = false
+shape_count = 1
+shapes/0/shape = SubResource( 36 )
+shapes/0/transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+shapes/0/trigger = false
+collision/layers = 1
+collision/mask = 1
+friction = 1.0
+bounce = 0.0
+constant_linear_velocity = Vector3( 0, 0, 0 )
+constant_angular_velocity = Vector3( 0, 0, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="bottom2/StaticBody"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+shape = SubResource( 36 )
+trigger = false
+_update_shape_index = 0
+
+[node name="bottom3" type="MeshInstance" parent="."]
+
+_import_path = NodePath("SketchUp_008")
+_import_transform = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588032, 0.0807232, 0.0911283 )
+transform/local = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588032, 0.0807232, 0.0911283 )
+layers = 1
+geometry/visible = true
+geometry/material_override = null
+geometry/cast_shadow = 1
+geometry/receive_shadows = true
+geometry/range_begin = 0.0
+geometry/range_end = 0.0
+geometry/extra_cull_margin = 0.0
+geometry/billboard = false
+geometry/billboard_y = false
+geometry/depth_scale = false
+geometry/visible_in_all_rooms = false
+geometry/use_baked_light = true
+geometry/baked_light_tex_id = 0
+mesh/mesh = SubResource( 23 )
+mesh/skeleton = NodePath("..")
+material/0 = SubResource( 37 )
+material/1 = null
+
+[node name="StaticBody" type="StaticBody" parent="bottom3"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+input/ray_pickable = true
+input/capture_on_drag = false
+shape_count = 1
+shapes/0/shape = SubResource( 38 )
+shapes/0/transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+shapes/0/trigger = false
+collision/layers = 1
+collision/mask = 1
+friction = 1.0
+bounce = 0.0
+constant_linear_velocity = Vector3( 0, 0, 0 )
+constant_angular_velocity = Vector3( 0, 0, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="bottom3/StaticBody"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+shape = SubResource( 38 )
+trigger = false
+_update_shape_index = 0
+
+[node name="SketchUp_009" type="MeshInstance" parent="."]
+
+_import_path = NodePath("SketchUp_009")
+_import_transform = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588032, 0.0807232, 0.0911283 )
+transform/local = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588032, 0.0807232, 0.0911283 )
+layers = 1
+geometry/visible = true
+geometry/material_override = null
+geometry/cast_shadow = 1
+geometry/receive_shadows = true
+geometry/range_begin = 0.0
+geometry/range_end = 0.0
+geometry/extra_cull_margin = 0.0
+geometry/billboard = false
+geometry/billboard_y = false
+geometry/depth_scale = false
+geometry/visible_in_all_rooms = false
+geometry/use_baked_light = true
+geometry/baked_light_tex_id = 0
+mesh/mesh = SubResource( 24 )
+mesh/skeleton = NodePath("..")
+
+[node name="SketchUp_010" type="MeshInstance" parent="."]
+
+_import_path = NodePath("SketchUp_010")
+_import_transform = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588032, 0.0807232, 0.0911283 )
+transform/local = Transform( 0.003175, 0, 0, 0, 0.003175, 0, 0, 0, 0.003175, -0.0588032, 0.0807232, 0.0911283 )
+layers = 1
+geometry/visible = true
+geometry/material_override = null
+geometry/cast_shadow = 1
+geometry/receive_shadows = true
+geometry/range_begin = 0.0
+geometry/range_end = 0.0
+geometry/extra_cull_margin = 0.0
+geometry/billboard = false
+geometry/billboard_y = false
+geometry/depth_scale = false
+geometry/visible_in_all_rooms = false
+geometry/use_baked_light = true
+geometry/baked_light_tex_id = 0
+mesh/mesh = SubResource( 25 )
+mesh/skeleton = NodePath("..")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+_import_path = NodePath("AnimationPlayer")
+playback/process_mode = 1
+playback/default_blend_time = 0.0
+root/root = NodePath("..")
+playback/active = true
+playback/speed = 1.0
+blend_times = [  ]
+autoplay = ""
+
+
