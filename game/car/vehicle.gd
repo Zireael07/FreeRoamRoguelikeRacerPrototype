@@ -10,9 +10,21 @@ export var engine_force = 40
 
 #speed
 var speed
+var speed_int = 0
+var speed_kph = 0
+
+#hud
+var hud
+var speed_text
 
 func _fixed_process(delta):
 	speed = get_linear_velocity().length();
+	
+	#speedometer
+	speed_int = round(speed)
+	speed_kph = round(speed_int*3.6)
+	speed_text = String(speed_int) + " m/s " + String(speed_kph) + " kph"
+	hud.update_speed(speed_text)
 	
 	#gas
 	if (Input.is_action_pressed("ui_up")):
@@ -44,4 +56,9 @@ func _fixed_process(delta):
 
 
 func _ready():
+	##GUI
+	var h = preload("res://hud/hud.tscn")
+	hud = h.instance()
+	add_child(hud)
+	
 	set_fixed_process(true)
