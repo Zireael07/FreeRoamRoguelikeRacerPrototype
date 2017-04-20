@@ -1,4 +1,7 @@
-[gd_scene load_steps=2 format=1]
+[gd_scene load_steps=4 format=1]
+
+[ext_resource path="res://scripts/ground_gen.gd" type="Script" id=1]
+[ext_resource path="res://assets/grass_material.tres" type="Material" id=2]
 
 [sub_resource type="PlaneShape" id=1]
 
@@ -10,7 +13,10 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
 [node name="Ground" type="Spatial" parent="."]
 
+editor/display_folded = true
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+script/script = ExtResource( 1 )
+terrainmaterial = ExtResource( 2 )
 
 [node name="StaticBody" type="StaticBody" parent="Ground"]
 
