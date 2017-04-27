@@ -13,21 +13,11 @@ var speed
 var speed_int = 0
 var speed_kph = 0
 
-#hud
-var hud
-var speed_text
-
-func _fixed_process(delta):
+func process_car_physics(gas, brake, left, right):
 	speed = get_linear_velocity().length();
 	
-	#speedometer
-	speed_int = round(speed)
-	speed_kph = round(speed_int*3.6)
-	speed_text = String(speed_int) + " m/s " + String(speed_kph) + " kph"
-	hud.update_speed(speed_text)
-	
 	#gas
-	if (Input.is_action_pressed("ui_up")):
+	if (gas): #(Input.is_action_pressed("ui_up")):
 		set_engine_force(engine_force)
 	else:
 		if (speed > 3):
@@ -36,7 +26,7 @@ func _fixed_process(delta):
 			set_engine_force(0)
 	
 	#brake/reverse
-	if (Input.is_action_pressed("ui_down")):
+	if (brake): #(Input.is_action_pressed("ui_down")):
 		if (speed > 5):
 			#slows down 1 unit per tick
 			set_brake(1)
@@ -48,17 +38,17 @@ func _fixed_process(delta):
 		set_brake(0.0)
 	
 	#steering
-	if (Input.is_action_pressed("ui_left") and get_steering() > -STEER_LIMIT):
+	if (left and get_steering() > -STEER_LIMIT): #(Input.is_action_pressed("ui_left") and get_steering() > -STEER_LIMIT):
 		set_steering(get_steering()-steer_inc)
-	if (Input.is_action_pressed("ui_right") and get_steering() < STEER_LIMIT):
+	if (right and get_steering() < STEER_LIMIT): #(Input.is_action_pressed("ui_right") and get_steering() < STEER_LIMIT):
 		set_steering(get_steering()+steer_inc)
 
+	
+func _fixed_process(delta):
+	#just to have something here
+	var basis = get_transform().basis.y
 
 
 func _ready():
-	##GUI
-	var h = preload("res://hud/hud.tscn")
-	hud = h.instance()
-	add_child(hud)
-	
-	set_fixed_process(true)
+	#blah
+	var basis = get_transform().basis.y
