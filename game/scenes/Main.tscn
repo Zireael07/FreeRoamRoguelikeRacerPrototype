@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=6 format=1]
 
 [ext_resource path="res://objects/roads.tscn" type="PackedScene" id=1]
 [ext_resource path="res://objects/skyscraper.tscn" type="PackedScene" id=2]
-[ext_resource path="res://car/car_base.tscn" type="PackedScene" id=3]
+[ext_resource path="res://car/car_AI_base.tscn" type="PackedScene" id=3]
+[ext_resource path="res://car/car_base.tscn" type="PackedScene" id=4]
 
 [sub_resource type="Environment" id=1]
 
@@ -112,11 +113,27 @@ transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -18.6308, 0, 18.8162 )
 
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.90196, 0, 40.1475 )
 
+[node name="skyscraper5" parent="." instance=ExtResource( 2 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 47.8947, 0, 40.1475 )
+
+[node name="skyscraper6" parent="." instance=ExtResource( 2 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 41.977, 0, 97.0089 )
+
+[node name="skyscraper7" parent="." instance=ExtResource( 2 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 78.7708, 0, 97.0089 )
+
 [node name="skyscraper1" parent="." instance=ExtResource( 2 )]
 
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19.8311, 0, 7.28573 )
 
-[node name="car" parent="." instance=ExtResource( 3 )]
+[node name="AI" parent="." instance=ExtResource( 3 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.91261, 0, 0 )
+
+[node name="car" parent="." instance=ExtResource( 4 )]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 
