@@ -22,6 +22,9 @@ func _fixed_process(delta):
 	var left = false
 	var right = false
 	
+	#fps display
+	hud.update_fps()
+	
 	if (Input.is_action_pressed("ui_up")):
 		gas = true
 	
