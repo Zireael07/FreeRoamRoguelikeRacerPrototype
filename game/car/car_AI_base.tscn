@@ -514,6 +514,54 @@ quad/offset = Vector2( 0, 0 )
 quad/centered = true
 script/script = ExtResource( 4 )
 
+[node name="SpotLight" type="SpotLight" parent="BODY"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+transform/local = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.372065, 0, 1.3591 )
+layers = 1
+params/enabled = true
+params/editor_only = false
+params/bake_mode = 0
+params/energy = 1.0
+colors/diffuse = Color( 0.933567, 0.992188, 0.523224, 1 )
+colors/specular = Color( 1, 1, 1, 1 )
+shadow/shadow = false
+shadow/darkening = 0.0
+shadow/z_offset = 0.05
+shadow/z_slope_scale = 0.0
+shadow/esm_multiplier = 60.0
+shadow/blur_passes = 1.0
+projector = null
+operator = 0
+params/radius = 3.0
+params/attenuation = 1.0
+params/spot_angle = 30.0
+params/spot_attenuation = 1.0
+
+[node name="SpotLight1" type="SpotLight" parent="BODY"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+transform/local = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.562522, 0, 1.3591 )
+layers = 1
+params/enabled = true
+params/editor_only = false
+params/bake_mode = 0
+params/energy = 1.0
+colors/diffuse = Color( 0.933567, 0.992188, 0.523224, 1 )
+colors/specular = Color( 1, 1, 1, 1 )
+shadow/shadow = false
+shadow/darkening = 0.0
+shadow/z_offset = 0.05
+shadow/z_slope_scale = 0.0
+shadow/esm_multiplier = 60.0
+shadow/blur_passes = 1.0
+projector = null
+operator = 0
+params/radius = 3.0
+params/attenuation = 1.0
+params/spot_angle = 30.0
+params/spot_attenuation = 1.0
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
 _import_path = NodePath("AnimationPlayer")
