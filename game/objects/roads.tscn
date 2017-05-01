@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=1]
+[gd_scene load_steps=7 format=1]
 
 [ext_resource path="res://scripts/ground_gen.gd" type="Script" id=1]
 [ext_resource path="res://assets/grass_material.tres" type="Material" id=2]
 [ext_resource path="res://scripts/road_gen.gd" type="Script" id=3]
 [ext_resource path="res://assets/road_material.tres" type="Material" id=4]
+[ext_resource path="res://scripts/curved_road_segment.gd" type="Script" id=5]
 
 [sub_resource type="PlaneShape" id=1]
 
@@ -48,6 +49,17 @@ _update_shape_index = 0
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18.7979, 0, 0 )
 script/script = ExtResource( 3 )
+material = ExtResource( 4 )
+
+[node name="Position3D" type="Position3D" parent="."]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+script/script = ExtResource( 5 )
+lane_width = 2.5
+radius = 15
+loc = Vector2( 0, 0 )
+left_turn = false
+angle = 120
 material = ExtResource( 4 )
 
 
