@@ -132,6 +132,34 @@ func make_curves():
 	if (!left_turn):
 		set_rotation(Vector3(0,0,0))
 
+#make the mesh (less objects)
+func make_strip_single(index_one, index_two, parent):
+	var right_side = null
+	var left_side = null
+	var center_line = null
+	
+	center_line = curve_one
+	left_side = curve_three
+	right_side = curve_two
+	
+
+	if (left_side != null):
+		if (index_one != index_two):
+			var zero = right_side.get_point_pos(index_one)
+			var one = center_line.get_point_pos(index_one)
+			var two = center_line.get_point_pos(index_two)
+			var three = right_side.get_point_pos(index_two)
+			var four = left_side.get_point_pos(index_one)
+			var five = left_side.get_point_pos(index_two)
+			
+			addRoadCurveTest(material, zero, one, two, three, four, five, parent)
+						
+		else:
+			print("Bad indexes given")
+	else:
+		print("No sides given")
+
+
 ##make the mesh
 func make_strip(index_one, index_two, right):
 	var right_side = null
@@ -162,8 +190,14 @@ func make_strip(index_one, index_two, right):
 		print("No sides given")
 	
 func test_road():
+	#dummy to be able to get the road mesh faster
+	var road_mesh = Spatial.new()
+	road_mesh.set_name("road_mesh")
+	add_child(road_mesh)
+	
 	var nb_points = 32
 	for index in range(nb_points-1):
-		make_strip(index, index+1, true)
-		make_strip(index, index+1, false)
+		make_strip_single(index, index+1, road_mesh)
+		#make_strip(index, index+1, true)
+		#make_strip(index, index+1, false)
 	

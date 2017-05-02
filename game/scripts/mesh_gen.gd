@@ -69,6 +69,29 @@ func addRoadCurve(material, left_one, right_one, left_two, right_two, flip_uv):
 	#Turn off shadows
 	node.set_cast_shadows_setting(0)
 	
+#this one counts from 1 not 0
+func addRoadCurveTest(material, one, two, three, four, five, six, parent):
+	#print("Adding curved road")
+	var surface = SurfaceTool.new()
+	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	#Create a node that will hold the mesh
+	var node = MeshInstance.new()
+	node.set_name("road_curved")
+	if (parent !=null):
+		parent.add_child(node)
+	else:
+		add_child(node)
+	
+	addQuad(one, two, three, four, material, surface, false)
+	addQuad(two, five, six, three, material, surface, true)
+	
+	#Set the created mesh to the node
+	node.set_mesh(surface.commit())	
+	
+	#Turn off shadows
+	node.set_cast_shadows_setting(0)	
+
 #clockwise order = right, left, left_ahead, right (as looking from origin)
 func addQuad(one, two, three, four, material, surface, flip_uv):
 	var corners = []
