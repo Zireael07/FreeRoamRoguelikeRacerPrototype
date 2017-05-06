@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=1]
+[gd_scene load_steps=7 format=1]
 
 [ext_resource path="res://objects/roads.tscn" type="PackedScene" id=1]
 [ext_resource path="res://objects/skyscraper.tscn" type="PackedScene" id=2]
 [ext_resource path="res://car/car_AI_base.tscn" type="PackedScene" id=3]
 [ext_resource path="res://car/car_base.tscn" type="PackedScene" id=4]
+[ext_resource path="res://roads/test_instancing_segments.tscn" type="PackedScene" id=5]
 
 [sub_resource type="Environment" id=1]
 
@@ -139,5 +140,9 @@ transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.91261, 0, 0 )
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 environment = SubResource( 1 )
+
+[node name="Spatial" parent="." instance=ExtResource( 5 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.30582, 0, 0 )
 
 

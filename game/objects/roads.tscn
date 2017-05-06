@@ -54,7 +54,7 @@ material = ExtResource( 4 )
 [node name="Position3D" type="Position3D" parent="."]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, 12.9904 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21.8439, 0, 12.9904 )
 script/script = ExtResource( 5 )
 lane_width = 2.5
 radius = 15
