@@ -20,7 +20,12 @@ export var radius = 15
 export(Vector2) var loc = Vector2(0,0)
 export(bool) var left_turn = false
 export var angle = 120
-
+#for matching the segments
+var start_point
+var last
+var global_start
+var global_end
+var relative_end
 
 #mesh material
 export(FixedMaterial)    var material    = preload("res://assets/road_material.tres")
@@ -75,7 +80,7 @@ func make_curve_for(array, node):
 	var get = node.get_curve()
 	var num = get.get_point_count()
 	#print("Number of points" + String(num))
-	var last = get.get_point_pos(num-1)
+	last = get.get_point_pos(num-1)
 	#print("Position of last point is " + String(last))
 	#addTestColor(m, Color(1,0,0), last.x, last.y, last.z, 0.1,0.1,0.1)
 	
@@ -100,37 +105,44 @@ func make_curves():
 	curve_three = make_curve_for(points_outer, path_three)
 
 	#debug
+	debug(path_one)
+	
+	#fix rotations
+	if (!left_turn):
+		set_rotation(Vector3(0,0,0))
+
+	#fix issue
+	if (get_parent().get_name() == "Placer"):
+		#let the placer do its work
+		get_parent().place_road()
+
+func debug(path_one):
 	var center_curve = path_one.get_curve()
-	var start_point = center_curve.get_point_pos(0)
+	start_point = center_curve.get_point_pos(0)
 	print("Position of start point is " + String(start_point))
 	#addTestColor(m, Color(0, 1,0), "start_cube", start_point.x, start_point.y, start_point.z, 0.1, 0.1, 0.1)
 	
 	
 	var num = center_curve.get_point_count()
 	#print("Number of points" + String(num))
-	var last = center_curve.get_point_pos(num-1)
+	last = center_curve.get_point_pos(num-1)
 	print("Position of last point is " + String(last))
 	
 	var loc3d = Vector3(loc.x, 0, loc.y)
-	if (!left_turn):
+	if (left_turn):
 		#transform so that we're at our start point
-		var trans = Vector3(-start_point.x, 0, -start_point.z)
-		set_translation(trans+loc3d)
-	else:
+		#var trans = Vector3(-start_point.x, 0, -start_point.z)
+		#set_translation(trans+loc3d)
+	#else:
 		set_rotation_deg(Vector3(0, -180, 0))
-		var trans = Vector3(start_point.x, 0, start_point.z)
-		set_translation(trans+loc3d)
+		#var trans = Vector3(start_point.x, 0, start_point.z)
+		#set_translation(trans+loc3d)
 	
-	#var global = get_global_transform().xform_inv(last)
-	#var global_start = get_global_transform().xform_inv(start_point)
+	#global_end = get_global_transform().xform_inv(last)
+	#global_start = get_global_transform().xform_inv(start_point)
 	
-	var relative = start_point-last #global_start - global
-	print("Last relative to start is " + String(relative))
-
-	
-	#fix rotations
-	if (!left_turn):
-		set_rotation(Vector3(0,0,0))
+	relative_end = start_point-last #global_start - global
+	print("Last relative to start is " + String(relative_end))
 
 #make the mesh (less objects)
 func make_strip_single(index_one, index_two, parent):
