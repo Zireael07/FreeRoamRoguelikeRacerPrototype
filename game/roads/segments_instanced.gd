@@ -20,9 +20,12 @@ func _ready():
 	road = preload("res://roads/road_segment.tscn")
 	road_left = preload("res://roads/road_segment_left.tscn")
 	
-	# Initialization here
-	for index in range (numSegments):
-		placeRoad(index)
+	#this prevent multiplying of road meshes
+	#only if we have a parent
+	if (get_parent().get_name() == "Spatial"):
+		# Initialization here
+		for index in range (numSegments):
+			placeRoad(index)
 	
 	pass
 
@@ -54,11 +57,10 @@ func placeRoad(index):
 		
 		if (index == 0):
 			road_node = setupRoad(index, false)
-			positions.push_back(road_node.get_translation())
-			ends.push_back(road_node.get_child(0).get_child(0).relative_end)
-#			road_node = road.instance()
-#			road_node.set_name("Road_instance" + String(index))
-#			add_child(road_node)
+			#arrays were for debugging only
+			#positions.push_back(road_node.get_translation())
+			#ends.push_back(road_node.get_child(0).get_child(0).relative_end)
+
 		else:
 			if (index % 2 > 0): ##odd
 				var prev = get_prev_segment(index)
@@ -78,17 +80,17 @@ func placeRoad(index):
 						road_node.set_translation(loc)
 					else:
 						road_node.set_translation(-loc)
-					positions.push_back(road_node.get_translation())
-					ends.push_back(road_node.get_child(0).get_child(0).relative_end)
+					#positions.push_back(road_node.get_translation())
+					#ends.push_back(road_node.get_child(0).get_child(0).relative_end)
 				else:
 					print("No previous segment found")
 			else: #even
 				var prev = get_prev_segment(index)
 				if (prev != null):
-					var prev_loc = positions[index-1]
-					#var prev_loc = prev.get_translation()
-					var end_loc = ends[index-1]
-					#var end_loc = prev.get_child(0).get_child(0).relative_end
+					#var prev_loc = positions[index-1]
+					#var end_loc = ends[index-1]
+					var prev_loc = prev.get_translation()
+					var end_loc = prev.get_child(0).get_child(0).relative_end
 					var loc = prev_loc - end_loc
 					#var loc = Vector3(prev_loc.x + end_loc.x, prev_loc.y + end_loc.y, prev_loc.z+end_loc.z)
 					print("Previous segment is " + prev.get_name() + " location " + String(prev_loc) + " end " + String(end_loc));
@@ -96,22 +98,19 @@ func placeRoad(index):
 					#print("Previous segment location is " + String(prev_loc))
 					print("Location is " + String(loc))
 					
-					#if (prev_loc !
-					
-					
 					road_node = road.instance()
 					road_node.set_name("Road_instance" + String(index))
 					add_child(road_node)
 					
 					#road_node = setupRoad(index, false)
 					road_node.set_translation(loc)
-					positions.push_back(road_node.get_translation())
-					ends.push_back(road_node.get_child(0).get_child(0).relative_end)
+					#positions.push_back(road_node.get_translation())
+					#ends.push_back(road_node.get_child(0).get_child(0).relative_end)
 				else:
 					print("No previous segment found")
 			
-		if get_tree().is_editor_hint():
-	    		road_node.set_owner(get_tree().get_edited_scene_root())
+		#if get_tree().is_editor_hint():
+	    #		road_node.set_owner(get_tree().get_edited_scene_root())
 	else:
 		print("We already have a segment")
 		var node = get_node("Road_instance"+String(index))
