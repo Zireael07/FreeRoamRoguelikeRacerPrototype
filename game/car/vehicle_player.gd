@@ -5,6 +5,10 @@ extends "vehicle.gd"
 var hud
 var speed_text
 
+var last_pos
+var distance = 0
+var distance_int = 0
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
@@ -12,6 +16,8 @@ func _ready():
 	var h = preload("res://hud/hud.tscn")
 	hud = h.instance()
 	add_child(hud)
+	
+	last_pos = get_translation()
 	
 	set_fixed_process(true)
 
@@ -39,11 +45,16 @@ func _fixed_process(delta):
 	#make physics happen!
 	process_car_physics(gas, brake, left, right)
 	
-	
 	#speedometer
 	speed_int = round(speed)
 	speed_kph = round(speed_int*3.6)
 	speed_text = String(speed_int) + " m/s " + String(speed_kph) + " kph"
 	hud.update_speed(speed_text)
 	
+	#increment distance counter
+	distance = distance + get_translation().distance_to(last_pos)
+	last_pos = get_translation()
 	
+	distance_int = round(distance)
+	#update distance HUD
+	hud.update_distance("Distance: " + String(distance_int) + " m")
