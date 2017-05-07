@@ -149,4 +149,8 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
 numSegments = 9
 
+[node name="Position3D1" parent="Spatial" instance=ExtResource( 5 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 58.719, 0, 25.5731 )
+
 
