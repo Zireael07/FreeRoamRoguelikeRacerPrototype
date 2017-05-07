@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=1]
+
+[ext_resource path="res://roads/segments_instanced.gd" type="Script" id=1]
+[ext_resource path="res://roads/road_segment.tscn" type="PackedScene" id=2]
+[ext_resource path="res://roads/road_segment_left.tscn" type="PackedScene" id=3]
+
+[node name="Position3D" type="Position3D"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+script/script = ExtResource( 1 )
+numSegments = 7
+positions = Vector3Array( 0, 0, 0, 1.29677, 0, 37.1346, 2.59354, 0, 74.2692, 3.89031, 0, 111.404, 5.18708, 0, 148.538, 6.48385, 0, 185.673, 7.78062, 0, 222.808 )
+ends = Vector3Array( -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346 )
+
+[node name="Road_instance0" parent="." instance=ExtResource( 2 )]
+
+[node name="Road_instance1" parent="." instance=ExtResource( 3 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.29677, 0, 37.1346 )
+
+[node name="Road_instance2" parent="." instance=ExtResource( 2 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59354, 0, 74.2692 )
+
+[node name="Road_instance3" parent="." instance=ExtResource( 3 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.89031, 0, 111.404 )
+
+[node name="Road_instance4" parent="." instance=ExtResource( 2 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.18708, 0, 148.538 )
+
+[node name="Road_instance5" parent="." instance=ExtResource( 3 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.48385, 0, 185.673 )
+
+[node name="Road_instance6" parent="." instance=ExtResource( 2 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.78062, 0, 222.808 )
+
+
