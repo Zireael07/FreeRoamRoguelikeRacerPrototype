@@ -20,6 +20,7 @@ func _ready():
 	last_pos = get_translation()
 	
 	set_fixed_process(true)
+	set_process_input(true)
 
 func _fixed_process(delta):
 	#input
@@ -58,3 +59,11 @@ func _fixed_process(delta):
 	distance_int = round(distance)
 	#update distance HUD
 	hud.update_distance("Distance: " + String(distance_int) + " m")
+	
+#doesn't interact with physics
+func _input(event):
+	if (Input.is_action_pressed("headlights_toggle")):
+		if (get_node("SpotLight").is_enabled()):
+			setHeadlights(false)
+		else:
+			setHeadlights(true)	

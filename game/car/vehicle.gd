@@ -13,6 +13,10 @@ var speed
 var speed_int = 0
 var speed_kph = 0
 
+#lights
+var headlight_one
+var headlight_two
+
 func process_car_physics(gas, brake, left, right):
 	speed = get_linear_velocity().length();
 	
@@ -50,5 +54,14 @@ func _fixed_process(delta):
 
 
 func _ready():
-	#blah
-	var basis = get_transform().basis.y
+	#get lights
+	headlight_one = get_node("SpotLight")
+	headlight_two = get_node("SpotLight1")
+	
+func setHeadlights(on):
+	if (on):
+		headlight_one.set_enabled(true)
+		headlight_two.set_enabled(true)
+	else:
+		headlight_one.set_enabled(false)
+		headlight_two.set_enabled(false)
