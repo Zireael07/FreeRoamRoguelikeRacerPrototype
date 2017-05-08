@@ -22,7 +22,9 @@ lane_width = 3.0
 radius = 25
 loc = Vector2( 0, 0 )
 left_turn = true
-angle = 100
+angle = 120
+start_angle = null
+end_angle = null
 material = ExtResource( 3 )
 
 

@@ -56,11 +56,13 @@ material = ExtResource( 4 )
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21.8439, 0, 12.9904 )
 script/script = ExtResource( 5 )
-lane_width = 2.5
+lane_width = 3.0
 radius = 15
 loc = Vector2( 0, 0 )
 left_turn = false
 angle = 120
+start_angle = 90
+end_angle = 170
 material = ExtResource( 4 )
 
 

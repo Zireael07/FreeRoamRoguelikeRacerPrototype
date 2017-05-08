@@ -4,11 +4,6 @@
 [ext_resource path="res://scripts/curved_road_segment.gd" type="Script" id=2]
 [ext_resource path="res://assets/road_material.tres" type="Material" id=3]
 
-
-
-
-
-
 [node name="Spatial" type="Spatial"]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
@@ -21,13 +16,13 @@ script/script = ExtResource( 1 )
 [node name="Road" type="Position3D" parent="Placer"]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, 12.9904 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 0, 21.6506 )
 script/script = ExtResource( 2 )
 lane_width = 3.0
 radius = 25
 loc = Vector2( 0, 0 )
 left_turn = false
-angle = 100
+angle = 120
 start_angle = null
 end_angle = 150
 material = ExtResource( 3 )
