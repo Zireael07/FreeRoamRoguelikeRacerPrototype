@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=1]
+[gd_scene load_steps=8 format=1]
 
 [ext_resource path="res://objects/roads.tscn" type="PackedScene" id=1]
 [ext_resource path="res://objects/skyscraper.tscn" type="PackedScene" id=2]
 [ext_resource path="res://car/car_AI_base.tscn" type="PackedScene" id=3]
 [ext_resource path="res://car/car_base.tscn" type="PackedScene" id=4]
 [ext_resource path="res://roads/segment_instancer.tscn" type="PackedScene" id=5]
+[ext_resource path="res://roads/road_segment_straight.tscn" type="PackedScene" id=6]
 
 [sub_resource type="Environment" id=1]
 
@@ -152,5 +153,9 @@ numSegments = 9
 [node name="Position3D1" parent="Spatial" instance=ExtResource( 5 )]
 
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 58.719, 0, 25.5731 )
+
+[node name="Position3D 2" parent="Spatial" instance=ExtResource( 6 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.87472, 0, -86.8634 )
 
 
