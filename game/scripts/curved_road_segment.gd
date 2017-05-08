@@ -20,6 +20,8 @@ export var radius = 15
 export(Vector2) var loc = Vector2(0,0)
 export(bool) var left_turn = false
 export var angle = 120
+export(int) var start_angle = null
+export(int) var end_angle = null
 #for matching the segments
 var start_point
 var last
@@ -35,7 +37,7 @@ func _ready():
 	# Initialization here
 	#draw_debug_point(loc, Color(1,1,1))
 	
-	points_center = get_circle_arc_simple(loc, radius, angle)
+	points_center = get_circle_arc(loc, radius, get_start_angle(), get_end_angle())
 	#how many points do we need debugged?
 	var nb_points = 32
 	
@@ -43,11 +45,11 @@ func _ready():
 		#draw_debug_point(points_center[index], Color(0, 0, 0))
 		
 	
-	points_inner = get_circle_arc_simple(loc, radius-lane_width, angle)
+	points_inner = get_circle_arc(loc, radius-lane_width, get_start_angle(), get_end_angle())
 #	for index in range(nb_points):
 #		draw_debug_point(points_inner[index], Color(0.5, 0.5, 0.5))
 	
-	points_outer = get_circle_arc_simple(loc, radius+lane_width, angle)
+	points_outer = get_circle_arc(loc, radius+lane_width, get_start_angle(), get_end_angle())
 #	for index in range(nb_points):
 #		draw_debug_point(points_outer[index], Color(1, 0.5, 0.5))
 	
@@ -55,6 +57,31 @@ func _ready():
 	test_road()
 	
 	pass
+
+func get_start_angle():
+	var ret = 90-angle/2
+	if (start_angle != null) and (start_angle > 0):
+		return start_angle
+	elif (end_angle != null) and (end_angle > 0):
+		return end_angle - angle
+	elif (angle > 0):
+		return ret
+	
+func get_end_angle():
+	var ret = 90+angle/2
+	
+	if (start_angle != null) and (start_angle > 0):
+		##allow specifying both start and end angles
+		if (end_angle != null) and (end_angle > 0):
+			return end_angle
+		else:
+			return start_angle + angle
+	elif (end_angle != null) and (end_angle > 0):
+		return end_angle
+	elif (angle > 0):
+		return ret
+
+
 
 func draw_debug_point(loc, color):
 	addTestColor(m, color, null, loc.x, road_height, loc.y, 0.05,0.05,0.05)
