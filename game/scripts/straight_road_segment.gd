@@ -13,6 +13,10 @@ var roadwidth = 3
 var sectionlength = 2
 var roadheight = 0.01
 
+#for matching
+var start_point
+export(Vector3) var relative_end
+
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -32,6 +36,9 @@ func _ready():
 				##draw_debug_point(positions[index], color)
 			
 				meshCreate(positions, material)
+	
+	#set the end
+	relative_end = Vector3(0,0, sectionlength*length)
 	
 	pass
 
