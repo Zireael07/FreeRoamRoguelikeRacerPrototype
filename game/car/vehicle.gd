@@ -46,7 +46,14 @@ func process_car_physics(gas, brake, left, right):
 		set_steering(get_steering()-steer_inc)
 	if (right and get_steering() < STEER_LIMIT): #(Input.is_action_pressed("ui_right") and get_steering() < STEER_LIMIT):
 		set_steering(get_steering()+steer_inc)
-
+	
+	#relax steering if we're not pressing either direction
+	if (not left and not right):
+		if (abs(get_steering()) > 0.02 and abs(get_steering()) < STEER_LIMIT):
+			if (get_steering() > 0):
+				set_steering(get_steering()-steer_inc)
+			else:
+				set_steering(get_steering()+steer_inc)
 	
 func _fixed_process(delta):
 	#just to have something here
