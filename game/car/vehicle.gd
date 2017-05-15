@@ -3,6 +3,7 @@ extends VehicleBody
 
 # Member variables
 const STEER_LIMIT = 1 #radians
+const MAX_SPEED = 55 #m/s = 200 kph
 var steer_inc = 0.02 #radians
 
 
@@ -22,7 +23,11 @@ func process_car_physics(gas, brake, left, right):
 	
 	#gas
 	if (gas): #(Input.is_action_pressed("ui_up")):
-		set_engine_force(engine_force)
+		#obey max speed setting
+		if (speed < MAX_SPEED):
+			set_engine_force(engine_force)
+		else:
+			set_engine_force(0)
 	else:
 		if (speed > 3):
 			set_engine_force(-engine_force/4)
