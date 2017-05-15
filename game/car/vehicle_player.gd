@@ -48,7 +48,7 @@ func _fixed_process(delta):
 	
 	#speedometer
 	speed_int = round(speed)
-	speed_kph = round(speed_int*3.6)
+	speed_kph = round(speed*3.6)
 	speed_text = String(speed_int) + " m/s " + String(speed_kph) + " kph"
 	hud.update_speed(speed_text)
 	
