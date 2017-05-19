@@ -31,6 +31,8 @@ var relative_end
 
 #editor drawing
 var positions  = Vector3Array()
+var left_positions = Vector3Array()
+var right_positions = Vector3Array()
 var draw
 
 #mesh material
@@ -248,10 +250,19 @@ func test_road():
 	else:
 		#clear to prevent weird stuff
 		positions.resize(0)
+		left_positions.resize(0)
+		right_positions.resize(0)
+		
 		var nb_points = 32
 		for index in range(nb_points-1):
 			positions.push_back(curve_one.get_point_pos(index))
 			positions.push_back(curve_one.get_point_pos(index+1))
+			left_positions.push_back(curve_three.get_point_pos(index))
+			left_positions.push_back(curve_three.get_point_pos(index+1))
+			right_positions.push_back(curve_two.get_point_pos(index))
+			right_positions.push_back(curve_two.get_point_pos(index+1))
 	
 		if (draw != null):
 			draw.draw_line(positions)
+			draw.draw_line(left_positions)
+			draw.draw_line(right_positions)

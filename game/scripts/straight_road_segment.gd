@@ -10,6 +10,8 @@ var temp_positions = Vector3Array()
 
 #editor drawing
 var positions = Vector3Array()
+var left_positions = Vector3Array()
+var right_positions = Vector3Array()
 var draw
 
 
@@ -45,7 +47,11 @@ func _ready():
 					meshCreate(temp_positions, material)
 				positions.push_back(temp_positions[1])
 				positions.push_back(temp_positions[2])
-	
+				left_positions.push_back(temp_positions[0])
+				left_positions.push_back(temp_positions[3])
+				right_positions.push_back(temp_positions[4])
+				right_positions.push_back(temp_positions[5])
+				
 	#set the end
 	relative_end = Vector3(0,0, sectionlength*length)
 	
@@ -53,7 +59,8 @@ func _ready():
 	if get_tree().is_editor_hint():
 		#debug drawing
 		draw.draw_line(positions)
-	
+		draw.draw_line(left_positions)
+		draw.draw_line(right_positions)
 	
 	pass
 
