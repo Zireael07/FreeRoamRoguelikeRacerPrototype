@@ -29,12 +29,17 @@ var global_start
 var global_end
 var relative_end
 
+#editor drawing
+var positions  = Vector3Array()
+var draw
+
 #mesh material
 export(FixedMaterial)    var material    = preload("res://assets/road_material.tres")
 
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
+	draw = get_node("draw")
 	#draw_debug_point(loc, Color(1,1,1))
 	
 	points_center = get_circle_arc(loc, radius, get_start_angle(), get_end_angle())
@@ -229,14 +234,24 @@ func make_strip(index_one, index_two, right):
 		print("No sides given")
 	
 func test_road():
-	#dummy to be able to get the road mesh faster
-	var road_mesh = Spatial.new()
-	road_mesh.set_name("road_mesh")
-	add_child(road_mesh)
+	#only mesh in game because meshing in editor can take >900 ms
+	if not get_tree().is_editor_hint():
+		#dummy to be able to get the road mesh faster
+		var road_mesh = Spatial.new()
+		road_mesh.set_name("road_mesh")
+		add_child(road_mesh)
+		
+		var nb_points = 32
+		for index in range(nb_points-1):
+			make_strip_single(index, index+1, road_mesh)
+	#draw an immediate line in editor instead
+	else:
+		#clear to prevent weird stuff
+		positions.resize(0)
+		var nb_points = 32
+		for index in range(nb_points-1):
+			positions.push_back(curve_one.get_point_pos(index))
+			positions.push_back(curve_one.get_point_pos(index+1))
 	
-	var nb_points = 32
-	for index in range(nb_points-1):
-		make_strip_single(index, index+1, road_mesh)
-		#make_strip(index, index+1, true)
-		#make_strip(index, index+1, false)
-	
+		if (draw != null):
+			draw.draw_line(positions)
