@@ -43,49 +43,49 @@ func _fixed_process(delta):
 		left = true
 	if (get_steering() < -limit):
 		right = true
+	#else:
+	#stop if we're supposed to
+	if (stop):
+		stopping()	
 	else:
-		#stop if we're supposed to
-		if (stop):
-			stopping()	
+		#handle gas/brake
+		if (rel_loc.distance_to(compare_pos) > round(speed)):
+		#if (rel_loc.distance_to(compare_pos) > 5):
+			if (speed < top_speed):
+				gas = true
 		else:
-			#handle gas/brake
-			if (rel_loc.distance_to(compare_pos) > round(speed)):
-			#if (rel_loc.distance_to(compare_pos) > 5):
-				if (speed < top_speed):
-					gas = true
-			else:
-				if (rel_loc.distance_to(compare_pos) > 5):
-					brake = true
+			if (rel_loc.distance_to(compare_pos) > 5):
+				brake = true
 
-			#if we're close to target, do nothing
-			if (rel_loc.distance_to(compare_pos) < 3):
-				#print("Close to target, don't deviate")
+		#if we're close to target, do nothing
+		if (rel_loc.distance_to(compare_pos) < 3):
+			#print("Close to target, don't deviate")
+			#relax steering
+			if (abs(get_steering()) > 0.02):
+				if (get_steering() > 0):
+					left = true
+				else:
+					right = true
+			
+		else:
+			#normal stuff
+			if (abs(angle) > target_angle):
+				if (angle > 0):
+					#Make AI cautious with steering
+					if (get_steering() > -limit):
+						left = true
+				else:
+					if (get_steering() < limit):
+						right = true
+			else:
+				#print("The angle is less than target")
 				#relax steering
+#				relax_steering(0.02)
 				if (abs(get_steering()) > 0.02):
 					if (get_steering() > 0):
 						left = true
 					else:
 						right = true
-				
-			else:
-				#normal stuff
-				if (abs(angle) > target_angle):
-					if (angle > 0):
-						#Make AI cautious with steering
-						if (get_steering() > -limit):
-							left = true
-					else:
-						if (get_steering() < limit):
-							right = true
-				else:
-					#print("The angle is less than target")
-					#relax steering
-	#				relax_steering(0.02)
-					if (abs(get_steering()) > 0.02):
-						if (get_steering() > 0):
-							left = true
-						else:
-							right = true
 	
 	process_car_physics(gas, brake, left, right)
 	
@@ -108,9 +108,10 @@ func stopping():
 		else:
 			right = true
 
-	if (speed > 1):
+	if (speed > 0 and not reverse):
 		brake = true
-	
+	if (speed > 0 and reverse):
+		gas = true
 	
 func get_target(index):
 	return target_array[index]

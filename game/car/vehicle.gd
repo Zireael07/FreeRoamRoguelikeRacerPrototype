@@ -14,6 +14,8 @@ var speed
 var speed_int = 0
 var speed_kph = 0
 
+var reverse
+
 #lights
 var headlight_one
 var headlight_two
@@ -59,6 +61,13 @@ func process_car_physics(gas, brake, left, right):
 				set_steering(get_steering()-steer_inc)
 			else:
 				set_steering(get_steering()+steer_inc)
+	
+	#reverse
+	if (get_linear_velocity().z > 0):
+		reverse = false
+	else:
+		reverse = true
+	
 	
 func _fixed_process(delta):
 	#just to have something here
