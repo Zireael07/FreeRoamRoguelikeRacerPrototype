@@ -67,3 +67,11 @@ func _input(event):
 			setHeadlights(false)
 		else:
 			setHeadlights(true)	
+	
+	if (Input.is_action_pressed("camera_debug")):
+		var cam = get_child(6).get_child(0)
+		if (cam !=null):
+			if (not cam.debug):
+				cam.set_debug(true)
+			else:
+				cam.set_debug(false)
