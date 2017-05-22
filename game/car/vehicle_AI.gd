@@ -6,6 +6,9 @@ var current = 0
 export var target_angle = 0.2
 export var top_speed = 15 #50 kph?
 
+var rel_loc
+var dot
+
 #steering
 var angle
 var gas = false
@@ -30,12 +33,22 @@ func _fixed_process(delta):
 	left = false
 	right = false
 
+	#data
 	speed = get_linear_velocity().length();
-
-	var rel_loc = get_global_transform().xform_inv(get_target(current))
+	var forward_vec = get_translation() + get_global_transform().basis.z
+	
+	rel_loc = get_global_transform().xform_inv(get_target(current))
 	
 	#2D angle to target (local coords)
 	angle = atan2(rel_loc.x, rel_loc.z)
+	
+	#is the target in front of us or not?
+	var pos = get_global_transform().origin
+	#B-A = from A to B
+	var target_vec = get_target(current) - pos
+	dot = forward_vec.dot(target_vec)
+	
+	#BEHAVIOR
 	
 	#if we're over the limit, relax steering
 	var limit = get_steering_limit()
@@ -85,6 +98,16 @@ func _fixed_process(delta):
 					right = false
 	
 	process_car_physics(delta, gas, brake, left, right)
+	
+	#if we passed the point, don't backtrack
+	if (dot < 0 and not stop):
+		##do we have a next point?
+		if (target_array.size() > current+1):
+			current = current + 1
+		else:
+			#print("We're at the end")
+			stop = true
+	
 	
 	if (rel_loc.distance_to(Vector3(0,1.5,0)) < 2):
 		#print("We're close to target")
