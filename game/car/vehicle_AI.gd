@@ -43,7 +43,8 @@ func _fixed_process(delta):
 		left = true
 	if (get_steering() < -limit):
 		right = true
-	#else:
+
+
 	#stop if we're supposed to
 	if (stop):
 		stopping()	
@@ -62,10 +63,8 @@ func _fixed_process(delta):
 			#print("Close to target, don't deviate")
 			#relax steering
 			if (abs(get_steering()) > 0.02):
-				if (get_steering() > 0):
-					left = true
-				else:
-					right = true
+				left = false
+				right = false
 			
 		else:
 			#normal stuff
@@ -82,10 +81,8 @@ func _fixed_process(delta):
 				#relax steering
 #				relax_steering(0.02)
 				if (abs(get_steering()) > 0.02):
-					if (get_steering() > 0):
-						left = true
-					else:
-						right = true
+					left = false
+					right = false
 	
 	process_car_physics(delta, gas, brake, left, right)
 	
@@ -103,11 +100,9 @@ func _fixed_process(delta):
 func stopping():
 	#relax steering
 	if (abs(get_steering()) > 0.00):
-		if (get_steering() > 0):
-			left = true
-		else:
-			right = true
-
+		left = false
+		right = false
+		
 	if (speed > 0 and not reverse):
 		brake = true
 	if (speed > 0 and reverse):
