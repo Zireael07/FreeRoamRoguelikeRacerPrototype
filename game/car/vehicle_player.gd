@@ -44,7 +44,7 @@ func _fixed_process(delta):
 		right = true
 		
 	#make physics happen!
-	process_car_physics(gas, brake, left, right)
+	process_car_physics(delta, gas, brake, left, right)
 	
 	#speedometer
 	speed_int = round(speed)

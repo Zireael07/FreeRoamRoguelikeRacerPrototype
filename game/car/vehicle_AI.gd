@@ -87,7 +87,7 @@ func _fixed_process(delta):
 					else:
 						right = true
 	
-	process_car_physics(gas, brake, left, right)
+	process_car_physics(delta, gas, brake, left, right)
 	
 	if (rel_loc.distance_to(Vector3(0,1.5,0)) < 2):
 		#print("We're close to target")
