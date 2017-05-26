@@ -1,12 +1,13 @@
-[gd_scene load_steps=9 format=1]
+[gd_scene load_steps=10 format=1]
 
 [ext_resource path="res://objects/roads.tscn" type="PackedScene" id=1]
 [ext_resource path="res://objects/skyscraper.tscn" type="PackedScene" id=2]
-[ext_resource path="res://car/car_AI_base.tscn" type="PackedScene" id=3]
-[ext_resource path="res://car/car_base.tscn" type="PackedScene" id=4]
-[ext_resource path="res://roads/segment_instancer.tscn" type="PackedScene" id=5]
-[ext_resource path="res://roads/road_segment_straight.tscn" type="PackedScene" id=6]
-[ext_resource path="res://roads/segment_instancer_straight.tscn" type="PackedScene" id=7]
+[ext_resource path="res://car/car_AI_racer.tscn" type="PackedScene" id=3]
+[ext_resource path="res://car/car_AI_traffic.tscn" type="PackedScene" id=4]
+[ext_resource path="res://car/car_base.tscn" type="PackedScene" id=5]
+[ext_resource path="res://roads/segment_instancer.tscn" type="PackedScene" id=6]
+[ext_resource path="res://roads/road_segment_straight.tscn" type="PackedScene" id=7]
+[ext_resource path="res://roads/segment_instancer_straight.tscn" type="PackedScene" id=8]
 
 [sub_resource type="Environment" id=1]
 
@@ -134,9 +135,13 @@ transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19.8311, 0, 7.28573 )
 
 [node name="AI" parent="." instance=ExtResource( 3 )]
 
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.91261, 0, 0 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.20636, 0, 0 )
 
-[node name="car" parent="." instance=ExtResource( 4 )]
+[node name="AI2" parent="." instance=ExtResource( 4 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.33525, 0, 0 )
+
+[node name="car" parent="." instance=ExtResource( 5 )]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 
@@ -147,19 +152,19 @@ environment = SubResource( 1 )
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
-[node name="Position3D" parent="Spatial" instance=ExtResource( 5 )]
+[node name="Position3D" parent="Spatial" instance=ExtResource( 6 )]
 
 numSegments = 9
 
-[node name="Position3D1" parent="Spatial" instance=ExtResource( 5 )]
+[node name="Position3D1" parent="Spatial" instance=ExtResource( 6 )]
 
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 58.719, 0, 25.5731 )
 
-[node name="Position3D 2" parent="Spatial" instance=ExtResource( 6 )]
+[node name="Position3D 2" parent="Spatial" instance=ExtResource( 7 )]
 
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.87472, 0, -86.8634 )
 
-[node name="Position3D 3" parent="Spatial" instance=ExtResource( 7 )]
+[node name="Position3D 3" parent="Spatial" instance=ExtResource( 8 )]
 
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.0851, 0, 25.1989 )
 
