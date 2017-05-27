@@ -24,11 +24,11 @@ func _ready():
 	pass
 
 func get_prev_segment(index):
-	if get_node("Road_instance"+String(index-1)):
+	if has_node("Road_instance"+String(index-1)):
 		return get_node("Road_instance"+String(index-1))
 	
 	#handle the fact that the straight needs a spatial parent
-	if get_node("Spatial/Road_instance"+String(index-1)):
+	if has_node("Spatial/Road_instance"+String(index-1)):
 		return get_node("Spatial/Road_instance"+String(index-1))
 		
 func setupCurvedRoad(index, left, fit):
@@ -58,7 +58,7 @@ func setupStraightRoad(index):
 	return road_node
 	
 func placeRoad(index):
-	if (get_node("Road_instance"+String(index)) == null):
+	if (not has_node("Road_instance"+String(index))):
 		var road_node
 			
 		if (index == 0):

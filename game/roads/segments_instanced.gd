@@ -35,7 +35,7 @@ func clearChildren():
 
 
 func get_prev_segment(index):
-	if get_node("Road_instance"+String(index-1)):
+	if has_node("Road_instance"+String(index-1)):
 		return get_node("Road_instance"+String(index-1))
 
 func setupRoad(index, left):
@@ -51,7 +51,7 @@ func setupRoad(index, left):
 		return road_node
 
 func placeRoad(index):
-	if (get_node("Road_instance"+String(index)) == null):
+	if (not has_node("Road_instance"+String(index))):
 		
 		var road_node
 		
