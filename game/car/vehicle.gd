@@ -19,6 +19,7 @@ var speed
 var speed_int = 0
 var speed_kph = 0
 
+var forward_vec
 var reverse
 
 #lights
@@ -89,8 +90,10 @@ func process_car_physics(delta, gas, brake, left, right):
 	
 	set_steering(steer_angle)
 	
+	#this one actually reacts to rotations unlike the one using basis.z or linear velocity.z
+	var forward_vec = get_global_transform().xform(Vector3(0, 1.5, 2))-get_global_transform().origin
 	#reverse
-	if (get_linear_velocity().z > 0):
+	if (get_linear_velocity().dot(forward_vec) > 0):
 		reverse = false
 	else:
 		reverse = true
