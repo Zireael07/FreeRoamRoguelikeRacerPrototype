@@ -4,6 +4,7 @@ extends "vehicle.gd"
 #hud
 var hud
 var speed_text
+var map
 
 var last_pos
 var distance = 0
@@ -16,6 +17,10 @@ func _ready():
 	var h = preload("res://hud/hud.tscn")
 	hud = h.instance()
 	add_child(hud)
+	var m = preload("res://hud/minimap.tscn")
+	map = m.instance()
+	add_child(map)
+	
 	
 	last_pos = get_translation()
 	
