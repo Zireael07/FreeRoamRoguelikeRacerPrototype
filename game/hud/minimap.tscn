@@ -22,9 +22,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 774.0
-margin/top = 348.0
+margin/top = 508.0
 margin/right = 1024.0
-margin/bottom = 598.0
+margin/bottom = 758.0
 
 [node name="map_background" type="TextureFrame" parent="Container"]
 
