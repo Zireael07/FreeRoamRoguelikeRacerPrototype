@@ -150,6 +150,7 @@ environment = SubResource( 1 )
 
 [node name="Spatial" type="Spatial" parent="."]
 
+editor/display_folded = true
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
 [node name="Position3D" parent="Spatial" instance=ExtResource( 6 )]
