@@ -347,7 +347,7 @@ _update_shape_index = 0
 [node name="cambase" type="Spatial" parent="BODY"]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58203, -1.06042 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.996002, -1.06042 )
 
 [node name="Camera" type="Camera" parent="BODY/cambase"]
 
