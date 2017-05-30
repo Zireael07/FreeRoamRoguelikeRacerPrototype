@@ -51,6 +51,10 @@ func _fixed_process(delta):
 	#make physics happen!
 	process_car_physics(delta, gas, brake, left, right)
 	
+	#reset
+	if (Input.is_action_pressed("steer_reset")):
+		reset_car()
+	
 	#speedometer
 	speed_int = round(speed)
 	speed_kph = round(speed*3.6)

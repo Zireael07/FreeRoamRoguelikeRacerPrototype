@@ -103,6 +103,9 @@ func _fixed_process(delta):
 	#just to have something here
 	var basis = get_transform().basis.y
 
+func reset_car():
+	var reset_rot = Vector3(0, get_rotation_deg().y, 0)
+	set_rotation_deg(reset_rot)
 
 func _ready():
 	#get lights
