@@ -25,6 +25,8 @@ var reverse
 #lights
 var headlight_one
 var headlight_two
+var taillights
+var tail_mat
 
 func process_car_physics(delta, gas, brake, left, right):
 	speed = get_linear_velocity().length();
@@ -66,6 +68,11 @@ func process_car_physics(delta, gas, brake, left, right):
 		else:
 			set_engine_force(0)
 	
+	#cancel braking visual
+	tail_mat = taillights.get_mesh().surface_get_material(0)
+	if tail_mat != null:
+		tail_mat.set_parameter(FixedMaterial.PARAM_DIFFUSE, Color(0.62,0.62,0.62))
+	
 	#brake/reverse
 	if (brake): #(Input.is_action_pressed("ui_down")):
 		if (speed > 5):
@@ -75,6 +82,11 @@ func process_car_physics(delta, gas, brake, left, right):
 			#reverse
 			set_brake(0.0)
 			set_engine_force(-engine_force)
+			
+		#visual effect
+		if tail_mat != null:	
+			tail_mat.set_parameter(FixedMaterial.PARAM_DIFFUSE, Color(1,1,1))
+		
 	else:
 		set_brake(0.0)
 	
@@ -111,6 +123,7 @@ func _ready():
 	#get lights
 	headlight_one = get_node("SpotLight")
 	headlight_two = get_node("SpotLight1")
+	taillights = get_node("taillights")
 	
 func setHeadlights(on):
 	if (on):
