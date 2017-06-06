@@ -39,7 +39,7 @@ func _ready():
 	draw = get_node("draw")
 	
 	#overdraw fix
-	if (get_parent().get_name() == "Spatial"):
+	if (get_parent().get_name().find("Spatial") != -1):
 		for index in range(length):
 			#clear the array
 			temp_positions.resize(0)
