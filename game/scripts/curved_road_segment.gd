@@ -35,6 +35,15 @@ var left_positions = Vector3Array()
 var right_positions = Vector3Array()
 var draw
 
+#for minimap
+var mid_point
+var global_positions = Vector3Array()
+
+var start_vector = Vector3()
+var end_vector = Vector3()
+
+
+
 #mesh material
 export(FixedMaterial)    var material    = preload("res://assets/road_material.tres")
 
@@ -177,6 +186,11 @@ func debug(path_one):
 	
 	relative_end = start_point-last #global_start - global
 	print("Last relative to start is " + String(relative_end))
+	
+	#test
+	mid_point = center_curve.get_point_pos(round(num/2))
+	
+	
 
 #make the mesh (less objects)
 func make_strip_single(index_one, index_two, parent):
@@ -234,7 +248,16 @@ func make_strip(index_one, index_two, right):
 			print("Bad indexes given!")
 	else:
 		print("No sides given")
+
+func get_global_positions():
+	global_positions.push_back(get_global_transform().xform(positions[0]))
+	global_positions.push_back(get_global_transform().xform(mid_point))
+	global_positions.push_back(get_global_transform().xform(positions[31]))
+		
+	return global_positions
+
 	
+			
 func test_road():
 	#only mesh in game because meshing in editor can take >900 ms
 	if not get_tree().is_editor_hint():
@@ -261,6 +284,11 @@ func test_road():
 			left_positions.push_back(curve_three.get_point_pos(index+1))
 			right_positions.push_back(curve_two.get_point_pos(index))
 			right_positions.push_back(curve_two.get_point_pos(index+1))
+	
+		#B-A = from a to b
+		start_vector = Vector3(positions[1]-positions[0])
+		end_vector = Vector3(positions[positions.size()-2] - positions[positions.size()-1])
+	
 	
 		if (draw != null):
 			draw.draw_line(positions)

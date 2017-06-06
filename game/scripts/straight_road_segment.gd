@@ -24,6 +24,14 @@ var roadheight = 0.01
 var start_point
 export(Vector3) var relative_end
 
+#for minimap
+var mid_point
+var global_positions = Vector3Array()
+
+#for rotations
+var end_vector
+var start_vector
+
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -55,6 +63,21 @@ func _ready():
 	#set the end
 	relative_end = Vector3(0,0, sectionlength*length)
 	
+	#debug midpoint
+	if positions.size() > 0:
+		var middle = round(positions.size()/2)
+		mid_point = positions[middle]
+	
+	#global positions
+	if positions.size() > 0:
+		global_positions = get_global_positions()
+		
+		start_vector = Vector3(positions[1] - positions[0])
+		#B-A = from a to b
+		end_vector = Vector3(positions[positions.size()-1]- positions[positions.size()-2])
+	
+	
+	
 	#in editor, we draw simple immediate mode lines instead
 	if get_tree().is_editor_hint():
 		#debug drawing
@@ -72,6 +95,15 @@ func initSection(start):
 	temp_positions.push_back(Vector3(start.x-roadwidth, roadheight, start.z+sectionlength))
 	temp_positions.push_back(Vector3(start.x+roadwidth, roadheight, start.z))
 	temp_positions.push_back(Vector3(start.x+roadwidth, roadheight, start.z+sectionlength)) 
+
+func get_global_positions():
+	global_positions.push_back(get_global_transform().xform(positions[0]))
+	global_positions.push_back(get_global_transform().xform(mid_point))
+	global_positions.push_back(get_global_transform().xform(positions[positions.size()-2]))
+	global_positions.push_back(get_global_transform().xform(positions[positions.size()-1]))
+		
+	return global_positions
+
 
 func draw_debug_point(loc, color):
 	addTestColor(m, color, null, loc.x, 0.01, loc.z, 0.05,0.05,0.05)
