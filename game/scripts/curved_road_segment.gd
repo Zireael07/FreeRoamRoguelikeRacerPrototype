@@ -266,9 +266,27 @@ func test_road():
 		road_mesh.set_name("road_mesh")
 		add_child(road_mesh)
 		
+		#clear to prevent weird stuff
+		positions.resize(0)
+		left_positions.resize(0)
+		right_positions.resize(0)
+		global_positions.resize(0)
+		
 		var nb_points = 32
 		for index in range(nb_points-1):
 			make_strip_single(index, index+1, road_mesh)
+			
+			positions.push_back(curve_one.get_point_pos(index))
+			positions.push_back(curve_one.get_point_pos(index+1))
+			left_positions.push_back(curve_three.get_point_pos(index))
+			left_positions.push_back(curve_three.get_point_pos(index+1))
+			right_positions.push_back(curve_two.get_point_pos(index))
+			right_positions.push_back(curve_two.get_point_pos(index+1))
+			
+			#B-A = from a to b
+			start_vector = Vector3(positions[1]-positions[0])
+			end_vector = Vector3(positions[positions.size()-1] - positions[positions.size()-2])
+			
 	#draw an immediate line in editor instead
 	else:
 		#clear to prevent weird stuff
@@ -287,7 +305,7 @@ func test_road():
 	
 		#B-A = from a to b
 		start_vector = Vector3(positions[1]-positions[0])
-		end_vector = Vector3(positions[positions.size()-2] - positions[positions.size()-1])
+		end_vector = Vector3(positions[positions.size()-1] - positions[positions.size()-2])
 	
 	
 		if (draw != null):
