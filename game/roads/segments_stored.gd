@@ -68,10 +68,7 @@ func loadData():
 #				print("Previous data is : " + str(data))
 				var prev_type = data["type"]
 				if prev_type == "straight":
-					#straights don't have children nodes because they don't need 'em
-					#this is positive!!!
-					var end_loc = prev.relative_end 
-					var loc = prev_loc + end_loc - Vector3(0,0,1)
+					var loc = get_end_location_straight(prev)
 					print("Location is " + String(loc))
 					
 					#are we a curve?
@@ -96,14 +93,11 @@ func loadData():
 					
 				#a curve
 				else:
-					var end_loc = prev.get_child(0).get_child(0).relative_end #+ Vector3(1,0,0)
+					var end_loc = prev.get_child(0).get_child(0).relative_end
 
 					print("Previous segment is a curve at " + String(prev_loc) + " ending at " + String(end_loc))
 					if prev_loc != Vector3(0,0,0):
-						var g_loc = prev.get_global_transform().xform(-end_loc)
-						#print("Global location of relative end is" + String(g_loc))
-						
-						var loc = get_global_transform().xform_inv(g_loc)
+						var loc = get_end_location_right_turn(prev, end_loc)
 						
 						print("Location is " + String(loc))
 						#are we a curve?
@@ -211,4 +205,20 @@ func get_start_vector(segment, data):
 		return segment.start_vector
 	else:
 		return segment.get_child(0).get_child(0).start_vector
+
+func get_end_location_straight(prev):
+	#straights don't have children nodes because they don't need 'em
+	#this is positive!!!
+	var end_loc = prev.relative_end 
+	#the relative end in global space
+	var g_loc = prev.get_global_transform().xform(end_loc)
+	#global space to local space
+	var loc = get_global_transform().xform_inv(g_loc)
+	return loc
 	
+func get_end_location_right_turn(prev, end_loc):
+	#var end_loc = prev.get_child(0).get_child(0).relative_end
+	var g_loc = prev.get_global_transform().xform(-end_loc)
+	#print("Global location of relative end is" + String(g_loc))
+	var loc = get_global_transform().xform_inv(g_loc)
+	return loc	
