@@ -81,15 +81,21 @@ func loadData():
 						segment.get_parent().set_translation(loc)
 						
 					#rotations
-					#print("Previous segment's end vector " + String(prev.end_vector))
-					var target_loc = prev.relative_end + prev.end_vector
-					#print("End vector is " + String(prev.end_vector))
-					#print("Target loc is " + String(target_loc))
-					var start_vec = get_start_vector(segment, loadeddata["game"+str(linenum)])
-					print("Start vec " + String(start_vec))
-					var angle = start_vec.angle_to(target_loc)
-					print("Angle to target loc is " + String(angle))
-					segment.set_rotation(Vector3(0,-angle,0))
+					var needed_locs = vectors_to_fit_straight(segment, prev, loadeddata["game"+str(linenum)])
+					var start_g = needed_locs[0]
+					var check_loc = needed_locs[1]
+					
+					var angle_data = rotate_to_fit_straight(loc, start_g, check_loc)
+					var angle = angle_data[0]
+					var rel_vector = angle_data[1]
+					
+					if curdata["left_turn"] == false:
+						if rel_vector.x > rel_vector.z:
+							print("We're rotating right")
+							segment.set_rotation(Vector3(0,-angle,0))
+						else:
+							print("We're rotating left")
+							segment.set_rotation(Vector3(0,angle, 0))
 					
 				#a curve
 				else:
@@ -222,3 +228,34 @@ func get_end_location_right_turn(prev, end_loc):
 	#print("Global location of relative end is" + String(g_loc))
 	var loc = get_global_transform().xform_inv(g_loc)
 	return loc	
+
+#functions to fit a curve to a straight
+func vectors_to_fit_straight(segment, prev, data):
+	var target_loc = prev.relative_end - prev.end_vector
+	#print("Target loc is " + String(target_loc))
+	var g_target_loc = prev.get_global_transform().xform(target_loc)
+	print("Global target loc is " + String(g_target_loc))
+	#make the global a local again but in our space
+	var check_loc = get_global_transform().xform_inv(g_target_loc)
+	
+	var start_vec = get_start_vector(segment, data)
+	var g_start_vec = segment.get_global_transform().xform(start_vec)
+	var start_g = get_global_transform().xform_inv(g_start_vec)
+	
+	return [start_g, check_loc]
+	
+func rotate_to_fit_straight(loc, start_loc, check_loc):
+	#B-A = from a to b
+	var vector_curr = start_loc-loc
+	var vector_prev = check_loc-loc
+	var angle_prev = vector_curr.angle_to(vector_prev)
+	
+	print("Angle to previous " + String(angle_prev) + " deg " + String(rad2deg(angle_prev)))
+	var angle = deg2rad(180)-angle_prev
+	print("Angle " + String(angle) + " deg " + String(rad2deg(angle)))
+	
+	#need relative location of check_loc to start_loc
+	var rel_vector = vector_curr+vector_prev
+	print("Relative location of check to start vector is " + String(rel_vector))
+	
+	return [angle, rel_vector]
