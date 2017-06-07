@@ -118,27 +118,16 @@ func loadData():
 							segment.get_parent().set_translation(loc)
 					
 						#rotations
-						#print("Previous segment's end vector " + String(prev.end_vector))
-						var target_loc = end_loc + prev.get_child(0).get_child(0).end_vector
-						#negate (a curve's relative end is start-end)
-						var g_target_loc = prev.get_global_transform().xform(-target_loc)
-						#make the global a local again but in our space
-						var check_loc = get_global_transform().xform_inv(g_target_loc)
-						
-						#print("Check loc is " + String(check_loc))
-						#this is local
-						var start_vec = get_start_vector(segment, loadeddata["game"+str(linenum)]) 
-						var g_start_vec = segment.get_parent().get_global_transform().xform(start_vec)
-						var start_g = get_global_transform().xform_inv(g_start_vec)
-
-						#print("Start vec is " + String(start_g))
+						var needed_locs = vectors_to_fit_curve(segment, prev, end_loc, loadeddata["game"+str(linenum)])
+						var start_g = needed_locs[0]
+						var check_loc = needed_locs[1]
+						var g_target_loc = needed_locs[2]
 						
 						#check the angles (relative to segment)
 						var rel_target = segment.get_parent().get_global_transform().xform_inv(g_target_loc)
 						print("Relative location of check vec to segment is " + String(rel_target))
 						var angle = atan2(rel_target.x, rel_target.z)
-
-						#if get_tree().is_editor_hint():
+						
 						print("Angle to target loc is " + String(rad2deg(angle)) + " degrees")
 						#to point straight, we need to rotate by 180-angle degrees
 						#180 degrees in radians is a scary number 3.14159265, so just trim
@@ -259,3 +248,20 @@ func rotate_to_fit_straight(loc, start_loc, check_loc):
 	print("Relative location of check to start vector is " + String(rel_vector))
 	
 	return [angle, rel_vector]
+	
+#functions to fit to a curve
+func vectors_to_fit_curve(segment, prev, end_loc, data):
+	#print("Previous segment's end vector " + String(prev.end_vector))
+	var target_loc = end_loc + prev.get_child(0).get_child(0).end_vector
+	#negate (a curve's relative end is start-end)
+	var g_target_loc = prev.get_global_transform().xform(-target_loc)
+	#make the global a local again but in our space
+	var check_loc = get_global_transform().xform_inv(g_target_loc)
+	
+	#print("Check loc is " + String(check_loc))
+	#this is local
+	var start_vec = get_start_vector(segment, data) 
+	var g_start_vec = segment.get_parent().get_global_transform().xform(start_vec)
+	var start_g = get_global_transform().xform_inv(g_start_vec)
+	
+	return [start_g, check_loc, g_target_loc]
