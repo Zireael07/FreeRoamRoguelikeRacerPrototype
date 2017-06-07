@@ -162,7 +162,7 @@ func setupStraightRoad(index, data):
 	road_node.set_name("Road_instance" + String(index))
 	
 	var spatial = Spatial.new()
-	spatial.set_name("Spatial")
+	spatial.set_name("Spatial"+String(index))
 	add_child(spatial)
 	spatial.add_child(road_node)
 	return road_node
@@ -191,8 +191,8 @@ func get_previous_segment(index):
 		return get_node("Road_instance"+String(index-1))
 	
 	#handle the fact that the straight needs a spatial parent
-	if has_node("Spatial/Road_instance"+String(index-1)): #get_node("Spatial/Road_instance"+String(index-1)):
-		return get_node("Spatial/Road_instance"+String(index-1))
+	if has_node("Spatial"+String(index-1)+"/Road_instance"+String(index-1)): #get_node("Spatial/Road_instance"+String(index-1)):
+		return get_node("Spatial"+String(index-1)+"/Road_instance"+String(index-1))
 		
 func get_start_vector(segment, data):
 	#faster than checking if segment extends a custom script
