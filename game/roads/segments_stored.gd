@@ -204,7 +204,7 @@ func get_start_vector(segment, data):
 func get_end_location_straight(prev):
 	#straights don't have children nodes because they don't need 'em
 	#this is positive!!!
-	var end_loc = prev.relative_end 
+	var end_loc = prev.relative_end - Vector3(0,0,0.5) #tiny fudge to hide imperfect rotations
 	#the relative end in global space
 	var g_loc = prev.get_global_transform().xform(end_loc)
 	#global space to local space
