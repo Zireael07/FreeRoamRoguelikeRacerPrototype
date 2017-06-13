@@ -3,6 +3,8 @@ extends Control
 # class member variables go here, for example:
 var AIs = StringArray()
 var player_pos = Vector2(110, 110)
+var minimap_bg
+
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -39,6 +41,8 @@ func _ready():
 	player_tex.set_pos(player_pos)
 	get_child(0).add_child(player_tex)
 	
+	#get the minimap
+	#minimap_bg = get_child(0).get_child(0).get_child(0)
 	
 	set_process(true)
 	pass
@@ -61,6 +65,22 @@ func _process(delta):
 				dot.hide()
 			else:
 				dot.show()
+	
+	var calc_offset = calc_panning()
+	
+	minimap_bg.get_material().set_shader_param("X", calc_offset[0])
+	minimap_bg.get_material().set_shader_param("Y", calc_offset[1])
+	
+func calc_panning():
+	#print("Minimap offset is " + String(minimap_bg.uv_offset))
+	var player_coord = get_parent().get_global_transform().origin
+	#print("Player coords is " + String(player_coord))
+	#to move map left, the value must be negative
+	var panning_x = player_coord.x * -minimap_bg.uv_offset
+	#to move map up from our perspective, the value must be negative
+	var panning_y = player_coord.z * -minimap_bg.uv_offset
+	#print("Panning " + String(panning_x) + " " + String(panning_y))
+	return [panning_x, panning_y]
 	
 func get_AI_rel_loc(AI):
 	var global_loc = AI.get_global_transform().origin
