@@ -19,7 +19,7 @@ var right = false
 #flag telling us to come to a halt
 var stop = false
 
-var compare_pos = Vector3(0,1.5,0)
+var compare_pos = Vector3(0,0,0)
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -63,12 +63,11 @@ func _fixed_process(delta):
 		stopping()	
 	else:
 		#handle gas/brake
-		if (rel_loc.distance_to(compare_pos) > round(speed)):
-		#if (rel_loc.distance_to(compare_pos) > 5):
+		if is_enough_dist(rel_loc, compare_pos, speed):
 			if (speed < top_speed):
 				gas = true
 		else:
-			if (rel_loc.distance_to(compare_pos) > 5):
+			if (speed > 1):
 				brake = true
 
 		#if we're close to target, do nothing
@@ -126,9 +125,9 @@ func stopping():
 		left = false
 		right = false
 		
-	if (speed > 0 and not reverse):
+	if (speed > 0.2 and not reverse):
 		brake = true
-	if (speed > 0 and reverse):
+	if (speed > 0.2 and reverse):
 		gas = true
 	
 func get_target(index):
@@ -146,3 +145,15 @@ func get_steering_limit():
 		limit = 0.3
 	
 	return limit
+
+func is_enough_dist(rel_loc, compare_pos, speed):
+	#let's keep some speed
+	var enough_dist = round(rel_loc.distance_to(compare_pos)) > round(speed)*1.6
+	
+	#come to a perfect stop if it's the last node
+	if not target_array.size() > current+1:
+		enough_dist = round(rel_loc.distance_to(compare_pos)) > round(speed)*2
+	#else:
+		#print("Approaching node")
+
+	return enough_dist
