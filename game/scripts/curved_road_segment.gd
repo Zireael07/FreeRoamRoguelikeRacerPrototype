@@ -12,6 +12,14 @@ var curve_one
 var curve_two
 var curve_three
 
+#sidewalks
+export(bool) var sidewalks = false
+var points_inner_side
+var points_outer_side
+
+var curve_inner
+var curve_outer
+
 var road_height = 0.01
 
 #road variables
@@ -46,6 +54,7 @@ var end_vector = Vector3()
 
 #mesh material
 export(FixedMaterial)    var material    = preload("res://assets/road_material.tres")
+export(FixedMaterial) var sidewalk_material = preload("res://assets/cement.tres")
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -68,6 +77,10 @@ func _ready():
 	points_outer = get_circle_arc(loc, radius+lane_width, get_start_angle(), get_end_angle())
 #	for index in range(nb_points):
 #		draw_debug_point(points_outer[index], Color(1, 0.5, 0.5))
+	
+	if sidewalks:
+		points_inner_side = get_circle_arc(loc, radius-(lane_width*1.5), get_start_angle(), get_end_angle())
+		points_outer_side = get_circle_arc(loc, radius+(lane_width*1.5), get_start_angle(), get_end_angle())
 	
 	make_curves()
 	test_road()
@@ -147,6 +160,19 @@ func make_curves():
 	curve_two = make_curve_for(points_inner, path_two)
 	curve_three = make_curve_for(points_outer, path_three)
 
+	if sidewalks:
+		var path_four = Path.new()
+		var path_five = Path.new()
+		
+		path_four.set_name("sidewalk_path")
+		path_five.set_name("sidewalk_path2")
+		
+		add_child(path_four)
+		add_child(path_five)
+		
+		curve_inner = make_curve_for(points_inner_side, path_four)
+		curve_outer = make_curve_for(points_outer_side, path_five)
+
 	#debug
 	debug(path_one)
 	
@@ -190,7 +216,25 @@ func debug(path_one):
 	#test
 	mid_point = center_curve.get_point_pos(round(num/2))
 	
+#make the sidewalk
+func make_quad(index_one, index_two, inner):
+	var right_side = null
+	var left_side = null
+	if inner:
+		left_side = curve_two
+		right_side = curve_inner
+	else:
+		left_side = curve_outer
+		right_side = curve_three
 	
+	if (index_one != index_two):
+			var start = right_side.get_point_pos(index_one)
+			var left = left_side.get_point_pos(index_one)
+			var ahead_right = right_side.get_point_pos(index_two)
+			var ahead_left = left_side.get_point_pos(index_two)
+#			
+			#if (right):
+			addRoadCurve(sidewalk_material, start, left, ahead_left, ahead_right, false)	
 
 #make the mesh (less objects)
 func make_strip_single(index_one, index_two, parent):
@@ -275,6 +319,10 @@ func test_road():
 		var nb_points = 32
 		for index in range(nb_points-1):
 			make_strip_single(index, index+1, road_mesh)
+			
+			if sidewalks:
+				make_quad(index, index+1, true)
+				make_quad(index, index+1, false)
 			
 			positions.push_back(curve_one.get_point_pos(index))
 			positions.push_back(curve_one.get_point_pos(index+1))
