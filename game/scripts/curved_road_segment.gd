@@ -56,11 +56,15 @@ var end_vector = Vector3()
 export(FixedMaterial)    var material    = preload("res://assets/road_material.tres")
 export(FixedMaterial) var sidewalk_material = preload("res://assets/cement.tres")
 
+#props
+var streetlight
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
 	draw = get_node("draw")
 	#draw_debug_point(loc, Color(1,1,1))
+	streetlight = preload("res://objects/streetlight.scn")
 	
 	points_center = get_circle_arc(loc, radius, get_start_angle(), get_end_angle())
 	#how many points do we need debugged?
@@ -335,6 +339,7 @@ func test_road():
 			start_vector = Vector3(positions[1]-positions[0])
 			end_vector = Vector3(positions[positions.size()-1] - positions[positions.size()-2])
 			
+		placeStreetlight()
 	#draw an immediate line in editor instead
 	else:
 		#clear to prevent weird stuff
@@ -354,9 +359,24 @@ func test_road():
 		#B-A = from a to b
 		start_vector = Vector3(positions[1]-positions[0])
 		end_vector = Vector3(positions[positions.size()-1] - positions[positions.size()-2])
-	
+		
+		placeStreetlight()
 	
 		if (draw != null):
 			draw.draw_line(positions)
 			draw.draw_line(left_positions)
 			draw.draw_line(right_positions)
+			
+#props
+func placeStreetlight():
+	var light = streetlight.instance()
+	light.set_name("Streetlight")
+	add_child(light)
+	
+	var num = (positions.size()/2)
+	light.set_translation(positions[num]+Vector3(-5,0,0))
+	
+	if (not left_turn):
+		light.set_rotation_deg(Vector3(0, 0, 0))
+	else:
+		light.set_rotation_deg(Vector3(0, 0, 0))
