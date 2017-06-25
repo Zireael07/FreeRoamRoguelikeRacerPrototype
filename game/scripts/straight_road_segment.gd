@@ -34,7 +34,7 @@ var start_vector
 
 #props
 var building
-var buildDistance = 5
+var buildDistance = 10
 var numBuildings = 10
 
 func _ready():
