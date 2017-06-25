@@ -32,11 +32,18 @@ var global_positions = Vector3Array()
 var end_vector
 var start_vector
 
+#props
+var building
+var buildDistance = 5
+var numBuildings = 10
 
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
 	draw = get_node("draw")
+	
+	#props
+	building = preload("res://objects/skyscraper.tscn")
 	
 	#overdraw fix
 	if (get_parent().get_name().find("Spatial") != -1):
@@ -76,7 +83,9 @@ func _ready():
 		#B-A = from a to b
 		end_vector = Vector3(positions[positions.size()-1]- positions[positions.size()-2])
 	
-	
+	#place buildings
+	for index in range(numBuildings):
+		placeBuilding(index)
 	
 	#in editor, we draw simple immediate mode lines instead
 	if get_tree().is_editor_hint():
@@ -125,3 +134,34 @@ func meshCreate(array, material):
 	
 	#Turn off shadows
 	node.set_cast_shadows_setting(0)
+	
+#props
+func setupBuilding(index):
+	var build = building.instance()
+	#build.set_scale(Vector3(2, 2, 2))
+	build.set_name("Skyscraper"+String(index))
+	add_child(build)
+	
+	return build
+
+func placeBuilding(index):
+	var build = setupBuilding(index)
+	
+	#left side of the road
+	var loc = Vector3(roadwidth+buildDistance, 0, index)
+	if (index > 0):
+		loc = Vector3(roadwidth+buildDistance, 0, index*10)
+	else:
+		loc = Vector3(roadwidth+buildDistance, 0, index)
+	
+	build.set_translation(loc)
+	
+	build = setupBuilding(index)
+	#right side of the road
+	var loc = Vector3(-(roadwidth+buildDistance), 0, index)
+	if (index > 0):
+		loc = Vector3(-(roadwidth+buildDistance), 0, index*10)
+	else:
+		loc = Vector3(-(roadwidth+buildDistance), 0, index)
+	
+	build.set_translation(loc)

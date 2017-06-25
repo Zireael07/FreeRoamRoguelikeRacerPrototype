@@ -104,27 +104,15 @@ shadow/zoffset_scale = 2.0
 
 [node name="skyscraper" parent="." instance=ExtResource( 2 )]
 
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19.8311, 0, -8.30006 )
-
-[node name="skyscraper2" parent="." instance=ExtResource( 2 )]
-
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -18.6308, 0, -8.30006 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12.3669, 0, -8.30006 )
 
 [node name="skyscraper3" parent="." instance=ExtResource( 2 )]
 
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -18.6308, 0, 18.8162 )
-
-[node name="skyscraper4" parent="." instance=ExtResource( 2 )]
-
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.0174, 0, 60.5154 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -18.6308, 0, 37.7611 )
 
 [node name="skyscraper5" parent="." instance=ExtResource( 2 )]
 
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 47.8947, 0, 40.1475 )
-
-[node name="skyscraper6" parent="." instance=ExtResource( 2 )]
-
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 41.977, 0, 97.0089 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 50.5854, 0, 40.1475 )
 
 [node name="skyscraper7" parent="." instance=ExtResource( 2 )]
 
@@ -132,17 +120,19 @@ transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 78.7708, 0, 97.0089 )
 
 [node name="skyscraper1" parent="." instance=ExtResource( 2 )]
 
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19.8311, 0, 7.28573 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12.2307, 0, 7.28573 )
 
 [node name="AI" parent="." instance=ExtResource( 3 )]
 
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.20636, 0, 0 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.05444, 0, 0 )
 
 [node name="AI2" parent="." instance=ExtResource( 4 )]
 
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.33525, 0, 0 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.92555, 0, 0 )
 
 [node name="car" parent="." instance=ExtResource( 5 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.2608, 0, 0 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 
@@ -151,29 +141,29 @@ environment = SubResource( 1 )
 
 [node name="Spatial" type="Spatial" parent="."]
 
-editor/display_folded = true
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
 [node name="Position3D" parent="Spatial" instance=ExtResource( 6 )]
 
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.5935, 0, 6.94175 )
 numSegments = 9
+
+[node name="Position3D 2" parent="Spatial" instance=ExtResource( 7 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.87472, 0, -129.09 )
 
 [node name="Position3D1" parent="Spatial" instance=ExtResource( 6 )]
 
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 58.719, 0, 25.5731 )
 
-[node name="Position3D 2" parent="Spatial" instance=ExtResource( 7 )]
-
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.87472, 0, -86.8634 )
-
 [node name="Position3D 3" parent="Spatial" instance=ExtResource( 8 )]
 
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.0851, 0, 25.1989 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.0147, 0, 25.1989 )
 
 [node name="Position3D" type="Position3D" parent="."]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -33.6772, 0, 0.125347 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -50.7348, 0, 0.125347 )
 script/script = ExtResource( 9 )
 
 
