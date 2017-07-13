@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=1]
+[gd_scene load_steps=5 format=1]
 
 [ext_resource path="res://hud/speed_label.gd" type="Script" id=1]
 [ext_resource path="res://hud/pause_menu.gd" type="Script" id=2]
 [ext_resource path="res://hud/resume_button.gd" type="Script" id=3]
+[ext_resource path="res://hud/cam_icon.png" type="Texture" id=4]
 
 [node name="root" type="Control"]
 
@@ -140,6 +141,35 @@ shortcut = null
 text = "Resume"
 flat = false
 script/script = ExtResource( 3 )
+
+[node name="CAM" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 29.0
+margin/top = 7.0
+margin/right = 69.0
+margin/bottom = 21.0
+text = "CAM"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="TextureFrame" type="TextureFrame" parent="."]
+
+rect/scale = Vector2( 0.5, 0.5 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 6.0
+margin/top = 3.0
+margin/right = 46.0
+margin/bottom = 43.0
+texture = ExtResource( 4 )
+stretch_mode = 0
 
 [connection signal="pressed" from="pause_menu/resume_button" to="pause_menu/resume_button" method="_on_resume_button_pressed"]
 
