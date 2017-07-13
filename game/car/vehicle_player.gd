@@ -5,6 +5,7 @@ extends "vehicle.gd"
 var hud
 var speed_text
 var map
+var panel
 
 var last_pos
 var distance = 0
@@ -21,6 +22,11 @@ func _ready():
 	map = m.instance()
 	add_child(map)
 	
+	var msg = preload("res://hud/message_panel.tscn")
+	panel = msg.instance()
+	#panel.set_text("Welcome to 大都市")
+	add_child(panel)
+	panel.set_text("Welcome to 大都市")
 	
 	last_pos = get_translation()
 	
