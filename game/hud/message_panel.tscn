@@ -1,6 +1,14 @@
-[gd_scene load_steps=2 format=1]
+[gd_scene load_steps=4 format=1]
 
 [ext_resource path="res://hud/message_panel.gd" type="Script" id=1]
+[ext_resource path="res://assets/851H-kktt.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+
+font/size = 16
+font/use_mipmaps = false
+font/use_filter = false
+font/font = ExtResource( 2 )
 
 [node name="Control" type="Control"]
 
@@ -37,6 +45,7 @@ margin/left = 0.0
 margin/top = 0.0
 margin/right = 1022.0
 margin/bottom = 135.0
+custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.0151978, 0.905335, 0.972656, 1 )
 custom_constants/shadow_offset_x = 1
 custom_constants/line_spacing = 2
