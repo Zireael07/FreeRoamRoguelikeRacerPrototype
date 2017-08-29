@@ -8,7 +8,8 @@ const MAX_SPEED = 55 #m/s = 200 kph
 const STEER_SPEED = 1
 const STEER_LIMIT = 0.4
 
-export var engine_force = 40
+export var force = 40
+var braking_force_mult = 4
 
 #steering
 var steer_angle = 0
@@ -59,12 +60,12 @@ func process_car_physics(delta, gas, brake, left, right):
 	if (gas): #(Input.is_action_pressed("ui_up")):
 		#obey max speed setting
 		if (speed < MAX_SPEED):
-			set_engine_force(engine_force)
+			set_engine_force(force)
 		else:
 			set_engine_force(0)
 	else:
 		if (speed > 3):
-			set_engine_force(-engine_force/4)
+			set_engine_force(-force/4)
 		else:
 			set_engine_force(0)
 	
@@ -77,11 +78,14 @@ func process_car_physics(delta, gas, brake, left, right):
 	if (brake): #(Input.is_action_pressed("ui_down")):
 		if (speed > 5):
 			#slows down 1 unit per tick
+			# increasing the value seems to do nothing
 			set_brake(1)
+			# let's make the brake actually brake harder
+			set_engine_force(-force*braking_force_mult)
 		else:
 			#reverse
 			set_brake(0.0)
-			set_engine_force(-engine_force)
+			set_engine_force(-force)
 			
 		#visual effect
 		if tail_mat != null:	
