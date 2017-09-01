@@ -7,5 +7,7 @@ extends Quad
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
-	get_material_override().set_texture(FixedMaterial.PARAM_DIFFUSE, get_parent().get_node("Viewport").get_render_target_texture())
+	if (get_parent().get_node("Viewport") != null):
+		print("Setting a quad")
+		get_material_override().set_texture(FixedMaterial.PARAM_DIFFUSE, get_parent().get_node("Viewport").get_render_target_texture())
 	pass

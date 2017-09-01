@@ -1,12 +1,14 @@
-[gd_scene load_steps=17 format=1]
+[gd_scene load_steps=20 format=1]
 
 [ext_resource path="res://car/vehicle_player.gd" type="Script" id=1]
 [ext_resource path="res://assets/truenohoudini.msh" type="Mesh" id=2]
 [ext_resource path="res://assets/car_blue.tres" type="Material" id=3]
 [ext_resource path="res://car/follow_camera.gd" type="Script" id=4]
-[ext_resource path="res://hud/test_car_label.tscn" type="PackedScene" id=5]
-[ext_resource path="res://hud/label_3d.gd" type="Script" id=6]
+[ext_resource path="res://hud/label_3d.gd" type="Script" id=5]
+[ext_resource path="res://hud/test_car_label.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/LED taillights stock.tex" type="Texture" id=7]
+[ext_resource path="res://hud/test_car_nameplate.tscn" type="PackedScene" id=8]
+[ext_resource path="res://hud/nameplate_3d.gd" type="Script" id=9]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -134,7 +136,7 @@ textures/glow_tc = 0
 textures/normal_tc = 0
 textures/shade_param_tc = 0
 
-[sub_resource type="FixedMaterial" id=16]
+[sub_resource type="FixedMaterial" id=8]
 
 flags/visible = true
 flags/double_sided = false
@@ -172,17 +174,54 @@ textures/glow_tc = 0
 textures/normal_tc = 0
 textures/shade_param_tc = 0
 
-[sub_resource type="Mesh" id=8]
+[sub_resource type="Mesh" id=9]
 
 surfaces/0 = {
 "alphasort": false,
 "arrays": [ Vector3Array( -0.4027, 0.0262, -0.0986, -0.4027, 0.0012, -0.0986, -0.2027, 0.0262, -0.0986, -0.2027, 0.0012, -0.0986, -0.2027, 0.0262, 0.0013, -0.2027, 0.0012, 0.0013, -0.4027, 0.0262, 0.0013, -0.3527, 0.0012, 0.0013, -0.2027, 0.0262, -0.0986, -0.2027, 0.0262, 0.0013, -0.4027, 0.0262, -0.0986, -0.4027, 0.0262, 0.0013, -0.4027, 0.0012, -0.0986, -0.3527, 0.0012, 0.0013, -0.2027, 0.0012, -0.0986, -0.2027, 0.0012, 0.0013, -0.4027, 0.0262, 0.0013, -0.3527, 0.0012, 0.0013, -0.4027, 0.0262, -0.0986, -0.4027, 0.0012, -0.0986, -0.2027, 0.0262, -0.0986, -0.2027, 0.0012, -0.0986, -0.2027, 0.0262, 0.0013, -0.2027, 0.0012, 0.0013, 0.2059, 0.0262, -0.0986, 0.2059, 0.0012, -0.0986, 0.4059, 0.0262, -0.0986, 0.4059, 0.0012, -0.0986, 0.4059, 0.0262, 0.0013, 0.3472, 0.0012, 0.0013, 0.2059, 0.0262, 0.0013, 0.2059, 0.0012, 0.0013, 0.4059, 0.0262, -0.0986, 0.4059, 0.0262, 0.0013, 0.2059, 0.0262, -0.0986, 0.2059, 0.0262, 0.0013, 0.2059, 0.0012, -0.0986, 0.2059, 0.0012, 0.0013, 0.4059, 0.0012, -0.0986, 0.3472, 0.0012, 0.0013, 0.2059, 0.0262, 0.0013, 0.2059, 0.0012, 0.0013, 0.2059, 0.0262, -0.0986, 0.2059, 0.0012, -0.0986, 0.4059, 0.0262, -0.0986, 0.4059, 0.0012, -0.0986, 0.4059, 0.0262, 0.0013, 0.3472, 0.0012, 0.0013 ), Vector3Array( 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, -0.6968, -0.6959, 0.174, -0.6968, -0.6959, 0.174, -0.6968, -0.6959, 0.174, -0.6968, -0.6959, 0.174, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, 0.637, -0.7478, 0.187, 0.637, -0.7478, 0.187, 0.637, -0.7478, 0.187, 0.637, -0.7478, 0.187 ), FloatArray( 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, -0.0738475, 0.99727, 0, 1, -0.739689, 0.672949, 0, 1, -0.894427, 0.447214, 0, 1, 0, 0, -1, 1, 0, 0, -1, 1, 0, 0, -1, 1, 0, 0, -1, 1, -0.447572, 0, -0.894248, 1, -0.325487, 0, -0.945546, 1, -0.171715, 0, -0.985147, 1, 0, 0, -1, 1, -0.712584, 0.699256, -0.0571443, 1, -0.709816, 0.703845, -0.0276276, 1, -0.689168, 0.716688, 0.106793, 1, -0.675196, 0.718111, 0.168605, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0.920034, 0.391837, 0, 1, 0.89438, 0.447309, 0, 1, 0.109368, 0.994001, 0, 1, 0, 1, 0, 1, 0, 0, -1, 1, 0, 0, -1, 1, 0, 0, -1, 1, 0, 0, -1, 1, 0, 0, -1, 1, 0.153879, 0, -0.98809, 1, 0.290931, 0, -0.956744, 1, 0.506605, 0, -0.862178, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0.717501, 0.663948, 0.210632, 1, 0.739319, 0.661407, 0.126288, 1, 0.764746, 0.643565, -0.0314201, 1, 0.767041, 0.639033, -0.057316, 1 ), null, Vector2Array( 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0 ), null, null, null, IntArray( 0, 1, 2, 2, 1, 3, 4, 5, 6, 6, 5, 7, 8, 9, 10, 10, 9, 11, 12, 13, 14, 14, 13, 15, 16, 17, 18, 18, 17, 19, 20, 21, 22, 22, 21, 23, 24, 25, 26, 26, 25, 27, 28, 29, 30, 30, 29, 31, 32, 33, 34, 34, 33, 35, 36, 37, 38, 38, 37, 39, 40, 41, 42, 42, 41, 43, 44, 45, 46, 46, 45, 47 ) ],
-"material": SubResource( 16 ),
+"material": SubResource( 8 ),
 "morph_arrays": [  ],
 "name": "taillights_simple",
 "primitive": 4
 }
 custom_aabb/custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+
+[sub_resource type="FixedMaterial" id=10]
+
+flags/visible = true
+flags/double_sided = false
+flags/invert_faces = false
+flags/unshaded = false
+flags/on_top = false
+flags/lightmap_on_uv2 = true
+flags/colarray_is_srgb = true
+params/blend_mode = 0
+params/depth_draw = 1
+params/line_width = -1.82169e-44
+fixed_flags/use_alpha = false
+fixed_flags/use_color_array = false
+fixed_flags/use_point_size = false
+fixed_flags/discard_alpha = false
+fixed_flags/use_xy_normalmap = false
+params/diffuse = Color( 1, 1, 1, 1 )
+params/specular = Color( 0, 0, 0, 1 )
+params/emission = Color( 0, 0, 0, 1 )
+params/specular_exp = 40
+params/detail_mix = 1.0
+params/normal_depth = 1
+params/shader = 0
+params/shader_param = 0.5
+params/glow = 0
+params/point_size = 1.0
+uv_xform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+textures/diffuse_tc = 0
+textures/detail_tc = 0
+textures/specular_tc = 0
+textures/emission_tc = 0
+textures/specular_exp_tc = 0
+textures/glow_tc = 0
+textures/normal_tc = 0
+textures/shade_param_tc = 0
 
 [node name="Spatial" type="Spatial"]
 
@@ -210,7 +249,7 @@ motion/steering = 0.0
 body/mass = 40.0
 body/friction = 0.5
 script/script = ExtResource( 1 )
-engine_force = 40
+force = 40
 
 [node name="wheel1" type="VehicleWheel" parent="BODY"]
 
@@ -219,6 +258,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573678, 0.115169, 0.864664 )
 type/traction = true
 type/steering = true
+wheel/roll_influence = 0.1
 wheel/radius = 0.25
 wheel/rest_length = 0.15
 wheel/friction_slip = 10.5
@@ -257,6 +297,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573678, 0.115169, -0.783403 )
 type/traction = true
 type/steering = false
+wheel/roll_influence = 0.1
 wheel/radius = 0.25
 wheel/rest_length = 0.15
 wheel/friction_slip = 10.5
@@ -295,6 +336,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.115169, 0.864664 )
 type/traction = true
 type/steering = true
+wheel/roll_influence = 0.1
 wheel/radius = 0.25
 wheel/rest_length = 0.15
 wheel/friction_slip = 10.5
@@ -333,6 +375,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.115169, -0.783403 )
 type/traction = true
 type/steering = false
+wheel/roll_influence = 0.1
 wheel/radius = 0.25
 wheel/rest_length = 0.15
 wheel/friction_slip = 10.5
@@ -421,9 +464,32 @@ angle_v_adjust = 0.0
 autoturn_ray_aperture = 25
 autoturn_speed = 50
 
+[node name="Quad" type="Quad" parent="BODY"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+transform/local = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.32596, 0 )
+layers = 1
+geometry/visible = true
+geometry/material_override = SubResource( 7 )
+geometry/cast_shadow = 0
+geometry/receive_shadows = false
+geometry/range_begin = 0.0
+geometry/range_end = 0.0
+geometry/extra_cull_margin = 0.0
+geometry/billboard = false
+geometry/billboard_y = false
+geometry/depth_scale = false
+geometry/visible_in_all_rooms = false
+geometry/use_baked_light = false
+geometry/baked_light_tex_id = 0
+quad/axis = 2
+quad/size = Vector2( 0.75, 0.5 )
+quad/offset = Vector2( 0, 0 )
+quad/centered = true
+script/script = ExtResource( 5 )
+
 [node name="Viewport" type="Viewport" parent="BODY"]
 
-editor/display_folded = true
 rect = Rect2( 0, 0, 300, 200 )
 own_world = false
 world = null
@@ -439,31 +505,7 @@ audio_listener/enable_3d = false
 physics/object_picking = false
 gui/disable_input = false
 
-[node name="Control" parent="BODY/Viewport" instance=ExtResource( 5 )]
-
-[node name="Quad" type="Quad" parent="BODY"]
-
-_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform/local = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.32596, 0 )
-layers = 1
-geometry/visible = true
-geometry/material_override = SubResource( 7 )
-geometry/cast_shadow = 1
-geometry/receive_shadows = false
-geometry/range_begin = 0.0
-geometry/range_end = 0.0
-geometry/extra_cull_margin = 0.0
-geometry/billboard = false
-geometry/billboard_y = false
-geometry/depth_scale = false
-geometry/visible_in_all_rooms = false
-geometry/use_baked_light = false
-geometry/baked_light_tex_id = 0
-quad/axis = 2
-quad/size = Vector2( 0.75, 0.5 )
-quad/offset = Vector2( 0, 0 )
-quad/centered = true
-script/script = ExtResource( 6 )
+[node name="Nametag" parent="BODY/Viewport" instance=ExtResource( 6 )]
 
 [node name="SpotLight" type="SpotLight" parent="BODY"]
 
@@ -531,9 +573,53 @@ geometry/depth_scale = false
 geometry/visible_in_all_rooms = false
 geometry/use_baked_light = false
 geometry/baked_light_tex_id = 0
-mesh/mesh = SubResource( 8 )
+mesh/mesh = SubResource( 9 )
 mesh/skeleton = NodePath("..")
 material/0 = null
+
+[node name="Viewport 2" type="Viewport" parent="BODY"]
+
+editor/display_folded = true
+rect = Rect2( 0, 0, 400, 150 )
+own_world = false
+world = null
+transparent_bg = false
+render_target/enabled = true
+render_target/v_flip = false
+render_target/clear_on_new_frame = true
+render_target/filter = false
+render_target/gen_mipmaps = false
+render_target/update_mode = 2
+audio_listener/enable_2d = false
+audio_listener/enable_3d = false
+physics/object_picking = false
+gui/disable_input = false
+
+[node name="nameplate" parent="BODY/Viewport 2" instance=ExtResource( 8 )]
+
+[node name="Quad 2" type="Quad" parent="BODY"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+transform/local = Transform( -1, -8.74228e-08, 0, -8.74228e-08, 1, -8.74228e-08, 7.64274e-15, -8.74228e-08, -1, 0, 0.225596, -1.32481 )
+layers = 1
+geometry/visible = true
+geometry/material_override = SubResource( 10 )
+geometry/cast_shadow = 0
+geometry/receive_shadows = false
+geometry/range_begin = 0.0
+geometry/range_end = 0.0
+geometry/extra_cull_margin = 0.0
+geometry/billboard = false
+geometry/billboard_y = false
+geometry/depth_scale = false
+geometry/visible_in_all_rooms = false
+geometry/use_baked_light = false
+geometry/baked_light_tex_id = 0
+quad/axis = 2
+quad/size = Vector2( 0.5, 0.1 )
+quad/offset = Vector2( 0, 0 )
+quad/centered = true
+script/script = ExtResource( 9 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 

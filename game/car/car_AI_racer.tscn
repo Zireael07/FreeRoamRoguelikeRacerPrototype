@@ -210,7 +210,7 @@ motion/steering = 0.0
 body/mass = 40.0
 body/friction = 0.5
 script/script = ExtResource( 1 )
-engine_force = 40
+force = 40
 target_array = Vector3Array( 10, 0, 10, 20, 0, 20, 35, 0, 35 )
 target_angle = 0.2
 top_speed = 15
@@ -222,6 +222,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573678, 0.115169, 0.864664 )
 type/traction = true
 type/steering = true
+wheel/roll_influence = 0.1
 wheel/radius = 0.25
 wheel/rest_length = 0.15
 wheel/friction_slip = 10.5
@@ -260,6 +261,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573678, 0.115169, -0.783403 )
 type/traction = true
 type/steering = false
+wheel/roll_influence = 0.1
 wheel/radius = 0.25
 wheel/rest_length = 0.15
 wheel/friction_slip = 10.5
@@ -298,6 +300,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.115169, 0.864664 )
 type/traction = true
 type/steering = true
+wheel/roll_influence = 0.1
 wheel/radius = 0.25
 wheel/rest_length = 0.15
 wheel/friction_slip = 10.5
@@ -336,6 +339,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.115169, -0.783403 )
 type/traction = true
 type/steering = false
+wheel/roll_influence = 0.1
 wheel/radius = 0.25
 wheel/rest_length = 0.15
 wheel/friction_slip = 10.5
@@ -426,7 +430,6 @@ autoturn_speed = 50
 
 [node name="Viewport" type="Viewport" parent="BODY"]
 
-editor/display_folded = true
 rect = Rect2( 0, 0, 300, 200 )
 own_world = false
 world = null
@@ -442,7 +445,7 @@ audio_listener/enable_3d = false
 physics/object_picking = false
 gui/disable_input = false
 
-[node name="Control" parent="BODY/Viewport" instance=ExtResource( 5 )]
+[node name="Nametag" parent="BODY/Viewport" instance=ExtResource( 5 )]
 
 [node name="Quad" type="Quad" parent="BODY"]
 
@@ -451,7 +454,7 @@ transform/local = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0
 layers = 1
 geometry/visible = true
 geometry/material_override = SubResource( 7 )
-geometry/cast_shadow = 1
+geometry/cast_shadow = 0
 geometry/receive_shadows = false
 geometry/range_begin = 0.0
 geometry/range_end = 0.0
