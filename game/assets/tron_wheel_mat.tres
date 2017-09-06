@@ -1,0 +1,65 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=1]
+
+[sub_resource type="MaterialShader" id=1]
+
+_code = {
+"fragment": "uniform color col;
+uniform color edge_col;
+uniform color rim_col;
+uniform float y_start;
+uniform float y_end;
+uniform float thick;
+
+vec4 out;
+vec4 emis;
+
+//if (UV.x > 0.05-thick && UV.x < 0.05 || UV.x > 0.95-thick && UV.x < 0.95)
+//{
+//	out = vec4(edge_col.r, edge_col.g, edge_col.b, edge_col.a);
+//	emis = vec4(edge_col.r, edge_col.g, edge_col.b, edge_col.a);
+//}
+//else
+//{
+	out = vec4(col.r, col.g, col.b, col.a);
+//}
+
+if (UV.y > y_start-thick && UV.y < y_start || UV.y > y_end+thick && UV.y < y_end)
+{
+	out = vec4(edge_col.r, edge_col.g, edge_col.b, edge_col.a);
+	emis = vec4(edge_col.r, edge_col.g, edge_col.b, edge_col.a);
+} 
+
+if (UV.y > 0.95)
+{
+	out = vec4(rim_col.r, rim_col.g, rim_col.b, rim_col.a);
+}
+
+DIFFUSE = vec3(out.r, out.g, out.b);
+EMISSION = vec3(emis.r, emis.g, emis.b);",
+"fragment_ofs": 0,
+"light": "",
+"light_ofs": 0,
+"vertex": "",
+"vertex_ofs": 0
+}
+
+[resource]
+
+flags/visible = true
+flags/double_sided = false
+flags/invert_faces = false
+flags/unshaded = false
+flags/on_top = false
+flags/lightmap_on_uv2 = true
+flags/colarray_is_srgb = false
+params/blend_mode = 0
+params/depth_draw = 1
+params/line_width = 0.0
+shader/shader = SubResource( 1 )
+shader_param/col = Color( 0.992188, 0.992188, 0.992188, 1 )
+shader_param/edge_col = Color( 0.976563, 0.0152588, 0.0152588, 1 )
+shader_param/rim_col = null
+shader_param/y_start = 0.8
+shader_param/y_end = null
+shader_param/thick = 0.05
+
