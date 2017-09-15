@@ -8,17 +8,10 @@ var points_center
 var points_inner
 var points_outer
 
-var curve_one
-var curve_two
-var curve_three
-
 #sidewalks
 export(bool) var sidewalks = false
 var points_inner_side
 var points_outer_side
-
-var curve_inner
-var curve_outer
 
 var road_height = 0.01
 
@@ -86,7 +79,7 @@ func _ready():
 		points_inner_side = get_circle_arc(loc, radius-(lane_width*1.5), get_start_angle(), get_end_angle())
 		points_outer_side = get_circle_arc(loc, radius+(lane_width*1.5), get_start_angle(), get_end_angle())
 	
-	make_curves()
+	fix_stuff()
 	test_road()
 	
 	pass
@@ -119,66 +112,11 @@ func get_end_angle():
 func draw_debug_point(loc, color):
 	addTestColor(m, color, null, loc.x, road_height, loc.y, 0.05,0.05,0.05)
 
+	
 
-func make_curve_for(array, node):
-	var curve = Curve3D.new()
-	var path = []
-	var nb_points = 32
-	
-	if ((array != null) and array.size() > 0):
-	
-		for index in range(nb_points):
-			path.append(array[index])
-		
-	if path.size() > 0:
-		for point in path:
-			curve.add_point(Vector3(point.x, road_height, point.y))
-			
-	node.set_curve(curve)
-	
+func fix_stuff():
 	#debug
-	var get = node.get_curve()
-	var num = get.get_point_count()
-	#print("Number of points" + String(num))
-	last = get.get_point_pos(num-1)
-	#print("Position of last point is " + String(last))
-	#addTestColor(m, Color(1,0,0), last.x, last.y, last.z, 0.1,0.1,0.1)
-	
-	return get
-
-func make_curves():
-	#create three path nodes
-	var path_one = Path.new()
-	var path_two = Path.new()
-	var path_three = Path.new()
-	
-	path_one.set_name("path_one")
-	path_two.set_name("path_two")
-	path_three.set_name("path_three")
-	
-	add_child(path_one)
-	add_child(path_two)
-	add_child(path_three)
-	
-	curve_one = make_curve_for(points_center, path_one)
-	curve_two = make_curve_for(points_inner, path_two)
-	curve_three = make_curve_for(points_outer, path_three)
-
-	if sidewalks:
-		var path_four = Path.new()
-		var path_five = Path.new()
-		
-		path_four.set_name("sidewalk_path")
-		path_five.set_name("sidewalk_path2")
-		
-		add_child(path_four)
-		add_child(path_five)
-		
-		curve_inner = make_curve_for(points_inner_side, path_four)
-		curve_outer = make_curve_for(points_outer_side, path_five)
-
-	#debug
-	debug(path_one)
+	debug()
 	
 	#fix rotations
 	if (!left_turn):
@@ -189,16 +127,12 @@ func make_curves():
 		#let the placer do its work
 		get_parent().place_road()
 
-func debug(path_one):
-	var center_curve = path_one.get_curve()
-	start_point = center_curve.get_point_pos(0)
+func debug():
+	start_point = Vector3(points_center[0].x, road_height, points_center[0].y) 
 	print("Position of start point is " + String(start_point))
 	#addTestColor(m, Color(0, 1,0), "start_cube", start_point.x, start_point.y, start_point.z, 0.1, 0.1, 0.1)
-	
-	
-	var num = center_curve.get_point_count()
-	#print("Number of points" + String(num))
-	last = center_curve.get_point_pos(num-1)
+
+	last = Vector3(points_center[31].x, road_height, points_center[31].y)
 	print("Position of last point is " + String(last))
 	
 	var loc3d = Vector3(loc.x, 0, loc.y)
@@ -217,25 +151,25 @@ func debug(path_one):
 	relative_end = start_point-last #global_start - global
 	print("Last relative to start is " + String(relative_end))
 	
-	#test
-	mid_point = center_curve.get_point_pos(round(num/2))
+	var mid_loc = points_center[(round(32/2))]
+	mid_point = Vector3(mid_loc.x, road_height, mid_loc.y)
 	
 #make the sidewalk
 func make_quad(index_one, index_two, inner):
 	var right_side = null
 	var left_side = null
 	if inner:
-		left_side = curve_two
-		right_side = curve_inner
+		left_side = points_inner
+		right_side = points_inner_side
 	else:
-		left_side = curve_outer
-		right_side = curve_three
+		left_side = points_outer_side
+		right_side = points_outer
 	
 	if (index_one != index_two):
-			var start = right_side.get_point_pos(index_one)
-			var left = left_side.get_point_pos(index_one)
-			var ahead_right = right_side.get_point_pos(index_two)
-			var ahead_left = left_side.get_point_pos(index_two)
+			var start = Vector3(right_side[index_one].x, road_height, right_side[index_one].y)
+			var left = Vector3(left_side[index_one].x, road_height, left_side[index_one].y)
+			var ahead_right = Vector3(right_side[index_two].x, road_height, right_side[index_two].y)
+			var ahead_left = Vector3(left_side[index_two].x, road_height, left_side[index_two].y)
 #			
 			#if (right):
 			addRoadCurve(sidewalk_material, start, left, ahead_left, ahead_right, false)	
@@ -246,21 +180,23 @@ func make_strip_single(index_one, index_two, parent):
 	var left_side = null
 	var center_line = null
 	
-	center_line = curve_one
-	left_side = curve_three
-	right_side = curve_two
+	center_line = points_center
+	left_side = points_outer
+	right_side = points_inner
 	
 
 	if (left_side != null):
 		if (index_one != index_two):
-			var zero = right_side.get_point_pos(index_one)
-			var one = center_line.get_point_pos(index_one)
-			var two = center_line.get_point_pos(index_two)
-			var three = right_side.get_point_pos(index_two)
-			var four = left_side.get_point_pos(index_one)
-			var five = left_side.get_point_pos(index_two)
+			var zero = Vector3(right_side[index_one].x, road_height, right_side[index_one].y)
+			var one = Vector3(center_line[index_one].x, road_height, center_line[index_one].y)
+			var two = Vector3(center_line[index_two].x, road_height, center_line[index_two].y)
+			var three = Vector3(right_side[index_two].x, road_height, right_side[index_two].y)
+			var four = Vector3(left_side[index_one].x, road_height, left_side[index_one].y)
+			var five = Vector3(left_side[index_two].x, road_height, left_side[index_two].y)
+			
 			
 			addRoadCurveTest(material, zero, one, two, three, four, five, parent)
+			
 						
 		else:
 			print("Bad indexes given")
@@ -268,34 +204,34 @@ func make_strip_single(index_one, index_two, parent):
 		print("No sides given")
 
 
-##make the mesh
-func make_strip(index_one, index_two, right):
-	var right_side = null
-	var left_side = null
-
-	if (right):
-		right_side = curve_two
-		left_side = curve_one
-	else:
-		right_side = curve_one
-		left_side = curve_three
-	
+#make the mesh
+#func make_strip(index_one, index_two, right):
+#	var right_side = null
+#	var left_side = null
+#
+#	if (right):
+#		right_side = curve_two
+#		left_side = curve_one
+#	else:
+#		right_side = curve_one
+#		left_side = curve_three
+#	
 #note: right, left, right_ahead, left_ahead
-	if (left_side != null):
-		if (index_one != index_two):
-			var start = right_side.get_point_pos(index_one)
-			var left = left_side.get_point_pos(index_one)
-			var ahead_right = right_side.get_point_pos(index_two)
-			var ahead_left = left_side.get_point_pos(index_two)
-#			
-			if (right):
-				addRoadCurve(material, start, left, ahead_left, ahead_right, false)
-			else:
-				addRoadCurve(material, start, left, ahead_left, ahead_right, true)
-		else:
-			print("Bad indexes given!")
-	else:
-		print("No sides given")
+#	if (left_side != null):
+#		if (index_one != index_two):
+#			var start = right_side.get_point_pos(index_one)
+#			var left = left_side.get_point_pos(index_one)
+#			var ahead_right = right_side.get_point_pos(index_two)
+#			var ahead_left = left_side.get_point_pos(index_two)
+			
+#			if (right):
+#				addRoadCurve(material, start, left, ahead_left, ahead_right, false)
+#			else:
+#				addRoadCurve(material, start, left, ahead_left, ahead_right, true)
+#		else:
+#			print("Bad indexes given!")
+#	else:
+#		print("No sides given")
 
 func get_global_positions():
 	global_positions.push_back(get_global_transform().xform(positions[0]))
@@ -328,12 +264,12 @@ func test_road():
 				make_quad(index, index+1, true)
 				make_quad(index, index+1, false)
 			
-			positions.push_back(curve_one.get_point_pos(index))
-			positions.push_back(curve_one.get_point_pos(index+1))
-			left_positions.push_back(curve_three.get_point_pos(index))
-			left_positions.push_back(curve_three.get_point_pos(index+1))
-			right_positions.push_back(curve_two.get_point_pos(index))
-			right_positions.push_back(curve_two.get_point_pos(index+1))
+			positions.push_back(Vector3(points_center[index].x, road_height, points_center[index].y))
+			positions.push_back(Vector3(points_center[index+1].x, road_height, points_center[index+1].y))
+			left_positions.push_back(Vector3(points_outer[index].x, road_height, points_outer[index].y))
+			left_positions.push_back(Vector3(points_outer[index+1].x, road_height, points_outer[index+1].y))
+			right_positions.push_back(Vector3(points_inner[index].x, road_height, points_inner[index].y))
+			right_positions.push_back(Vector3(points_inner[index+1].x, road_height, points_inner[index+1].y))
 			
 			#B-A = from a to b
 			start_vector = Vector3(positions[1]-positions[0])
@@ -349,12 +285,12 @@ func test_road():
 		
 		var nb_points = 32
 		for index in range(nb_points-1):
-			positions.push_back(curve_one.get_point_pos(index))
-			positions.push_back(curve_one.get_point_pos(index+1))
-			left_positions.push_back(curve_three.get_point_pos(index))
-			left_positions.push_back(curve_three.get_point_pos(index+1))
-			right_positions.push_back(curve_two.get_point_pos(index))
-			right_positions.push_back(curve_two.get_point_pos(index+1))
+			positions.push_back(Vector3(points_center[index].x, road_height, points_center[index].y))
+			positions.push_back(Vector3(points_center[index+1].x, road_height, points_center[index+1].y))
+			left_positions.push_back(Vector3(points_outer[index].x, road_height, points_outer[index].y))
+			left_positions.push_back(Vector3(points_outer[index+1].x, road_height, points_outer[index+1].y))
+			right_positions.push_back(Vector3(points_inner[index].x, road_height, points_inner[index].y))
+			right_positions.push_back(Vector3(points_inner[index+1].x, road_height, points_inner[index+1].y))
 	
 		#B-A = from a to b
 		start_vector = Vector3(positions[1]-positions[0])
