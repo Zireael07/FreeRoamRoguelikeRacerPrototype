@@ -16,12 +16,22 @@ export var well_w = 0.4
 
 export var width = 1.0
 
+var pillar_w = 0.1
+
 export(FixedMaterial) var material = FixedMaterial.new()
+export(FixedMaterial) var glass_material = FixedMaterial.new()
+export(FixedMaterial) var taillights_material = FixedMaterial.new()
 
 func _ready():
 	
 	var surface = SurfaceTool.new()
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	var glass_surf = SurfaceTool.new()
+	glass_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	var taillights_surf = SurfaceTool.new()
+	taillights_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	#Create a node building that will hold the mesh
 	var node = MeshInstance.new()
@@ -29,20 +39,25 @@ func _ready():
 	add_child(node)
 	
 	#do the stuff
-	createCar(surface, node)
+	createCar(surface, glass_surf, taillights_surf, node)
 	
-func createCar(surface, node):
+func createCar(surface, glass, taillights, node):
 	# sides
 	var halfwidth = float(width/2)
 
 	createSide(surface, -halfwidth, false)
+	createSideWindows(glass, glass_material, -halfwidth, false)
 	createSide(surface, halfwidth, true)
+	createSideWindows(glass, glass_material, halfwidth, true)
 	
 	#make them visible no matter the side
 	createSide(surface, -halfwidth, true)
 	createSide(surface, halfwidth, false)
 	
 	createBody(surface, halfwidth)
+	createWindows(glass, glass_material, halfwidth)
+	
+	createTailLights(taillights, taillights_material, halfwidth)
 	
 	# roof
 	var top_win_left = Vector3(-halfwidth,door_h+window_h, -door+(roof_w/2))
@@ -82,9 +97,14 @@ func createCar(surface, node):
 	addQuad(well_side_r_left, rear_left, rear_right, well_side_r_right, material, surface, false)
 	
 	surface.generate_normals()
+	glass.generate_normals()
+	taillights.generate_normals()
 	
 	#Set the created mesh to the node
 	node.set_mesh(surface.commit())
+	#Add the other surfaces
+	node.set_mesh(glass.commit(node.get_mesh()))
+	node.set_mesh(taillights.commit(node.get_mesh()))
 	
 func createSide(surface, x_offset, flip):
 	var one = Vector3(x_offset,0,0)
@@ -112,17 +132,54 @@ func createSide(surface, x_offset, flip):
 	# front
 	createFront(x_offset, flip, surface)
 	
+	# side pillars
+	#var offset = (-door*2)*0.75
 	var r_edge_roof = -door-(roof_w/2)
 	var l_edge_roof = -door+(roof_w/2)
 	var top_m = Vector3(x_offset,door_h+window_h, -door)
 	var top_r = Vector3(x_offset,door_h+window_h, r_edge_roof)
 	var top_l = Vector3(x_offset,door_h+window_h, l_edge_roof)
 	
+	# window coords
+	var inner_top_r = Vector3(x_offset, door_h+window_h, r_edge_roof+pillar_w)
+	var inner_top_l = Vector3(x_offset, door_h+window_h, l_edge_roof-pillar_w)
+	
+	var ab = top_r-inner_top_r
+	
+	var inner_low_l = four+ab
+	var inner_low_r = six-ab
+	
 	if flip:
-		addQuad(top_l, top_r, six, four, material, surface, false)
+		addQuad(top_l, inner_top_l, inner_low_l, four, material, surface, false)
+		addQuad(inner_top_r, top_r, six, inner_low_r, material, surface, false)
+		#addQuad(top_l, top_r, six, four, material, surface, false)
 	else:
-		addQuad(four, six, top_r, top_l, material, surface, false)
-		
+		addQuad(four, inner_low_l, inner_top_l, top_l, material, surface, false)
+		addQuad(inner_low_r, six, top_r, inner_top_r, material, surface, false)
+		#addQuad(four, six, top_r, top_l, material, surface, false)
+
+func createSideWindows(surface, mat, x_offset, flip):
+	# side windows
+	var four = Vector3(x_offset,door_h,0)
+	var six = Vector3(x_offset,door_h,-door*2)
+	var r_edge_roof = -door-(roof_w/2)
+	var l_edge_roof = -door+(roof_w/2)
+	var top_r = Vector3(x_offset,door_h+window_h, r_edge_roof)
+	
+	var inner_top_r = Vector3(x_offset, door_h+window_h, r_edge_roof+pillar_w)
+	var inner_top_l = Vector3(x_offset, door_h+window_h, l_edge_roof-pillar_w)
+	
+	var ab = top_r-inner_top_r
+	
+	var inner_low_l = four+ab
+	var inner_low_r = six-ab
+	
+	if flip:
+		addQuad(inner_top_l, inner_top_r, inner_low_r, inner_low_l, mat, surface, false)
+	else:
+		addQuad(inner_low_l, inner_low_r, inner_top_r, inner_top_l, mat, surface, false)
+
+
 func createRear(x_offset, flip, surface):
 	var five = Vector3(x_offset,0, -door*2)
 	var six = Vector3(x_offset,door_h,-door*2)
@@ -206,3 +263,97 @@ func createBody(surface, halfwidth):
 	addQuad(rleft_one, rright_one, rright_two, rleft_two, material, surface, false)
 	# this one is visible from inside
 	addQuad(rleft_two, rright_two, rright_one, rleft_one, material, surface, false)
+	
+	# front windshield
+	var offset = (-door*2)*0.75
+	var front_offset = (-door*2)-offset
+	var top_win_left = Vector3(-halfwidth,door_h+window_h, -door+(roof_w/2))
+	var top_win_right = Vector3(halfwidth, door_h+window_h, -door+(roof_w/2))
+	
+	var pillar_door_l = Vector3(-halfwidth+0.1, door_h,0)
+	var pillar_door_r = Vector3(halfwidth-0.1, door_h,0)
+	var pillar_top_l = Vector3(-halfwidth+0.1, door_h+window_h, -door+(roof_w/2))
+	var pillar_top_r = Vector3(halfwidth-0.1, door_h+window_h, -door+(roof_w/2))
+	
+	# pillar A left
+	# visible from the inside
+	addQuad(fhoodl_one, pillar_door_l, pillar_top_l, top_win_left, material, surface, false)
+	addQuad(top_win_left, pillar_top_l, pillar_door_l, fhoodl_one, material, surface, false)
+	
+	# pillar A right
+	# visible from the inside
+	addQuad(pillar_door_r, fhoodr_one, top_win_right, pillar_top_r, material, surface, false)
+	addQuad(pillar_top_r, top_win_right, fhoodr_one, pillar_door_r, material, surface, false)
+	
+	# rear pillars
+	var top_win_rear_l = Vector3(-halfwidth,door_h+window_h, -door-(roof_w/2))
+	var top_win_rear_r = Vector3(halfwidth, door_h+window_h, -door-(roof_w/2))
+	var pillar_top_rear_l = Vector3(-halfwidth+0.1, door_h+window_h, -door-(roof_w/2))
+	var pillar_top_rear_r = Vector3(halfwidth-0.1, door_h+window_h, -door-(roof_w/2))
+	var pillar_bottom_rear_l = Vector3(-halfwidth+0.1, door_h, -door*2)
+	var pillar_bottom_rear_r = Vector3(halfwidth-0.1, door_h, -door*2)
+	
+	#left
+	# visible from the inside
+	addQuad(rhoodl_one, pillar_bottom_rear_l, pillar_top_rear_l, top_win_rear_l, material, surface, false)
+	addQuad(top_win_rear_l, pillar_top_rear_l, pillar_bottom_rear_l, rhoodl_one, material, surface, false)
+	
+	# right
+	addQuad(pillar_bottom_rear_r, rhoodr_one, top_win_rear_r, pillar_top_rear_r, material, surface, false)
+	addQuad(pillar_top_rear_r, top_win_rear_r, rhoodr_one, pillar_bottom_rear_r, material, surface, false)
+
+func createWindows(surface, mat, halfwidth):
+	# front hood
+	var fhoodl_one = Vector3(-halfwidth,door_h,0)
+	var fhoodr_one = Vector3(halfwidth,door_h,0)
+	# rear hood
+	var rhoodl_one = Vector3(-halfwidth,door_h,-door*2)
+	var rhoodr_one = Vector3(halfwidth,door_h,-door*2)
+	
+	# front windshield
+	# pillar
+	var pillar_door_l = Vector3(-halfwidth+0.1, door_h,0)
+	var pillar_door_r = Vector3(halfwidth-0.1, door_h,0)
+	var pillar_top_l = Vector3(-halfwidth+0.1, door_h+window_h, -door+(roof_w/2))
+	var pillar_top_r = Vector3(halfwidth-0.1, door_h+window_h, -door+(roof_w/2))
+
+	# visible from inside
+	addQuad(pillar_door_l, pillar_door_r, pillar_top_r, pillar_top_l, mat, surface, false)
+	addQuad(pillar_top_l, pillar_top_r, pillar_door_r, pillar_door_l, mat, surface, false)
+	
+	# rear windshield
+	# rear pillars
+	var pillar_top_rear_l = Vector3(-halfwidth+0.1, door_h+window_h, -door-(roof_w/2))
+	var pillar_top_rear_r = Vector3(halfwidth-0.1, door_h+window_h, -door-(roof_w/2))
+	var pillar_bottom_rear_l = Vector3(-halfwidth+0.1, door_h, -door*2)
+	var pillar_bottom_rear_r = Vector3(halfwidth-0.1, door_h, -door*2)
+	
+	
+	var top_win_rear_l = Vector3(-halfwidth,door_h+window_h, -door-(roof_w/2))
+	var top_win_rear_r = Vector3(halfwidth, door_h+window_h, -door-(roof_w/2))
+	addQuad(pillar_bottom_rear_l, pillar_bottom_rear_r, pillar_top_rear_r, pillar_top_rear_l, mat, surface, false)
+	#addQuad(rhoodl_one, rhoodr_one, top_win_rear_r, top_win_rear_l, mat, surface, false)
+	# visible from inside
+	addQuad(pillar_top_rear_l, pillar_top_rear_r, pillar_bottom_rear_r, pillar_bottom_rear_l, mat, surface, false)
+	#addQuad(top_win_rear_l, top_win_rear_r, rhoodr_one, rhoodl_one, mat, surface, false)
+
+
+func createTailLights(surface, mat, halfwidth):
+	# right light
+	var light_off =0.02
+	var light_one_l = Vector3(-halfwidth+0.2,0.1, -door*2-rear-light_off)
+	var light_one_top_l = Vector3(-halfwidth+0.2,0.2, -door*2-rear-light_off)
+	var light_one_r = Vector3(-halfwidth+0.4,0.1, -door*2-rear-light_off)
+	var light_one_top_r = Vector3(-halfwidth+0.4,0.2, -door*2-rear-light_off)
+	
+	addQuad(light_one_l, light_one_r, light_one_top_r, light_one_top_l, mat, surface, false)
+	
+	# left light
+	var light_two_l = Vector3(halfwidth-0.2,0.1, -door*2-rear-light_off)
+	var light_two_top_l = Vector3(halfwidth-0.2,0.2, -door*2-rear-light_off)
+	var light_two_r = Vector3(halfwidth-0.4,0.1, -door*2-rear-light_off)
+	var light_two_top_r = Vector3(halfwidth-0.4,0.2, -door*2-rear-light_off)
+	
+	# seen from inside
+	#addQuad(light_two_l, light_two_r, light_two_top_r, light_two_top_l, mat, surface, false)
+	addQuad(light_two_top_l, light_two_top_r, light_two_r, light_two_l, mat, surface, false)
