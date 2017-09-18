@@ -22,12 +22,32 @@ func _ready():
 	
 	#this prevent multiplying of road meshes
 	#only if we have a parent
-	if (get_parent().get_name() == "Spatial"):
+	#if (get_parent().get_name() == "Spatial"):
+	if (get_parent().get_name().find("Spatial") != -1):
 		# Initialization here
 		for index in range (numSegments):
 			placeRoad(index)
 	
-	pass
+	call_deferred("setupNavigation")
+	
+	#pass
+
+func setupNavigation():
+	for index in range (numSegments):
+		var segment = get_node("Road_instance"+String(index)).get_child(0).get_child(0)
+		
+		if (segment != null):
+			if (segment.nav_vertices != null):
+				if (index == 0):
+					segment.navMesh(segment.nav_vertices, false)
+					segment.navMesh(segment.nav_vertices2, true)
+				else:
+					if (index % 2 > 0): ##odd
+						segment.navMesh(segment.nav_vertices, true)
+						segment.navMesh(segment.nav_vertices2, false)
+					else:
+						segment.navMesh(segment.nav_vertices, false)
+						segment.navMesh(segment.nav_vertices2, true)
 
 func clearChildren():
 	for index in get_children():

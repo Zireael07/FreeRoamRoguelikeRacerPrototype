@@ -20,9 +20,11 @@ func _ready():
 	for index in range (numSegments):
 			placeRoad(index)
 	
+	call_deferred("navMesh")
 	
-	pass
+	#pass
 
+# utility functions
 func get_prev_segment(index):
 	if has_node("Road_instance"+String(index-1)):
 		return get_node("Road_instance"+String(index-1))
@@ -63,6 +65,7 @@ func placeRoad(index):
 			
 		if (index == 0):
 			road_node = setupStraightRoad(index)
+			road_node.updateGlobalVerts()
 			#arrays were for debugging
 			#positions.push_back(road_node.get_translation())
 			#ends.push_back(road_node.get_child(0).get_child(0).relative_end)
@@ -131,3 +134,40 @@ func placeRoad(index):
 		var node = get_node("Road_instance"+String(index))
 		#var end = node.get_child(0).get_child(0).relative_end
 		#print("Location is " + String(node.get_translation()) + " end is " + String(end))
+		
+# nav mesh
+func fitNavMesh(straight, straight_ind, straight_ind2, curve, curve_ind, curve_ind2, left):
+	print("Fitting navmesh " + curve.get_parent().get_parent().get_name() + " "+ str(curve_ind) + ", " + str(curve_ind2) + " to " + straight.get_name() + " " + str(straight_ind) + ", " + str(straight_ind2)) 
+	if (straight != null and straight.global_vertices != null):
+		var target1 = straight.global_vertices[straight_ind]
+		var target2 = straight.global_vertices[straight_ind2]
+		#print("Loaded road: target 1 is " + String(target1) + " target 2 is " + String(target2))
+
+		# move the vertices to fit earlier straight
+		var pos1 = curve.global_to_local_vert(target1)
+#		#print("Local position of target 1 is: " + String(pos1))
+		var pos2 = curve.global_to_local_vert(target2)
+#		#print("Local position of target 2 is: " + String(pos2))
+		curve.move_key_navi_vertices(curve_ind, pos1, curve_ind2, pos2)
+		#print("New vertices from loaded instancer, are : " + String(curved.nav_vertices[curved.nav_vertices.size()-2]) + " " + String(curved.nav_vertices[curved.nav_vertices.size()-1]))
+#		
+		curve.move_key_nav2_vertices(curve_ind, pos2, curve_ind2, pos1)
+
+#		#create navmesh
+		if left:
+			#print("Creating navmesh for left turn")
+			curve.navMesh(curve.nav_vertices, true)
+			#create other lane
+			curve.navMesh(curve.nav_vertices2, false)
+		else:
+			curve.navMesh(curve.nav_vertices, false)
+			#create other lane
+			curve.navMesh(curve.nav_vertices2, true)
+			
+func navMesh():
+	#move the vertices so that the curve fits the straight
+	var straight = get_node("Spatial/Road_instance0")
+	var curved = get_node("Road_instance1").get_child(0).get_child(0)
+	if curved != null:
+		fitNavMesh(straight, 2, 3, curved, curved.nav_vertices.size()-2, curved.nav_vertices.size()-1, true)
+	
