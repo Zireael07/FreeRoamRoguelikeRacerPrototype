@@ -8,6 +8,10 @@ var points_center
 var points_inner
 var points_outer
 
+# nav stuff
+var points_inner_nav
+var points_outer_nav
+
 #sidewalks
 export(bool) var sidewalks = false
 var points_inner_side
@@ -35,6 +39,16 @@ var positions  = Vector3Array()
 var left_positions = Vector3Array()
 var right_positions = Vector3Array()
 var draw
+
+#navmesh
+var nav_vertices
+var nav_vertices2
+var global_vertices
+var global_vertices2
+# margin
+var margin = 1
+var left_nav_positions = Vector3Array()
+var right_nav_positions = Vector3Array()
 
 #for minimap
 var mid_point
@@ -70,10 +84,12 @@ func _ready():
 	points_inner = get_circle_arc(loc, radius-lane_width, get_start_angle(), get_end_angle())
 #	for index in range(nb_points):
 #		draw_debug_point(points_inner[index], Color(0.5, 0.5, 0.5))
+	points_inner_nav = get_circle_arc(loc, radius-lane_width+margin, get_start_angle(), get_end_angle())
 	
 	points_outer = get_circle_arc(loc, radius+lane_width, get_start_angle(), get_end_angle())
 #	for index in range(nb_points):
 #		draw_debug_point(points_outer[index], Color(1, 0.5, 0.5))
+	points_outer_nav = get_circle_arc(loc, radius+lane_width-margin, get_start_angle(), get_end_angle())
 	
 	if sidewalks:
 		points_inner_side = get_circle_arc(loc, radius-(lane_width*1.5), get_start_angle(), get_end_angle())
@@ -270,11 +286,21 @@ func test_road():
 			left_positions.push_back(Vector3(points_outer[index+1].x, road_height, points_outer[index+1].y))
 			right_positions.push_back(Vector3(points_inner[index].x, road_height, points_inner[index].y))
 			right_positions.push_back(Vector3(points_inner[index+1].x, road_height, points_inner[index+1].y))
+			#nav
+			left_nav_positions.push_back(Vector3(points_outer_nav[index].x, road_height, points_outer_nav[index].y))
+			left_nav_positions.push_back(Vector3(points_outer_nav[index+1].x, road_height, points_outer_nav[index+1].y))
+			right_nav_positions.push_back(Vector3(points_inner_nav[index].x, road_height, points_inner_nav[index].y))
+			right_nav_positions.push_back(Vector3(points_inner_nav[index+1].x, road_height, points_inner_nav[index+1].y))
 			
 			#B-A = from a to b
 			start_vector = Vector3(positions[1]-positions[0])
 			end_vector = Vector3(positions[positions.size()-1] - positions[positions.size()-2])
+		
 			
+		#generate navi vertices
+		nav_vertices = get_navi_vertices()
+		nav_vertices2 = get_navi_vertices_alt()		
+						
 		placeStreetlight()
 	#draw an immediate line in editor instead
 	else:
@@ -316,3 +342,98 @@ func placeStreetlight():
 		light.set_rotation_deg(Vector3(0, 0, 0))
 	else:
 		light.set_rotation_deg(Vector3(0, 0, 0))
+		
+# navmesh
+func get_navi_vertices():
+	var nav_vertices = Vector3Array()
+	for index in range (positions.size()): #0 #1
+		nav_vertices.push_back(positions[index]) #0 #2
+		nav_vertices.push_back(right_nav_positions[index]) #1 #3
+		
+	return nav_vertices
+
+func get_navi_vertices_alt():
+	var nav_vertices = Vector3Array()
+	for index in range (positions.size()): #0 #1
+		nav_vertices.push_back(left_nav_positions[index]) #0 #2
+		nav_vertices.push_back(positions[index]) #1 #3
+		
+	return nav_vertices
+
+func make_navi(index, index_two, index_three, index_four):
+	var navi = navQuad(index, index_two, index_three, index_four)
+	return navi
+	
+func navQuad(one, two, three, four):
+	var quad = []
+	
+	quad.push_back(one)
+	quad.push_back(two)
+	quad.push_back(three)
+	quad.push_back(four)
+	
+	return quad
+
+func makeNav(index, nav_mesh):
+	var navi_poly = make_navi(index+1, index, index+2, index+3)
+	nav_mesh.add_polygon(navi_poly)
+
+func navMesh(vertices, left):
+	#print("Making navmesh")
+	var nav_polygones = []
+	
+	var nav_mesh = NavigationMesh.new()
+	
+	
+	if (vertices.size() <= 0):
+		nav_vertices = Vector3Array()
+		nav_vertices.resize(0)
+		
+		#this gives us 124 nav vertices for left lane
+		nav_vertices = get_navi_vertices()
+	else:
+		nav_vertices = vertices
+		
+	nav_mesh.set_vertices(nav_vertices)
+	
+	# skip every 4 verts
+	for i in range(0,124,4):
+		makeNav(i, nav_mesh)
+	
+	# add the actual navmesh and enable it
+	var nav_mesh_inst = NavigationMeshInstance.new()
+	nav_mesh_inst.set_navigation_mesh(nav_mesh)
+	nav_mesh_inst.set_enabled(true)
+	
+	# assign lane
+	if (left):
+		nav_mesh_inst.add_to_group("left_lane")
+		nav_mesh_inst.set_name("nav_mesh_left_lane_turn")
+	else:
+		nav_mesh_inst.add_to_group("right_lane")
+		nav_mesh_inst.set_name("nav_mesh_right_lane_turn")
+	
+	add_child(nav_mesh_inst)
+
+func get_key_navi_vertices():
+	var key_nav_vertices = Vector3Array()
+	key_nav_vertices.push_back(nav_vertices[0])
+	key_nav_vertices.push_back(nav_vertices[1])
+	key_nav_vertices.push_back(nav_vertices[nav_vertices.size()-1])
+	key_nav_vertices.push_back(nav_vertices[nav_vertices.size()-2])
+	
+	return key_nav_vertices
+
+func move_key_navi_vertices(index1, pos1, index2, pos2):
+	nav_vertices.set(index1, pos1)
+	#print("Setting vertex " + String(index1) + " to " + String(pos1))
+	nav_vertices.set(index2, pos2)
+	#print("Setting vertex " + String(index2) + " to " + String(pos2))
+	#print("New vertices " + String(nav_vertices[index1]) + " & " + String(nav_vertices[index2]))
+	
+func move_key_nav2_vertices(index1, pos1, index2, pos2):
+	nav_vertices2.set(index1, pos1)
+	nav_vertices2.set(index2, pos2)
+	
+func global_to_local_vert(pos):
+	return get_global_transform().xform_inv(pos)
