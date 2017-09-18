@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=1]
+[gd_scene load_steps=18 format=1]
 
 [ext_resource path="res://car/vehicle_AI.gd" type="Script" id=1]
 [ext_resource path="res://assets/truenohoudini.msh" type="Mesh" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://hud/test_car_label.tscn" type="PackedScene" id=5]
 [ext_resource path="res://hud/label_3d.gd" type="Script" id=6]
 [ext_resource path="res://assets/LED taillights stock.tex" type="Texture" id=7]
+[ext_resource path="res://car/detect_obstacles_ray.gd" type="Script" id=8]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -540,6 +541,36 @@ geometry/baked_light_tex_id = 0
 mesh/mesh = SubResource( 9 )
 mesh/skeleton = NodePath("..")
 material/0 = null
+
+[node name="RayFront" type="RayCast" parent="BODY"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.44403 )
+enabled = true
+cast_to = Vector3( 0, 0, 5 )
+layer_mask = 1
+type_mask = 15
+script/script = ExtResource( 8 )
+
+[node name="RayRightFront" type="RayCast" parent="BODY"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+transform/local = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, 1.44403 )
+enabled = true
+cast_to = Vector3( 0, 0, 5 )
+layer_mask = 1
+type_mask = 15
+script/script = ExtResource( 8 )
+
+[node name="RayLeftFront" type="RayCast" parent="BODY"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+transform/local = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 1.44403 )
+enabled = true
+cast_to = Vector3( 0, 0, 5 )
+layer_mask = 1
+type_mask = 15
+script/script = ExtResource( 8 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 

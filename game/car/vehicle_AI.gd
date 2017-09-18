@@ -60,8 +60,35 @@ func _fixed_process(delta):
 
 	#stop if we're supposed to
 	if (stop):
-		stopping()	
+		stopping()
 	else:
+		# detect collisions
+		if has_node("RayFront"):
+			if get_node("RayFront").get_collider_hit() != null:
+				if (not reverse and speed > 4):
+					brake = true
+		
+		if has_node("RayRightFront"):
+			if get_node("RayRightFront").get_collider_hit() != null:
+				#print("Detected obstacle " + (get_node("RayRightFront").get_collider().get_parent().get_name()))
+				if has_node("RayLeftFront"):
+					if get_node("RayLeftFront").get_collider_hit() != null:
+						print(get_parent().get_name() + " rays cancelling out")
+					else:
+						left = true
+				
+				if (not reverse and speed > 4):
+					brake = true
+		
+		if has_node("RayLeftFront"):
+			if get_node("RayLeftFront").get_collider_hit() != null:
+				#print("Detected obstacle " + (get_node("RayLeftFront").get_collider().get_parent().get_name()))
+				right = true
+				
+				if (not reverse and speed > 4):
+					brake = true	
+	
+
 		#handle gas/brake
 		if is_enough_dist(rel_loc, compare_pos, speed):
 			if (speed < top_speed):

@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=1]
+[gd_scene load_steps=15 format=1]
 
 [ext_resource path="res://car/vehicle_AI.gd" type="Script" id=1]
 [ext_resource path="res://assets/truenohoudini.msh" type="Mesh" id=2]
 [ext_resource path="res://assets/car_gray.tres" type="Material" id=3]
 [ext_resource path="res://car/follow_camera.gd" type="Script" id=4]
 [ext_resource path="res://assets/LED taillights stock.tex" type="Texture" id=5]
+[ext_resource path="res://car/detect_obstacles_ray.gd" type="Script" id=6]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -171,7 +172,7 @@ motion/steering = 0.0
 body/mass = 40.0
 body/friction = 0.5
 script/script = ExtResource( 1 )
-engine_force = 40
+force = 40
 target_array = Vector3Array( 10, 0, 10, 25, 0, 20, 30, 0, 30 )
 target_angle = 0.2
 top_speed = 15
@@ -183,6 +184,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573678, 0.115169, 0.864664 )
 type/traction = true
 type/steering = true
+wheel/roll_influence = 0.1
 wheel/radius = 0.25
 wheel/rest_length = 0.15
 wheel/friction_slip = 10.5
@@ -221,6 +223,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573678, 0.115169, -0.783403 )
 type/traction = true
 type/steering = false
+wheel/roll_influence = 0.1
 wheel/radius = 0.25
 wheel/rest_length = 0.15
 wheel/friction_slip = 10.5
@@ -259,6 +262,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.115169, 0.864664 )
 type/traction = true
 type/steering = true
+wheel/roll_influence = 0.1
 wheel/radius = 0.25
 wheel/rest_length = 0.15
 wheel/friction_slip = 10.5
@@ -297,6 +301,7 @@ _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.115169, -0.783403 )
 type/traction = true
 type/steering = false
+wheel/roll_influence = 0.1
 wheel/radius = 0.25
 wheel/rest_length = 0.15
 wheel/friction_slip = 10.5
@@ -454,6 +459,36 @@ geometry/baked_light_tex_id = 0
 mesh/mesh = SubResource( 8 )
 mesh/skeleton = NodePath("..")
 material/0 = null
+
+[node name="RayFront" type="RayCast" parent="BODY"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.44403 )
+enabled = true
+cast_to = Vector3( 0, 0, 5 )
+layer_mask = 1
+type_mask = 15
+script/script = ExtResource( 6 )
+
+[node name="RayLeftFront" type="RayCast" parent="BODY"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+transform/local = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 1.44403 )
+enabled = true
+cast_to = Vector3( 0, 0, 5 )
+layer_mask = 1
+type_mask = 15
+script/script = ExtResource( 6 )
+
+[node name="RayRightFront" type="RayCast" parent="BODY"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+transform/local = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, 1.44403 )
+enabled = true
+cast_to = Vector3( 0, 0, 5 )
+layer_mask = 1
+type_mask = 15
+script/script = ExtResource( 6 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
