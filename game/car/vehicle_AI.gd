@@ -1,7 +1,8 @@
 extends "vehicle.gd"
 
 # class member variables go here, for example:
-export (Vector3Array) var target_array = null
+#export (Vector3Array) var target_array = null
+var target_array = Vector3Array()
 var current = 0
 export var target_angle = 0.2
 export var top_speed = 15 #50 kph?
@@ -21,11 +22,50 @@ var stop = false
 
 var compare_pos = Vector3(0,0,0)
 
+# pathing
+var navigation_node
+var path
+
+var elapsed_secs = 0
+var start_secs = 1
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
-	set_fixed_process(true)
 	
+	target_array.resize(0)
+	
+	navigation_node = get_node("/root/root")
+	
+	var source = get_global_transform().origin
+	
+	# need a dummy target for before we get navigation
+	var forw_global = get_global_transform().xform(Vector3(0, 0, 4))
+	var target = forw_global
+	
+	target_array.resize(0)
+	target_array.push_back(target)
+	
+	set_process(true)
+	set_fixed_process(true)
+
+func _process(delta):
+	# delay getting the path until everything is set up
+	elapsed_secs += delta
+	
+	if (elapsed_secs > start_secs):
+		if (path == null):
+#			
+			path = get_parent().find_path()
+			#if path != null:
+			#	print(get_parent().get_name() + " found path: " + String(path))
+#			
+			if (path != null and path.size() > 0):
+#			print("We have a path to follow")
+				for index in range(path.size()):
+					if (index > 0): #because #0 is our own location
+						target_array.push_back(path[index])
+
 func _fixed_process(delta):
 	#input
 	gas = false

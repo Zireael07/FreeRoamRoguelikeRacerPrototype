@@ -1,11 +1,12 @@
-[gd_scene load_steps=15 format=1]
+[gd_scene load_steps=16 format=1]
 
-[ext_resource path="res://car/vehicle_AI.gd" type="Script" id=1]
-[ext_resource path="res://assets/truenohoudini.msh" type="Mesh" id=2]
-[ext_resource path="res://assets/car_gray.tres" type="Material" id=3]
-[ext_resource path="res://car/follow_camera.gd" type="Script" id=4]
-[ext_resource path="res://assets/LED taillights stock.tex" type="Texture" id=5]
-[ext_resource path="res://car/detect_obstacles_ray.gd" type="Script" id=6]
+[ext_resource path="res://car/AI_pathing.gd" type="Script" id=1]
+[ext_resource path="res://car/vehicle_AI.gd" type="Script" id=2]
+[ext_resource path="res://assets/truenohoudini.msh" type="Mesh" id=3]
+[ext_resource path="res://assets/car_gray.tres" type="Material" id=4]
+[ext_resource path="res://car/follow_camera.gd" type="Script" id=5]
+[ext_resource path="res://assets/LED taillights stock.tex" type="Texture" id=6]
+[ext_resource path="res://car/detect_obstacles_ray.gd" type="Script" id=7]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -124,7 +125,7 @@ params/shader_param = 0.5
 params/glow = 0
 params/point_size = 1.0
 uv_xform = Transform( 0.2, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 0, 0 )
-textures/diffuse = ExtResource( 5 )
+textures/diffuse = ExtResource( 6 )
 textures/diffuse_tc = 1
 textures/detail_tc = 0
 textures/specular_tc = 0
@@ -150,9 +151,12 @@ custom_aabb/custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
 
 _import_path = NodePath(".")
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+script/script = ExtResource( 1 )
 __meta__ = {
 "__editor_plugin_screen__": "3D"
 }
+target = Vector3( 0, 0, 0 )
+left = true
 
 [node name="BODY" type="VehicleBody" parent="."]
 
@@ -171,9 +175,8 @@ motion/brake = 0.0
 motion/steering = 0.0
 body/mass = 40.0
 body/friction = 0.5
-script/script = ExtResource( 1 )
+script/script = ExtResource( 2 )
 force = 40
-target_array = Vector3Array( 10, 0, 10, 25, 0, 20, 30, 0, 30 )
 target_angle = 0.2
 top_speed = 15
 
@@ -352,9 +355,9 @@ geometry/depth_scale = false
 geometry/visible_in_all_rooms = false
 geometry/use_baked_light = false
 geometry/baked_light_tex_id = 0
-mesh/mesh = ExtResource( 2 )
+mesh/mesh = ExtResource( 3 )
 mesh/skeleton = NodePath("..")
-material/0 = ExtResource( 3 )
+material/0 = ExtResource( 4 )
 
 [node name="CollisionShape" type="CollisionShape" parent="BODY"]
 
@@ -383,7 +386,7 @@ visible_layers = -1
 environment = null
 h_offset = 0.0
 v_offset = 0.0
-script/script = ExtResource( 4 )
+script/script = ExtResource( 5 )
 min_distance = 1.0
 max_distance = 4.0
 angle_v_adjust = 0.0
@@ -468,7 +471,7 @@ enabled = true
 cast_to = Vector3( 0, 0, 5 )
 layer_mask = 1
 type_mask = 15
-script/script = ExtResource( 6 )
+script/script = ExtResource( 7 )
 
 [node name="RayLeftFront" type="RayCast" parent="BODY"]
 
@@ -478,7 +481,7 @@ enabled = true
 cast_to = Vector3( 0, 0, 5 )
 layer_mask = 1
 type_mask = 15
-script/script = ExtResource( 6 )
+script/script = ExtResource( 7 )
 
 [node name="RayRightFront" type="RayCast" parent="BODY"]
 
@@ -488,7 +491,7 @@ enabled = true
 cast_to = Vector3( 0, 0, 5 )
 layer_mask = 1
 type_mask = 15
-script/script = ExtResource( 6 )
+script/script = ExtResource( 7 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
