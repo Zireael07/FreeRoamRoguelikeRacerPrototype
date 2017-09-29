@@ -259,20 +259,21 @@ motion/steering = 0.0
 body/mass = 40.0
 body/friction = 0.5
 script/script = ExtResource( 1 )
-engine_force = 40
-target_array = Vector3Array( 10, 0, 10, 20, 0, 20, 30, 0, 30 )
+force = 40
 target_angle = 0.2
 top_speed = 15
 
 [node name="wheel1" type="VehicleWheel" parent="BODY"]
 
+editor/display_folded = true
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573678, 0.115169, 1.10416 )
 type/traction = true
 type/steering = true
+wheel/roll_influence = 0.1
 wheel/radius = 0.25
 wheel/rest_length = 0.15
-wheel/friction_slip = 10.5
+wheel/friction_slip = 1.5
 suspension/travel = 2.0
 suspension/stiffness = 40.0
 suspension/max_force = 6000.0
@@ -303,13 +304,15 @@ material/0 = null
 
 [node name="wheel2" type="VehicleWheel" parent="BODY"]
 
+editor/display_folded = true
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573678, 0.115169, -0.783403 )
 type/traction = true
 type/steering = false
+wheel/roll_influence = 0.1
 wheel/radius = 0.25
 wheel/rest_length = 0.15
-wheel/friction_slip = 10.5
+wheel/friction_slip = 1.5
 suspension/travel = 2.0
 suspension/stiffness = 40.0
 suspension/max_force = 6000.0
@@ -340,13 +343,15 @@ material/0 = null
 
 [node name="wheel3" type="VehicleWheel" parent="BODY"]
 
+editor/display_folded = true
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.115169, 1.10416 )
 type/traction = true
 type/steering = true
+wheel/roll_influence = 0.1
 wheel/radius = 0.25
 wheel/rest_length = 0.15
-wheel/friction_slip = 10.5
+wheel/friction_slip = 1.5
 suspension/travel = 2.0
 suspension/stiffness = 40.0
 suspension/max_force = 6000.0
@@ -377,13 +382,15 @@ material/0 = null
 
 [node name="wheel4" type="VehicleWheel" parent="BODY"]
 
+editor/display_folded = true
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.115169, -0.783403 )
 type/traction = true
 type/steering = false
+wheel/roll_influence = 0.1
 wheel/radius = 0.25
 wheel/rest_length = 0.15
-wheel/friction_slip = 10.5
+wheel/friction_slip = 1.5
 suspension/travel = 2.0
 suspension/stiffness = 40.0
 suspension/max_force = 6000.0
