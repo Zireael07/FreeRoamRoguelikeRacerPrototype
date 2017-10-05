@@ -8,7 +8,7 @@ const MAX_SPEED = 55 #m/s = 200 kph
 const STEER_SPEED = 1
 const STEER_LIMIT = 0.4
 
-export var force = 40
+export var force = 1500
 var braking_force_mult = 4
 
 #steering

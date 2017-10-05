@@ -256,10 +256,10 @@ collision/mask = 1
 motion/engine_force = 0.0
 motion/brake = 0.0
 motion/steering = 0.0
-body/mass = 40.0
+body/mass = 1500.0
 body/friction = 0.5
 script/script = ExtResource( 1 )
-force = 40
+force = 1500
 target_angle = 0.2
 top_speed = 15
 
