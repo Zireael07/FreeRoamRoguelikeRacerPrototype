@@ -19,6 +19,7 @@ var right = false
 
 #flag telling us to come to a halt
 var stop = false
+var flag
 
 var compare_pos = Vector3(0,0,0)
 
@@ -67,6 +68,8 @@ func _process(delta):
 						target_array.push_back(path[index])
 
 func _fixed_process(delta):
+	flag = ""
+	
 	#input
 	gas = false
 	brake = false
@@ -105,7 +108,16 @@ func _fixed_process(delta):
 		# detect collisions
 		if has_node("RayFront"):
 			if get_node("RayFront").get_collider_hit() != null:
+				if has_node("RayRightFront") and has_node("RayLeftFront"):
+					if get_node("RayRightFront").get_collider_hit() != null:
+						if get_node("RayLeftFront").get_collider_hit() != null:
+							print(get_parent().get_name() + " all three rays hit")
+							flag = "AVOID"
+							brake = true
+				
+				
 				if (not reverse and speed > 4):
+					flag = "AVOID"
 					brake = true
 		
 		if has_node("RayRightFront"):
@@ -115,53 +127,56 @@ func _fixed_process(delta):
 					if get_node("RayLeftFront").get_collider_hit() != null:
 						print(get_parent().get_name() + " rays cancelling out")
 					else:
+						flag = "AVOID"
 						left = true
 				
 				if (not reverse and speed > 4):
+					flag = "AVOID"
 					brake = true
 		
 		if has_node("RayLeftFront"):
 			if get_node("RayLeftFront").get_collider_hit() != null:
 				#print("Detected obstacle " + (get_node("RayLeftFront").get_collider().get_parent().get_name()))
+				flag = "AVOID"
 				right = true
 				
 				if (not reverse and speed > 4):
 					brake = true	
 	
-
-		#handle gas/brake
-		if is_enough_dist(rel_loc, compare_pos, speed):
-			if (speed < top_speed):
-				gas = true
-		else:
-			if (speed > 1):
-				brake = true
-
-		#if we're close to target, do nothing
-		if (rel_loc.distance_to(compare_pos) < 3):
-			#print("Close to target, don't deviate")
-			#relax steering
-			if (abs(get_steering()) > 0.02):
-				left = false
-				right = false
-			
-		else:
-			#normal stuff
-			if (abs(angle) > target_angle):
-				if (angle > 0):
-					#Make AI cautious with steering
-					if (get_steering() > -limit):
-						left = true
-				else:
-					if (get_steering() < limit):
-						right = true
+		if not flag == "AVOID":
+			#handle gas/brake
+			if is_enough_dist(rel_loc, compare_pos, speed):
+				if (speed < top_speed):
+					gas = true
 			else:
-				#print("The angle is less than target")
+				if (speed > 1):
+					brake = true
+	
+			#if we're close to target, do nothing
+			if (rel_loc.distance_to(compare_pos) < 3):
+				#print("Close to target, don't deviate")
 				#relax steering
-#				relax_steering(0.02)
 				if (abs(get_steering()) > 0.02):
 					left = false
 					right = false
+				
+			else:
+				#normal stuff
+				if (abs(angle) > target_angle):
+					if (angle > 0):
+						#Make AI cautious with steering
+						if (get_steering() > -limit):
+							left = true
+					else:
+						if (get_steering() < limit):
+							right = true
+				else:
+					#print("The angle is less than target")
+					#relax steering
+	#				relax_steering(0.02)
+					if (abs(get_steering()) > 0.02):
+						left = false
+						right = false
 	
 	process_car_physics(delta, gas, brake, left, right)
 	
