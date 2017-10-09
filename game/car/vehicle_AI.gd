@@ -12,6 +12,7 @@ var dot
 
 #steering
 var angle
+var limit
 var gas = false
 var brake = false
 var left = false
@@ -94,7 +95,7 @@ func _fixed_process(delta):
 	#BEHAVIOR
 	
 	#if we're over the limit, relax steering
-	var limit = get_steering_limit()
+	limit = get_steering_limit()
 	if (get_steering() > limit):
 		left = true
 	if (get_steering() < -limit):
@@ -162,22 +163,7 @@ func _fixed_process(delta):
 				
 			else:
 				#normal stuff
-				if (abs(angle) > target_angle):
-					if (angle > 0):
-						#Make AI cautious with steering
-						if (get_steering() > -limit):
-							left = true
-					else:
-						if (get_steering() < limit):
-							right = true
-				else:
-					#print("The angle is less than target")
-					#relax steering
-	#				relax_steering(0.02)
-					if (abs(get_steering()) > 0.02):
-						left = false
-						right = false
-	
+				fixed_angling()
 	
 	# predict wheel angle
 	predicted_steer = predict_steer(delta, left, right)
@@ -243,3 +229,27 @@ func is_enough_dist(rel_loc, compare_pos, speed):
 		#print("Approaching node")
 
 	return enough_dist
+
+func fixed_angling():
+	flag = "ANGLE TO TARGET"
+	
+	if angle > 0 and dot > 0: # disregard points behind us	
+		if angle > predicted_steer:
+			if (get_steering() > -limit):
+				left = true
+			else:
+				left = false
+				right = false
+		else:
+			left = false
+			right = false
+	elif angle < 0 and dot > 0:
+		if angle < -predicted_steer:
+			if (get_steering() < limit):
+				right = true
+			else:
+				left = false
+				right = false
+		else:
+				left = false
+				right = false
