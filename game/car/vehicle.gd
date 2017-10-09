@@ -14,6 +14,8 @@ var braking_force_mult = 4
 #steering
 var steer_angle = 0
 var steer_target = 0
+# this is mostly used by the AI but might be a curiosity for the player
+var predicted_steer = 0
 
 #speed
 var speed
@@ -122,6 +124,28 @@ func _fixed_process(delta):
 func reset_car():
 	var reset_rot = Vector3(0, get_rotation_deg().y, 0)
 	set_rotation_deg(reset_rot)
+
+# basically copy-pasta from the car physics function, to predict steer the NEXT physics tick
+func predict_steer(delta, left, right):
+	if (left):
+		steer_target = -STEER_LIMIT
+	elif (right):
+		steer_target = STEER_LIMIT
+	else: #if (not left and not right):
+		steer_target = 0
+	
+	
+	if (steer_target < steer_angle):
+		steer_angle -= STEER_SPEED*delta
+		if (steer_target > steer_angle):
+			steer_angle = steer_target
+	elif (steer_target > steer_angle):
+		steer_angle += STEER_SPEED*delta
+		if (steer_target < steer_angle):
+			steer_angle = steer_target
+			
+	return steer_angle
+
 
 func _ready():
 	#get lights

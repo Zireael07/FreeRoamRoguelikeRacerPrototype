@@ -178,6 +178,10 @@ func _fixed_process(delta):
 						left = false
 						right = false
 	
+	
+	# predict wheel angle
+	predicted_steer = predict_steer(delta, left, right)
+	
 	process_car_physics(delta, gas, brake, left, right)
 	
 	#if we passed the point, don't backtrack
