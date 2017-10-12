@@ -138,19 +138,27 @@ func placeRoad(index):
 # nav mesh
 func fitNavMesh(straight, straight_ind, straight_ind2, curve, curve_ind, curve_ind2, left):
 	print("Fitting navmesh " + curve.get_parent().get_parent().get_name() + " "+ str(curve_ind) + ", " + str(curve_ind2) + " to " + straight.get_name() + " " + str(straight_ind) + ", " + str(straight_ind2)) 
-	if (straight != null and straight.global_vertices != null):
+	if (straight != null and straight.global_vertices != null and straight.global_vertices_alt != null):
 		var target1 = straight.global_vertices[straight_ind]
 		var target2 = straight.global_vertices[straight_ind2]
 		#print("Loaded road: target 1 is " + String(target1) + " target 2 is " + String(target2))
-
+		var target3 = straight.global_vertices_alt[straight_ind]
+		var target4 = straight.global_vertices_alt[straight_ind2]
+		
 		# move the vertices to fit earlier straight
 		var pos1 = curve.global_to_local_vert(target1)
 #		#print("Local position of target 1 is: " + String(pos1))
 		var pos2 = curve.global_to_local_vert(target2)
 #		#print("Local position of target 2 is: " + String(pos2))
-		curve.move_key_navi_vertices(curve_ind, pos1, curve_ind2, pos2)
+		
+		var pos3 = curve.global_to_local_vert(target3)
+		var pos4 = curve.global_to_local_vert(target4)
+		
+		# right lane on turn right
+		curve.move_key_navi_vertices(curve_ind, pos3, curve_ind2, pos4)
 		#print("New vertices from loaded instancer, are : " + String(curved.nav_vertices[curved.nav_vertices.size()-2]) + " " + String(curved.nav_vertices[curved.nav_vertices.size()-1]))
 #		
+		# this is left lane on turn right!!!
 		curve.move_key_nav2_vertices(curve_ind, pos2, curve_ind2, pos1)
 
 #		#create navmesh

@@ -267,6 +267,21 @@ func updateGlobalVerts():
 		# from parent's local to global again
 		var res = get_parent().get_global_transform().xform(par_loc)
 		global_vertices.push_back(res) 
+		
+	# do the same for nav_vertices_alt
+	global_vertices_alt = Vector3Array()
+	for index in range (nav_vertices_alt.size()):
+		#print("Writing alt vert to global")
+		# from local to global space
+		var gl = get_global_transform().xform(nav_vertices_alt[index])
+		#print("Gl : " + str(gl))
+		# from global to local relative to our parent (which is what is rotated/moved)
+		var par_loc = get_parent().get_global_transform().xform_inv(gl)
+		#print("Relative to parent " + str(par_loc))
+		# from parent's local to global again
+		var res = get_parent().get_global_transform().xform(par_loc)
+		#print("Global again " + str(res))
+		global_vertices_alt.push_back(res)
 
 
 func move_key_navi_vertices(index1, pos1, index2, pos2):
