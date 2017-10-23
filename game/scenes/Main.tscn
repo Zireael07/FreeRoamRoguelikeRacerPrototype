@@ -174,5 +174,6 @@ script/script = ExtResource( 9 )
 [node name="marker" parent="." instance=ExtResource( 10 )]
 
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5603, 0.1, 25.5822 )
+target = Vector3( 25, 0.1, 90 )
 
 
