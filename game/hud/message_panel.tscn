@@ -73,6 +73,26 @@ shortcut = null
 text = "Close"
 flat = false
 
+[node name="OK_button" type="Button" parent="."]
+
+visibility/visible = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 503.0
+margin/top = 113.0
+margin/right = 589.0
+margin/bottom = 133.0
+disabled = true
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "OK"
+flat = false
+
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+
+[connection signal="pressed" from="OK_button" to="." method="_on_OK_button_pressed"]
 
 
