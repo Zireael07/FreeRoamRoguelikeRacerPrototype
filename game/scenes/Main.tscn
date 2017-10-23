@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=1]
+[gd_scene load_steps=12 format=1]
 
 [ext_resource path="res://objects/roads.tscn" type="PackedScene" id=1]
 [ext_resource path="res://objects/skyscraper.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://roads/road_segment_straight.tscn" type="PackedScene" id=7]
 [ext_resource path="res://roads/segment_instancer_straight.tscn" type="PackedScene" id=8]
 [ext_resource path="res://roads/segments_stored.gd" type="Script" id=9]
+[ext_resource path="res://objects/marker.tscn" type="PackedScene" id=10]
 
 [sub_resource type="Environment" id=1]
 
@@ -144,6 +145,7 @@ environment = SubResource( 1 )
 
 [node name="Spatial" type="Spatial" parent="."]
 
+editor/display_folded = true
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
 [node name="Position3D" parent="Spatial" instance=ExtResource( 6 )]
@@ -168,5 +170,9 @@ transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.0147, 0, 25.1989 )
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -50.7348, 0, 0.125347 )
 script/script = ExtResource( 9 )
+
+[node name="marker" parent="." instance=ExtResource( 10 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5603, 0.1, 25.5822 )
 
 
