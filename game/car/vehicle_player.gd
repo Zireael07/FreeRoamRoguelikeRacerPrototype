@@ -24,6 +24,7 @@ func _ready():
 	
 	var msg = preload("res://hud/message_panel.tscn")
 	panel = msg.instance()
+	panel.set_name("Messages")
 	#panel.set_text("Welcome to 大都市")
 	add_child(panel)
 	panel.set_text("Welcome to 大都市")

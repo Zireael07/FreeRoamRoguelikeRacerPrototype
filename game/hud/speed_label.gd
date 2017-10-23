@@ -6,6 +6,7 @@ var label = null
 var debug_label = null
 var fps_label = null
 var dist_label = null
+var label_timer = null
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -14,6 +15,7 @@ func _ready():
 	debug_label = get_node("Label 2")
 	fps_label = get_node("Label FPS")
 	dist_label = get_node("Label dist")
+	label_timer = get_node("Label timer")
 
 func update_speed(text):
 	label.set_text(text)
@@ -26,3 +28,6 @@ func update_fps():
 
 func update_distance(text):
 	dist_label.set_text(text)
+	
+func update_timer(text):
+	label_timer.set_text("Timer: " + text)
