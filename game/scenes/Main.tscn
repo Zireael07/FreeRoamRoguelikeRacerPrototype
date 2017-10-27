@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=1]
+[gd_scene load_steps=13 format=1]
 
 [ext_resource path="res://objects/roads.tscn" type="PackedScene" id=1]
 [ext_resource path="res://objects/skyscraper.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://roads/segment_instancer_straight.tscn" type="PackedScene" id=8]
 [ext_resource path="res://roads/segments_stored.gd" type="Script" id=9]
 [ext_resource path="res://objects/marker.tscn" type="PackedScene" id=10]
+[ext_resource path="res://objects/race_marker.tscn" type="PackedScene" id=11]
 
 [sub_resource type="Environment" id=1]
 
@@ -175,5 +176,10 @@ script/script = ExtResource( 9 )
 
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5603, 0.1, 25.5822 )
 target = Vector3( 25, 0.1, 90 )
+
+[node name="marker 2" parent="." instance=ExtResource( 11 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -52.0014, 0.25, 2.00525 )
+target = Vector3( -52, 0.1, 90 )
 
 
