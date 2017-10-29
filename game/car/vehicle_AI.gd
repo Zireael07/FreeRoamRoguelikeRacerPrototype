@@ -4,6 +4,7 @@ extends "vehicle.gd"
 #export (Vector3Array) var target_array = null
 var target_array = Vector3Array()
 var current = 0
+var prev = 0
 export var target_angle = 0.2
 export var top_speed = 15 #50 kph?
 
@@ -174,6 +175,7 @@ func _fixed_process(delta):
 	if (dot < 0 and not stop):
 		##do we have a next point?
 		if (target_array.size() > current+1):
+			prev = current
 			current = current + 1
 		else:
 			#print("We're at the end")
@@ -185,6 +187,7 @@ func _fixed_process(delta):
 		
 		##do we have a next point?
 		if (target_array.size() > current+1):
+			prev = current
 			current = current + 1
 		else:
 			#print("We're at the end")

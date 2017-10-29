@@ -11,6 +11,8 @@ const STEER_LIMIT = 0.4
 export var force = 1500
 var braking_force_mult = 4
 
+var offset
+
 #steering
 var steer_angle = 0
 var steer_target = 0
@@ -146,6 +148,42 @@ func predict_steer(delta, left, right):
 			
 	return steer_angle
 
+
+# this works in 2d (disregards the height)
+func offset_dist(start, end, point):
+	#print("Cross dist: " + str(start) + " " + str(end) + " " + str(point))
+	# 2d
+	#x1, y1 = start.x, start.y
+	#x2, y2 = end.x, end.y
+	#x3, y3 = point.x, point.y
+
+	var px = end.x-start.x
+	var py = end.z-start.z
+
+	var something = px*px + py*py
+
+	var u =  ((point.x - start.x) * px + (point.z - start.z) * py) / float(something)
+
+	if u > 1:
+		u = 1
+	elif u < 0:
+		u = 0
+
+	var x = start.x + u * px
+	var y = start.z + u * py
+
+	var dx = x - point.x
+	var dy = y - point.z
+
+    # Note: If the actual distance does not matter,
+    # if you only want to compare what this function
+    # returns to other results of this function, you
+    # can just return the squared distance instead
+    # (i.e. remove the sqrt) to gain a little performance
+
+	var dist = sqrt(dx*dx + dy*dy)
+
+	return [dist, Vector3(x, start.y, y)]
 
 func _ready():
 	#get lights
