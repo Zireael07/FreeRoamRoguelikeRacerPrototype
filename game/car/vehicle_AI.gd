@@ -146,25 +146,45 @@ func _fixed_process(delta):
 					brake = true	
 	
 		if not flag == "AVOID":
-			#handle gas/brake
-			if is_enough_dist(rel_loc, compare_pos, speed):
-				if (speed < top_speed):
-					gas = true
-			else:
-				if (speed > 1):
-					brake = true
-	
-			#if we're close to target, do nothing
-			if (rel_loc.distance_to(compare_pos) < 3):
-				#print("Close to target, don't deviate")
-				#relax steering
-				if (abs(get_steering()) > 0.02):
-					left = false
-					right = false
+			# go back on track if too far away from the drive line
+			offset = offset_dist(get_target(prev), get_target(current), pos)
+			if offset[0] > 3:
+			#print("Trying to go back because too far off the path")
+				flag = "GOING BACK"
 				
-			else:
-				#normal stuff
-				fixed_angling()
+				#rel_loc = get_global_transform().xform_inv(offset[1])
+				#angle = atan2(rel_loc.x, rel_loc.z)
+				var rel_target = get_global_transform().xform_inv(offset[1])
+				var rel_angle = atan2(rel_target.x, rel_target.z)
+				#print("Angle to new target: " + str(rel_angle))
+				#print("Offset loc: 	" + str(rel_loc.x) + " " + str(rel_loc.z))
+				if (not reverse and speed > 10):
+					brake = true
+				else:
+					gas = true
+				
+				simple_steering(rel_angle)
+			
+			if not flag == "GOING BACK":
+				#handle gas/brake
+				if is_enough_dist(rel_loc, compare_pos, speed):
+					if (speed < top_speed):
+						gas = true
+				else:
+					if (speed > 1):
+						brake = true
+		
+				#if we're close to target, do nothing
+				if (rel_loc.distance_to(compare_pos) < 3):
+					#print("Close to target, don't deviate")
+					#relax steering
+					if (abs(get_steering()) > 0.02):
+						left = false
+						right = false
+					
+				else:
+					#normal stuff
+					fixed_angling()
 	
 	# predict wheel angle
 	predicted_steer = predict_steer(delta, left, right)
@@ -248,6 +268,29 @@ func fixed_angling():
 			right = false
 	elif angle < 0 and dot > 0:
 		if angle < -predicted_steer:
+			if (get_steering() < limit):
+				right = true
+			else:
+				left = false
+				right = false
+		else:
+				left = false
+				right = false
+
+# almost a copy of standard steer behavior (but we don't disregard points behind us)				
+func simple_steering(rel_angle):
+	if rel_angle > 0:
+		if rel_angle > predicted_steer:
+			if (get_steering() > -limit):
+				left = true
+			else:
+				left = false
+				right = false
+		else:
+			left = false
+			right = false
+	elif rel_angle < 0:
+		if rel_angle < -predicted_steer:
 			if (get_steering() < limit):
 				right = true
 			else:
