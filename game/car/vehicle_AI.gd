@@ -108,44 +108,67 @@ func _fixed_process(delta):
 		stopping()
 	else:
 		# detect collisions
-		if has_node("RayFront"):
-			if get_node("RayFront").get_collider_hit() != null:
-				if has_node("RayRightFront") and has_node("RayLeftFront"):
-					if get_node("RayRightFront").get_collider_hit() != null:
-						if get_node("RayLeftFront").get_collider_hit() != null:
-							print(get_parent().get_name() + " all three rays hit")
-							flag = "AVOID"
-							brake = true
-				
-				
-				if (not reverse and speed > 4):
-					flag = "AVOID"
+		if has_node("RayFront") and get_node("RayFront").get_collider_hit() != null:
+			# if all rays hit
+			if has_node("RayRightFront") and has_node("RayLeftFront") \
+			and get_node("RayRightFront").get_collider_hit() != null and get_node("RayLeftFront").get_collider_hit() != null:
+				#print(get_parent().get_name() + " all three rays hit")
+				flag = "AVOID - REVERSE"
+				brake = true
+				# pick direction to go to
+				if get_parent().left:
+					left = true
+				else:
+					right = true
+
+			else:
+			
+				# if one of the other rays collides
+				if has_node("RayRightFront") and get_node("RayRightFront").get_collider_hit() != null:
+					right = true
+					flag = "AVOID - REVERSE"
 					brake = true
-		
-		if has_node("RayRightFront"):
-			if get_node("RayRightFront").get_collider_hit() != null:
-				#print("Detected obstacle " + (get_node("RayRightFront").get_collider().get_parent().get_name()))
-				if has_node("RayLeftFront"):
-					if get_node("RayLeftFront").get_collider_hit() != null:
-						print(get_parent().get_name() + " rays cancelling out")
+				elif has_node("RayLeftFront") and get_node("RayLeftFront").get_collider_hit() != null:
+					left = true
+					flag = "AVOID - REVERSE"
+					brake = true
+				else:
+					if (not reverse and speed > 10):
+						flag = "AVOID - BRAKE"
+						brake = true
 					else:
 						flag = "AVOID"
+						gas = true
+		
+		elif has_node("RayRightFront") and get_node("RayRightFront").is_colliding() and (get_node("RayRightFront").get_collider() != null):
+				#print("Detected obstacle " + (get_node("RayRightFront").get_collider().get_parent().get_name()))
+				if has_node("RayLeftFront"):
+					if not (get_node("RayLeftFront").is_colliding() and (get_node("RayLeftFront").get_collider() != null)):
+						#print(get_parent().get_name() + " rays cancelling out")
+					#else:
+						flag = "AVOID - LEFT TURN"
 						left = true
 				
-				if (not reverse and speed > 4):
-					flag = "AVOID"
+				if (not reverse and speed > 10):	
+					#flag = "AVOID"
 					brake = true
-		
-		if has_node("RayLeftFront"):
-			if get_node("RayLeftFront").get_collider_hit() != null:
-				#print("Detected obstacle " + (get_node("RayLeftFront").get_collider().get_parent().get_name()))
-				flag = "AVOID"
+				else:
+					gas = true
+				
+		elif has_node("RayLeftFront"):
+			if get_node("RayLeftFront").is_colliding() and (get_node("RayLeftFront").get_collider() != null):
+				#print(get_parent().get_name() + " detected left obstacle " + (get_node("RayLeftFront").get_collider().get_parent().get_name()))
+				flag = "AVOID - RIGHT TURN"
 				right = true
 				
-				if (not reverse and speed > 4):
-					brake = true	
-	
-		if not flag == "AVOID":
+				if (not reverse and speed > 10):
+					#flag = "AVOID"
+					brake = true
+				else:
+					gas = true
+					
+		
+		if not (flag.find("AVOID") != -1):
 			# go back on track if too far away from the drive line
 			offset = offset_dist(get_target(prev), get_target(current), pos)
 			if offset[0] > 3:
