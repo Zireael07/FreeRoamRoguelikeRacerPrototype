@@ -69,6 +69,8 @@ var streetlight
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
+	#add_to_group("roads")
+	
 	draw = get_node("draw")
 	#draw_debug_point(loc, Color(1,1,1))
 	streetlight = preload("res://objects/streetlight.scn")
@@ -250,9 +252,13 @@ func make_strip_single(index_one, index_two, parent):
 #		print("No sides given")
 
 func get_global_positions():
-	global_positions.push_back(get_global_transform().xform(positions[0]))
+	global_positions.push_back(get_global_transform().xform(start_point))
 	global_positions.push_back(get_global_transform().xform(mid_point))
-	global_positions.push_back(get_global_transform().xform(positions[31]))
+	global_positions.push_back(get_global_transform().xform(last))
+	
+	#global_positions.push_back(get_global_transform().xform(positions[0]))
+	#global_positions.push_back(get_global_transform().xform(mid_point))
+	#global_positions.push_back(get_global_transform().xform(positions[31]))
 		
 	return global_positions
 
@@ -437,3 +443,8 @@ func move_key_nav2_vertices(index1, pos1, index2, pos2):
 	
 func global_to_local_vert(pos):
 	return get_global_transform().xform_inv(pos)
+	
+func send_positions(map):
+	print(get_name() + " sending position to map")
+	global_positions = get_global_positions()
+	map.add_positions(global_positions)

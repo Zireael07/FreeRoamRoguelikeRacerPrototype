@@ -50,6 +50,8 @@ var numBuildings = 10
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
+	#add_to_group("roads")
+	
 	draw = get_node("draw")
 	
 	#props
@@ -130,6 +132,7 @@ func initSection(start):
 	temp_positions.push_back(Vector3(start.x+roadwidth-margin, roadheight, start.z+sectionlength))
 
 func get_global_positions():
+	global_positions = []
 	global_positions.push_back(get_global_transform().xform(positions[0]))
 	global_positions.push_back(get_global_transform().xform(mid_point))
 	global_positions.push_back(get_global_transform().xform(positions[positions.size()-2]))
@@ -293,3 +296,10 @@ func move_key_navi_vertices(index1, pos1, index2, pos2):
 
 func global_to_local_vert(pos):
 	return get_global_transform().xform_inv(pos)
+	
+func send_positions(map):
+	if positions.size() < 1:
+		return
+	print(get_name() + " sending position to map")
+	global_positions = get_global_positions()
+	map.add_positions(global_positions)
