@@ -5,13 +5,19 @@ var AIs = StringArray()
 var player_pos = Vector2(110, 110)
 var minimap_bg
 
+# for storing positions
+var temp_positions = Array()
+var positions = Array()
 
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
+	positions.resize(0)
 	
 	var arrow = preload("res://hud/minimap_arrow_big_64 - bordered grayscale.png")
 	var player_arrow = preload("res://hud/minimap_arrow_big_64 - cyan.png")
+	
+	getPositions()
 	
 	##we're child of player, AI are siblings of player
 	var AI = get_parent().get_parent().get_parent().get_node("AI")
@@ -46,6 +52,31 @@ func _ready():
 	
 	set_process(true)
 	pass
+
+# get the positions we need for actual mapgen
+func add_positions(pos):
+	#print("Adding positions")
+	var temp = []
+	
+	# simple (add just the positions)
+	#for i in range(pos.size():
+	#	add(pos[i])
+	
+	# store positions per road
+	for i in range (pos.size()):
+		#if add(pos[i]):
+		temp.push_back(pos[i])
+	
+	positions.append(temp)
+
+func getPositions():
+	#get_tree().call_group(0, "roads", "send_positions", self)
+	var roads = get_tree().get_nodes_in_group("roads")
+	for r in roads:
+		r.send_positions(self)
+		
+	print("Should have positions")
+
 
 func _process(delta):
 	for index in range(AIs.size()):
