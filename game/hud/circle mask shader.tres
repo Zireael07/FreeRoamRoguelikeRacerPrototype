@@ -9,7 +9,7 @@ uniform float Y;
 //uniform 
 vec2 center = vec2(0.5, 0.5); //the center of your circle in screen coords
 //uniform 
-float radius = 0.25; //the radius of your circle in pixels
+float radius = 0.1; //the radius of your circle in pixels
 
 //panning
 vec2 uv = vec2(UV.x + X, UV.y + Y);
