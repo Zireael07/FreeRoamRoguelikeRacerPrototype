@@ -11,9 +11,19 @@ var last_pos
 var distance = 0
 var distance_int = 0
 
+# setup stuff
+var elapsed_secs = 0
+var start_secs = 2
+var emitted = false
+
+signal load_ended
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
+	# our custom signal
+	connect("load_ended", self, "on_load_ended")
+	
 	##GUI
 	var h = preload("res://hud/hud.tscn")
 	hud = h.instance()
@@ -34,7 +44,17 @@ func _ready():
 	set_fixed_process(true)
 	set_process_input(true)
 
+func on_load_ended():
+	print("Loaded all pertinent stuff")
+
 func _fixed_process(delta):
+	# emit a signal when we're all set up
+	elapsed_secs += delta
+	if (elapsed_secs > start_secs and not emitted):
+		emit_signal("load_ended")
+		emitted = true
+	
+	
 	#input
 	var gas = false
 	var brake = false
