@@ -4,13 +4,13 @@
 [ext_resource path="res://objects/skyscraper.tscn" type="PackedScene" id=2]
 [ext_resource path="res://car/car_AI_racer.tscn" type="PackedScene" id=3]
 [ext_resource path="res://car/car_AI_traffic.tscn" type="PackedScene" id=4]
-[ext_resource path="res://car/car_base.tscn" type="PackedScene" id=5]
-[ext_resource path="res://roads/segment_instancer.tscn" type="PackedScene" id=6]
-[ext_resource path="res://roads/road_segment_straight.tscn" type="PackedScene" id=7]
-[ext_resource path="res://roads/segment_instancer_straight.tscn" type="PackedScene" id=8]
-[ext_resource path="res://roads/segments_stored.gd" type="Script" id=9]
-[ext_resource path="res://objects/marker.tscn" type="PackedScene" id=10]
-[ext_resource path="res://objects/race_marker.tscn" type="PackedScene" id=11]
+[ext_resource path="res://roads/segment_instancer.tscn" type="PackedScene" id=5]
+[ext_resource path="res://roads/road_segment_straight.tscn" type="PackedScene" id=6]
+[ext_resource path="res://roads/segment_instancer_straight.tscn" type="PackedScene" id=7]
+[ext_resource path="res://roads/segments_stored.gd" type="Script" id=8]
+[ext_resource path="res://objects/marker.tscn" type="PackedScene" id=9]
+[ext_resource path="res://objects/race_marker.tscn" type="PackedScene" id=10]
+[ext_resource path="res://car/car_base.tscn" type="PackedScene" id=11]
 
 [sub_resource type="Environment" id=1]
 
@@ -135,10 +135,6 @@ target = Vector3( 0, 0, 30 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5723, 0, 2.27175 )
 target = Vector3( 0, 0, 10 )
 
-[node name="car" parent="." instance=ExtResource( 5 )]
-
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.2608, 0, 0 )
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
@@ -149,20 +145,20 @@ environment = SubResource( 1 )
 editor/display_folded = true
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
-[node name="Position3D" parent="Spatial" instance=ExtResource( 6 )]
+[node name="Position3D" parent="Spatial" instance=ExtResource( 5 )]
 
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.5935, 0, 6.94175 )
 numSegments = 9
 
-[node name="Position3D 2" parent="Spatial" instance=ExtResource( 7 )]
+[node name="Position3D 2" parent="Spatial" instance=ExtResource( 6 )]
 
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.87472, 0, -129.09 )
 
-[node name="Position3D1" parent="Spatial" instance=ExtResource( 6 )]
+[node name="Position3D1" parent="Spatial" instance=ExtResource( 5 )]
 
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 58.719, 0, 25.5731 )
 
-[node name="Position3D 3" parent="Spatial" instance=ExtResource( 8 )]
+[node name="Position3D 3" parent="Spatial" instance=ExtResource( 7 )]
 
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.0147, 0, 25.1989 )
 
@@ -170,16 +166,20 @@ transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.0147, 0, 25.1989 )
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -50.7348, 0, 0.125347 )
-script/script = ExtResource( 9 )
+script/script = ExtResource( 8 )
 
-[node name="marker" parent="." instance=ExtResource( 10 )]
+[node name="marker" parent="." instance=ExtResource( 9 )]
 
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5603, 0.1, 25.5822 )
 target = Vector3( 25, 0.1, 90 )
 
-[node name="marker 2" parent="." instance=ExtResource( 11 )]
+[node name="marker 2" parent="." instance=ExtResource( 10 )]
 
 transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -52.0014, 0.25, 2.00525 )
 target = Vector3( -52, 0.1, 90 )
+
+[node name="car" parent="." instance=ExtResource( 11 )]
+
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.2608, 0, 0 )
 
 
