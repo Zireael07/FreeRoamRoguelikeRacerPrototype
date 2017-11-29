@@ -64,9 +64,8 @@ lane_width = 3.0
 radius = 25
 loc = Vector2( 0, 0 )
 left_turn = false
-angle = 120
-start_angle = null
-end_angle = 150
+start_angle = 90
+end_angle = 180
 material = ExtResource( 3 )
 sidewalk_material = ExtResource( 4 )
 

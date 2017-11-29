@@ -24,9 +24,9 @@ export var lane_width = 2.5
 export var radius = 15
 export(Vector2) var loc = Vector2(0,0)
 export(bool) var left_turn = false
-export var angle = 120
-export(int) var start_angle = null
-export(int) var end_angle = null
+#export var angle = 120
+export(int) var start_angle = 90
+export(int) var end_angle = 180
 #for matching the segments
 var start_point
 var last
@@ -75,7 +75,7 @@ func _ready():
 	#draw_debug_point(loc, Color(1,1,1))
 	streetlight = preload("res://objects/streetlight.scn")
 	
-	points_center = get_circle_arc(loc, radius, get_start_angle(), get_end_angle())
+	points_center = get_circle_arc(loc, radius, start_angle, end_angle, not left_turn)
 	#how many points do we need debugged?
 	var nb_points = 32
 	
@@ -83,47 +83,47 @@ func _ready():
 		#draw_debug_point(points_center[index], Color(0, 0, 0))
 		
 	
-	points_inner = get_circle_arc(loc, radius-lane_width, get_start_angle(), get_end_angle())
+	points_inner = get_circle_arc(loc, radius-lane_width, start_angle, end_angle, not left_turn)
 #	for index in range(nb_points):
 #		draw_debug_point(points_inner[index], Color(0.5, 0.5, 0.5))
-	points_inner_nav = get_circle_arc(loc, radius-lane_width+margin, get_start_angle(), get_end_angle())
+	points_inner_nav = get_circle_arc(loc, radius-lane_width+margin, start_angle, end_angle, not left_turn)
 	
-	points_outer = get_circle_arc(loc, radius+lane_width, get_start_angle(), get_end_angle())
+	points_outer = get_circle_arc(loc, radius+lane_width, start_angle, end_angle, not left_turn)
 #	for index in range(nb_points):
 #		draw_debug_point(points_outer[index], Color(1, 0.5, 0.5))
-	points_outer_nav = get_circle_arc(loc, radius+lane_width-margin, get_start_angle(), get_end_angle())
+	points_outer_nav = get_circle_arc(loc, radius+lane_width-margin, start_angle, end_angle, not left_turn)
 	
 	if sidewalks:
-		points_inner_side = get_circle_arc(loc, radius-(lane_width*1.5), get_start_angle(), get_end_angle())
-		points_outer_side = get_circle_arc(loc, radius+(lane_width*1.5), get_start_angle(), get_end_angle())
+		points_inner_side = get_circle_arc(loc, radius-(lane_width*1.5), start_angle, end_angle, not left_turn)
+		points_outer_side = get_circle_arc(loc, radius+(lane_width*1.5), start_angle, end_angle, not left_turn)
 	
 	fix_stuff()
 	test_road()
 	
 	pass
 
-func get_start_angle():
-	var ret = 90-angle/2
-	if (start_angle != null) and (start_angle > 0):
-		return start_angle
-	elif (end_angle != null) and (end_angle > 0):
-		return end_angle - angle
-	elif (angle > 0):
-		return ret
-	
-func get_end_angle():
-	var ret = 90+angle/2
-	
-	if (start_angle != null) and (start_angle > 0):
-		##allow specifying both start and end angles
-		if (end_angle != null) and (end_angle > 0):
-			return end_angle
-		else:
-			return start_angle + angle
-	elif (end_angle != null) and (end_angle > 0):
-		return end_angle
-	elif (angle > 0):
-		return ret
+#func get_start_angle():
+#	var ret = 90-angle/2
+#	if (start_angle != null) and (start_angle > 0):
+#		return start_angle
+#	elif (end_angle != null) and (end_angle > 0):
+#		return end_angle - angle
+#	elif (angle > 0):
+#		return ret
+#	
+#func get_end_angle():
+#	var ret = 90+angle/2
+#	
+#	if (start_angle != null) and (start_angle > 0):
+#		##allow specifying both start and end angles
+#		if (end_angle != null) and (end_angle > 0):
+#			return end_angle
+#		else:
+#			return start_angle + angle
+#	elif (end_angle != null) and (end_angle > 0):
+#		return end_angle
+#	elif (angle > 0):
+#		return ret
 
 
 
@@ -137,8 +137,8 @@ func fix_stuff():
 	debug()
 	
 	#fix rotations
-	if (!left_turn):
-		set_rotation(Vector3(0,0,0))
+	#if (!left_turn):
+	set_rotation(Vector3(0,0,0))
 
 	#fix issue
 	if (get_parent().get_name() == "Placer"):
@@ -153,20 +153,24 @@ func debug():
 	last = Vector3(points_center[31].x, road_height, points_center[31].y)
 	print("Position of last point is " + String(last))
 	
-	var loc3d = Vector3(loc.x, 0, loc.y)
-	if (left_turn):
+	#var loc3d = Vector3(loc.x, 0, loc.y)
+	#if (left_turn):
 		#transform so that we're at our start point
 		#var trans = Vector3(-start_point.x, 0, -start_point.z)
 		#set_translation(trans+loc3d)
 	#else:
-		set_rotation_deg(Vector3(0, -180, 0))
+	#	set_rotation_deg(Vector3(0, -180, 0))
 		#var trans = Vector3(start_point.x, 0, start_point.z)
 		#set_translation(trans+loc3d)
 	
+	global_end = get_global_transform().xform_inv(last)
+	global_start = get_global_transform().xform_inv(start_point)
+	
 	#global_end = get_global_transform().xform_inv(last)
 	#global_start = get_global_transform().xform_inv(start_point)
+	#relative_end = start_point-last 
 	
-	relative_end = start_point-last #global_start - global
+	relative_end = global_start - global_end
 	print("Last relative to start is " + String(relative_end))
 	
 	var mid_loc = points_center[(round(32/2))]
@@ -197,10 +201,17 @@ func make_strip_single(index_one, index_two, parent):
 	var right_side = null
 	var left_side = null
 	var center_line = null
+
+	# necessary to draw left turn since the arc turns the other way	
+	if left_turn:
+		center_line = points_center
+		left_side = points_inner
+		right_side = points_outer
+	else:
+		center_line = points_center #curve_one
+		left_side = points_outer #curve_three
+		right_side = points_inner #curve_two
 	
-	center_line = points_center
-	left_side = points_outer
-	right_side = points_inner
 	
 
 	if (left_side != null):

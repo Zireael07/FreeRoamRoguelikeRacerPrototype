@@ -21,14 +21,16 @@ func place_road():
 		if (road != null):
 			#print("We have a road")
 			
-			var end = road.last
-			print("End is " + String(end))
+			#var end = road.last
+			#print("End is " + String(end))
+			#var locate = Vector3(end.x, 0, end.z)
+			var begin = road.start_point
+
+			# rotate to point in the correct z direction
+			var locate = Vector3(begin.x, 0, begin.z)
+			road.set_rotation_deg(Vector3(0, 180, 0))
 			
-			var locate = Vector3(end.x, 0, end.z)
 			
-#			var trans = road.get_translation()
-#			#place ourselves at 0,0 temporarily
-#			road.translate(-trans)
-#			road.translate(locate)
+
 
 			road.set_translation(locate)
