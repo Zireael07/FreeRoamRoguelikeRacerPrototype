@@ -142,13 +142,12 @@ environment = SubResource( 1 )
 
 [node name="Spatial" type="Spatial" parent="."]
 
-editor/display_folded = true
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
 [node name="Position3D" parent="Spatial" instance=ExtResource( 5 )]
 
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.5935, 0, 6.94175 )
-numSegments = 9
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -83.2746, 0, 6.94175 )
+numSegments = 3
 
 [node name="Position3D 2" parent="Spatial" instance=ExtResource( 6 )]
 
@@ -156,7 +155,8 @@ transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.87472, 0, -129.09 )
 
 [node name="Position3D1" parent="Spatial" instance=ExtResource( 5 )]
 
-transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 58.719, 0, 25.5731 )
+transform/local = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.45915, 0, 7.84292 )
+numSegments = 3
 
 [node name="Position3D 3" parent="Spatial" instance=ExtResource( 7 )]
 
