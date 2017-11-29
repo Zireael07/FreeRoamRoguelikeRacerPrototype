@@ -141,25 +141,31 @@ func makeRoads():
 						#print("Current type is straight")
 						segment.get_parent().set_translation(loc)
 						segment.updateGlobalVerts()
-				
-					#rotations
-					var needed_locs = vectors_to_fit_curve(segment, prev, end_loc, dat[linenum])
-					var start_g = needed_locs[0]
-					var check_loc = needed_locs[1]
-					var g_target_loc = needed_locs[2]
 					
-					#check the angles (relative to segment)
-					var rel_target = segment.get_parent().get_global_transform().xform_inv(g_target_loc)
-					print("Relative location of check vec to segment is " + String(rel_target))
-					var angle = atan2(rel_target.x, rel_target.z)
-					
-					print("Angle to target loc is " + String(rad2deg(angle)) + " degrees")
-					#to point straight, we need to rotate by 180-angle degrees
-					#180 degrees in radians is a scary number 3.14159265, so just trim
-					var rotation = -(3.1415-angle+0.03)
-					segment.get_parent().set_rotation(Vector3(0,rotation,0))
-					print("Rotation is " + String(segment.get_parent().get_rotation_deg()))
-					segment.updateGlobalVerts()
+					if cur_type == "straight":
+						#rotations
+						var needed_locs = vectors_to_fit_curve(segment, prev, end_loc, dat[linenum])
+						var start_g = needed_locs[0]
+						var check_loc = needed_locs[1]
+						var g_target_loc = needed_locs[2]
+						
+						#check the angles (relative to segment)
+						var rel_target = segment.get_parent().get_global_transform().xform_inv(g_target_loc)
+						print("Relative location of check vec to segment is " + String(rel_target))
+						var angle = atan2(rel_target.x, rel_target.z)
+						
+						print("Angle to target loc is " + String(rad2deg(angle)) + " degrees")
+						#to point straight, we need to rotate by 180-angle degrees
+						#180 degrees in radians is a scary number 3.14159265, so just trim
+						var rotation = -(3.1415-angle+0.03)
+						segment.get_parent().set_rotation(Vector3(0,rotation,0))
+						print("Rotation is " + String(segment.get_parent().get_rotation_deg()))
+						segment.updateGlobalVerts()
+					# curve
+					else:
+						# degrees
+						var angle_diff = prev.get_child(0).get_child(0).end_angle - prev.get_child(0).get_child(0).start_angle
+						segment.set_rotation_deg(Vector3(0, -angle_diff, 0))
 				
 				#if starting at 0,0,0
 				else:
@@ -177,6 +183,12 @@ func makeRoads():
 								segment.set_translation(-loc)
 							else:
 								segment.set_translation(loc)
+								
+							# rotations
+							# degrees
+							var angle_diff = prev.get_child(0).get_child(0).end_angle - prev.get_child(0).get_child(0).start_angle
+							segment.set_rotation_deg(Vector3(0, -angle_diff, 0))
+								
 						else:
 							#print("Current type is straight")
 							segment.get_parent().set_translation(-loc)
@@ -215,8 +227,8 @@ func setupCurvedRoad(index, data):
 		var road_node_right = road.instance()
 		road_node_right.set_name("Road_instance" + String(index))
 		#set the angle we wanted
-		if data["angle"] > 0:
-			road_node_right.get_child(0).get_child(0).angle = data["angle"]
+		#if data["angle"] > 0:
+		#	road_node_right.get_child(0).get_child(0).angle = data["angle"]
 		#set the radius we wanted
 		if data["radius"] > 0:
 			road_node_right.get_child(0).get_child(0).radius = data["radius"]

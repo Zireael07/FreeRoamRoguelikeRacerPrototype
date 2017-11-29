@@ -77,57 +77,101 @@ func placeRoad(index):
 		
 		if (index == 0):
 			road_node = setupRoad(index, false)
-			#arrays were for debugging only
-			#positions.push_back(road_node.get_translation())
-			#ends.push_back(road_node.get_child(0).get_child(0).relative_end)
 
 		else:
-			if (index % 2 > 0): ##odd
+			if (index % 2 > 0): #odd
 				var prev = get_prev_segment(index)
 				if (prev != null):
-					#print("Previous segment is " + prev.get_name())
+					print("[Instancing] Previous segment is " + prev.get_name())
 					var prev_loc = prev.get_translation()
 					var end_loc = prev.get_child(0).get_child(0).relative_end
-					var loc = prev_loc + end_loc
-					if (prev_loc != Vector3(0,0,0)):
-						print("Previous location is not 0,0,0")
-						loc = Vector3(prev_loc.x-end_loc.x, 0, prev_loc.z-end_loc.z)
-					print("Previous segment " + prev.get_name() + " location is " + String(prev_loc))
 					
-					print("Location is " + String(loc))
+					# odd is left
 					road_node = setupRoad(index, true)
-					if (prev_loc != Vector3(0,0,0)):
+					# if previous wasn't starting at 0,0,0
+					if prev_loc != Vector3(0,0,0):
+						var loc = get_end_location_turn(prev, end_loc)
 						road_node.set_translation(loc)
+						
+						# degrees
+						var angle_diff = prev.get_child(0).get_child(0).end_angle - prev.get_child(0).get_child(0).start_angle
+						road_node.set_rotation_deg(Vector3(0, -angle_diff, 0))
+					#if starting at 0,0,0
 					else:
-						road_node.set_translation(-loc)
-					#positions.push_back(road_node.get_translation())
-					#ends.push_back(road_node.get_child(0).get_child(0).relative_end)
-				else:
-					print("No previous segment found")
-			else: #even
+						var loc = get_end_location_turn(prev, end_loc)
+						# -loc for right, loc for left
+						road_node.set_translation(loc)
+						
+						# degrees
+						var angle_diff = prev.get_child(0).get_child(0).end_angle - prev.get_child(0).get_child(0).start_angle
+						road_node.set_rotation_deg(Vector3(0, -angle_diff, 0))
+			
+			else: # even
 				var prev = get_prev_segment(index)
 				if (prev != null):
-					#var prev_loc = positions[index-1]
-					#var end_loc = ends[index-1]
+					print("[Instancing] Previous segment is " + prev.get_name())
 					var prev_loc = prev.get_translation()
 					var end_loc = prev.get_child(0).get_child(0).relative_end
-					var loc = prev_loc - end_loc
-					#var loc = Vector3(prev_loc.x + end_loc.x, prev_loc.y + end_loc.y, prev_loc.z+end_loc.z)
-					print("Previous segment is " + prev.get_name() + " location " + String(prev_loc) + " end " + String(end_loc));
-					#print("End of previous location is " + String(prev.get_child(0).get_child(0).relative_end))
-					#print("Previous segment location is " + String(prev_loc))
-					print("Location is " + String(loc))
 					
+					# even is right
 					road_node = road.instance()
 					road_node.set_name("Road_instance" + String(index))
 					add_child(road_node)
 					
-					#road_node = setupRoad(index, false)
+					var loc = get_end_location_turn(prev, end_loc)
 					road_node.set_translation(loc)
-					#positions.push_back(road_node.get_translation())
-					#ends.push_back(road_node.get_child(0).get_child(0).relative_end)
-				else:
-					print("No previous segment found")
+						
+					# degrees
+					#var angle_diff = prev.get_child(0).get_child(0).end_angle - prev.get_child(0).get_child(0).start_angle
+					#road_node.set_rotation_deg(Vector3(0, -angle_diff, 0))
+					
+			
+#			if (index % 2 > 0): ##odd
+#				var prev = get_prev_segment(index)
+#				if (prev != null):
+#					#print("Previous segment is " + prev.get_name())
+#					var prev_loc = prev.get_translation()
+#					var end_loc = prev.get_child(0).get_child(0).relative_end
+#					var loc = prev_loc + end_loc
+#					if (prev_loc != Vector3(0,0,0)):
+#						print("Previous location is not 0,0,0")
+#						loc = Vector3(prev_loc.x-end_loc.x, 0, prev_loc.z-end_loc.z)
+#					print("Previous segment " + prev.get_name() + " location is " + String(prev_loc))
+#					
+#					print("Location is " + String(loc))
+#					road_node = setupRoad(index, true)
+#					if (prev_loc != Vector3(0,0,0)):
+#						road_node.set_translation(loc)
+#					else:
+#						road_node.set_translation(-loc)
+#					#positions.push_back(road_node.get_translation())
+#					#ends.push_back(road_node.get_child(0).get_child(0).relative_end)
+#				else:
+#					print("No previous segment found")
+#			else: #even
+#				var prev = get_prev_segment(index)
+#				if (prev != null):
+#					#var prev_loc = positions[index-1]
+#					#var end_loc = ends[index-1]
+#					var prev_loc = prev.get_translation()
+#					var end_loc = prev.get_child(0).get_child(0).relative_end
+#					var loc = prev_loc - end_loc
+#					#var loc = Vector3(prev_loc.x + end_loc.x, prev_loc.y + end_loc.y, prev_loc.z+end_loc.z)
+#					print("Previous segment is " + prev.get_name() + " location " + String(prev_loc) + " end " + String(end_loc));
+#					#print("End of previous location is " + String(prev.get_child(0).get_child(0).relative_end))
+#					#print("Previous segment location is " + String(prev_loc))
+#					print("Location is " + String(loc))
+#					
+#					road_node = road.instance()
+#					road_node.set_name("Road_instance" + String(index))
+#					add_child(road_node)
+#					
+#					#road_node = setupRoad(index, false)
+#					road_node.set_translation(loc)
+#					#positions.push_back(road_node.get_translation())
+#					#ends.push_back(road_node.get_child(0).get_child(0).relative_end)
+#				else:
+#					print("No previous segment found")
 			
 		#if get_tree().is_editor_hint():
 	    #		road_node.set_owner(get_tree().get_edited_scene_root())
@@ -137,4 +181,9 @@ func placeRoad(index):
 		var end = node.get_child(0).get_child(0).relative_end
 		print("Location is " + String(node.get_translation()) + " end is " + String(end))
 #		
-#		
+func get_end_location_turn(prev, end_loc):
+	#var end_loc = prev.get_child(0).get_child(0).relative_end
+	var g_loc = prev.get_global_transform().xform(-end_loc)
+	#print("Global location of relative end is" + String(g_loc))
+	var loc = get_global_transform().xform_inv(g_loc)
+	return loc

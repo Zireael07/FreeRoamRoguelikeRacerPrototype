@@ -38,8 +38,8 @@ func setupCurvedRoad(index, left, fit):
 		var road_node_left = road_left.instance()
 		road_node_left.set_name("Road_instance" + String(index))
 		if (fit):
-			road_node_left.get_child(0).get_child(0).start_angle = 30
-			road_node_left.get_child(0).get_child(0).end_angle = 90
+			road_node_left.get_child(0).get_child(0).start_angle = 90
+			road_node_left.get_child(0).get_child(0).end_angle = 150 # 90+60; 90-30 = 60
 			print("Set angle to " + String(road_node_left.get_child(0).get_child(0).end_angle))
 		add_child(road_node_left)
 		return road_node_left
@@ -80,7 +80,7 @@ func placeRoad(index):
 						#straights don't have children nodes because they don't need 'em
 						#this is positive!!!
 						var end_loc = prev.relative_end
-						var loc = prev_loc + end_loc - Vector3(0,0,1)
+						var loc = prev_loc + end_loc #- Vector3(0,0,1)
 						
 						print("Location is " + String(loc))
 						road_node = setupCurvedRoad(index, true, true)
