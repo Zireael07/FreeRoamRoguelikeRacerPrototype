@@ -1,4 +1,4 @@
-extends Quad
+extends MeshInstance
 
 # class member variables go here, for example:
 # var a = 2
@@ -9,5 +9,9 @@ func _ready():
 	# Initialization here
 	if (get_parent().get_node("Viewport 2") != null):
 		print("Setting a nameplate")
-		get_material_override().set_texture(FixedMaterial.PARAM_DIFFUSE, get_parent().get_node("Viewport 2").get_render_target_texture())
+		
+		# Set the quad's albedo texture to the viewport texture
+		var tex = get_parent().get_node("Viewport 2").get_texture()
+		get_material_override().albedo_texture = tex
+		
 	pass
