@@ -3,7 +3,7 @@ tool
 extends "mesh_gen.gd"
 
 # class member variables go here, for example:
-export(FixedMaterial) var terrainmaterial = null
+export(SpatialMaterial) var terrainmaterial = null
 
 func _ready():
 	if (terrainmaterial):

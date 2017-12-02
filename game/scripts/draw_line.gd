@@ -2,7 +2,7 @@ tool
 extends GeometryInstance
 
 # class member variables go here, for example:
-var m = FixedMaterial.new()
+var m = SpatialMaterial.new()
 var points = Vector3Array()
 export(Color) var color = Color(1,1,1)
 
@@ -14,10 +14,10 @@ func _ready():
 func set_material():
 	m.set_line_width(3)
 	m.set_point_size(3)
-	m.set_fixed_flag(FixedMaterial.FLAG_USE_POINT_SIZE, true)
-	m.set_flag(Material.FLAG_UNSHADED, true)
+	m.set_flag(SpatialMaterial.FLAG_UNSHADED, true)
+	m.set_flag(SpatialMaterial.FLAG_USE_POINT_SIZE, true)
 	
-	m.set_parameter(FixedMaterial.PARAM_DIFFUSE, color)
+	m.set_albedo(color)
 	
 	#m.set_fixed_flag(FixedMaterial.FLAG_USE_COLOR_ARRAY, true)
 	
@@ -26,10 +26,10 @@ func set_material():
 func set_material_color(color):	
 	m.set_line_width(3)
 	m.set_point_size(3)
-	m.set_fixed_flag(FixedMaterial.FLAG_USE_POINT_SIZE, true)
-	m.set_flag(Material.FLAG_UNSHADED, true)
+	m.set_flag(SpatialMaterial.FLAG_UNSHADED, true)
+	m.set_flag(SpatialMaterial.FLAG_USE_POINT_SIZE, true)
 	
-	m.set_parameter(FixedMaterial.PARAM_DIFFUSE, color)
+	m.set_albedo(color)
 	
 	set_material_override(m)
 
