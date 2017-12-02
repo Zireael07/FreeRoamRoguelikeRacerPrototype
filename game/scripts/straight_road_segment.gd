@@ -254,7 +254,7 @@ func navMesh(navigation_node, nav_vertices, left):
 	navigation_node.add_child(nav_mesh_inst)
 	
 	# set global vertices
-	global_vertices = Vector3Array()
+	global_vertices = PoolVector3Array()
 	for index in range (nav_vertices.size()):
 		global_vertices.push_back(get_global_transform().xform(nav_vertices[index]))
 
