@@ -1,7 +1,7 @@
 extends Control
 
 # class member variables go here, for example:
-var AIs = StringArray()
+var AIs = PoolStringArray()
 var player_pos = Vector2(110, 110)
 var minimap_bg
 
@@ -32,7 +32,7 @@ func _ready():
 	#	AIs.push_back("AI1")
 	
 	for index in range(AIs.size()):
-		var tex = TextureFrame.new()
+		var tex = TextureRect.new()
 		tex.set_texture(arrow)
 		tex.set_name(AIs[index])
 		tex.set_scale(Vector2(0.5, 0.5))
@@ -40,11 +40,11 @@ func _ready():
 		get_child(0).add_child(tex)
 	
 	#add player arrow
-	var player_tex = TextureFrame.new()
+	var player_tex = TextureRect.new()
 	player_tex.set_texture(player_arrow)
 	player_tex.set_name("player")
 	player_tex.set_scale(Vector2(0.5, 0.5))
-	player_tex.set_pos(player_pos)
+	player_tex.set_position(player_pos)
 	get_child(0).add_child(player_tex)
 	
 	#get the minimap
@@ -89,7 +89,7 @@ func _process(delta):
 		if dot != null:
 			var dot_offset = get_AI_dot_loc(rel_loc)
 			var dot_pos = player_pos-dot_offset
-			dot.set_pos(dot_pos)
+			dot.set_position(dot_pos)
 			var dist = get_AI_dot_dist(dot)
 			#hide those arrows that would go out of map range
 			if dist > 100:
@@ -127,4 +127,4 @@ func get_AI_dot_loc(rel_loc):
 
 func get_AI_dot_dist(dot):
 	#print(dot.get_name() + " dot pos is " + String(dot.get_pos()))
-	return player_pos.distance_to(dot.get_pos())
+	return player_pos.distance_to(dot.get_position())
