@@ -16,7 +16,7 @@ var debug
 var origin
 var target_orig
 
-func _fixed_process(dt):
+func _physics_process(dt):
 	if (not debug):
 		var target = get_parent().get_global_transform().origin
 		var pos = get_global_transform().origin
@@ -40,11 +40,11 @@ func _fixed_process(dt):
 		
 		pos = target + delta
 		
-		look_at_from_pos(pos, target, up)
+		look_at_from_position(pos, target, up)
 		
 		# Turn a little up or down
 		var t = get_transform()
-		t.basis = Matrix3(t.basis[0], deg2rad(angle_v_adjust))*t.basis
+		t.basis = Basis(t.basis[0], deg2rad(angle_v_adjust))*t.basis
 		set_transform(t)
 	
 	#debug mode
@@ -55,7 +55,7 @@ func _fixed_process(dt):
 		
 		#move up and rotate to look down
 		set_translation(origin+Vector3(0, 50, -origin.z)+delta)
-		set_rotation_deg(Vector3(-90, 0, 180))
+		set_rotation_degrees(Vector3(-90, 0, 180))
 
 func set_debug(val):
 	debug = val
@@ -68,11 +68,11 @@ func _ready():
 	# Find collision exceptions for ray
 	var node = self
 	while(node):
-		if (node extends RigidBody):
+		if (node is RigidBody):
 			collision_exception.append(node.get_rid())
 			break
 		else:
 			node = node.get_parent()
-	set_fixed_process(true)
+	set_physics_process(true)
 	# This detaches the camera transform from the parent spatial node
 	set_as_toplevel(true)
