@@ -1,0 +1,21 @@
+[application]
+
+icon = "res://icon.png"
+main_scene = "res://hud/main_menu.tscn"
+name = "FreeRoamRacerPrototype"
+
+[display]
+
+window/height = 760
+window/width = 1024
+
+[input]
+
+camera_debug = [ InputEvent(KEY,67) ]
+headlights_toggle = [ InputEvent(KEY,76) ]
+steer_reset = [ InputEvent(KEY,82) ]
+
+[rasterizer]
+
+shadow_filter = 3
+

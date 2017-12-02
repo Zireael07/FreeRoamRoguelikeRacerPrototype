@@ -1,13 +1,11 @@
-[gd_scene load_steps=2 format=1]
+[gd_scene load_steps=1 format=2]
 
 [ext_resource path="res://roads/segments_instanced.gd" type="Script" id=1]
 
 [node name="Position3D" type="Position3D"]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-script/script = ExtResource( 1 )
+script = ExtResource( 1 )
 numSegments = 7
-positions = Vector3Array( 0, 0, 0, 1.29677, 0, 37.1346, 2.59354, 0, 74.2692, 3.89031, 0, 111.404, 5.18708, 0, 148.538, 6.48385, 0, 185.673, 7.78062, 0, 222.808 )
-ends = Vector3Array( -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346 )
-
-
+positions = PoolVector3Array( 0, 0, 0, 1.29677, 0, 37.1346, 2.59354, 0, 74.2692, 3.89031, 0, 111.404, 5.18708, 0, 148.538, 6.48385, 0, 185.673, 7.78062, 0, 222.808 )
+ends = PoolVector3Array( -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346 )

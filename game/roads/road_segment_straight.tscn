@@ -1,10 +1,10 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scripts/straight_road_segment.gd" type="Script" id=1]
 [ext_resource path="res://assets/road_material.tres" type="Material" id=2]
 [ext_resource path="res://scripts/draw_line.gd" type="Script" id=3]
 
-[sub_resource type="FixedMaterial" id=1]
+[sub_resource type="SpatialMaterial" id=1]
 
 flags/visible = true
 flags/double_sided = false
@@ -46,7 +46,7 @@ textures/shade_param_tc = 0
 ]]
 
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-script/script = ExtResource( 1 )
+script = ExtResource( 1 )
 material = ExtResource( 2 )
 length = 50
 relative_end = Vector3( 0, 0, 100 )
@@ -56,19 +56,17 @@ relative_end = Vector3( 0, 0, 100 )
 _import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 layers = 1
 geometry/visible = true
-geometry/material_override = SubResource( 1 )
-geometry/cast_shadow = 1
+material_override = SubResource( 1 )
+cast_shadow = 1
 geometry/receive_shadows = true
 geometry/range_begin = 0.0
 geometry/range_end = 0.0
-geometry/extra_cull_margin = 0.0
-geometry/billboard = false
-geometry/billboard_y = false
-geometry/depth_scale = false
-geometry/visible_in_all_rooms = false
-geometry/use_baked_light = false
+extra_cull_margin = 0.0
+use_as_billboard = false
+use_as_y_billboard = false
+use_depth_scale = false
+visible_in_all_rooms = false
+use_in_baked_light = false
 geometry/baked_light_tex_id = 0
-script/script = ExtResource( 3 )
+script = ExtResource( 3 )
 color = Color( 1, 1, 1, 1 )
-
-

@@ -1,4 +1,5 @@
-[gd_resource type="Animation" format=1]
+[gd_resource type="Animation" load_steps=1 format=2]
+
 
 [resource]
 
@@ -6,13 +7,12 @@ length = 1.0
 loop = true
 step = 0.1
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:transform/scale")
+tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 1
 tracks/0/imported = false
 tracks/0/keys = {
-"times": FloatArray( 0, 1 ),
-"transitions": FloatArray( 1, 1 ),
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Vector3( 1.5, 1, 1 ), Vector3( 2, 2, 1 ) ]
 }
-

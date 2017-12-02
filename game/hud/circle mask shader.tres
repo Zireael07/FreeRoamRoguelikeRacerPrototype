@@ -1,4 +1,5 @@
-[gd_resource type="CanvasItemShader" format=1]
+[gd_resource type="Shader" load_steps=1 format=2]
+
 
 [resource]
 
@@ -40,4 +41,3 @@ COLOR.rgba = vec4(col.r, col.g, col.b, alpha);",
 "vertex": "",
 "vertex_ofs": 0
 }
-

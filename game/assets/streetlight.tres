@@ -1,4 +1,4 @@
-[gd_resource type="FixedMaterial" load_steps=3 format=1]
+[gd_resource type="SpatialMaterial" load_steps=1 format=2]
 
 [ext_resource path="res://assets/Streetlight_color.tex" type="Texture" id=1]
 [ext_resource path="res://assets/Streetlight_normals.tex" type="Texture" id=2]
@@ -38,7 +38,6 @@ textures/specular_tc = 0
 textures/emission_tc = 0
 textures/specular_exp_tc = 0
 textures/glow_tc = 0
-textures/normal = ExtResource( 2 )
+texture_normal = ExtResource( 2 )
 textures/normal_tc = 0
 textures/shade_param_tc = 0
-

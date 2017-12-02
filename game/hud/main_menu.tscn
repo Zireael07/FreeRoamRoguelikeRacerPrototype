@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://hud/car at night.png" type="Texture" id=1]
 [ext_resource path="res://assets/LCDM2N__.TTF" type="DynamicFontData" id=2]
@@ -6,46 +6,46 @@
 
 [sub_resource type="DynamicFont" id=1]
 
-font/size = 40
-font/use_mipmaps = false
-font/use_filter = false
-font/font = ExtResource( 2 )
+size = 40
+use_mipmaps = false
+use_filter = false
+font_data = ExtResource( 2 )
 
 [node name="Control" type="Control"]
 
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 0.0
-margin/top = 0.0
-margin/right = 1024.0
-margin/bottom = 760.0
+focus_ignore_mouse = false
+focus_stop_mouse = true
+size_flags_horizontal = 2
+size_flags_vertical = 2
+margin_left = 0.0
+margin_top = 0.0
+margin_right = 1024.0
+margin_bottom = 760.0
 
-[node name="TextureFrame" type="TextureFrame" parent="."]
+[node name="TextureFrame" type="TextureRect" parent="."]
 
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 0.0
-margin/top = 0.0
-margin/right = 1024.0
-margin/bottom = 760.0
+focus_ignore_mouse = true
+focus_stop_mouse = true
+size_flags_horizontal = 2
+size_flags_vertical = 2
+margin_left = 0.0
+margin_top = 0.0
+margin_right = 1024.0
+margin_bottom = 760.0
 texture = ExtResource( 1 )
 expand = true
 stretch_mode = 0
 
 [node name="Title" type="Label" parent="."]
 
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 0
-margin/left = 280.0
-margin/top = 81.0
-margin/right = 805.0
-margin/bottom = 123.0
+focus_ignore_mouse = true
+focus_stop_mouse = true
+size_flags_horizontal = 2
+size_flags_vertical = 0
+margin_left = 280.0
+margin_top = 81.0
+margin_right = 805.0
+margin_bottom = 123.0
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.212326, 0.879163, 0.988281, 1 )
 text = "Free Roam Racer Prototype"
@@ -57,21 +57,19 @@ max_lines_visible = -1
 
 [node name="new_game" type="Button" parent="."]
 
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 496.0
-margin/top = 505.0
-margin/right = 578.0
-margin/bottom = 525.0
+focus_ignore_mouse = false
+focus_stop_mouse = true
+size_flags_horizontal = 2
+size_flags_vertical = 2
+margin_left = 496.0
+margin_top = 505.0
+margin_right = 578.0
+margin_bottom = 525.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 text = "New Game"
 flat = false
-script/script = ExtResource( 3 )
+script = ExtResource( 3 )
 
-[connection signal="pressed" from="new_game" to="new_game" method="_on_new_game_pressed"]
-
-
+[connection signal="pressed"  from="new_game"  to="new_game" method="_on_new_game_pressed" binds=[  ]]
