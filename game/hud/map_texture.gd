@@ -1,7 +1,7 @@
-extends TextureFrame
+extends TextureRect
 
 # class member variables go here, for example:
-var texture
+var textur
 var uv_offset
 
 var image
@@ -23,8 +23,8 @@ func _ready():
 	# connect to the load_ended signal of the player
 	get_parent().get_parent().get_parent().get_parent().connect("load_ended", self, "make_map")
 	
-	if not get_tree().is_editor_hint():
-		texture = get_texture()
+	if not Engine.is_editor_hint():
+		textur = get_texture()
 		uv_offset = 1/get_size().x #assume the node's scale is 1,1
 		#print("UV offset is " + String(uv_offset))		
 		
@@ -36,7 +36,8 @@ func _ready():
 func make_map():
 	var start_time = OS.get_ticks_msec()
 	#print("Started at " + String(start_time))
-	image = Image(1000, 1000, false, Image.FORMAT_RGBA)
+	image = Image.new()
+	image.create(1000, 1000, false, Image.FORMAT_RGBA8)
 	
 	positions = get_parent().get_parent().get_parent().positions
 	
@@ -44,8 +45,11 @@ func make_map():
 	# massive speed up
 	image.fill(bg)
 	
+	# necessary in 3.0
+	image.lock()
+	
 	#draw center point (=0,0)
-	image.put_pixel(image.get_width()/2, image.get_height()/2, testcolor)
+	image.set_pixel(image.get_width()/2, image.get_height()/2, testcolor)
 	
 	if positions.size() == 0:
 		print("No positions detected")
@@ -65,7 +69,9 @@ func make_map():
 				var vec = positions_2d[index][ind]
 				for i in range (vec.x, vec.x+dot_size):
 					for j in range (vec.y, vec.y+dot_size):
-						image.put_pixel(i,j, road)
+						# necessary in 3.0
+						image.lock()
+						image.set_pixel(i,j, road)
 				
 				draw_lines(ind, index)
 			
@@ -78,9 +84,9 @@ func make_map():
 	var exec_time = OS.get_ticks_msec() - start_time
 	print("Minimap generation execution time: " + String(exec_time))
 	
-	texture = load("res://map_edited.png") #set_data(image)
+	textur = load("res://map_edited.png") #set_data(image)
 	
-	set_texture(texture)
+	set_texture(textur)
 
 	#register ourselves with the parent
 	get_parent().get_parent().get_parent().minimap_bg = self
@@ -112,7 +118,9 @@ func draw_lines(ind, index):
 		for index in range (line.size()):
 			for i in range(line[index].x, line[index].x+dot_size):
 				for j in range(line[index].y, line[index].y+dot_size):
-					image.put_pixel(i,j, road)
+					# necessary in 3.0
+					image.lock()
+					image.set_pixel(i,j, road)
 
 #for debugging purposes, different colors for straight vs. curves
 func draw_lines_differently(index):
@@ -129,7 +137,9 @@ func draw_lines_differently(index):
 				for index in range (line.size()):
 					for i in range(line[index].x, line[index].x+dot_size):
 						for j in range(line[index].y, line[index].y+dot_size):
-							image.put_pixel(i,j, road)	
+							# necessary in 3.0
+							image.lock()
+							image.set_pixel(i,j, road)	
 					
 	else:		
 		for ind in range(positions_2d[index].size()):
@@ -144,7 +154,9 @@ func draw_lines_differently(index):
 				for index in range (line.size()):
 					for i in range(line[index].x, line[index].x+dot_size):
 						for j in range(line[index].y, line[index].y+dot_size):
-							image.put_pixel(i,j, linecolor)
+							# necessary in 3.0
+							image.lock()
+							image.set_pixel(i,j, linecolor)
 							
 # BRESENHAM
 func swap(a,b):
@@ -159,7 +171,7 @@ func swap(a,b):
 #translation of C version from https://rosettacode.org/wiki/Bitmap/Bresenham%27s_line_algorithm
 func bresenham_complex(start, end):
 	#print("Running bresenham complex for " + String(start) + " to " + String(end))
-	var points = Vector2Array()
+	var points = PoolVector2Array()
 	
 	#helper vars
 	var sx = start.x
