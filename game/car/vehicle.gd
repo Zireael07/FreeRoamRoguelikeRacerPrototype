@@ -33,7 +33,7 @@ var headlight_two
 var taillights
 var tail_mat
 
-func process_car_physics(delta, gas, brake, left, right):
+func process_car_physics(delta, gas, braking, left, right):
 	speed = get_linear_velocity().length();
 	
 	#vary limit depending on current speed
@@ -54,9 +54,9 @@ func process_car_physics(delta, gas, brake, left, right):
 		STEER_SPEED = 1
 	
 	if (left):
-		steer_target = -STEER_LIMIT
-	elif (right):
 		steer_target = STEER_LIMIT
+	elif (right):
+		steer_target = -STEER_LIMIT
 	else: #if (not left and not right):
 		steer_target = 0
 	
@@ -79,7 +79,7 @@ func process_car_physics(delta, gas, brake, left, right):
 		tail_mat.set_parameter(FixedMaterial.PARAM_DIFFUSE, Color(0.62,0.62,0.62))
 	
 	#brake/reverse
-	if (brake): #(Input.is_action_pressed("ui_down")):
+	if (braking): #(Input.is_action_pressed("ui_down")):
 		if (speed > 5):
 			#slows down 1 unit per tick
 			# increasing the value seems to do nothing
@@ -119,13 +119,13 @@ func process_car_physics(delta, gas, brake, left, right):
 		reverse = true
 	
 	
-func _fixed_process(delta):
+func _physics_process(delta):
 	#just to have something here
 	var basis = get_transform().basis.y
 
 func reset_car():
 	var reset_rot = Vector3(0, get_rotation_deg().y, 0)
-	set_rotation_deg(reset_rot)
+	set_rotation_degrees(reset_rot)
 
 # basically copy-pasta from the car physics function, to predict steer the NEXT physics tick
 func predict_steer(delta, left, right):

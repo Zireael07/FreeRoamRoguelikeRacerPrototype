@@ -2,7 +2,7 @@ extends "vehicle.gd"
 
 # class member variables go here, for example:
 #export (Vector3Array) var target_array = null
-var target_array = Vector3Array()
+var target_array = PoolVector3Array()
 var current = 0
 var prev = 0
 export var target_angle = 0.2
@@ -15,7 +15,7 @@ var dot
 var angle
 var limit
 var gas = false
-var brake = false
+var braking = false
 var left = false
 var right = false
 
@@ -50,7 +50,7 @@ func _ready():
 	target_array.push_back(target)
 	
 	set_process(true)
-	set_fixed_process(true)
+	set_physics_process(true)
 
 func _process(delta):
 	# delay getting the path until everything is set up
@@ -69,12 +69,12 @@ func _process(delta):
 					if (index > 0): #because #0 is our own location
 						target_array.push_back(path[index])
 
-func _fixed_process(delta):
+func _physics_process(delta):
 	flag = ""
 	
 	#input
 	gas = false
-	brake = false
+	braking = false
 	left = false
 	right = false
 
@@ -114,7 +114,7 @@ func _fixed_process(delta):
 			and get_node("RayRightFront").get_collider_hit() != null and get_node("RayLeftFront").get_collider_hit() != null:
 				#print(get_parent().get_name() + " all three rays hit")
 				flag = "AVOID - REVERSE"
-				brake = true
+				braking = true
 				# pick direction to go to
 				if get_parent().left:
 					left = true
@@ -127,15 +127,15 @@ func _fixed_process(delta):
 				if has_node("RayRightFront") and get_node("RayRightFront").get_collider_hit() != null:
 					right = true
 					flag = "AVOID - REVERSE"
-					brake = true
+					braking = true
 				elif has_node("RayLeftFront") and get_node("RayLeftFront").get_collider_hit() != null:
 					left = true
 					flag = "AVOID - REVERSE"
-					brake = true
+					braking = true
 				else:
 					if (not reverse and speed > 10):
 						flag = "AVOID - BRAKE"
-						brake = true
+						braking = true
 					else:
 						flag = "AVOID"
 						gas = true
@@ -151,7 +151,7 @@ func _fixed_process(delta):
 				
 				if (not reverse and speed > 10):	
 					#flag = "AVOID"
-					brake = true
+					braking = true
 				else:
 					gas = true
 				
@@ -163,7 +163,7 @@ func _fixed_process(delta):
 				
 				if (not reverse and speed > 10):
 					#flag = "AVOID"
-					brake = true
+					braking = true
 				else:
 					gas = true
 					
@@ -182,7 +182,7 @@ func _fixed_process(delta):
 				#print("Angle to new target: " + str(rel_angle))
 				#print("Offset loc: 	" + str(rel_loc.x) + " " + str(rel_loc.z))
 				if (not reverse and speed > 10):
-					brake = true
+					braking = true
 				else:
 					gas = true
 				
@@ -195,7 +195,7 @@ func _fixed_process(delta):
 						gas = true
 				else:
 					if (speed > 1):
-						brake = true
+						braking = true
 		
 				#if we're close to target, do nothing
 				if (rel_loc.distance_to(compare_pos) < 3):
@@ -212,7 +212,7 @@ func _fixed_process(delta):
 	# predict wheel angle
 	predicted_steer = predict_steer(delta, left, right)
 	
-	process_car_physics(delta, gas, brake, left, right)
+	process_car_physics(delta, gas, braking, left, right)
 	
 	#if we passed the point, don't backtrack
 	if (dot < 0 and not stop):
@@ -244,7 +244,7 @@ func stopping():
 		right = false
 		
 	if (speed > 0.2 and not reverse):
-		brake = true
+		braking = true
 	if (speed > 0.2 and reverse):
 		gas = true
 	

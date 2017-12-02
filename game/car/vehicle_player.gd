@@ -47,7 +47,7 @@ func _ready():
 func on_load_ended():
 	print("Loaded all pertinent stuff")
 
-func _fixed_process(delta):
+func _physics_process(delta):
 	# emit a signal when we're all set up
 	elapsed_secs += delta
 	if (elapsed_secs > start_secs and not emitted):
@@ -57,7 +57,7 @@ func _fixed_process(delta):
 	
 	#input
 	var gas = false
-	var brake = false
+	var braking = false
 	var left = false
 	var right = false
 	
@@ -68,7 +68,7 @@ func _fixed_process(delta):
 		gas = true
 	
 	if (Input.is_action_pressed("ui_down")):
-		brake = true
+		braking = true
 	
 	if (Input.is_action_pressed("ui_left")):
 		left = true
@@ -76,7 +76,7 @@ func _fixed_process(delta):
 		right = true
 		
 	#make physics happen!
-	process_car_physics(delta, gas, brake, left, right)
+	process_car_physics(delta, gas, braking, left, right)
 	
 	#reset
 	if (Input.is_action_pressed("steer_reset")):
