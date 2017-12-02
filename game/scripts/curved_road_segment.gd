@@ -3,7 +3,7 @@ tool
 extends "helpers.gd"
 
 # class member variables go here, for example:
-var m = FixedMaterial.new()
+var m = SpatialMaterial.new()
 var points_center
 var points_inner
 var points_outer
@@ -35,9 +35,9 @@ var global_end
 var relative_end
 
 #editor drawing
-var positions  = Vector3Array()
-var left_positions = Vector3Array()
-var right_positions = Vector3Array()
+var positions  = PoolVector3Array()
+var left_positions = PoolVector3Array()
+var right_positions = PoolVector3Array()
 var draw
 
 #navmesh
@@ -47,12 +47,12 @@ var global_vertices
 var global_vertices2
 # margin
 var margin = 1
-var left_nav_positions = Vector3Array()
-var right_nav_positions = Vector3Array()
+var left_nav_positions = PoolVector3Array()
+var right_nav_positions = PoolVector3Array()
 
 #for minimap
 var mid_point
-var global_positions = Vector3Array()
+var global_positions = PoolVector3Array()
 
 var start_vector = Vector3()
 var end_vector = Vector3()
@@ -60,8 +60,8 @@ var end_vector = Vector3()
 
 
 #mesh material
-export(FixedMaterial)    var material    = preload("res://assets/road_material.tres")
-export(FixedMaterial) var sidewalk_material = preload("res://assets/cement.tres")
+export(SpatialMaterial)    var material    = preload("res://assets/road_material.tres")
+export(SpatialMaterial) var sidewalk_material = preload("res://assets/cement.tres")
 
 #props
 var streetlight
@@ -277,7 +277,7 @@ func get_global_positions():
 			
 func test_road():
 	#only mesh in game because meshing in editor can take >900 ms
-	if not get_tree().is_editor_hint():
+	if not Engine.is_editor_hint():
 		#dummy to be able to get the road mesh faster
 		var road_mesh = Spatial.new()
 		road_mesh.set_name("road_mesh")
@@ -362,7 +362,7 @@ func placeStreetlight():
 		
 # navmesh
 func get_navi_vertices():
-	var nav_vertices = Vector3Array()
+	var nav_vertices = PoolVector3Array()
 	for index in range (positions.size()): #0 #1
 		nav_vertices.push_back(positions[index]) #0 #2
 		nav_vertices.push_back(right_nav_positions[index]) #1 #3
@@ -370,7 +370,7 @@ func get_navi_vertices():
 	return nav_vertices
 
 func get_navi_vertices_alt():
-	var nav_vertices = Vector3Array()
+	var nav_vertices = PoolVector3Array()
 	for index in range (positions.size()): #0 #1
 		nav_vertices.push_back(left_nav_positions[index]) #0 #2
 		nav_vertices.push_back(positions[index]) #1 #3
@@ -433,7 +433,7 @@ func navMesh(vertices, left):
 	add_child(nav_mesh_inst)
 
 func get_key_navi_vertices():
-	var key_nav_vertices = Vector3Array()
+	var key_nav_vertices = PoolVector3Array()
 	key_nav_vertices.push_back(nav_vertices[0])
 	key_nav_vertices.push_back(nav_vertices[1])
 	key_nav_vertices.push_back(nav_vertices[nav_vertices.size()-1])

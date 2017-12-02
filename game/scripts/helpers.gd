@@ -10,7 +10,7 @@ func _ready():
 ##MATH
 func get_circle_arc_simple(center, radius, angle):
 	var nb_points = 32
-	var points_arc = Vector2Array()
+	var points_arc = PoolVector2Array()
 	
 	var angle_from = 90-angle/2
 	var angle_to = 90+angle/2
@@ -25,7 +25,7 @@ func get_circle_arc_simple(center, radius, angle):
 
 func get_circle_arc( center, radius, angle_from, angle_to, right ):
 	var nb_points = 32
-	var points_arc = Vector2Array()
+	var points_arc = PoolVector2Array()
 
 	for i in range(nb_points+1):
 		if right:

@@ -3,7 +3,7 @@ extends GeometryInstance
 
 # class member variables go here, for example:
 var m = SpatialMaterial.new()
-var points = Vector3Array()
+var points = PoolVector3Array()
 export(Color) var color = Color(1,1,1)
 
 

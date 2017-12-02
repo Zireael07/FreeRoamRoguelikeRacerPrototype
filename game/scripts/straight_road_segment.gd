@@ -3,15 +3,15 @@ tool
 extends "mesh_gen.gd"
 
 # class member variables go here, for example:
-var m = FixedMaterial.new()
+var m = SpatialMaterial.new()
 var color = Color(1,0,0)
-export(FixedMaterial)    var material    = preload("res://assets/road_material.tres")
-var temp_positions = Vector3Array()
+export(SpatialMaterial)    var material    = preload("res://assets/road_material.tres")
+var temp_positions = PoolVector3Array()
 
 #editor drawing
-var positions = Vector3Array()
-var left_positions = Vector3Array()
-var right_positions = Vector3Array()
+var positions = PoolVector3Array()
+var left_positions = PoolVector3Array()
+var right_positions = PoolVector3Array()
 var draw
 
 
@@ -31,12 +31,12 @@ var nav_vertices_alt
 var global_vertices_alt
 # margin
 var margin = 1
-var left_nav_positions = Vector3Array()
-var right_nav_positions = Vector3Array()
+var left_nav_positions = PoolVector3Array()
+var right_nav_positions = PoolVector3Array()
 
 #for minimap
 var mid_point
-var global_positions = Vector3Array()
+var global_positions = PoolVector3Array()
 
 #for rotations
 var end_vector
@@ -70,7 +70,7 @@ func _ready():
 			for index in range(num):
 				##draw_debug_point(positions[index], color)
 				#only make the mesh in game (meshing in editor is hilariously slow, up to 900 ms)
-				if not get_tree().is_editor_hint():
+				if not Engine.is_editor_hint():
 					meshCreate(temp_positions, material)
 				positions.push_back(temp_positions[1])
 				positions.push_back(temp_positions[2])
@@ -85,7 +85,7 @@ func _ready():
 				right_nav_positions.push_back(temp_positions[9])
 		
 		# set up navmesh if not in editor	
-		if not get_tree().is_editor_hint():
+		if not Engine.is_editor_hint():
 			setupNavi(self)
 				
 	#set the end
@@ -109,7 +109,7 @@ func _ready():
 		placeBuilding(index)
 	
 	#in editor, we draw simple immediate mode lines instead
-	if get_tree().is_editor_hint():
+	if Engine.is_editor_hint():
 		#debug drawing
 		draw.draw_line(positions)
 		draw.draw_line(left_positions)
@@ -185,7 +185,7 @@ func placeBuilding(index):
 	
 	build = setupBuilding(index)
 	#right side of the road
-	var loc = Vector3(-(roadwidth+buildDistance), 0, index)
+	loc = Vector3(-(roadwidth+buildDistance), 0, index)
 	if (index > 0):
 		loc = Vector3(-(roadwidth+buildDistance), 0, index*10)
 	else:
@@ -202,7 +202,7 @@ func setupNavi(navigation_node):
 	navMesh(navigation_node, nav_vertices_alt, false)
 
 func get_navi_vertices():
-	var nav_vertices = Vector3Array()
+	var nav_vertices = PoolVector3Array()
 	
 	var pos_size = positions.size()-1
 	nav_vertices.push_back(right_nav_positions[0])
@@ -213,7 +213,7 @@ func get_navi_vertices():
 	return nav_vertices
 
 func get_navi_vertices_alt():
-	var nav_vertices = Vector3Array()
+	var nav_vertices = PoolVector3Array()
 	
 	var pos_size = positions.size()-1
 	nav_vertices.push_back(positions[0])
@@ -261,7 +261,7 @@ func navMesh(navigation_node, nav_vertices, left):
 
 func updateGlobalVerts():
 	print("Updating global verts ")
-	global_vertices = Vector3Array()
+	global_vertices = PoolVector3Array()
 	for index in range (nav_vertices.size()):
 		# from local to global space
 		var gl = get_global_transform().xform(nav_vertices[index])
@@ -272,7 +272,7 @@ func updateGlobalVerts():
 		global_vertices.push_back(res) 
 		
 	# do the same for nav_vertices_alt
-	global_vertices_alt = Vector3Array()
+	global_vertices_alt = PoolVector3Array()
 	for index in range (nav_vertices_alt.size()):
 		#print("Writing alt vert to global")
 		# from local to global space
