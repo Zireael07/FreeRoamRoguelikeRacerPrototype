@@ -76,7 +76,7 @@ func process_car_physics(delta, gas, braking, left, right):
 	#cancel braking visual
 	tail_mat = taillights.get_mesh().surface_get_material(0)
 	if tail_mat != null:
-		tail_mat.set_parameter(FixedMaterial.PARAM_DIFFUSE, Color(0.62,0.62,0.62))
+		tail_mat.set_albedo(Color(0.62,0.62,0.62))
 	
 	#brake/reverse
 	if (braking): #(Input.is_action_pressed("ui_down")):
@@ -93,7 +93,7 @@ func process_car_physics(delta, gas, braking, left, right):
 			
 		#visual effect
 		if tail_mat != null:	
-			tail_mat.set_parameter(FixedMaterial.PARAM_DIFFUSE, Color(1,1,1))
+			tail_mat.set_albedo(Color(1,1,1))
 		
 	else:
 		set_brake(0.0)
@@ -162,28 +162,34 @@ func offset_dist(start, end, point):
 
 	var something = px*px + py*py
 
-	var u =  ((point.x - start.x) * px + (point.z - start.z) * py) / float(something)
-
-	if u > 1:
-		u = 1
-	elif u < 0:
-		u = 0
-
-	var x = start.x + u * px
-	var y = start.z + u * py
-
-	var dx = x - point.x
-	var dy = y - point.z
-
-    # Note: If the actual distance does not matter,
-    # if you only want to compare what this function
-    # returns to other results of this function, you
-    # can just return the squared distance instead
-    # (i.e. remove the sqrt) to gain a little performance
-
-	var dist = sqrt(dx*dx + dy*dy)
-
-	return [dist, Vector3(x, start.y, y)]
+	if something != 0:
+		var u =  ((point.x - start.x) * px + (point.z - start.z) * py) / float(something)
+	
+		if u > 1:
+			u = 1
+		elif u < 0:
+			u = 0
+	
+		var x = start.x + u * px
+		var y = start.z + u * py
+	
+		var dx = x - point.x
+		var dy = y - point.z
+	
+	    # Note: If the actual distance does not matter,
+	    # if you only want to compare what this function
+	    # returns to other results of this function, you
+	    # can just return the squared distance instead
+	    # (i.e. remove the sqrt) to gain a little performance
+	
+		var dist = sqrt(dx*dx + dy*dy)
+	
+		return [dist, Vector3(x, start.y, y)]
+	# need this because division by zero
+	else:
+		var dist = 0
+		return [dist, Vector3(0, start.y, 0)]
+	
 
 func _ready():
 	#get lights

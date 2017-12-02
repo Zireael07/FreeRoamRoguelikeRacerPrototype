@@ -41,7 +41,7 @@ func _ready():
 	
 	last_pos = get_translation()
 	
-	set_fixed_process(true)
+	set_physics_process(true)
 	set_process_input(true)
 
 func on_load_ended():
