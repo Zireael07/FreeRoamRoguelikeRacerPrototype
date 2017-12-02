@@ -356,9 +356,9 @@ func placeStreetlight():
 	light.set_translation(positions[num]+Vector3(-5,0,0))
 	
 	if (not left_turn):
-		light.set_rotation_deg(Vector3(0, 0, 0))
+		light.set_rotation_degrees(Vector3(0, 0, 0))
 	else:
-		light.set_rotation_deg(Vector3(0, 0, 0))
+		light.set_rotation_degrees(Vector3(0, 0, 0))
 		
 # navmesh
 func get_navi_vertices():
