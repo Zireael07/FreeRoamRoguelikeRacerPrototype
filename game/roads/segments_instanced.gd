@@ -7,8 +7,8 @@ export(int) var numSegments = 2
 var road
 var road_left
 
-export(Vector3Array) var positions = Vector3Array()
-export(Vector3Array) var ends = Vector3Array()
+export(PoolVector3Array) var positions = PoolVector3Array()
+export(PoolVector3Array) var ends = PoolVector3Array()
 
 
 func _ready():
@@ -95,7 +95,7 @@ func placeRoad(index):
 						
 						# degrees
 						var angle_diff = prev.get_child(0).get_child(0).end_angle - prev.get_child(0).get_child(0).start_angle
-						road_node.set_rotation_deg(Vector3(0, -angle_diff, 0))
+						road_node.set_rotation_degrees(Vector3(0, -angle_diff, 0))
 					#if starting at 0,0,0
 					else:
 						var loc = get_end_location_turn(prev, end_loc)
@@ -104,7 +104,7 @@ func placeRoad(index):
 						
 						# degrees
 						var angle_diff = prev.get_child(0).get_child(0).end_angle - prev.get_child(0).get_child(0).start_angle
-						road_node.set_rotation_deg(Vector3(0, -angle_diff, 0))
+						road_node.set_rotation_degrees(Vector3(0, -angle_diff, 0))
 			
 			else: # even
 				var prev = get_prev_segment(index)

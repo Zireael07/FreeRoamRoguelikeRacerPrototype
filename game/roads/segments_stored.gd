@@ -68,7 +68,7 @@ func loadData():
 
 func parseJson(line):
 	var result = {}
-	var error_code = result.parse_json(line)   # (1) What does the error code even mean?
+	result = parse_json(line)
 	return result
 
 # make the actual roads
@@ -157,15 +157,15 @@ func makeRoads():
 						print("Angle to target loc is " + String(rad2deg(angle)) + " degrees")
 						#to point straight, we need to rotate by 180-angle degrees
 						#180 degrees in radians is a scary number 3.14159265, so just trim
-						var rotation = -(3.1415-angle+0.03)
-						segment.get_parent().set_rotation(Vector3(0,rotation,0))
-						print("Rotation is " + String(segment.get_parent().get_rotation_deg()))
+						var rotate = -(3.1415-angle+0.03)
+						segment.get_parent().set_rotation(Vector3(0,rotate,0))
+						print("Rotation is " + String(segment.get_parent().get_rotation_degrees()))
 						segment.updateGlobalVerts()
 					# curve
 					else:
 						# degrees
 						var angle_diff = prev.get_child(0).get_child(0).end_angle - prev.get_child(0).get_child(0).start_angle
-						segment.set_rotation_deg(Vector3(0, -angle_diff, 0))
+						segment.set_rotation_degrees(Vector3(0, -angle_diff, 0))
 				
 				#if starting at 0,0,0
 				else:
@@ -187,7 +187,7 @@ func makeRoads():
 							# rotations
 							# degrees
 							var angle_diff = prev.get_child(0).get_child(0).end_angle - prev.get_child(0).get_child(0).start_angle
-							segment.set_rotation_deg(Vector3(0, -angle_diff, 0))
+							segment.set_rotation_degrees(Vector3(0, -angle_diff, 0))
 								
 						else:
 							#print("Current type is straight")

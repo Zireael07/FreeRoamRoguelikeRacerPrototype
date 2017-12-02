@@ -179,6 +179,9 @@ environment = SubResource( 1 )
 [node name="Position3D" parent="Spatial" instance=ExtResource( 5 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -83.2746, 0, 6.94175 )
+numSegments = 2
+positions = PoolVector3Array(  )
+ends = PoolVector3Array(  )
 
 [node name="Position3D 2" parent="Spatial" instance=ExtResource( 6 )]
 
@@ -189,6 +192,9 @@ relative_end = Vector3( 0, 0, 10 )
 [node name="Position3D1" parent="Spatial" instance=ExtResource( 5 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.45915, 0, 7.84292 )
+numSegments = 2
+positions = PoolVector3Array(  )
+ends = PoolVector3Array(  )
 
 [node name="Position3D 3" parent="Spatial" instance=ExtResource( 7 )]
 

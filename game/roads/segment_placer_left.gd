@@ -28,7 +28,7 @@ func place_road():
 
 			# rotate to point in the correct z direction
 			var locate = Vector3(begin.x, 0, begin.z)
-			road.set_rotation_deg(Vector3(0, 180, 0))
+			road.set_rotation_degrees(Vector3(0, 180, 0))
 			
 			
 
