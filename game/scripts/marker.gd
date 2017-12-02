@@ -24,8 +24,8 @@ func set_finish(val):
 	finish = val
 
 func _on_Area_body_enter( body ):
-	if body extends VehicleBody:
-		if body extends player_script:
+	if body is VehicleBody:
+		if body is player_script:
 			print("Area entered by the player")
 			player = body
 			
@@ -72,8 +72,8 @@ func _process(delta):
 	#	print("Count is off")
 
 func _on_Area_body_exit( body ):
-	if body extends VehicleBody:
-		if body extends player_script:
+	if body is VehicleBody:
+		if body is player_script:
 			print("Area exited by the player")
 			player = body
 			if not finish:
