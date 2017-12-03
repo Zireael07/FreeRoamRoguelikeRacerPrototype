@@ -109,8 +109,6 @@ ends = PoolVector3Array(  )
 [node name="Position3D 2" parent="Spatial" instance=ExtResource( 7 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.87472, 0, -129.09 )
-length = 5
-relative_end = Vector3( 0, 0, 10 )
 
 [node name="Position3D1" parent="Spatial" instance=ExtResource( 6 )]
 
