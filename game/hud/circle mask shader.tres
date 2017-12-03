@@ -1,43 +1,38 @@
-[gd_resource type="Shader" load_steps=1 format=2]
-
+[gd_resource type="Shader" format=2]
 
 [resource]
 
-_code = {
-"fragment": "uniform float X;
-uniform float Y;
+code = "shader_type canvas_item;
 
-//uniform 
-vec2 center = vec2(0.5, 0.5); //the center of your circle in screen coords
-//uniform 
-float radius = 0.1; //the radius of your circle in pixels
+uniform float X = 0;
+uniform float Y = 0;
 
-//panning
-vec2 uv = vec2(UV.x + X, UV.y + Y);
+void fragment() {
+	vec2 center = vec2(0.5, 0.5); 
+	float radius = 0.1; //the radius of your circle in pixels
 
-//create the circle
-float len = length(UV - center);
-//len = smoothstep(radius, radius-blur, len);
-   
-// Get texture pixel color
-vec4 col = tex(TEXTURE, uv);
+	//panning
+	vec2 uv = vec2(UV.x + X, UV.y + Y);
+	
+	//create the circle
+	float len = length(UV - center);
+	//len = smoothstep(radius, radius-blur, len);
+	   
+	// Get texture pixel color
+	vec4 col = texture(TEXTURE, uv);
+	
+	//masking
+	float alpha = 1.0;
+	
+	if (len > radius)
+	{
+		alpha = 0.0;
+	}
+	else 
+	{
+		alpha = 1.0;
+	}
+	
+	COLOR.rgba = vec4(col.r, col.g, col.b, alpha);
+}"
 
-//masking
-float alpha = 1.0;
-
-if (len > radius)
-{
-	alpha = 0.0;
-}
-else 
-{
-	alpha = 1.0;
-}
-
-COLOR.rgba = vec4(col.r, col.g, col.b, alpha);",
-"fragment_ofs": 0,
-"light": "",
-"light_ofs": 0,
-"vertex": "",
-"vertex_ofs": 0
-}
