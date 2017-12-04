@@ -1,11 +1,12 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://car/AI_pathing.gd" type="Script" id=1]
 [ext_resource path="res://car/vehicle_AI.gd" type="Script" id=2]
 [ext_resource path="res://assets/truenohoudini.obj" type="ArrayMesh" id=3]
 [ext_resource path="res://assets/car_gray.tres" type="Material" id=4]
 [ext_resource path="res://car/follow_camera.gd" type="Script" id=5]
-[ext_resource path="res://car/detect_obstacles_ray.gd" type="Script" id=6]
+[ext_resource path="res://assets/LED taillights stock.jpg" type="Texture" id=6]
+[ext_resource path="res://car/detect_obstacles_ray.gd" type="Script" id=7]
 
 [sub_resource type="SpatialMaterial" id=1]
 
@@ -129,7 +130,7 @@ custom_aabb/custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
 
 extents = Vector3( 0.477039, 0.413218, 1.32118 )
 
-[sub_resource type="SpatialMaterial" id=7]
+[sub_resource type="SpatialMaterial" id=9]
 
 render_priority = 0
 flags_transparent = false
@@ -152,6 +153,7 @@ params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = false
 albedo_color = Color( 1, 1, 1, 1 )
+albedo_texture = ExtResource( 6 )
 metallic = 0.0
 metallic_specular = 0.5
 metallic_texture_channel = 0
@@ -168,7 +170,7 @@ subsurf_scatter_enabled = false
 transmission_enabled = false
 refraction_enabled = false
 detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
+uv1_scale = Vector3( 0.2, 0.2, 1 )
 uv1_offset = Vector3( 0, 0, 0 )
 uv1_triplanar = false
 uv1_triplanar_sharpness = 1.0
@@ -188,7 +190,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 98071,
 "index_count": 72,
-"material": SubResource( 7 ),
+"material": SubResource( 9 ),
 "name": "taillights_simple",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -393,6 +395,11 @@ h_offset = 0.0
 v_offset = 0.0
 doppler/tracking = 0
 script = ExtResource( 5 )
+min_distance = 0.5
+max_distance = 4.0
+angle_v_adjust = 0.0
+autoturn_ray_aperture = 25
+autoturn_speed = 50
 
 [node name="SpotLight" type="SpotLight" parent="BODY"]
 
@@ -458,7 +465,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.44403 )
 enabled = true
 cast_to = Vector3( 0, 0, 5 )
 collision_mask = 1
-script = ExtResource( 6 )
+script = ExtResource( 7 )
 
 [node name="RayLeftFront" type="RayCast" parent="BODY"]
 
@@ -466,7 +473,7 @@ transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0
 enabled = true
 cast_to = Vector3( 0, 0, 5 )
 collision_mask = 1
-script = ExtResource( 6 )
+script = ExtResource( 7 )
 
 [node name="RayRightFront" type="RayCast" parent="BODY"]
 
@@ -474,7 +481,7 @@ transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0
 enabled = true
 cast_to = Vector3( 0, 0, 5 )
 collision_mask = 1
-script = ExtResource( 6 )
+script = ExtResource( 7 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
