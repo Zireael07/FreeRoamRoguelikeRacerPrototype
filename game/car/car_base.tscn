@@ -1,12 +1,14 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://car/vehicle_player.gd" type="Script" id=1]
 [ext_resource path="res://assets/truenohoudini.obj" type="ArrayMesh" id=2]
 [ext_resource path="res://assets/car_blue.tres" type="Material" id=3]
 [ext_resource path="res://car/follow_camera.gd" type="Script" id=4]
 [ext_resource path="res://hud/test_car_label.tscn" type="PackedScene" id=5]
-[ext_resource path="res://assets/LED taillights stock.jpg" type="Texture" id=6]
-[ext_resource path="res://hud/test_car_nameplate.tscn" type="PackedScene" id=7]
+[ext_resource path="res://hud/label_3d.gd" type="Script" id=6]
+[ext_resource path="res://assets/LED taillights stock.jpg" type="Texture" id=7]
+[ext_resource path="res://hud/test_car_nameplate.tscn" type="PackedScene" id=8]
+[ext_resource path="res://hud/nameplate_3d.gd" type="Script" id=9]
 
 [sub_resource type="SpatialMaterial" id=1]
 
@@ -130,7 +132,61 @@ custom_aabb/custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
 
 extents = Vector3( 0.477039, 0.413218, 1.32118 )
 
-[sub_resource type="SpatialMaterial" id=7]
+[sub_resource type="SpatialMaterial" id=12]
+
+render_priority = 0
+flags_transparent = true
+flags_unshaded = false
+flags_vertex_lighting = false
+flags_no_depth_test = false
+flags_use_point_size = false
+flags_world_triplanar = false
+flags_fixed_size = false
+vertex_color_use_as_albedo = false
+vertex_color_is_srgb = false
+params_diffuse_mode = 1
+params_specular_mode = 0
+params_blend_mode = 0
+params_cull_mode = 0
+params_depth_draw_mode = 0
+params_line_width = 1.0
+params_point_size = 1.0
+params_billboard_mode = 0
+params_grow = false
+params_use_alpha_scissor = false
+albedo_color = Color( 1, 1, 1, 1 )
+metallic = 0.0
+metallic_specular = 0.5
+metallic_texture_channel = 0
+roughness = 0.0
+roughness_texture_channel = 0
+emission_enabled = false
+normal_enabled = false
+rim_enabled = false
+clearcoat_enabled = false
+anisotropy_enabled = false
+ao_enabled = false
+depth_enabled = false
+subsurf_scatter_enabled = false
+transmission_enabled = false
+refraction_enabled = false
+detail_enabled = false
+uv1_scale = Vector3( 1, 1, 1 )
+uv1_offset = Vector3( 0, 0, 0 )
+uv1_triplanar = false
+uv1_triplanar_sharpness = 1.0
+uv2_scale = Vector3( 1, 1, 1 )
+uv2_offset = Vector3( 0, 0, 0 )
+uv2_triplanar = false
+uv2_triplanar_sharpness = 1.0
+proximity_fade_enable = false
+distance_fade_enable = false
+
+[sub_resource type="QuadMesh" id=11]
+
+size = Vector2( 1, 1 )
+
+[sub_resource type="SpatialMaterial" id=8]
 
 render_priority = 0
 flags_transparent = false
@@ -153,7 +209,7 @@ params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = false
 albedo_color = Color( 1, 1, 1, 1 )
-albedo_texture = ExtResource( 6 )
+albedo_texture = ExtResource( 7 )
 metallic = 0.0
 metallic_specular = 0.5
 metallic_texture_channel = 0
@@ -181,7 +237,7 @@ uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 
-[sub_resource type="ArrayMesh" id=8]
+[sub_resource type="ArrayMesh" id=9]
 
 surfaces/0 = {
 "aabb": AABB( -0.4027, 0.0012, -0.0986, 0.8086, 0.02501, 0.0999 ),
@@ -190,13 +246,67 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 98071,
 "index_count": 72,
-"material": SubResource( 7 ),
+"material": SubResource( 8 ),
 "name": "taillights_simple",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 48
 }
 custom_aabb/custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+
+[sub_resource type="SpatialMaterial" id=13]
+
+render_priority = 0
+flags_transparent = false
+flags_unshaded = false
+flags_vertex_lighting = false
+flags_no_depth_test = false
+flags_use_point_size = false
+flags_world_triplanar = false
+flags_fixed_size = false
+vertex_color_use_as_albedo = false
+vertex_color_is_srgb = false
+params_diffuse_mode = 1
+params_specular_mode = 0
+params_blend_mode = 0
+params_cull_mode = 0
+params_depth_draw_mode = 0
+params_line_width = 1.0
+params_point_size = 1.0
+params_billboard_mode = 0
+params_grow = false
+params_use_alpha_scissor = false
+albedo_color = Color( 1, 1, 1, 1 )
+metallic = 0.0
+metallic_specular = 0.5
+metallic_texture_channel = 0
+roughness = 0.0
+roughness_texture_channel = 0
+emission_enabled = false
+normal_enabled = false
+rim_enabled = false
+clearcoat_enabled = false
+anisotropy_enabled = false
+ao_enabled = false
+depth_enabled = false
+subsurf_scatter_enabled = false
+transmission_enabled = false
+refraction_enabled = false
+detail_enabled = false
+uv1_scale = Vector3( 1, 1, 1 )
+uv1_offset = Vector3( 0, 0, 0 )
+uv1_triplanar = false
+uv1_triplanar_sharpness = 1.0
+uv2_scale = Vector3( 1, 1, 1 )
+uv2_offset = Vector3( 0, 0, 0 )
+uv2_triplanar = false
+uv2_triplanar_sharpness = 1.0
+proximity_fade_enable = false
+distance_fade_enable = false
+
+[sub_resource type="QuadMesh" id=10]
+
+size = Vector2( 1, 1 )
 
 [node name="Spatial" type="Spatial"]
 
@@ -373,6 +483,7 @@ disabled = false
 
 [node name="cambase" type="Spatial" parent="BODY"]
 
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.996002, -1.06042 )
 
 [node name="Camera" type="Camera" parent="BODY/cambase"]
@@ -399,7 +510,7 @@ autoturn_speed = 50
 [node name="Viewport" type="Viewport" parent="BODY"]
 
 arvr = false
-size = Vector2( 0, 0 )
+size = Vector2( 300, 200 )
 own_world = false
 world = null
 transparent_bg = true
@@ -408,7 +519,7 @@ hdr = false
 disable_3d = false
 usage = 2
 debug_draw = 0
-render_target_v_flip = false
+render_target_v_flip = true
 render_target_clear_mode = 0
 render_target_update_mode = 2
 audio_listener_enable_2d = false
@@ -431,6 +542,23 @@ anchor_bottom = 0.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
+
+[node name="MeshInstance" type="MeshInstance" parent="BODY"]
+
+transform = Transform( -1, 0, 8.74228e-08, 0, 0.5, 0, -8.74228e-08, 0, -1, 0, 1.1208, 0 )
+layers = 1
+material_override = SubResource( 12 )
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 11 )
+skeleton = NodePath("..")
+material/0 = null
+script = ExtResource( 6 )
 
 [node name="SpotLight" type="SpotLight" parent="BODY"]
 
@@ -486,15 +614,14 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 8 )
+mesh = SubResource( 9 )
 skeleton = NodePath("..")
 material/0 = null
 
 [node name="Viewport 2" type="Viewport" parent="BODY"]
 
-editor/display_folded = true
 arvr = false
-size = Vector2( 0, 0 )
+size = Vector2( 400, 150 )
 own_world = false
 world = null
 transparent_bg = false
@@ -503,9 +630,9 @@ hdr = false
 disable_3d = false
 usage = 2
 debug_draw = 0
-render_target_v_flip = false
+render_target_v_flip = true
 render_target_clear_mode = 0
-render_target_update_mode = 2
+render_target_update_mode = 3
 audio_listener_enable_2d = false
 audio_listener_enable_3d = false
 physics_object_picking = false
@@ -517,7 +644,7 @@ shadow_atlas_quad_1 = 2
 shadow_atlas_quad_2 = 3
 shadow_atlas_quad_3 = 4
 
-[node name="nameplate" parent="BODY/Viewport 2" instance=ExtResource( 7 )]
+[node name="nameplate" parent="BODY/Viewport 2" instance=ExtResource( 8 )]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -526,6 +653,23 @@ anchor_bottom = 0.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
+
+[node name="MeshInstance2" type="MeshInstance" parent="BODY"]
+
+transform = Transform( -0.4, 0, 8.74228e-08, 0, 0.2, 0, -3.49691e-08, 0, -1, 0, 0.362609, -1.41142 )
+layers = 1
+material_override = SubResource( 13 )
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 10 )
+skeleton = NodePath("..")
+material/0 = null
+script = ExtResource( 9 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
