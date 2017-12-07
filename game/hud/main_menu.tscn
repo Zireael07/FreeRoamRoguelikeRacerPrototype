@@ -13,39 +13,50 @@ font_data = ExtResource( 2 )
 
 [node name="Control" type="Control"]
 
-focus_ignore_mouse = false
-focus_stop_mouse = true
-size_flags_horizontal = 2
-size_flags_vertical = 2
-margin_left = 0.0
-margin_top = 0.0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 1024.0
 margin_bottom = 760.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 2
+size_flags_vertical = 2
 
 [node name="TextureFrame" type="TextureRect" parent="."]
 
-focus_ignore_mouse = true
-focus_stop_mouse = true
-size_flags_horizontal = 2
-size_flags_vertical = 2
-margin_left = 0.0
-margin_top = 0.0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 1024.0
 margin_bottom = 760.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+size_flags_horizontal = 2
+size_flags_vertical = 2
 texture = ExtResource( 1 )
 expand = true
 stretch_mode = 0
 
 [node name="Title" type="Label" parent="."]
 
-focus_ignore_mouse = true
-focus_stop_mouse = true
-size_flags_horizontal = 2
-size_flags_vertical = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_left = 280.0
 margin_top = 81.0
 margin_right = 805.0
 margin_bottom = 123.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 2
+size_flags_vertical = 0
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.212326, 0.879163, 0.988281, 1 )
 text = "Free Roam Racer Prototype"
@@ -57,19 +68,27 @@ max_lines_visible = -1
 
 [node name="new_game" type="Button" parent="."]
 
-focus_ignore_mouse = false
-focus_stop_mouse = true
-size_flags_horizontal = 2
-size_flags_vertical = 2
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_left = 496.0
 margin_top = 505.0
 margin_right = 578.0
 margin_bottom = 525.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+size_flags_horizontal = 2
+size_flags_vertical = 2
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
+group = null
 text = "New Game"
 flat = false
 script = ExtResource( 3 )
 
-[connection signal="pressed"  from="new_game"  to="new_game" method="_on_new_game_pressed" binds=[  ]]
+[connection signal="pressed" from="new_game" to="new_game" method="_on_new_game_pressed"]
+
+
