@@ -124,7 +124,7 @@ func _physics_process(delta):
 	var basis = get_transform().basis.y
 
 func reset_car():
-	var reset_rot = Vector3(0, get_rotation_deg().y, 0)
+	var reset_rot = Vector3(0, get_rotation_degrees().y, 0)
 	set_rotation_degrees(reset_rot)
 
 # basically copy-pasta from the car physics function, to predict steer the NEXT physics tick
@@ -199,8 +199,8 @@ func _ready():
 	
 func setHeadlights(on):
 	if (on):
-		headlight_one.set_enabled(true)
-		headlight_two.set_enabled(true)
+		headlight_one.set_visible(true)
+		headlight_two.set_visible(true)
 	else:
-		headlight_one.set_enabled(false)
-		headlight_two.set_enabled(false)
+		headlight_one.set_visible(false)
+		headlight_two.set_visible(false)

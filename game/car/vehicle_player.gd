@@ -99,7 +99,7 @@ func _physics_process(delta):
 #doesn't interact with physics
 func _input(event):
 	if (Input.is_action_pressed("headlights_toggle")):
-		if (get_node("SpotLight").is_enabled()):
+		if (get_node("SpotLight").is_visible()):
 			setHeadlights(false)
 		else:
 			setHeadlights(true)	
