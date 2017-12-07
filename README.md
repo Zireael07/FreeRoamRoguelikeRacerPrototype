@@ -1,6 +1,8 @@
 # FreeRoamRoguelikeRacerPrototype
 
-This is a Godot 2.1.4 project.
+This is a Godot 3.0 (beta 1) project.
+
+For a 2.1.4 version, see the 2.1.4 branch.
 
 Mostly an exploration of procedural generation of roads/city.
 
