@@ -85,6 +85,29 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = 1
 
+[node name="Label clock" type="Label" parent="."]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 678.0
+margin_top = 461.0
+margin_right = 880.0
+margin_bottom = 561.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 2
+size_flags_vertical = 0
+custom_colors/font_color = Color( 0.0154419, 0.988281, 0.988281, 1 )
+text = "clock"
+align = 1
+valign = 2
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = 1
+
 [node name="Label 2" type="Label" parent="."]
 
 anchor_left = 0.0
