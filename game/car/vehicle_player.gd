@@ -1,6 +1,8 @@
 extends "vehicle.gd"
 
 # class member variables go here, for example:
+var World_node
+	
 #hud
 var hud
 var speed_text
@@ -23,6 +25,8 @@ func _ready():
 	# Initialization here
 	# our custom signal
 	connect("load_ended", self, "on_load_ended")
+	
+	World_node = get_parent().get_parent().get_node("World")
 	
 	##GUI
 	var h = preload("res://hud/hud.tscn")
@@ -87,6 +91,13 @@ func _physics_process(delta):
 	speed_kph = round(speed*3.6)
 	speed_text = String(speed_int) + " m/s " + String(speed_kph) + " kph"
 	hud.update_speed(speed_text)
+	
+	# in-game time
+	var text = " "
+	if (World_node != null):
+		text = String(World_node.hour) + " : " + String(round(World_node.minute))
+	
+	hud.update_clock(text)
 	
 	#increment distance counter
 	distance = distance + get_translation().distance_to(last_pos)
