@@ -232,6 +232,64 @@ func make_strip_single(index_one, index_two, parent):
 	else:
 		print("No sides given")
 
+func make_point_array(index_one, index_two):
+	var right_side = null
+	var left_side = null
+	var center_line = null
+	
+	if left_turn:
+		center_line = points_center
+		left_side = points_inner
+		right_side = points_outer
+	else:
+		center_line = points_center #curve_one
+		left_side = points_outer #curve_three
+		right_side = points_inner #curve_two
+	
+
+	if (left_side != null):
+		if (index_one != index_two):
+			var zero = Vector3(right_side[index_one].x, road_height, right_side[index_one].y) #right_side.get_point_pos(index_one)
+			var one = Vector3(center_line[index_one].x, road_height, center_line[index_one].y) #center_line.get_point_pos(index_one)
+			var two = Vector3(center_line[index_two].x, road_height, center_line[index_two].y) #center_line.get_point_pos(index_two)
+			var three = Vector3(right_side[index_two].x, road_height, right_side[index_two].y) #right_side.get_point_pos(index_two)
+			var four = Vector3(left_side[index_one].x, road_height, left_side[index_one].y) #left_side.get_point_pos(index_one)
+			var five = Vector3(left_side[index_two].x, road_height, left_side[index_two].y) #left_side.get_point_pos(index_two)
+			
+			return [zero, one, two, three, four, five]
+						
+		else:
+			print("Bad indexes given")
+	else:
+		print("No sides given")
+
+
+func getQuads(array):
+	var quad_one = [array[0], array[1], array[2], array[3], false]
+	var quad_two = [array[1], array[4], array[5], array[2], true]
+	
+	return [quad_one, quad_two]
+
+func optimizedmeshCreate(quads, material):
+	var surface = SurfaceTool.new()
+	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	#Create a node building that will hold the mesh
+	var node = MeshInstance.new()
+	node.set_name("plane")
+	add_child(node)
+	
+	for qu in quads:
+		addQuad(qu[0], qu[1], qu[2], qu[3], material, surface, qu[4])
+	
+	surface.generate_normals()
+	
+	#Set the created mesh to the node
+	node.set_mesh(surface.commit())	
+	
+	#Turn off shadows
+	node.set_cast_shadows_setting(0)
+
 
 #make the mesh
 #func make_strip(index_one, index_two, right):
@@ -278,6 +336,7 @@ func get_global_positions():
 func test_road():
 	#only mesh in game because meshing in editor can take >900 ms
 	if not Engine.is_editor_hint():
+		var quads = []
 		#dummy to be able to get the road mesh faster
 		var road_mesh = Spatial.new()
 		road_mesh.set_name("road_mesh")
@@ -291,7 +350,11 @@ func test_road():
 		
 		var nb_points = 32
 		for index in range(nb_points-1):
-			make_strip_single(index, index+1, road_mesh)
+			var array = make_point_array(index, index+1)
+			quads.append(getQuads(array)[0])
+			quads.append(getQuads(array)[1])
+			
+			#make_strip_single(index, index+1, road_mesh)
 			
 			if sidewalks:
 				make_quad(index, index+1, true)
@@ -312,6 +375,9 @@ func test_road():
 			#B-A = from a to b
 			start_vector = Vector3(positions[1]-positions[0])
 			end_vector = Vector3(positions[positions.size()-1] - positions[positions.size()-2])
+		
+		#optimized mesh
+		optimizedmeshCreate(quads, material)
 		
 			
 		#generate navi vertices

@@ -57,6 +57,8 @@ func _ready():
 	#props
 	building = preload("res://objects/skyscraper.tscn")
 	
+	var quads = []
+	
 	#overdraw fix
 	if (get_parent().get_name().find("Spatial") != -1):
 		for index in range(length):
@@ -71,7 +73,10 @@ func _ready():
 				##draw_debug_point(positions[index], color)
 				#only make the mesh in game (meshing in editor is hilariously slow, up to 900 ms)
 				if not Engine.is_editor_hint():
-					meshCreate(temp_positions, material)
+					#meshCreate(temp_positions, material)
+					quads.append(getQuads(temp_positions)[0])
+					quads.append(getQuads(temp_positions)[1])
+				
 				positions.push_back(temp_positions[1])
 				positions.push_back(temp_positions[2])
 				left_positions.push_back(temp_positions[0])
@@ -87,6 +92,7 @@ func _ready():
 		# set up navmesh if not in editor	
 		if not Engine.is_editor_hint():
 			setupNavi(self)
+			optimizedmeshCreate(quads, material)
 				
 	#set the end
 	relative_end = Vector3(0,0, sectionlength*length)
@@ -143,6 +149,32 @@ func get_global_positions():
 
 func draw_debug_point(loc, color):
 	addTestColor(m, color, null, loc.x, 0.01, loc.z, 0.05,0.05,0.05)
+
+func getQuads(array):
+	var quad_one = [array[0], array[1], array[2], array[3], false]
+	var quad_two = [array[1], array[4], array[5], array[2], true]
+	
+	return [quad_one, quad_two]
+
+func optimizedmeshCreate(quads, material):
+	var surface = SurfaceTool.new()
+	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	#Create a node building that will hold the mesh
+	var node = MeshInstance.new()
+	node.set_name("plane")
+	add_child(node)
+	
+	for qu in quads:
+		addQuad(qu[0], qu[1], qu[2], qu[3], material, surface, qu[4])
+	
+	surface.generate_normals()
+	
+	#Set the created mesh to the node
+	node.set_mesh(surface.commit())	
+	
+	#Turn off shadows
+	node.set_cast_shadows_setting(0)
 
 func meshCreate(array, material):
 	var surface = SurfaceTool.new()
