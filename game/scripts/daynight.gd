@@ -15,6 +15,8 @@ export var day_night = true
 
 var sun = null
 var sunmoon_angle
+var sunmoon_lat
+
 
 # colors
 var light_color
@@ -25,8 +27,8 @@ var gr_horizon_color
 
 func _ready():
 	
-	time = 6.0;
-	prev_time = 6.0;
+	time = 8.0;
+	prev_time = 8.0;
 	delay = 0.0;
 	
 	#target 60 fps
@@ -77,11 +79,26 @@ func calculate_rotation(time):
 	var angle = deg2rad(-(angle_midnight*inv_fraction))
 	return angle
 	
+func calculate_sun_latitude(time):
+	var lat_sunset = 180
+	var lat_night = -40
+	var latitude
+	
+	# fraction of daytime (from 6 to 18)
+	var time_since_day = time-6
+	if time_since_day > 0 and time < 20:
+		var fraction_daytime = time_since_day/12.0
+		latitude = (lat_sunset*fraction_daytime)
+	elif time_since_day < 0 or time >= 20:
+		latitude = lat_night
+	
+	
+	return latitude
+
 func day_night_cycle(time):
 	sunmoon_angle = calculate_rotation(time)
 	get_parent().get_node("DirectionalLight").set_rotation(Vector3(sunmoon_angle, 0, 0))
-	
-	
+	sunmoon_lat = calculate_sun_latitude(time)
 	
 	var light = calculate_lightning(hour, minute);
 	get_parent().get_node("DirectionalLight").set_param(Light.PARAM_ENERGY, light);
@@ -90,7 +107,7 @@ func day_night_cycle(time):
 	if time >= 17.5 && time < 18:
 		var d = (time-17.5)/0.5;
 		light_color = Color(1-((1-42/255.0)*d), 1-((1-64/255.0)*d), 1-((1-141/255.0)*d));
-	elif time >= 5.5 && time < 6.0:
+	elif time >= 6.0 && time < 6.5:
 		var d = (time-5.5)/0.5;
 		light_color = Color((42/255.0)+((1-42/255.0)*d), (64/255.0)+((1-64/255.0)*d), (141/255.0)+((1-141/255.0)*d));
 	elif time >= 18 || time < 5.5:
@@ -121,5 +138,8 @@ func day_night_cycle(time):
 	sky.set_sky_top_color(sky_color)
 	sky.set_sky_horizon_color(horizon_color)
 	sky.set_ground_horizon_color(gr_horizon_color)
+	
+	# set sun latitude
+	sky.set_sun_latitude(sunmoon_lat)
 	
 	#env.set_background_param(Environment.BG_PARAM_COLOR, col);
