@@ -6,23 +6,23 @@ path="res://.import/road2Lane - road M.jpg-df58671eaa883807f2574e545c844b10.stex
 
 [deps]
 
-source_md5="5e5d6c5cfd144015f27f5dd0943cee57"
+source_md5="1d8e461f4e6737df345150cc886511df"
 
 [params]
 
-compress/mode=0
+compress/mode=3
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/normal_map=0
-flags/repeat=0
-flags/filter=true
+flags/repeat=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
-flags/srgb=2
-process/fix_alpha_border=true
+flags/srgb=1
+process/fix_alpha_border=false
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0
