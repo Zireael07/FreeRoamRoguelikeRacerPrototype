@@ -36,3 +36,7 @@ steer_reset=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_nam
 [rasterizer]
 
 shadow_filter=3
+
+[rendering]
+
+quality/voxel_cone_tracing/high_quality=false
