@@ -525,3 +525,14 @@ func send_positions(map):
 	print(get_name() + " sending position to map")
 	global_positions = get_global_positions()
 	map.add_positions(global_positions)
+
+func lite_up():
+	#print("Lit up road")
+	var material = get_node("plane").get_mesh().surface_get_material(0)
+	material.set_feature(SpatialMaterial.FEATURE_EMISSION, true)
+	material.set_emission(Color(0,0,1))
+	
+func reset_lite():
+	#print("Reset lite")
+	var material = get_node("plane").get_mesh().surface_get_material(0)
+	material.set_feature(SpatialMaterial.FEATURE_EMISSION, false)
