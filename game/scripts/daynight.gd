@@ -113,6 +113,8 @@ func day_night_cycle(time):
 		#get_tree().call_group("roads", "reset_lite")
 		#re-enable shadows
 		get_parent().get_node("DirectionalLight").set_shadow(true)
+		# gi
+		get_parent().get_node("GIProbe").set_interior(false)
 	elif time >= 6.0 && time < 6.5:
 		var d = (time-5.5)/0.5;
 		light_color = Color((42/255.0)+((1-42/255.0)*d), (64/255.0)+((1-64/255.0)*d), (141/255.0)+((1-141/255.0)*d));
@@ -120,6 +122,8 @@ func day_night_cycle(time):
 		#disable shadows
 		get_parent().get_node("DirectionalLight").set_shadow(false)
 		get_tree().get_nodes_in_group("roads")[0].lite_up()
+		# so that emissives light effect is better visible
+		get_parent().get_node("GIProbe").set_interior(true)
 	elif time >= 18 || time < 5.5:
 		light_color = Color(42/255.0, 64/255.0, 141/255.0);
 		
