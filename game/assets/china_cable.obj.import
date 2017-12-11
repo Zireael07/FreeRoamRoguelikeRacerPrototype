@@ -1,0 +1,15 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/china_cable.obj-408a05b9e54cdf338e2f6aef10167d61.mesh"
+
+[deps]
+
+files=[ "res://.import/china_cable.obj-408a05b9e54cdf338e2f6aef10167d61.mesh" ]
+
+source_md5="f86280577a571cbf16c61e64e520a98c"
+
+[params]
+
+generate_tangents=true
