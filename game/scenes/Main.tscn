@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scripts/daynight.gd" type="Script" id=1]
 [ext_resource path="res://objects/roads.tscn" type="PackedScene" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://objects/marker.tscn" type="PackedScene" id=11]
 [ext_resource path="res://objects/race_marker.tscn" type="PackedScene" id=12]
 [ext_resource path="res://car/car_base.tscn" type="PackedScene" id=13]
+[ext_resource path="res://objects/china_cable.tscn" type="PackedScene" id=14]
 
 [node name="root" type="Navigation"]
 
@@ -116,6 +117,8 @@ ends = PoolVector3Array(  )
 [node name="Position3D 2" parent="Spatial" instance=ExtResource( 8 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.87472, 0, -129.09 )
+length = 49
+relative_end = Vector3( 0, 0, 98 )
 
 [node name="Position3D1" parent="Spatial" instance=ExtResource( 7 )]
 
@@ -144,5 +147,21 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -52.0014, 0.25, 2.00525 )
 [node name="car" parent="." instance=ExtResource( 13 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.2608, 0, 0 )
+
+[node name="Spatial2" parent="." instance=ExtResource( 14 )]
+
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -38.2155 )
+
+[node name="Spatial3" parent="." instance=ExtResource( 14 )]
+
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -57.5656 )
+
+[node name="Spatial4" parent="." instance=ExtResource( 14 )]
+
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -77.4224 )
+
+[node name="Spatial5" parent="." instance=ExtResource( 14 )]
+
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -107.416 )
 
 
