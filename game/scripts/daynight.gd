@@ -107,16 +107,23 @@ func day_night_cycle(time):
 	if time >= 17.5 && time < 18:
 		var d = (time-17.5)/0.5;
 		light_color = Color(1-((1-42/255.0)*d), 1-((1-64/255.0)*d), 1-((1-141/255.0)*d));
+	elif time >= 5.5 && time < 6.0:
+		# stuff done slightly before sunrise
+		get_tree().get_nodes_in_group("roads")[0].reset_lite()
+		#get_tree().call_group("roads", "reset_lite")
+		#re-enable shadows
+		get_parent().get_node("DirectionalLight").set_shadow(true)
 	elif time >= 6.0 && time < 6.5:
 		var d = (time-5.5)/0.5;
 		light_color = Color((42/255.0)+((1-42/255.0)*d), (64/255.0)+((1-64/255.0)*d), (141/255.0)+((1-141/255.0)*d));
-	elif time >= 18 || time < 5.5:
-		light_color = Color(42/255.0, 64/255.0, 141/255.0);
+	elif time >= 18 && time < 18.5:
 		#disable shadows
 		get_parent().get_node("DirectionalLight").set_shadow(false)
-	else:
-		#re-enable shadows
-		get_parent().get_node("DirectionalLight").set_shadow(true)
+		get_tree().get_nodes_in_group("roads")[0].lite_up()
+	elif time >= 18 || time < 5.5:
+		light_color = Color(42/255.0, 64/255.0, 141/255.0);
+		
+		
 		
 	get_parent().get_node("DirectionalLight").set_color(light_color)
 	
@@ -143,3 +150,4 @@ func day_night_cycle(time):
 	sky.set_sun_latitude(sunmoon_lat)
 	
 	#env.set_background_param(Environment.BG_PARAM_COLOR, col);
+	
