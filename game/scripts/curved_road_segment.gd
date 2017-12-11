@@ -385,6 +385,10 @@ func test_road():
 		nav_vertices2 = get_navi_vertices_alt()		
 						
 		placeStreetlight()
+		
+		# disable the emissiveness
+		reset_lite()
+		
 	#draw an immediate line in editor instead
 	else:
 		#clear to prevent weird stuff

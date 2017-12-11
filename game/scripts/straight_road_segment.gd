@@ -93,6 +93,8 @@ func _ready():
 		if not Engine.is_editor_hint():
 			setupNavi(self)
 			optimizedmeshCreate(quads, material)
+			# disable the emissiveness
+			reset_lite()
 				
 	#set the end
 	relative_end = Vector3(0,0, sectionlength*length)
