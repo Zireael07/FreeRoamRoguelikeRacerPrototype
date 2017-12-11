@@ -1,6 +1,7 @@
-[gd_resource type="SpatialMaterial" load_steps=2 format=2]
+[gd_resource type="SpatialMaterial" load_steps=3 format=2]
 
 [ext_resource path="res://assets/road2Lane - road.jpg" type="Texture" id=1]
+[ext_resource path="res://assets/road2Lane - road M.jpg" type="Texture" id=2]
 
 [resource]
 
@@ -31,7 +32,11 @@ metallic_specular = 0.5
 metallic_texture_channel = 0
 roughness = 1.0
 roughness_texture_channel = 0
-emission_enabled = false
+emission_enabled = true
+emission = Color( 0.00769043, 0.0916243, 0.984375, 1 )
+emission_energy = 1.0
+emission_operator = 1
+emission_texture = ExtResource( 2 )
 normal_enabled = false
 rim_enabled = false
 clearcoat_enabled = false
