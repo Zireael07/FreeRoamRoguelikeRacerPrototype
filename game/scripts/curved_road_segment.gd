@@ -17,6 +17,9 @@ export(bool) var sidewalks = false
 var points_inner_side
 var points_outer_side
 
+export(bool) var barriers = true
+var points_outer_barrier
+
 var road_height = 0.01
 
 #road variables
@@ -62,6 +65,7 @@ var end_vector = Vector3()
 #mesh material
 export(SpatialMaterial)    var material    = preload("res://assets/road_material.tres")
 export(SpatialMaterial) var sidewalk_material = preload("res://assets/cement.tres")
+export(SpatialMaterial) var barrier_material = preload("res://assets/barrier_material.tres")
 
 #props
 var streetlight
@@ -96,6 +100,10 @@ func _ready():
 	if sidewalks:
 		points_inner_side = get_circle_arc(loc, radius-(lane_width*1.5), start_angle, end_angle, not left_turn)
 		points_outer_side = get_circle_arc(loc, radius+(lane_width*1.5), start_angle, end_angle, not left_turn)
+		
+	if barriers:
+		points_outer_barrier = get_circle_arc(loc, radius+(lane_width*1.5)+0.5, start_angle, end_angle, not left_turn)
+	
 	
 	fix_stuff()
 	test_road()
@@ -359,6 +367,10 @@ func test_road():
 			if sidewalks:
 				make_quad(index, index+1, true)
 				make_quad(index, index+1, false)
+				
+			if barriers and index > 5 and index < 25:
+					make_barrier(index, barrier_material)
+			
 			
 			positions.push_back(Vector3(points_center[index].x, road_height, points_center[index].y))
 			positions.push_back(Vector3(points_center[index+1].x, road_height, points_center[index+1].y))
@@ -429,6 +441,39 @@ func placeStreetlight():
 		light.set_rotation_degrees(Vector3(0, 0, 0))
 	else:
 		light.set_rotation_degrees(Vector3(0, 0, 0))
+
+func make_barrier(index, material):
+	var surface = SurfaceTool.new()
+	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	#Create a node building that will hold the mesh
+	var node = MeshInstance.new()
+	node.set_name("barrier")
+	add_child(node)
+	
+	var one = Vector3(points_outer_barrier[index].x, road_height, points_outer_barrier[index].y)
+	var two = Vector3(points_outer_barrier[index+1].x, road_height, points_outer_barrier[index+1].y)
+	var three = Vector3(points_outer_barrier[index+1].x, 2, points_outer_barrier[index+1].y)
+	var four = Vector3(points_outer_barrier[index].x, 2, points_outer_barrier[index].y)
+	
+	var flip = false
+	if (!left_turn):
+		flip = true
+	
+	# outside
+	addQuad(one, two, three, four, material, surface, flip)
+	# inside
+	addQuad(four, three, two, one, material, surface, flip)
+	
+	surface.generate_normals()
+	
+	#Set the created mesh to the node
+	node.set_mesh(surface.commit())	
+	
+	#Turn off shadows
+	node.set_cast_shadows_setting(0)
+
+
 		
 # navmesh
 func get_navi_vertices():
