@@ -62,11 +62,15 @@ func setupRoad(index, left):
 	if (left):
 		var road_node_left = road_left.instance()
 		road_node_left.set_name("Road_instance" + String(index))
+		road_node_left.get_child(0).get_child(0).start_angle = 45
+		road_node_left.get_child(0).get_child(0).end_angle = 135
 		add_child(road_node_left)
 		return road_node_left
 	else:
 		var road_node = road.instance()
 		road_node.set_name("Road_instance" + String(index))
+		road_node.get_child(0).get_child(0).start_angle = 45
+		road_node.get_child(0).get_child(0).end_angle = 135
 		add_child(road_node)
 		return road_node
 
