@@ -435,12 +435,16 @@ func placeStreetlight():
 	add_child(light)
 	
 	var num = (positions.size()/2)
-	light.set_translation(positions[num]+Vector3(-5,0,0))
 	
 	if (not left_turn):
 		light.set_rotation_degrees(Vector3(0, 0, 0))
 	else:
-		light.set_rotation_degrees(Vector3(0, 0, 0))
+		light.set_rotation_degrees(Vector3(0, 90, 0))
+		
+	if left_turn:
+		light.set_translation(right_positions[num]+Vector3(-2,0,0))
+	else:
+		light.set_translation(right_positions[num]+Vector3(-2,0,0))
 
 func make_barrier(index, material):
 	var surface = SurfaceTool.new()
