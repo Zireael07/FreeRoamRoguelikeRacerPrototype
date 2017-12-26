@@ -130,9 +130,9 @@ func reset_car():
 # basically copy-pasta from the car physics function, to predict steer the NEXT physics tick
 func predict_steer(delta, left, right):
 	if (left):
-		steer_target = -STEER_LIMIT
-	elif (right):
 		steer_target = STEER_LIMIT
+	elif (right):
+		steer_target = -STEER_LIMIT
 	else: #if (not left and not right):
 		steer_target = 0
 	
