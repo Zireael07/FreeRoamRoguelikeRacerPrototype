@@ -20,11 +20,11 @@ func find_path():
 		
 		# enable the navmesh we're interested in
 		if (left):
-			get_tree().call_group(0, "right_lane", "set_enabled", false)
-			get_tree().call_group(0, "left_lane", "set_enabled", true)
+			get_tree().call_group("right_lane", "set_enabled", false)
+			get_tree().call_group("left_lane", "set_enabled", true)
 		else:
-			get_tree().call_group(0, "left_lane", "set_enabled", false)
-			get_tree().call_group(0, "right_lane", "set_enabled", true)
+			get_tree().call_group("left_lane", "set_enabled", false)
+			get_tree().call_group("right_lane", "set_enabled", true)
 		
 		# get the points on navmesh relative to ourselves and target
 		var pos = get_translation()
