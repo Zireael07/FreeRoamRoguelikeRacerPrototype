@@ -108,85 +108,12 @@ func _physics_process(delta):
 		stopping()
 	else:
 		# detect collisions
-		if has_node("RayFront") and get_node("RayFront").get_collider_hit() != null:
-			# if all rays hit
-			if has_node("RayRightFront") and has_node("RayLeftFront") \
-			and get_node("RayRightFront").get_collider_hit() != null and get_node("RayLeftFront").get_collider_hit() != null:
-				#print(get_parent().get_name() + " all three rays hit")
-				flag = "AVOID - REVERSE"
-				braking = true
-				# pick direction to go to
-				if get_parent().left:
-					left = true
-				else:
-					right = true
-
-			else:
-			
-				# if one of the other rays collides
-				if has_node("RayRightFront") and get_node("RayRightFront").get_collider_hit() != null:
-					right = true
-					flag = "AVOID - REVERSE"
-					braking = true
-				elif has_node("RayLeftFront") and get_node("RayLeftFront").get_collider_hit() != null:
-					left = true
-					flag = "AVOID - REVERSE"
-					braking = true
-				else:
-					if (not reverse and speed > 10):
-						flag = "AVOID - BRAKE"
-						braking = true
-					else:
-						flag = "AVOID"
-						gas = true
-		
-		elif has_node("RayRightFront") and get_node("RayRightFront").is_colliding() and (get_node("RayRightFront").get_collider() != null):
-				#print("Detected obstacle " + (get_node("RayRightFront").get_collider().get_parent().get_name()))
-				if has_node("RayLeftFront"):
-					if not (get_node("RayLeftFront").is_colliding() and (get_node("RayLeftFront").get_collider() != null)):
-						#print(get_parent().get_name() + " rays cancelling out")
-					#else:
-						flag = "AVOID - LEFT TURN"
-						left = true
-				
-				if (not reverse and speed > 10):	
-					#flag = "AVOID"
-					braking = true
-				else:
-					gas = true
-				
-		elif has_node("RayLeftFront"):
-			if get_node("RayLeftFront").is_colliding() and (get_node("RayLeftFront").get_collider() != null):
-				#print(get_parent().get_name() + " detected left obstacle " + (get_node("RayLeftFront").get_collider().get_parent().get_name()))
-				flag = "AVOID - RIGHT TURN"
-				right = true
-				
-				if (not reverse and speed > 10):
-					#flag = "AVOID"
-					braking = true
-				else:
-					gas = true
+		collision_avoidance()
 					
 		
 		if not (flag.find("AVOID") != -1):
 			# go back on track if too far away from the drive line
-			offset = offset_dist(get_target(prev), get_target(current), pos)
-			if offset[0] > 3:
-			#print("Trying to go back because too far off the path")
-				flag = "GOING BACK"
-				
-				#rel_loc = get_global_transform().xform_inv(offset[1])
-				#angle = atan2(rel_loc.x, rel_loc.z)
-				var rel_target = get_global_transform().xform_inv(offset[1])
-				var rel_angle = atan2(rel_target.x, rel_target.z)
-				#print("Angle to new target: " + str(rel_angle))
-				#print("Offset loc: 	" + str(rel_loc.x) + " " + str(rel_loc.z))
-				if (not reverse and speed > 10):
-					braking = true
-				else:
-					gas = true
-				
-				simple_steering(rel_angle)
+			go_back(pos)
 			
 			if not flag == "GOING BACK":
 				#handle gas/brake
@@ -235,7 +162,8 @@ func _physics_process(delta):
 		else:
 			#print("We're at the end")
 			stop = true
-	
+
+# AI	
 	
 func stopping():
 	#relax steering
@@ -247,6 +175,86 @@ func stopping():
 		braking = true
 	if (speed > 0.2 and reverse):
 		gas = true
+
+func collision_avoidance():
+	if has_node("RayFront") and get_node("RayFront").get_collider_hit() != null:
+		# if all rays hit
+		if has_node("RayRightFront") and has_node("RayLeftFront") \
+		and get_node("RayRightFront").get_collider_hit() != null and get_node("RayLeftFront").get_collider_hit() != null:
+			#print(get_parent().get_name() + " all three rays hit")
+			flag = "AVOID - REVERSE"
+			braking = true
+			# pick direction to go to
+			if get_parent().left:
+				left = true
+			else:
+				right = true
+
+		else:
+		
+			# if one of the other rays collides
+			if has_node("RayRightFront") and get_node("RayRightFront").get_collider_hit() != null:
+				right = true
+				flag = "AVOID - REVERSE"
+				braking = true
+			elif has_node("RayLeftFront") and get_node("RayLeftFront").get_collider_hit() != null:
+				left = true
+				flag = "AVOID - REVERSE"
+				braking = true
+			else:
+				if (not reverse and speed > 10):
+					flag = "AVOID - BRAKE"
+					braking = true
+				else:
+					flag = "AVOID"
+					gas = true
+	
+	elif has_node("RayRightFront") and get_node("RayRightFront").is_colliding() and (get_node("RayRightFront").get_collider() != null):
+			#print("Detected obstacle " + (get_node("RayRightFront").get_collider().get_parent().get_name()))
+			if has_node("RayLeftFront"):
+				if not (get_node("RayLeftFront").is_colliding() and (get_node("RayLeftFront").get_collider() != null)):
+					#print(get_parent().get_name() + " rays cancelling out")
+				#else:
+					flag = "AVOID - LEFT TURN"
+					left = true
+			
+			if (not reverse and speed > 10):	
+				#flag = "AVOID"
+				braking = true
+			else:
+				gas = true
+			
+	elif has_node("RayLeftFront"):
+		if get_node("RayLeftFront").is_colliding() and (get_node("RayLeftFront").get_collider() != null):
+			#print(get_parent().get_name() + " detected left obstacle " + (get_node("RayLeftFront").get_collider().get_parent().get_name()))
+			flag = "AVOID - RIGHT TURN"
+			right = true
+			
+			if (not reverse and speed > 10):
+				#flag = "AVOID"
+				braking = true
+			else:
+				gas = true
+
+func go_back(pos):
+	offset = offset_dist(get_target(prev), get_target(current), pos)
+	if offset[0] > 3:
+	#print("Trying to go back because too far off the path")
+		flag = "GOING BACK"
+		
+		#rel_loc = get_global_transform().xform_inv(offset[1])
+		#angle = atan2(rel_loc.x, rel_loc.z)
+		var rel_target = get_global_transform().xform_inv(offset[1])
+		var rel_angle = atan2(rel_target.x, rel_target.z)
+		#print("Angle to new target: " + str(rel_angle))
+		#print("Offset loc: 	" + str(rel_loc.x) + " " + str(rel_loc.z))
+		if (not reverse and speed > 10):
+			braking = true
+		else:
+			gas = true
+		
+		simple_steering(rel_angle)
+
 	
 func get_target(index):
 	return target_array[index]
