@@ -25,6 +25,8 @@ var sky_color
 var horizon_color
 var gr_horizon_color
 
+var night_fired = false
+
 func _ready():
 	
 	time = 8.0;
@@ -108,22 +110,30 @@ func day_night_cycle(time):
 		var d = (time-17.5)/0.5;
 		light_color = Color(1-((1-42/255.0)*d), 1-((1-64/255.0)*d), 1-((1-141/255.0)*d));
 	elif time >= 5.5 && time < 6.0:
+		night_fired = false
 		# stuff done slightly before sunrise
 		get_tree().get_nodes_in_group("roads")[0].reset_lite()
 		#get_tree().call_group("roads", "reset_lite")
 		#re-enable shadows
 		get_parent().get_node("DirectionalLight").set_shadow(true)
-		# gi
-		get_parent().get_node("GIProbe").set_interior(false)
+		
+		get_parent().get_node("WorldEnvironment").get_environment().background_energy = 1
+		
+		# switching gi settings causes stutter
+		#get_parent().get_node("GIProbe").set_interior(false)
 	elif time >= 6.0 && time < 6.5:
 		var d = (time-5.5)/0.5;
 		light_color = Color((42/255.0)+((1-42/255.0)*d), (64/255.0)+((1-64/255.0)*d), (141/255.0)+((1-141/255.0)*d));
-	elif time >= 18 && time < 18.5:
+	elif time >= 17.5 && not night_fired:
 		#disable shadows
 		get_parent().get_node("DirectionalLight").set_shadow(false)
 		get_tree().get_nodes_in_group("roads")[0].lite_up()
 		# so that emissives light effect is better visible
-		get_parent().get_node("GIProbe").set_interior(true)
+		get_parent().get_node("WorldEnvironment").get_environment().background_energy = 0.1
+		print("[DAYNIGHT] switch to night settings")
+		night_fired = true
+		# GI probe interior switch causes stutter
+		#get_parent().get_node("GIProbe").set_interior(true)
 	elif time >= 18 || time < 5.5:
 		light_color = Color(42/255.0, 64/255.0, 141/255.0);
 		
