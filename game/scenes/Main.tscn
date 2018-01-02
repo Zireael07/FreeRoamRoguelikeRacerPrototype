@@ -29,35 +29,37 @@ propagation = 0.7
 interior = false
 compress = false
 
-[node name="root" type="Navigation"]
+[node name="root" type="Navigation" index="0"]
 
 up_vector = Vector3( 0, 1, 0 )
 __meta__ = {
 "__editor_plugin_screen__": "3D"
 }
 
-[node name="World" type="Spatial" parent="."]
+[node name="World" type="Spatial" parent="." index="0"]
 
 script = ExtResource( 1 )
 SPEED = 30.0
 day_night = true
 
-[node name="Camera" type="Camera" parent="."]
+[node name="Camera" type="Camera" parent="." index="1"]
 
 transform = Transform( 0.999422, 0, 0.0339803, 0, 1, 0, -0.0339803, 0, 0.999422, 0.3423, 0.509534, -5.59995 )
-projection = 0
-fov = 60.0
-near = 0.1
-far = 100.0
 keep_aspect = 1
-current = true
+vaspect = true
 cull_mask = 1048575
 environment = null
 h_offset = 0.0
 v_offset = 0.0
-doppler/tracking = 0
+doppler_tracking = 0
+projection = 0
+current = true
+fov = 60.0
+size = 1.0
+near = 0.1
+far = 100.0
 
-[node name="DirectionalLight" type="DirectionalLight" parent="."]
+[node name="DirectionalLight" type="DirectionalLight" parent="." index="2"]
 
 transform = Transform( 1, 0, 0, 0, -0.766045, 0.642788, 0, -0.642788, -0.766045, 0, 18.629, 0 )
 layers = 1
@@ -66,6 +68,7 @@ light_energy = 1.0
 light_indirect_energy = 1.0
 light_negative = false
 light_specular = 0.5
+light_bake_mode = 1
 light_cull_mask = -1
 shadow_enabled = true
 shadow_color = Color( 0, 0, 0, 1 )
@@ -83,102 +86,104 @@ directional_shadow_bias_split_scale = 0.25
 directional_shadow_depth_range = 0
 directional_shadow_max_distance = 100.0
 
-[node name="roads" parent="." instance=ExtResource( 2 )]
+[node name="roads" parent="." index="3" instance=ExtResource( 2 )]
 
-[node name="skyscraper" parent="." instance=ExtResource( 3 )]
+[node name="skyscraper" parent="." index="4" instance=ExtResource( 3 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12.3669, 0, -8.30006 )
 
-[node name="skyscraper3" parent="." instance=ExtResource( 3 )]
+[node name="skyscraper3" parent="." index="5" instance=ExtResource( 3 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -18.6308, 0, 37.7611 )
 
-[node name="skyscraper5" parent="." instance=ExtResource( 3 )]
+[node name="skyscraper5" parent="." index="6" instance=ExtResource( 3 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 50.5854, 0, 40.1475 )
 
-[node name="skyscraper7" parent="." instance=ExtResource( 3 )]
+[node name="skyscraper7" parent="." index="7" instance=ExtResource( 3 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 78.7708, 0, 97.0089 )
 
-[node name="skyscraper1" parent="." instance=ExtResource( 3 )]
+[node name="skyscraper1" parent="." index="8" instance=ExtResource( 3 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12.2307, 0, 7.28573 )
 
-[node name="AI" parent="." instance=ExtResource( 4 )]
+[node name="AI" parent="." index="9" instance=ExtResource( 4 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.8735, 0, 6.40305 )
 target = Vector3( 0, 0, 30 )
 
-[node name="AI2" parent="." instance=ExtResource( 5 )]
+[node name="AI2" parent="." index="10" instance=ExtResource( 5 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5723, 0, 2.27175 )
 target = Vector3( 0, 0, 10 )
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="11"]
 
 environment = ExtResource( 6 )
 
-[node name="Spatial" type="Spatial" parent="."]
+[node name="Spatial" type="Spatial" parent="." index="12"]
 
-[node name="Position3D" parent="Spatial" instance=ExtResource( 7 )]
+[node name="Position3D" parent="Spatial" index="0" instance=ExtResource( 7 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -83.2746, 0, 6.94175 )
 numSegments = 2
 positions = PoolVector3Array(  )
 ends = PoolVector3Array(  )
 
-[node name="Position3D 2" parent="Spatial" instance=ExtResource( 8 )]
+[node name="Position3D 2" parent="Spatial" index="1" instance=ExtResource( 8 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.87472, 0, -129.09 )
 length = 49
 relative_end = Vector3( 0, 0, 98 )
 
-[node name="Position3D1" parent="Spatial" instance=ExtResource( 7 )]
+[node name="Position3D1" parent="Spatial" index="2" instance=ExtResource( 7 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.31318, 0, 7.84292 )
 numSegments = 2
 positions = PoolVector3Array(  )
 ends = PoolVector3Array(  )
 
-[node name="Position3D 3" parent="Spatial" instance=ExtResource( 9 )]
+[node name="Position3D 3" parent="Spatial" index="3" instance=ExtResource( 9 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.0147, 0, 25.1989 )
 
-[node name="Position3D" type="Position3D" parent="."]
+[node name="Position3D" type="Position3D" parent="." index="13"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -50.7348, 0, 0.125347 )
 script = ExtResource( 10 )
 
-[node name="marker" parent="." instance=ExtResource( 11 )]
+[node name="marker" parent="." index="14" instance=ExtResource( 11 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5603, 0.1, 25.5822 )
 
-[node name="marker 2" parent="." instance=ExtResource( 12 )]
+[node name="marker 2" parent="." index="15" instance=ExtResource( 12 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -52.0014, 0.25, 2.00525 )
+_sections_unfolded = [ "Transform" ]
+target = Vector3( -140, 0, 115 )
 
-[node name="car" parent="." instance=ExtResource( 13 )]
+[node name="car" parent="." index="16" instance=ExtResource( 13 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.2608, 0, 0 )
 
-[node name="Spatial2" parent="." instance=ExtResource( 14 )]
+[node name="Spatial2" parent="." index="17" instance=ExtResource( 14 )]
 
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -38.2155 )
 
-[node name="Spatial3" parent="." instance=ExtResource( 14 )]
+[node name="Spatial3" parent="." index="18" instance=ExtResource( 14 )]
 
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -57.5656 )
 
-[node name="Spatial4" parent="." instance=ExtResource( 14 )]
+[node name="Spatial4" parent="." index="19" instance=ExtResource( 14 )]
 
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -77.4224 )
 
-[node name="Spatial5" parent="." instance=ExtResource( 14 )]
+[node name="Spatial5" parent="." index="20" instance=ExtResource( 14 )]
 
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -107.416 )
 
-[node name="GIProbe" type="GIProbe" parent="."]
+[node name="GIProbe" type="GIProbe" parent="." index="21"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0 )
 layers = 1
