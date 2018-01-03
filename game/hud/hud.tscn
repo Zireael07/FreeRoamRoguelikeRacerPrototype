@@ -1,24 +1,22 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://hud/speed_label.gd" type="Script" id=1]
-[ext_resource path="res://hud/pause_menu.gd" type="Script" id=2]
-[ext_resource path="res://hud/resume_button.gd" type="Script" id=3]
-[ext_resource path="res://hud/cam_icon.png" type="Texture" id=4]
+[ext_resource path="res://hud/cam_icon.png" type="Texture" id=2]
 
-[node name="root" type="Control"]
+[node name="root" type="Control" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 script = ExtResource( 1 )
+_sections_unfolded = [ "Pause" ]
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -29,7 +27,6 @@ margin_top = 49.0
 margin_right = 206.0
 margin_bottom = 148.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 2
 size_flags_vertical = 0
@@ -41,7 +38,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = 1
 
-[node name="Label timer" type="Label" parent="."]
+[node name="Label timer" type="Label" parent="." index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -51,7 +48,6 @@ margin_top = 229.0
 margin_right = 202.0
 margin_bottom = 328.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 2
 size_flags_vertical = 0
@@ -62,7 +58,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = 1
 
-[node name="Label dist" type="Label" parent="."]
+[node name="Label dist" type="Label" parent="." index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -73,7 +69,6 @@ margin_top = 500.0
 margin_right = 922.0
 margin_bottom = 600.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 2
 size_flags_vertical = 0
@@ -85,7 +80,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = 1
 
-[node name="Label clock" type="Label" parent="."]
+[node name="Label clock" type="Label" parent="." index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -96,7 +91,6 @@ margin_top = 461.0
 margin_right = 880.0
 margin_bottom = 561.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 2
 size_flags_vertical = 0
@@ -108,7 +102,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = 1
 
-[node name="Label 2" type="Label" parent="."]
+[node name="Label 2" type="Label" parent="." index="4"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -119,7 +113,6 @@ margin_top = 147.0
 margin_right = 218.0
 margin_bottom = 240.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 2
 size_flags_vertical = 0
@@ -129,7 +122,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="Label FPS" type="Label" parent="."]
+[node name="Label FPS" type="Label" parent="." index="5"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -138,7 +131,6 @@ anchor_bottom = 0.0
 margin_right = 80.0
 margin_bottom = 72.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 2
 size_flags_vertical = 0
@@ -149,47 +141,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="pause_menu" type="Container" parent="."]
-
-pause_mode = 2
-visible = false
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 40.0
-margin_bottom = 40.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 2
-size_flags_vertical = 2
-script = ExtResource( 2 )
-
-[node name="resume_button" type="Button" parent="pause_menu"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 436.0
-margin_top = 188.0
-margin_right = 500.0
-margin_bottom = 208.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 2
-size_flags_vertical = 2
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "Resume"
-flat = false
-script = ExtResource( 3 )
-
-[node name="CAM" type="Label" parent="."]
+[node name="CAM" type="Label" parent="." index="6"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -200,7 +152,6 @@ margin_top = 7.0
 margin_right = 69.0
 margin_bottom = 21.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 2
 size_flags_vertical = 0
@@ -209,7 +160,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="TextureFrame" type="TextureRect" parent="."]
+[node name="TextureFrame" type="TextureRect" parent="." index="7"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -221,13 +172,10 @@ margin_right = 46.0
 margin_bottom = 43.0
 rect_scale = Vector2( 0.5, 0.5 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 1
 size_flags_horizontal = 2
 size_flags_vertical = 2
-texture = ExtResource( 4 )
+texture = ExtResource( 2 )
 stretch_mode = 0
-
-[connection signal="pressed" from="pause_menu/resume_button" to="pause_menu/resume_button" method="_on_resume_button_pressed"]
 
 
