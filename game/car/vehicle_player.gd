@@ -43,6 +43,11 @@ func _ready():
 	add_child(panel)
 	panel.set_text("Welcome to 大都市")
 	
+	
+	var pause = preload("res://hud/pause_panel.tscn")
+	var pau = pause.instance()
+	add_child(pau)
+	
 	last_pos = get_translation()
 	
 	set_physics_process(true)
