@@ -5,7 +5,6 @@
 [node name="Control" type="Control" index="0"]
 
 pause_mode = 2
-visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -58,6 +57,31 @@ text = "Resume"
 flat = false
 align = 1
 
+[node name="CheckButton" type="CheckButton" parent="." index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 490.0
+margin_top = 61.0
+margin_right = 566.0
+margin_bottom = 101.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = true
+pressed = true
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "GI"
+flat = false
+align = 0
+
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+
+[connection signal="pressed" from="CheckButton" to="." method="_on_CheckGIButton_pressed"]
 
 
