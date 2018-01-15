@@ -186,6 +186,7 @@ transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.5583
 [node name="GIProbe" type="GIProbe" parent="." index="21"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0 )
+visible = false
 layers = 1
 subdiv = 1
 extents = Vector3( 220, 22, 200 )
