@@ -45,7 +45,7 @@ var start_vector
 #props
 var building
 var buildDistance = 10
-var numBuildings = 10
+var numBuildings = 6
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -55,7 +55,8 @@ func _ready():
 	draw = get_node("draw")
 	
 	#props
-	building = preload("res://objects/skyscraper.tscn")
+	#building = preload("res://objects/skyscraper.tscn")
+	building = preload("res://objects/skyscraper-cube.tscn")
 	
 	var quads = []
 	
@@ -211,7 +212,7 @@ func placeBuilding(index):
 	#left side of the road
 	var loc = Vector3(roadwidth+buildDistance, 0, index)
 	if (index > 0):
-		loc = Vector3(roadwidth+buildDistance, 0, index*10)
+		loc = Vector3(roadwidth+buildDistance, 0, index*15)
 	else:
 		loc = Vector3(roadwidth+buildDistance, 0, index)
 	
@@ -221,7 +222,7 @@ func placeBuilding(index):
 	#right side of the road
 	loc = Vector3(-(roadwidth+buildDistance), 0, index)
 	if (index > 0):
-		loc = Vector3(-(roadwidth+buildDistance), 0, index*10)
+		loc = Vector3(-(roadwidth+buildDistance), 0, index*15)
 	else:
 		loc = Vector3(-(roadwidth+buildDistance), 0, index)
 	
