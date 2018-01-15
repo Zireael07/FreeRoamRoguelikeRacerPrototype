@@ -39,14 +39,15 @@ __meta__ = {
 [node name="World" type="Spatial" parent="." index="0"]
 
 script = ExtResource( 1 )
-SPEED = 30.0
+SPEED = 10.0
+start_time = 18.0
 day_night = true
 
 [node name="Camera" type="Camera" parent="." index="1"]
 
 transform = Transform( 0.999422, 0, 0.0339803, 0, 1, 0, -0.0339803, 0, 0.999422, 0.3423, 0.509534, -5.59995 )
-keep_aspect = 1
-vaspect = true
+keep_aspect = 0
+vaspect = false
 cull_mask = 1048575
 environment = null
 h_offset = 0.0

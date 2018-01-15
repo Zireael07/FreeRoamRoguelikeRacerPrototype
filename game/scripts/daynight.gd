@@ -4,6 +4,8 @@ extends Spatial
 export var SPEED = 20.0;
 const UPDATE_TIME = 1/30.0;
 
+export var start_time = 8.0
+
 var prev_time = 0.0
 var time = 0.0;
 var delay = 0.0;
@@ -29,8 +31,8 @@ var night_fired = false
 
 func _ready():
 	
-	time = 8.0;
-	prev_time = 8.0;
+	time = start_time;
+	prev_time = start_time;
 	delay = 0.0;
 	
 	#target 60 fps
