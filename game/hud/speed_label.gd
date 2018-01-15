@@ -26,7 +26,7 @@ func update_debug(text):
 	debug_label.set_text(text)
 	
 func update_fps():
-	fps_label.set_text(str(Engine.get_frames_per_second()))
+	fps_label.set_text(str(Engine.get_frames_per_second()) + " ms: %.3f" % (1000.0/Engine.get_frames_per_second()))
 
 func update_distance(text):
 	dist_label.set_text(text)
