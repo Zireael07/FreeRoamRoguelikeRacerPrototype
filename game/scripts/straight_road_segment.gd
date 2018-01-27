@@ -56,7 +56,8 @@ func _ready():
 	
 	#props
 	#building = preload("res://objects/skyscraper.tscn")
-	building = preload("res://objects/skyscraper-cube.tscn")
+	#building = preload("res://objects/skyscraper-cube.tscn")
+	building = preload("res://objects/procedural_building.tscn")
 	
 	var quads = []
 	

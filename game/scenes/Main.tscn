@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scripts/daynight.gd" type="Script" id=1]
 [ext_resource path="res://objects/roads.tscn" type="PackedScene" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://objects/race_marker.tscn" type="PackedScene" id=12]
 [ext_resource path="res://car/car_base.tscn" type="PackedScene" id=13]
 [ext_resource path="res://objects/china_cable.tscn" type="PackedScene" id=14]
+[ext_resource path="res://objects/procedural_building.tscn" type="PackedScene" id=15]
 
 [sub_resource type="GIProbeData" id=1]
 
@@ -47,7 +48,6 @@ day_night = true
 
 transform = Transform( 0.999422, 0, 0.0339803, 0, 1, 0, -0.0339803, 0, 0.999422, 0.3423, 0.509534, -5.59995 )
 keep_aspect = 0
-vaspect = false
 cull_mask = 1048575
 environment = null
 h_offset = 0.0
@@ -199,5 +199,9 @@ normal_bias = 0.0
 interior = false
 compress = false
 data = SubResource( 1 )
+
+[node name="Spatial6" parent="." index="22" instance=ExtResource( 15 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.26849, 0, 4.78037 )
 
 
