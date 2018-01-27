@@ -46,6 +46,8 @@ var start_vector
 var building
 var buildDistance = 10
 var numBuildings = 6
+var building_tex1
+var building_tex2
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -58,6 +60,8 @@ func _ready():
 	#building = preload("res://objects/skyscraper.tscn")
 	#building = preload("res://objects/skyscraper-cube.tscn")
 	building = preload("res://objects/procedural_building.tscn")
+	building_tex1 = preload("res://assets/cement.tres")
+	building_tex2 = preload("res://assets/brick_wall.tres")
 	
 	var quads = []
 	
@@ -200,7 +204,21 @@ func meshCreate(array, material):
 	
 #props
 func setupBuilding(index):
+	# seed the rng
+	randomize()
+	
+	var ran = randf()
+	
 	var build = building.instance()
+	
+	if ran < 0.2:
+		var mat = building_tex2
+		build.material = mat
+	else:
+		var mat = building_tex1
+		build.material = mat
+	
+	
 	#build.set_scale(Vector3(2, 2, 2))
 	build.set_name("Skyscraper"+String(index))
 	add_child(build)
