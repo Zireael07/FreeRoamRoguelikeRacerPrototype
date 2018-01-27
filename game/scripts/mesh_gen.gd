@@ -239,3 +239,63 @@ func addQuadCustUV(one, two, three, four, uv_one, uv_two, uv_three, uv_four, mat
 	surface.add_vertex(corners[3])
 	surface.add_uv(uvs[0])
 	surface.add_vertex(corners[0])
+	
+# textured version of a cube
+func addCubeTexture(x,y,z, surface, material, dx, dy, dz):
+	surface.set_material(material)
+	
+	#This is the central point in the base of the cube
+	var base = Vector3(x, y + dy, z)
+	
+	##Corners of the cube
+	var corners = []
+	
+	#Top
+	corners.push_back(base + Vector3(-dx,  dy, -dz))
+	corners.push_back(base + Vector3( dx,  dy, -dz))
+	corners.push_back(base + Vector3( dx,  dy,  dz))
+	corners.push_back(base + Vector3(-dx,  dy,  dz))
+	
+	#Bottom
+	corners.push_back(base + Vector3(-dx, -dy, -dz))
+	corners.push_back(base + Vector3( dx, -dy, -dz))
+	corners.push_back(base + Vector3( dx, -dy,  dz))
+	corners.push_back(base + Vector3(-dx, -dy,  dz))
+	
+	var uvs = []
+	uvs.push_back(Vector2(0,0))
+	uvs.push_back(Vector2(0,1))
+	uvs.push_back(Vector2(1,1))
+	uvs.push_back(Vector2(1,0))
+	
+	#Color red
+#	surface.add_color(color)
+#
+	#Adding the corners in order, calculated by hand
+	#Top
+	addQuad(corners[0], corners[1], corners[2], corners[3], material, surface, false)
+#	
+	#One side
+	addQuad(corners[0], corners[4], corners[5], corners[1], material, surface, false)
+
+	#Other side
+	# inverted texture
+	#addQuad(corners[6], corners[2], corners[1], corners[5], material, surface, false)
+	addQuad(corners[1], corners[5], corners[6], corners[2], material, surface, false)
+
+	#Other side
+	# texture flipped to the side
+	#addQuad(corners[3], corners[2], corners[6], corners[7], material, surface, false)
+	#addQuad(corners[7], corners[3], corners[2], corners[6], material, surface, false) #inverted
+	addQuad(corners[2], corners[6], corners[7], corners[3], material, surface, false)
+	
+	#Other side
+	# texture flipped to the side
+	#addQuad(corners[0], corners[3], corners[7], corners[4], material, surface, false)
+	# inverted
+	#addQuad(corners[4], corners[0], corners[3], corners[7], material, surface, false)
+	addQuad(corners[3], corners[7], corners[4], corners[0], material, surface, false)
+	
+	#Bottom
+	addQuad(corners[6], corners[5], corners[4], corners[7], material, surface, false)
+	#addQuad(corners[6], corners[5], corners[7], corners[4], material, surface, false)
