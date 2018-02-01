@@ -48,6 +48,9 @@ var buildDistance = 10
 var numBuildings = 6
 var building_tex1
 var building_tex2
+var sign_tex1
+var sign_tex2
+var sign_tex3
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -62,6 +65,12 @@ func _ready():
 	building = preload("res://objects/procedural_building.tscn")
 	building_tex1 = preload("res://assets/cement.tres")
 	building_tex2 = preload("res://assets/brick_wall.tres")
+	# more props
+	sign_tex1 = preload("res://assets/neon_sign1.tres")
+	sign_tex2 = preload("res://assets/neon_sign2.tres")
+	sign_tex3 = preload("res://assets/neon_sign3.tres")
+	
+	
 	
 	var quads = []
 	
@@ -217,6 +226,19 @@ func setupBuilding(index):
 	else:
 		var mat = building_tex1
 		build.material = mat
+		
+	# sign material
+	var rand = randf()
+	
+	if ran < 0.33:
+		var sign_mat = sign_tex1
+		build.get_node("MeshInstance").set_surface_material(0, sign_mat)
+	elif ran < 0.66:
+		var sign_mat = sign_tex2
+		build.get_node("MeshInstance").set_surface_material(0, sign_mat)
+	else:
+		var sign_mat = sign_tex3
+		build.get_node("MeshInstance").set_surface_material(0, sign_mat)
 	
 	
 	#build.set_scale(Vector3(2, 2, 2))

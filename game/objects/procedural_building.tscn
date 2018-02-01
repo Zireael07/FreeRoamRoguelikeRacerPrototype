@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/procedural_building.gd" type="Script" id=1]
 [ext_resource path="res://assets/cement.tres" type="Material" id=2]
+[ext_resource path="res://assets/chinasign_1.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://assets/neon_sign1.tres" type="Material" id=4]
 
 [sub_resource type="SpatialMaterial" id=1]
 
@@ -63,5 +65,22 @@ width = 6
 thick = 6
 material = ExtResource( 2 )
 windows_mat = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="." index="0"]
+
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 1, 7.63328, 8.47983, 0 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = ExtResource( 3 )
+skeleton = NodePath("..")
+material/0 = ExtResource( 4 )
+_sections_unfolded = [ "Transform", "material" ]
 
 
