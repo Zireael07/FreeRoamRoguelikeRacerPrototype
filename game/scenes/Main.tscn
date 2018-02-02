@@ -1,20 +1,19 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scripts/daynight.gd" type="Script" id=1]
 [ext_resource path="res://objects/roads.tscn" type="PackedScene" id=2]
-[ext_resource path="res://objects/skyscraper.tscn" type="PackedScene" id=3]
-[ext_resource path="res://car/car_AI_racer.tscn" type="PackedScene" id=4]
-[ext_resource path="res://car/car_AI_traffic.tscn" type="PackedScene" id=5]
-[ext_resource path="res://default_env.tres" type="Environment" id=6]
-[ext_resource path="res://roads/segment_instancer.tscn" type="PackedScene" id=7]
-[ext_resource path="res://roads/road_segment_straight.tscn" type="PackedScene" id=8]
-[ext_resource path="res://roads/segment_instancer_straight.tscn" type="PackedScene" id=9]
-[ext_resource path="res://roads/segments_stored.gd" type="Script" id=10]
-[ext_resource path="res://objects/marker.tscn" type="PackedScene" id=11]
-[ext_resource path="res://objects/race_marker.tscn" type="PackedScene" id=12]
-[ext_resource path="res://car/car_base.tscn" type="PackedScene" id=13]
-[ext_resource path="res://objects/china_cable.tscn" type="PackedScene" id=14]
-[ext_resource path="res://objects/procedural_building.tscn" type="PackedScene" id=15]
+[ext_resource path="res://car/car_AI_racer.tscn" type="PackedScene" id=3]
+[ext_resource path="res://car/car_AI_traffic.tscn" type="PackedScene" id=4]
+[ext_resource path="res://default_env.tres" type="Environment" id=5]
+[ext_resource path="res://roads/segment_instancer.tscn" type="PackedScene" id=6]
+[ext_resource path="res://roads/road_segment_straight.tscn" type="PackedScene" id=7]
+[ext_resource path="res://roads/segment_instancer_straight.tscn" type="PackedScene" id=8]
+[ext_resource path="res://roads/segments_stored.gd" type="Script" id=9]
+[ext_resource path="res://objects/marker.tscn" type="PackedScene" id=10]
+[ext_resource path="res://objects/race_marker.tscn" type="PackedScene" id=11]
+[ext_resource path="res://car/car_base.tscn" type="PackedScene" id=12]
+[ext_resource path="res://objects/china_cable.tscn" type="PackedScene" id=13]
+[ext_resource path="res://objects/procedural_building.tscn" type="PackedScene" id=14]
 
 [sub_resource type="GIProbeData" id=1]
 
@@ -89,102 +88,82 @@ directional_shadow_max_distance = 100.0
 
 [node name="roads" parent="." index="3" instance=ExtResource( 2 )]
 
-[node name="skyscraper" parent="." index="4" instance=ExtResource( 3 )]
-
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12.3669, 0, -8.30006 )
-
-[node name="skyscraper3" parent="." index="5" instance=ExtResource( 3 )]
-
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -18.6308, 0, 37.7611 )
-
-[node name="skyscraper5" parent="." index="6" instance=ExtResource( 3 )]
-
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 50.5854, 0, 40.1475 )
-
-[node name="skyscraper7" parent="." index="7" instance=ExtResource( 3 )]
-
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 78.7708, 0, 97.0089 )
-
-[node name="skyscraper1" parent="." index="8" instance=ExtResource( 3 )]
-
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12.2307, 0, 7.28573 )
-
-[node name="AI" parent="." index="9" instance=ExtResource( 4 )]
+[node name="AI" parent="." index="4" instance=ExtResource( 3 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.8735, 0, 6.40305 )
 target = Vector3( 0, 0, 30 )
 
-[node name="AI2" parent="." index="10" instance=ExtResource( 5 )]
+[node name="AI2" parent="." index="5" instance=ExtResource( 4 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5723, 0, 2.27175 )
 target = Vector3( 0, 0, 10 )
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="11"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="6"]
 
-environment = ExtResource( 6 )
+environment = ExtResource( 5 )
 
-[node name="Spatial" type="Spatial" parent="." index="12"]
+[node name="Spatial" type="Spatial" parent="." index="7"]
 
-[node name="Position3D" parent="Spatial" index="0" instance=ExtResource( 7 )]
+[node name="Position3D" parent="Spatial" index="0" instance=ExtResource( 6 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -83.2746, 0, 6.94175 )
 numSegments = 2
 positions = PoolVector3Array(  )
 ends = PoolVector3Array(  )
 
-[node name="Position3D 2" parent="Spatial" index="1" instance=ExtResource( 8 )]
+[node name="Position3D 2" parent="Spatial" index="1" instance=ExtResource( 7 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.87472, 0, -129.09 )
 length = 49
 relative_end = Vector3( 0, 0, 98 )
 
-[node name="Position3D1" parent="Spatial" index="2" instance=ExtResource( 7 )]
+[node name="Position3D1" parent="Spatial" index="2" instance=ExtResource( 6 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.31318, 0, 7.84292 )
 numSegments = 2
 positions = PoolVector3Array(  )
 ends = PoolVector3Array(  )
 
-[node name="Position3D 3" parent="Spatial" index="3" instance=ExtResource( 9 )]
+[node name="Position3D 3" parent="Spatial" index="3" instance=ExtResource( 8 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.0147, 0, 25.1989 )
 
-[node name="Position3D" type="Position3D" parent="." index="13"]
+[node name="Position3D" type="Position3D" parent="." index="8"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -50.7348, 0, 0.125347 )
-script = ExtResource( 10 )
+script = ExtResource( 9 )
 
-[node name="marker" parent="." index="14" instance=ExtResource( 11 )]
+[node name="marker" parent="." index="9" instance=ExtResource( 10 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5603, 0.1, 25.5822 )
 
-[node name="marker 2" parent="." index="15" instance=ExtResource( 12 )]
+[node name="marker 2" parent="." index="10" instance=ExtResource( 11 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -52.0014, 0.25, 2.00525 )
 _sections_unfolded = [ "Transform" ]
 target = Vector3( -140, 0, 115 )
 
-[node name="car" parent="." index="16" instance=ExtResource( 13 )]
+[node name="car" parent="." index="11" instance=ExtResource( 12 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.2608, 0, 0 )
 
-[node name="Spatial2" parent="." index="17" instance=ExtResource( 14 )]
+[node name="Spatial2" parent="." index="12" instance=ExtResource( 13 )]
 
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -38.2155 )
 
-[node name="Spatial3" parent="." index="18" instance=ExtResource( 14 )]
+[node name="Spatial3" parent="." index="13" instance=ExtResource( 13 )]
 
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -57.5656 )
 
-[node name="Spatial4" parent="." index="19" instance=ExtResource( 14 )]
+[node name="Spatial4" parent="." index="14" instance=ExtResource( 13 )]
 
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -77.4224 )
 
-[node name="Spatial5" parent="." index="20" instance=ExtResource( 14 )]
+[node name="Spatial5" parent="." index="15" instance=ExtResource( 13 )]
 
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -107.416 )
 
-[node name="GIProbe" type="GIProbe" parent="." index="21"]
+[node name="GIProbe" type="GIProbe" parent="." index="16"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0 )
 visible = false
@@ -200,7 +179,7 @@ interior = false
 compress = false
 data = SubResource( 1 )
 
-[node name="Spatial6" parent="." index="22" instance=ExtResource( 15 )]
+[node name="Spatial6" parent="." index="17" instance=ExtResource( 14 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.26849, 0, 4.78037 )
 
