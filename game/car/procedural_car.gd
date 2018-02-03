@@ -18,9 +18,9 @@ export var width = 1.0
 
 var pillar_w = 0.1
 
-export(FixedMaterial) var material = FixedMaterial.new()
-export(FixedMaterial) var glass_material = FixedMaterial.new()
-export(FixedMaterial) var taillights_material = FixedMaterial.new()
+export(SpatialMaterial) var material = SpatialMaterial.new()
+export(SpatialMaterial) var glass_material = SpatialMaterial.new()
+export(SpatialMaterial) var taillights_material = SpatialMaterial.new()
 
 func _ready():
 	
