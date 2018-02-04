@@ -21,6 +21,8 @@ var pillar_w = 0.1
 export(SpatialMaterial) var material = SpatialMaterial.new()
 export(SpatialMaterial) var glass_material = SpatialMaterial.new()
 export(SpatialMaterial) var taillights_material = SpatialMaterial.new()
+export(SpatialMaterial) var inside_material = SpatialMaterial.new()
+export(SpatialMaterial) var steering_material = SpatialMaterial.new()
 
 func _ready():
 	
@@ -33,15 +35,33 @@ func _ready():
 	var taillights_surf = SurfaceTool.new()
 	taillights_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
+	var inside_surf = SurfaceTool.new()
+	inside_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
 	#Create a node building that will hold the mesh
 	var node = MeshInstance.new()
 	node.set_name("plane")
 	add_child(node)
 	
-	#do the stuff
-	createCar(surface, glass_surf, taillights_surf, node)
+	var steering_surf = SurfaceTool.new()
+	steering_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
-func createCar(surface, glass, taillights, node):
+	#Create a node that will hold the mesh
+	var steer_node = MeshInstance.new()
+	steer_node.set_name("steering")
+	add_child(steer_node)
+	
+	#do the stuff
+	createCar(surface, glass_surf, taillights_surf, inside_surf, node)
+	
+	var offset = Vector2(0.2,0.55)
+	var zoff = -0.1
+	createSteeringWheel(steering_surf, steering_material, offset, zoff)
+	
+	steering_surf.generate_normals()
+	steer_node.set_mesh(steering_surf.commit())
+	
+func createCar(surface, glass, taillights, inside, node):
 	# sides
 	var halfwidth = float(width/2)
 
@@ -56,6 +76,8 @@ func createCar(surface, glass, taillights, node):
 	
 	createBody(surface, halfwidth)
 	createWindows(glass, glass_material, halfwidth)
+	
+	createInside(inside, inside_material, halfwidth)
 	
 	createTailLights(taillights, taillights_material, halfwidth)
 	
@@ -99,11 +121,13 @@ func createCar(surface, glass, taillights, node):
 	surface.generate_normals()
 	glass.generate_normals()
 	taillights.generate_normals()
+	inside.generate_normals()
 	
 	#Set the created mesh to the node
 	node.set_mesh(surface.commit())
 	#Add the other surfaces
 	node.set_mesh(glass.commit(node.get_mesh()))
+	node.set_mesh(inside.commit(node.get_mesh()))
 	node.set_mesh(taillights.commit(node.get_mesh()))
 	
 func createSide(surface, x_offset, flip):
@@ -337,6 +361,113 @@ func createWindows(surface, mat, halfwidth):
 	addQuad(pillar_top_rear_l, pillar_top_rear_r, pillar_bottom_rear_r, pillar_bottom_rear_l, mat, surface, false)
 	#addQuad(top_win_rear_l, top_win_rear_r, rhoodr_one, rhoodl_one, mat, surface, false)
 
+	
+func createInside(surface, mat, halfwidth):
+	var left = Vector3(-halfwidth,0,0)
+	var right = Vector3(halfwidth,0,0)
+	var fhoodl_one = Vector3(-halfwidth,door_h,0)
+	var fhoodr_one = Vector3(halfwidth,door_h,0)
+	
+	var fhood_med = Vector3(0,door_h+0.1,0)
+	
+	addQuad(left, right, fhoodr_one, fhoodl_one, mat, surface, false)
+	
+	# patch the hole
+	addTri(fhoodl_one, fhoodr_one, fhood_med, mat, surface)
+	
+	
+	
+	# seat
+	var seat_w = 0.2
+	var seat_off = 0.6
+	var back_left_s = Vector3(halfwidth-0.2,0.1,-seat_off)
+	var back_right_s = Vector3(halfwidth-0.2-seat_w,0.1,-seat_off)
+	var back_topr_s = Vector3(halfwidth-0.2-seat_w,0.75,-seat_off)
+	var back_topr_l = Vector3(halfwidth-0.2,0.75,-seat_off)
+	
+	# from back
+	addQuad(back_right_s, back_left_s, back_topr_l, back_topr_s, mat, surface, false)
+	addQuad(back_topr_s, back_topr_l, back_left_s, back_right_s, mat, surface, false)
+	
+	var seat_back_thick = 0.1
+	var back_front_l = Vector3(halfwidth-0.2,0.1, -seat_off+seat_back_thick)
+	var back_front_r = Vector3(halfwidth-0.2-seat_w, 0.1, -seat_off+seat_back_thick)
+	var back_front_top = Vector3(halfwidth-0.2-seat_w, 0.75, -seat_off+seat_back_thick)
+	var back_front_top_l = Vector3(halfwidth-0.2, 0.75, -seat_off+seat_back_thick)
+	
+	addQuad(back_front_r, back_front_l, back_front_top_l, back_front_top, mat, surface, false)
+	addQuad(back_front_top, back_front_top_l, back_front_l, back_front_r, mat, surface, false)
+	
+	# right side
+	addQuad(back_front_r, back_right_s, back_topr_s, back_front_top, mat, surface, false)
+	addQuad(back_front_top, back_topr_s, back_right_s, back_front_l, mat, surface, false)
+	
+	# left side
+	addQuad(back_front_top_l, back_topr_l, back_left_s, back_front_l, mat, surface, false)
+	# from inside
+	addQuad(back_front_l, back_left_s, back_topr_l, back_front_top_l, mat, surface, false)
+	
+	# top
+	addQuad(back_topr_s, back_topr_l, back_front_top_l, back_front_top, mat, surface, false) 
+	
+	var seat_thick = 0.2
+	var seat_front_r = Vector3(halfwidth-0.2-seat_w, 0.1, -seat_off+seat_back_thick+seat_thick)
+	var seat_front_l = Vector3(halfwidth-0.2, 0.1, -seat_off+seat_back_thick+seat_thick)
+	var seat_top_l = Vector3(halfwidth-0.2, 0.3, -seat_off+seat_back_thick+seat_thick)
+	var seat_top_r = Vector3(halfwidth-0.2-seat_w, 0.3, -seat_off+seat_back_thick+seat_thick)
+	
+	# from back
+	addQuad(seat_front_r, seat_front_l, seat_top_l, seat_top_r, mat, surface, false)
+	addQuad(seat_top_r, seat_top_l, seat_front_l, seat_front_r, mat, surface, false)
+	
+	var tie_r = Vector3(halfwidth-0.2-seat_w, 0.3, -seat_off+seat_back_thick)
+	var tie_l = Vector3(halfwidth-0.2, 0.3, -seat_off+seat_back_thick)
+	
+	# side
+	addQuad(tie_r, seat_top_r, seat_front_r, back_front_r, mat, surface, false)
+	# from inside
+	addQuad(back_front_r, seat_front_r, seat_top_r, tie_r, mat, surface, false)
+	
+	# left side
+	addQuad(back_front_l, seat_front_l, seat_top_l, tie_l, mat, surface, false)
+	
+	# top of seat
+	addQuad(tie_r, tie_l, seat_top_l, seat_top_r, mat, surface, false)
+	
+func createSteeringWheel(surface, mat, offset, z_off):
+	# circle
+	#var circle = make_circle(Vector2(offset), 16, 0.1)
+	
+	#for i in range(0, circle.size()-1):	
+	#	addTri(Vector3(offset.x, offset.y, z_off), Vector3(circle[i].x, circle[i].y, z_off), Vector3(circle[i+1].x, circle[i+1].y, z_off), mat, surface)
+
+	# rectangle
+	var one = Vector3(offset.x-0.1, offset.y, z_off)
+	var two = Vector3(offset.x+0.1, offset.y, z_off)
+	var three = Vector3(offset.x+0.1, offset.y+0.1, z_off)
+	var four = Vector3(offset.x-0.1, offset.y+0.1, z_off)
+	
+	addQuad(one, two, three, four, mat, surface, false)
+
+	# the side
+	addQuad(Vector3(one.x, one.y, z_off+0.01), one, four, Vector3(four.x, four.y, z_off+0.01), mat, surface, false)
+	# other side
+	addQuad(two, Vector3(two.x, two.y, z_off+0.01), Vector3(three.x, three.y, z_off+0.01), three, mat, surface, false)
+
+	# top
+	addQuad(four, three, Vector3(three.x, three.y, z_off+0.01), Vector3(four.x, four.y, z_off+0.01), mat, surface, false)
+	
+	
+	#bottom 
+	addQuad(Vector3(one.x, one.y, z_off+0.01), Vector3(two.x, two.y, z_off+0.01), two, one, mat, surface, false)
+	#(from the top)
+	addQuad(one, two, Vector3(two.x, two.y, z_off+0.01), Vector3(one.x, one.y, z_off+0.01), mat, surface, false)
+	
+
+	# the back 
+	addQuad(Vector3(four.x, four.y, z_off+0.01), Vector3(three.x, three.y, z_off+0.01), Vector3(two.x, two.y, z_off+0.01), Vector3(one.x, one.y, z_off+0.01), mat, surface, false)
+	# from the front
+	addQuad(Vector3(one.x, one.y, z_off+0.01), Vector3(two.x, two.y, z_off+0.01), Vector3(three.x, three.y, z_off+0.01), Vector3(four.x, four.y, z_off+0.01), mat, surface, false)
 
 func createTailLights(surface, mat, halfwidth):
 	# right light
