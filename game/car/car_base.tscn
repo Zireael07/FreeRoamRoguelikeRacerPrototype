@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://car/vehicle_player.gd" type="Script" id=1]
 [ext_resource path="res://car/procedural_car.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://hud/label_3d.gd" type="Script" id=8]
 [ext_resource path="res://hud/test_car_nameplate.tscn" type="PackedScene" id=9]
 [ext_resource path="res://hud/nameplate_3d.gd" type="Script" id=10]
+[ext_resource path="res://objects/driver.tscn" type="PackedScene" id=11]
 
 [sub_resource type="SpatialMaterial" id=1]
 
@@ -186,7 +187,7 @@ uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 
-[sub_resource type="SpatialMaterial" id=16]
+[sub_resource type="SpatialMaterial" id=7]
 
 render_priority = 0
 flags_transparent = false
@@ -238,7 +239,7 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo" ]
 
-[sub_resource type="SpatialMaterial" id=17]
+[sub_resource type="SpatialMaterial" id=8]
 
 render_priority = 0
 flags_transparent = false
@@ -289,11 +290,11 @@ uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 
-[sub_resource type="BoxShape" id=18]
+[sub_resource type="BoxShape" id=9]
 
 extents = Vector3( 0.477039, 0.413218, 1.32118 )
 
-[sub_resource type="SpatialMaterial" id=19]
+[sub_resource type="SpatialMaterial" id=10]
 
 render_priority = 0
 flags_transparent = true
@@ -344,11 +345,11 @@ uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 
-[sub_resource type="QuadMesh" id=20]
+[sub_resource type="QuadMesh" id=11]
 
 size = Vector2( 1, 1 )
 
-[sub_resource type="SpatialMaterial" id=21]
+[sub_resource type="SpatialMaterial" id=12]
 
 render_priority = 0
 flags_transparent = false
@@ -400,7 +401,7 @@ uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 
-[sub_resource type="ArrayMesh" id=22]
+[sub_resource type="ArrayMesh" id=13]
 
 blend_shape_mode = 1
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
@@ -411,7 +412,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 98071,
 "index_count": 72,
-"material": SubResource( 21 ),
+"material": SubResource( 12 ),
 "name": "taillights_simple",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -648,7 +649,7 @@ material/0 = null
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.576408 )
 script = ExtResource( 2 )
 door_h = 0.55
-window_h = 0.3
+window_h = 0.4
 rh = 0.35
 door = 0.55
 front = 0.8
@@ -660,13 +661,13 @@ width = 1.1
 material = ExtResource( 3 )
 glass_material = ExtResource( 4 )
 taillights_material = SubResource( 6 )
-inside_material = SubResource( 16 )
-steering_material = SubResource( 17 )
+inside_material = SubResource( 7 )
+steering_material = SubResource( 8 )
 
 [node name="CollisionShape" type="CollisionShape" parent="BODY" index="5"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.439856, 0.0630786 )
-shape = SubResource( 18 )
+shape = SubResource( 9 )
 disabled = false
 
 [node name="cambase" type="Spatial" parent="BODY" index="6"]
@@ -736,7 +737,7 @@ mouse_default_cursor_shape = 0
 
 transform = Transform( -1, 0, 8.74228e-08, 0, 0.5, 0, -8.74228e-08, 0, -1, 0, 1.1208, 0 )
 layers = 1
-material_override = SubResource( 19 )
+material_override = SubResource( 10 )
 cast_shadow = 1
 extra_cull_margin = 0.0
 use_in_baked_light = false
@@ -744,7 +745,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 20 )
+mesh = SubResource( 11 )
 skeleton = NodePath("..")
 material/0 = null
 script = ExtResource( 8 )
@@ -805,7 +806,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 22 )
+mesh = SubResource( 13 )
 skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "material" ]
@@ -856,6 +857,10 @@ mesh = SubResource( 15 )
 skeleton = NodePath("..")
 material/0 = null
 script = ExtResource( 10 )
+
+[node name="driver" parent="BODY" index="14" instance=ExtResource( 11 )]
+
+transform = Transform( -1.31134e-08, 0, 0.3, 0, 0.3, 0, -0.3, 0, -1.31134e-08, 0.220677, -0.227599, 0.150683 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
 
