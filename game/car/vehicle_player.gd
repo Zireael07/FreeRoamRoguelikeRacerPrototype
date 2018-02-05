@@ -20,6 +20,8 @@ var emitted = false
 
 signal load_ended
 
+var cockpit_cam
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
@@ -27,6 +29,7 @@ func _ready():
 	connect("load_ended", self, "on_load_ended")
 	
 	World_node = get_parent().get_parent().get_node("World")
+	cockpit_cam = $"cambase/CameraCockpit"
 	
 	##GUI
 	var h = preload("res://hud/hud.tscn")
@@ -120,8 +123,19 @@ func _input(event):
 		else:
 			setHeadlights(true)	
 	
+	# switch cameras
+	if (Input.is_action_pressed("camera")):
+		var chase_cam = get_node("cambase/Camera")
+		var cockpit_cam = get_node("cambase/CameraCockpit")
+		if chase_cam.is_current():
+			cockpit_cam.make_current()
+		else:
+			chase_cam.make_current()
+	
+	
+	
 	if (Input.is_action_pressed("camera_debug")):
-		var cam = get_child(6).get_child(0)
+		var cam = get_node("cambase/Camera")
 		if (cam !=null):
 			if (not cam.debug):
 				cam.set_debug(true)

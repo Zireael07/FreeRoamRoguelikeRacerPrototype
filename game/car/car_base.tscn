@@ -672,12 +672,11 @@ disabled = false
 
 [node name="cambase" type="Spatial" parent="BODY" index="6"]
 
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.996002, -1.06042 )
 
 [node name="Camera" type="Camera" parent="BODY/cambase" index="0"]
 
-transform = Transform( 1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 1, -4.39379 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1, -4.39379 )
 keep_aspect = 1
 cull_mask = 1048575
 environment = null
@@ -691,11 +690,29 @@ size = 1.0
 near = 0.1
 far = 200.0
 script = ExtResource( 6 )
+_sections_unfolded = [ "Transform" ]
 min_distance = 1.0
 max_distance = 4.0
 angle_v_adjust = 0.0
 autoturn_ray_aperture = 25
 autoturn_speed = 50
+
+[node name="CameraCockpit" type="Camera" parent="BODY/cambase" index="1"]
+
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.191978, -0.198621, 1.17862 )
+keep_aspect = 1
+cull_mask = 1048575
+environment = null
+h_offset = 0.0
+v_offset = 0.0
+doppler_tracking = 0
+projection = 0
+current = false
+fov = 70.0
+size = 1.0
+near = 0.1
+far = 200.0
+_sections_unfolded = [ "Transform" ]
 
 [node name="Viewport" type="Viewport" parent="BODY" index="7"]
 
