@@ -21,6 +21,10 @@ var emitted = false
 signal load_ended
 
 var cockpit_cam
+var cam_speed = 1
+var cockpit_cam_target_angle = 0
+var cockpit_cam_angle = 0
+var cockpit_cam_max_angle = 5
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -84,8 +88,53 @@ func _physics_process(delta):
 	
 	if (Input.is_action_pressed("ui_left")):
 		left = true
+		
+		# tilt cam
+		if cockpit_cam.is_current() and cockpit_cam_target_angle > -11:
+			cockpit_cam_target_angle += 1
+		
+		
 	if (Input.is_action_pressed("ui_right")):
 		right = true
+		
+		# tilt cam
+		if cockpit_cam.is_current() and cockpit_cam_target_angle < 11:
+			cockpit_cam_target_angle -= 1
+	
+	# reset cam
+	if not left and not right:
+		# reset cam
+		if cockpit_cam.is_current():
+			cockpit_cam_target_angle = 0
+	
+	# vary cam speed
+	var speed = get_linear_velocity().length()
+	
+	cam_speed = 1
+	if speed > 25:
+		cam_speed = 4
+	if speed > 15:
+		cam_speed = 3
+	else:
+		cam_speed = 2
+		
+	#rotate cam
+	# left
+	if (cockpit_cam_target_angle < cockpit_cam_angle):
+		cockpit_cam_angle -= cam_speed*delta
+		if (cockpit_cam_target_angle > cockpit_cam_max_angle):
+			print("Setting to target angle: " + str(cockpit_cam_target_angle))
+			cockpit_cam_angle = cockpit_cam_target_angle
+	# right
+	if (cockpit_cam_target_angle > cockpit_cam_angle):
+		cockpit_cam_angle += cam_speed*delta
+		# bugs
+		#if (cockpit_cam.target_angle < cockpit_cam.max_angle):
+		#	print("Setting to target angle: " + str(cockpit_cam.target_angle))
+		#	cockpit_cam.angle = cockpit_cam.target_angle
+	
+	cockpit_cam.set_rotation_degrees(Vector3(180,cockpit_cam_angle, 180))
+	
 		
 	#make physics happen!
 	process_car_physics(delta, gas, braking, left, right)

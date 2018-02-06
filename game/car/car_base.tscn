@@ -676,7 +676,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.996002, -1.06042 )
 
 [node name="Camera" type="Camera" parent="BODY/cambase" index="0"]
 
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1, -4.39379 )
+transform = Transform( -1, 8.74228e-08, 0, 8.74228e-08, 1, 8.74228e-08, 7.64274e-15, 8.74228e-08, -1, 0, 1, -4.39379 )
 keep_aspect = 1
 cull_mask = 1048575
 environment = null
@@ -699,7 +699,7 @@ autoturn_speed = 50
 
 [node name="CameraCockpit" type="Camera" parent="BODY/cambase" index="1"]
 
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.191978, -0.198621, 1.17862 )
+transform = Transform( -1, 8.74228e-08, 0, 8.74228e-08, 1, 8.74228e-08, 7.64274e-15, 8.74228e-08, -1, 0.191978, -0.198621, 1.17862 )
 keep_aspect = 1
 cull_mask = 1048575
 environment = null
