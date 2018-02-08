@@ -23,4 +23,5 @@ Keys
 * Arrows to drive
 * R to reset car on the wheels
 * C to switch between cockpit and chase cameras
-* D to switch to a top-down debug camera
+* A/D to peek left/right in cockpit camera
+* T to switch to a top-down debug camera

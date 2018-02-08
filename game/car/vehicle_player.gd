@@ -25,6 +25,7 @@ var cam_speed = 1
 var cockpit_cam_target_angle = 0
 var cockpit_cam_angle = 0
 var cockpit_cam_max_angle = 5
+var peek
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -64,6 +65,8 @@ func on_load_ended():
 	print("Loaded all pertinent stuff")
 
 func _physics_process(delta):
+	# were we peeking last tick?
+	var old_peek = peek
 	# emit a signal when we're all set up
 	elapsed_secs += delta
 	if (elapsed_secs > start_secs and not emitted):
@@ -77,6 +80,8 @@ func _physics_process(delta):
 	var left = false
 	var right = false
 	
+	peek = false
+	
 	#fps display
 	hud.update_fps()
 	
@@ -86,6 +91,21 @@ func _physics_process(delta):
 	if (Input.is_action_pressed("ui_down")):
 		braking = true
 	
+		# camera
+	if Input.is_action_pressed("peek_left"):
+		peek = true
+		#print("Peek left")
+		if cockpit_cam.is_current():
+			cockpit_cam_target_angle = 30
+	
+	if Input.is_action_pressed("peek_right"):
+		peek = true
+		#print("Peek right")
+		if cockpit_cam.is_current():
+			cockpit_cam_target_angle = -40
+	
+	
+	# turning
 	if (Input.is_action_pressed("ui_left")):
 		left = true
 		
@@ -102,7 +122,12 @@ func _physics_process(delta):
 			cockpit_cam_target_angle -= 1
 	
 	# reset cam
-	if not left and not right:
+	if not left and not right and not peek:
+		# if we were peeking last frame but are not now
+		if old_peek and cockpit_cam.is_current():
+			cockpit_cam_angle = 0
+			#print("Old peek is: " + str(old_peek))
+		
 		# reset cam
 		if cockpit_cam.is_current():
 			cockpit_cam_target_angle = 0
@@ -117,6 +142,9 @@ func _physics_process(delta):
 		cam_speed = 3
 	else:
 		cam_speed = 2
+		
+	if peek:
+		cam_speed = 30
 		
 	#rotate cam
 	# left
