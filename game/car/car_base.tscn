@@ -484,7 +484,7 @@ __meta__ = {
 
 [node name="BODY" type="VehicleBody" parent="." index="0"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00169557, 0.222867, -0.0955184 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.001696, 0, -0.095518 )
 input_ray_pickable = true
 input_capture_on_drag = false
 collision_layer = 1
@@ -499,7 +499,7 @@ continuous_cd = false
 contacts_reported = 0
 contact_monitor = false
 sleeping = false
-can_sleep = true
+can_sleep = false
 axis_lock_linear_x = false
 axis_lock_linear_y = false
 axis_lock_linear_z = false
@@ -514,12 +514,13 @@ engine_force = 0.0
 brake = 0.0
 steering = 0.0
 script = ExtResource( 1 )
+_sections_unfolded = [ "Transform" ]
 force = 1500
 
 [node name="wheel1" type="VehicleWheel" parent="BODY" index="0"]
 
 editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573678, 0.115169, 0.864664 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573678, 0.359334, 0.864664 )
 use_as_traction = true
 use_as_steering = true
 wheel_roll_influence = 0.1
@@ -531,6 +532,7 @@ suspension_stiffness = 40.0
 suspension_max_force = 6000.0
 damping_compression = 0.88
 damping_relaxation = 0.88
+_sections_unfolded = [ "Transform" ]
 
 [node name="wheel1" type="MeshInstance" parent="BODY/wheel1" index="0"]
 
@@ -551,7 +553,7 @@ material/0 = null
 [node name="wheel2" type="VehicleWheel" parent="BODY" index="1"]
 
 editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573678, 0.115169, -0.783403 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573678, 0.359334, -0.783403 )
 use_as_traction = true
 use_as_steering = false
 wheel_roll_influence = 0.1
@@ -563,6 +565,7 @@ suspension_stiffness = 40.0
 suspension_max_force = 6000.0
 damping_compression = 0.88
 damping_relaxation = 0.88
+_sections_unfolded = [ "Transform" ]
 
 [node name="wheel2" type="MeshInstance" parent="BODY/wheel2" index="0"]
 
@@ -583,7 +586,7 @@ material/0 = null
 [node name="wheel3" type="VehicleWheel" parent="BODY" index="2"]
 
 editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.115169, 0.864664 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.359334, 0.864664 )
 use_as_traction = true
 use_as_steering = true
 wheel_roll_influence = 0.1
@@ -595,6 +598,7 @@ suspension_stiffness = 40.0
 suspension_max_force = 6000.0
 damping_compression = 0.88
 damping_relaxation = 0.88
+_sections_unfolded = [ "Transform" ]
 
 [node name="wheel3" type="MeshInstance" parent="BODY/wheel3" index="0"]
 
@@ -615,7 +619,7 @@ material/0 = null
 [node name="wheel4" type="VehicleWheel" parent="BODY" index="3"]
 
 editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.115169, -0.783403 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.359334, -0.783403 )
 use_as_traction = true
 use_as_steering = false
 wheel_roll_influence = 0.1
@@ -627,6 +631,7 @@ suspension_stiffness = 40.0
 suspension_max_force = 6000.0
 damping_compression = 0.88
 damping_relaxation = 0.88
+_sections_unfolded = [ "Transform" ]
 
 [node name="wheel4" type="MeshInstance" parent="BODY/wheel4" index="0"]
 
@@ -646,8 +651,9 @@ material/0 = null
 
 [node name="car_mesh" type="Spatial" parent="BODY" index="4"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.576408 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.244165, 0.576408 )
 script = ExtResource( 2 )
+_sections_unfolded = [ "Transform" ]
 door_h = 0.55
 window_h = 0.4
 rh = 0.35
@@ -666,13 +672,15 @@ steering_material = SubResource( 8 )
 
 [node name="CollisionShape" type="CollisionShape" parent="BODY" index="5"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.439856, 0.0630786 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.684021, 0.063079 )
 shape = SubResource( 9 )
 disabled = false
+_sections_unfolded = [ "Transform" ]
 
 [node name="cambase" type="Spatial" parent="BODY" index="6"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.996002, -1.06042 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24017, -1.06042 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Camera" type="Camera" parent="BODY/cambase" index="0"]
 
@@ -716,6 +724,7 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Viewport" type="Viewport" parent="BODY" index="7"]
 
+editor/display_folded = true
 arvr = false
 size = Vector2( 300, 200 )
 own_world = false
@@ -747,12 +756,13 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 
 [node name="MeshInstance" type="MeshInstance" parent="BODY" index="8"]
 
-transform = Transform( -1, 0, 8.74228e-08, 0, 0.5, 0, -8.74228e-08, 0, -1, 0, 1.1208, 0 )
+transform = Transform( -1, 0, 8.74228e-08, 0, 0.5, 0, -8.74228e-08, 0, -1, 0, 1.36496, 0 )
 layers = 1
 material_override = SubResource( 10 )
 cast_shadow = 1
@@ -766,10 +776,11 @@ mesh = SubResource( 11 )
 skeleton = NodePath("..")
 material/0 = null
 script = ExtResource( 8 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="SpotLight" type="SpotLight" parent="BODY" index="9"]
 
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.466324, 0.182029, 1.3591 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.466324, 0.426194, 1.3591 )
 layers = 1
 light_color = Color( 1, 1, 1, 1 )
 light_energy = 1.0
@@ -788,10 +799,11 @@ spot_range = 5.0
 spot_attenuation = 1.0
 spot_angle = 45.0
 spot_angle_attenuation = 1.0
+_sections_unfolded = [ "Transform" ]
 
 [node name="SpotLight1" type="SpotLight" parent="BODY" index="10"]
 
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.472078, 0.216692, 1.3591 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.472078, 0.460857, 1.3591 )
 layers = 1
 light_color = Color( 1, 1, 1, 1 )
 light_energy = 1.0
@@ -810,10 +822,11 @@ spot_range = 5.0
 spot_attenuation = 1.0
 spot_angle = 45.0
 spot_angle_attenuation = 1.0
+_sections_unfolded = [ "Transform" ]
 
 [node name="taillights" type="MeshInstance" parent="BODY" index="11"]
 
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.431975, -1.32023 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.67614, -1.32023 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -826,7 +839,7 @@ lod_max_hysteresis = 0.0
 mesh = SubResource( 13 )
 skeleton = NodePath("..")
 material/0 = null
-_sections_unfolded = [ "material" ]
+_sections_unfolded = [ "Transform", "material" ]
 
 [node name="Viewport 2" type="Viewport" parent="BODY" index="12"]
 
@@ -860,7 +873,7 @@ mouse_default_cursor_shape = 0
 
 [node name="MeshInstance2" type="MeshInstance" parent="BODY" index="13"]
 
-transform = Transform( -0.4, 0, 8.74228e-08, 0, 0.2, 0, -3.49691e-08, 0, -1, 0, 0.362609, -1.41142 )
+transform = Transform( -0.4, 0, 8.74228e-08, 0, 0.2, 0, -3.49691e-08, 0, -1, 0, 0.606774, -1.41142 )
 layers = 1
 material_override = SubResource( 14 )
 cast_shadow = 1
@@ -874,10 +887,11 @@ mesh = SubResource( 15 )
 skeleton = NodePath("..")
 material/0 = null
 script = ExtResource( 10 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="driver" parent="BODY" index="14" instance=ExtResource( 11 )]
 
-transform = Transform( -1.31134e-08, 0, 0.3, 0, 0.3, 0, -0.3, 0, -1.31134e-08, 0.220677, -0.227599, 0.150683 )
+transform = Transform( -1.31134e-08, 0, 0.3, 0, 0.3, 0, -0.3, 0, -1.31134e-08, 0.220677, 0.016566, 0.150683 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
 
