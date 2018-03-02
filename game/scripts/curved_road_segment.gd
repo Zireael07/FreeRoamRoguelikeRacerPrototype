@@ -23,7 +23,7 @@ var points_outer_barrier
 var road_height = 0.01
 
 #road variables
-export var lane_width = 2.5
+export var lane_width = 3
 export var radius = 15
 export(Vector2) var loc = Vector2(0,0)
 export(bool) var left_turn = false
@@ -422,11 +422,18 @@ func test_road():
 		end_vector = Vector3(positions[positions.size()-1] - positions[positions.size()-2])
 		
 		placeStreetlight()
+		# debug
+		var start_positions = [left_positions[0], positions[0], right_positions[0]]
+		
+		var end_positions = [left_positions[positions.size()-1], positions[positions.size()-1], right_positions[positions.size()-1]]
 	
 		if (draw != null):
 			draw.draw_line(positions)
 			draw.draw_line(left_positions)
 			draw.draw_line(right_positions)
+			# debug
+			draw.draw_line(start_positions)
+			draw.draw_line(end_positions)
 			
 #props
 func placeStreetlight():
