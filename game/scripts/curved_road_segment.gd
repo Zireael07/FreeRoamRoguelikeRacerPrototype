@@ -109,6 +109,7 @@ func _ready():
 	test_road()
 	
 	pass
+	
 
 #func get_start_angle():
 #	var ret = 90-angle/2
@@ -158,7 +159,7 @@ func debug():
 	print("Position of start point is " + String(start_point))
 	#addTestColor(m, Color(0, 1,0), "start_cube", start_point.x, start_point.y, start_point.z, 0.1, 0.1, 0.1)
 
-	last = Vector3(points_center[31].x, road_height, points_center[31].y)
+	last = Vector3(points_center[points_center.size()-1].x, road_height, points_center[points_center.size()-1].y)
 	print("Position of last point is " + String(last))
 	
 	#var loc3d = Vector3(loc.x, 0, loc.y)
@@ -388,6 +389,18 @@ func test_road():
 			start_vector = Vector3(positions[1]-positions[0])
 			end_vector = Vector3(positions[positions.size()-1] - positions[positions.size()-2])
 		
+		# add the final position that we're missing
+		positions.push_back(Vector3(points_center[points_center.size()-1].x, road_height, points_center[points_center.size()-1].y))
+		left_positions.push_back(Vector3(points_outer[points_outer.size()-1].x, road_height, points_outer[points_outer.size()-1].y))
+		right_positions.push_back(Vector3(points_inner[points_inner.size()-1].x, road_height, points_inner[points_inner.size()-1].y))
+		left_nav_positions.push_back(Vector3(points_outer_nav[points_outer_nav.size()-1].x, road_height, points_outer_nav[points_outer_nav.size()-1].y))
+		right_nav_positions.push_back(Vector3(points_inner_nav[points_inner_nav.size()-1].x, road_height, points_inner_nav[points_inner_nav.size()-1].y))
+		
+		# add the final quad
+		var array = make_point_array(points_center.size()-2, points_center.size()-1)
+		quads.append(getQuads(array)[0])
+		quads.append(getQuads(array)[1])
+		
 		#optimized mesh
 		optimizedmeshCreate(quads, material)
 		
@@ -416,6 +429,11 @@ func test_road():
 			left_positions.push_back(Vector3(points_outer[index+1].x, road_height, points_outer[index+1].y))
 			right_positions.push_back(Vector3(points_inner[index].x, road_height, points_inner[index].y))
 			right_positions.push_back(Vector3(points_inner[index+1].x, road_height, points_inner[index+1].y))
+			
+		# add the final position that we're missing
+		positions.push_back(Vector3(points_center[points_center.size()-1].x, road_height, points_center[points_center.size()-1].y))
+		left_positions.push_back(Vector3(points_outer[points_outer.size()-1].x, road_height, points_outer[points_outer.size()-1].y))
+		right_positions.push_back(Vector3(points_inner[points_inner.size()-1].x, road_height, points_inner[points_inner.size()-1].y))
 	
 		#B-A = from a to b
 		start_vector = Vector3(positions[1]-positions[0])
@@ -423,17 +441,36 @@ func test_road():
 		
 		placeStreetlight()
 		# debug
-		var start_positions = [left_positions[0], positions[0], right_positions[0]]
+		#var start_positions = [left_positions[0], positions[0], right_positions[0]]
 		
-		var end_positions = [left_positions[positions.size()-1], positions[positions.size()-1], right_positions[positions.size()-1]]
+		#var end_positions = [left_positions[positions.size()-1], positions[positions.size()-1], right_positions[positions.size()-1]]
+
+	
+		var debug_pos = [positions[0], Vector3(loc.x, road_height, loc.y)]
+		var debug_inner = [right_positions[0], Vector3(loc.x, road_height, loc.y)]
+		var debug_outer = [left_positions[0], Vector3(loc.x, road_height, loc.y)]
+		
+		var debug_pos2 = [positions[positions.size()-1], Vector3(loc.x, road_height, loc.y)]
+		var debug_inner2 = [right_positions[right_positions.size()-1], Vector3(loc.x, road_height, loc.y)]
+		var debug_outer2 = [left_positions[left_positions.size()-1], Vector3(loc.x, road_height, loc.y)]
 	
 		if (draw != null):
 			draw.draw_line(positions)
 			draw.draw_line(left_positions)
 			draw.draw_line(right_positions)
 			# debug
-			draw.draw_line(start_positions)
-			draw.draw_line(end_positions)
+			#draw.draw_line(start_positions)
+			#draw.draw_line(end_positions)
+			
+			
+			draw.draw_line(debug_pos)
+			draw.draw_line(debug_pos2)
+			
+			draw.draw_line(debug_inner)
+			draw.draw_line(debug_inner2)
+			
+			draw.draw_line(debug_outer)
+			draw.draw_line(debug_outer2)
 			
 #props
 func placeStreetlight():
