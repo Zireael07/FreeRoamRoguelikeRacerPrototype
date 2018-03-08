@@ -388,8 +388,8 @@ func test_road():
 			right_nav_positions.push_back(Vector3(points_inner_nav[index+1].x, road_height, points_inner_nav[index+1].y))
 			
 			#B-A = from a to b
-			start_vector = Vector3(positions[1]-positions[0])
-			end_vector = Vector3(positions[positions.size()-1] - positions[positions.size()-2])
+			#start_vector = Vector3(positions[1]-positions[0])
+			#end_vector = Vector3(positions[positions.size()-1] - positions[positions.size()-2])
 		
 		# add the final position that we're missing
 		positions.push_back(Vector3(points_center[points_center.size()-1].x, road_height, points_center[points_center.size()-1].y))
@@ -406,6 +406,25 @@ func test_road():
 		#optimized mesh
 		optimizedmeshCreate(quads, material)
 		
+		# 2D because 3D doesn't have tangent()
+		var start_axis_2d = -(points_center[0]-loc).tangent().normalized()*10
+		var end_axis_2d = (points_center[points_center.size()-1]-loc).tangent().normalized()*10
+		
+		if left_turn:
+			start_axis_2d = -start_axis_2d
+			end_axis_2d = -end_axis_2d
+		
+		#B-A = from a to b
+		start_axis = Vector3(start_axis_2d.x, road_height, start_axis_2d.y)
+		end_axis = Vector3(end_axis_2d.x, road_height, end_axis_2d.y)
+		
+		
+		
+		var debug_start_axis = [positions[0], positions[0]+start_axis]
+		var debug_end_axis = [positions[positions.size()-1], positions[positions.size()-1]+end_axis]
+		
+		start_vector = Vector3((positions[0]+start_axis)-positions[0])
+		end_vector = Vector3(positions[positions.size()-1] - (positions[positions.size()-1]+end_axis))
 			
 		#generate navi vertices
 		nav_vertices = get_navi_vertices()
@@ -438,8 +457,8 @@ func test_road():
 		right_positions.push_back(Vector3(points_inner[points_inner.size()-1].x, road_height, points_inner[points_inner.size()-1].y))
 	
 		#B-A = from a to b
-		start_vector = Vector3(positions[1]-positions[0])
-		end_vector = Vector3(positions[positions.size()-1] - positions[positions.size()-2])
+		#start_vector = Vector3(positions[1]-positions[0])
+		#end_vector = Vector3(positions[positions.size()-1] - positions[positions.size()-2])
 		
 		placeStreetlight()
 		# debug
@@ -472,6 +491,10 @@ func test_road():
 		
 		var debug_start_axis = [positions[0], positions[0]+start_axis]
 		var debug_end_axis = [positions[positions.size()-1], positions[positions.size()-1]+end_axis]
+		
+		#B-A = from a to b
+		start_vector = Vector3((positions[0]+start_axis)-positions[0])
+		end_vector = Vector3(positions[positions.size()-1] - (positions[positions.size()-1]+end_axis))
 	
 		if (draw != null):
 			draw.draw_line(positions)
