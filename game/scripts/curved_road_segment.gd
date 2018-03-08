@@ -36,6 +36,8 @@ var last
 var global_start
 var global_end
 var relative_end
+var start_axis
+var end_axis
 
 #editor drawing
 var positions  = PoolVector3Array()
@@ -453,6 +455,23 @@ func test_road():
 		var debug_pos2 = [positions[positions.size()-1], Vector3(loc.x, road_height, loc.y)]
 		var debug_inner2 = [right_positions[right_positions.size()-1], Vector3(loc.x, road_height, loc.y)]
 		var debug_outer2 = [left_positions[left_positions.size()-1], Vector3(loc.x, road_height, loc.y)]
+		
+		# 2D because 3D doesn't have tangent()
+		var start_axis_2d = -(points_center[0]-loc).tangent().normalized()*10
+		var end_axis_2d = (points_center[points_center.size()-1]-loc).tangent().normalized()*10
+		
+		if left_turn:
+			start_axis_2d = -start_axis_2d
+			end_axis_2d = -end_axis_2d
+		
+		
+		start_axis = Vector3(start_axis_2d.x, road_height, start_axis_2d.y)
+		end_axis = Vector3(end_axis_2d.x, road_height, end_axis_2d.y)
+		
+		
+		
+		var debug_start_axis = [positions[0], positions[0]+start_axis]
+		var debug_end_axis = [positions[positions.size()-1], positions[positions.size()-1]+end_axis]
 	
 		if (draw != null):
 			draw.draw_line(positions)
@@ -466,11 +485,14 @@ func test_road():
 			draw.draw_line(debug_pos)
 			draw.draw_line(debug_pos2)
 			
-			draw.draw_line(debug_inner)
-			draw.draw_line(debug_inner2)
+			draw.draw_line(debug_start_axis)
+			draw.draw_line(debug_end_axis)
 			
-			draw.draw_line(debug_outer)
-			draw.draw_line(debug_outer2)
+			#draw.draw_line(debug_inner)
+			#draw.draw_line(debug_inner2)
+			
+			#draw.draw_line(debug_outer)
+			#draw.draw_line(debug_outer2)
 			
 #props
 func placeStreetlight():
