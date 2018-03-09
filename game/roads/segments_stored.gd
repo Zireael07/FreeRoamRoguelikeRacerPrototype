@@ -112,9 +112,10 @@ func makeRoads():
 				var angle_data = rotate_to_fit_straight(loc, start_g, check_loc)
 				var angle = angle_data[0]
 				var rel_vector = angle_data[1]
+				#print("Rel vector: " + str(rel_vector) + " : " + str(angle)) 
 				
 				if curdata["left_turn"] == false:
-					if rel_vector.x > rel_vector.z:
+					if rel_vector.x < 0:
 						print("We're rotating left")
 						segment.set_rotation(Vector3(0,angle,0))
 					else:
@@ -156,11 +157,16 @@ func makeRoads():
 						
 						print("Angle to target loc is " + String(rad2deg(angle)) + " degrees")
 						#to point straight, we need to rotate by 180-angle degrees
-						#180 degrees in radians is a scary number 3.14159265, so just trim
-						var rotate = -(3.1415-angle) #+0.03)
-						segment.get_parent().set_rotation(Vector3(0,rotate,0))
-						print("Rotation is " + String(segment.get_parent().get_rotation_degrees()))
-						segment.updateGlobalVerts()
+						var rotate = -(deg2rad(180)-angle)
+						
+						if data["left_turn"] == false:
+							segment.get_parent().set_rotation(Vector3(0,rotate,0))
+							print("Rotation to right turn is " + String(segment.get_parent().get_rotation_degrees()))
+							segment.updateGlobalVerts()
+						else:
+							segment.get_parent().set_rotation(Vector3(0,-rotate,0))
+							print("Rotation to left turn is " + String(segment.get_parent().get_rotation_degrees()))
+							segment.updateGlobalVerts()
 					# curve
 					else:
 						# degrees
@@ -215,6 +221,9 @@ func setupRoad(index, data):
 func setupStraightRoad(index, data):
 	var road_node = road_straight.instance()
 	road_node.set_name("Road_instance" + String(index))
+	# set length
+	if data["length"] > 0:
+		road_node.length = data["length"]*20
 	
 	var spatial = Spatial.new()
 	spatial.set_name("Spatial"+String(index))
@@ -234,6 +243,13 @@ func setupCurvedRoad(index, data):
 			road_node_right.get_child(0).get_child(0).radius = data["radius"]
 		add_child(road_node_right)
 		return road_node_right
+	else:
+		var road_node_left = road_left.instance()
+		road_node_left.set_name("Road_instance" + String(index))
+		if data["radius"] > 0:
+			road_node_left.get_child(0).get_child(0).radius = data["radius"]
+		add_child(road_node_left)
+		return road_node_left
 		
 func get_previous_data(index, data):
 	return data["game"+str(index-1)]
