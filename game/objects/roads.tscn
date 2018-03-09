@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scripts/ground_gen.gd" type="Script" id=1]
 [ext_resource path="res://assets/ground_material.tres" type="Material" id=2]
@@ -6,7 +6,8 @@
 [ext_resource path="res://assets/road_material.tres" type="Material" id=4]
 [ext_resource path="res://scripts/curved_road_segment.gd" type="Script" id=5]
 [ext_resource path="res://assets/cement.tres" type="Material" id=6]
-[ext_resource path="res://scripts/draw_line.gd" type="Script" id=7]
+[ext_resource path="res://assets/barrier_material.tres" type="Material" id=7]
+[ext_resource path="res://scripts/draw_line.gd" type="Script" id=8]
 
 [sub_resource type="PlaneShape" id=1]
 
@@ -22,9 +23,10 @@ flags_no_depth_test = false
 flags_use_point_size = true
 flags_world_triplanar = false
 flags_fixed_size = false
+flags_albedo_tex_force_srgb = false
 vertex_color_use_as_albedo = false
 vertex_color_is_srgb = false
-params_diffuse_mode = 1
+params_diffuse_mode = 0
 params_specular_mode = 0
 params_blend_mode = 0
 params_cull_mode = 0
@@ -62,14 +64,14 @@ uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 
-[node name="Spatial" type="Spatial"]
+[node name="Spatial" type="Spatial" index="0"]
 
-[node name="Ground" type="Spatial" parent="."]
+[node name="Ground" type="Spatial" parent="." index="0"]
 
 script = ExtResource( 1 )
 terrainmaterial = ExtResource( 2 )
 
-[node name="StaticBody" type="StaticBody" parent="Ground"]
+[node name="StaticBody" type="StaticBody" parent="Ground" index="0"]
 
 input_ray_pickable = true
 input_capture_on_drag = false
@@ -80,22 +82,23 @@ bounce = 0.0
 constant_linear_velocity = Vector3( 0, 0, 0 )
 constant_angular_velocity = Vector3( 0, 0, 0 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Ground/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="Ground/StaticBody" index="0"]
 
 shape = SubResource( 1 )
 disabled = false
 
-[node name="Road" type="Spatial" parent="."]
+[node name="Road" type="Spatial" parent="." index="1"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18.7979, 0, 0 )
 script = ExtResource( 3 )
 material = ExtResource( 4 )
 
-[node name="Position3D" type="Position3D" parent="."]
+[node name="Position3D" type="Position3D" parent="." index="2"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21.8439, 0, -32.5206 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21.8439, 0, -31.0813 )
 script = ExtResource( 5 )
 sidewalks = false
+barriers = true
 lane_width = 3.0
 radius = 15
 loc = Vector2( 0, 0 )
@@ -104,8 +107,9 @@ start_angle = 90
 end_angle = 170
 material = ExtResource( 4 )
 sidewalk_material = ExtResource( 6 )
+barrier_material = ExtResource( 7 )
 
-[node name="draw" type="ImmediateGeometry" parent="Position3D"]
+[node name="draw" type="ImmediateGeometry" parent="Position3D" index="0"]
 
 layers = 1
 material_override = SubResource( 2 )
@@ -116,7 +120,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-script = ExtResource( 7 )
+script = ExtResource( 8 )
 color = Color( 1, 1, 1, 1 )
 
 

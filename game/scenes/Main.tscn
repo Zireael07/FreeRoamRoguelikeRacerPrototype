@@ -128,9 +128,9 @@ ends = PoolVector3Array(  )
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.0147, 0, 25.1989 )
 
-[node name="Position3D" type="Position3D" parent="." index="8"]
+[node name="roads_stored" type="Position3D" parent="." index="8"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -50.7348, 0, 0.125347 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -50.7348, 0, 133.174 )
 script = ExtResource( 9 )
 
 [node name="marker" parent="." index="9" instance=ExtResource( 10 )]
