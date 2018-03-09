@@ -115,11 +115,11 @@ func makeRoads():
 				
 				if curdata["left_turn"] == false:
 					if rel_vector.x > rel_vector.z:
-						print("We're rotating right")
-						segment.set_rotation(Vector3(0,-angle,0))
-					else:
 						print("We're rotating left")
-						segment.set_rotation(Vector3(0,angle, 0))
+						segment.set_rotation(Vector3(0,angle,0))
+					else:
+						print("We're rotating right")
+						segment.set_rotation(Vector3(0,-angle, 0))
 				
 			#a curve
 			else:
@@ -157,7 +157,7 @@ func makeRoads():
 						print("Angle to target loc is " + String(rad2deg(angle)) + " degrees")
 						#to point straight, we need to rotate by 180-angle degrees
 						#180 degrees in radians is a scary number 3.14159265, so just trim
-						var rotate = -(3.1415-angle+0.03)
+						var rotate = -(3.1415-angle) #+0.03)
 						segment.get_parent().set_rotation(Vector3(0,rotate,0))
 						print("Rotation is " + String(segment.get_parent().get_rotation_degrees()))
 						segment.updateGlobalVerts()
@@ -251,7 +251,7 @@ func get_start_vector(segment, data):
 func get_end_location_straight(prev):
 	#straights don't have children nodes because they don't need 'em
 	#this is positive!!!
-	var end_loc = prev.relative_end - Vector3(0,0,0.5) #tiny fudge to hide imperfect rotations
+	var end_loc = prev.relative_end #- Vector3(0,0,0.5) #tiny fudge to hide imperfect rotations
 	#the relative end in global space
 	var g_loc = prev.get_global_transform().xform(end_loc)
 	#global space to local space
