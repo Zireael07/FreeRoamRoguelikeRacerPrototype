@@ -67,13 +67,17 @@ func make_map():
 		for index in range (positions_2d.size()):
 			for ind in range(positions_2d[index].size()):
 				var vec = positions_2d[index][ind]
-				for i in range (vec.x, vec.x+dot_size):
-					for j in range (vec.y, vec.y+dot_size):
-						# necessary in 3.0
-						image.lock()
-						image.set_pixel(i,j, road)
-				
-				draw_lines(ind, index)
+				# abort early if we're out of borders
+				if vec.x or vec.y > 1000-dot_size: 
+					print("Out of borders")
+				else:
+					for i in range (vec.x, vec.x+dot_size):
+						for j in range (vec.y, vec.y+dot_size):
+							# necessary in 3.0
+							image.lock()
+							image.set_pixel(i,j, road)
+					
+					draw_lines(ind, index)
 			
 			# debugging purposes
 			#draw_lines_differently(index)
