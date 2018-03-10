@@ -81,124 +81,7 @@ func makeRoads():
 		
 		#if we're not the first, get previous
 		if linenum > 0:
-			#print("We should be getting previous segment") #data")
-			var prev = get_previous_segment(linenum)
-			print("Previous segment is " + prev.get_name())
-			var prev_loc = prev.get_translation()
-			
-			#use data to determine whether it's a straight or a curve
-			var data = dat[linenum-1]
-#			print("Previous data is : " + str(data))
-			var prev_type = data["type"]
-			if prev_type == "straight":
-				var loc = get_end_location_straight(prev)
-				print("Location is " + String(loc))
-				
-				#are we a curve?
-				var curdata = dat[linenum]
-				var cur_type = curdata["type"]
-				
-				if cur_type == "curved":
-					segment.set_translation(loc)
-				else:
-					segment.get_parent().set_translation(loc)
-					segment.updateGlobalVerts()
-					
-				#rotations
-				var needed_locs = vectors_to_fit_straight(segment, prev, dat[linenum])
-				var start_g = needed_locs[0]
-				var check_loc = needed_locs[1]
-				
-				var angle_data = rotate_to_fit_straight(loc, start_g, check_loc)
-				var angle = angle_data[0]
-				var rel_vector = angle_data[1]
-				#print("Rel vector: " + str(rel_vector) + " : " + str(angle)) 
-				
-				if curdata["left_turn"] == false:
-					if rel_vector.x < 0:
-						print("We're rotating left")
-						segment.set_rotation(Vector3(0,angle,0))
-					else:
-						print("We're rotating right")
-						segment.set_rotation(Vector3(0,-angle, 0))
-				
-			#a curve
-			else:
-				var end_loc = prev.get_child(0).get_child(0).relative_end
-
-				print("Previous segment is a curve at " + String(prev_loc) + " ending at " + String(end_loc))
-				if prev_loc != Vector3(0,0,0):
-					var loc = get_end_location_right_turn(prev, end_loc)
-					
-					print("Location is " + String(loc))
-					#are we a curve?
-					var curdata = dat[linenum]
-					var cur_type = curdata["type"]
-					
-					if cur_type == "curved":
-						#print("Current type is curved")
-						segment.set_translation(loc)
-					else:
-						#print("Current type is straight")
-						segment.get_parent().set_translation(loc)
-						segment.updateGlobalVerts()
-					
-					if cur_type == "straight":
-						#rotations
-						var needed_locs = vectors_to_fit_curve(segment, prev, end_loc, dat[linenum])
-						var start_g = needed_locs[0]
-						var check_loc = needed_locs[1]
-						var g_target_loc = needed_locs[2]
-						
-						#check the angles (relative to segment)
-						var rel_target = segment.get_parent().get_global_transform().xform_inv(g_target_loc)
-						print("Relative location of check vec to segment is " + String(rel_target))
-						var angle = atan2(rel_target.x, rel_target.z)
-						
-						print("Angle to target loc is " + String(rad2deg(angle)) + " degrees")
-						#to point straight, we need to rotate by 180-angle degrees
-						var rotate = -(deg2rad(180)-angle)
-						
-						if data["left_turn"] == false:
-							segment.get_parent().set_rotation(Vector3(0,rotate,0))
-							print("Rotation to right turn is " + String(segment.get_parent().get_rotation_degrees()))
-							segment.updateGlobalVerts()
-						else:
-							segment.get_parent().set_rotation(Vector3(0,-rotate,0))
-							print("Rotation to left turn is " + String(segment.get_parent().get_rotation_degrees()))
-							segment.updateGlobalVerts()
-					# curve
-					else:
-						# degrees
-						var angle_diff = prev.get_child(0).get_child(0).end_angle - prev.get_child(0).get_child(0).start_angle
-						segment.set_rotation_degrees(Vector3(0, -angle_diff, 0))
-				
-				#if starting at 0,0,0
-				else:
-					if data["left_turn"] == false:
-						var loc = get_end_location_right_turn(prev, end_loc)
-							
-						print(str(linenum) + " location is " + String(-loc))
-						#are we a curve?
-						var curdata = dat[linenum] #get_current_data_new(linenum, dat)
-						var cur_type = curdata["type"]
-							
-						if cur_type == "curved":
-							if curdata["left_turn"] == false:
-								#print("Current type is curved")
-								segment.set_translation(-loc)
-							else:
-								segment.set_translation(loc)
-								
-							# rotations
-							# degrees
-							var angle_diff = prev.get_child(0).get_child(0).end_angle - prev.get_child(0).get_child(0).start_angle
-							segment.set_rotation_degrees(Vector3(0, -angle_diff, 0))
-								
-						else:
-							#print("Current type is straight")
-							segment.get_parent().set_translation(-loc)
-							segment.updateGlobalVerts()
+			makeNonFirst(linenum, segment)
 		# we're first
 		else:
 			var curdata = dat[linenum]
@@ -206,6 +89,130 @@ func makeRoads():
 			if cur_type == "straight":
 				segment.updateGlobalVerts()
 
+func makeNonFirst(linenum, segment):
+	#print("We should be getting previous segment") #data")
+	var prev = get_previous_segment(linenum)
+	print("Previous segment is " + prev.get_name())
+	var prev_loc = prev.get_translation()
+	
+	#use data to determine whether it's a straight or a curve
+	var data = dat[linenum-1]
+#	print("Previous data is : " + str(data))
+	var prev_type = data["type"]
+	# do stuff
+	if prev_type == "straight":
+		var loc = get_end_location_straight(prev)
+		print("Location is " + String(loc))
+		
+		#are we a curve?
+		var curdata = dat[linenum]
+		var cur_type = curdata["type"]
+		
+		# place
+		if cur_type == "curved":
+			segment.set_translation(loc)
+		else:
+			segment.get_parent().set_translation(loc)
+			segment.updateGlobalVerts()
+			
+		#rotations
+		var needed_locs = vectors_to_fit_straight(segment, prev, dat[linenum])
+		var start_g = needed_locs[0]
+		var check_loc = needed_locs[1]
+		
+		var angle_data = rotate_to_fit_straight(loc, start_g, check_loc)
+		var angle = angle_data[0]
+		var rel_vector = angle_data[1]
+		#print("Rel vector: " + str(rel_vector) + " : " + str(angle)) 
+		
+		if curdata["left_turn"] == false:
+			if rel_vector.x < 0:
+				print("We're rotating left")
+				segment.set_rotation(Vector3(0,angle,0))
+			else:
+				print("We're rotating right")
+				segment.set_rotation(Vector3(0,-angle, 0))
+		
+	#a curve
+	else:
+		var end_loc = prev.get_child(0).get_child(0).relative_end
+
+		print("Previous segment is a curve at " + String(prev_loc) + " ending at " + String(end_loc))
+		# signs are different for starting at 0,0 and not
+		if prev_loc != Vector3(0,0,0):
+			var loc = get_end_location_right_turn(prev, end_loc)
+			
+			print("Location is " + String(loc))
+			#are we a curve?
+			var curdata = dat[linenum]
+			var cur_type = curdata["type"]
+			
+			if cur_type == "curved":
+				#print("Current type is curved")
+				segment.set_translation(loc)
+			else:
+				#print("Current type is straight")
+				segment.get_parent().set_translation(loc)
+				segment.updateGlobalVerts()
+			
+			if cur_type == "straight":
+				#rotations
+				var needed_locs = vectors_to_fit_curve(segment, prev, end_loc, dat[linenum])
+				var start_g = needed_locs[0]
+				var check_loc = needed_locs[1]
+				var g_target_loc = needed_locs[2]
+				
+				#check the angles (relative to segment)
+				var rel_target = segment.get_parent().get_global_transform().xform_inv(g_target_loc)
+				print("Relative location of check vec to segment is " + String(rel_target))
+				var angle = atan2(rel_target.x, rel_target.z)
+				
+				print("Angle to target loc is " + String(rad2deg(angle)) + " degrees")
+				#to point straight, we need to rotate by 180-angle degrees
+				var rotate = -(deg2rad(180)-angle)
+				
+				if data["left_turn"] == false:
+					segment.get_parent().set_rotation(Vector3(0,rotate,0))
+					print("Rotation to right turn is " + String(segment.get_parent().get_rotation_degrees()))
+					segment.updateGlobalVerts()
+				else:
+					segment.get_parent().set_rotation(Vector3(0,-rotate,0))
+					print("Rotation to left turn is " + String(segment.get_parent().get_rotation_degrees()))
+					segment.updateGlobalVerts()
+			# curve
+			else:
+				# degrees
+				var angle_diff = prev.get_child(0).get_child(0).end_angle - prev.get_child(0).get_child(0).start_angle
+				segment.set_rotation_degrees(Vector3(0, -angle_diff, 0))
+		
+		#if starting at 0,0,0
+		else:
+			if data["left_turn"] == false:
+				var loc = get_end_location_right_turn(prev, end_loc)
+					
+				print(str(linenum) + " location is " + String(-loc))
+				#are we a curve?
+				var curdata = dat[linenum] #get_current_data_new(linenum, dat)
+				var cur_type = curdata["type"]
+					
+				if cur_type == "curved":
+					if curdata["left_turn"] == false:
+						#print("Current type is curved")
+						segment.set_translation(-loc)
+					else:
+						segment.set_translation(loc)
+						
+					# rotations
+					# degrees
+					var angle_diff = prev.get_child(0).get_child(0).end_angle - prev.get_child(0).get_child(0).start_angle
+					segment.set_rotation_degrees(Vector3(0, -angle_diff, 0))
+						
+				else:
+					#print("Current type is straight")
+					segment.get_parent().set_translation(-loc)
+					segment.updateGlobalVerts()
+
+# setup
 func setupRoad(index, data):
 	print("Setting up road for " + str(data))
 	
