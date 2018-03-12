@@ -347,6 +347,48 @@ func get_global_positions():
 	
 			
 func test_road():
+	
+	#clear to prevent weird stuff
+	positions.resize(0)
+	left_positions.resize(0)
+	right_positions.resize(0)
+	global_positions.resize(0)
+	
+	var nb_points = 32
+	
+	for index in range(nb_points-1):
+		positions.push_back(Vector3(points_center[index].x, road_height, points_center[index].y))
+		positions.push_back(Vector3(points_center[index+1].x, road_height, points_center[index+1].y))
+		left_positions.push_back(Vector3(points_outer[index].x, road_height, points_outer[index].y))
+		left_positions.push_back(Vector3(points_outer[index+1].x, road_height, points_outer[index+1].y))
+		right_positions.push_back(Vector3(points_inner[index].x, road_height, points_inner[index].y))
+		right_positions.push_back(Vector3(points_inner[index+1].x, road_height, points_inner[index+1].y))
+			
+	# add the final position that we're missing
+	positions.push_back(Vector3(points_center[points_center.size()-1].x, road_height, points_center[points_center.size()-1].y))
+	left_positions.push_back(Vector3(points_outer[points_outer.size()-1].x, road_height, points_outer[points_outer.size()-1].y))
+	right_positions.push_back(Vector3(points_inner[points_inner.size()-1].x, road_height, points_inner[points_inner.size()-1].y))
+	
+	# 2D because 3D doesn't have tangent()
+	var start_axis_2d = -(points_center[0]-loc).tangent().normalized()*10
+	var end_axis_2d = -(points_center[points_center.size()-1]-loc).tangent().normalized()*10
+		
+	if left_turn:
+		start_axis_2d = -start_axis_2d
+		end_axis_2d = -end_axis_2d
+		
+	
+	start_axis = Vector3(start_axis_2d.x, road_height, start_axis_2d.y)
+	end_axis = Vector3(end_axis_2d.x, road_height, end_axis_2d.y)
+		
+	start_ref = positions[0]+start_axis
+	end_ref = positions[positions.size()-1]+end_axis
+	
+	#B-A = from a to b
+	start_vector = Vector3(start_ref-positions[0])
+	end_vector = Vector3(positions[positions.size()-1] - end_ref)
+	
+	
 	#only mesh in game because meshing in editor can take >900 ms
 	if not Engine.is_editor_hint():
 		var quads = []
@@ -355,13 +397,8 @@ func test_road():
 		road_mesh.set_name("road_mesh")
 		add_child(road_mesh)
 		
-		#clear to prevent weird stuff
-		positions.resize(0)
-		left_positions.resize(0)
-		right_positions.resize(0)
-		global_positions.resize(0)
 		
-		var nb_points = 32
+		
 		for index in range(nb_points-1):
 			var array = make_point_array(index, index+1)
 			quads.append(getQuads(array)[0])
@@ -376,13 +413,6 @@ func test_road():
 			if barriers and index > 5 and index < 25:
 					make_barrier(index, barrier_material)
 			
-			
-			positions.push_back(Vector3(points_center[index].x, road_height, points_center[index].y))
-			positions.push_back(Vector3(points_center[index+1].x, road_height, points_center[index+1].y))
-			left_positions.push_back(Vector3(points_outer[index].x, road_height, points_outer[index].y))
-			left_positions.push_back(Vector3(points_outer[index+1].x, road_height, points_outer[index+1].y))
-			right_positions.push_back(Vector3(points_inner[index].x, road_height, points_inner[index].y))
-			right_positions.push_back(Vector3(points_inner[index+1].x, road_height, points_inner[index+1].y))
 			#nav
 			left_nav_positions.push_back(Vector3(points_outer_nav[index].x, road_height, points_outer_nav[index].y))
 			left_nav_positions.push_back(Vector3(points_outer_nav[index+1].x, road_height, points_outer_nav[index+1].y))
@@ -394,9 +424,6 @@ func test_road():
 			#end_vector = Vector3(positions[positions.size()-1] - positions[positions.size()-2])
 		
 		# add the final position that we're missing
-		positions.push_back(Vector3(points_center[points_center.size()-1].x, road_height, points_center[points_center.size()-1].y))
-		left_positions.push_back(Vector3(points_outer[points_outer.size()-1].x, road_height, points_outer[points_outer.size()-1].y))
-		right_positions.push_back(Vector3(points_inner[points_inner.size()-1].x, road_height, points_inner[points_inner.size()-1].y))
 		left_nav_positions.push_back(Vector3(points_outer_nav[points_outer_nav.size()-1].x, road_height, points_outer_nav[points_outer_nav.size()-1].y))
 		right_nav_positions.push_back(Vector3(points_inner_nav[points_inner_nav.size()-1].x, road_height, points_inner_nav[points_inner_nav.size()-1].y))
 		
@@ -407,27 +434,6 @@ func test_road():
 		
 		#optimized mesh
 		optimizedmeshCreate(quads, material)
-		
-		# 2D because 3D doesn't have tangent()
-		var start_axis_2d = -(points_center[0]-loc).tangent().normalized()*10
-		var end_axis_2d = (points_center[points_center.size()-1]-loc).tangent().normalized()*10
-		
-		if left_turn:
-			start_axis_2d = -start_axis_2d
-			end_axis_2d = -end_axis_2d
-		
-		#B-A = from a to b
-		start_axis = Vector3(start_axis_2d.x, road_height, start_axis_2d.y)
-		end_axis = Vector3(end_axis_2d.x, road_height, end_axis_2d.y)
-		
-		start_ref = positions[0]+start_axis
-		end_ref = positions[positions.size()-1]+end_axis
-		
-		var debug_start_axis = [positions[0], start_ref]
-		var debug_end_axis = [positions[positions.size()-1], end_ref]
-		
-		start_vector = Vector3(start_ref-positions[0])
-		end_vector = Vector3(positions[positions.size()-1] - end_ref)
 			
 		#generate navi vertices
 		nav_vertices = get_navi_vertices()
@@ -440,25 +446,6 @@ func test_road():
 		
 	#draw an immediate line in editor instead
 	else:
-		#clear to prevent weird stuff
-		positions.resize(0)
-		left_positions.resize(0)
-		right_positions.resize(0)
-		
-		var nb_points = 32
-		for index in range(nb_points-1):
-			positions.push_back(Vector3(points_center[index].x, road_height, points_center[index].y))
-			positions.push_back(Vector3(points_center[index+1].x, road_height, points_center[index+1].y))
-			left_positions.push_back(Vector3(points_outer[index].x, road_height, points_outer[index].y))
-			left_positions.push_back(Vector3(points_outer[index+1].x, road_height, points_outer[index+1].y))
-			right_positions.push_back(Vector3(points_inner[index].x, road_height, points_inner[index].y))
-			right_positions.push_back(Vector3(points_inner[index+1].x, road_height, points_inner[index+1].y))
-			
-		# add the final position that we're missing
-		positions.push_back(Vector3(points_center[points_center.size()-1].x, road_height, points_center[points_center.size()-1].y))
-		left_positions.push_back(Vector3(points_outer[points_outer.size()-1].x, road_height, points_outer[points_outer.size()-1].y))
-		right_positions.push_back(Vector3(points_inner[points_inner.size()-1].x, road_height, points_inner[points_inner.size()-1].y))
-	
 		#B-A = from a to b
 		#start_vector = Vector3(positions[1]-positions[0])
 		#end_vector = Vector3(positions[positions.size()-1] - positions[positions.size()-2])
@@ -478,27 +465,8 @@ func test_road():
 		var debug_inner2 = [right_positions[right_positions.size()-1], Vector3(loc.x, road_height, loc.y)]
 		var debug_outer2 = [left_positions[left_positions.size()-1], Vector3(loc.x, road_height, loc.y)]
 		
-		# 2D because 3D doesn't have tangent()
-		var start_axis_2d = -(points_center[0]-loc).tangent().normalized()*10
-		var end_axis_2d = -(points_center[points_center.size()-1]-loc).tangent().normalized()*10
-		
-		if left_turn:
-			start_axis_2d = -start_axis_2d
-			end_axis_2d = -end_axis_2d
-		
-		
-		start_axis = Vector3(start_axis_2d.x, road_height, start_axis_2d.y)
-		end_axis = Vector3(end_axis_2d.x, road_height, end_axis_2d.y)
-		
-		start_ref = positions[0]+start_axis
-		end_ref = positions[positions.size()-1]+end_axis
-		
 		var debug_start_axis = [positions[0], start_ref]
 		var debug_end_axis = [positions[positions.size()-1], end_ref]
-		
-		#B-A = from a to b
-		start_vector = Vector3(start_ref-positions[0])
-		end_vector = Vector3(positions[positions.size()-1] - end_ref)
 	
 		if (draw != null):
 			draw.draw_line(positions)
