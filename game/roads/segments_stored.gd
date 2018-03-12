@@ -6,6 +6,7 @@ extends Position3D
 var road
 var road_left
 var road_straight
+export(int) var length_mult = 10
 
 var dat
 
@@ -223,7 +224,7 @@ func setupStraightRoad(index, data):
 	road_node.set_name("Road_instance" + String(index))
 	# set length
 	if data["length"] > 0:
-		road_node.length = data["length"]*20
+		road_node.length = data["length"]*length_mult
 	
 	var spatial = Spatial.new()
 	spatial.set_name("Spatial"+String(index))
