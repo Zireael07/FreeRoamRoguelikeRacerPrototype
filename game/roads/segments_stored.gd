@@ -116,22 +116,20 @@ func makeNonFirst(linenum, segment):
 			segment.updateGlobalVerts()
 			
 		#rotations
-		var needed_locs = vectors_to_fit_straight(segment, prev, dat[linenum])
+		var needed_locs = vectors_to_fit_to_straight(segment, prev, dat[linenum])
 		var start_g = needed_locs[0]
 		var check_loc = needed_locs[1]
 		
-		var angle_data = rotate_to_fit_straight(loc, start_g, check_loc)
-		var angle = angle_data[0]
-		var rel_vector = angle_data[1]
-		#print("Rel vector: " + str(rel_vector) + " : " + str(angle)) 
+		var results = rotate_to_fit(loc, start_g, check_loc)
+		var angle = results[0]
+		var rel_loc = results[1]
+		print("Angle to straight" + str(angle) + " " + str(rad2deg(angle)))
 		
-		if curdata["left_turn"] == false:
-			if rel_vector.x < 0:
-				print("We're rotating left")
-				segment.set_rotation(Vector3(0,angle,0))
-			else:
-				print("We're rotating right")
-				segment.set_rotation(Vector3(0,-angle, 0))
+		#segment.set_rotation(Vector3(0,angle,0))
+		if rel_loc.x > 0:
+			segment.set_rotation(Vector3(0, angle,0))
+		else:
+			segment.set_rotation(Vector3(0, -angle,0))
 		
 	#a curve
 	else:
@@ -157,28 +155,23 @@ func makeNonFirst(linenum, segment):
 			
 			if cur_type == "straight":
 				#rotations
-				var needed_locs = vectors_to_fit_curve(segment, prev, end_loc, dat[linenum])
+				var needed_locs = vectors_to_fit_to_curve(segment, prev, end_loc, dat[linenum])
 				var start_g = needed_locs[0]
 				var check_loc = needed_locs[1]
 				var g_target_loc = needed_locs[2]
 				
-				#check the angles (relative to segment)
-				var rel_target = segment.get_parent().get_global_transform().xform_inv(g_target_loc)
-				print("Relative location of check vec to segment is " + String(rel_target))
-				var angle = atan2(rel_target.x, rel_target.z)
-				
+				var results = rotate_to_fit(loc, start_g, check_loc)
+				var angle = results[0]
+				var rel_loc = results[1]
 				print("Angle to target loc is " + String(rad2deg(angle)) + " degrees")
-				#to point straight, we need to rotate by 180-angle degrees
-				var rotate = -(deg2rad(180)-angle)
 				
-				if data["left_turn"] == false:
-					segment.get_parent().set_rotation(Vector3(0,rotate,0))
-					print("Rotation to right turn is " + String(segment.get_parent().get_rotation_degrees()))
+				if rel_loc.x > 0:
+					segment.get_parent().set_rotation(Vector3(0, angle,0))
 					segment.updateGlobalVerts()
 				else:
-					segment.get_parent().set_rotation(Vector3(0,-rotate,0))
-					print("Rotation to left turn is " + String(segment.get_parent().get_rotation_degrees()))
+					segment.get_parent().set_rotation(Vector3(0, -angle,0))
 					segment.updateGlobalVerts()
+
 			# curve
 			else:
 				# degrees
@@ -264,12 +257,12 @@ func get_previous_data(index, data):
 func get_current_data(index, data):
 	return data["game"+str(index)]
 		
-func get_start_vector(segment, data):
-	#faster than checking if segment extends a custom script
-	if data["type"] == "straight":
-		return segment.start_vector
-	else:
-		return segment.get_child(0).get_child(0).start_vector
+#func get_start_vector(segment, data):
+#	#faster than checking if segment extends a custom script
+#	if data["type"] == "straight":
+#		return segment.start_vector
+#	else:
+#		return segment.get_child(0).get_child(0).start_vector
 
 func get_end_location_straight(prev):
 	#straights don't have children nodes because they don't need 'em
@@ -288,53 +281,60 @@ func get_end_location_right_turn(prev, end_loc):
 	var loc = get_global_transform().xform_inv(g_loc)
 	return loc	
 
+# rotations
+# 0. get point we want (endpoint of a vector)
+# 1. get global position
+# 2. convert it to our local space
+
 #functions to fit a curve to a straight
-func vectors_to_fit_straight(segment, prev, data):
-	var target_loc = prev.relative_end - prev.end_vector
+func vectors_to_fit_to_straight(segment, prev, data):
+	var target_loc = prev.end_ref #prev.relative_end - prev.end_vector
 	#print("Target loc is " + String(target_loc))
 	var g_target_loc = prev.get_global_transform().xform(target_loc)
 	print("Global target loc is " + String(g_target_loc))
 	#make the global a local again but in our space
 	var check_loc = get_global_transform().xform_inv(g_target_loc)
 	
-	var start_vec = get_start_vector(segment, data)
-	var g_start_vec = segment.get_global_transform().xform(start_vec)
+	var start_vec = segment.get_child(0).get_child(0).start_ref #get_start_vector(segment, data)
+	var g_start_vec = segment.get_child(0).get_child(0).get_global_transform().xform(start_vec)
 	var start_g = get_global_transform().xform_inv(g_start_vec)
 	
 	return [start_g, check_loc]
+
+#functions to fit to a curve
+func vectors_to_fit_to_curve(segment, prev, end_loc, data):
+	#print("Previous segment's end vector " + String(prev.end_vector))
+	var target_loc = prev.get_child(0).get_child(0).end_ref
+	#print("Target loc: " + str(target_loc))
+	var g_target_loc = prev.get_child(0).get_child(0).get_global_transform().xform(target_loc)
+	#var target_loc = end_loc + prev.get_child(0).get_child(0).end_vector
+	#negate (a curve's relative end is start-end)
+	#var g_target_loc = prev.get_global_transform().xform(-target_loc)
 	
-func rotate_to_fit_straight(loc, start_loc, check_loc):
+	#make the global a local again but in our space
+	var check_loc = get_global_transform().xform_inv(g_target_loc)
+	
+	print("Check loc is " + String(check_loc))
+	#this is local
+	var start_vec = segment.start_ref #get_start_vector(segment, data) 
+	var g_start_vec = segment.get_parent().get_global_transform().xform(start_vec)
+	var start_g = get_global_transform().xform_inv(g_start_vec)
+	
+	return [start_g, check_loc, g_target_loc]
+
+func rotate_to_fit(loc, start_loc, check_loc):
 	#B-A = from a to b
 	var vector_curr = start_loc-loc
 	var vector_prev = check_loc-loc
-	var angle_prev = vector_curr.angle_to(vector_prev)
+	var angle = vector_curr.angle_to(vector_prev)
 	
-	print("Angle to previous " + String(angle_prev) + " deg " + String(rad2deg(angle_prev)))
-	var angle = deg2rad(180)-angle_prev
-	print("Angle " + String(angle) + " deg " + String(rad2deg(angle)))
+	print("Angle to previous " + String(angle) + " deg " + String(rad2deg(angle)))
 	
 	#need relative location of check_loc to start_loc
 	var rel_vector = vector_curr+vector_prev
 	print("Relative location of check to start vector is " + String(rel_vector))
 	
 	return [angle, rel_vector]
-	
-#functions to fit to a curve
-func vectors_to_fit_curve(segment, prev, end_loc, data):
-	#print("Previous segment's end vector " + String(prev.end_vector))
-	var target_loc = end_loc + prev.get_child(0).get_child(0).end_vector
-	#negate (a curve's relative end is start-end)
-	var g_target_loc = prev.get_global_transform().xform(-target_loc)
-	#make the global a local again but in our space
-	var check_loc = get_global_transform().xform_inv(g_target_loc)
-	
-	#print("Check loc is " + String(check_loc))
-	#this is local
-	var start_vec = get_start_vector(segment, data) 
-	var g_start_vec = segment.get_parent().get_global_transform().xform(start_vec)
-	var start_g = get_global_transform().xform_inv(g_start_vec)
-	
-	return [start_g, check_loc, g_target_loc]
 
 # utility
 func get_previous_segment(index):
