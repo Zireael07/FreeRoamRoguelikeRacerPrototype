@@ -480,7 +480,7 @@ func test_road():
 		
 		# 2D because 3D doesn't have tangent()
 		var start_axis_2d = -(points_center[0]-loc).tangent().normalized()*10
-		var end_axis_2d = (points_center[points_center.size()-1]-loc).tangent().normalized()*10
+		var end_axis_2d = -(points_center[points_center.size()-1]-loc).tangent().normalized()*10
 		
 		if left_turn:
 			start_axis_2d = -start_axis_2d
@@ -490,14 +490,15 @@ func test_road():
 		start_axis = Vector3(start_axis_2d.x, road_height, start_axis_2d.y)
 		end_axis = Vector3(end_axis_2d.x, road_height, end_axis_2d.y)
 		
+		start_ref = positions[0]+start_axis
+		end_ref = positions[positions.size()-1]+end_axis
 		
-		
-		var debug_start_axis = [positions[0], positions[0]+start_axis]
-		var debug_end_axis = [positions[positions.size()-1], positions[positions.size()-1]+end_axis]
+		var debug_start_axis = [positions[0], start_ref]
+		var debug_end_axis = [positions[positions.size()-1], end_ref]
 		
 		#B-A = from a to b
-		start_vector = Vector3((positions[0]+start_axis)-positions[0])
-		end_vector = Vector3(positions[positions.size()-1] - (positions[positions.size()-1]+end_axis))
+		start_vector = Vector3(start_ref-positions[0])
+		end_vector = Vector3(positions[positions.size()-1] - end_ref)
 	
 		if (draw != null):
 			draw.draw_line(positions)
