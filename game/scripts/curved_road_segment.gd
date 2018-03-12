@@ -61,6 +61,8 @@ var global_positions = PoolVector3Array()
 
 var start_vector = Vector3()
 var end_vector = Vector3()
+var start_ref
+var end_ref
 
 
 
@@ -418,13 +420,14 @@ func test_road():
 		start_axis = Vector3(start_axis_2d.x, road_height, start_axis_2d.y)
 		end_axis = Vector3(end_axis_2d.x, road_height, end_axis_2d.y)
 		
+		start_ref = positions[0]+start_axis
+		end_ref = positions[positions.size()-1]+end_axis
 		
+		var debug_start_axis = [positions[0], start_ref]
+		var debug_end_axis = [positions[positions.size()-1], end_ref]
 		
-		var debug_start_axis = [positions[0], positions[0]+start_axis]
-		var debug_end_axis = [positions[positions.size()-1], positions[positions.size()-1]+end_axis]
-		
-		start_vector = Vector3((positions[0]+start_axis)-positions[0])
-		end_vector = Vector3(positions[positions.size()-1] - (positions[positions.size()-1]+end_axis))
+		start_vector = Vector3(start_ref-positions[0])
+		end_vector = Vector3(positions[positions.size()-1] - end_ref)
 			
 		#generate navi vertices
 		nav_vertices = get_navi_vertices()

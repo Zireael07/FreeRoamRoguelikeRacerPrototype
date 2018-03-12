@@ -41,6 +41,8 @@ var global_positions = PoolVector3Array()
 #for rotations
 var end_vector
 var start_vector
+var start_ref
+var end_ref
 
 #props
 var building
@@ -126,6 +128,9 @@ func _ready():
 		start_vector = Vector3(positions[1] - positions[0])
 		#B-A = from a to b
 		end_vector = Vector3(positions[positions.size()-1]- positions[positions.size()-2])
+		
+		start_ref = positions[0]+start_vector
+		end_ref = positions[positions.size()-1]+end_vector
 	
 	#place buildings
 	for index in range(numBuildings):
@@ -133,12 +138,19 @@ func _ready():
 	
 	#in editor, we draw simple immediate mode lines instead
 	if Engine.is_editor_hint():
-		#debug drawing
-		draw.draw_line(positions)
-		draw.draw_line(left_positions)
-		draw.draw_line(right_positions)
+		if positions.size() > 0:
+			var debug_start_axis = [positions[0], start_ref]
+			var debug_end_axis = [positions[positions.size()-1], end_ref]
+			
+			
+			#debug drawing
+			draw.draw_line(positions)
+			draw.draw_line(left_positions)
+			draw.draw_line(right_positions)
+			draw.draw_line(debug_start_axis)
+			draw.draw_line(debug_end_axis)
 	
-	pass
+	#pass
 
 func initSection(start):
 	#init positions
