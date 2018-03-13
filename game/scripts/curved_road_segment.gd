@@ -19,6 +19,7 @@ var points_outer_side
 
 export(bool) var barriers = true
 var points_outer_barrier
+var barrier_quads = []
 
 var road_height = 0.01
 
@@ -397,8 +398,6 @@ func test_road():
 		road_mesh.set_name("road_mesh")
 		add_child(road_mesh)
 		
-		
-		
 		for index in range(nb_points-1):
 			var array = make_point_array(index, index+1)
 			quads.append(getQuads(array)[0])
@@ -411,7 +410,11 @@ func test_road():
 				make_quad(index, index+1, false)
 				
 			if barriers and index > 5 and index < 25:
-					make_barrier(index, barrier_material)
+				var barrier_array = make_barrier_array(index)
+				var got = get_barrier_quads(barrier_array)
+				barrier_quads.append(got[0])
+				barrier_quads.append(got[1])
+				#	make_barrier(index, barrier_material, node)
 			
 			#nav
 			left_nav_positions.push_back(Vector3(points_outer_nav[index].x, road_height, points_outer_nav[index].y))
@@ -434,6 +437,10 @@ func test_road():
 		
 		#optimized mesh
 		optimizedmeshCreate(quads, material)
+		
+		if barriers:
+			# optimized barriers
+			make_barrier(barrier_quads, barrier_material)
 			
 		#generate navi vertices
 		nav_vertices = get_navi_vertices()
@@ -507,15 +514,8 @@ func placeStreetlight():
 	else:
 		light.set_translation(right_positions[num]+Vector3(-2,0,0))
 
-func make_barrier(index, material):
-	var surface = SurfaceTool.new()
-	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
-	
-	#Create a node building that will hold the mesh
-	var node = MeshInstance.new()
-	node.set_name("barrier")
-	add_child(node)
-	
+# visual barrier
+func make_barrier_array(index):
 	var one = Vector3(points_outer_barrier[index].x, road_height, points_outer_barrier[index].y)
 	var two = Vector3(points_outer_barrier[index+1].x, road_height, points_outer_barrier[index+1].y)
 	var three = Vector3(points_outer_barrier[index+1].x, 2, points_outer_barrier[index+1].y)
@@ -524,11 +524,32 @@ func make_barrier(index, material):
 	var flip = false
 	if (!left_turn):
 		flip = true
+		
+	return [one, two, three, four, flip]
+	
+func get_barrier_quads(array):
+	var quad_one = [array[0], array[1], array[2], array[3], array[4]]
+	var quad_two = [array[3], array[2], array[1], array[0], array[4]]
+	
+	return [quad_one, quad_two]
+
+
+func make_barrier(quads, material):
+	#Create a node building that will hold the mesh
+	var node = MeshInstance.new()
+	node.set_name("barrier")
+	add_child(node)
+	
+	var surface = SurfaceTool.new()
+	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	for qu in quads:
+		addQuad(qu[0], qu[1], qu[2], qu[3], material, surface, qu[4])
 	
 	# outside
-	addQuad(one, two, three, four, material, surface, flip)
+	#addQuad(one, two, three, four, material, surface, flip)
 	# inside
-	addQuad(four, three, two, one, material, surface, flip)
+	#addQuad(four, three, two, one, material, surface, flip)
 	
 	surface.generate_normals()
 	
