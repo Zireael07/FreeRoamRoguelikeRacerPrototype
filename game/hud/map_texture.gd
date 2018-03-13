@@ -68,7 +68,7 @@ func make_map():
 			for ind in range(positions_2d[index].size()):
 				var vec = positions_2d[index][ind]
 				# abort early if we're out of borders
-				if vec.x or vec.y > 1000-dot_size: 
+				if vec.x > 1000-dot_size or vec.y > 1000-dot_size: 
 					print("Out of borders")
 				else:
 					for i in range (vec.x, vec.x+dot_size):
