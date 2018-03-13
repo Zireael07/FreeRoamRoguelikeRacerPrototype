@@ -177,6 +177,10 @@ func _physics_process(delta):
 	speed_text = String(speed_int) + " m/s " + String(speed_kph) + " kph"
 	hud.update_speed(speed_text)
 	
+	
+	hud.update_wheel_angle(get_steering(), 1) #absolute maximum steer limit
+	hud.update_angle_limiter(STEER_LIMIT)
+	
 	# in-game time
 	var text = " "
 	if (World_node != null):

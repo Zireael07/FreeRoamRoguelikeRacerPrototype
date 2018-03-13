@@ -8,6 +8,9 @@ var fps_label = null
 var dist_label = null
 var label_timer = null
 var label_clock = null
+var label_angle = null
+var angle_bar = null
+var angle_limit_bar = null
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -18,6 +21,9 @@ func _ready():
 	dist_label = get_node("Label dist")
 	label_timer = get_node("Label timer")
 	label_clock = get_node("Label clock")
+	label_angle = get_node("WheelAngle")
+	angle_bar = get_node("WheelAngleBar")
+	angle_limit_bar = get_node("WheelAngleBar2")
 
 func update_speed(text):
 	label.set_text(text)
@@ -36,3 +42,12 @@ func update_timer(text):
 	
 func update_clock(text):
 	label_clock.set_text(text)
+
+func update_angle_limiter(val):
+	angle_limit_bar.set_value((val/1)*100)
+
+func update_wheel_angle(val, maxx):
+	label_angle.set_text(str(rad2deg(val)))
+	#var perc = 
+	#print("Calc: " + str(perc))
+	angle_bar.set_value((val/maxx)*100)
