@@ -38,15 +38,18 @@ func process_car_physics(delta, gas, braking, left, right):
 	
 	#vary limit depending on current speed
 	if (speed > 35): ##150 kph
-		STEER_LIMIT = 0.2
-		STEER_SPEED = 0.5
+		STEER_LIMIT = 0.1
+		STEER_SPEED = 0.2
 	elif (speed > 28): ##~100 kph
-		STEER_LIMIT = 0.4
-		STEER_SPEED = 0.5
+		STEER_LIMIT = 0.1
+		STEER_SPEED = 0.3
 	elif (speed > 15): #~50 kph
-		STEER_LIMIT = 0.5
-		STEER_SPEED = 0.5
+		STEER_LIMIT = 0.3
+		STEER_SPEED = 0.4
 	elif (speed > 5): #~25 kph
+		STEER_LIMIT = 0.5
+		STEER_SPEED = 0.4
+	elif (speed > 2): #10 kph
 		STEER_LIMIT = 0.75
 		STEER_SPEED = 0.5
 	else:
