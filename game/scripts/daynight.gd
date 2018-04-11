@@ -13,6 +13,8 @@ var delay = 0.0;
 var hour = 0
 var minute = 0
 
+var light
+
 export var day_night = true
 
 var sun = null
@@ -98,20 +100,35 @@ func calculate_sun_latitude(time):
 	
 	
 	return latitude
+	
+func get_light_color(time):
+	if time >= 17.5 && time < 18:
+		var d = (time-17.5)/0.5;
+		light_color = Color(1-((1-42/255.0)*d), 1-((1-64/255.0)*d), 1-((1-141/255.0)*d));
+	elif time >= 6.0 && time < 6.5:
+		var d = (time-5.5)/0.5;
+		light_color = Color((42/255.0)+((1-42/255.0)*d), (64/255.0)+((1-64/255.0)*d), (141/255.0)+((1-141/255.0)*d));
+	elif time >= 18 or time < 5.5:
+		light_color = Color(42/255.0, 64/255.0, 141/255.0);
+	else:
+		light_color = Color(1,1,1)
+	
+	#print("Time: " + str(time) + " " + str(light_color))
+	
+	return light_color
 
 func day_night_cycle(time):
+	#print(str(time))
 	sunmoon_angle = calculate_rotation(time)
 	get_parent().get_node("DirectionalLight").set_rotation(Vector3(sunmoon_angle, 0, 0))
 	sunmoon_lat = calculate_sun_latitude(time)
 	
-	var light = calculate_lightning(hour, minute);
+	light = calculate_lightning(hour, minute);
 	get_parent().get_node("DirectionalLight").set_param(Light.PARAM_ENERGY, light);
 	
-	light_color = Color(1,1,1);
-	if time >= 17.5 && time < 18:
-		var d = (time-17.5)/0.5;
-		light_color = Color(1-((1-42/255.0)*d), 1-((1-64/255.0)*d), 1-((1-141/255.0)*d));
-	elif time >= 5.5 && time < 6.0:
+	#light_color = Color(1,1,1);
+	
+	if time >= 5.5 && time < 6.0:
 		night_fired = false
 		# stuff done slightly before sunrise
 		get_tree().get_nodes_in_group("roads")[0].reset_lite()
@@ -123,9 +140,6 @@ func day_night_cycle(time):
 		
 		# switching gi settings causes stutter
 		#get_parent().get_node("GIProbe").set_interior(false)
-	elif time >= 6.0 && time < 6.5:
-		var d = (time-5.5)/0.5;
-		light_color = Color((42/255.0)+((1-42/255.0)*d), (64/255.0)+((1-64/255.0)*d), (141/255.0)+((1-141/255.0)*d));
 	elif time >= 17.5 && not night_fired:
 		#disable shadows
 		get_parent().get_node("DirectionalLight").set_shadow(false)
@@ -136,10 +150,8 @@ func day_night_cycle(time):
 		night_fired = true
 		# GI probe interior switch causes stutter
 		#get_parent().get_node("GIProbe").set_interior(true)
-	elif time >= 18 || time < 5.5:
-		light_color = Color(42/255.0, 64/255.0, 141/255.0);
 		
-		
+	light_color = get_light_color(time)	
 		
 	get_parent().get_node("DirectionalLight").set_color(light_color)
 	
