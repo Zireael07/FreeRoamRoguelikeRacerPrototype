@@ -20,6 +20,8 @@ export var day_night = true
 var sun = null
 var sunmoon_angle
 var sunmoon_lat
+var env = null
+var sky = null
 
 
 # colors
@@ -41,6 +43,8 @@ func _ready():
 	Engine.set_target_fps(60)
 	
 	sun = get_parent().get_node("DirectionalLight")
+	env = get_parent().get_node("WorldEnvironment").get_environment()
+	sky = env.get_sky()
 
 func _process(delta):
 #	# Called every frame. Delta is time since last frame.
@@ -116,6 +120,29 @@ func get_light_color(time):
 	#print("Time: " + str(time) + " " + str(light_color))
 	
 	return light_color
+	
+func set_colors(time):
+	light_color = get_light_color(time)	
+		
+	get_parent().get_node("DirectionalLight").set_color(light_color)
+	
+	ambient_color = Color(169/255.0*light, 189/255.0*light, 242/255.0*light);
+	
+	# set ambient light colors
+	env.set_ambient_light_color(ambient_color)
+	env.set_ambient_light_energy(0.2+(0.2*light))
+	
+	# set sky colors
+	# default sky color is 12, 116, 249
+	sky_color = Color(12/255.0*light, 116/255.0*light, 0.972*light)
+	# default horizon color is 142, 210, 232
+	horizon_color = Color(142/255.0*light, 210/255.0*light, 232/255.0*light)
+	# detault ground horizon color is 123, 201, 243
+	gr_horizon_color = Color(123/255.0*light, 201/255.0*light, 243/255.0*light)
+	sky.set_sky_top_color(sky_color)
+	sky.set_sky_horizon_color(horizon_color)
+	sky.set_ground_horizon_color(gr_horizon_color)	
+
 
 func day_night_cycle(time):
 	#print(str(time))
@@ -126,7 +153,7 @@ func day_night_cycle(time):
 	light = calculate_lightning(hour, minute);
 	get_parent().get_node("DirectionalLight").set_param(Light.PARAM_ENERGY, light);
 	
-	#light_color = Color(1,1,1);
+	set_colors(time)
 	
 	if time >= 5.5 && time < 6.0:
 		night_fired = false
@@ -151,28 +178,7 @@ func day_night_cycle(time):
 		# GI probe interior switch causes stutter
 		#get_parent().get_node("GIProbe").set_interior(true)
 		
-	light_color = get_light_color(time)	
-		
-	get_parent().get_node("DirectionalLight").set_color(light_color)
-	
-	var env = get_parent().get_node("WorldEnvironment").get_environment();
-	ambient_color = Color(169/255.0*light, 189/255.0*light, 242/255.0*light);
-	
-	# set ambient light colors
-	env.set_ambient_light_color(ambient_color)
-	env.set_ambient_light_energy(0.2+(0.2*light))
-	
-	# set sky colors
-	var sky = env.get_sky()
-	# default sky color is 12, 116, 249
-	sky_color = Color(12/255.0*light, 116/255.0*light, 0.972*light)
-	# default horizon color is 142, 210, 232
-	horizon_color = Color(142/255.0*light, 210/255.0*light, 232/255.0*light)
-	# detault ground horizon color is 123, 201, 243
-	gr_horizon_color = Color(123/255.0*light, 201/255.0*light, 243/255.0*light)
-	sky.set_sky_top_color(sky_color)
-	sky.set_sky_horizon_color(horizon_color)
-	sky.set_ground_horizon_color(gr_horizon_color)
+
 	
 	# set sun latitude
 	sky.set_sun_latitude(sunmoon_lat)
