@@ -124,7 +124,7 @@ func get_light_color(time):
 func set_colors(time):
 	light_color = get_light_color(time)	
 		
-	get_parent().get_node("DirectionalLight").set_color(light_color)
+	sun.set_color(light_color)
 	
 	ambient_color = Color(169/255.0*light, 189/255.0*light, 242/255.0*light);
 	
@@ -147,11 +147,11 @@ func set_colors(time):
 func day_night_cycle(time):
 	#print(str(time))
 	sunmoon_angle = calculate_rotation(time)
-	get_parent().get_node("DirectionalLight").set_rotation(Vector3(sunmoon_angle, 0, 0))
+	sun.set_rotation(Vector3(sunmoon_angle, 0, 0))
 	sunmoon_lat = calculate_sun_latitude(time)
 	
 	light = calculate_lightning(hour, minute);
-	get_parent().get_node("DirectionalLight").set_param(Light.PARAM_ENERGY, light);
+	sun.set_param(Light.PARAM_ENERGY, light);
 	
 	set_colors(time)
 	
@@ -161,18 +161,18 @@ func day_night_cycle(time):
 		get_tree().get_nodes_in_group("roads")[0].reset_lite()
 		#get_tree().call_group("roads", "reset_lite")
 		#re-enable shadows
-		get_parent().get_node("DirectionalLight").set_shadow(true)
+		sun.set_shadow(true)
 		
-		get_parent().get_node("WorldEnvironment").get_environment().background_energy = 1
+		env.background_energy = 1
 		
 		# switching gi settings causes stutter
 		#get_parent().get_node("GIProbe").set_interior(false)
 	elif time >= 17.5 && not night_fired:
 		#disable shadows
-		get_parent().get_node("DirectionalLight").set_shadow(false)
+		sun.set_shadow(false)
 		get_tree().get_nodes_in_group("roads")[0].lite_up()
 		# so that emissives light effect is better visible
-		get_parent().get_node("WorldEnvironment").get_environment().background_energy = 0.1
+		env.background_energy = 0.1
 		print("[DAYNIGHT] switch to night settings")
 		night_fired = true
 		# GI probe interior switch causes stutter
