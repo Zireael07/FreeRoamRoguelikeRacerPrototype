@@ -19,6 +19,7 @@ export(int) var length = 5
 var roadwidth = 3
 var sectionlength = 2
 var roadheight = 0.01
+export(float) var road_slope = 0.0
 
 #for matching
 var start_point
@@ -78,11 +79,15 @@ func _ready():
 	
 	#overdraw fix
 	if (get_parent().get_name().find("Spatial") != -1):
+		# find out slope
+		var slope_diff = road_slope/length
+		#print("Slope diff" + str(slope_diff))
 		for index in range(length):
+			#print("Index " + str(index))
 			#clear the array
 			temp_positions.resize(0)
-			var start = Vector3(0,roadheight,index*sectionlength)
-			initSection(start)
+			var start = Vector3(0,roadheight+(index*slope_diff),index*sectionlength)
+			initSection(start, slope_diff)
 	
 			#mesh
 			var num = temp_positions.size()
@@ -152,19 +157,24 @@ func _ready():
 	
 	#pass
 
-func initSection(start):
+func initSection(start, slope):
+	var start_height = start.y
+	var end_height = start.y + slope
+	if slope > 0:
+		print("Start height " + str(start_height) + " end height" + str(end_height))
+	
 	#init positions
-	temp_positions.push_back(Vector3(start.x-roadwidth, roadheight, start.z))
+	temp_positions.push_back(Vector3(start.x-roadwidth, start_height, start.z))
 	temp_positions.push_back(start)
-	temp_positions.push_back(Vector3(0, roadheight, start.z+sectionlength))
-	temp_positions.push_back(Vector3(start.x-roadwidth, roadheight, start.z+sectionlength))
-	temp_positions.push_back(Vector3(start.x+roadwidth, roadheight, start.z))
-	temp_positions.push_back(Vector3(start.x+roadwidth, roadheight, start.z+sectionlength))
+	temp_positions.push_back(Vector3(0, end_height, start.z+sectionlength))
+	temp_positions.push_back(Vector3(start.x-roadwidth, end_height, start.z+sectionlength))
+	temp_positions.push_back(Vector3(start.x+roadwidth, start_height, start.z))
+	temp_positions.push_back(Vector3(start.x+roadwidth, end_height, start.z+sectionlength))
 	# navmesh (#6-9)
-	temp_positions.push_back(Vector3(start.x-roadwidth+margin, roadheight, start.z))
-	temp_positions.push_back(Vector3(start.x-roadwidth+margin, roadheight, start.z+sectionlength))
-	temp_positions.push_back(Vector3(start.x+roadwidth-margin, roadheight, start.z))
-	temp_positions.push_back(Vector3(start.x+roadwidth-margin, roadheight, start.z+sectionlength))
+	temp_positions.push_back(Vector3(start.x-roadwidth+margin, start_height, start.z))
+	temp_positions.push_back(Vector3(start.x-roadwidth+margin, end_height, start.z+sectionlength))
+	temp_positions.push_back(Vector3(start.x+roadwidth-margin, start_height, start.z))
+	temp_positions.push_back(Vector3(start.x+roadwidth-margin, end_height, start.z+sectionlength))
 
 func get_global_positions():
 	global_positions = []
@@ -204,6 +214,9 @@ func optimizedmeshCreate(quads, material):
 	
 	#Turn off shadows
 	node.set_cast_shadows_setting(0)
+	
+	# yay GD 3
+	node.create_convex_collision()
 
 func meshCreate(array, material):
 	var surface = SurfaceTool.new()

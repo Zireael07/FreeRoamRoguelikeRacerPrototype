@@ -40,7 +40,7 @@ __meta__ = {
 
 script = ExtResource( 1 )
 SPEED = 10.0
-start_time = 18.0
+start_time = 8.0
 day_night = true
 
 [node name="Camera" type="Camera" parent="." index="1"]
@@ -115,6 +115,7 @@ ends = PoolVector3Array(  )
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.87472, 0, -129.09 )
 length = 49
+road_slope = 0.0
 relative_end = Vector3( 0, 0, 98 )
 
 [node name="Position3D1" parent="Spatial" index="2" instance=ExtResource( 6 )]
@@ -128,10 +129,18 @@ ends = PoolVector3Array(  )
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.0147, 0, 25.1989 )
 
+[node name="Position3D2" parent="Spatial" index="4" instance=ExtResource( 7 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -52.5704, 0, 0 )
+length = 20
+road_slope = 10.0
+relative_end = Vector3( 0, 0, 40 )
+
 [node name="roads_stored" type="Position3D" parent="." index="8"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -50.7348, 0, 133.174 )
 script = ExtResource( 9 )
+length_mult = 10
 
 [node name="marker" parent="." index="9" instance=ExtResource( 10 )]
 
