@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://skysphere.dae" type="PackedScene" id=1]
+[ext_resource path="res://assets/clouds_shader_mat.tres" type="Material" id=2]
+
+[node name="Scene Root" index="0" instance=ExtResource( 1 )]
+
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+[node name="Skysphere" parent="." index="0"]
+
+transform = Transform( 20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 1.68945, 0 )
+material_override = ExtResource( 2 )
+cast_shadow = 0
+extra_cull_margin = 10.0
+_sections_unfolded = [ "Geometry", "Transform", "material" ]
+
+

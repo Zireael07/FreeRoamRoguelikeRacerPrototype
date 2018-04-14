@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://car/vehicle_player.gd" type="Script" id=1]
 [ext_resource path="res://car/procedural_car.gd" type="Script" id=2]
@@ -11,6 +11,8 @@
 [ext_resource path="res://hud/test_car_nameplate.tscn" type="PackedScene" id=9]
 [ext_resource path="res://hud/nameplate_3d.gd" type="Script" id=10]
 [ext_resource path="res://objects/driver.tscn" type="PackedScene" id=11]
+[ext_resource path="res://objects/skysphere.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scripts/skysphere.gd" type="Script" id=13]
 
 [sub_resource type="SpatialMaterial" id=1]
 
@@ -475,7 +477,7 @@ distance_fade_enable = false
 
 size = Vector2( 1, 1 )
 
-[sub_resource type="Shader" id=17]
+[sub_resource type="Shader" id=16]
 
 code = "shader_type spatial;
 
@@ -553,17 +555,17 @@ void fragment(){
 }
 "
 
-[sub_resource type="ShaderMaterial" id=18]
+[sub_resource type="ShaderMaterial" id=17]
 
 render_priority = 0
-shader = SubResource( 17 )
+shader = SubResource( 16 )
 shader_param/cut_off = 0.15
 shader_param/cloud_cover = 30.0
 shader_param/move = true
 shader_param/ha_divider = 758.0
 _sections_unfolded = [ "shader_param" ]
 
-[sub_resource type="ImageTexture" id=19]
+[sub_resource type="ImageTexture" id=18]
 
 flags = 0
 storage = 0
@@ -992,8 +994,9 @@ transform = Transform( -1.31134e-08, 0, 0.3, 0, 0.3, 0, -0.3, 0, -1.31134e-08, 0
 [node name="CloudsSprite3D" type="Sprite3D" parent="BODY" index="15"]
 
 transform = Transform( -14, 0, -1.50996e-07, 0, 3, 0, 2.11394e-06, 0, -1, 0, 59.6771, 150 )
+visible = false
 layers = 1
-material_override = SubResource( 18 )
+material_override = SubResource( 17 )
 cast_shadow = 0
 extra_cull_margin = 0.0
 use_in_baked_light = false
@@ -1013,13 +1016,18 @@ transparent = true
 shaded = false
 double_sided = true
 alpha_cut = 0
-texture = SubResource( 19 )
+texture = SubResource( 18 )
 vframes = 1
 hframes = 1
 frame = 0
 region_enabled = false
 region_rect = Rect2( 0, 0, 0, 0 )
 _sections_unfolded = [ "Geometry", "Transform" ]
+
+[node name="skysphere" parent="BODY" index="16" instance=ExtResource( 12 )]
+
+transform = Transform( -8.74228e-08, 0, -2, 0, 2, 0, 2, 0, -8.74228e-08, 0, 3, 0 )
+script = ExtResource( 13 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
 
