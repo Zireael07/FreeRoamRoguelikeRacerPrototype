@@ -451,6 +451,9 @@ func test_road():
 		# disable the emissiveness
 		reset_lite()
 		
+		# kill debug draw in game
+		draw.queue_free()
+		
 	#draw an immediate line in editor instead
 	else:
 		#B-A = from a to b

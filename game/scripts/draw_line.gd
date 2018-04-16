@@ -8,6 +8,9 @@ export(Color) var color = Color(1,1,1)
 
 
 func _ready():
+	#Turn off shadows
+	self.set_cast_shadows_setting(0)
+	
 	set_material()
 	
 

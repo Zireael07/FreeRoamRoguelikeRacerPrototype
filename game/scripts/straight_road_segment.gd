@@ -155,6 +155,10 @@ func _ready():
 			draw.draw_line(debug_start_axis)
 			draw.draw_line(debug_end_axis)
 	
+	# kill debug draw in game
+	else:
+		draw.queue_free()
+	
 	#pass
 
 func initSection(start, slope):
