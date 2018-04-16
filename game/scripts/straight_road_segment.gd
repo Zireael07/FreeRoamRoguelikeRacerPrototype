@@ -73,7 +73,11 @@ func _ready():
 	sign_tex2 = preload("res://assets/neon_sign2.tres")
 	sign_tex3 = preload("res://assets/neon_sign3.tres")
 	
+	positions.resize(0) # = []
+	left_positions.resize(0) # = []
+	right_positions.resize(0) #= []
 	
+	print("Positions: " + str(positions.size()))
 	
 	var quads = []
 	
@@ -91,25 +95,26 @@ func _ready():
 	
 			#mesh
 			var num = temp_positions.size()
-			for index in range(num):
+			#for index in range(num):
+				#print("Index from temp_positions " + str(index))
 				##draw_debug_point(positions[index], color)
-				#only make the mesh in game (meshing in editor is hilariously slow, up to 900 ms)
-				if not Engine.is_editor_hint():
-					#meshCreate(temp_positions, material)
-					quads.append(getQuads(temp_positions)[0])
-					quads.append(getQuads(temp_positions)[1])
-				
-				positions.push_back(temp_positions[1])
-				positions.push_back(temp_positions[2])
-				left_positions.push_back(temp_positions[0])
-				left_positions.push_back(temp_positions[3])
-				right_positions.push_back(temp_positions[4])
-				right_positions.push_back(temp_positions[5])
-				# navmesh margin
-				left_nav_positions.push_back(temp_positions[6])
-				left_nav_positions.push_back(temp_positions[7])
-				right_nav_positions.push_back(temp_positions[8])
-				right_nav_positions.push_back(temp_positions[9])
+			#only make the mesh in game (meshing in editor is hilariously slow, up to 900 ms)
+			if not Engine.is_editor_hint():
+				#meshCreate(temp_positions, material)
+				quads.append(getQuads(temp_positions)[0])
+				quads.append(getQuads(temp_positions)[1])
+			
+			positions.push_back(temp_positions[1])
+			positions.push_back(temp_positions[2])
+			left_positions.push_back(temp_positions[0])
+			left_positions.push_back(temp_positions[3])
+			right_positions.push_back(temp_positions[4])
+			right_positions.push_back(temp_positions[5])
+			# navmesh margin
+			left_nav_positions.push_back(temp_positions[6])
+			left_nav_positions.push_back(temp_positions[7])
+			right_nav_positions.push_back(temp_positions[8])
+			right_nav_positions.push_back(temp_positions[9])
 		
 		# set up navmesh if not in editor	
 		if not Engine.is_editor_hint():
