@@ -199,6 +199,13 @@ func _process(delta):
 	#update distance HUD
 	hud.update_distance("Distance: " + String(distance_int) + " m")
 
+	#print("Light color" + str(World_node.light_color))
+	
+	var color = Vector3(World_node.light_color.r, World_node.light_color.g, World_node.light_color.b)
+	#print("Color input: " + str(color))
+	
+	get_node("skysphere/Skysphere").get_material_override().set_shader_param("light", color) #Color(World_node.light_color.r, World_node.light_color.g, World_node.light_color.b))
+	#print("Shader color: " + str(get_node("skysphere/Skysphere").get_material_override().get_shader_param("light")))
 	
 #doesn't interact with physics
 func _input(event):

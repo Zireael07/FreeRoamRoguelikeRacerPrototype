@@ -13,6 +13,7 @@ transform = Transform( 20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 1.68945, 0 )
 material_override = ExtResource( 2 )
 cast_shadow = 0
 extra_cull_margin = 10.0
+use_in_baked_light = false
 _sections_unfolded = [ "Geometry", "Transform", "material" ]
 
 
