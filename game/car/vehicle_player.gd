@@ -59,6 +59,7 @@ func _ready():
 	last_pos = get_translation()
 	
 	set_physics_process(true)
+	set_process(true)
 	set_process_input(true)
 
 func on_load_ended():
@@ -171,6 +172,8 @@ func _physics_process(delta):
 	if (Input.is_action_pressed("steer_reset")):
 		reset_car()
 	
+# UI stuff doesn't have to be in physics_process
+func _process(delta):
 	#speedometer
 	speed_int = round(speed)
 	speed_kph = round(speed*3.6)
@@ -195,6 +198,7 @@ func _physics_process(delta):
 	distance_int = round(distance)
 	#update distance HUD
 	hud.update_distance("Distance: " + String(distance_int) + " m")
+
 	
 #doesn't interact with physics
 func _input(event):
