@@ -156,23 +156,7 @@ target = Vector3( -140, 0, 115 )
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.2608, 0, 0 )
 
-[node name="Spatial2" parent="." index="12" instance=ExtResource( 13 )]
-
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -38.2155 )
-
-[node name="Spatial3" parent="." index="13" instance=ExtResource( 13 )]
-
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -57.5656 )
-
-[node name="Spatial4" parent="." index="14" instance=ExtResource( 13 )]
-
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -77.4224 )
-
-[node name="Spatial5" parent="." index="15" instance=ExtResource( 13 )]
-
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -107.416 )
-
-[node name="GIProbe" type="GIProbe" parent="." index="16"]
+[node name="GIProbe" type="GIProbe" parent="." index="12"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0 )
 visible = false
@@ -188,7 +172,29 @@ interior = false
 compress = false
 data = SubResource( 1 )
 
-[node name="Spatial6" parent="." index="17" instance=ExtResource( 14 )]
+[node name="lanterns" type="Spatial" parent="." index="13"]
+
+[node name="Spatial2" parent="lanterns" index="0" instance=ExtResource( 13 )]
+
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -38.2155 )
+
+[node name="Spatial7" parent="lanterns" index="1" instance=ExtResource( 13 )]
+
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, 35.4552 )
+
+[node name="Spatial3" parent="lanterns" index="2" instance=ExtResource( 13 )]
+
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -57.5656 )
+
+[node name="Spatial4" parent="lanterns" index="3" instance=ExtResource( 13 )]
+
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -77.4224 )
+
+[node name="Spatial5" parent="lanterns" index="4" instance=ExtResource( 13 )]
+
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -107.416 )
+
+[node name="Spatial6" parent="lanterns" index="5" instance=ExtResource( 14 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.26849, 0, 4.78037 )
 
