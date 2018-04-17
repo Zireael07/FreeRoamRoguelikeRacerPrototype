@@ -83,9 +83,6 @@ func _physics_process(delta):
 	
 	peek = false
 	
-	#fps display
-	hud.update_fps()
-	
 	if (Input.is_action_pressed("ui_up")):
 		gas = true
 	
@@ -174,6 +171,9 @@ func _physics_process(delta):
 	
 # UI stuff doesn't have to be in physics_process
 func _process(delta):
+	#fps display
+	hud.update_fps()
+	
 	#speedometer
 	speed_int = round(speed)
 	speed_kph = round(speed*3.6)

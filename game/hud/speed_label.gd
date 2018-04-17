@@ -12,6 +12,11 @@ var label_angle = null
 var angle_bar = null
 var angle_limit_bar = null
 
+var fps
+var draws
+var vertices
+
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
@@ -32,7 +37,10 @@ func update_debug(text):
 	debug_label.set_text(text)
 	
 func update_fps():
-	fps_label.set_text(str(Engine.get_frames_per_second()) + " ms: %.3f" % (1000.0/Engine.get_frames_per_second()))
+	fps = str(Engine.get_frames_per_second()) + " ms: %.3f" % (1000.0/Engine.get_frames_per_second())
+	draws = str(Performance.get_monitor(Performance.RENDER_DRAW_CALLS_IN_FRAME)) 
+	vertices = str(Performance.get_monitor(Performance.RENDER_VERTICES_IN_FRAME))
+	fps_label.set_text(fps+ " draw calls" + draws + " verts: " + vertices)
 
 func update_distance(text):
 	dist_label.set_text(text)
