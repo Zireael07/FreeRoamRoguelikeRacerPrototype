@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scripts/daynight.gd" type="Script" id=1]
 [ext_resource path="res://objects/roads.tscn" type="PackedScene" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://car/car_base.tscn" type="PackedScene" id=12]
 [ext_resource path="res://objects/china_cable.tscn" type="PackedScene" id=13]
 [ext_resource path="res://objects/procedural_building.tscn" type="PackedScene" id=14]
+[ext_resource path="res://objects/speed_marker.tscn" type="PackedScene" id=15]
 
 [sub_resource type="GIProbeData" id=1]
 
@@ -174,6 +175,8 @@ data = SubResource( 1 )
 
 [node name="lanterns" type="Spatial" parent="." index="13"]
 
+editor/display_folded = true
+
 [node name="Spatial2" parent="lanterns" index="0" instance=ExtResource( 13 )]
 
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.55837, 3.01332, -38.2155 )
@@ -197,5 +200,10 @@ transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.5583
 [node name="Spatial6" parent="lanterns" index="5" instance=ExtResource( 14 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.26849, 0, 4.78037 )
+
+[node name="marker2" parent="." index="14" instance=ExtResource( 15 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55.9996, 0.25, 249.886 )
+_sections_unfolded = [ "Transform" ]
 
 
