@@ -73,19 +73,20 @@ light_bake_mode = 1
 light_cull_mask = -1
 shadow_enabled = true
 shadow_color = Color( 0, 0, 0, 1 )
-shadow_bias = 0.1
+shadow_bias = 0.0
 shadow_contact = 0.0
-shadow_reverse_cull_face = false
+shadow_reverse_cull_face = true
 editor_only = false
 directional_shadow_mode = 2
 directional_shadow_split_1 = 0.1
 directional_shadow_split_2 = 0.2
 directional_shadow_split_3 = 0.5
-directional_shadow_blend_splits = false
-directional_shadow_normal_bias = 0.8
-directional_shadow_bias_split_scale = 0.25
+directional_shadow_blend_splits = true
+directional_shadow_normal_bias = 0.0
+directional_shadow_bias_split_scale = 0.0
 directional_shadow_depth_range = 0
 directional_shadow_max_distance = 100.0
+_sections_unfolded = [ "Directional Shadow", "Shadow" ]
 
 [node name="roads" parent="." index="3" instance=ExtResource( 2 )]
 

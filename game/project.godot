@@ -45,4 +45,5 @@ shadow_filter=3
 
 [rendering]
 
+quality/shadows/filter_mode=2
 quality/voxel_cone_tracing/high_quality=false
