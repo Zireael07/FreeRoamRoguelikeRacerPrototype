@@ -54,6 +54,8 @@ var building_tex2
 var sign_tex1
 var sign_tex2
 var sign_tex3
+var win_mat
+var win_mat2
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -72,6 +74,10 @@ func _ready():
 	sign_tex1 = preload("res://assets/neon_sign1.tres")
 	sign_tex2 = preload("res://assets/neon_sign2.tres")
 	sign_tex3 = preload("res://assets/neon_sign3.tres")
+	# props
+	win_mat = preload("res://assets/windows_material.tres")
+	win_mat2 = preload("res://assets/windows_material2.tres")
+	
 	
 	positions.resize(0) # = []
 	left_positions.resize(0) # = []
@@ -266,7 +272,21 @@ func setupBuilding(index):
 	var rani = randi() % 11
 	build.storeys = 16 + rani
 	
+	# windows color
+	var ran_color_r = randf()
+	var ran_color_g = randf()
+	var ran_color_b = randf()
 	
+	if ran < 0.5:
+		var win_color = win_mat
+		build.windows_mat = win_color
+	else:
+		var win_color = win_mat2
+		build.windows_mat = win_color
+	
+	#build.windows_mat.
+	
+	#build.windows_mat.set_albedo(Color(ran_color_r, ran_color_g, ran_color_b))
 	
 		
 	# sign material
