@@ -9,7 +9,7 @@
 
 render_priority = 0
 flags_transparent = false
-flags_unshaded = false
+flags_unshaded = true
 flags_vertex_lighting = false
 flags_no_depth_test = false
 flags_use_point_size = false
@@ -28,7 +28,7 @@ params_point_size = 1.0
 params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = false
-albedo_color = Color( 0.0268097, 0.958117, 0.980469, 1 )
+albedo_color = Color( 0.212646, 0.798441, 0.8125, 1 )
 metallic = 0.5
 metallic_specular = 0.5
 metallic_texture_channel = 0
@@ -55,7 +55,7 @@ uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
-_sections_unfolded = [ "Albedo", "Metallic", "Roughness" ]
+_sections_unfolded = [ "Albedo", "Flags", "Metallic", "Parameters", "Roughness" ]
 
 [node name="Spatial" type="Spatial" index="0"]
 
@@ -71,7 +71,7 @@ windows_mat = SubResource( 1 )
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 1, 7.63328, 8.47983, 0 )
 layers = 1
 material_override = null
-cast_shadow = 1
+cast_shadow = 0
 extra_cull_margin = 0.0
 use_in_baked_light = false
 lod_min_distance = 0.0
@@ -81,6 +81,6 @@ lod_max_hysteresis = 0.0
 mesh = ExtResource( 3 )
 skeleton = NodePath("..")
 material/0 = ExtResource( 4 )
-_sections_unfolded = [ "Transform", "material" ]
+_sections_unfolded = [ "Geometry", "Transform", "material" ]
 
 
