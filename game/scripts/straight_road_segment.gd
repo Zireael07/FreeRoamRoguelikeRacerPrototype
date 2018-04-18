@@ -260,14 +260,23 @@ func setupBuilding(index):
 	else:
 		var mat = building_tex1
 		build.material = mat
+	
+	# storeys
+	# number between 0-10
+	var rani = randi() % 11
+	build.storeys = 16 + rani
+	
+	
+	
 		
 	# sign material
 	var rand = randf()
 	
-	if ran < 0.33:
+	
+	if rand < 0.33:
 		var sign_mat = sign_tex1
 		build.get_node("MeshInstance").set_surface_material(0, sign_mat)
-	elif ran < 0.66:
+	elif rand < 0.66:
 		var sign_mat = sign_tex2
 		build.get_node("MeshInstance").set_surface_material(0, sign_mat)
 	else:
