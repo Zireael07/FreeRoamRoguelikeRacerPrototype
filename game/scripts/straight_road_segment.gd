@@ -56,6 +56,7 @@ var sign_tex2
 var sign_tex3
 var win_mat
 var win_mat2
+var cables
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -77,6 +78,7 @@ func _ready():
 	# props
 	win_mat = preload("res://assets/windows_material.tres")
 	win_mat2 = preload("res://assets/windows_material2.tres")
+	cables = preload("res://objects/china_cable.tscn")
 	
 	
 	positions.resize(0) # = []
@@ -148,9 +150,10 @@ func _ready():
 		start_ref = positions[0]+start_vector
 		end_ref = positions[positions.size()-1]+end_vector
 	
-	#place buildings
+	#place buildings and lanterns
 	for index in range(numBuildings):
 		placeBuilding(index)
+		placeCable(index)
 	
 	#in editor, we draw simple immediate mode lines instead
 	if Engine.is_editor_hint():
@@ -331,6 +334,15 @@ func placeBuilding(index):
 		loc = Vector3(-(roadwidth+buildDistance), 0, index)
 	
 	build.set_translation(loc)
+	
+func placeCable(index):
+	if (index % 2 > 0):
+		var cable = cables.instance()
+		cable.set_name("Cable"+String(index))
+		add_child(cable)
+	
+		var loc = Vector3(0,3,index*15)
+		cable.set_translation(loc)
 	
 # navmesh
 func setupNavi(navigation_node):
