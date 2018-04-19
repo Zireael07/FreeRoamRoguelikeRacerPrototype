@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scripts/ground_gen.gd" type="Script" id=1]
+[ext_resource path="res://assets/ground_material.tres" type="Material" id=2]
+
+[sub_resource type="PlaneShape" id=1]
+
+plane = Plane( 0, 1, 0, 0 )
+
+[node name="Spatial" type="Spatial" index="0"]
+
+[node name="Ground" type="Spatial" parent="." index="0"]
+
+script = ExtResource( 1 )
+terrainmaterial = ExtResource( 2 )
+
+[node name="StaticBody" type="StaticBody" parent="Ground" index="0"]
+
+input_ray_pickable = true
+input_capture_on_drag = false
+collision_layer = 1
+collision_mask = 1
+friction = 1.0
+bounce = 0.0
+constant_linear_velocity = Vector3( 0, 0, 0 )
+constant_angular_velocity = Vector3( 0, 0, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Ground/StaticBody" index="0"]
+
+shape = SubResource( 1 )
+disabled = false
+
+
