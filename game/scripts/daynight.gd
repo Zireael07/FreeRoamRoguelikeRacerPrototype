@@ -142,6 +142,7 @@ func set_colors(time):
 	sky.set_sky_top_color(sky_color)
 	sky.set_sky_horizon_color(horizon_color)
 	sky.set_ground_horizon_color(gr_horizon_color)	
+	env.set_fog_color(horizon_color)
 
 
 func day_night_cycle(time):
