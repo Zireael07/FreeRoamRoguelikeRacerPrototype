@@ -1,0 +1,11 @@
+{"end":"(0, 0, 10)", "length":5, "type":"straight"}
+{"left_turn":true, "angle":120, "radius":15, "type":"curved"}
+{"end":"(0, 0, 10)", "length":5, "type":"straight"}
+{"left_turn":true, "angle":120, "radius":15, "type":"curved"}
+{"end":"(0, 0, 10)", "length":5, "type":"straight"}
+{"left_turn":false, "angle":120, "radius":15, "type":"curved"}
+{"end":"(0, 0, 10)", "length":7, "type":"straight"}
+{"left_turn":false, "angle":120, "radius":15, "type":"curved"}
+{"end":"(0, 0, 10)", "length":5, "type":"straight"}
+{"left_turn":false, "angle":120, "radius":15, "type":"curved"}
+{"end":"(0, 0, 10)", "length":5, "type":"straight"}
