@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://car/vehicle_player.gd" type="Script" id=1]
 [ext_resource path="res://car/procedural_car.gd" type="Script" id=2]
@@ -296,7 +296,81 @@ distance_fade_enable = false
 
 extents = Vector3( 0.477039, 0.413218, 1.32118 )
 
-[sub_resource type="SpatialMaterial" id=10]
+[sub_resource type="Shader" id=19]
+
+code = "shader_type spatial;
+render_mode unshaded;
+
+uniform vec3 cam;
+
+
+void fragment() {
+	vec4 screen =textureLod( SCREEN_TEXTURE, SCREEN_UV, 0.0);
+        //float depth = textureLod(DEPTH_TEXTURE,SCREEN_UV,0.0).r;
+		//vec4 upos = INV_PROJECTION_MATRIX * vec4(SCREEN_UV, depth, 1.0);
+		//upos = vec4(SCREEN_UV, depth, 1.0);
+        //vec4 upos = INV_PROJECTION_MATRIX * vec4(SCREEN_UV*2.0-1.0,depth*2.0-1.0,1.0);
+        //vec3 pixel_position = upos.xyz/upos.w;
+	
+	//COLOR = screen;
+	
+	vec2 uv = SCREEN_UV;
+	vec2 uv_mv = vec2(cam.x, cam.y);
+	
+	//uv = mix(uv, uv_mv, 0.1);
+	//uv.y += cam.y+0.02;
+	//uv.x += sin(uv.y*frequency+TIME)*depth;
+	//uv.x = clamp(uv.x,0,1);
+	
+	//uv = uv+uv_mv;
+	
+	vec3 c = textureLod(SCREEN_TEXTURE,uv+uv_mv,0.0).rgb;
+	vec4 ghost = vec4(c.rgb, 0.5);
+	
+	//ALBEDO = screen.rgb;
+	
+	//ALBEDO = ghost.rgb;
+	
+	//if (ghost.r > screen.r && ghost.b > screen.b)
+	//	ALBEDO = vec3(1.0, 1.0, 1.0);
+		
+	//if (screen.r > 0.5)
+	//	ALBEDO = vec3(1.0, 0.0, 0.0);
+		//ALPHA = 0.5;
+	
+	
+	
+	//ALBEDO = ghost.rgb*vec3(1.0, 1.0, 1.0);
+	
+	//ALBEDO = screen.rgb + ghost.rgb;
+	
+	//ALPHA = ghost.a;
+	
+	ALBEDO.rgb=mix(screen.rgb, ghost.rgb, 0.3);
+	
+	//ALBEDO = ghost.rgb;
+	
+	//ALBEDO = screen.rgb;
+		
+		//ALBEDO = pixel_position;
+		//ALBEDO = pixel_position+cam;
+		//ALBEDO = pixel_position+cam+screen.rgb;
+		//ALPHA = 1.0;
+}"
+
+[sub_resource type="ShaderMaterial" id=20]
+
+render_priority = 0
+shader = SubResource( 19 )
+shader_param/cam = Vector3( 0, 0.01, 0 )
+_sections_unfolded = [ "shader_param" ]
+
+[sub_resource type="QuadMesh" id=21]
+
+material = SubResource( 20 )
+size = Vector2( 2, 2 )
+
+[sub_resource type="SpatialMaterial" id=22]
 
 render_priority = 0
 flags_transparent = true
@@ -347,11 +421,11 @@ uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 
-[sub_resource type="QuadMesh" id=11]
+[sub_resource type="QuadMesh" id=23]
 
 size = Vector2( 1, 1 )
 
-[sub_resource type="SpatialMaterial" id=12]
+[sub_resource type="SpatialMaterial" id=24]
 
 render_priority = 0
 flags_transparent = false
@@ -403,7 +477,7 @@ uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 
-[sub_resource type="ArrayMesh" id=13]
+[sub_resource type="ArrayMesh" id=25]
 
 blend_shape_mode = 1
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
@@ -414,7 +488,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 98071,
 "index_count": 72,
-"material": SubResource( 12 ),
+"material": SubResource( 24 ),
 "name": "taillights_simple",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -422,7 +496,7 @@ surfaces/0 = {
 }
 _sections_unfolded = [ "surface_1" ]
 
-[sub_resource type="SpatialMaterial" id=14]
+[sub_resource type="SpatialMaterial" id=17]
 
 render_priority = 0
 flags_transparent = false
@@ -473,7 +547,7 @@ uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 
-[sub_resource type="QuadMesh" id=15]
+[sub_resource type="QuadMesh" id=18]
 
 size = Vector2( 1, 1 )
 
@@ -707,6 +781,24 @@ angle_v_adjust = 0.0
 autoturn_ray_aperture = 25
 autoturn_speed = 50
 
+[node name="blur_quad" type="MeshInstance" parent="BODY/cambase/Camera" index="0"]
+
+transform = Transform( 1, 6.6815e-22, 0, 6.6815e-22, 1, 0, 0, 0, 1, 0, 0, -0.908243 )
+visible = false
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 21 )
+skeleton = NodePath("..")
+material/0 = null
+_sections_unfolded = [ "material" ]
+
 [node name="CameraCockpit" type="Camera" parent="BODY/cambase" index="1"]
 
 transform = Transform( -1, 8.74228e-08, 0, 8.74228e-08, 1, 8.74228e-08, 7.64274e-15, 8.74228e-08, -1, 0.191978, -0.198621, 1.17862 )
@@ -766,7 +858,7 @@ mouse_default_cursor_shape = 0
 
 transform = Transform( -1, 0, 8.74228e-08, 0, 0.5, 0, -8.74228e-08, 0, -1, 0, 1.36496, 0 )
 layers = 1
-material_override = SubResource( 10 )
+material_override = SubResource( 22 )
 cast_shadow = 1
 extra_cull_margin = 0.0
 use_in_baked_light = false
@@ -774,7 +866,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 11 )
+mesh = SubResource( 23 )
 skeleton = NodePath("..")
 material/0 = null
 script = ExtResource( 8 )
@@ -838,7 +930,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 13 )
+mesh = SubResource( 25 )
 skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Transform", "material" ]
@@ -877,7 +969,7 @@ mouse_default_cursor_shape = 0
 
 transform = Transform( -0.4, 0, 8.74228e-08, 0, 0.2, 0, -3.49691e-08, 0, -1, 0, 0.606774, -1.41142 )
 layers = 1
-material_override = SubResource( 14 )
+material_override = SubResource( 17 )
 cast_shadow = 1
 extra_cull_margin = 0.0
 use_in_baked_light = false
@@ -885,7 +977,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 15 )
+mesh = SubResource( 18 )
 skeleton = NodePath("..")
 material/0 = null
 script = ExtResource( 10 )
