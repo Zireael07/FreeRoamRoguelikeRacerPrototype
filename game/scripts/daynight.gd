@@ -33,6 +33,15 @@ var gr_horizon_color
 
 var night_fired = false
 
+# weather
+
+export(int) var weather = 0
+
+const WEATHER_SUNNY = 0
+const WEATHER_OVERCAST = 1
+const WEATHER_RAIN = 2
+
+
 func _ready():
 	
 	time = start_time;
@@ -70,6 +79,18 @@ func _process(delta):
 	
 	if day_night:
 		day_night_cycle(time)
+		
+	# weather
+	if weather == WEATHER_SUNNY:
+		get_tree().get_nodes_in_group("player")[0].get_node("BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 25)
+	elif weather == WEATHER_OVERCAST or weather == WEATHER_RAIN:
+		get_tree().get_nodes_in_group("player")[0].get_node("BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 85)
+	
+	
+	if weather == WEATHER_RAIN:
+		get_tree().get_nodes_in_group("player")[0].get_node("BODY/RainParticles").set_emitting(true)
+	else:
+		get_tree().get_nodes_in_group("player")[0].get_node("BODY/RainParticles").set_emitting(false)
 
 
 func calculate_lightning(hour, minute):
