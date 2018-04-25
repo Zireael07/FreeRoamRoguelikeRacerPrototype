@@ -340,17 +340,17 @@ void fragment() {
 	//	ALBEDO = vec3(1.0, 0.0, 0.0);
 		//ALPHA = 0.5;
 	
+	vec3 bright = vec3(1.2, 1.2, 1.2);
 	
-	
-	//ALBEDO = ghost.rgb*vec3(1.0, 1.0, 1.0);
+	//ALBEDO = ghost.rgb;
 	
 	//ALBEDO = screen.rgb + ghost.rgb;
 	
-	//ALPHA = ghost.a;
+	ALPHA = ghost.a;
 	
-	ALBEDO.rgb=mix(screen.rgb, ghost.rgb, 0.3);
+	//ALBEDO.rgb=mix(screen.rgb, ghost.rgb, 0.3);
 	
-	//ALBEDO = ghost.rgb;
+	ALBEDO = ghost.rgb*bright;
 	
 	//ALBEDO = screen.rgb;
 		
@@ -1012,7 +1012,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-emitting = true
+emitting = false
 amount = 512
 lifetime = 1.0
 one_shot = false
