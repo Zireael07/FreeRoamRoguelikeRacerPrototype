@@ -49,7 +49,16 @@ func _ready():
 	panel.set_name("Messages")
 	#panel.set_text("Welcome to 大都市")
 	add_child(panel)
-	panel.set_text("Welcome to 大都市")
+	
+	# random date
+	var date = random_date()
+	var date_format_west = "%d-%d-%d"
+	var date_west = date_format_west % [date[0], date[1], date[2]]
+	var date_format_east = "未来%d年 %d月 %d日"
+	# year-month-day
+	var date_east = date_format_east % [date[2]-2018, date[1], date[0]]
+	
+	panel.set_text("Welcome to 大都市" + "\n" + "The date is: " + date_east + " (" + date_west+")")
 	
 	
 	var pause = preload("res://hud/pause_panel.tscn")
@@ -61,6 +70,16 @@ func _ready():
 	set_physics_process(true)
 	set_process(true)
 	set_process_input(true)
+
+func random_date():
+	# seed the rng
+	randomize()
+	
+	var day = (randi() % 30) +1
+	var month = (randi() % 13) +1
+	var year = 2040 + (randi() % 20)
+	
+	return [day, month, year]
 
 func on_load_ended():
 	print("Loaded all pertinent stuff")
