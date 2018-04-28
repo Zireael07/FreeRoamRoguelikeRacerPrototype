@@ -30,6 +30,12 @@ var peek
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
+	
+	# contacts
+	set_max_contacts_reported(1)
+	set_contact_monitor(true)
+	
+	
 	# our custom signal
 	connect("load_ended", self, "on_load_ended")
 	
@@ -257,3 +263,10 @@ func _input(event):
 				cam.set_debug(true)
 			else:
 				cam.set_debug(false)
+
+func _on_BODY_body_entered(body):
+	#print("Collided with " + str(body.get_name()))
+	
+	print("Speed at collision: " + str(round(speed*3.6)))
+	
+	#pass # replace with function body

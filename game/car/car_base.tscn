@@ -1041,4 +1041,6 @@ playback_default_blend_time = 0.0
 playback_speed = 1.0
 blend_times = [  ]
 
+[connection signal="body_entered" from="BODY" to="BODY" method="_on_BODY_body_entered"]
+
 
