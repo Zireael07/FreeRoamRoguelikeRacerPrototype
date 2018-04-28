@@ -12,6 +12,8 @@ var label_angle = null
 var angle_bar = null
 var angle_limit_bar = null
 
+var health_bar = null
+
 var fps
 var draws
 var vertices
@@ -29,6 +31,7 @@ func _ready():
 	label_angle = get_node("WheelAngle")
 	angle_bar = get_node("WheelAngleBar")
 	angle_limit_bar = get_node("WheelAngleBar2")
+	health_bar = get_node("Health")
 
 func update_speed(text):
 	label.set_text(text)
@@ -59,3 +62,6 @@ func update_wheel_angle(val, maxx):
 	#var perc = 
 	#print("Calc: " + str(perc))
 	angle_bar.set_value((val/maxx)*100)
+	
+func update_health(val):
+	health_bar.set_value(val)

@@ -1,6 +1,9 @@
 extends "vehicle.gd"
 
 # class member variables go here, for example:
+var health = 100
+	
+	
 var World_node
 	
 #hud
@@ -224,6 +227,9 @@ func _process(delta):
 	#update distance HUD
 	hud.update_distance("Distance: " + String(distance_int) + " m")
 
+	hud.update_health(health)
+
+	# shaders stuff
 	#print("Light color" + str(World_node.light_color))
 	if "light_color" in World_node and World_node.light_color != null:
 		var color = Vector3(World_node.light_color.r, World_node.light_color.g, World_node.light_color.b)
@@ -267,6 +273,9 @@ func _input(event):
 func _on_BODY_body_entered(body):
 	#print("Collided with " + str(body.get_name()))
 	
-	print("Speed at collision: " + str(round(speed*3.6)))
+	print("Speed at collision: " + str(round(speed*3.6)) + "km/h, deducting: " + str(round(speed)))
 	
-	#pass # replace with function body
+	# deduct health
+	health -= round(speed)
+	
+	#print("Health" + str(health))
