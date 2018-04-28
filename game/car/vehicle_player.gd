@@ -11,6 +11,7 @@ var hud
 var speed_text
 var map
 var panel
+var game_over
 
 var last_pos
 var distance = 0
@@ -73,6 +74,9 @@ func _ready():
 	var pause = preload("res://hud/pause_panel.tscn")
 	var pau = pause.instance()
 	add_child(pau)
+	
+	game_over = preload("res://hud/game_over.tscn")
+	
 	
 	last_pos = get_translation()
 	
@@ -277,5 +281,10 @@ func _on_BODY_body_entered(body):
 	
 	# deduct health
 	health -= round(speed)
+	
+	if health <= 0:
+		# game over!
+		var over = game_over.instance()
+		add_child(over)
 	
 	#print("Health" + str(health))

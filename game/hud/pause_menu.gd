@@ -1,8 +1,6 @@
 extends Control
 
 # class member variables go here, for example:
-# var a = 2
-# var b = "textvar"
 
 func _ready():
 	#hide()
@@ -11,7 +9,8 @@ func _ready():
 	#pass
 	
 func _input(event):
-	if (Input.is_action_pressed("ui_cancel")):
+	# we cannot pause/unpause if we're dead
+	if (Input.is_action_pressed("ui_cancel")) and get_parent().health > 0:
 		if (not get_tree().is_paused()):
 			show()
 			get_tree().set_pause(true)
