@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scripts/daynight.gd" type="Script" id=1]
 [ext_resource path="res://objects/roads.tscn" type="PackedScene" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://objects/race_marker.tscn" type="PackedScene" id=11]
 [ext_resource path="res://car/car_base.tscn" type="PackedScene" id=12]
 [ext_resource path="res://objects/speed_marker.tscn" type="PackedScene" id=13]
+[ext_resource path="res://objects/recharge_station.tscn" type="PackedScene" id=14]
 
 [sub_resource type="GIProbeData" id=1]
 
@@ -177,5 +178,9 @@ data = SubResource( 1 )
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55.9996, 0.25, 249.886 )
 _sections_unfolded = [ "Transform" ]
+
+[node name="charge" parent="." index="14" instance=ExtResource( 14 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.6765, 1.90735e-06, 31.168 )
 
 
