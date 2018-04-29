@@ -2,7 +2,7 @@ extends "vehicle.gd"
 
 # class member variables go here, for example:
 var health = 100
-	
+var battery = 50
 	
 var World_node
 	
@@ -232,6 +232,8 @@ func _process(delta):
 	hud.update_distance("Distance: " + String(distance_int) + " m")
 
 	hud.update_health(health)
+	
+	hud.update_battery(battery)
 
 	# shaders stuff
 	#print("Light color" + str(World_node.light_color))

@@ -13,6 +13,7 @@ var angle_bar = null
 var angle_limit_bar = null
 
 var health_bar = null
+var battery_bar = null
 
 var fps
 var draws
@@ -32,6 +33,7 @@ func _ready():
 	angle_bar = get_node("WheelAngleBar")
 	angle_limit_bar = get_node("WheelAngleBar2")
 	health_bar = get_node("Health")
+	battery_bar = get_node("Battery")
 
 func update_speed(text):
 	label.set_text(text)
@@ -65,3 +67,6 @@ func update_wheel_angle(val, maxx):
 	
 func update_health(val):
 	health_bar.set_value(val)
+	
+func update_battery(val):
+	battery_bar.set_value(val)

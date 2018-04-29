@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://hud/speed_label.gd" type="Script" id=1]
 [ext_resource path="res://hud/cam_icon.png" type="Texture" id=2]
+[ext_resource path="res://hud/battery_icon_full.png" type="Texture" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
 
@@ -82,10 +83,10 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 4.0
-margin_top = 49.0
-margin_right = 206.0
-margin_bottom = 148.0
+margin_left = 25.0
+margin_top = -22.0
+margin_right = 227.0
+margin_bottom = 77.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -334,6 +335,56 @@ margin_left = 11.0
 margin_top = 59.0
 margin_right = 108.0
 margin_bottom = 78.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 0
+custom_styles/fg = SubResource( 1 )
+custom_styles/bg = SubResource( 2 )
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+page = 0.0
+value = 100.0
+exp_edit = false
+rounded = false
+percent_visible = true
+_sections_unfolded = [ "Percent", "custom_styles" ]
+
+[node name="batteryIcon" type="TextureRect" parent="." index="12"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 42.0
+margin_top = 82.0
+margin_right = 82.0
+margin_bottom = 117.0
+rect_rotation = 90.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 0
+_sections_unfolded = [ "Rect" ]
+
+[node name="Battery" type="ProgressBar" parent="." index="13"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 52.0
+margin_top = 94.0
+margin_right = 149.0
+margin_bottom = 113.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
