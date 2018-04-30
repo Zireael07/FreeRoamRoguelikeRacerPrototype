@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://car/vehicle_player.gd" type="Script" id=1]
 [ext_resource path="res://car/procedural_car.gd" type="Script" id=2]
@@ -6,15 +6,17 @@
 [ext_resource path="res://assets/modular car glass.tres" type="Material" id=4]
 [ext_resource path="res://assets/LED taillights stock.jpg" type="Texture" id=5]
 [ext_resource path="res://car/follow_camera.gd" type="Script" id=6]
-[ext_resource path="res://hud/test_car_label.tscn" type="PackedScene" id=7]
-[ext_resource path="res://hud/label_3d.gd" type="Script" id=8]
-[ext_resource path="res://hud/test_car_nameplate.tscn" type="PackedScene" id=9]
-[ext_resource path="res://hud/nameplate_3d.gd" type="Script" id=10]
-[ext_resource path="res://objects/driver.tscn" type="PackedScene" id=11]
-[ext_resource path="res://objects/skysphere.tscn" type="PackedScene" id=12]
-[ext_resource path="res://scripts/skysphere.gd" type="Script" id=13]
-[ext_resource path="res://assets/rain_material.tres" type="Material" id=14]
-[ext_resource path="res://assets/rain_particles.tres" type="Material" id=15]
+[ext_resource path="res://assets/gaussian_blur.shader" type="Shader" id=7]
+[ext_resource path="res://motion_blur/motion_blur.tscn" type="PackedScene" id=8]
+[ext_resource path="res://hud/test_car_label.tscn" type="PackedScene" id=9]
+[ext_resource path="res://hud/label_3d.gd" type="Script" id=10]
+[ext_resource path="res://hud/test_car_nameplate.tscn" type="PackedScene" id=11]
+[ext_resource path="res://hud/nameplate_3d.gd" type="Script" id=12]
+[ext_resource path="res://objects/driver.tscn" type="PackedScene" id=13]
+[ext_resource path="res://objects/skysphere.tscn" type="PackedScene" id=14]
+[ext_resource path="res://scripts/skysphere.gd" type="Script" id=15]
+[ext_resource path="res://assets/rain_material.tres" type="Material" id=16]
+[ext_resource path="res://assets/rain_particles.tres" type="Material" id=17]
 
 [sub_resource type="SpatialMaterial" id=1]
 
@@ -298,81 +300,19 @@ distance_fade_enable = false
 
 extents = Vector3( 0.477039, 0.413218, 1.32118 )
 
-[sub_resource type="Shader" id=10]
-
-code = "shader_type spatial;
-render_mode unshaded;
-
-uniform vec3 cam;
-
-
-void fragment() {
-	vec4 screen =textureLod( SCREEN_TEXTURE, SCREEN_UV, 0.0);
-        //float depth = textureLod(DEPTH_TEXTURE,SCREEN_UV,0.0).r;
-		//vec4 upos = INV_PROJECTION_MATRIX * vec4(SCREEN_UV, depth, 1.0);
-		//upos = vec4(SCREEN_UV, depth, 1.0);
-        //vec4 upos = INV_PROJECTION_MATRIX * vec4(SCREEN_UV*2.0-1.0,depth*2.0-1.0,1.0);
-        //vec3 pixel_position = upos.xyz/upos.w;
-	
-	//COLOR = screen;
-	
-	vec2 uv = SCREEN_UV;
-	vec2 uv_mv = vec2(cam.x, cam.y);
-	
-	//uv = mix(uv, uv_mv, 0.1);
-	//uv.y += cam.y+0.02;
-	//uv.x += sin(uv.y*frequency+TIME)*depth;
-	//uv.x = clamp(uv.x,0,1);
-	
-	//uv = uv+uv_mv;
-	
-	vec3 c = textureLod(SCREEN_TEXTURE,uv+uv_mv,0.0).rgb;
-	vec4 ghost = vec4(c.rgb, 0.5);
-	
-	//ALBEDO = screen.rgb;
-	
-	//ALBEDO = ghost.rgb;
-	
-	//if (ghost.r > screen.r && ghost.b > screen.b)
-	//	ALBEDO = vec3(1.0, 1.0, 1.0);
-		
-	//if (screen.r > 0.5)
-	//	ALBEDO = vec3(1.0, 0.0, 0.0);
-		//ALPHA = 0.5;
-	
-	vec3 bright = vec3(1.2, 1.2, 1.2);
-	
-	//ALBEDO = ghost.rgb;
-	
-	//ALBEDO = screen.rgb + ghost.rgb;
-	
-	ALPHA = ghost.a;
-	
-	//ALBEDO.rgb=mix(screen.rgb, ghost.rgb, 0.3);
-	
-	ALBEDO = ghost.rgb*bright;
-	
-	//ALBEDO = screen.rgb;
-		
-		//ALBEDO = pixel_position;
-		//ALBEDO = pixel_position+cam;
-		//ALBEDO = pixel_position+cam+screen.rgb;
-		//ALPHA = 1.0;
-}"
-
-[sub_resource type="ShaderMaterial" id=11]
+[sub_resource type="ShaderMaterial" id=10]
 
 render_priority = 0
-shader = SubResource( 10 )
+shader = ExtResource( 7 )
 shader_param/cam = Vector3( 0, 0.01, 0 )
 _sections_unfolded = [ "shader_param" ]
 
-[sub_resource type="QuadMesh" id=12]
+[sub_resource type="QuadMesh" id=11]
 
-material = SubResource( 11 )
+material = SubResource( 10 )
 size = Vector2( 2, 2 )
 
-[sub_resource type="SpatialMaterial" id=13]
+[sub_resource type="SpatialMaterial" id=12]
 
 render_priority = 0
 flags_transparent = true
@@ -423,11 +363,11 @@ uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 
-[sub_resource type="QuadMesh" id=14]
+[sub_resource type="QuadMesh" id=13]
 
 size = Vector2( 1, 1 )
 
-[sub_resource type="SpatialMaterial" id=15]
+[sub_resource type="SpatialMaterial" id=14]
 
 render_priority = 0
 flags_transparent = false
@@ -479,7 +419,7 @@ uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 
-[sub_resource type="ArrayMesh" id=16]
+[sub_resource type="ArrayMesh" id=15]
 
 blend_shape_mode = 1
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
@@ -490,7 +430,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 98071,
 "index_count": 72,
-"material": SubResource( 15 ),
+"material": SubResource( 14 ),
 "name": "taillights_simple",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -498,7 +438,7 @@ surfaces/0 = {
 }
 _sections_unfolded = [ "surface_1" ]
 
-[sub_resource type="SpatialMaterial" id=17]
+[sub_resource type="SpatialMaterial" id=16]
 
 render_priority = 0
 flags_transparent = false
@@ -549,11 +489,11 @@ uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 
-[sub_resource type="QuadMesh" id=18]
+[sub_resource type="QuadMesh" id=17]
 
 size = Vector2( 1, 1 )
 
-[sub_resource type="QuadMesh" id=19]
+[sub_resource type="QuadMesh" id=18]
 
 size = Vector2( 0.5, 0.5 )
 
@@ -802,10 +742,15 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 12 )
+mesh = SubResource( 11 )
 skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "material" ]
+
+[node name="motion_blur" parent="BODY/cambase/Camera" index="1" instance=ExtResource( 8 )]
+
+visible = false
+motion_blur = false
 
 [node name="CameraCockpit" type="Camera" parent="BODY/cambase" index="1"]
 
@@ -851,7 +796,7 @@ shadow_atlas_quad_1 = 2
 shadow_atlas_quad_2 = 3
 shadow_atlas_quad_3 = 4
 
-[node name="Nametag" parent="BODY/Viewport" index="0" instance=ExtResource( 7 )]
+[node name="Nametag" parent="BODY/Viewport" index="0" instance=ExtResource( 9 )]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -866,7 +811,7 @@ mouse_default_cursor_shape = 0
 
 transform = Transform( -1, 0, 8.74228e-08, 0, 0.5, 0, -8.74228e-08, 0, -1, 0, 1.36496, 0 )
 layers = 1
-material_override = SubResource( 13 )
+material_override = SubResource( 12 )
 cast_shadow = 1
 extra_cull_margin = 0.0
 use_in_baked_light = false
@@ -874,10 +819,10 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 14 )
+mesh = SubResource( 13 )
 skeleton = NodePath("..")
 material/0 = null
-script = ExtResource( 8 )
+script = ExtResource( 10 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="SpotLight" type="SpotLight" parent="BODY" index="9"]
@@ -938,7 +883,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 16 )
+mesh = SubResource( 15 )
 skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Transform", "material" ]
@@ -969,7 +914,7 @@ shadow_atlas_quad_1 = 2
 shadow_atlas_quad_2 = 3
 shadow_atlas_quad_3 = 4
 
-[node name="nameplate" parent="BODY/Viewport 2" index="0" instance=ExtResource( 9 )]
+[node name="nameplate" parent="BODY/Viewport 2" index="0" instance=ExtResource( 11 )]
 
 mouse_default_cursor_shape = 0
 
@@ -977,7 +922,7 @@ mouse_default_cursor_shape = 0
 
 transform = Transform( -0.4, 0, 8.74228e-08, 0, 0.2, 0, -3.49691e-08, 0, -1, 0, 0.606774, -1.41142 )
 layers = 1
-material_override = SubResource( 17 )
+material_override = SubResource( 16 )
 cast_shadow = 1
 extra_cull_margin = 0.0
 use_in_baked_light = false
@@ -985,26 +930,26 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 18 )
+mesh = SubResource( 17 )
 skeleton = NodePath("..")
 material/0 = null
-script = ExtResource( 10 )
+script = ExtResource( 12 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="driver" parent="BODY" index="14" instance=ExtResource( 11 )]
+[node name="driver" parent="BODY" index="14" instance=ExtResource( 13 )]
 
 transform = Transform( -1.31134e-08, 0, 0.3, 0, 0.3, 0, -0.3, 0, -1.31134e-08, 0.220677, 0.016566, 0.150683 )
 
-[node name="skysphere" parent="BODY" index="15" instance=ExtResource( 12 )]
+[node name="skysphere" parent="BODY" index="15" instance=ExtResource( 14 )]
 
 transform = Transform( -1.04907e-07, 0, -2.4, 0, 2.4, 0, 2.4, 0, -1.04907e-07, 0, 3, 0 )
-script = ExtResource( 13 )
+script = ExtResource( 15 )
 
 [node name="RainParticles" type="Particles" parent="BODY" index="16"]
 
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 5, 0 )
 layers = 1
-material_override = ExtResource( 14 )
+material_override = ExtResource( 16 )
 cast_shadow = 0
 extra_cull_margin = 0.0
 use_in_baked_light = false
@@ -1025,10 +970,10 @@ fract_delta = false
 visibility_aabb = AABB( -6, -6, -6, 12, 16, 12 )
 local_coords = true
 draw_order = 0
-process_material = ExtResource( 15 )
+process_material = ExtResource( 17 )
 draw_passes = 1
-draw_pass_1 = SubResource( 19 )
-script = ExtResource( 13 )
+draw_pass_1 = SubResource( 18 )
+script = ExtResource( 15 )
 _sections_unfolded = [ "Draw Passes", "Drawing", "Geometry", "Process Material", "Time", "Transform" ]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
