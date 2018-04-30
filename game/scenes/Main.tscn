@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scripts/daynight.gd" type="Script" id=1]
 [ext_resource path="res://objects/roads.tscn" type="PackedScene" id=2]
@@ -14,6 +14,8 @@
 [ext_resource path="res://car/car_base.tscn" type="PackedScene" id=12]
 [ext_resource path="res://objects/speed_marker.tscn" type="PackedScene" id=13]
 [ext_resource path="res://objects/recharge_station.tscn" type="PackedScene" id=14]
+[ext_resource path="res://objects/beech_tree.tscn" type="PackedScene" id=15]
+[ext_resource path="res://objects/cherry_tree.tscn" type="PackedScene" id=16]
 
 [sub_resource type="GIProbeData" id=1]
 
@@ -182,5 +184,21 @@ _sections_unfolded = [ "Transform" ]
 [node name="charge" parent="." index="14" instance=ExtResource( 14 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.6765, 1.90735e-06, 31.168 )
+
+[node name="MeshInstance" parent="." index="15" instance=ExtResource( 15 )]
+
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 64.4389 )
+
+[node name="MeshInstance2" parent="." index="16" instance=ExtResource( 16 )]
+
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 45.9253 )
+
+[node name="MeshInstance3" parent="." index="17" instance=ExtResource( 16 )]
+
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -21.8238, 0, 40.8254 )
+
+[node name="MeshInstance4" parent="." index="18" instance=ExtResource( 16 )]
+
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -21.8238, 0, 57.3724 )
 
 
