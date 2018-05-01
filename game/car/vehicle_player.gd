@@ -243,11 +243,11 @@ func _process(delta):
 		get_node("skysphere/Skysphere").get_material_override().set_shader_param("light", color) #Color(World_node.light_color.r, World_node.light_color.g, World_node.light_color.b))
 	#print("Shader color: " + str(get_node("skysphere/Skysphere").get_material_override().get_shader_param("light")))
 	
-	if speed > 28: #100 kphs
-		get_node("cambase/Camera/blur_quad").set_visible(true)
-		#get_mesh().surface_get_material(0).set_shader_param
-	else:
-		get_node("cambase/Camera/blur_quad").set_visible(false)
+#	if speed > 28: #100 kphs
+#		get_node("cambase/Camera/blur_quad").set_visible(true)
+#		#get_mesh().surface_get_material(0).set_shader_param
+#	else:
+#		get_node("cambase/Camera/blur_quad").set_visible(false)
 	
 #doesn't interact with physics
 func _input(event):
@@ -279,10 +279,10 @@ func _input(event):
 func _on_BODY_body_entered(body):
 	#print("Collided with " + str(body.get_name()))
 	
-	print("Speed at collision: " + str(round(speed*3.6)) + "km/h, deducting: " + str(round(speed)))
-	
-	# deduct health
-	health -= round(speed)
+	if speed > 5:
+		print("Speed at collision: " + str(round(speed*3.6)) + "km/h, deducting: " + str(round(speed)))
+		# deduct health
+		health -= round(speed)
 	
 	if health <= 0:
 		# game over!
