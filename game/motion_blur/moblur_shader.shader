@@ -10,6 +10,7 @@ uniform float intensity : hint_range(0, 1);
 void fragment()
 { 
 	float depth = texture(DEPTH_TEXTURE, SCREEN_UV).r;
+	//float depth = textureLod(DEPTH_TEXTURE, SCREEN_UV, 0.0).r;
 	
 	//Turn the current pixel from ndc to world coordinates
 	vec3 pixel_pos_ndc = vec3(SCREEN_UV*2.0-1.0, depth*2.0-1.0); 
@@ -36,10 +37,11 @@ void fragment()
 	for (int i = 0; i < iteration_count; i++)
 	{
 		vec2 offset = pixel_diff_ndc * (float(i) / float(iteration_count) - 0.5) * intensity; 
-		col += texture(SCREEN_TEXTURE, SCREEN_UV + offset).rgb;
+		//col += texture(SCREEN_TEXTURE, SCREEN_UV + offset).rgb;
+		col += textureLod(SCREEN_TEXTURE, SCREEN_UV + offset, 0.0).rgb;
 		counter++;
 	}
 	ALBEDO = col / counter;
 	//added to workaround capture being after opaque pass
-	ALPHA = 0.7;
+	ALPHA = 0.3;
 }
