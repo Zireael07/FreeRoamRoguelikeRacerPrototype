@@ -52,6 +52,25 @@ func _ready():
 	set_process(true)
 	set_physics_process(true)
 
+func debug_draw_lines():
+	#points
+	var pos = get_transform().origin #get_translation()
+	var points = PoolVector3Array()
+	points.push_back(get_translation())
+	# from relative location
+	var gl_tg = get_global_transform().xform(rel_loc)
+	var par_rel = get_parent().get_global_transform().xform_inv(gl_tg)
+	points.push_back(Vector3(par_rel.x, 1, par_rel.z))
+	
+	#if doing nothing because close to target, yellow
+	if (rel_loc.distance_to(compare_pos) < 3):
+		get_parent().draw.draw_line_color(points, 3, Color(1,1,0,1))
+	#if braking, draw red line
+	elif not is_enough_dist(rel_loc, compare_pos, speed):  #(round(rel_loc.distance_to(compare_pos)) < round(speed)):
+		get_parent().draw.draw_line_color(points, 3, Color(1,0,0,1))
+	else:
+		get_parent().draw.draw_line_color(points, 3, Color(0,0,1,1))
+
 func _process(delta):
 	# delay getting the path until everything is set up
 	elapsed_secs += delta
@@ -68,6 +87,11 @@ func _process(delta):
 				for index in range(path.size()):
 					if (index > 0): #because #0 is our own location
 						target_array.push_back(path[index])
+
+
+		# debug
+		if (get_parent().draw != null):
+			debug_draw_lines()
 
 func _physics_process(delta):
 	flag = ""

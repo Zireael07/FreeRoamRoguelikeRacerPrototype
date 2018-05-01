@@ -6,13 +6,19 @@ export(bool) var left = true
 
 var navigation_node
 
+# debugging
+var draw
+
 func _ready():
 	# Called every time the node is added to the scene.
 	
 	navigation_node = get_node("/root/root")
 	
 	# Initialization here
-	pass
+	if has_node("draw"):
+		draw = get_node("draw")
+	
+	#pass
 
 func find_path():
 	if (navigation_node != null):
