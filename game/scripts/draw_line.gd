@@ -11,7 +11,7 @@ func _ready():
 	#Turn off shadows
 	self.set_cast_shadows_setting(0)
 	
-	set_material()
+	#set_material()
 	
 
 func set_material():
@@ -39,6 +39,8 @@ func set_material_color(color):
 
 
 func draw_line(points):
+	set_material()
+
 
 	begin(Mesh.PRIMITIVE_LINE_STRIP, null)
 	for i in points:
@@ -47,10 +49,13 @@ func draw_line(points):
 	
 	pass
 
-func draw_line_color(points, size, color):
-	set_material_color(color)	
+func draw_line_color(points, size, color_par):
+	#set_material_color(color)	
 	
 	clear()
+	
+	color = color_par
+	set_material()
 	
 	if (size != null):
 		##set width
@@ -59,5 +64,6 @@ func draw_line_color(points, size, color):
 	
 	begin(Mesh.PRIMITIVE_LINE_STRIP, null)
 	for i in points:
+		#set_color(color)
 		add_vertex(i)
 	end()	
