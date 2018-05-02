@@ -592,4 +592,19 @@ lod_max_hysteresis = 0.0
 script = ExtResource( 8 )
 color = Color( 1, 1, 1, 1 )
 
+[node name="draw2" type="ImmediateGeometry" parent="." index="3"]
+
+layers = 1
+material_override = SubResource( 9 )
+cast_shadow = 0
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+script = ExtResource( 8 )
+_sections_unfolded = [ "Transform" ]
+color = Color( 1, 1, 1, 1 )
+
 

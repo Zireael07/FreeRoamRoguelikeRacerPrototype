@@ -8,6 +8,7 @@ var navigation_node
 
 # debugging
 var draw
+var draw_arc
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -17,6 +18,8 @@ func _ready():
 	# Initialization here
 	if has_node("draw"):
 		draw = get_node("draw")
+	if has_node("draw2"):
+		draw_arc = get_node("draw2")
 	
 	#pass
 

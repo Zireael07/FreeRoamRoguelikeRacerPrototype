@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://car/AI_pathing.gd" type="Script" id=1]
 [ext_resource path="res://car/vehicle_AI.gd" type="Script" id=2]
@@ -11,7 +11,7 @@
 [ext_resource path="res://car/detect_obstacles_ray.gd" type="Script" id=9]
 [ext_resource path="res://scripts/draw_line.gd" type="Script" id=10]
 
-[sub_resource type="SpatialMaterial" id=1]
+[sub_resource type="SpatialMaterial" id=10]
 
 render_priority = 0
 flags_transparent = false
@@ -62,7 +62,7 @@ uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 
-[sub_resource type="ArrayMesh" id=2]
+[sub_resource type="ArrayMesh" id=11]
 
 blend_shape_mode = 1
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
@@ -73,14 +73,14 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 98051,
 "index_count": 132,
-"material": SubResource( 1 ),
+"material": SubResource( 10 ),
 "name": "Material.001",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 72
 }
 
-[sub_resource type="ArrayMesh" id=3]
+[sub_resource type="ArrayMesh" id=12]
 
 blend_shape_mode = 1
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
@@ -91,14 +91,14 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 98051,
 "index_count": 132,
-"material": SubResource( 1 ),
+"material": SubResource( 10 ),
 "name": "Material.001",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 72
 }
 
-[sub_resource type="ArrayMesh" id=4]
+[sub_resource type="ArrayMesh" id=13]
 
 blend_shape_mode = 1
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
@@ -109,14 +109,14 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 98051,
 "index_count": 132,
-"material": SubResource( 1 ),
+"material": SubResource( 10 ),
 "name": "Material.001",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 72
 }
 
-[sub_resource type="ArrayMesh" id=5]
+[sub_resource type="ArrayMesh" id=14]
 
 blend_shape_mode = 1
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
@@ -127,18 +127,18 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 98051,
 "index_count": 132,
-"material": SubResource( 1 ),
+"material": SubResource( 10 ),
 "name": "Material.001",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 72
 }
 
-[sub_resource type="BoxShape" id=6]
+[sub_resource type="BoxShape" id=15]
 
 extents = Vector3( 0.477039, 0.413218, 1.32118 )
 
-[sub_resource type="SpatialMaterial" id=7]
+[sub_resource type="SpatialMaterial" id=16]
 
 render_priority = 0
 flags_transparent = true
@@ -189,11 +189,11 @@ uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 
-[sub_resource type="QuadMesh" id=8]
+[sub_resource type="QuadMesh" id=17]
 
 size = Vector2( 1, 1 )
 
-[sub_resource type="SpatialMaterial" id=9]
+[sub_resource type="SpatialMaterial" id=18]
 
 render_priority = 0
 flags_transparent = false
@@ -245,7 +245,7 @@ uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 
-[sub_resource type="ArrayMesh" id=10]
+[sub_resource type="ArrayMesh" id=19]
 
 blend_shape_mode = 1
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
@@ -256,12 +256,63 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 98071,
 "index_count": 72,
-"material": SubResource( 9 ),
+"material": SubResource( 18 ),
 "name": "taillights_simple",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 48
 }
+
+[sub_resource type="SpatialMaterial" id=9]
+
+render_priority = 0
+flags_transparent = false
+flags_unshaded = true
+flags_vertex_lighting = false
+flags_no_depth_test = false
+flags_use_point_size = true
+flags_world_triplanar = false
+flags_fixed_size = false
+flags_albedo_tex_force_srgb = false
+vertex_color_use_as_albedo = false
+vertex_color_is_srgb = false
+params_diffuse_mode = 0
+params_specular_mode = 0
+params_blend_mode = 0
+params_cull_mode = 0
+params_depth_draw_mode = 0
+params_line_width = 3.0
+params_point_size = 3.0
+params_billboard_mode = 0
+params_grow = false
+params_use_alpha_scissor = false
+albedo_color = Color( 1, 1, 1, 1 )
+metallic = 0.0
+metallic_specular = 0.5
+metallic_texture_channel = 0
+roughness = 0.0
+roughness_texture_channel = 0
+emission_enabled = false
+normal_enabled = false
+rim_enabled = false
+clearcoat_enabled = false
+anisotropy_enabled = false
+ao_enabled = false
+depth_enabled = false
+subsurf_scatter_enabled = false
+transmission_enabled = false
+refraction_enabled = false
+detail_enabled = false
+uv1_scale = Vector3( 1, 1, 1 )
+uv1_offset = Vector3( 0, 0, 0 )
+uv1_triplanar = false
+uv1_triplanar_sharpness = 1.0
+uv2_scale = Vector3( 1, 1, 1 )
+uv2_offset = Vector3( 0, 0, 0 )
+uv2_triplanar = false
+uv2_triplanar_sharpness = 1.0
+proximity_fade_enable = false
+distance_fade_enable = false
 
 [node name="Spatial" type="Spatial" index="0"]
 
@@ -338,7 +389,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 2 )
+mesh = SubResource( 11 )
 skeleton = NodePath("..")
 material/0 = null
 
@@ -370,7 +421,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 3 )
+mesh = SubResource( 12 )
 skeleton = NodePath("..")
 material/0 = null
 
@@ -402,7 +453,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 4 )
+mesh = SubResource( 13 )
 skeleton = NodePath("..")
 material/0 = null
 
@@ -434,7 +485,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 5 )
+mesh = SubResource( 14 )
 skeleton = NodePath("..")
 material/0 = null
 
@@ -458,7 +509,7 @@ material/0 = ExtResource( 4 )
 [node name="CollisionShape" type="CollisionShape" parent="BODY" index="5"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.439856, 0.0630786 )
-shape = SubResource( 6 )
+shape = SubResource( 15 )
 disabled = false
 
 [node name="cambase" type="Spatial" parent="BODY" index="6"]
@@ -528,7 +579,7 @@ mouse_default_cursor_shape = 0
 
 transform = Transform( -1, 0, 8.74228e-08, 0, 0.5, 0, -8.74228e-08, 0, -1, 0, 1.1208, 0 )
 layers = 1
-material_override = SubResource( 7 )
+material_override = SubResource( 16 )
 cast_shadow = 1
 extra_cull_margin = 0.0
 use_in_baked_light = false
@@ -536,7 +587,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 8 )
+mesh = SubResource( 17 )
 skeleton = NodePath("..")
 material/0 = null
 script = ExtResource( 7 )
@@ -597,7 +648,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 10 )
+mesh = SubResource( 19 )
 skeleton = NodePath("..")
 material/0 = null
 
@@ -642,7 +693,7 @@ blend_times = [  ]
 
 layers = 1
 material_override = null
-cast_shadow = 1
+cast_shadow = 0
 extra_cull_margin = 0.0
 use_in_baked_light = false
 lod_min_distance = 0.0
@@ -650,6 +701,21 @@ lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
 script = ExtResource( 10 )
+color = Color( 1, 1, 1, 1 )
+
+[node name="draw2" type="ImmediateGeometry" parent="." index="3"]
+
+layers = 1
+material_override = SubResource( 9 )
+cast_shadow = 0
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+script = ExtResource( 10 )
+_sections_unfolded = [ "Transform" ]
 color = Color( 1, 1, 1, 1 )
 
 

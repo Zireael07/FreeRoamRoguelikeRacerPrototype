@@ -12,7 +12,7 @@ var rel_loc
 var dot
 
 #steering
-var angle
+var angle = 0
 var limit
 var gas = false
 var braking = false
@@ -92,6 +92,9 @@ func _process(delta):
 		# debug
 		if (get_parent().draw != null):
 			debug_draw_lines()
+			
+		if (get_parent().draw_arc != null):
+			get_parent().draw_arc.draw_arc_poly(get_translation(), 90-get_rotation_degrees().y, rad2deg(angle), Color(1,0,0))
 
 func _physics_process(delta):
 	flag = ""
