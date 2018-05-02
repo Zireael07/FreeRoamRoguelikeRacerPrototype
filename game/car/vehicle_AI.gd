@@ -94,9 +94,12 @@ func _process(delta):
 			debug_draw_lines()
 			
 		if (get_parent().draw_arc != null):
-			# the minus is there solely for display purposes
-			get_parent().draw_arc.draw_arc_poly(get_translation(), 90-get_rotation_degrees().y, -rad2deg(angle), Color(1,0,0))
-
+			if angle > 0:
+				# the minus is there solely for display purposes
+				get_parent().draw_arc.draw_arc_poly(get_translation(), 90-get_rotation_degrees().y, -rad2deg(angle), Color(1,0,0))
+			else:
+				get_parent().draw_arc.draw_arc_poly(get_translation(), 90-get_rotation_degrees().y, -rad2deg(angle), Color(0,1,0))
+				
 func _physics_process(delta):
 	flag = ""
 	
