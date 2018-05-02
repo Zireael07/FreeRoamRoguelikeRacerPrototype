@@ -94,7 +94,8 @@ func _process(delta):
 			debug_draw_lines()
 			
 		if (get_parent().draw_arc != null):
-			get_parent().draw_arc.draw_arc_poly(get_translation(), 90-get_rotation_degrees().y, rad2deg(angle), Color(1,0,0))
+			# the minus is there solely for display purposes
+			get_parent().draw_arc.draw_arc_poly(get_translation(), 90-get_rotation_degrees().y, -rad2deg(angle), Color(1,0,0))
 
 func _physics_process(delta):
 	flag = ""
@@ -152,7 +153,8 @@ func _physics_process(delta):
 						braking = true
 		
 				#if we're close to target, do nothing
-				if (rel_loc.distance_to(compare_pos) < 3):
+				if (rel_loc.distance_to(compare_pos) < 3) and abs(angle) < 0.9:
+					#fixed_angling()
 					#print("Close to target, don't deviate")
 					#relax steering
 					if (abs(get_steering()) > 0.02):
@@ -198,9 +200,9 @@ func stopping():
 		left = false
 		right = false
 		
-	if (speed > 0.2 and not reverse):
+	if (speed > 0.1 and not reverse):
 		braking = true
-	if (speed > 0.2 and reverse):
+	if (speed > 0.1 and reverse):
 		gas = true
 
 func collision_avoidance():
