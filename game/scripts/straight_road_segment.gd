@@ -324,6 +324,7 @@ func placeBuilding(index):
 		loc = Vector3(roadwidth+buildDistance, 0, index)
 	
 	build.set_translation(loc)
+	build.set_rotation_degrees(Vector3(0, 180, 0))
 	
 	build = setupBuilding(index)
 	#right side of the road
