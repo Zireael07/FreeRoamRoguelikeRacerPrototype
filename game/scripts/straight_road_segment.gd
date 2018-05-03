@@ -306,6 +306,11 @@ func setupBuilding(index):
 		var sign_mat = sign_tex3
 		build.get_node("MeshInstance").set_surface_material(0, sign_mat)
 	
+	# vary sign placement height
+	var rand_i = randi() % 5
+	
+	build.get_node("MeshInstance").translate(Vector3(0, rand_i, 0))
+	
 	
 	#build.set_scale(Vector3(2, 2, 2))
 	build.set_name("Skyscraper"+String(index))
