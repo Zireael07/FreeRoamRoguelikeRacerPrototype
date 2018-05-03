@@ -45,6 +45,8 @@ var start_vector
 var start_ref
 var end_ref
 
+export(bool) var trees
+
 #props
 var building
 var buildDistance = 10
@@ -57,6 +59,7 @@ var sign_tex3
 var win_mat
 var win_mat2
 var cables
+var cherry_tree
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -79,6 +82,7 @@ func _ready():
 	win_mat = preload("res://assets/windows_material.tres")
 	win_mat2 = preload("res://assets/windows_material2.tres")
 	cables = preload("res://objects/china_cable.tscn")
+	cherry_tree = preload("res://objects/cherry_tree.tscn")
 	
 	
 	positions.resize(0) # = []
@@ -152,8 +156,11 @@ func _ready():
 	
 	#place buildings and lanterns
 	for index in range(numBuildings):
-		placeBuilding(index)
-		placeCable(index)
+		if not trees:
+			placeBuilding(index)
+			placeCable(index)
+		else:
+			placeTree(index)
 	
 	#in editor, we draw simple immediate mode lines instead
 	if Engine.is_editor_hint():
@@ -349,6 +356,34 @@ func placeCable(index):
 	
 		var loc = Vector3(0,3,index*15)
 		cable.set_translation(loc)
+
+func placeTree(index):
+	var tree = cherry_tree.instance()
+	tree.set_name("Tree"+String(index))
+	add_child(tree)
+
+	#left side of the road
+	var loc = Vector3(roadwidth+(buildDistance/2), 0, index)
+	if (index > 0):
+		loc = Vector3(roadwidth+(buildDistance/2), 0, index*10)
+	else:
+		loc = Vector3(roadwidth+(buildDistance/2), 0, index)
+	
+	tree.set_translation(loc)
+	
+	tree = cherry_tree.instance()
+	tree.set_name("Tree"+String(index))
+	add_child(tree)
+	
+	#right side of the road
+	loc = Vector3(-(roadwidth+(buildDistance/2)), 0, index)
+	if (index > 0):
+		loc = Vector3(-(roadwidth+(buildDistance/2)), 0, index*10)
+	else:
+		loc = Vector3(-(roadwidth+(buildDistance/2)), 0, index)
+	
+	tree.set_translation(loc)
+	
 	
 # navmesh
 func setupNavi(navigation_node):
