@@ -1,6 +1,7 @@
-[gd_resource type="SpatialMaterial" load_steps=2 format=2]
+[gd_resource type="SpatialMaterial" load_steps=3 format=2]
 
 [ext_resource path="res://assets/NeonChinaSign1.png" type="Texture" id=1]
+[ext_resource path="res://assets/NeonChinaSign1 - part mask.png" type="Texture" id=2]
 
 [resource]
 
@@ -32,7 +33,12 @@ metallic_specular = 0.5
 metallic_texture_channel = 0
 roughness = 0.0
 roughness_texture_channel = 0
-emission_enabled = false
+emission_enabled = true
+emission = Color( 1, 1, 1, 1 )
+emission_energy = 2.0
+emission_operator = 1
+emission_on_uv2 = false
+emission_texture = ExtResource( 2 )
 normal_enabled = false
 rim_enabled = false
 clearcoat_enabled = false
