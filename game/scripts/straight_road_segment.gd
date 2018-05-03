@@ -50,7 +50,8 @@ export(bool) var trees
 #props
 var building
 var buildDistance = 10
-var numBuildings = 6
+#var numBuildings = 6
+var buildingSpacing = 15
 var building_tex1
 var building_tex2
 var sign_tex1
@@ -60,6 +61,7 @@ var win_mat
 var win_mat2
 var cables
 var cherry_tree
+var treeSpacing = 10
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -155,11 +157,14 @@ func _ready():
 		end_ref = positions[positions.size()-1]+end_vector
 	
 	#place buildings and lanterns
-	for index in range(numBuildings):
-		if not trees:
+	if not trees:
+		var numBuildings = int((sectionlength*length)/buildingSpacing)
+		for index in range(numBuildings+1):
 			placeBuilding(index)
 			placeCable(index)
-		else:
+	else:
+		var numTrees = int((sectionlength*length)/treeSpacing)
+		for index in range(numTrees+1):
 			placeTree(index)
 	
 	#in editor, we draw simple immediate mode lines instead
