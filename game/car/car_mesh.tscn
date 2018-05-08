@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://car/procedural_car_better.gd" type="Script" id=1]
+[ext_resource path="res://assets/car_blue.tres" type="Material" id=2]
+[ext_resource path="res://assets/modular car glass.tres" type="Material" id=3]
+
+[node name="Spatial" type="Spatial" index="0"]
+
+script = ExtResource( 1 )
+width = 1.0
+material = ExtResource( 2 )
+glass_material = ExtResource( 3 )
+
+
