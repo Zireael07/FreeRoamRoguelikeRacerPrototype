@@ -22,6 +22,7 @@ var indices_body = []
 	
 export(SpatialMaterial) var material = SpatialMaterial.new()
 export(SpatialMaterial) var glass_material = SpatialMaterial.new()
+export(SpatialMaterial) var steering_material = SpatialMaterial.new()
 
 func _ready():
 	# Called when the node is added to the scene for the first time.
@@ -76,10 +77,21 @@ func _ready():
 	var glass_surf = SurfaceTool.new()
 	glass_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
+	var inside_surf = SurfaceTool.new()
+	inside_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
 	#Create a node that will hold the mesh
 	var node = MeshInstance.new()
 	node.set_name("plane")
 	add_child(node)
+	
+	var steering_surf = SurfaceTool.new()
+	steering_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	#Create a node that will hold the mesh
+	var steer_node = MeshInstance.new()
+	steer_node.set_name("steering")
+	add_child(steer_node)
 	
 	if polygon.size() < 1:
 		return
@@ -87,6 +99,64 @@ func _ready():
 	#print(str(polygon))
 	#polygon.invert()
 	
+	createCar(trueno, window_poly, surface, glass_surf)
+	
+	createSteeringWheel(steering_surf, steering_material)
+	
+	steering_surf.generate_normals()
+	steering_surf.set_material(steering_material)
+	steer_node.set_mesh(steering_surf.commit())
+	
+	
+	# finish
+	surface.generate_normals()
+	surface.set_material(material)
+	glass_surf.generate_normals()
+	glass_surf.set_material(glass_material)
+	
+	
+	#Set the created mesh to the node
+	node.set_mesh(surface.commit())
+	#Add the other surfaces
+	node.set_mesh(glass_surf.commit(node.get_mesh()))
+	
+	
+	#pass
+
+func createSteeringWheel(steering_surf, steering_material):
+	var side_poly = []
+	
+	# these values seem to fit the Trueno outline - it's roughly the position of the window bottom left
+	
+	# TODO: define x,y,z of the center and work from that
+	
+	side_poly.append(Vector2(0.15, 0.40))
+	side_poly.append(Vector2(0.18, 0.40))
+	side_poly.append(Vector2(0.18, 0.50))
+	side_poly.append(Vector2(0.15, 0.50))
+	
+	var indices = Array(Geometry.triangulate_polygon(PoolVector2Array(side_poly)))
+	
+	# 0.2 and 0.4 make a right-hand drive
+	
+	createSide(indices, side_poly, steering_surf, 0.58)
+	createSide(indices, side_poly, steering_surf, 0.58, true)
+	createSide(indices, side_poly, steering_surf, 0.78, true)
+	createSide(indices, side_poly, steering_surf, 0.78)
+	
+	linkSides(indices, side_poly, steering_surf, 0.58, 0.78)
+	
+	# add missing top
+	var p0 = side_poly[2]
+	var p1 = side_poly[3]
+	
+	print(str(p0))
+	print(str(p1))
+	
+	createQuadNoUV(steering_surf, Vector3(p0.x, p0.y, 0.58), Vector3(p0.x, p0.y, 0.78), Vector3(p1.x, p1.y, 0.78), Vector3(p1.x, p1.y, 0.58))
+	createQuadNoUV(steering_surf, Vector3(p0.x, p0.y, 0.58), Vector3(p0.x, p0.y, 0.78), Vector3(p1.x, p1.y, 0.78), Vector3(p1.x, p1.y, 0.58), true)
+	
+func createCar(trueno, window_poly, surface, glass_surf):
 	var poly_bottom = []
 	poly_bottom.append(trueno[7]) # end of front wheel well
 	poly_bottom.append(trueno[8]) # beginning of rear wheel well
@@ -187,7 +257,7 @@ func _ready():
 	indices_body = Array(Geometry.triangulate_polygon(PoolVector2Array(polygon)))
 	
 	#print("Indices: " + str(indices_body))
-	linkSides(indices_body, surface, width)
+	linkSides(indices_body, polygon, surface, width)
 	
 	# add missing front
 	p0 = polygon[0]
@@ -195,22 +265,7 @@ func _ready():
 	
 	createQuadNoUV(surface, Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, width), Vector3(p1.x, p1.y, width), Vector3(p1.x, p1.y, 0))
 	createQuadNoUV(surface, Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, width), Vector3(p1.x, p1.y, width), Vector3(p1.x, p1.y, 0), true)
-	
-	
-	# finish
-	surface.generate_normals()
-	surface.set_material(material)
-	glass_surf.generate_normals()
-	glass_surf.set_material(glass_material)
-	
-	
-	#Set the created mesh to the node
-	node.set_mesh(surface.commit())
-	#Add the other surfaces
-	node.set_mesh(glass_surf.commit(node.get_mesh()))
-	
-	
-	#pass
+
 
 # TODO: write a common function for both front and rear (90% of logic is duplicated)
 func calculateFrontWindow():
@@ -424,15 +479,15 @@ func createWindow(window_verts, surface, flip=false):
 	createQuadNoUV(surface, one, two, three, four, flip)
 
 		
-func linkSides(indices, surface, offset):
+func linkSides(indices, polygon, surface, offset, begin=0):
 	for p in range(0, polygon.size()):
 		var p0 = polygon[p]
 		if polygon.size() > p+2:
 			var p1 = polygon[p+1]
 			#print("Linking" + str(p0) + " + " + str(p1))
 		
-			createQuadNoUV(surface, Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, offset), Vector3(p1.x, p1.y, offset), Vector3(p1.x, p1.y, 0))
-			createQuadNoUV(surface, Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, offset), Vector3(p1.x, p1.y, offset), Vector3(p1.x, p1.y, 0), true)
+			createQuadNoUV(surface, Vector3(p0.x, p0.y, begin), Vector3(p0.x, p0.y, offset), Vector3(p1.x, p1.y, offset), Vector3(p1.x, p1.y, begin))
+			createQuadNoUV(surface, Vector3(p0.x, p0.y, begin), Vector3(p0.x, p0.y, offset), Vector3(p1.x, p1.y, offset), Vector3(p1.x, p1.y, begin), true)
 		
 		
 		#addQuad(Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, offset), Vector3(p1.x, p1.y, offset), Vector3(p1.x, p1.y, 0), material, surface, false) 
