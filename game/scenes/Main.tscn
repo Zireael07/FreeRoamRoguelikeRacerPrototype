@@ -108,6 +108,8 @@ environment = ExtResource( 5 )
 
 [node name="Spatial" type="Spatial" parent="." index="7"]
 
+editor/display_folded = true
+
 [node name="Position3D" parent="Spatial" index="0" instance=ExtResource( 6 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -83.2746, 0, 6.94175 )
@@ -154,9 +156,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5603, 0.1, 25.5822 )
 
 [node name="marker 2" parent="." index="10" instance=ExtResource( 11 )]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -52.0014, 0.25, 2.00525 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -52.0014, 0.25, 137.169 )
 _sections_unfolded = [ "Transform" ]
-target = Vector3( -140, 0, 115 )
+target = Vector3( 50, 0, 248 )
 
 [node name="car" parent="." index="11" instance=ExtResource( 12 )]
 

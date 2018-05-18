@@ -93,7 +93,7 @@ func spawn_finish(start):
 	var our = preload("res://objects/race_marker.tscn")
 	var finish = our.instance()
 	finish.set_name("Finish")
-	finish.set_translation(loc)
+	finish.set_translation(Vector3(loc.x, 0.25, loc.z))
 	finish.finish = true
 	finish.start = start
 	#finish.set_val(true)
