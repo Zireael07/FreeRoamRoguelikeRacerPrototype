@@ -6,7 +6,14 @@ extends VehicleBody
 const MAX_SPEED = 55 #m/s = 200 kph
 #var steer_inc = 0.02 #radians
 const STEER_SPEED = 1
-const STEER_LIMIT = 0.4
+const STEER_LIMIT = 0.4 # 23 degrees # usually up to 30 deg
+
+# based on torcs
+var SPEED_SENS = 0.7 # speed sensitivity factor
+var STEER_SENS = 0.8
+var SPEED_FACT = 1.0 #10.0
+var FUDGE = 8 # account for TORCS timestep being 0.002 seconds (500Hz) and our physics tick is 60 hz
+
 
 export var force = 1500
 var braking_force_mult = 4
@@ -36,32 +43,46 @@ var tail_mat
 func process_car_physics(delta, gas, braking, left, right):
 	speed = get_linear_velocity().length();
 	
+	# hack solution to keep car under control
 	#vary limit depending on current speed
-	if (speed > 35): ##150 kph
-		STEER_LIMIT = 0.1
-		STEER_SPEED = 0.2
-	elif (speed > 28): ##~100 kph
-		STEER_LIMIT = 0.1
-		STEER_SPEED = 0.3
-	elif (speed > 15): #~50 kph
-		STEER_LIMIT = 0.3
-		STEER_SPEED = 0.4
-	elif (speed > 5): #~25 kph
-		STEER_LIMIT = 0.5
-		STEER_SPEED = 0.4
-	elif (speed > 2): #10 kph
-		STEER_LIMIT = 0.75
-		STEER_SPEED = 0.5
-	else:
-		STEER_LIMIT = 1
-		STEER_SPEED = 1
+#	if (speed > 35): ##150 kph
+#		STEER_LIMIT = 0.1
+#		STEER_SPEED = 0.2
+#	elif (speed > 28): ##~100 kph
+#		STEER_LIMIT = 0.1
+#		STEER_SPEED = 0.3
+#	elif (speed > 15): #~50 kph
+#		STEER_LIMIT = 0.3
+#		STEER_SPEED = 0.4
+#	elif (speed > 5): #~25 kph
+#		STEER_LIMIT = 0.5
+#		STEER_SPEED = 0.4
+#	elif (speed > 2): #10 kph
+#		STEER_LIMIT = 0.75
+#		STEER_SPEED = 0.5
+#	else:
+#		STEER_LIMIT = 1
+#		STEER_SPEED = 1
 	
 	if (left):
 		steer_target = STEER_LIMIT
-	elif (right):
+		
+		# TORCS approach:
+		# keep previous value, add steering changes as on line 170, clamped to 0-1.0
+		
+	elif (right): # for usual
+	# torcs-style would be if (so that neither key has precedence)
 		steer_target = -STEER_LIMIT
-	else: #if (not left and not right):
+		
+		# TORCS approach: see line 77, but deduce change instead of adding, clamped to -1.0-0
+
+	else: 
 		steer_target = 0
+	
+	# TORCS approach would sum up here
+#	steer_input = left_steer_input + right_steer_input
+	#print(steer_input)
+	
 	
 	#gas
 	if (gas): #(Input.is_action_pressed("ui_up")):
@@ -101,15 +122,39 @@ func process_car_physics(delta, gas, braking, left, right):
 	else:
 		set_brake(0.0)
 	
+	# original Truck Town logic
 	#steering
 	if (steer_target < steer_angle):
-		steer_angle -= STEER_SPEED*delta
+		# original
+		#var steer_change = STEER_SPEED*delta
+
+		# TORCS style
+		var press = 2 * 1 - 1
+		var steer_change = press * STEER_SENS * delta  / (1.0 + SPEED_SENS * get_linear_velocity().length() / SPEED_FACT) * FUDGE
+#		var steer_change = press * STEER_SENS * delta / (1.0 + SPEED_SENS * get_linear_velocity().length() / SPEED_FACT)
+
+		steer_angle -= steer_change
 		if (steer_target > steer_angle):
 			steer_angle = steer_target
 	elif (steer_target > steer_angle):
-		steer_angle += STEER_SPEED*delta
+		# original
+		#var steer_change = STEER_SPEED*delta
+		
+		# TORCS style
+		var press = 2 * 1 - 1
+		var steer_change = press * STEER_SENS * delta  / (1.0 + SPEED_SENS * get_linear_velocity().length() / SPEED_FACT) * FUDGE
+#		var steer_change = press * STEER_SENS * delta / (1.0 + SPEED_SENS * get_linear_velocity().length() / SPEED_FACT)
+
+
+		steer_angle += steer_change
+
 		if (steer_target < steer_angle):
 			steer_angle = steer_target
+	
+	# torcs-style
+	# delta is included beforehand
+#	var steer_fract = steer_input*STEER_LIMIT
+#	#print("Fract is " + str(steer_fract))
 	
 	set_steering(steer_angle)
 	
