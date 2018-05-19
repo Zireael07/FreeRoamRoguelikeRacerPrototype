@@ -11,7 +11,7 @@ func _ready():
 	pass
 
 func addRoad(material, dx, dy, dz):
-	print("Adding road " + String(dx) + String(dy) + String(dz))
+	#print("Adding road " + String(dx) + String(dy) + String(dz))
 	var surface = SurfaceTool.new()
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
@@ -26,7 +26,7 @@ func addRoad(material, dx, dy, dz):
 	node.set_mesh(surface.commit())
 
 func addTerrain(material, dx, dy, dz):
-	print("Adding ground " + String(dx) + String(dy) + String(dz))
+	#print("Adding ground " + String(dx) + String(dy) + String(dz))
 	var surface = SurfaceTool.new()
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
@@ -41,7 +41,7 @@ func addTerrain(material, dx, dy, dz):
 	node.set_mesh(surface.commit())	
 	
 func addPlaneRect(x,y,z,surface, material, dx, dy, dz):
-	print("Adding plane... " + String(x) + " " + String(y) + " " + String(z) + " " + String(dx) + " " + String(dy) + " " + String(dz))
+	#print("Adding plane... " + String(x) + " " + String(y) + " " + String(z) + " " + String(dx) + " " + String(dy) + " " + String(dz))
 	
 	var base = Vector3(x,y,z)
 	
