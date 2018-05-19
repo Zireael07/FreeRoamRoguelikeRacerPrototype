@@ -20,7 +20,7 @@ func _ready():
 	for index in range (numSegments):
 			placeRoad(index)
 	
-	call_deferred("navMesh")
+	#call_deferred("navMesh")
 	
 	#pass
 

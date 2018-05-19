@@ -26,7 +26,7 @@ func _ready():
 	var exec_time = OS.get_ticks_msec() - start
 	print("Stored road generator execution time: " + String(exec_time))
 	
-	call_deferred("setNavMeshNew")
+#call_deferred("setNavMeshNew")
 	#pass
 	
 # load data from json
@@ -129,8 +129,10 @@ func makeNonFirst(linenum, segment):
 		#segment.set_rotation(Vector3(0,angle,0))
 		if rel_loc.x > 0:
 			segment.set_rotation(Vector3(0, angle,0))
+			#segment.updateGlobalVerts()
 		else:
 			segment.set_rotation(Vector3(0, -angle,0))
+			#segment.updateGlobalVerts()
 		
 	#a curve
 	else:
@@ -366,17 +368,17 @@ func fitNavMesh(straight, straight_ind, straight_ind2, curve, curve_ind, curve_i
 	if (straight != null and straight.global_vertices != null):
 		var target1 = straight.global_vertices[straight_ind]
 		var target2 = straight.global_vertices[straight_ind2]
-		#print("Loaded road: target 1 is " + String(target1) + " target 2 is " + String(target2))
+		print("Loaded road: target 1 is " + String(target1) + " target 2 is " + String(target2))
 
 		# move the begin vertices to fit earlier straight
 		#var curved = curve.get_child(0).get_child(0)
 		var pos1 = curve.global_to_local_vert(target1)
-#		#print("Local position of target 1 is: " + String(pos1))
+		print("Local position of target 1 is: " + String(pos1))
 		var pos2 = curve.global_to_local_vert(target2)
-#		#print("Local position of target 2 is: " + String(pos2))
+		print("Local position of target 2 is: " + String(pos2))
 		#if (curved.nav_vertices != null):
 		curve.move_key_navi_vertices(curve_ind, pos1, curve_ind2, pos2)
-		#print("New vertices from loaded instancer, are : " + String(curved.nav_vertices[curved.nav_vertices.size()-2]) + " " + String(curved.nav_vertices[curved.nav_vertices.size()-1]))
+		#print("New vertices from loaded instancer, are : " + String(curve.nav_vertices[curve_ind]) + " " + String(curve.nav_vertices[curve_ind2]))
 #		
 		curve.move_key_nav2_vertices(curve_ind, pos2, curve_ind2, pos1)
 
@@ -416,29 +418,29 @@ func setNavMeshNew():
 					if curdata["left_turn"] == true:
 						#print("We should be getting previous segment") #data")
 						var prev = get_previous_segment(linenum)
-						print("Previous segment is " + prev.get_name() + " at " + str(prev.get_parent().get_translation()))
+						#print("Previous segment is " + prev.get_name() + " at " + str(prev.get_parent().get_translation()))
 						
 						#move the vertices so that the curve fits the straight
 						var segment = get_current_segment(linenum)
 						var curved = segment.get_child(0).get_child(0)
 						if curved != null:
-							fitNavMesh(prev, 2, 3, curved, curved.nav_vertices.size()-2, curved.nav_vertices.size()-1, true)
+							fitNavMesh(prev, 2, 3, curved, 0, 1, true)
 
 					#if we're turning right
 					else:
 						#print("We're turning right")
 						var prev = get_previous_segment(linenum)
-						print("Previous segment is " + prev.get_name() + " at " + str(prev.get_parent().get_translation()))
+						#print("Previous segment is " + prev.get_name() + " at " + str(prev.get_parent().get_translation()))
 												
 #						#move the vertices so that the curve fits the straight
 						var segment = get_current_segment(linenum)
 						var curved = segment.get_child(0).get_child(0)
 						if curved != null:
-							fitNavMesh(prev, 2, 3, curved, 0, 1, false)
+							fitNavMesh(prev, 2, 3, curved, curved.nav_vertices.size()-1, curved.nav_vertices.size()-2, false)
 
 			#if previous isn't a straight
 			else:
-				print("Segment " + str(linenum) + ", previous segment isn't a straight")
+				#print("Segment " + str(linenum) + ", previous segment isn't a straight..")
 				#are we a curve?
 				var curdata = dat[linenum]
 				var cur_type = curdata["type"]
@@ -483,21 +485,21 @@ func setNavMeshNew():
 #				print("Previous data is : " + str(data))
 				var prev_type = data["type"]
 				if prev_type == "curved":
-					print("We ought to be getting previous segment for: " + str(linenum))
+					#print("We ought to be getting previous segment for: " + str(linenum))
 					var prev = get_previous_segment(linenum)
-					print("Previous segment is " + prev.get_name() + " at " + str(prev.get_translation()))
+					#print("Previous segment is " + prev.get_name() + " at " + str(prev.get_translation()))
 					
 					var cur = get_current_segment(linenum)
-					print("Current segment is " + cur.get_name() + " at " + str(cur.get_parent().get_translation()))
+					#print("Current segment is " + cur.get_name() + " at " + str(cur.get_parent().get_translation()))
 					
 					if data["left_turn"] == true:
 						#move the vertices so that the curve fits the straight
 						if cur != null:
 							var curved = prev.get_child(0).get_child(0)
 							if curved != null:
-								fitNavMesh(cur, 0, 1, curved, 2, 3, true)
+								fitNavMesh(cur, 0, 1, curved, curved.nav_vertices.size()-1, curved.nav_vertices.size()-2, true)
 					else:
-						print("We're turning right")
+						#print("We're turning right")
 						#move the vertices so that the curve fits the straight
 						if cur != null:
 							var curved = prev.get_child(0).get_child(0)

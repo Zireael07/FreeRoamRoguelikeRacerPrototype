@@ -91,7 +91,7 @@ func _ready():
 	left_positions.resize(0) # = []
 	right_positions.resize(0) #= []
 	
-	print("Positions: " + str(positions.size()))
+	#print("Positions: " + str(positions.size()))
 	
 	var quads = []
 	
@@ -113,10 +113,11 @@ func _ready():
 				#print("Index from temp_positions " + str(index))
 				##draw_debug_point(positions[index], color)
 			#only make the mesh in game (meshing in editor is hilariously slow, up to 900 ms)
-			if not Engine.is_editor_hint():
+			#if not Engine.is_editor_hint() or Engine.is_editor_hint():
 				#meshCreate(temp_positions, material)
-				quads.append(getQuads(temp_positions)[0])
-				quads.append(getQuads(temp_positions)[1])
+			
+			quads.append(getQuads(temp_positions)[0])
+			quads.append(getQuads(temp_positions)[1])
 			
 			positions.push_back(temp_positions[1])
 			positions.push_back(temp_positions[2])
@@ -130,10 +131,10 @@ func _ready():
 			right_nav_positions.push_back(temp_positions[8])
 			right_nav_positions.push_back(temp_positions[9])
 		
-		# set up navmesh if not in editor	
-		if not Engine.is_editor_hint():
-			setupNavi(self)
+		if Engine.is_editor_hint() or not Engine.is_editor_hint():
+			#setupNavi(self)
 			optimizedmeshCreate(quads, material)
+		if not Engine.is_editor_hint():
 			# disable the emissiveness
 			reset_lite()
 				
@@ -457,7 +458,11 @@ func navMesh(navigation_node, nav_vertices, left):
 
 
 func updateGlobalVerts():
-	print("Updating global verts ")
+	if nav_vertices == null or nav_vertices.size() < 1:
+		return
+	
+	print("Updating global verts")
+	
 	global_vertices = PoolVector3Array()
 	for index in range (nav_vertices.size()):
 		# from local to global space
@@ -497,7 +502,7 @@ func global_to_local_vert(pos):
 func send_positions(map):
 	if positions.size() < 1:
 		return
-	print(get_name() + " sending position to map")
+	#print(get_name() + " sending position to map")
 	global_positions = get_global_positions()
 	map.add_positions(global_positions)
 	

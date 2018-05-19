@@ -391,12 +391,13 @@ func test_road():
 	
 	
 	#only mesh in game because meshing in editor can take >900 ms
-	if not Engine.is_editor_hint():
+	# we need meshes to bake navmesh
+	if Engine.is_editor_hint() or not Engine.is_editor_hint():
 		var quads = []
 		#dummy to be able to get the road mesh faster
-		var road_mesh = Spatial.new()
-		road_mesh.set_name("road_mesh")
-		add_child(road_mesh)
+		#var road_mesh = Spatial.new()
+		#road_mesh.set_name("road_mesh")
+		#add_child(road_mesh)
 		
 		for index in range(nb_points-1):
 			var array = make_point_array(index, index+1)
@@ -417,18 +418,18 @@ func test_road():
 				#	make_barrier(index, barrier_material, node)
 			
 			#nav
-			left_nav_positions.push_back(Vector3(points_outer_nav[index].x, road_height, points_outer_nav[index].y))
-			left_nav_positions.push_back(Vector3(points_outer_nav[index+1].x, road_height, points_outer_nav[index+1].y))
-			right_nav_positions.push_back(Vector3(points_inner_nav[index].x, road_height, points_inner_nav[index].y))
-			right_nav_positions.push_back(Vector3(points_inner_nav[index+1].x, road_height, points_inner_nav[index+1].y))
+			#left_nav_positions.push_back(Vector3(points_outer_nav[index].x, road_height, points_outer_nav[index].y))
+			#left_nav_positions.push_back(Vector3(points_outer_nav[index+1].x, road_height, points_outer_nav[index+1].y))
+			#right_nav_positions.push_back(Vector3(points_inner_nav[index].x, road_height, points_inner_nav[index].y))
+			#right_nav_positions.push_back(Vector3(points_inner_nav[index+1].x, road_height, points_inner_nav[index+1].y))
 			
 			#B-A = from a to b
 			#start_vector = Vector3(positions[1]-positions[0])
 			#end_vector = Vector3(positions[positions.size()-1] - positions[positions.size()-2])
 		
 		# add the final position that we're missing
-		left_nav_positions.push_back(Vector3(points_outer_nav[points_outer_nav.size()-1].x, road_height, points_outer_nav[points_outer_nav.size()-1].y))
-		right_nav_positions.push_back(Vector3(points_inner_nav[points_inner_nav.size()-1].x, road_height, points_inner_nav[points_inner_nav.size()-1].y))
+		#left_nav_positions.push_back(Vector3(points_outer_nav[points_outer_nav.size()-1].x, road_height, points_outer_nav[points_outer_nav.size()-1].y))
+		#right_nav_positions.push_back(Vector3(points_inner_nav[points_inner_nav.size()-1].x, road_height, points_inner_nav[points_inner_nav.size()-1].y))
 		
 		# add the final quad
 		var array = make_point_array(points_center.size()-2, points_center.size()-1)
@@ -443,19 +444,20 @@ func test_road():
 			make_barrier(barrier_quads, barrier_material)
 			
 		#generate navi vertices
-		nav_vertices = get_navi_vertices()
-		nav_vertices2 = get_navi_vertices_alt()		
+		#nav_vertices = get_navi_vertices()
+		#nav_vertices2 = get_navi_vertices_alt()		
 						
 		placeStreetlight()
-		
+	elif not Engine.is_editor_hint():	
 		# disable the emissiveness
 		reset_lite()
 		
+	elif not Engine.is_editor_hint():
 		# kill debug draw in game
 		draw.queue_free()
 		
 	#draw an immediate line in editor instead
-	else:
+	#else:
 		#B-A = from a to b
 		#start_vector = Vector3(positions[1]-positions[0])
 		#end_vector = Vector3(positions[positions.size()-1] - positions[positions.size()-2])
@@ -647,9 +649,9 @@ func get_key_navi_vertices():
 
 func move_key_navi_vertices(index1, pos1, index2, pos2):
 	nav_vertices.set(index1, pos1)
-	#print("Setting vertex " + String(index1) + " to " + String(pos1))
+	print("Setting vertex " + String(index1) + " to " + String(pos1))
 	nav_vertices.set(index2, pos2)
-	#print("Setting vertex " + String(index2) + " to " + String(pos2))
+	print("Setting vertex " + String(index2) + " to " + String(pos2))
 	#print("New vertices " + String(nav_vertices[index1]) + " & " + String(nav_vertices[index2]))
 	
 func move_key_nav2_vertices(index1, pos1, index2, pos2):
@@ -660,7 +662,7 @@ func global_to_local_vert(pos):
 	return get_global_transform().xform_inv(pos)
 	
 func send_positions(map):
-	print(get_name() + " sending position to map")
+	#print(get_name() + " sending position to map")
 	global_positions = get_global_positions()
 	map.add_positions(global_positions)
 
