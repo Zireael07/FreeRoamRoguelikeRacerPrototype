@@ -58,8 +58,10 @@ func _on_Area_body_enter( body ):
 func _on_ok_click():
 	count = true
 	time = 0.0
+	player.get_parent().get_node("AnimationPlayer").recording = true
 	spawn_finish(self)
 	print("Clicked ok!")
+	play_replay()
 	
 	
 func _process(delta):
@@ -92,3 +94,28 @@ func spawn_finish(start):
 	#finish.set_val(true)
 	
 	get_parent().add_child(finish)
+
+func play_replay():
+	if File.new().file_exists("res://replay/replay.tscn"):
+		print("We have a replay")
+		
+		# load our stuff
+		var ghost = preload("res://car/car_replay.tscn")
+		var ghost_in = ghost.instance()
+		ghost_in.set_name("Ghost")
+		
+		var repl = load("res://replay/replay.tscn")
+		var replay = repl.instance()
+		replay.set_name("replay")
+		# test
+		replay.set_script(preload("res://replay/replay.gd"))
+		
+		# fix offset
+		ghost_in.set_translation(player.get_parent().get_translation())
+		
+		get_parent().add_child(ghost_in)
+		ghost_in.add_child(replay)
+		
+		# play
+		ghost_in.get_node("replay").play("BODY")
+		
