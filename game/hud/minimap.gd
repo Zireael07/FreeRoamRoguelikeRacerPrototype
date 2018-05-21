@@ -9,6 +9,10 @@ var minimap_bg
 var temp_positions = Array()
 var positions = Array()
 
+# for static markers (races, POIs)
+var marker_pos = []
+var markers = []
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
@@ -16,9 +20,21 @@ func _ready():
 	
 	var arrow = preload("res://hud/minimap_arrow_big_64 - bordered grayscale.png")
 	var player_arrow = preload("res://hud/minimap_arrow_big_64 - cyan.png")
+	var blue_flag = preload("res://hud/flag.png")
+	#var red_flag = preload("res://hud/flag_red.png")
+	
 	
 	getPositions()
 	
+	setupMinimap(arrow, player_arrow, blue_flag)
+	
+	#get the minimap
+	#minimap_bg = get_child(0).get_child(0).get_child(0)
+	
+	set_process(true)
+	pass
+
+func setupMinimap(arrow, player_arrow, blue_flag):
 	##we're child of player, AI are siblings of player
 	var AI = get_parent().get_parent().get_parent().get_node("AI")
 	var AI2 = get_parent().get_parent().get_parent().get_node("AI2")
@@ -39,6 +55,15 @@ func _ready():
 		#add the arrows beneath the container
 		get_child(0).add_child(tex)
 	
+	# markers
+	var markers = get_tree().get_nodes_in_group("marker")
+	
+	for e in markers:
+		#print("We have a marker " + e.get_name())
+		add_marker(e.get_global_transform().origin, blue_flag)
+	
+	
+	# is last because needs to be on top of everything else
 	#add player arrow
 	var player_tex = TextureRect.new()
 	player_tex.set_texture(player_arrow)
@@ -46,12 +71,17 @@ func _ready():
 	player_tex.set_scale(Vector2(0.5, 0.5))
 	player_tex.set_position(player_pos)
 	get_child(0).add_child(player_tex)
-	
-	#get the minimap
-	#minimap_bg = get_child(0).get_child(0).get_child(0)
-	
-	set_process(true)
-	pass
+
+
+func add_marker(pos, blue_flag):
+	var marker_tex = TextureRect.new()
+	marker_tex.set_texture(blue_flag)
+	#marker_tex.set_pos(pos3d_to_gamemap_point(Vector3(pos)))
+	#marker_tex.set_scale(Vector2(0.5, 0.5))
+	get_child(0).add_child(marker_tex)
+	marker_pos.push_back(pos)
+	markers.push_back(marker_tex.get_name())
+
 
 # get the positions we need for actual mapgen
 func add_positions(pos):
@@ -97,6 +127,24 @@ func _process(delta):
 			else:
 				dot.show()
 	
+	# handle the markers
+	for index in range(markers.size()):
+		var dot = get_child(0).get_node(markers[index])
+		if dot != null:
+			var rel_loc = get_point_rel_loc(marker_pos[index])
+			var dot_offset = get_AI_dot_loc(rel_loc)
+			var dot_pos = player_pos-dot_offset
+			# 32 is the icon size, so let's fix the slight offset
+			dot_pos = Vector2(dot_pos.x+32/2, dot_pos.y)
+			dot.set_position(dot_pos)
+			var dist = get_AI_dot_dist(dot)
+			#hide those arrows that would go out of map range
+			if dist > 100:
+				dot.hide()
+			else:
+				dot.show()
+	
+	
 	var calc_offset = calc_panning()
 	
 	minimap_bg.get_material().set_shader_param("X", calc_offset[0])
@@ -112,6 +160,12 @@ func calc_panning():
 	var panning_y = player_coord.z * -minimap_bg.uv_offset
 	#print("Panning " + String(panning_x) + " " + String(panning_y))
 	return [panning_x, panning_y]
+
+func get_point_rel_loc(global_loc):
+	var player_tr = get_parent().get_global_transform()
+	
+	var rel_loc = player_tr.xform_inv(global_loc)
+	return rel_loc
 	
 func get_AI_rel_loc(AI):
 	var global_loc = AI.get_global_transform().origin
