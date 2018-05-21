@@ -144,7 +144,7 @@ func createSteeringWheel(steering_surf, steering_material):
 	createSide(indices, side_poly, steering_surf, 0.78, true)
 	createSide(indices, side_poly, steering_surf, 0.78)
 	
-	linkSides(indices, side_poly, steering_surf, 0.58, 0.78)
+	linkSides(indices, side_poly, steering_surf, 0.58, 0.78, true)
 	
 	# add missing top
 	var p0 = side_poly[2]
@@ -203,27 +203,27 @@ func createCar(trueno, window_poly, surface, glass_surf):
 	createSide(indices_front, poly_front, surface, 0)
 	createSide(indices_rear, poly_rear, surface, 0)
 	#other side
-	createSide(indices, poly_bottom, surface, 0, true)
-	createSide(indices_top, poly_top, surface, 0, true)
-	createSide(indices_front, poly_front, surface, 0, true)
-	createSide(indices_rear, poly_rear, surface, 0, true)
+#	createSide(indices, poly_bottom, surface, 0, true)
+#	createSide(indices_top, poly_top, surface, 0, true)
+#	createSide(indices_front, poly_front, surface, 0, true)
+#	createSide(indices_rear, poly_rear, surface, 0, true)
 	
 	createSide(indices, poly_bottom, surface, width, true)
 	createSide(indices_top, poly_top, surface, width, true)
 	createSide(indices_front, poly_front, surface, width, true)
 	createSide(indices_rear, poly_rear, surface, width, true)
 	#other side
-	createSide(indices, poly_bottom, surface, width, false)
-	createSide(indices_top, poly_top, surface, width, false)
-	createSide(indices_front, poly_front, surface, width, false)
-	createSide(indices_rear, poly_rear, surface, width, false)
+#	createSide(indices, poly_bottom, surface, width, false)
+#	createSide(indices_top, poly_top, surface, width, false)
+#	createSide(indices_front, poly_front, surface, width, false)
+#	createSide(indices_rear, poly_rear, surface, width, false)
 	
 	
 	createSideWindow(window_poly, glass_surf, 0, true)
-	createSideWindow(window_poly, glass_surf, 0, false)
+	#createSideWindow(window_poly, glass_surf, 0, false)
 	# other side
 	createSideWindow(window_poly, glass_surf, width)
-	createSideWindow(window_poly, glass_surf, width, true)
+#	createSideWindow(window_poly, glass_surf, width, true)
 	
 	createRear(surface, glass_surf)
 	
@@ -236,7 +236,7 @@ func createCar(trueno, window_poly, surface, glass_surf):
 	var p1 = polygon[p+1]
 	
 	createQuadNoUV(surface, Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, width), Vector3(p1.x, p1.y, width), Vector3(p1.x, p1.y, 0))
-	createQuadNoUV(surface, Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, width), Vector3(p1.x, p1.y, width), Vector3(p1.x, p1.y, 0), true)
+	#createQuadNoUV(surface, Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, width), Vector3(p1.x, p1.y, width), Vector3(p1.x, p1.y, 0), true)
 	
 	# roof
 	p = polygon.size()-4
@@ -244,7 +244,7 @@ func createCar(trueno, window_poly, surface, glass_surf):
 	p1 = polygon[p+1]
 	
 	createQuadNoUV(surface, Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, width), Vector3(p1.x, p1.y, width), Vector3(p1.x, p1.y, 0))
-	createQuadNoUV(surface, Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, width), Vector3(p1.x, p1.y, width), Vector3(p1.x, p1.y, 0), true)
+	#createQuadNoUV(surface, Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, width), Vector3(p1.x, p1.y, width), Vector3(p1.x, p1.y, 0), true)
 	
 	
 	# we need to exclude the parts where the front/rear windows go (see above)
@@ -264,7 +264,7 @@ func createCar(trueno, window_poly, surface, glass_surf):
 	p1 = polygon[polygon.size()-1]
 	
 	createQuadNoUV(surface, Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, width), Vector3(p1.x, p1.y, width), Vector3(p1.x, p1.y, 0))
-	createQuadNoUV(surface, Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, width), Vector3(p1.x, p1.y, width), Vector3(p1.x, p1.y, 0), true)
+	#createQuadNoUV(surface, Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, width), Vector3(p1.x, p1.y, width), Vector3(p1.x, p1.y, 0), true)
 
 
 # TODO: write a common function for both front and rear (90% of logic is duplicated)
@@ -305,7 +305,7 @@ func createFront(surface, glass_surf):
 	var front_window_poly = calculateFrontWindow()	
 	
 	createWindow(front_window_poly, glass_surf)
-	createWindow(front_window_poly, glass_surf, true)
+	#createWindow(front_window_poly, glass_surf, true)
 	
 	var bottom_front = []
 	bottom_front.append(Vector3(polygon[polygon.size()-2].x, polygon[polygon.size()-2].y, 0))
@@ -314,7 +314,7 @@ func createFront(surface, glass_surf):
 	bottom_front.append(front_window_poly[0])
 	
 	createQuadNoUV(surface, bottom_front[0], bottom_front[1], bottom_front[2], bottom_front[3])
-	createQuadNoUV(surface, bottom_front[0], bottom_front[1], bottom_front[2], bottom_front[3], true)
+	#createQuadNoUV(surface, bottom_front[0], bottom_front[1], bottom_front[2], bottom_front[3], true)
 	
 	var top_front = []
 	top_front.append(front_window_poly[2])
@@ -323,7 +323,7 @@ func createFront(surface, glass_surf):
 	top_front.append(Vector3(polygon[polygon.size()-3].x, polygon[polygon.size()-3].y, width))
 	
 	createQuadNoUV(surface, top_front[0], top_front[1], top_front[2], top_front[3])
-	createQuadNoUV(surface, top_front[0], top_front[1], top_front[2], top_front[3], true)
+	#createQuadNoUV(surface, top_front[0], top_front[1], top_front[2], top_front[3], true)
 	
 	var front_pillar_left = []
 	front_pillar_left.append(bottom_front[0])
@@ -332,7 +332,7 @@ func createFront(surface, glass_surf):
 	front_pillar_left.append(top_front[2])
 	
 	createQuadNoUV(surface, front_pillar_left[0], front_pillar_left[1], front_pillar_left[2], front_pillar_left[3])
-	createQuadNoUV(surface, front_pillar_left[0], front_pillar_left[1], front_pillar_left[2], front_pillar_left[3], true)
+	#createQuadNoUV(surface, front_pillar_left[0], front_pillar_left[1], front_pillar_left[2], front_pillar_left[3], true)
 	
 	var front_pillar_right = []
 	front_pillar_right.append(bottom_front[1])
@@ -341,7 +341,7 @@ func createFront(surface, glass_surf):
 	front_pillar_right.append(top_front[3])
 	
 	createQuadNoUV(surface, front_pillar_right[0], front_pillar_right[1], front_pillar_right[2], front_pillar_right[3])
-	createQuadNoUV(surface, front_pillar_right[0], front_pillar_right[1], front_pillar_right[2], front_pillar_right[3], true)
+	#createQuadNoUV(surface, front_pillar_right[0], front_pillar_right[1], front_pillar_right[2], front_pillar_right[3], true)
 	
 func calculateRearWindow():
 	var index = 5
@@ -380,7 +380,7 @@ func createRear(surface, glass_surf):
 	var rear_window_poly = calculateRearWindow()	
 	
 	createWindow(rear_window_poly, glass_surf)
-	createWindow(rear_window_poly, glass_surf, true)
+	#createWindow(rear_window_poly, glass_surf, true)
 	
 	# fill the rest of the body
 	var bottom_rear = []
@@ -390,7 +390,7 @@ func createRear(surface, glass_surf):
 	bottom_rear.append(rear_window_poly[0])
 	
 	createQuadNoUV(surface, bottom_rear[0], bottom_rear[1], bottom_rear[2], bottom_rear[3])
-	createQuadNoUV(surface, bottom_rear[0], bottom_rear[1], bottom_rear[2], bottom_rear[3], true)
+	#createQuadNoUV(surface, bottom_rear[0], bottom_rear[1], bottom_rear[2], bottom_rear[3], true)
 	
 	var top_rear = []
 	top_rear.append(rear_window_poly[2])
@@ -399,7 +399,7 @@ func createRear(surface, glass_surf):
 	top_rear.append(Vector3(polygon[polygon.size()-4].x, polygon[polygon.size()-4].y, width))
 	
 	createQuadNoUV(surface, top_rear[0], top_rear[1], top_rear[2], top_rear[3])
-	createQuadNoUV(surface, top_rear[0], top_rear[1], top_rear[2], top_rear[3], true)
+	#createQuadNoUV(surface, top_rear[0], top_rear[1], top_rear[2], top_rear[3], true)
 	
 	var rear_pillar_left = []
 	rear_pillar_left.append(bottom_rear[0])
@@ -408,7 +408,7 @@ func createRear(surface, glass_surf):
 	rear_pillar_left.append(top_rear[2])
 	
 	createQuadNoUV(surface, rear_pillar_left[0], rear_pillar_left[1], rear_pillar_left[2], rear_pillar_left[3])
-	createQuadNoUV(surface, rear_pillar_left[0], rear_pillar_left[1], rear_pillar_left[2], rear_pillar_left[3], true)
+	#createQuadNoUV(surface, rear_pillar_left[0], rear_pillar_left[1], rear_pillar_left[2], rear_pillar_left[3], true)
 	
 	var rear_pillar_right = []
 	rear_pillar_right.append(bottom_rear[1])
@@ -417,7 +417,7 @@ func createRear(surface, glass_surf):
 	rear_pillar_right.append(top_rear[3])
 	
 	createQuadNoUV(surface, rear_pillar_right[0], rear_pillar_right[1], rear_pillar_right[2], rear_pillar_right[3])
-	createQuadNoUV(surface, rear_pillar_right[0], rear_pillar_right[1], rear_pillar_right[2], rear_pillar_right[3], true)
+	#createQuadNoUV(surface, rear_pillar_right[0], rear_pillar_right[1], rear_pillar_right[2], rear_pillar_right[3], true)
 
 func createQuadNoUV(surface, one, two, three, four, flip=false):
 	if not flip:
@@ -479,7 +479,7 @@ func createWindow(window_verts, surface, flip=false):
 	createQuadNoUV(surface, one, two, three, four, flip)
 
 		
-func linkSides(indices, polygon, surface, offset, begin=0):
+func linkSides(indices, polygon, surface, offset, begin=0, dup=false):
 	for p in range(0, polygon.size()):
 		var p0 = polygon[p]
 		if polygon.size() > p+2:
@@ -487,7 +487,8 @@ func linkSides(indices, polygon, surface, offset, begin=0):
 			#print("Linking" + str(p0) + " + " + str(p1))
 		
 			createQuadNoUV(surface, Vector3(p0.x, p0.y, begin), Vector3(p0.x, p0.y, offset), Vector3(p1.x, p1.y, offset), Vector3(p1.x, p1.y, begin))
-			createQuadNoUV(surface, Vector3(p0.x, p0.y, begin), Vector3(p0.x, p0.y, offset), Vector3(p1.x, p1.y, offset), Vector3(p1.x, p1.y, begin), true)
+			if dup:
+				createQuadNoUV(surface, Vector3(p0.x, p0.y, begin), Vector3(p0.x, p0.y, offset), Vector3(p1.x, p1.y, offset), Vector3(p1.x, p1.y, begin), true)
 		
 		
 		#addQuad(Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, offset), Vector3(p1.x, p1.y, offset), Vector3(p1.x, p1.y, 0), material, surface, false) 
