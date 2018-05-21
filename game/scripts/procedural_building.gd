@@ -40,6 +40,10 @@ func _ready():
 	surface.generate_normals()
 	surface_wind.generate_normals()
 	
+	# fix index
+	surface.index()
+	surface_wind.index()
+	
 	#Set the created mesh to the node
 	node.set_mesh(surface.commit())
 	node.set_mesh(surface_wind.commit(node.get_mesh()))
