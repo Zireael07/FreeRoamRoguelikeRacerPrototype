@@ -50,6 +50,9 @@ func _ready():
 	
 	# yay GD 3
 	node.create_convex_collision()
+	
+	# test
+	#node.set_visible(false)
 
 func cube_building_storeys(surface, material, surface_wind, windows_mat, pos, storeys):
 	# building
@@ -64,15 +67,21 @@ func cube_building_storeys(surface, material, surface_wind, windows_mat, pos, st
 		for i in range(-width+1, width+1, 3):
 			# first storey
 			if j == 0:
-				addCubeTexture(i, pos.y+1, thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
+				addQuadFromCube(i, pos.y+1, thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
 				# other wall
-				addCubeTexture(i, pos.y+1, -thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
+				addQuadFromCube(i, pos.y+1, -thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
+				
+				#addCubeTexture(i, pos.y+1, thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
+				# other wall
+				#addCubeTexture(i, pos.y+1, -thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
 			
 			else:
 				# one wall
-				addCubeTexture(i, pos.y+1+j*2, thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
+				addQuadFromCube(i, pos.y+1+j*2, thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
+				#addCubeTexture(i, pos.y+1+j*2, thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
 				# other wall
-				addCubeTexture(i, pos.y+1+j*2, -thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
+				addQuadFromCube(i, pos.y+1+j*2, -thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
+				#addCubeTexture(i, pos.y+1+j*2, -thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
 				
 		# other axis (X)
 		for i in range(-thick+1, thick+1, 3):
@@ -80,15 +89,19 @@ func cube_building_storeys(surface, material, surface_wind, windows_mat, pos, st
 			if j == 0:
 				# one wall
 				# swap thick and height to rotate 90 deg
-				addCubeTexture(width, pos.y+1, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
+				addQuadFromCube(width, pos.y+1, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
+				#addCubeTexture(width, pos.y+1, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
 				# other wall
-				addCubeTexture(-width, pos.y+1, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
+				addQuadFromCube(-width, pos.y+1, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
+				#addCubeTexture(-width, pos.y+1, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
 			else:
 				# one wall
 				# swap thick and height to rotate 90 deg
-				addCubeTexture(width, pos.y+1+j*2, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
+				addQuadFromCube(width, pos.y+1+j*2, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
+				#addCubeTexture(width, pos.y+1+j*2, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
 				# other wall
-				addCubeTexture(-width, pos.y+1+j*2, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
+				addQuadFromCube(-width, pos.y+1+j*2, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
+				#addCubeTexture(-width, pos.y+1+j*2, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
 		
 		# increment storey count
 		#j = j+1

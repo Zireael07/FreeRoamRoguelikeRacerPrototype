@@ -299,3 +299,50 @@ func addCubeTexture(x,y,z, surface, material, dx, dy, dz):
 	#Bottom
 	addQuad(corners[6], corners[5], corners[4], corners[7], material, surface, false)
 	#addQuad(corners[6], corners[5], corners[7], corners[4], material, surface, false)
+	
+func addQuadFromCube(x,y,z, surface, material, dx, dy, dz):
+	surface.set_material(material)
+	
+	#This is the central point in the base of the cube
+	var base = Vector3(x, y + dy, z)
+	
+	##Corners of the cube
+	var corners = []
+	
+	#Top
+	corners.push_back(base + Vector3(-dx,  dy, -dz))
+	corners.push_back(base + Vector3( dx,  dy, -dz))
+	corners.push_back(base + Vector3( dx,  dy,  dz))
+	corners.push_back(base + Vector3(-dx,  dy,  dz))
+	
+	#Bottom
+	corners.push_back(base + Vector3(-dx, -dy, -dz))
+	corners.push_back(base + Vector3( dx, -dy, -dz))
+	corners.push_back(base + Vector3( dx, -dy,  dz))
+	corners.push_back(base + Vector3(-dx, -dy,  dz))
+	
+	var uvs = []
+	uvs.push_back(Vector2(0,0))
+	uvs.push_back(Vector2(0,1))
+	uvs.push_back(Vector2(1,1))
+	uvs.push_back(Vector2(1,0))
+
+	#Adding the corners in order, calculated by hand
+	#Top
+	#if select == "top":
+	#	addQuad(corners[0], corners[1], corners[2], corners[3], material, surface, false)
+	#if select == "side1":
+		#One side
+	addQuad(corners[0], corners[4], corners[5], corners[1], material, surface, false)
+	#elif select == "side2":
+		#Other side
+	addQuad(corners[1], corners[5], corners[6], corners[2], material, surface, false)
+	#elif select == "side3":
+		#Other side
+	addQuad(corners[2], corners[6], corners[7], corners[3], material, surface, false)
+	#elif select == "side4":
+		#Other side
+	addQuad(corners[3], corners[7], corners[4], corners[0], material, surface, false)
+	
+	#Bottom
+	#addQuad(corners[6], corners[5], corners[4], corners[7], material, surface, false)
