@@ -70,6 +70,16 @@ func debug_draw_lines():
 		get_parent().draw.draw_line_color(points, 3, Color(1,0,0,1))
 	else:
 		get_parent().draw.draw_line_color(points, 3, Color(0,0,1,1))
+		
+
+func debug_draw_path():
+	var pt_locs = []
+	for pt in path:
+		#var pt_gl = get_global_transform().xform(pt)
+		pt_locs.push_back(get_parent().get_global_transform().xform_inv(pt))
+	
+	if pt_locs.size() > 0:
+		get_parent().draw.draw_line_color(pt_locs, 6, Color(1,0,0,1))
 
 func _process(delta):
 	# delay getting the path until everything is set up
@@ -91,7 +101,8 @@ func _process(delta):
 
 		# debug
 		if (get_parent().draw != null):
-			debug_draw_lines()
+			#debug_draw_lines()
+			debug_draw_path()
 			
 		if (get_parent().draw_arc != null):
 			if angle > 0:
