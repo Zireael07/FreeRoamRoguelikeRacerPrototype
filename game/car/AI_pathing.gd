@@ -46,10 +46,20 @@ func find_path():
 		
 		
 		if (path.size() > 0):
-			print(get_name() + " has a path " + String(path))
-			#print(get_name() + " AI has a path")
+			#print(get_name() + " has a path " + String(path))
+			print(get_name() + " AI has a path")				
 			
 			return path
 		else:
 			#print("No path")
 			return null
+			
+func debug_cube(loc):
+	var mesh = CubeMesh.new()
+	mesh.set_size(Vector3(0.5,0.5,0.5))
+	var node = MeshInstance.new()
+	node.set_mesh(mesh)
+	add_child(node)
+	node.set_translation(loc)
+	
+	

@@ -28,9 +28,11 @@ var compare_pos = Vector3(0,0,0)
 # pathing
 var navigation_node
 var path
+var pt_locs_rel = []
 
 var elapsed_secs = 0
 var start_secs = 1
+var emitted = false
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -72,12 +74,7 @@ func debug_draw_lines():
 		get_parent().draw.draw_line_color(points, 3, Color(0,0,1,1))
 		
 
-func debug_draw_path():
-	var pt_locs = []
-	for pt in path:
-		#var pt_gl = get_global_transform().xform(pt)
-		pt_locs.push_back(get_parent().get_global_transform().xform_inv(pt))
-	
+func debug_draw_path(pt_locs):
 	if pt_locs.size() > 0:
 		get_parent().draw.draw_line_color(pt_locs, 6, Color(1,0,0,1))
 
@@ -92,17 +89,29 @@ func _process(delta):
 			#if path != null:
 			#	print(get_parent().get_name() + " found path: " + String(path))
 #			
-			if (path != null and path.size() > 0):
+		if (path != null and path.size() > 0 and not emitted):
+			emitted = true
+			
+			# stuff to do after getting path
 #			print("We have a path to follow")
-				for index in range(path.size()):
-					if (index > 0): #because #0 is our own location
-						target_array.push_back(path[index])
+			for index in range(path.size()):
+				if (index > 0): #because #0 is our own location
+					target_array.push_back(path[index])
 
+			#var pt_locs_rel = []
+			for pt in path:
+				#var pt_gl = get_global_transform().xform(pt)
+				pt_locs_rel.push_back(get_parent().get_global_transform().xform_inv(pt))
+				
+			# debug
+			for i in pt_locs_rel.size()-1:
+				var pt_loc = pt_locs_rel[i]
+				get_parent().debug_cube(pt_loc)
 
 		# debug
 		if (get_parent().draw != null):
 			#debug_draw_lines()
-			debug_draw_path()
+			debug_draw_path(pt_locs_rel)
 			
 		if (get_parent().draw_arc != null):
 			if angle > 0:
