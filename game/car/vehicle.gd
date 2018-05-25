@@ -170,6 +170,48 @@ func process_car_physics(delta, gas, braking, left, right):
 func _physics_process(delta):
 	#just to have something here
 	var basis = get_transform().basis.y
+	
+	#kill_debugs
+	
+func _integrate_forces(state):
+	if state.get_contact_count() > 0:
+		kill_debugs()
+		
+		var c_pos = state.get_contact_collider_position(0)
+		var l_pos = state.get_contact_local_position(0)
+		#var tr = Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), c_pos)
+		#print("Local pos of contact: " + str(l_pos) + " collider " + str(c_pos))
+		
+		var local
+		
+		# bug! sometimes there are weird "collisions" far away, ignore them
+		if l_pos != c_pos:
+			pass
+			#var g_pos = tr.xform(l_pos)
+			#print("Global pos of collision" + str(g_pos))
+		
+			#local = get_global_transform().xform_inv(g_pos)
+		else:
+			#pass
+			local = get_global_transform().xform_inv(l_pos)
+			#print("Local" + str(local))
+			
+			# the above somehow results in inverted location, so we do some transformations
+			var tr = Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), local)
+			var axis = Vector3(0,1,0)
+			var angle_fix = deg2rad(180)
+			local = tr.rotated(axis, angle_fix).origin
+
+		if local != null:
+			#print(str(local))
+			debug_cube(local)
+
+func kill_debugs():	
+	# kill old cubes
+	for c in get_children():
+		if c.get_name().find("Debug") != -1:
+	#if get_node("Debug") != null:
+			c.queue_free()
 
 func reset_car():
 	var reset_rot = Vector3(0, get_rotation_degrees().y, 0)
@@ -252,3 +294,14 @@ func setHeadlights(on):
 	else:
 		headlight_one.set_visible(false)
 		headlight_two.set_visible(false)
+		
+		
+# debug
+func debug_cube(loc):
+	var mesh = CubeMesh.new()
+	mesh.set_size(Vector3(0.5,0.5,0.5))
+	var node = MeshInstance.new()
+	node.set_mesh(mesh)
+	node.set_name("Debug")
+	add_child(node)
+	node.set_translation(loc)
