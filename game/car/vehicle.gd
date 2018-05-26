@@ -40,6 +40,18 @@ var headlight_two
 var taillights
 var tail_mat
 
+var sparks
+	
+func _ready():
+	sparks = load("res://objects/Particles_sparks.tscn")
+	
+	
+	#get lights
+	headlight_one = get_node("SpotLight")
+	headlight_two = get_node("SpotLight1")
+	taillights = get_node("taillights")
+
+
 func process_car_physics(delta, gas, braking, left, right):
 	speed = get_linear_velocity().length();
 	
@@ -171,14 +183,16 @@ func _physics_process(delta):
 	#just to have something here
 	var basis = get_transform().basis.y
 	
-	#kill_debugs
+	#kill_debugs()
 	
 func _integrate_forces(state):
 	if state.get_contact_count() > 0:
-		kill_debugs()
+		#kill_debugs()
 		
 		var c_pos = state.get_contact_collider_position(0)
 		var l_pos = state.get_contact_local_position(0)
+		
+		var normal = state.get_contact_local_normal(0)
 		#var tr = Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), c_pos)
 		#print("Local pos of contact: " + str(l_pos) + " collider " + str(c_pos))
 		
@@ -203,13 +217,32 @@ func _integrate_forces(state):
 			local = tr.rotated(axis, angle_fix).origin
 
 		if local != null:
+			var x_gr
+			if local.x < 0:
+				x_gr = -9.8
+				#normal = Vector3(-9.8, 0, -4.5)
+			else:
+				x_gr = 9.8
+				#normal = Vector3(9.8, 0, -4.5)
+			
+			var y_gr
+			if local.z > 0:
+				y_gr = -9.8
+			else:
+				y_gr = -4.5
+			
+			normal = Vector3(x_gr, 0, y_gr)
+			
+			
+			#var normal = Vector3(-9.8, 0,0)
 			#print(str(local))
-			debug_cube(local)
+			#debug_cube(local)
+			spawn_sparks(local, normal)
 
 func kill_debugs():	
 	# kill old cubes
 	for c in get_children():
-		if c.get_name().find("Debug") != -1:
+		if c.get_name().find("Spark") != -1:
 	#if get_node("Debug") != null:
 			c.queue_free()
 
@@ -280,12 +313,6 @@ func offset_dist(start, end, point):
 		var dist = 0
 		return [dist, Vector3(0, start.y, 0)]
 	
-
-func _ready():
-	#get lights
-	headlight_one = get_node("SpotLight")
-	headlight_two = get_node("SpotLight1")
-	taillights = get_node("taillights")
 	
 func setHeadlights(on):
 	if (on):
@@ -305,3 +332,13 @@ func debug_cube(loc):
 	node.set_name("Debug")
 	add_child(node)
 	node.set_translation(loc)
+	
+func spawn_sparks(loc, normal):
+	var spark = sparks.instance()
+	
+	add_child(spark)
+	spark.set_name("Spark")
+	spark.set_translation(loc)
+	spark.set_emitting(true)
+	#print("Normal " + str(normal))
+	spark.get_process_material().set_gravity(normal)
