@@ -67,16 +67,20 @@ func make_map():
 		for index in range (positions_2d.size()):
 			for ind in range(positions_2d[index].size()):
 				var vec = positions_2d[index][ind]
+				#print("Vec: " + str(vec))
 				# abort early if we're out of borders
-				if vec.x > 1000-dot_size or vec.y > 1000-dot_size: 
+				if vec.x > 1000-dot_size or vec.y > 1000-dot_size or vec.x <0 or vec.y < 0: 
 					print("Out of borders")
+					#return
 				else:
 					for i in range (vec.x, vec.x+dot_size):
 						for j in range (vec.y, vec.y+dot_size):
-							# necessary in 3.0
-							image.lock()
-							image.set_pixel(i,j, road)
-					
+							# paranoia
+							if i > 0 and i < 1000 and j > 0 and j < 1000:
+								# necessary in 3.0
+								image.lock()
+								image.set_pixel(i,j, road)
+
 					draw_lines(ind, index)
 			
 			# debugging purposes
@@ -122,9 +126,11 @@ func draw_lines(ind, index):
 		for index in range (line.size()):
 			for i in range(line[index].x, line[index].x+dot_size):
 				for j in range(line[index].y, line[index].y+dot_size):
-					# necessary in 3.0
-					image.lock()
-					image.set_pixel(i,j, road)
+					# paranoia
+					if i > 0 and i < 1000 and j > 0 and j < 1000:
+						# necessary in 3.0
+						image.lock()
+						image.set_pixel(i,j, road)
 
 #for debugging purposes, different colors for straight vs. curves
 func draw_lines_differently(index):
@@ -141,9 +147,11 @@ func draw_lines_differently(index):
 				for index in range (line.size()):
 					for i in range(line[index].x, line[index].x+dot_size):
 						for j in range(line[index].y, line[index].y+dot_size):
-							# necessary in 3.0
-							image.lock()
-							image.set_pixel(i,j, road)	
+							# paranoia
+							if i > 0 and i < 1000 and j > 0 and j < 1000:
+								# necessary in 3.0
+								image.lock()
+								image.set_pixel(i,j, road)	
 					
 	else:		
 		for ind in range(positions_2d[index].size()):
