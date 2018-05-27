@@ -1,0 +1,104 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://default_env.tres" type="Environment" id=1]
+[ext_resource path="res://scripts/daynight.gd" type="Script" id=2]
+[ext_resource path="res://car/car_base.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scripts/ground_gen.gd" type="Script" id=4]
+[ext_resource path="res://assets/ground_material.tres" type="Material" id=5]
+
+[sub_resource type="PlaneShape" id=1]
+
+plane = Plane( 0, 1, 0, 0 )
+
+[node name="Navigation" type="Navigation" index="0"]
+
+up_vector = Vector3( 0, 1, 0 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="0"]
+
+environment = ExtResource( 1 )
+
+[node name="World" type="Spatial" parent="." index="1"]
+
+script = ExtResource( 2 )
+SPEED = 10.0
+start_time = 8.0
+day_night = true
+weather = 0
+
+[node name="Camera" type="Camera" parent="." index="2"]
+
+transform = Transform( 0.999422, 0, 0.0339803, 0, 1, 0, -0.0339803, 0, 0.999422, 0.3423, 0.509534, -5.59995 )
+keep_aspect = 0
+cull_mask = 1048575
+environment = null
+h_offset = 0.0
+v_offset = 0.0
+doppler_tracking = 0
+projection = 0
+current = true
+fov = 60.0
+size = 1.0
+near = 0.1
+far = 100.0
+
+[node name="DirectionalLight" type="DirectionalLight" parent="." index="3"]
+
+transform = Transform( 1, 0, 0, 0, -0.766045, 0.642788, 0, -0.642788, -0.766045, 0, 18.629, 0 )
+layers = 1
+light_color = Color( 1, 1, 1, 1 )
+light_energy = 1.0
+light_indirect_energy = 1.0
+light_negative = false
+light_specular = 0.5
+light_bake_mode = 1
+light_cull_mask = -1
+shadow_enabled = true
+shadow_color = Color( 0, 0, 0, 1 )
+shadow_bias = 0.0
+shadow_contact = 0.0
+shadow_reverse_cull_face = true
+editor_only = false
+directional_shadow_mode = 2
+directional_shadow_split_1 = 0.1
+directional_shadow_split_2 = 0.2
+directional_shadow_split_3 = 0.5
+directional_shadow_blend_splits = true
+directional_shadow_normal_bias = 0.0
+directional_shadow_bias_split_scale = 0.0
+directional_shadow_depth_range = 0
+directional_shadow_max_distance = 100.0
+_sections_unfolded = [ "Directional Shadow", "Shadow" ]
+
+[node name="car" type="Spatial" parent="." index="4" groups=[
+"player",
+] instance=ExtResource( 3 )]
+
+_import_path = NodePath(".")
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.2608, 0, 0 )
+__meta__ = {
+"__editor_plugin_screen__": "3D"
+}
+
+[node name="Ground" type="Spatial" parent="." index="5"]
+
+script = ExtResource( 4 )
+terrainmaterial = ExtResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="Ground" index="0"]
+
+input_ray_pickable = true
+input_capture_on_drag = false
+collision_layer = 1
+collision_mask = 1
+friction = 1.0
+bounce = 0.0
+constant_linear_velocity = Vector3( 0, 0, 0 )
+constant_angular_velocity = Vector3( 0, 0, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Ground/StaticBody" index="0"]
+
+shape = SubResource( 1 )
+disabled = false
+
+
