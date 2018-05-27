@@ -18,11 +18,12 @@ func _ready():
 	for i in range(polys.size()-1):
 		var pts = get_common_points(i)
 		
-		for p in pts:
-			commons.append(p[0])
+		# storing per poly lets us draw lines around
+		commons.append(pts)
+
 		
 	#print("Commons " + str(commons))
-	clean_up_commons()
+	#clean_up_commons()
 
 	
 	poly_helper(commons)
@@ -166,6 +167,7 @@ func get_common_points(ind):
 	#print("Getting common points for " + str(ind))
 	var pts = []
 	var temp = []
+	
 	for p in polys[ind]:
 		#print("Polygon range starts at : " + str(ind+1))
 		# for each of the other polygons
@@ -173,7 +175,7 @@ func get_common_points(ind):
 			for pt in polys[i]:
 				if pt.distance_to(p) < 5 and not temp.has(p): # avoid duplicates
 					#print("Found a point close to " + str(p) + " at : " + str(pt))
-					pts.append([p, pt])
+					pts.append([p, pt, ind, i])
 					temp.append(p)
 		
 		# check earlier polys, just in case			
@@ -182,32 +184,43 @@ func get_common_points(ind):
 				for pt in polys[i]:
 					if pt.distance_to(p) < 5 and not temp.has(p): # avoid duplicates
 						#print("Found a point close to " + str(p) + " at : " + str(pt))
-						pts.append([p, pt])
+						pts.append([p, pt, ind, i])
 						temp.append(p)
 	#print(str(pts))		
 	
 	return pts
 	
+# currently cleans way too much
 func clean_up_commons():
 	var closest = []
-	for i in range(commons.size()-1):
-		find_closest(i, closest)
+	for p in commons:
+		#print("p: " + str(p))
+		for i in range(p.size()-1):
+			find_closest(commons.find(p), i, closest)
+	
+	#print("Closest " + str(closest))
+	
 	
 	for p in closest:
-		# paranoia = sometimes it doesn't find 
-		var fnd = commons.find(p)
-		if fnd != -1:
-			commons.remove(fnd)
+		for c in commons:
+			if p[2] or p[3] == commons.find(c):
+			#print("c:" + str(c) + " Looking for " + str(p))
+			
+				# paranoia = sometimes it doesn't find 
+				var fnd = c.find(p)
+				if fnd != -1:
+					c.remove(fnd)
 	
 	#return closest
 
 		
-func find_closest(i, closest):
-	for j in range(i+1, commons.size()-1):
-		var p = commons[i]
-		var p2 = commons[j]
-		if p.distance_to(p2) < 5:
-			closest.append(p2)
+func find_closest(ind, i, closest):
+	for a in range(i+1, commons.size()-1):
+		for j in range(commons[a].size()-1):
+			var p = commons[ind][i][0]
+			var p2 = commons[a][j][0]
+			if p.distance_to(p2) < 5:
+				closest.append(commons[a][j])
 	
 	
 	
