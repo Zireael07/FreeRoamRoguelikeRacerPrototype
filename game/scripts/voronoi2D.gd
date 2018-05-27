@@ -5,6 +5,7 @@ extends Node2D
 var image
 var data = []
 var polys = []
+var commons = []
 
 func _ready():
 	randomize()
@@ -13,6 +14,19 @@ func _ready():
 	data_to_polygon()
 	polygon_children()
 
+	# get common points
+	for i in range(polys.size()-1):
+		var pts = get_common_points(i)
+		
+		for p in pts:
+			commons.append(p[0])
+		
+	#print("Commons " + str(commons))
+	clean_up_commons()
+
+	
+	poly_helper(commons)
+	#print(str(commons))
 
 #func set_textur():
 #	get_node("Sprite").set_texture(load("res://VoronoiMap.png"))
@@ -147,7 +161,62 @@ func reduce_poly(poly, threshold):
 	#print("New poly: " + str(new_poly.size()))
 		
 	return new_poly	
-				
+
+func get_common_points(ind):
+	#print("Getting common points for " + str(ind))
+	var pts = []
+	var temp = []
+	for p in polys[ind]:
+		#print("Polygon range starts at : " + str(ind+1))
+		# for each of the other polygons
+		for i in range(ind+1, polys.size()-1):
+			for pt in polys[i]:
+				if pt.distance_to(p) < 5 and not temp.has(p): # avoid duplicates
+					#print("Found a point close to " + str(p) + " at : " + str(pt))
+					pts.append([p, pt])
+					temp.append(p)
+		
+		# check earlier polys, just in case			
+		if ind >= 2:
+			for i in range(0, ind):
+				for pt in polys[i]:
+					if pt.distance_to(p) < 5 and not temp.has(p): # avoid duplicates
+						#print("Found a point close to " + str(p) + " at : " + str(pt))
+						pts.append([p, pt])
+						temp.append(p)
+	#print(str(pts))		
+	
+	return pts
+	
+func clean_up_commons():
+	var closest = []
+	for i in range(commons.size()-1):
+		find_closest(i, closest)
+	
+	for p in closest:
+		# paranoia = sometimes it doesn't find 
+		var fnd = commons.find(p)
+		if fnd != -1:
+			commons.remove(fnd)
+	
+	#return closest
+
+		
+func find_closest(i, closest):
+	for j in range(i+1, commons.size()-1):
+		var p = commons[i]
+		var p2 = commons[j]
+		if p.distance_to(p2) < 5:
+			closest.append(p2)
+	
+	
+	
+func poly_helper(pts):
+	var script = load("res://2d tests/voronoi_2d_helper.gd")
+	var node = Node2D.new()
+	node.set_script(script)
+	add_child(node)
+	node.pts = pts
 		
 func polygon_children():
 	var script = load("res://2d tests/2d_polygon_corners.gd")
@@ -157,4 +226,5 @@ func polygon_children():
 		node.set_polygon(p)
 		node.set_color(color)
 		node.set_script(script)
-		add_child(node)				
+		add_child(node)			
+			
