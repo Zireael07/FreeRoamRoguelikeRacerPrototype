@@ -21,6 +21,8 @@ var sectionlength = 2
 var roadheight = 0.01
 export(float) var road_slope = 0.0
 
+var support_positions = PoolVector3Array()
+
 #for matching
 var start_point
 export(Vector3) var relative_end
@@ -31,9 +33,9 @@ var global_vertices
 var nav_vertices_alt
 var global_vertices_alt
 # margin
-var margin = 1
-var left_nav_positions = PoolVector3Array()
-var right_nav_positions = PoolVector3Array()
+#var margin = 1
+#var left_nav_positions = PoolVector3Array()
+#var right_nav_positions = PoolVector3Array()
 
 #for minimap
 var mid_point
@@ -94,18 +96,30 @@ func _ready():
 	#print("Positions: " + str(positions.size()))
 	
 	var quads = []
+	var support_quads = []
 	
 	#overdraw fix
 	if (get_parent().get_name().find("Spatial") != -1):
 		# find out slope
 		var slope_diff = road_slope/length
 		#print("Slope diff" + str(slope_diff))
+		
+		#if slope_diff > 0:
+			
+		
 		for index in range(length):
 			#print("Index " + str(index))
 			#clear the array
 			temp_positions.resize(0)
+			support_positions.resize(0)
+			
+			
 			var start = Vector3(0,roadheight+(index*slope_diff),index*sectionlength)
 			initSection(start, slope_diff)
+	
+			if slope_diff > 0:
+				makeSupport(start, slope_diff)
+				#support_quads.append(getQuadsSimple(support_positions))
 	
 			#mesh
 			var num = temp_positions.size()
@@ -126,14 +140,41 @@ func _ready():
 			right_positions.push_back(temp_positions[4])
 			right_positions.push_back(temp_positions[5])
 			# navmesh margin
-			left_nav_positions.push_back(temp_positions[6])
-			left_nav_positions.push_back(temp_positions[7])
-			right_nav_positions.push_back(temp_positions[8])
-			right_nav_positions.push_back(temp_positions[9])
+			#left_nav_positions.push_back(temp_positions[6])
+			#left_nav_positions.push_back(temp_positions[7])
+			#right_nav_positions.push_back(temp_positions[8])
+			#right_nav_positions.push_back(temp_positions[9])
+			
+			
+			
 		
 		if Engine.is_editor_hint() or not Engine.is_editor_hint():
 			#setupNavi(self)
 			optimizedmeshCreate(quads, material)
+			
+			if support_positions.size() > 0:
+				#optimizedmeshCreate(support_quads, building_tex1)
+				var array = support_positions
+				var surface = SurfaceTool.new()
+				surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+
+				#Create a node building that will hold the mesh
+				var node = MeshInstance.new()
+				node.set_name("support")
+				add_child(node)
+
+				# cement is one sided for now
+				addQuad(array[0], array[1], array[2], array[3], building_tex1, surface, false)
+				addQuad(array[3], array[2], array[1], array[0], building_tex1, surface, false)
+				
+				# other side
+				addQuad(array[4], array[5], array[6], array[7], building_tex1, surface, false)
+				addQuad(array[7], array[6], array[5], array[4], building_tex1, surface, false)
+				
+
+				#Set the created mesh to the node
+				node.set_mesh(surface.commit())	
+			
 		if not Engine.is_editor_hint():
 			# disable the emissiveness
 			reset_lite()
@@ -202,10 +243,28 @@ func initSection(start, slope):
 	temp_positions.push_back(Vector3(start.x+roadwidth, start_height, start.z))
 	temp_positions.push_back(Vector3(start.x+roadwidth, end_height, start.z+sectionlength))
 	# navmesh (#6-9)
-	temp_positions.push_back(Vector3(start.x-roadwidth+margin, start_height, start.z))
-	temp_positions.push_back(Vector3(start.x-roadwidth+margin, end_height, start.z+sectionlength))
-	temp_positions.push_back(Vector3(start.x+roadwidth-margin, start_height, start.z))
-	temp_positions.push_back(Vector3(start.x+roadwidth-margin, end_height, start.z+sectionlength))
+	#temp_positions.push_back(Vector3(start.x-roadwidth+margin, start_height, start.z))
+	#temp_positions.push_back(Vector3(start.x-roadwidth+margin, end_height, start.z+sectionlength))
+	#temp_positions.push_back(Vector3(start.x+roadwidth-margin, start_height, start.z))
+	#temp_positions.push_back(Vector3(start.x+roadwidth-margin, end_height, start.z+sectionlength))
+
+func makeSupport(start, slope):
+	var start_height = start.y
+	var end_height = start.y + slope
+	
+	# one side
+	support_positions.push_back(Vector3(start.x-roadwidth, start_height, start.z)) #3
+	support_positions.push_back(Vector3(start.x-roadwidth, end_height, start.z+sectionlength)) #2
+	support_positions.push_back(Vector3(start.x-roadwidth, 0, start.z+sectionlength)) #1
+	support_positions.push_back(Vector3(start.x-roadwidth, 0, start.z)) #0
+	
+	# other side
+	support_positions.push_back(Vector3(start.x+roadwidth, 0, start.z))
+	support_positions.push_back(Vector3(start.x+roadwidth, 0, start.z+sectionlength))
+	support_positions.push_back(Vector3(start.x+roadwidth, end_height, start.z+sectionlength))
+	support_positions.push_back(Vector3(start.x+roadwidth, start_height, start.z))
+	
+
 
 func get_global_positions():
 	global_positions = []
@@ -219,6 +278,11 @@ func get_global_positions():
 
 func draw_debug_point(loc, color):
 	addTestColor(m, color, null, loc.x, 0.01, loc.z, 0.05,0.05,0.05)
+
+func getQuadsSimple(array):
+	var quad_one = [array[0], array[1], array[2], array[3], false]
+	
+	return quad_one
 
 func getQuads(array):
 	var quad_one = [array[0], array[1], array[2], array[3], false]
@@ -401,27 +465,27 @@ func setupNavi(navigation_node):
 	nav_vertices_alt = get_navi_vertices_alt()
 	navMesh(navigation_node, nav_vertices_alt, false)
 
-func get_navi_vertices():
-	var nav_vertices = PoolVector3Array()
-	
-	var pos_size = positions.size()-1
-	nav_vertices.push_back(right_nav_positions[0])
-	nav_vertices.push_back(positions[0])
-	nav_vertices.push_back(positions[pos_size])
-	nav_vertices.push_back(right_nav_positions[pos_size])
-	
-	return nav_vertices
-
-func get_navi_vertices_alt():
-	var nav_vertices = PoolVector3Array()
-	
-	var pos_size = positions.size()-1
-	nav_vertices.push_back(positions[0])
-	nav_vertices.push_back(left_nav_positions[0])
-	nav_vertices.push_back(left_nav_positions[pos_size])
-	nav_vertices.push_back(positions[pos_size])
-	
-	return nav_vertices
+#func get_navi_vertices():
+#	var nav_vertices = PoolVector3Array()
+#
+#	var pos_size = positions.size()-1
+#	nav_vertices.push_back(right_nav_positions[0])
+#	nav_vertices.push_back(positions[0])
+#	nav_vertices.push_back(positions[pos_size])
+#	nav_vertices.push_back(right_nav_positions[pos_size])
+#
+#	return nav_vertices
+#
+#func get_navi_vertices_alt():
+#	var nav_vertices = PoolVector3Array()
+#
+#	var pos_size = positions.size()-1
+#	nav_vertices.push_back(positions[0])
+#	nav_vertices.push_back(left_nav_positions[0])
+#	nav_vertices.push_back(left_nav_positions[pos_size])
+#	nav_vertices.push_back(positions[pos_size])
+#
+#	return nav_vertices
 
 func navMesh(navigation_node, nav_vertices, left):
 	
