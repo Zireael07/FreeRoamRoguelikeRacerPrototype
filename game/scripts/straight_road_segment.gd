@@ -240,6 +240,8 @@ func optimizedmeshCreate(quads, material):
 	
 	surface.generate_normals()
 	
+	surface.index()
+	
 	#Set the created mesh to the node
 	node.set_mesh(surface.commit())	
 	
