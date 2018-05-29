@@ -21,6 +21,7 @@ var middle_right #= Vector3(-2,0,0)
 
 var middle_center
 var middle_bottom
+var middle_top
 
 var pointtwo_right #= Vector3(6,0,0)
 var pointtwo_left #= Vector3(6,0,-4)
@@ -68,6 +69,8 @@ func _ready():
 	middle_center = Vector3(point_one.x, 0, point_two.z + road_width)
 	middle_bottom = Vector3(point_one.x, 0, point_two.z - road_width)
 	
+	middle_top = Vector3(point_one.x+road_width, 0, point_two.z)
+	
 	
 	array.push_back(pointone_left) #0
 	array.push_back(point_one)
@@ -77,14 +80,14 @@ func _ready():
 	array.push_back(middle_right) #2
 	
 	#second part
-	array.push_back(pointtwo_left)
-	#array.push_back(pointtwo)
+	array.push_back(pointtwo_left) #6
+	array.push_back(point_two)
 	array.push_back(pointtwo_right)
 	array.push_back(middle_bottom_left)
-	#array.push_back(middle_bottom)
+	array.push_back(middle_top)
 	
 	# third part (other end of main road)
-	array.push_back(point_three_left) #9
+	array.push_back(point_three_left) #11
 	array.push_back(point_three)
 	array.push_back(middle_bottom)
 	array.push_back(point_three_right)
@@ -92,6 +95,8 @@ func _ready():
 	
 	
 	meshCreate(material, array)
+	
+#	debug_cube(middle_top)
 	
 #	positions_left.push_back(pointone_left)
 #	positions_left.push_back(middle_left)
@@ -124,17 +129,17 @@ func meshCreate(material, array):
 	addQuad(array[1], array[4], array[5], array[2], material, surface, true)
 	
 	# other end
-	addQuad(array[9], array[10], array[11], array[8], material, surface, false)
-	addQuad(array[10], array[12], array[13], array[11], material, surface, true)
+	addQuad(array[11], array[12], array[13], array[9], material, surface, false)
+	addQuad(array[12], array[14], array[15], array[13], material, surface, true)
 	
 	
 	# second road
-	addQuad(array[6], array[7], array[3], array[8], material, surface, true)
-	
+	addQuad(array[6], array[7], array[10], array[9], material, surface, false)
+	addQuad(array[7], array[8], array[3], array[10], material, surface, true)
 	
 	
 	# center
-	addQuad(array[3], array[5], array[13], array[8], material, surface, true)
+	addQuad(array[3], array[5], array[15], array[9], material, surface, true)
 	
 	surface.generate_normals()
 	surface.index()
@@ -144,3 +149,13 @@ func meshCreate(material, array):
 	
 	#Turn off shadows
 	node.set_cast_shadows_setting(0)
+	
+# debug
+func debug_cube(loc):
+	var mesh = CubeMesh.new()
+	mesh.set_size(Vector3(0.5,0.5,0.5))
+	var node = MeshInstance.new()
+	node.set_mesh(mesh)
+	node.set_name("Debug")
+	add_child(node)
+	node.set_translation(loc)
