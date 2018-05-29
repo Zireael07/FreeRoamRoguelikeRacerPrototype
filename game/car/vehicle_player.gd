@@ -68,7 +68,8 @@ func _ready():
 	# year-month-day
 	var date_east = date_format_east % [date[2]-2018, date[1], date[0]]
 	
-	panel.set_text("Welcome to 大都市" + "\n" + "The date is: " + date_east + " (" + date_west+")")
+	panel.set_text("Welcome to 大都市" + "\n" + "The date is: " + date_east + " (" + date_west+")" + "\n" + 
+	"Enjoy your new car! Remember, it's electric so you don't have to worry about gearing, but you have to watch your battery level!")
 	
 	
 	var pause = preload("res://hud/pause_panel.tscn")
