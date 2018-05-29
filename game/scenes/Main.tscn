@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://roads/segments_stored.gd" type="Script" id=1]
 [ext_resource path="res://roads/segment_instancer.tscn" type="PackedScene" id=2]
@@ -16,6 +16,7 @@
 [ext_resource path="res://objects/recharge_station.tscn" type="PackedScene" id=14]
 [ext_resource path="res://objects/beech_tree.tscn" type="PackedScene" id=15]
 [ext_resource path="res://objects/cherry_tree.tscn" type="PackedScene" id=16]
+[ext_resource path="res://roads/intersection.tscn" type="PackedScene" id=17]
 
 [sub_resource type="NavigationMesh" id=1]
 
@@ -232,5 +233,29 @@ transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -21.8238, 0, 40.8254 )
 [node name="MeshInstance4" parent="." index="17" instance=ExtResource( 16 )]
 
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -21.8238, 0, 57.3724 )
+
+[node name="Spatial2" type="Spatial" parent="." index="18"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.72837, 0, -7.2239 )
+
+[node name="Spatial" parent="Spatial2" index="0" instance=ExtResource( 17 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.493, 0, -24.2483 )
+
+[node name="Position3D" parent="Spatial2" index="1" instance=ExtResource( 3 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.5, 0, -134 )
+_sections_unfolded = [ "Transform" ]
+road_slope = 0.0
+trees = null
+
+[node name="Position3D2" parent="Spatial2" index="2" instance=ExtResource( 3 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.5, 0, -20 )
+_sections_unfolded = [ "Transform" ]
+length = 20
+road_slope = 0.0
+relative_end = Vector3( 0, 0, 40 )
+trees = null
 
 
