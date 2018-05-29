@@ -54,6 +54,11 @@ var building
 var buildDistance = 10
 #var numBuildings = 6
 var buildingSpacing = 15
+var treeSpacing = 10
+# how far is the first building offset from road start (prevents overlapping with other roads/intersections)
+var buildOffset = 6
+
+# materials
 var building_tex1
 var building_tex2
 var sign_tex1
@@ -63,7 +68,7 @@ var win_mat
 var win_mat2
 var cables
 var cherry_tree
-var treeSpacing = 10
+
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -276,8 +281,8 @@ func get_global_positions():
 	return global_positions
 
 
-func draw_debug_point(loc, color):
-	addTestColor(m, color, null, loc.x, 0.01, loc.z, 0.05,0.05,0.05)
+#func draw_debug_point(loc, color):
+#	addTestColor(m, color, null, loc.x, 0.01, loc.z, 0.05,0.05,0.05)
 
 func getQuadsSimple(array):
 	var quad_one = [array[0], array[1], array[2], array[3], false]
@@ -401,22 +406,22 @@ func placeBuilding(index):
 	var build = setupBuilding(index)
 	
 	#left side of the road
-	var loc = Vector3(roadwidth+buildDistance, 0, index)
+	var loc = Vector3(roadwidth+buildDistance, 0, index+buildOffset)
 	if (index > 0):
-		loc = Vector3(roadwidth+buildDistance, 0, index*15)
+		loc = Vector3(roadwidth+buildDistance, 0, buildOffset + index*15)
 	else:
-		loc = Vector3(roadwidth+buildDistance, 0, index)
+		loc = Vector3(roadwidth+buildDistance, 0, index+buildOffset)
 	
 	build.set_translation(loc)
 	build.set_rotation_degrees(Vector3(0, 180, 0))
 	
 	build = setupBuilding(index)
 	#right side of the road
-	loc = Vector3(-(roadwidth+buildDistance), 0, index)
+	loc = Vector3(-(roadwidth+buildDistance), 0, index+buildOffset)
 	if (index > 0):
-		loc = Vector3(-(roadwidth+buildDistance), 0, index*15)
+		loc = Vector3(-(roadwidth+buildDistance), 0, buildOffset + index*15)
 	else:
-		loc = Vector3(-(roadwidth+buildDistance), 0, index)
+		loc = Vector3(-(roadwidth+buildDistance), 0, index+buildOffset)
 	
 	build.set_translation(loc)
 	
