@@ -12,6 +12,7 @@ func _ready():
 
 func _on_new_game_pressed():
 	#print("Pressed button")
-	get_tree().change_scene("res://scenes/Main.tscn")
+	#get_tree().change_scene("res://scenes/Main.tscn")
+	get_tree().change_scene("res://hud/loading_screen.tscn")
 	
 	pass
