@@ -86,15 +86,20 @@ func make_map():
 			# debugging purposes
 			#draw_lines_differently(index)
 
-
-	image.save_png("res://map_edited.png")
 	
 	var exec_time = OS.get_ticks_msec() - start_time
 	print("Minimap generation execution time: " + String(exec_time))
 	
-	textur = load("res://map_edited.png") #set_data(image)
+	##textur = load("res://map_edited.png") #set_data(image)
+	
+	textur = ImageTexture.new()
+	print("Creating image tex from data")
+	textur.create_from_image(image)
 	
 	set_texture(textur)
+	
+	# save for later
+	image.save_png("res://map_edited.png")
 
 	#register ourselves with the parent
 	get_parent().get_parent().get_parent().minimap_bg = self
