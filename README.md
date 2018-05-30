@@ -9,8 +9,10 @@ Mostly an exploration of procedural generation of roads/city.
 Features
 
 * main menu
+* loading screen
 * procedural generation of road segments (straight/curved)
 * procedural placement of said segments
+* procedural T intersections
 * procedural buildings
 * procedural car
 * pause menu
