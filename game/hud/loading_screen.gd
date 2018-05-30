@@ -6,6 +6,8 @@ var wait_frames
 var time_max = 100 # msec
 var current_scene
 
+var loaded = false
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
@@ -51,20 +53,26 @@ func _process(time):
 		# poll your loader
 		var err = loader.poll()
 
-		if err == ERR_FILE_EOF: # load finished
-			var resource = loader.get_resource()
-			loader = null
-			
-			current_scene.queue_free() # get rid of the old scene
-			print("Finished loading scene")
-			set_new_scene(resource)
+		if err == ERR_FILE_EOF:
+			finished_loading()
 			break
 		elif err == OK:
 			update_progress()
+			
+		
 		else: # error during loading
 			show_error()
 			loader = null
 			break
+
+func finished_loading():
+	var resource = loader.get_resource()
+	loader = null
+				
+	current_scene.queue_free() # get rid of the old scene
+	print("Switching to new scene")
+	set_new_scene(resource)
+
 
 func update_progress():
 	var progress = float(loader.get_stage()) / loader.get_stage_count()
@@ -82,3 +90,7 @@ func update_progress():
 func set_new_scene(scene_resource):
 	current_scene = scene_resource.instance()
 	get_node("/root").add_child(current_scene)
+	
+func show_error():
+	print("Oops! An error happened")
+	
