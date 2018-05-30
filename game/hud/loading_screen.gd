@@ -6,7 +6,10 @@ var wait_frames
 var time_max = 100 # msec
 var current_scene
 
+var resource
+
 var loaded = false
+var done = false
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -49,7 +52,20 @@ func _process(time):
 			set_process(false)
 			return
 		else:
-			print("Test")
+			if not done: # we need this to prevent looping for some reason
+				#current_scene.queue_free() # get rid of the old scene
+				print("Switching to new scene")
+				set_new_scene(resource)
+				#print("[After set] New root: " + str(get_node("/root").get_name()))
+				print("Done loading new scene")
+				
+				final_progress()
+				#wait_frames = 30
+				
+				done = true
+			else: # our job is done, finally!
+				current_scene.queue_free() # get rid of the old scene
+				print("Free current scene")
 		
 	else:
 		process_loader()
@@ -77,16 +93,14 @@ func process_loader():
 
 
 func finished_loading():
-	var resource = loader.get_resource()
+	resource = loader.get_resource()
 	
 	loader = null
 	
+#	final_progress()
+#	wait_frames = 1
+	
 	loaded = true
-				
-	current_scene.queue_free() # get rid of the old scene
-	print("Switching to new scene")
-	set_new_scene(resource)
-	#print("[After set] New root: " + str(get_node("/root").get_name()))
 
 func update_progress():
 	var progress = float(loader.get_stage()) / loader.get_stage_count()
@@ -103,8 +117,8 @@ func update_progress():
 	#get_node("animation").seek(progress * len, true)
 
 func set_new_scene(scene_resource):
-	current_scene = scene_resource.instance()
-	get_node("/root").add_child(current_scene)
+	var new_scene = scene_resource.instance()
+	get_node("/root").add_child(new_scene)
 	#print("[Set new scene] New root: " + str(get_node("/root").get_name()))
 	
 func show_error():
