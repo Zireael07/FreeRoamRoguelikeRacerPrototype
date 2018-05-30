@@ -97,6 +97,9 @@ func random_date():
 
 func on_load_ended():
 	print("Loaded all pertinent stuff")
+	# enable our cam
+	var chase_cam = get_node("cambase/Camera")
+	chase_cam.make_current()
 
 func _physics_process(delta):
 	# were we peeking last tick?
