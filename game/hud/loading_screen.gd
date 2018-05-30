@@ -38,26 +38,36 @@ func goto_scene(path): # game requests to switch to this scene
 	wait_frames = 1
 
 func _process(time):
-	if loader == null:
-		# no need to process anymore
-		set_process(false)
-		return
-
 	if wait_frames > 0: # wait for frames to let the "loading" animation to show up
 		wait_frames -= 1
 		return
+	
+	
+	if loader == null:
+		if not loaded: # something went wrong
+			# no need to process anymore
+			set_process(false)
+			return
+		else:
+			print("Test")
+		
+	else:
+		process_loader()
 
+func process_loader():
 	var t = OS.get_ticks_msec()
 	while OS.get_ticks_msec() < t + time_max: # use "time_max" to control how much time we block this thread
 
 		# poll your loader
 		var err = loader.poll()
 
-		if err == ERR_FILE_EOF:
+		if err == ERR_FILE_EOF and not loaded:
 			finished_loading()
 			break
 		elif err == OK:
 			update_progress()
+			# ensure we can see all progress
+			#wait_frames = 1
 			
 		
 		else: # error during loading
@@ -65,17 +75,22 @@ func _process(time):
 			loader = null
 			break
 
+
 func finished_loading():
 	var resource = loader.get_resource()
+	
 	loader = null
+	
+	loaded = true
 				
 	current_scene.queue_free() # get rid of the old scene
 	print("Switching to new scene")
 	set_new_scene(resource)
-
+	#print("[After set] New root: " + str(get_node("/root").get_name()))
 
 func update_progress():
 	var progress = float(loader.get_stage()) / loader.get_stage_count()
+	#print("Progress" + str(progress))
 	var progress_percent = progress * 100
 	#print("Progress is " + String(progress_percent))
 	# update your progress bar?
@@ -90,7 +105,10 @@ func update_progress():
 func set_new_scene(scene_resource):
 	current_scene = scene_resource.instance()
 	get_node("/root").add_child(current_scene)
+	#print("[Set new scene] New root: " + str(get_node("/root").get_name()))
 	
 func show_error():
 	print("Oops! An error happened")
-	
+
+func final_progress():
+	get_node("ProgressBar").set_value(99)	
