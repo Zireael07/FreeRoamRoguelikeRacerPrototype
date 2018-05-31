@@ -1,0 +1,5 @@
+Created for Ludum Dare 33 by MrNyarlathotep
+http://ludumdare.com/compo/author/mrnyarlathotep/
+
+In the spirit of GameJams, no attribution is required and you can remix and reuse this for any purpose including commercial.
+Sell this as an asset however, either individually or as part of an asset pack, you must specify that this asset is free and provide a link to the source you obtained it.
