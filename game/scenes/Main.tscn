@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://roads/segments_stored.gd" type="Script" id=1]
 [ext_resource path="res://roads/segment_instancer.tscn" type="PackedScene" id=2]
@@ -17,6 +17,7 @@
 [ext_resource path="res://objects/beech_tree.tscn" type="PackedScene" id=15]
 [ext_resource path="res://objects/cherry_tree.tscn" type="PackedScene" id=16]
 [ext_resource path="res://roads/intersection.tscn" type="PackedScene" id=17]
+[ext_resource path="res://objects/garage_city.tscn" type="PackedScene" id=18]
 
 [sub_resource type="NavigationMesh" id=1]
 
@@ -236,6 +237,7 @@ transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -21.8238, 0, 57.3724 )
 
 [node name="Spatial2" type="Spatial" parent="." index="18"]
 
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.72837, 0, -7.2239 )
 
 [node name="Spatial" parent="Spatial2" index="0" instance=ExtResource( 17 )]
@@ -257,5 +259,9 @@ length = 20
 road_slope = 0.0
 relative_end = Vector3( 0, 0, 40 )
 trees = null
+
+[node name="garage2" parent="." index="19" instance=ExtResource( 18 )]
+
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 41.3739, 0, -31.4886 )
 
 
