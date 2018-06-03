@@ -29,9 +29,16 @@ func _ready():
 	positions.append(loc_src_ex)
 	
 	
-	var data = calculate(loc_src_ex, loc_dest_ex, src_ex)
+	var data = calculate_initial_turn(loc_src_ex, loc_dest_ex, src_ex)
 	
-	road_test(data, loc_src_ex)
+	initial_road_test(data, loc_src_ex)
+	
+	set_straight(data[3], data[2])
+	
+	data = calculate_last_turn(loc_src_ex, loc_dest_ex, dest_ex)
+	
+	last_turn_test(data)
+
 	
 	#debug drawing
 	draw.draw_line(positions)
@@ -40,7 +47,7 @@ func _ready():
 	# Initialization here
 	#pass
 	
-func calculate(loc_src_ex, loc_dest_ex, src_ex):
+func calculate_initial_turn(loc_src_ex, loc_dest_ex, src_ex):
 
 	#positions.append(loc_dest_ex)
 	
@@ -79,20 +86,68 @@ func calculate(loc_src_ex, loc_dest_ex, src_ex):
 	var points_arc = get_circle_arc(inters, radius, angles[0], angles[1], true)
 	
 	# back to 3D
-	for i in range(points_arc.size()):
-		positions.append(Vector3(points_arc[i].x, 0.01, points_arc[i].y))
+	#for i in range(points_arc.size()):
+	#	positions.append(Vector3(points_arc[i].x, 0.01, points_arc[i].y))
 	
-	positions.append(loc_dest_ex)	
+	#positions.append(loc_dest_ex)	
 
-	return [radius, angles[0], angles[1]]
+	var fin = Vector3(points_arc[points_arc.size()-1].x, 0.01, points_arc[points_arc.size()-1].y)
+
+	return [radius, angles[0], angles[1], fin] #Vector3(end_point.x, 0, end_point.y)]
+
+func calculate_last_turn(loc_src_ex, loc_dest_ex, dest_ex):
+	#B-A: A->B
+	# needs to be 2D because 3D doesn't have clamped()
+	var line = (Vector2(loc_dest_ex.x, loc_dest_ex.z)-Vector2(loc_src_ex.x, loc_src_ex.z))
+	var end_point = Vector2(loc_dest_ex.x, loc_dest_ex.z) - line.clamped(10)
 	
-func road_test(data, loc_src_ex):
+	debug_cube(Vector3(end_point.x, 1, end_point.y))
+	
+	#B-A: A->B 
+	# 3D has no tangent()
+	var tang = Vector2(dest_ex.x, dest_ex.z).tangent()
+	var tang2 = (end_point-Vector2(loc_dest_ex.x, loc_dest_ex.z)).tangent()
+	
+	# extend them
+	var tang_factor = 30
+	tang = tang*tang_factor
+	tang2 = tang2*tang_factor
+	
+	# check for intersection (2D only)
+	var inters = Geometry.segment_intersects_segment_2d(Vector2(loc_dest_ex.x, loc_dest_ex.z), Vector2(Vector2(loc_dest_ex.x, loc_dest_ex.z) - tang), end_point, Vector2(end_point-tang2))
+	#print("Intersect: " + str(inters))
+	
+	if inters:
+		debug_cube(Vector3(inters.x, 1, inters.y))
+	
+		var radius = inters.distance_to(Vector2(loc_dest_ex.x, loc_dest_ex.z))
+		
+		# the point to which 0 degrees corresponds
+		var angle0 = inters+Vector2(radius,0)
+		
+		debug_cube(Vector3(angle0.x, 1, angle0.y))
+		
+		var angles = get_arc_angle(inters, Vector2(loc_dest_ex.x, loc_dest_ex.z), end_point, angle0)
+	
+		var points_arc = get_circle_arc(inters, radius, angles[0], angles[1], true)
+		
+		# back to 3D
+		for i in range(points_arc.size()):
+			positions.append(Vector3(points_arc[i].x, 0.01, points_arc[i].y))
+	
+		var fin = Vector3(points_arc[points_arc.size()-1].x, 0.01, points_arc[points_arc.size()-1].y)
+	
+	#positions.append(loc_dest_ex)	
+		return [radius, angles[0], angles[1], loc_dest_ex, fin] #Vector3(end_point.x, 0, end_point.y)]
+	
+	
+func initial_road_test(data, loc_src_ex):
 	var radius = data[0]
 	var start_angle = data[1]
 	var end_angle = data[2]
 	
 	
-	var curved = set_curved_road(radius, start_angle, end_angle)
+	var curved = set_curved_road(radius, start_angle, end_angle, 0)
 	curved.set_translation(loc_src_ex)
 	
 	# place
@@ -101,45 +156,49 @@ func road_test(data, loc_src_ex):
 	else:
 		curved.rotate_y(deg2rad(180))
 		print("Rotated because we're going back")
-	
-	# right
-	#debug_cube(loc_src_ex + Vector3(tang.x, 1, tang.y))
-	#debug_cube(Vector3(end_point.x, 1, end_point.y) + Vector3(tang2.x, 0, tang2.y))
-	
-	# left
-	#debug_cube(loc_src_ex - Vector3(tang.x, 0, tang.y))
-	#debug_cube(Vector3(end_point.x, 1, end_point.y) - Vector3(tang2.x, 0, tang2.y))
-	
-	#positions.append(loc_src_ex - Vector3(tang.x, 0, tang.y))
-	
-	#positions.append(Vector3(end_point.x, 0, end_point.y))
-	#positions.append(Vector3(end_point.x, 1, end_point.y) - Vector3(tang2.x, 0, tang2.y))
+
+func last_turn_test(data):
+	var radius = data[0]
+	var start_angle = data[1]
+	var end_angle = data[2]
+	var loc = data[3]
 	
 	
+	var curved = set_curved_road(radius, start_angle, end_angle, 1)
+	curved.set_translation(loc)
 	
-	
+	# place
+	if get_child(1).get_translation().y > get_child(0).get_translation().y:
+		print("Road in normal direction, positive y")
+	else:
+		curved.rotate_y(deg2rad(180))
+		print("Rotated because we're going back")	
+
+
 	
 	# place a short straight
 	#set_start_straight(get_child(0), get_child(1), loc_src_ex)
 	
 	
-func set_start_straight(src, dest, loc):
+func set_straight(loc, rot):
 	var road_node = road_straight.instance()
 	road_node.set_name("Road_instance 0")
 	# set length
-	road_node.length = 5
+	road_node.length = 15
 	
 	var spatial = Spatial.new()
 	spatial.set_name("Spatial0")
 	add_child(spatial)
 	spatial.add_child(road_node)
 	
+	spatial.rotate_y(deg2rad(360-rot))
+	
 	# place
-	if dest.get_translation().y > src.get_translation().y:
-		print("Road in normal direction, positive y")
-	else:
-		spatial.rotate_y(deg2rad(180))
-		print("Rotated because we're going back")
+#	if dest.get_translation().y > src.get_translation().y:
+#		print("Road in normal direction, positive y")
+#	else:
+#		spatial.rotate_y(deg2rad(180))
+#		print("Rotated because we're going back")
 		
 	
 	spatial.set_translation(loc)
@@ -147,9 +206,9 @@ func set_start_straight(src, dest, loc):
 	
 	return road_node	
 	
-func set_curved_road(radius, start_angle, end_angle):
+func set_curved_road(radius, start_angle, end_angle, index):
 	var road_node_right = road.instance()
-	road_node_right.set_name("Road_instance0")
+	road_node_right.set_name("Road_instance"+String(index))
 	#set the angles we wanted
 	# road angles are in respect to X axis, so let's subtract 90 to point down Y
 	road_node_right.get_child(0).get_child(0).start_angle = start_angle-90
