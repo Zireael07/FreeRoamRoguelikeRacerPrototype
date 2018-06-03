@@ -84,6 +84,13 @@ func _ready():
 	#draw_debug_point(loc, Color(1,1,1))
 	streetlight = preload("res://objects/streetlight.scn")
 	
+	# angle fix
+	if end_angle < 0:
+		end_angle = 360+end_angle
+	if start_angle < 0:
+		start_angle = 360+start_angle
+	
+	
 	points_center = get_circle_arc(loc, radius, start_angle, end_angle, not left_turn)
 	#how many points do we need debugged?
 	var nb_points = 32
