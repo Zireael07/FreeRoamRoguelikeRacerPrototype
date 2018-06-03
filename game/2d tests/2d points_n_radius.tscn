@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://2d tests/arc_center2D.gd" type="Script" id=1]
+
+[node name="Node2D" type="Node2D" index="0"]
+
+script = ExtResource( 1 )
+start_point = Vector2( 10, 0 )
+end_point = Vector2( 0, 20 )
+height = 10
+
+
