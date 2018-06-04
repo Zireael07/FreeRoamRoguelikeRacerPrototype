@@ -91,15 +91,48 @@ func get_tangent(i,j):
 		return -tang*tang_factor
 	else:
 		return tang*tang_factor
-		
+
+func get_intersection(index):
+	print("Getting intersection for index: " + str(index) + ", -1: " + str(index-1) + " next: " + str(index+1))
+	#var start = corners[index]
+	var start = corners[index]-get_tangent(index-1,index)
+	
+	var end = corners[index]+get_tangent(index-1,index)
+	
+	var start_b = corners[index+1]-get_tangent(index,index+1)
+	#var start_b = corners[index+1]
+	var end_b = corners[index+1]+get_tangent(index,index+1)
+	
+	var inters = Geometry.segment_intersects_segment_2d(start, end, start_b, end_b)
+	
+	intersections.append(inters)
+	print("Appending intersection ... " + str(inters))	
 
 func get_intersections():
 	
-	intersections.append(Geometry.segment_intersects_segment_2d(corners[1], corners[1]+get_tangent(1,1), corners[2], corners[2]+get_tangent(1,2)))
+	get_intersection(1)
 	
-	#intersections.append(Geometry.segment_intersects_segment_2d(corners[3], corners[3]+get_tangent(2,3), corners[4], corners[4]+get_tangent(2,4)))
+	if corners.size() > 3:
+		get_intersection(3)
+		
+#	#var start = corners[1]
+#	var start = corners[1]-get_tangent(1,1)
+#
+#	var end = corners[1]+get_tangent(1,1)
+#
+#	var start_b = corners[2]-get_tangent(1,2)
+#	#var start_b = corners[2]
+#	var end_b = corners[2]+get_tangent(1,2)
+#
+#	intersections.append(Geometry.segment_intersects_segment_2d(start, end, start_b, end_b))
 	
-	#print("Intersection: " + str(intersections[0]) + "test" + str(intersections[0]+Vector2(4.758389,0)))
+	
+	# used to check corner to corner+tangent
+	#intersections.append(Geometry.segment_intersects_segment_2d(corners[1], corners[1]+get_tangent(1,1), corners[2], corners[2]+get_tangent(1,2)))
+	
+	# now checks corner-tangent to corner+tangent
+	#intersections.append(Geometry.segment_intersects_segment_2d(corners[1]-get_tangent(1,1), corners[1]+get_tangent(1,1), corners[2]-get_tangent(1,2), corners[2]+get_tangent(1,2)))
+
 
 func draw_circle_arc(center, radius, angle_from, angle_to, right, clr):
 	points_arc = get_circle_arc(center, radius, angle_from, angle_to, right)
@@ -129,8 +162,9 @@ func get_circle_arc( center, radius, angle_from, angle_to, right ):
 	return points_arc
 
 func get_arc_angle(corner_id, intersect_id, corner2):
-	#if not intersect_id in intersections:
-	#	return
+	if intersections.size() + 1 < intersect_id:
+		print("Tried getting angle for nonexistent intersection")
+		return
 		
 	# radius = line from intersection to corner point
 	var radius = (corners[corner_id]-intersections[intersect_id]).length()
@@ -151,13 +185,15 @@ func get_arc_angle(corner_id, intersect_id, corner2):
 	
 
 func get_arc_angles():
+	# corner1, intersection, corner2
 	get_arc_angle(1,0,2)
 	
 	print("Difference is " + str(angles[0]-angles[1]))
 	
-	#get_arc_angle(3,1,4)
+	# corner1, intersection, corner2
+	get_arc_angle(3,1,4)
 	
-	#print("Difference is " + str(angles[2]-angles[3]))
+	print("Difference is " + str(angles[2]-angles[3]))
 		
 	#pass
 
@@ -168,8 +204,13 @@ func _draw():
 	
 	draw_tangents()
 	
-	# draw intersection if any
-	draw_circle(intersections[0], 1, Color(1,0,1))
+	if intersections.size() > 0:
+		# draw intersection if any
+		draw_circle(intersections[0], 1, Color(1,0,1))
+		
+	if intersections.size() > 1:
+		# draw intersection if any
+		draw_circle(intersections[1], 1, Color(1,0,1))
 	
 	
 	# test
@@ -184,7 +225,7 @@ func _draw():
 	# radius equals distance from intersection to point
 	draw_circle_arc(intersections[0], (corners[1]-intersections[0]).length(), angles[1], angles[1]+(angles[0]-angles[1]), true, Color(1,0,1))
 	
-#	draw_circle_arc(intersections[1], (corners[3]-intersections[1]).length(), angles[2], angles[2]+(angles[2]-angles[3]), false, Color(1,0,1))
+	draw_circle_arc(intersections[1], (corners[3]-intersections[1]).length(), angles[3], angles[3]+(angles[2]-angles[3]), true, Color(1,0,1))
 	
 	#draw_corner_line()
 	draw_corners()
@@ -192,15 +233,31 @@ func _draw():
 func draw_tangents():
 	draw_line(corners[0], corners[0]+get_tangent(0,0), Color(0,0,1), 1.0)
 	
+	# test
+	draw_line(corners[0], corners[0]-get_tangent(0,0), Color(0,1,0), 1.0)
+	
 	# corners around point 1
-	draw_line(corners[1], corners[1]+get_tangent(1,1), Color(0,0,1), 1.0)
+	draw_line(corners[1], corners[1]+get_tangent(0,1), Color(0,0,1), 1.0)
 	draw_line(corners[2], corners[2]+get_tangent(1,2), Color(0,0,1), 1.0)
+	
+	# test
+	draw_line(corners[1], corners[1]-get_tangent(0,1), Color(0,1,0), 1.0)
+	draw_line(corners[2], corners[2]-get_tangent(1,2), Color(0,1,0), 1.0)
+	
 	
 	# corners around point 2
 	draw_line(corners[3], corners[3]+get_tangent(2,3), Color(0,0,1), 1.0)
-	draw_line(corners[4], corners[4]+get_tangent(2,4), Color(0,0,1), 1.0)
+	draw_line(corners[4], corners[4]+get_tangent(3,4), Color(0,0,1), 1.0)
 	
-	draw_line(corners[5], corners[5]+get_tangent(3,5), Color(0,0,1), 1.0)
+	# test
+	draw_line(corners[3], corners[3]-get_tangent(2,3), Color(0,1,0), 1.0)
+	draw_line(corners[4], corners[4]-get_tangent(3,4), Color(0,1,0), 1.0)
+	
+	
+	#draw_line(corners[3], corners[3]+get_tangent(2,3), Color(0,0,1), 1.0)
+	#draw_line(corners[4], corners[4]+get_tangent(2,4), Color(0,0,1), 1.0)
+	
+	#draw_line(corners[5], corners[5]+get_tangent(3,5), Color(0,0,1), 1.0)
 
 
 	
