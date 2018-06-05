@@ -38,7 +38,7 @@ params_point_size = 3.0
 params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = false
-albedo_color = Color( 1, 0.0429688, 0.0429688, 1 )
+albedo_color = Color( 1, 0.961243, 0.0078125, 1 )
 metallic = 0.0
 metallic_specular = 0.5
 metallic_texture_channel = 0
@@ -153,7 +153,7 @@ disabled = false
 
 [node name="sample" type="Spatial" parent="." index="6"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 46.1598, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 76.114, 0, -38.5343 )
 
 [node name="Spatial" parent="sample" index="0" instance=ExtResource( 6 )]
 
@@ -206,6 +206,6 @@ lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
 script = ExtResource( 10 )
-color = Color( 1, 0.0429688, 0.0429688, 1 )
+color = Color( 1, 0.961243, 0.0078125, 1 )
 
 

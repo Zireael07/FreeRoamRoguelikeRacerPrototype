@@ -17,117 +17,209 @@ func _ready():
 	
 	# basic stuff
 	# assuming 0 is source and 1 is target
-	var src_ex = get_src_exit(get_child(0), get_child(1))
-	var loc_src_ex = to_local(get_child(0).to_global(src_ex))
+	var src_exit = get_src_exit(get_child(0), get_child(1))
+	var loc_src_exit = to_local(get_child(0).to_global(src_exit))
 	
-	var dest_ex = get_dest_exit(get_child(0), get_child(1))
-	var loc_dest_ex = to_local(get_child(1).to_global(dest_ex))
+	var dest_exit = get_dest_exit(get_child(0), get_child(1))
+	var loc_dest_exit = to_local(get_child(1).to_global(dest_exit))
 	
 
-	print("Line length: " + str(loc_dest_ex.distance_to(loc_src_ex)))
+	print("Line length: " + str(loc_dest_exit.distance_to(loc_src_exit)))
 
-	positions.append(loc_src_ex)
+	#positions.append(loc_src_exit)
+	#positions.append(loc_dest_exit)
 	
+	var extendeds = extend_lines(loc_src_exit, loc_dest_exit, 2)
 	
-	var data = calculate_initial_turn(loc_src_ex, loc_dest_ex, src_ex)
+	var corner_points = get_corner_points(extendeds[0], extendeds[1], extendeds[0].distance_to(loc_src_exit))
 	
-	initial_road_test(data, loc_src_ex)
+	var data = calculate_initial_turn(corner_points[0], corner_points[1], loc_src_exit, extendeds[0], src_exit)
 	
-	set_straight(data[3], data[2])
+	initial_road_test(data, corner_points[0])
 	
-	data = calculate_last_turn(loc_src_ex, loc_dest_ex, dest_ex)
+	set_straight(corner_points[1], corner_points[3], data[2])
 	
-	last_turn_test(data)
+	data = calculate_last_turn(corner_points[2], corner_points[3], loc_dest_exit, extendeds[1], dest_exit)
+	
+	last_turn_test(data, corner_points[2])
 
 	
 	#debug drawing
 	draw.draw_line(positions)
 	
-	# Called every time the node is added to the scene.
-	# Initialization here
-	#pass
-	
-func calculate_initial_turn(loc_src_ex, loc_dest_ex, src_ex):
 
-	#positions.append(loc_dest_ex)
-	
+func extend_lines(loc_src_exit, loc_dest_exit, extend):
 	#B-A: A->B
-	# needs to be 2D because 3D doesn't have clamped()
-	var line = (Vector2(loc_dest_ex.x, loc_dest_ex.z)-Vector2(loc_src_ex.x, loc_src_ex.z))
-	var end_point = Vector2(loc_src_ex.x, loc_src_ex.z) + line.clamped(10)
+	var src_line = loc_src_exit-get_child(0).get_translation()
+	#var extend = ex
+	var loc_src_extended = src_line*extend + get_child(0).get_translation()
 	
-	debug_cube(Vector3(end_point.x, 1, end_point.y))
+	#debug_cube(loc_src_extended)
 	
+	var dest_line = loc_dest_exit-get_child(1).get_translation()
+	var loc_dest_extended = dest_line*extend + get_child(1).get_translation()
+	debug_cube(loc_dest_extended)
+	
+	return [loc_src_extended, loc_dest_extended]
+	
+func get_corner_points(loc_src_extended, loc_dest_extended, dist):
+	var corners = []
+	
+	# B-A = A-> B
+	var vec_back = get_child(0).get_translation() - loc_src_extended
+	vec_back = vec_back.normalized()*dist # x units away
+	
+	var corner_back = loc_src_extended + vec_back
+	corners.append(corner_back)
+	
+	debug_cube(Vector3(corner_back.x, 1, corner_back.z))
+	
+	var vec_forw = loc_dest_extended - loc_src_extended
+	vec_forw = vec_forw.normalized()*dist # x units away
+	
+	var corner_forw = loc_src_extended + vec_forw
+	corners.append(corner_forw)
+	
+	debug_cube(Vector3(corner_forw.x, 1, corner_forw.z))
+	
+	# the destinations
+	# B-A = A-> B
+	vec_back = get_child(1).get_translation() - loc_dest_extended
+	vec_back = vec_back.normalized()*dist # x units away
+	
+	corner_back = loc_dest_extended + vec_back
+	corners.append(corner_back)
+	
+	debug_cube(Vector3(corner_back.x, 1, corner_back.z))
+	
+	vec_forw = loc_src_extended - loc_dest_extended
+	vec_forw = vec_forw.normalized()*dist # x units away
+	
+	corner_forw = loc_dest_extended + vec_forw
+	corners.append(corner_forw)
+	
+	debug_cube(Vector3(corner_forw.x, 1, corner_forw.z))
+	
+	
+	return corners
+	
+	
+func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, src_exit):
 	#B-A: A->B 
 	# 3D has no tangent()
-	var tang = Vector2(src_ex.x, src_ex.z).tangent()
-	var tang2 = (end_point-Vector2(loc_src_ex.x, loc_src_ex.z)).tangent()
+	var tang = (Vector2(corner1.x, corner1.z)-Vector2(loc_src_extended.x, loc_src_extended.z)).tangent()
+	var tang2 = (Vector2(corner2.x, corner2.z)-Vector2(loc_src_extended.x, loc_src_extended.z)).tangent()
 	
 	# extend them
-	var tang_factor = 30
+	var tang_factor = 10
 	tang = tang*tang_factor
 	tang2 = tang2*tang_factor
 	
-	# check for intersection (2D only)
-	var inters = Geometry.segment_intersects_segment_2d(Vector2(loc_src_ex.x, loc_src_ex.z), Vector2(Vector2(loc_src_ex.x, loc_src_ex.z) - tang), end_point, Vector2(end_point-tang2))
-	#print("Intersect: " + str(inters))
+	var start = Vector2(corner1.x, corner1.z) + tang
 	
-	debug_cube(Vector3(inters.x, 1, inters.y))
+	#debug_cube(Vector3(start.x, 1, start.y))
 	
-	var radius = inters.distance_to(Vector2(loc_src_ex.x, loc_src_ex.z))
+	#positions.append(Vector3(start.x, 0, start.y))
 	
-	# the point to which 0 degrees corresponds
-	var angle0 = inters+Vector2(radius,0)
+	#var start = Vector2(corner1.x, corner1.z)
+	var end = Vector2(Vector2(corner1.x, corner1.z) - tang)
 	
-	debug_cube(Vector3(angle0.x, 1, angle0.y))
+	#debug_cube(Vector3(end.x, 1, end.y))
+	#positions.append(Vector3(end.x, 0, end.y))
 	
-	var angles = get_arc_angle(inters, Vector2(loc_src_ex.x, loc_src_ex.z), end_point, angle0)
-
-	var points_arc = get_circle_arc(inters, radius, angles[0], angles[1], true)
-	
-	# back to 3D
-	#for i in range(points_arc.size()):
-	#	positions.append(Vector3(points_arc[i].x, 0.01, points_arc[i].y))
-	
-	#positions.append(loc_dest_ex)	
-
-	var fin = Vector3(points_arc[points_arc.size()-1].x, 0.01, points_arc[points_arc.size()-1].y)
-
-	return [radius, angles[0], angles[1], fin] #Vector3(end_point.x, 0, end_point.y)]
-
-func calculate_last_turn(loc_src_ex, loc_dest_ex, dest_ex):
-	#B-A: A->B
-	# needs to be 2D because 3D doesn't have clamped()
-	var line = (Vector2(loc_dest_ex.x, loc_dest_ex.z)-Vector2(loc_src_ex.x, loc_src_ex.z))
-	var end_point = Vector2(loc_dest_ex.x, loc_dest_ex.z) - line.clamped(10)
-	
-	debug_cube(Vector3(end_point.x, 1, end_point.y))
-	
-	#B-A: A->B 
-	# 3D has no tangent()
-	var tang = Vector2(dest_ex.x, dest_ex.z).tangent()
-	var tang2 = (end_point-Vector2(loc_dest_ex.x, loc_dest_ex.z)).tangent()
-	
-	# extend them
-	var tang_factor = 30
-	tang = tang*tang_factor
-	tang2 = tang2*tang_factor
+	#var start_b = Vector2(corner2.x, corner2.z)
+	var start_b = Vector2(corner2.x, corner2.z) + tang2
+	#debug_cube(Vector3(start_b.x, 1, start_b.y))
+	#positions.append(Vector3(start_b.x, 0, start_b.y))
+	var end_b = Vector2(Vector2(corner2.x, corner2.z)-tang2)
+	#positions.append(Vector3(end_b.x, 0, end_b.y))
+	#debug_cube(Vector3(end_b.x, 1, end_b.y))
 	
 	# check for intersection (2D only)
-	var inters = Geometry.segment_intersects_segment_2d(Vector2(loc_dest_ex.x, loc_dest_ex.z), Vector2(Vector2(loc_dest_ex.x, loc_dest_ex.z) - tang), end_point, Vector2(end_point-tang2))
-	#print("Intersect: " + str(inters))
+	var inters = Geometry.segment_intersects_segment_2d(start, end, start_b, end_b)
 	
 	if inters:
+		print("Intersect: " + str(inters))
+		#positions.append(Vector3(inters.x, 0, inters.y))
+		#debug_cube(Vector3(inters.x, 1, inters.y))
+	
+		# radius = line from intersection to corner point
+		var radius = inters.distance_to(Vector2(corner1.x, corner1.z))
+	
+		# the point to which 0 degrees corresponds
+		var angle0 = inters+Vector2(radius,0)
+	
+		#debug_cube(Vector3(angle0.x, 1, angle0.y))
+		#positions.append(Vector3(angle0.x, 0, angle0.y))
+	
+		var angles = get_arc_angle(inters, Vector2(corner1.x, corner1.z), Vector2(corner2.x, corner2.z), angle0)
+		# debug angles
+		positions.append(corner1)
+		positions.append(Vector3(angle0.x, 0, angle0.y))
+		positions.append(corner2)
+		
+
+		var points_arc = get_circle_arc(inters, radius, angles[0], angles[1], true)
+	
+		# back to 3D
+		#for i in range(points_arc.size()):
+		#	positions.append(Vector3(points_arc[i].x, 0.01, points_arc[i].y))
+		
+		#positions.append(loc_dest_ex)	
+	
+		var fin = Vector3(points_arc[points_arc.size()-1].x, 0.01, points_arc[points_arc.size()-1].y)
+	
+		return [radius, angles[0], angles[1], fin] #Vector3(end_point.x, 0, end_point.y)]
+
+func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, dest_ex):
+	#B-A: A->B 
+	# 3D has no tangent()
+	var tang = (Vector2(corner1.x, corner1.z)-Vector2(loc_dest_extended.x, loc_dest_extended.z)).tangent()
+	var tang2 = (Vector2(corner2.x, corner2.z)-Vector2(loc_dest_extended.x, loc_dest_extended.z)).tangent()
+	
+	# extend them
+	var tang_factor = 10
+	tang = tang*tang_factor
+	tang2 = tang2*tang_factor
+	var start = Vector2(corner1.x, corner1.z) + tang
+	
+	debug_cube(Vector3(start.x, 1, start.y))
+	
+	positions.append(Vector3(start.x, 0, start.y))
+	
+	#var start = Vector2(corner1.x, corner1.z)
+	var end = Vector2(Vector2(corner1.x, corner1.z) - tang)
+	
+	debug_cube(Vector3(end.x, 1, end.y))
+	positions.append(Vector3(end.x, 0, end.y))
+	
+	#var start_b = Vector2(corner2.x, corner2.z)
+	var start_b = Vector2(corner2.x, corner2.z) + tang2
+	debug_cube(Vector3(start_b.x, 1, start_b.y))
+	positions.append(Vector3(start_b.x, 0, start_b.y))
+	var end_b = Vector2(Vector2(corner2.x, corner2.z)-tang2)
+	positions.append(Vector3(end_b.x, 0, end_b.y))
+	debug_cube(Vector3(end_b.x, 1, end_b.y))
+	
+	# check for intersection (2D only)
+	var inters = Geometry.segment_intersects_segment_2d(start, end, start_b, end_b)
+	
+	if inters:
+		print("Intersect: " + str(inters))
 		debug_cube(Vector3(inters.x, 1, inters.y))
 	
-		var radius = inters.distance_to(Vector2(loc_dest_ex.x, loc_dest_ex.z))
+		var radius = inters.distance_to(Vector2(corner1.x, corner1.z))
 		
 		# the point to which 0 degrees corresponds
 		var angle0 = inters+Vector2(radius,0)
 		
 		debug_cube(Vector3(angle0.x, 1, angle0.y))
 		
-		var angles = get_arc_angle(inters, Vector2(loc_dest_ex.x, loc_dest_ex.z), end_point, angle0)
+		var angles = get_arc_angle(inters, Vector2(corner1.x, corner1.z), Vector2(corner2.x, corner2.z), angle0)
+		# debug angles
+		positions.append(corner1)
+		positions.append(Vector3(angle0.x, 0, angle0.y))
+		positions.append(corner2)
 	
 		var points_arc = get_circle_arc(inters, radius, angles[0], angles[1], true)
 		
@@ -138,17 +230,17 @@ func calculate_last_turn(loc_src_ex, loc_dest_ex, dest_ex):
 		var fin = Vector3(points_arc[points_arc.size()-1].x, 0.01, points_arc[points_arc.size()-1].y)
 	
 	#positions.append(loc_dest_ex)	
-		return [radius, angles[0], angles[1], loc_dest_ex, fin] #Vector3(end_point.x, 0, end_point.y)]
+		return [radius, angles[0], angles[1], fin] #Vector3(end_point.x, 0, end_point.y)]
 	
 	
-func initial_road_test(data, loc_src_ex):
+func initial_road_test(data, loc):
 	var radius = data[0]
 	var start_angle = data[1]
 	var end_angle = data[2]
 	
 	
 	var curved = set_curved_road(radius, start_angle, end_angle, 0)
-	curved.set_translation(loc_src_ex)
+	curved.set_translation(loc)
 	
 	# place
 	if get_child(1).get_translation().y > get_child(0).get_translation().y:
@@ -157,11 +249,10 @@ func initial_road_test(data, loc_src_ex):
 		curved.rotate_y(deg2rad(180))
 		print("Rotated because we're going back")
 
-func last_turn_test(data):
+func last_turn_test(data, loc):
 	var radius = data[0]
 	var start_angle = data[1]
 	var end_angle = data[2]
-	var loc = data[3]
 	
 	
 	var curved = set_curved_road(radius, start_angle, end_angle, 1)
@@ -180,11 +271,15 @@ func last_turn_test(data):
 	#set_start_straight(get_child(0), get_child(1), loc_src_ex)
 	
 	
-func set_straight(loc, rot):
+func set_straight(loc, loc2, rot):
 	var road_node = road_straight.instance()
 	road_node.set_name("Road_instance 0")
 	# set length
-	road_node.length = 15
+	var dist = loc.distance_to(loc2)
+	print("Distance between points: " + str(dist))
+	var rounded = int(round(dist))
+	print("Rounding" + str(rounded))
+	road_node.length = (rounded+1)/2 # road section length
 	
 	var spatial = Spatial.new()
 	spatial.set_name("Spatial0")
@@ -259,54 +354,15 @@ func debug_cube(loc):
 	node.set_translation(loc)
 
 
-# arc through A and B
-func arc(start_point, end_point, height):
-	var midpoint = Vector2((end_point.x+start_point.x)/2, (end_point.y+start_point.y)/2)
-	
-	var width = end_point.distance_to(start_point)
-	print("Width" + str(width))
-	
-	# check for invalid inputs?
-	
-	
-	# B-A = a->b
-	var tang = (midpoint-start_point).tangent()
-	
-	#var height = 5
-	
-	var arc_top = midpoint + tang.clamped(height)
-
-	
-	# https://en.wikipedia.org/wiki/Circular_segment
-	var radius = pow(width,2)/(8*height) + height/2	
-	print("Radius: " + str(radius))
-	
-	# this one is wrong for some weird reason
-	#center_point = arc_top-tang.clamped(radius)
-	
-	var center_point = midpoint-tang.clamped((radius-height))
-	
-	#print("Check" + str(arc_top.distance_to(center_point)))
-	
-	# the point to which 0 degrees corresponds
-	var angle0 = center_point+Vector2(radius,0)
-	#print("Angle0" + str(angle0))
-	
-	var angles = get_arc_angle(center_point, start_point, end_point, angle0)
-	
-	#var right = true
-	#if (angles[1]-angles[0]) > 180:
-	#	right = false
-		
-	#var points_arc = get_circle_arc(center_point, radius, angles[0], angles[1], right)
-	
-	return [center_point, radius, angles[0], angles[1]] #right]
-
 func get_arc_angle(center_point, start_point, end_point, angle0):
 	var angles = []
 	
 	# angle between line from center point to angle0 and from center point to start point
 	var angle = rad2deg((angle0-center_point).angle_to(start_point-center_point))
+	
+	if angle < 0:
+		angle = 360+angle
+		print("Angle 1 " + str(angle))
 	
 	angles.append(angle)
 	print("Angle 1 " + str(angle))
@@ -315,6 +371,7 @@ func get_arc_angle(center_point, start_point, end_point, angle0):
 	
 	if angle < 0:
 		angle = 360+angle
+		print("Angle 2 " + str(angle))
 	
 	print("Angle 2 " + str(angle))
 	angles.append(angle)
