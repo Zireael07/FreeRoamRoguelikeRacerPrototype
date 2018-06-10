@@ -33,6 +33,8 @@ var pt_locs_rel = []
 var elapsed_secs = 0
 var start_secs = 1
 var emitted = false
+signal path_gotten
+
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -91,6 +93,8 @@ func _process(delta):
 #			
 		if (path != null and path.size() > 0 and not emitted):
 			emitted = true
+			
+			emit_signal("path_gotten")
 			
 			# stuff to do after getting path
 #			print("We have a path to follow")

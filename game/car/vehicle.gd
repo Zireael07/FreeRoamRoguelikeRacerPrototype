@@ -19,6 +19,7 @@ export var force = 1500
 var braking_force_mult = 4
 
 var offset
+var position_on_line
 
 #steering
 var steer_angle = 0
@@ -313,6 +314,32 @@ func offset_dist(start, end, point):
 		var dist = 0
 		return [dist, Vector3(0, start.y, 0)]
 	
+func position_line(start_i, end_i, point, path):
+	var start = path[start_i]
+	var end = path[end_i]
+	
+	# get the point on line closest to the point
+	var px = end.x-start.x
+	var py = end.z-start.z
+
+	var something = px*px + py*py
+
+	if something != 0:
+		var u =  ((point.x - start.x) * px + (point.z - start.z) * py) / float(something)
+	
+		if u > 1:
+			u = 1
+		elif u < 0:
+			u = 0
+	
+		var x = start.x + u * px
+		var y = start.z + u * py
+	
+		return [Vector3(x, start.y, y), start_i, end_i]	
+	# need this because division by zero
+	else:
+		var dist = 0
+		return [Vector3(0, start.y, 0), start_i, end_i]
 	
 func setHeadlights(on):
 	if (on):

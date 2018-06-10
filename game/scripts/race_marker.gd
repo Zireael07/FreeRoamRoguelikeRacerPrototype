@@ -15,6 +15,8 @@ export var target = Vector3()
 var racer
 var car
 
+var done = false
+
 func _ready():
 	player_script = load("res://car/vehicle_player.gd")
 	count = false
@@ -68,13 +70,124 @@ func _on_ok_click():
 	spawn_racer(Vector3(0,0,4))
 	print("Clicked ok!")
 	
+# race positioning system
+# the AI sends us a signal when it has the path
+func _on_path_gotten():
+	print("On path gotten")
+	var ai = car.get_node("BODY")
+	var raceline = ai.path
+	#print("Race line is " + str(raceline))
+	player.race = self
+	player.create_race_path(raceline)
+
+func get_AI_position_on_raceline():
+	if not done: return null
+	else:
+		var ai = car.get_node("BODY")
+		var raceline = ai.path
+		var AI_pos = ai.position_on_line
+	
+		return AI_pos
+
+func get_player_position_on_raceline():
+	if not done: return null
+	else:
+		var player_pos = null
+		if "position_on_line" in player:
+			if player.position_on_line != null:
+				player_pos = player.position_on_line
+		
+		return player_pos
+
+func get_positions_on_raceline():
+	var AI_pos = get_AI_position_on_raceline()
+	var player_pos = get_player_position_on_raceline()
+#	if not done: return null
+#	else:
+#		var ai = car.get_node("BODY")
+#		var raceline = ai.path
+#		var AI_pos = ai.position_on_line
+#		
+#		var player_pos = null
+#		if "position_on_line" in player:
+#			if player.position_on_line != null:
+#				player_pos = player.position_on_line
+		
+	return [AI_pos, player_pos]
+
+func get_distance_along_raceline(line_pos, path):
+	#print("Position along raceline: " + str(line_pos[0]))
+	var distance = line_pos[0].distance_to(path[line_pos[1]])
+	if line_pos[1] > 0 and line_pos[1] < 2:
+		var segment_distance = path[0].distance_to(path[line_pos[1]])
+		distance = distance + segment_distance
+	
+	return distance
+
+func get_distance_from_prev(line_pos, path):
+	if line_pos != null:
+		var distance = line_pos[0].distance_to(path[line_pos[1]])
+		return distance
+	else:
+		return null
+		
+func get_positions():
+	if not done: return null
+	var ai = car.get_node("BODY")
+	var raceline = ai.path
+	
+	
+	var positions = []
+	var points = get_positions_on_raceline()
+	if points != null:
+		for pt in points:
+			if pt != null:
+				positions.push_back(get_distance_along_raceline(pt, raceline))
+		
+	return positions
+	
+func get_positions_simple():
+	if not done: return []
+	else:
+		var positions = []
+		var ai = car.get_node("BODY")
+	
+		var raceline = ai.path
+		
+		if ai.current > player.current:
+			#print("AI's current higher")
+			positions.push_back(car.romaji)
+			positions.push_back(player.get_parent().romaji)
+		elif ai.current == player.current:
+			var AI_dist = get_distance_from_prev(get_AI_position_on_raceline(), raceline)
+			var player_dist = get_distance_from_prev(get_player_position_on_raceline(), raceline)
+			if AI_dist != null and player_dist != null:
+				if AI_dist > player_dist:
+					#print("AI dist higher")
+					positions.push_back(car.romaji)
+					positions.push_back(player.get_parent().romaji)
+				else:
+					#print("player dist higher")
+					positions.push_back(player.get_parent().romaji)
+					positions.push_back(car.romaji)
+		else:
+			#print("player current higher")
+			positions.push_back(player.get_parent().romaji)
+			positions.push_back(car.romaji)
+		
+		
+		#print(str(positions))
+		
+		return positions
+
 	
 func _process(delta):
 	if count:
 		time += delta
 		#print("Timer is " + str(time))
 		player.get_node("root").get_node("Label timer").show()
-		player.get_node("root").update_timer(str(time))
+		#print(str(get_positions_simple()))
+		player.get_node("root").update_timer(str(time) + '\n' + str(get_positions_simple()))
 	#else:
 	#	print("Count is off")
 
@@ -111,7 +224,7 @@ func spawn_racer(loc):
 	car.set_translation(get_translation()+loc)
 	car.target = target
 
-	#car.race = self
+	car.race = self
 
 	car.left = false
 	
