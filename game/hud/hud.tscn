@@ -121,7 +121,7 @@ align = 1
 valign = 1
 percent_visible = 1.0
 lines_skipped = 0
-max_lines_visible = 1
+max_lines_visible = -1
 
 [node name="Label dist" type="Label" parent="." index="2"]
 
