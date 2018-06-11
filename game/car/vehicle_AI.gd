@@ -148,6 +148,10 @@ func _physics_process(delta):
 	var target_vec = get_target(current) - pos
 	dot = forward_vec.dot(target_vec)
 	
+	# needed for race position
+	if path != null and path.size() > 0:
+		position_on_line = position_line(prev, current, pos, path)
+	
 	#BEHAVIOR
 	
 	#if we're over the limit, relax steering

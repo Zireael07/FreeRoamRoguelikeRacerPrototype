@@ -159,8 +159,11 @@ func get_positions_simple():
 			positions.push_back(car.romaji)
 			positions.push_back(player.get_parent().romaji)
 		elif ai.current == player.current:
+			#print("Same current, comparing distances")
 			var AI_dist = get_distance_from_prev(get_AI_position_on_raceline(), raceline)
+			#print("AI dist: " + str(AI_dist))
 			var player_dist = get_distance_from_prev(get_player_position_on_raceline(), raceline)
+			#print("Player dist: " + str(player_dist))
 			if AI_dist != null and player_dist != null:
 				if AI_dist > player_dist:
 					#print("AI dist higher")
