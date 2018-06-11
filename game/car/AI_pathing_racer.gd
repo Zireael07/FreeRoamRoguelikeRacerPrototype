@@ -44,7 +44,9 @@ func set_our_name():
 	print("Setting AI name " + String(romaji))
 	
 	if AI_name != "" and romaji != "":
-		panel.set_name(romaji)
+		#panel.set_name(romaji)
+		panel.get_node("Label").set_text(romaji)
+		
 		print("AI panel name " + panel.name)
 		#nameplate.set_name(AI_name)
 		#print("AI nameplate " + nameplate.name)
