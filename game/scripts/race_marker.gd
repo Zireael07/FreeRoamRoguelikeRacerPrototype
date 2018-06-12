@@ -183,14 +183,23 @@ func get_positions_simple():
 		
 		return positions
 
+func displayed_positions():
+	var string = ""
+	var positions = get_positions_simple()
 	
+	for i in range(positions.size()):
+		string = string + "\n" + str(i+1) + " " + str(positions[i])
+
+	return string
+
 func _process(delta):
 	if count:
 		time += delta
 		#print("Timer is " + str(time))
 		player.get_node("root").get_node("Label timer").show()
 		#print(str(get_positions_simple()))
-		player.get_node("root").update_timer(str(time) + '\n' + str(get_positions_simple()))
+		player.get_node("root").update_timer(str(time) + '\n' + str(displayed_positions()))
+		# str(get_positions_simple()))
 	#else:
 	#	print("Count is off")
 
