@@ -13,6 +13,7 @@ Features
 * procedural generation of road segments (straight/curved)
 * procedural placement of said segments
 * procedural T intersections
+* procedurally connecting intersections
 * procedural buildings
 * procedural car
 * pause menu
@@ -26,4 +27,5 @@ Keys
 * R to reset car on the wheels
 * C to switch between cockpit and chase cameras
 * A/D to peek left/right in cockpit camera
+* E for the camera to look back
 * T to switch to a top-down debug camera
