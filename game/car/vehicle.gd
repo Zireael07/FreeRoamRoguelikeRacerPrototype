@@ -248,8 +248,16 @@ func kill_debugs():
 			c.queue_free()
 
 func reset_car():
-	var reset_rot = Vector3(0, get_rotation_degrees().y, 0)
-	set_rotation_degrees(reset_rot)
+	print("Reset!")
+	var axis = Vector3(0,1,0)
+	
+	# why the minus?
+	var forward_vec = get_global_transform().xform(Vector3(0, 0, -10))
+	# we don't have scaling so this gets the job done
+	look_at(forward_vec, axis)
+	
+	#var reset_rot = Vector3(0, get_rotation_degrees().y, 0)
+	#set_rotation_degrees(reset_rot)
 
 # basically copy-pasta from the car physics function, to predict steer the NEXT physics tick
 func predict_steer(delta, left, right):
