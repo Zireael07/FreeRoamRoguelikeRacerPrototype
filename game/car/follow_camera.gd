@@ -15,6 +15,7 @@ var debug
 #set at ready
 var origin
 var target_orig
+var look_back
 
 func _physics_process(dt):
 	if (not debug):
@@ -46,7 +47,7 @@ func _physics_process(dt):
 		var t = get_transform()
 		t.basis = Basis(t.basis[0], deg2rad(angle_v_adjust))*t.basis
 		set_transform(t)
-	
+		
 	#debug mode
 	else:
 		#follow the player
@@ -56,6 +57,15 @@ func _physics_process(dt):
 		#move up and rotate to look down
 		set_translation(origin+Vector3(0, 50, -origin.z)+delta)
 		set_rotation_degrees(Vector3(-90, 0, 180))
+
+
+	# look back
+	if look_back and not debug:
+		
+		var t = get_transform()
+		t.basis = Basis(t.basis[1], deg2rad(180))*t.basis
+		set_transform(t)
+		
 
 func set_debug(val):
 	debug = val

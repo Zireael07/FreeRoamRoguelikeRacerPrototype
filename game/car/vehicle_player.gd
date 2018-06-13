@@ -328,21 +328,33 @@ func _input(event):
 				cam.set_debug(true)
 			else:
 				cam.set_debug(false)
+				
+				
+	if (Input.is_action_pressed("look_back")):
+		print("Look back!")
+		var cam = get_node("cambase/Camera")
+		if (cam != null):
+			if (not cam.debug):
+				if not cam.look_back:
+					cam.look_back = true
+				else:
+					cam.look_back = false
 
 func _on_BODY_body_entered(body):
 	#print("Collided with " + str(body.get_name()))
-	
+
 	if speed > 5:
 		print("Speed at collision: " + str(round(speed*3.6)) + "km/h, deducting: " + str(round(speed)))
 		# deduct health
 		health -= round(speed)
-	
+
 	if health <= 0:
 		# game over!
 		var over = game_over.instance()
 		add_child(over)
-	
+
 	#print("Health" + str(health))
+#	pass
 	
 func create_race_path(path):
 	print("Creating race path")
