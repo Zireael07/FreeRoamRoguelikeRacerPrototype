@@ -28,7 +28,7 @@ func _ready():
 		for index in range (numSegments):
 			placeRoad(index)
 	
-	call_deferred("setupNavigation")
+	#call_deferred("setupNavigation")
 	
 	#pass
 

@@ -515,16 +515,33 @@ func placeStreetlight():
 	add_child(light)
 	
 	var num = (positions.size()/2)
+	var center = Vector3(0,0,0)
 	
-	if (not left_turn):
-		light.set_rotation_degrees(Vector3(0, 0, 0))
+	# test
+	#debug_cube(right_positions[num])
+	#debug_cube(center)
+	
+
+	var dist = 2
+	# B-A: A->B
+	var dir = (center-right_positions[num])
+	var offset = dir.normalized() * dist
+	
+	#var offset = Vector3(-2,0,0)
+	
+	# place
+	debug_cube(right_positions[num]+offset)
+	light.set_translation(right_positions[num]+offset)
+	
+	# rotations
+	if (left_turn): #or abs(get_parent().get_parent().get_rotation_degrees().y) > 178:
+		light.set_rotation_degrees(Vector3(0,90,0))
+		#get_node("Debug").set_rotation_degrees(Vector3(0,90,0))
 	else:
-		light.set_rotation_degrees(Vector3(0, 90, 0))
-		
-	if left_turn:
-		light.set_translation(right_positions[num]+Vector3(-2,0,0))
-	else:
-		light.set_translation(right_positions[num]+Vector3(-2,0,0))
+		light.set_rotation_degrees(Vector3(0,0,0))
+		#get_node("Debug").set_rotation_degrees(Vector3(0,0,0))
+
+
 
 # visual barrier
 func make_barrier_array(index):
@@ -691,3 +708,12 @@ func rain_shine():
 func no_rain():
 	var material = get_node("plane").get_mesh().surface_get_material(0)
 	material.set_roughness(1.0)
+	
+func debug_cube(loc):
+	var mesh = CubeMesh.new()
+	mesh.set_size(Vector3(0.5,0.5,0.5))
+	var node = MeshInstance.new()
+	node.set_mesh(mesh)
+	node.set_name("Debug")
+	add_child(node)
+	node.set_translation(loc)
