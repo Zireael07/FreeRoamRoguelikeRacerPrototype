@@ -19,21 +19,46 @@ func _ready():
 	# assuming 0 is source and 1 is target
 	var src_exit = get_src_exit(get_child(0), get_child(1))
 	var loc_src_exit = to_local(get_child(0).to_global(src_exit))
-	
+
 	var dest_exit = get_dest_exit(get_child(0), get_child(1))
 	var loc_dest_exit = to_local(get_child(1).to_global(dest_exit))
-	
+
 
 	print("Line length: " + str(loc_dest_exit.distance_to(loc_src_exit)))
 
 	#positions.append(loc_src_exit)
 	#positions.append(loc_dest_exit)
-	
-	var extendeds = extend_lines(loc_src_exit, loc_dest_exit, 2)
-	
-	var corner_points = get_corner_points(extendeds[0], extendeds[1], extendeds[0].distance_to(loc_src_exit))
-	
+
+	var extendeds = extend_lines(0,1, loc_src_exit, loc_dest_exit, 2)
+
+	var corner_points = get_corner_points(0,1, extendeds[0], extendeds[1], extendeds[0].distance_to(loc_src_exit))
+
 	var data = calculate_initial_turn(corner_points[0], corner_points[1], loc_src_exit, extendeds[0], src_exit)
+
+	initial_road_test(data, corner_points[0])
+
+	set_straight(corner_points[1], corner_points[3], data[2])
+
+	data = calculate_last_turn(corner_points[2], corner_points[3], loc_dest_exit, extendeds[1], dest_exit)
+
+	last_turn_test(data, corner_points[2])
+
+	
+	#debug drawing
+	#draw.draw_line(positions)
+	
+	# again
+	src_exit = get_src_exit(get_child(0), get_child(2))
+	loc_src_exit = to_local(get_child(0).to_global(src_exit))
+	
+	dest_exit = get_dest_exit(get_child(0), get_child(2))
+	loc_dest_exit = to_local(get_child(2).to_global(dest_exit))
+	
+	extendeds = extend_lines(0, 2, loc_src_exit, loc_dest_exit, 2)
+	
+	corner_points = get_corner_points(0,2, extendeds[0], extendeds[1], extendeds[0].distance_to(loc_src_exit))
+	
+	data = calculate_initial_turn(corner_points[0], corner_points[1], loc_src_exit, extendeds[0], src_exit)
 	
 	initial_road_test(data, corner_points[0])
 	
@@ -42,31 +67,52 @@ func _ready():
 	data = calculate_last_turn(corner_points[2], corner_points[3], loc_dest_exit, extendeds[1], dest_exit)
 	
 	last_turn_test(data, corner_points[2])
-
 	
 	#debug drawing
-	draw.draw_line(positions)
+	#draw.draw_line(positions)
+	
+	# and once more
+	src_exit = get_src_exit(get_child(2), get_child(3))
+	loc_src_exit = to_local(get_child(2).to_global(src_exit))
+	
+	dest_exit = get_dest_exit(get_child(2), get_child(3))
+	loc_dest_exit = to_local(get_child(3).to_global(dest_exit))
+	
+	extendeds = extend_lines(2, 3, loc_src_exit, loc_dest_exit, 2)
+	
+	corner_points = get_corner_points(2,3, extendeds[0], extendeds[1], extendeds[0].distance_to(loc_src_exit))
+	
+	data = calculate_initial_turn(corner_points[0], corner_points[1], loc_src_exit, extendeds[0], src_exit)
+	
+	initial_road_test(data, corner_points[0])
+	
+	set_straight(corner_points[1], corner_points[3], data[2], true)
+	
+	data = calculate_last_turn(corner_points[2], corner_points[3], loc_dest_exit, extendeds[1], dest_exit)
+	
+	last_turn_test(data, corner_points[2])
+	
 	
 
-func extend_lines(loc_src_exit, loc_dest_exit, extend):
+func extend_lines(one, two, loc_src_exit, loc_dest_exit, extend):
 	#B-A: A->B
-	var src_line = loc_src_exit-get_child(0).get_translation()
+	var src_line = loc_src_exit-get_child(one).get_translation()
 	#var extend = ex
-	var loc_src_extended = src_line*extend + get_child(0).get_translation()
+	var loc_src_extended = src_line*extend + get_child(one).get_translation()
 	
 	#debug_cube(loc_src_extended)
 	
-	var dest_line = loc_dest_exit-get_child(1).get_translation()
-	var loc_dest_extended = dest_line*extend + get_child(1).get_translation()
+	var dest_line = loc_dest_exit-get_child(two).get_translation()
+	var loc_dest_extended = dest_line*extend + get_child(two).get_translation()
 	debug_cube(loc_dest_extended)
 	
 	return [loc_src_extended, loc_dest_extended]
 	
-func get_corner_points(loc_src_extended, loc_dest_extended, dist):
+func get_corner_points(one, two, loc_src_extended, loc_dest_extended, dist):
 	var corners = []
 	
 	# B-A = A-> B
-	var vec_back = get_child(0).get_translation() - loc_src_extended
+	var vec_back = get_child(one).get_translation() - loc_src_extended
 	vec_back = vec_back.normalized()*dist # x units away
 	
 	var corner_back = loc_src_extended + vec_back
@@ -84,7 +130,7 @@ func get_corner_points(loc_src_extended, loc_dest_extended, dist):
 	
 	# the destinations
 	# B-A = A-> B
-	vec_back = get_child(1).get_translation() - loc_dest_extended
+	vec_back = get_child(two).get_translation() - loc_dest_extended
 	vec_back = vec_back.normalized()*dist # x units away
 	
 	corner_back = loc_dest_extended + vec_back
@@ -271,7 +317,7 @@ func last_turn_test(data, loc):
 	#set_start_straight(get_child(0), get_child(1), loc_src_ex)
 	
 	
-func set_straight(loc, loc2, rot):
+func set_straight(loc, loc2, rot, rotate=False):
 	var road_node = road_straight.instance()
 	road_node.set_name("Road_instance 0")
 	# set length
@@ -287,6 +333,9 @@ func set_straight(loc, loc2, rot):
 	spatial.add_child(road_node)
 	
 	spatial.rotate_y(deg2rad(360-rot))
+	
+	if rotate:
+		spatial.rotate_y(deg2rad(180))
 	
 	# place
 #	if dest.get_translation().y > src.get_translation().y:
@@ -316,30 +365,39 @@ func set_curved_road(radius, start_angle, end_angle, index):
 
 # assume standard rotation for now
 func get_src_exit(src, dest):
-	if dest.get_translation().x < src.get_translation().x:
-		print("X rule")
+	print("X abs: " + str(abs(dest.get_translation().x - src.get_translation().x)))
+	print("Z abs: " + str(abs(dest.get_translation().z - src.get_translation().z)))
+	
+	
+	if abs(dest.get_translation().x - src.get_translation().x) > abs(dest.get_translation().z - src.get_translation().z):
+	#if dest.get_translation().x > src.get_translation().x:
+		print("[src] " + src.get_name() + " " + dest.get_name() + " X rule")
 		return src.point_two
 		
-	elif dest.get_translation().y > src.get_translation().y:
-		print("Y rule")
+	elif dest.get_translation().z > src.get_translation().z:
+		print("[src] " + src.get_name() + " " + dest.get_name() + " Y rule")
 		return src.point_one
 		
 	else:
-		print("Y rule 2")
+		print("[src] " + src.get_name() + " " + dest.get_name() + " Y rule 2")
 		return src.point_three	
 
 # assume standard rotation for now
 func get_dest_exit(src, dest):
-	if dest.get_translation().x < src.get_translation().x:
-		print("X rule")
-		return dest.point_one
+	if abs(dest.get_translation().x - src.get_translation().x) > abs(dest.get_translation().z - src.get_translation().z):
+		if dest.get_translation().z > src.get_translation().z:
+			print("[dest] " + src.get_name() + " " + dest.get_name() + " X rule a)")
+			return dest.point_three
+		else:
+			print("[dest] " + src.get_name() + " " + dest.get_name() + " X rule b)")
+			return dest.point_one
 	
-	elif dest.get_translation().y > src.get_translation().y:
-		print("Y rule")
+	elif dest.get_translation().z > src.get_translation().z:
+		print("[dest] " + src.get_name() + " " + dest.get_name() + " Y rule")
 		return dest.point_three
 		
 	else:
-		print("Y rule 2")
+		print("[dest] " + src.get_name() + " " + dest.get_name() + " Y rule 2")
 		return dest.point_one
 
 

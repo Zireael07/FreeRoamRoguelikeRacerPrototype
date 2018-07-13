@@ -153,6 +153,7 @@ disabled = false
 
 [node name="sample" type="Spatial" parent="." index="6"]
 
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 76.114, 0, -38.5343 )
 
 [node name="Spatial" parent="sample" index="0" instance=ExtResource( 6 )]
@@ -177,7 +178,7 @@ trees = null
 
 [node name="garage2" parent="sample" index="1" instance=ExtResource( 8 )]
 
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 47.4969, 0, -24.2806 )
+transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 47.4969, 0, -24.2806 )
 
 [node name="Spatial" type="Spatial" parent="." index="7"]
 
@@ -194,7 +195,17 @@ _sections_unfolded = [ "Transform" ]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16.3338, 0, -64.3236 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="draw" type="ImmediateGeometry" parent="Spatial" index="2"]
+[node name="Spatial3" parent="Spatial" index="2" instance=ExtResource( 6 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 65.0786, 0, 33.0919 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Spatial4" parent="Spatial" index="3" instance=ExtResource( 6 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 117.773, 0, -14.9741 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="draw" type="ImmediateGeometry" parent="Spatial" index="4"]
 
 layers = 1
 material_override = SubResource( 2 )
