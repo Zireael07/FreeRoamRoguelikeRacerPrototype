@@ -15,4 +15,8 @@ position = Vector2( 10, 10 )
 
 position = Vector2( 66.5, 105 )
 
+[node name="Node2D3" parent="." index="2" instance=ExtResource( 2 )]
+
+position = Vector2( 103.25, 55 )
+
 
