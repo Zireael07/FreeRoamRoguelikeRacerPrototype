@@ -15,84 +15,33 @@ func _ready():
 	road_straight = preload("res://roads/road_segment_straight.tscn")
 	road = preload("res://roads/road_segment.tscn")
 	
-	# basic stuff
-	# assuming 0 is source and 1 is target
-	var src_exit = get_src_exit(get_child(0), get_child(1))
-	var loc_src_exit = to_local(get_child(0).to_global(src_exit))
+	connect_intersections(0,1)
+	connect_intersections(0,2)
+	# need to rotate straight for some reason?
+	connect_intersections(2,3, true)
+	
+func connect_intersections(one, two, straight_rot=false):
+	var src_exit = get_src_exit(get_child(one), get_child(two))
+	var loc_src_exit = to_local(get_child(one).to_global(src_exit))
 
-	var dest_exit = get_dest_exit(get_child(0), get_child(1))
-	var loc_dest_exit = to_local(get_child(1).to_global(dest_exit))
+	var dest_exit = get_dest_exit(get_child(one), get_child(two))
+	var loc_dest_exit = to_local(get_child(two).to_global(dest_exit))
 
+	#print("Line length: " + str(loc_dest_exit.distance_to(loc_src_exit)))
 
-	print("Line length: " + str(loc_dest_exit.distance_to(loc_src_exit)))
+	var extendeds = extend_lines(one,two, loc_src_exit, loc_dest_exit, 2)
 
-	#positions.append(loc_src_exit)
-	#positions.append(loc_dest_exit)
-
-	var extendeds = extend_lines(0,1, loc_src_exit, loc_dest_exit, 2)
-
-	var corner_points = get_corner_points(0,1, extendeds[0], extendeds[1], extendeds[0].distance_to(loc_src_exit))
+	var corner_points = get_corner_points(one,two, extendeds[0], extendeds[1], extendeds[0].distance_to(loc_src_exit))
 
 	var data = calculate_initial_turn(corner_points[0], corner_points[1], loc_src_exit, extendeds[0], src_exit)
 
 	initial_road_test(data, corner_points[0])
 
-	set_straight(corner_points[1], corner_points[3], data[2])
+	set_straight(corner_points[1], corner_points[3], data[2], straight_rot)
 
 	data = calculate_last_turn(corner_points[2], corner_points[3], loc_dest_exit, extendeds[1], dest_exit)
 
-	last_turn_test(data, corner_points[2])
-
-	
-	#debug drawing
-	#draw.draw_line(positions)
-	
-	# again
-	src_exit = get_src_exit(get_child(0), get_child(2))
-	loc_src_exit = to_local(get_child(0).to_global(src_exit))
-	
-	dest_exit = get_dest_exit(get_child(0), get_child(2))
-	loc_dest_exit = to_local(get_child(2).to_global(dest_exit))
-	
-	extendeds = extend_lines(0, 2, loc_src_exit, loc_dest_exit, 2)
-	
-	corner_points = get_corner_points(0,2, extendeds[0], extendeds[1], extendeds[0].distance_to(loc_src_exit))
-	
-	data = calculate_initial_turn(corner_points[0], corner_points[1], loc_src_exit, extendeds[0], src_exit)
-	
-	initial_road_test(data, corner_points[0])
-	
-	set_straight(corner_points[1], corner_points[3], data[2])
-	
-	data = calculate_last_turn(corner_points[2], corner_points[3], loc_dest_exit, extendeds[1], dest_exit)
-	
-	last_turn_test(data, corner_points[2])
-	
-	#debug drawing
-	#draw.draw_line(positions)
-	
-	# and once more
-	src_exit = get_src_exit(get_child(2), get_child(3))
-	loc_src_exit = to_local(get_child(2).to_global(src_exit))
-	
-	dest_exit = get_dest_exit(get_child(2), get_child(3))
-	loc_dest_exit = to_local(get_child(3).to_global(dest_exit))
-	
-	extendeds = extend_lines(2, 3, loc_src_exit, loc_dest_exit, 2)
-	
-	corner_points = get_corner_points(2,3, extendeds[0], extendeds[1], extendeds[0].distance_to(loc_src_exit))
-	
-	data = calculate_initial_turn(corner_points[0], corner_points[1], loc_src_exit, extendeds[0], src_exit)
-	
-	initial_road_test(data, corner_points[0])
-	
-	set_straight(corner_points[1], corner_points[3], data[2], true)
-	
-	data = calculate_last_turn(corner_points[2], corner_points[3], loc_dest_exit, extendeds[1], dest_exit)
-	
-	last_turn_test(data, corner_points[2])
-	
-	
+	last_turn_test(data, corner_points[2])	
 
 func extend_lines(one, two, loc_src_exit, loc_dest_exit, extend):
 	#B-A: A->B
