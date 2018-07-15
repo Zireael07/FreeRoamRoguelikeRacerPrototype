@@ -20,6 +20,8 @@ func _ready():
 	# need to rotate straight for some reason?
 	connect_intersections(2,3, true)
 	
+	connect_intersections(0,4, true)
+	
 func connect_intersections(one, two, straight_rot=false):
 	var src_exit = get_src_exit(get_child(one), get_child(two))
 	var loc_src_exit = to_local(get_child(one).to_global(src_exit))
@@ -106,7 +108,7 @@ func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, sr
 	var tang2 = (Vector2(corner2.x, corner2.z)-Vector2(loc_src_extended.x, loc_src_extended.z)).tangent()
 	
 	# extend them
-	var tang_factor = 10
+	var tang_factor = 20 # 10 is too little for some turns
 	tang = tang*tang_factor
 	tang2 = tang2*tang_factor
 	
@@ -165,6 +167,8 @@ func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, sr
 		var fin = Vector3(points_arc[points_arc.size()-1].x, 0.01, points_arc[points_arc.size()-1].y)
 	
 		return [radius, angles[0], angles[1], fin] #Vector3(end_point.x, 0, end_point.y)]
+	else:
+		print("First turn, no inters detected")
 
 func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, dest_ex):
 	#B-A: A->B 
@@ -173,7 +177,7 @@ func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, des
 	var tang2 = (Vector2(corner2.x, corner2.z)-Vector2(loc_dest_extended.x, loc_dest_extended.z)).tangent()
 	
 	# extend them
-	var tang_factor = 10
+	var tang_factor = 20 # 10 is too little for some turns
 	tang = tang*tang_factor
 	tang2 = tang2*tang_factor
 	var start = Vector2(corner1.x, corner1.z) + tang
@@ -226,7 +230,8 @@ func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, des
 	
 	#positions.append(loc_dest_ex)	
 		return [radius, angles[0], angles[1], fin] #Vector3(end_point.x, 0, end_point.y)]
-	
+	else:
+		print("Last turn, no inters detected")
 	
 func initial_road_test(data, loc):
 	var radius = data[0]
@@ -258,12 +263,7 @@ func last_turn_test(data, loc):
 		print("Road in normal direction, positive y")
 	else:
 		curved.rotate_y(deg2rad(180))
-		print("Rotated because we're going back")	
-
-
-	
-	# place a short straight
-	#set_start_straight(get_child(0), get_child(1), loc_src_ex)
+		print("Rotated because we're going back")
 	
 	
 func set_straight(loc, loc2, rot, rotate=False):

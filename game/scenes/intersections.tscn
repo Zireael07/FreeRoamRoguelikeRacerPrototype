@@ -178,7 +178,6 @@ transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 47.49
 
 [node name="Spatial" type="Spatial" parent="." index="6"]
 
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2052, 0, 91.8753 )
 script = ExtResource( 8 )
 _sections_unfolded = [ "Transform" ]
@@ -202,7 +201,12 @@ _sections_unfolded = [ "Transform" ]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 117.773, 0, -14.9741 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="draw" type="ImmediateGeometry" parent="Spatial" index="4"]
+[node name="Spatial6" parent="Spatial" index="4" instance=ExtResource( 5 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.2119, 0, 115.59 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="draw" type="ImmediateGeometry" parent="Spatial" index="5"]
 
 layers = 1
 material_override = SubResource( 2 )
