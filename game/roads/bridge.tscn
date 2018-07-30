@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://roads/road_segment_straight.tscn" type="PackedScene" id=1]
+
+[node name="Spatial" type="Spatial" index="0"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -52.5704, 0, -30 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Position3D3" parent="." index="0" instance=ExtResource( 1 )]
+
+_sections_unfolded = [ "Transform" ]
+length = 20
+road_slope = 5.0
+sidewalks = false
+guardrails = true
+relative_end = Vector3( 0, 0, 40 )
+trees = null
+
+[node name="Position3D4" parent="." index="1" instance=ExtResource( 1 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 39.98 )
+_sections_unfolded = [ "Transform" ]
+length = 20
+road_slope = 0.0
+sidewalks = false
+guardrails = true
+relative_end = Vector3( 0, 0, 40 )
+trees = null
+
+[node name="Position3D5" parent="." index="2" instance=ExtResource( 1 )]
+
+transform = Transform( -1, 0, -8.74228e-008, 0, 1, 0, 8.74228e-008, 0, -1, 0, 0, 119.9 )
+_sections_unfolded = [ "Transform" ]
+length = 20
+road_slope = 5.0
+sidewalks = false
+guardrails = true
+relative_end = Vector3( 0, 0, 40 )
+trees = null
+
+
