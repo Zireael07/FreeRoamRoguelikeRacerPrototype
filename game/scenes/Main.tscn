@@ -1,23 +1,24 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://roads/segments_stored.gd" type="Script" id=1]
 [ext_resource path="res://roads/segment_instancer.tscn" type="PackedScene" id=2]
 [ext_resource path="res://roads/road_segment_straight.tscn" type="PackedScene" id=3]
 [ext_resource path="res://roads/segment_instancer_straight.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scripts/daynight.gd" type="Script" id=5]
-[ext_resource path="res://objects/roads.tscn" type="PackedScene" id=6]
-[ext_resource path="res://car/car_AI_racer.tscn" type="PackedScene" id=7]
-[ext_resource path="res://car/car_AI_traffic.tscn" type="PackedScene" id=8]
-[ext_resource path="res://default_env.tres" type="Environment" id=9]
-[ext_resource path="res://objects/marker.tscn" type="PackedScene" id=10]
-[ext_resource path="res://objects/race_marker.tscn" type="PackedScene" id=11]
-[ext_resource path="res://car/car_base.tscn" type="PackedScene" id=12]
-[ext_resource path="res://objects/speed_marker.tscn" type="PackedScene" id=13]
-[ext_resource path="res://objects/recharge_station.tscn" type="PackedScene" id=14]
-[ext_resource path="res://objects/beech_tree.tscn" type="PackedScene" id=15]
-[ext_resource path="res://objects/cherry_tree.tscn" type="PackedScene" id=16]
-[ext_resource path="res://roads/intersection.tscn" type="PackedScene" id=17]
-[ext_resource path="res://objects/garage_city.tscn" type="PackedScene" id=18]
+[ext_resource path="res://roads/bridge.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scripts/daynight.gd" type="Script" id=6]
+[ext_resource path="res://objects/roads.tscn" type="PackedScene" id=7]
+[ext_resource path="res://car/car_AI_racer.tscn" type="PackedScene" id=8]
+[ext_resource path="res://car/car_AI_traffic.tscn" type="PackedScene" id=9]
+[ext_resource path="res://default_env.tres" type="Environment" id=10]
+[ext_resource path="res://objects/marker.tscn" type="PackedScene" id=11]
+[ext_resource path="res://objects/race_marker.tscn" type="PackedScene" id=12]
+[ext_resource path="res://car/car_base.tscn" type="PackedScene" id=13]
+[ext_resource path="res://objects/speed_marker.tscn" type="PackedScene" id=14]
+[ext_resource path="res://objects/recharge_station.tscn" type="PackedScene" id=15]
+[ext_resource path="res://objects/beech_tree.tscn" type="PackedScene" id=16]
+[ext_resource path="res://objects/cherry_tree.tscn" type="PackedScene" id=17]
+[ext_resource path="res://roads/intersection.tscn" type="PackedScene" id=18]
+[ext_resource path="res://objects/garage_city.tscn" type="PackedScene" id=19]
 
 [sub_resource type="NavigationMesh" id=1]
 
@@ -76,8 +77,6 @@ length_mult = 10
 
 [node name="Spatial" type="Spatial" parent="NavigationMeshInstance" index="1"]
 
-editor/display_folded = true
-
 [node name="Position3D" parent="NavigationMeshInstance/Spatial" index="0" instance=ExtResource( 2 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -83.2746, 0, 6.94175 )
@@ -106,21 +105,23 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.0147, 0, 25.1989 )
 
 [node name="Position3D2" parent="NavigationMeshInstance/Spatial" index="4" instance=ExtResource( 3 )]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -52.5704, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -124.102, 0, 0 )
 length = 20
 road_slope = 10.0
 relative_end = Vector3( 0, 0, 40 )
 trees = null
 
+[node name="Spatial" parent="NavigationMeshInstance/Spatial" index="5" instance=ExtResource( 5 )]
+
 [node name="World" type="Spatial" parent="." index="1"]
 
-script = ExtResource( 5 )
+script = ExtResource( 6 )
 SPEED = 10.0
 start_time = 8.0
 day_night = true
 weather = 0
 
-[node name="roads" parent="." index="2" instance=ExtResource( 6 )]
+[node name="roads" parent="." index="2" instance=ExtResource( 7 )]
 
 [node name="Camera" type="Camera" parent="." index="3"]
 
@@ -166,31 +167,31 @@ directional_shadow_depth_range = 0
 directional_shadow_max_distance = 100.0
 _sections_unfolded = [ "Directional Shadow", "Shadow" ]
 
-[node name="AI" parent="." index="5" instance=ExtResource( 7 )]
+[node name="AI" parent="." index="5" instance=ExtResource( 8 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.8735, 0, 6.40305 )
 target = Vector3( 0, 0, 30 )
 
-[node name="AI2" parent="." index="6" instance=ExtResource( 8 )]
+[node name="AI2" parent="." index="6" instance=ExtResource( 9 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5723, 0, 2.27175 )
 target = Vector3( 0, 0, 10 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." index="7"]
 
-environment = ExtResource( 9 )
+environment = ExtResource( 10 )
 
-[node name="marker" parent="." index="8" instance=ExtResource( 10 )]
+[node name="marker" parent="." index="8" instance=ExtResource( 11 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5603, 0.1, 25.5822 )
 
-[node name="marker 2" parent="." index="9" instance=ExtResource( 11 )]
+[node name="marker 2" parent="." index="9" instance=ExtResource( 12 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -52.0014, 0.25, 137.169 )
 _sections_unfolded = [ "Transform" ]
 target = Vector3( 50, 0, 248 )
 
-[node name="car" parent="." index="10" instance=ExtResource( 12 )]
+[node name="car" parent="." index="10" instance=ExtResource( 13 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.2608, 0, 0 )
 
@@ -210,28 +211,28 @@ interior = false
 compress = false
 data = SubResource( 2 )
 
-[node name="marker2" parent="." index="12" instance=ExtResource( 13 )]
+[node name="marker2" parent="." index="12" instance=ExtResource( 14 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55.9996, 0.25, 249.886 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="charge" parent="." index="13" instance=ExtResource( 14 )]
+[node name="charge" parent="." index="13" instance=ExtResource( 15 )]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.6765, 1.90735e-06, 31.168 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.6765, 1.90735e-006, 31.168 )
 
-[node name="MeshInstance" parent="." index="14" instance=ExtResource( 15 )]
+[node name="MeshInstance" parent="." index="14" instance=ExtResource( 16 )]
 
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 64.4389 )
 
-[node name="MeshInstance2" parent="." index="15" instance=ExtResource( 16 )]
+[node name="MeshInstance2" parent="." index="15" instance=ExtResource( 17 )]
 
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 45.9253 )
 
-[node name="MeshInstance3" parent="." index="16" instance=ExtResource( 16 )]
+[node name="MeshInstance3" parent="." index="16" instance=ExtResource( 17 )]
 
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -21.8238, 0, 40.8254 )
 
-[node name="MeshInstance4" parent="." index="17" instance=ExtResource( 16 )]
+[node name="MeshInstance4" parent="." index="17" instance=ExtResource( 17 )]
 
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -21.8238, 0, 57.3724 )
 
@@ -240,7 +241,7 @@ transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -21.8238, 0, 57.3724 )
 editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.72837, 0, -7.2239 )
 
-[node name="Spatial" parent="Spatial2" index="0" instance=ExtResource( 17 )]
+[node name="Spatial" parent="Spatial2" index="0" instance=ExtResource( 18 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.493, 0, -24.2483 )
 
@@ -260,8 +261,8 @@ road_slope = 0.0
 relative_end = Vector3( 0, 0, 40 )
 trees = null
 
-[node name="garage2" parent="." index="19" instance=ExtResource( 18 )]
+[node name="garage2" parent="." index="19" instance=ExtResource( 19 )]
 
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 41.3739, 0, -31.4886 )
+transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 41.3739, 0, -31.4886 )
 
 
