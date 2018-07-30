@@ -72,6 +72,7 @@ var treeSpacing = 10
 var buildOffset = 6
 
 # materials
+var railing_tex
 var building_tex1
 var building_tex2
 var sign_tex1
@@ -89,6 +90,8 @@ func _ready():
 	#add_to_group("roads")
 	
 	draw = get_node("draw")
+	
+	railing_tex = preload("res://assets/railing_material.tres")
 	
 	#props
 	#building = preload("res://objects/skyscraper.tscn")
@@ -243,9 +246,12 @@ func _ready():
 				node.set_name("guardrail")
 				add_child(node)
 			
+				var uvs = [Vector2(0,0), Vector2(0,1), Vector2(1,1), Vector2(1,0)]
+			
 				for qu in rail_quads:
-					addQuad(qu[0], qu[1], qu[2], qu[3], building_tex1, surface, qu[4])
-					addQuad(qu[3], qu[2], qu[1], qu[0], building_tex1, surface, qu[4])
+					addQuadCustUV(qu[0], qu[1], qu[2], qu[3], uvs[1], uvs[2], uvs[3], uvs[0], railing_tex, surface) #, qu[4])
+					addQuadCustUV(qu[3], qu[2], qu[1], qu[0], uvs[0], uvs[3], uvs[2], uvs[1], railing_tex, surface) #, qu[4])
+					# 3 2 1 0
 	
 				surface.generate_normals()
 	
