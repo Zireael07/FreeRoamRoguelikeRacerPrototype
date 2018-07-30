@@ -21,6 +21,19 @@ var sectionlength = 2
 var roadheight = 0.01
 export(float) var road_slope = 0.0
 
+#sidewalks
+export(bool) var sidewalks = false
+var points_inner_side = PoolVector3Array()
+var points_outer_side = PoolVector3Array()
+
+export(bool) var guardrails = false
+# debugging
+var points_inner_rail = PoolVector3Array()
+var points_outer_rail = PoolVector3Array()
+# actual mesh
+var rail_positions_left = PoolVector3Array()
+var rail_positions_right = PoolVector3Array()
+
 var support_positions = PoolVector3Array()
 
 #for matching
@@ -98,10 +111,17 @@ func _ready():
 	left_positions.resize(0) # = []
 	right_positions.resize(0) #= []
 	
+	points_inner_side.resize(0)
+	points_outer_side.resize(0)
+	
+	points_inner_rail.resize(0)
+	points_outer_rail.resize(0)
+	
 	#print("Positions: " + str(positions.size()))
 	
 	var quads = []
 	var support_quads = []
+	var rail_quads = []
 	
 	#overdraw fix
 	if (get_parent().get_name().find("Spatial") != -1):
@@ -117,14 +137,18 @@ func _ready():
 			#clear the array
 			temp_positions.resize(0)
 			support_positions.resize(0)
+			rail_positions_left.resize(0)
+			rail_positions_right.resize(0)
 			
 			
 			var start = Vector3(0,roadheight+(index*slope_diff),index*sectionlength)
 			initSection(start, slope_diff)
 	
 			if slope_diff > 0:
+				# one time for the whole road (!)
 				makeSupport(start, slope_diff)
 				#support_quads.append(getQuadsSimple(support_positions))
+			
 	
 			#mesh
 			var num = temp_positions.size()
@@ -144,6 +168,36 @@ func _ready():
 			left_positions.push_back(temp_positions[3])
 			right_positions.push_back(temp_positions[4])
 			right_positions.push_back(temp_positions[5])
+			
+			if sidewalks:
+				#print("We have sidewalks or guardrails, need more positions")
+				points_inner_side.push_back(temp_positions[6])
+				points_inner_side.push_back(temp_positions[7])
+				points_outer_side.push_back(temp_positions[8])
+				points_outer_side.push_back(temp_positions[9])
+				
+			
+			if guardrails and not sidewalks:
+				points_inner_rail.push_back(temp_positions[6])
+				points_inner_rail.push_back(temp_positions[7])
+				points_outer_rail.push_back(temp_positions[8])
+				points_outer_rail.push_back(temp_positions[9])
+			
+				# guardrail quads
+				rail_positions_left.push_back(temp_positions[6]) #0
+				rail_positions_left.push_back(temp_positions[7]) #1
+				rail_positions_left.push_back(temp_positions[3]) #2
+				rail_positions_left.push_back(temp_positions[0]) #3
+				
+				rail_quads.append(getQuadsSimple(rail_positions_left))
+			
+				rail_positions_right.push_back(temp_positions[8]) #0
+				rail_positions_right.push_back(temp_positions[9]) #1
+				rail_positions_right.push_back(temp_positions[5]) #2
+				rail_positions_right.push_back(temp_positions[4]) #3
+				
+				rail_quads.append(getQuadsSimple(rail_positions_right))
+				
 			# navmesh margin
 			#left_nav_positions.push_back(temp_positions[6])
 			#left_nav_positions.push_back(temp_positions[7])
@@ -168,7 +222,7 @@ func _ready():
 				node.set_name("support")
 				add_child(node)
 
-				# cement is one sided for now
+				# cement material is one sided for now
 				addQuad(array[0], array[1], array[2], array[3], building_tex1, surface, false)
 				addQuad(array[3], array[2], array[1], array[0], building_tex1, surface, false)
 				
@@ -178,7 +232,34 @@ func _ready():
 				
 
 				#Set the created mesh to the node
-				node.set_mesh(surface.commit())	
+				node.set_mesh(surface.commit())
+			
+			if rail_quads.size() > 0:
+				var surface = SurfaceTool.new()
+				surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+
+				#Create a node building that will hold the mesh
+				var node = MeshInstance.new()
+				node.set_name("guardrail")
+				add_child(node)
+			
+				for qu in rail_quads:
+					addQuad(qu[0], qu[1], qu[2], qu[3], building_tex1, surface, qu[4])
+					addQuad(qu[3], qu[2], qu[1], qu[0], building_tex1, surface, qu[4])
+	
+				surface.generate_normals()
+	
+				surface.index()
+				
+				#Set the created mesh to the node
+				node.set_mesh(surface.commit())
+				
+				#Turn off shadows
+				node.set_cast_shadows_setting(0)
+				
+				# yay GD 3
+				#node.create_convex_collision()
+				node.create_trimesh_collision()
 			
 		if not Engine.is_editor_hint():
 			# disable the emissiveness
@@ -227,6 +308,13 @@ func _ready():
 			draw.draw_line(right_positions)
 			draw.draw_line(debug_start_axis)
 			draw.draw_line(debug_end_axis)
+			if points_inner_side.size() > 0:
+				draw.draw_line(points_inner_side)
+				draw.draw_line(points_outer_side)
+				
+			if points_inner_rail.size() > 0:
+				draw.draw_line(points_inner_rail)
+				draw.draw_line(points_outer_rail)
 	
 	# kill debug draw in game
 	else:
@@ -247,11 +335,31 @@ func initSection(start, slope):
 	temp_positions.push_back(Vector3(start.x-roadwidth, end_height, start.z+sectionlength))
 	temp_positions.push_back(Vector3(start.x+roadwidth, start_height, start.z))
 	temp_positions.push_back(Vector3(start.x+roadwidth, end_height, start.z+sectionlength))
+	
+	# sides
+	if sidewalks:
+		var width_with_side = roadwidth*1.25
+		
+		temp_positions.push_back(Vector3(start.x-width_with_side, start_height, start.z))
+		temp_positions.push_back(Vector3(start.x-width_with_side, end_height, start.z+sectionlength))
+		temp_positions.push_back(Vector3(start.x+width_with_side, start_height, start.z))
+		temp_positions.push_back(Vector3(start.x+width_with_side, end_height, start.z+sectionlength))
+	
+	if guardrails:
+		temp_positions.push_back(Vector3(start.x-roadwidth, start_height + 1, start.z))
+		temp_positions.push_back(Vector3(start.x-roadwidth, end_height + 1, start.z+sectionlength))
+		temp_positions.push_back(Vector3(start.x+roadwidth, start_height + 1, start.z))
+		temp_positions.push_back(Vector3(start.x+roadwidth, end_height + 1, start.z + sectionlength))
+	
+	
 	# navmesh (#6-9)
 	#temp_positions.push_back(Vector3(start.x-roadwidth+margin, start_height, start.z))
 	#temp_positions.push_back(Vector3(start.x-roadwidth+margin, end_height, start.z+sectionlength))
 	#temp_positions.push_back(Vector3(start.x+roadwidth-margin, start_height, start.z))
 	#temp_positions.push_back(Vector3(start.x+roadwidth-margin, end_height, start.z+sectionlength))
+	
+	
+	
 
 func makeSupport(start, slope):
 	var start_height = start.y
@@ -268,8 +376,6 @@ func makeSupport(start, slope):
 	support_positions.push_back(Vector3(start.x+roadwidth, 0, start.z+sectionlength))
 	support_positions.push_back(Vector3(start.x+roadwidth, end_height, start.z+sectionlength))
 	support_positions.push_back(Vector3(start.x+roadwidth, start_height, start.z))
-	
-
 
 func get_global_positions():
 	global_positions = []
