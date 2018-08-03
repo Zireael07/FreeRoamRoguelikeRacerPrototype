@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://roads/segments_stored.gd" type="Script" id=1]
 [ext_resource path="res://roads/segment_instancer.tscn" type="PackedScene" id=2]
@@ -19,6 +19,8 @@
 [ext_resource path="res://objects/cherry_tree.tscn" type="PackedScene" id=17]
 [ext_resource path="res://roads/intersection.tscn" type="PackedScene" id=18]
 [ext_resource path="res://objects/garage_city.tscn" type="PackedScene" id=19]
+[ext_resource path="res://objects/neon_tube.tscn" type="PackedScene" id=20]
+[ext_resource path="res://objects/bamboo_clump.tscn" type="PackedScene" id=21]
 
 [sub_resource type="NavigationMesh" id=1]
 
@@ -89,29 +91,46 @@ ends = PoolVector3Array(  )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.87472, 0, -129.09 )
 length = 49
 road_slope = 0.0
+sidewalks = false
+guardrails = false
 relative_end = Vector3( 0, 0, 98 )
 trees = true
+bamboo = null
 
-[node name="Position3D1" parent="NavigationMeshInstance/Spatial" index="2" instance=ExtResource( 2 )]
+[node name="Position3D 4" parent="NavigationMeshInstance/Spatial" index="2" instance=ExtResource( 3 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -35.7404, 0, -144.992 )
+length = 49
+road_slope = 0.0
+sidewalks = false
+guardrails = false
+relative_end = Vector3( 0, 0, 98 )
+trees = false
+bamboo = true
+
+[node name="Position3D1" parent="NavigationMeshInstance/Spatial" index="3" instance=ExtResource( 2 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.31318, 0, 7.84292 )
 numSegments = 2
 positions = PoolVector3Array(  )
 ends = PoolVector3Array(  )
 
-[node name="Position3D 3" parent="NavigationMeshInstance/Spatial" index="3" instance=ExtResource( 4 )]
+[node name="Position3D 3" parent="NavigationMeshInstance/Spatial" index="4" instance=ExtResource( 4 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.0147, 0, 25.1989 )
 
-[node name="Position3D2" parent="NavigationMeshInstance/Spatial" index="4" instance=ExtResource( 3 )]
+[node name="Position3D2" parent="NavigationMeshInstance/Spatial" index="5" instance=ExtResource( 3 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -124.102, 0, 0 )
 length = 20
 road_slope = 10.0
+sidewalks = false
+guardrails = false
 relative_end = Vector3( 0, 0, 40 )
 trees = null
+bamboo = false
 
-[node name="Spatial" parent="NavigationMeshInstance/Spatial" index="5" instance=ExtResource( 5 )]
+[node name="Spatial" parent="NavigationMeshInstance/Spatial" index="6" instance=ExtResource( 5 )]
 
 [node name="World" type="Spatial" parent="." index="1"]
 
@@ -238,7 +257,6 @@ transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -21.8238, 0, 57.3724 )
 
 [node name="Spatial2" type="Spatial" parent="." index="18"]
 
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.72837, 0, -7.2239 )
 
 [node name="Spatial" parent="Spatial2" index="0" instance=ExtResource( 18 )]
@@ -250,7 +268,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.493, 0, -24.2483 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.5, 0, -134 )
 _sections_unfolded = [ "Transform" ]
 road_slope = 0.0
+sidewalks = false
+guardrails = false
 trees = null
+bamboo = null
 
 [node name="Position3D2" parent="Spatial2" index="2" instance=ExtResource( 3 )]
 
@@ -258,11 +279,29 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.5, 0, -20 )
 _sections_unfolded = [ "Transform" ]
 length = 20
 road_slope = 0.0
+sidewalks = false
+guardrails = false
 relative_end = Vector3( 0, 0, 40 )
 trees = null
+bamboo = null
 
 [node name="garage2" parent="." index="19" instance=ExtResource( 19 )]
 
 transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 41.3739, 0, -31.4886 )
+
+[node name="Spatial" parent="." index="20" instance=ExtResource( 20 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.77304, 0, 5.59601 )
+
+[node name="Spatial3" parent="." index="21" instance=ExtResource( 20 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.6989, 0, 10.6069 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Spatial6" parent="." index="22" instance=ExtResource( 21 )]
+
+[node name="Spatial8" parent="." index="23" instance=ExtResource( 21 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.676305, 0, 10.6646 )
 
 
