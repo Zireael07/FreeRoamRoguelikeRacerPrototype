@@ -61,6 +61,7 @@ var start_ref
 var end_ref
 
 export(bool) var trees
+export(bool) var bamboo
 
 #props
 var building
@@ -82,6 +83,7 @@ var win_mat
 var win_mat2
 var cables
 var cherry_tree
+var bamboo_clump
 
 
 func _ready():
@@ -108,6 +110,7 @@ func _ready():
 	win_mat2 = preload("res://assets/windows_material2.tres")
 	cables = preload("res://objects/china_cable.tscn")
 	cherry_tree = preload("res://objects/cherry_tree.tscn")
+	bamboo_clump = preload("res://objects/bamboo_clump.tscn")
 	
 	
 	positions.resize(0) # = []
@@ -290,16 +293,22 @@ func _ready():
 		start_ref = positions[0]+start_vector
 		end_ref = positions[positions.size()-1]+end_vector
 	
-	#place buildings and lanterns
-	if not trees:
+	#place props
+	# buildings and lanterns
+	if not trees and not bamboo:
 		var numBuildings = int((sectionlength*length)/buildingSpacing)
 		for index in range(numBuildings+1):
 			placeBuilding(index)
 			placeCable(index)
-	else:
+	elif not bamboo:
 		var numTrees = int((sectionlength*length)/treeSpacing)
 		for index in range(numTrees+1):
 			placeTree(index)
+	else:
+		var numTrees = int((sectionlength*length)/(treeSpacing/2))
+		for index in range(numTrees+1):
+			placeBamboo(index)
+	
 	
 	#in editor, we draw simple immediate mode lines instead
 	if Engine.is_editor_hint():
@@ -572,6 +581,47 @@ func placeTree(index):
 		loc = Vector3(-(roadwidth+(buildDistance/2)), 0, index)
 	
 	tree.set_translation(loc)
+
+func placeBamboo(index):
+	# vary position a bit
+	var rand_i = randi() % 4
+	var rand = randf()
+	
+	
+	var clump = bamboo_clump.instance()
+	clump.set_name("Bamboo"+String(index))
+	add_child(clump)
+
+	#left side of the road
+	var loc = Vector3(roadwidth+(buildDistance/2), 0, index)
+	if (index > 0):
+		if rand > 0.5:
+			loc = Vector3(roadwidth+(buildDistance/2)+rand_i, 0, index*5)
+		else:
+			loc = Vector3(roadwidth+(buildDistance/2)-rand_i, 0, index*5)
+	else:
+		loc = Vector3(roadwidth+(buildDistance/2), 0, index)
+	
+	clump.set_translation(loc)
+	
+	clump = bamboo_clump.instance()
+	clump.set_name("Bamboo"+String(index))
+	add_child(clump)
+	
+	# vary position a bit
+	rand_i = randi() % 5
+	
+	#right side of the road
+	loc = Vector3(-(roadwidth+(buildDistance/2)), 0, index)
+	if (index > 0):
+		if rand > 0.5:
+			loc = Vector3(-(roadwidth+(buildDistance/2)+rand_i), 0, index*5)
+		else:
+			loc = Vector3(-(roadwidth+(buildDistance/2)-rand_i), 0, index*5)
+	else:
+		loc = Vector3(-(roadwidth+(buildDistance/2)), 0, index)
+	
+	clump.set_translation(loc)
 	
 	
 # navmesh
