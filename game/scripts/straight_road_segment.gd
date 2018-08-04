@@ -65,6 +65,7 @@ export(bool) var bamboo
 
 #props
 var building
+var building_test
 var buildDistance = 10
 #var numBuildings = 6
 var buildingSpacing = 15
@@ -101,6 +102,9 @@ func _ready():
 	building = preload("res://objects/procedural_building.tscn")
 	building_tex1 = preload("res://assets/cement.tres")
 	building_tex2 = preload("res://assets/brick_wall.tres")
+	
+	building_test = preload("res://objects/test_shader_building.tscn")
+	
 	# more props
 	sign_tex1 = preload("res://assets/neon_sign1.tres")
 	sign_tex2 = preload("res://assets/neon_sign2.tres")
@@ -523,8 +527,18 @@ func setupBuilding(index):
 	
 	return build
 
+func setupBuildingSimple(index):
+	#var build = building.instance()
+	var build = building_test.instance()
+
+	build.set_name("Skyscraper"+String(index))
+	add_child(build)
+	
+	return build
+
 func placeBuilding(index):
 	var build = setupBuilding(index)
+	#var build = setupBuildingSimple(index)
 	
 	#left side of the road
 	var loc = Vector3(roadwidth+buildDistance, 0, index+buildOffset)
@@ -537,6 +551,9 @@ func placeBuilding(index):
 	build.set_rotation_degrees(Vector3(0, 180, 0))
 	
 	build = setupBuilding(index)
+	
+	#build = setupBuildingSimple(index)
+	
 	#right side of the road
 	loc = Vector3(-(roadwidth+buildDistance), 0, index+buildOffset)
 	if (index > 0):

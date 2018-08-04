@@ -1,0 +1,65 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=1]
+
+code = "shader_type spatial;
+
+/*void vertex() {
+	VAR1.xyz = SRC_NORMAL;
+}*/
+
+uniform float w = 1;
+uniform float hx = 1;
+uniform float hz = 1;
+
+vec3 hsv2rgb(vec3 hsv)
+	{
+		hsv.yz = clamp(hsv.yz, 0.0, 1.0);
+		return hsv.z * (vec3(1.0) + 0.5 * hsv.y * vec3(cos (2.0 * 3.14159 * (hsv.x + 0.0)),
+		cos (2.0 * 3.14159 * (hsv.x * 2.0/3.0)), cos(2.0 * 3.14159 * (hsv.x + 1.0/3.0))));
+	}
+	float rand(vec2 seed)
+	{
+		return fract(sin(dot(seed,vec2(12.9898, 78.233))) * 137.5453);
+	}
+	vec3 wind(float wx, float wz, vec2 uv, float tim)
+	{
+		vec2 frag = (vec2(wx*2.0 * uv.x, wz*2.0* uv.y) - vec2(1.0));
+		frag *= vec2(1.0) - 0.2 * vec2(cos(frag.x) * sin(3.14159), cos(frag.y) * sin(3.14159));
+		frag *= 1.0;
+		float random = rand(floor(frag));
+		
+		vec2 black = smoothstep(0.2, 0.1, vec2(cos(frag.x * 3.14159 * 2.0), cos(frag.y * 3.14159 * 2.0)));
+		
+		vec3 col = hsv2rgb(vec3(random, 1.0, 1.0));
+		col *= black.x * black.y * smoothstep(1.0, 0.0, length(fract(frag) - vec2(0.5)));
+		col *= 0.5 + 0.5 * cos(random + random * tim + 3.14159 * 0.5);
+		return col;
+	}
+	
+
+void fragment()
+{
+	vec2 uv = vec2(UV.x, UV.y);
+	vec2 uv2 = NORMAL.yy;
+	vec2 uv3 = NORMAL.xx;
+	vec2 uv4 = NORMAL.zz;
+	
+	float g = pow(1.0-sqrt(abs(uv.x-0.005)),10.0) + pow(1.0-sqrt(abs(uv.x-0.995)), 10.0) +
+	pow(1.0-sqrt(abs(uv.y-0.995)), 10.0) + pow(1.0-sqrt(abs(uv.y-0.005)),10.0);
+	
+	if (uv2 != vec2(0,0)) { EMISSION = vec3(0,g,0); }
+	if (uv3 != vec2(0,0)) { EMISSION = vec3(0,0,g)+wind(w,hz,uv, TIME); }
+	if (uv4 != vec2(0,0)) { EMISSION = vec3(0,0,g)+wind(hx,w, uv, TIME); }
+}"
+_sections_unfolded = [ "Resource" ]
+
+[resource]
+
+render_priority = 0
+shader = SubResource( 1 )
+shader_param/w = 4.0
+shader_param/hx = 2.0
+shader_param/hz = 2.0
+_sections_unfolded = [ "shader_param" ]
+

@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/test_cube_building.gd" type="Script" id=1]
+
+[node name="Spatial" type="Spatial" index="0"]
+
+[node name="MeshInstance4" type="MeshInstance" parent="." index="0"]
+
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = null
+skeleton = NodePath("..")
+script = ExtResource( 1 )
+_sections_unfolded = [ "Transform" ]
+height = 20
+width = 6
+thick = 6
+
+
