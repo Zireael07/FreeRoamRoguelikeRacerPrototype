@@ -36,8 +36,11 @@ func _ready():
 
 func setupMinimap(arrow, player_arrow, blue_flag):
 	##we're child of player, AI are siblings of player
-	var AI = get_parent().get_parent().get_parent().get_node("AI")
-	var AI2 = get_parent().get_parent().get_parent().get_node("AI2")
+	var AI = get_tree().get_nodes_in_group("player")[0].get_parent().get_node("AI")
+	var AI2 = get_tree().get_nodes_in_group("player")[0].get_parent().get_node("AI2")
+	# TODO: clean this up!
+	#var AI = get_parent().get_parent().get_parent().get_parent().get_parent().get_node("AI")
+	#var AI2 = get_parent().get_parent().get_parent().get_parent().get_parent().get_node("AI2")
 	#var AI1 = get_parent().get_parent().get_parent().get_node("AI1")
 	
 	if (AI != null):
@@ -111,7 +114,9 @@ func getPositions():
 func _process(delta):
 	for index in range(AIs.size()):
 		#the actual AI lives in the child of the spatial
-		var AI_node = get_parent().get_parent().get_parent().get_node(AIs[index]).get_child(0)
+		var AI_node = get_tree().get_nodes_in_group("player")[0].get_parent().get_node(AIs[index]).get_child(0)
+		# TODO: clear this up!
+		#var AI_node = get_parent().get_parent().get_parent().get_parent().get_node(AIs[index]).get_child(0)
 		var rel_loc = get_AI_rel_loc(AI_node)
 		
 		#arrows are children of container, which is below us
@@ -152,7 +157,8 @@ func _process(delta):
 	
 func calc_panning():
 	#print("Minimap offset is " + String(minimap_bg.uv_offset))
-	var player_coord = get_parent().get_global_transform().origin
+	var player_coord = get_tree().get_nodes_in_group("player")[0].get_child(0).get_global_transform().origin
+	#var player_coord = get_parent().get_parent().get_global_transform().origin
 	#print("Player coords is " + String(player_coord))
 	#to move map left, the value must be negative
 	var panning_x = player_coord.x * -minimap_bg.uv_offset
@@ -162,14 +168,16 @@ func calc_panning():
 	return [panning_x, panning_y]
 
 func get_point_rel_loc(global_loc):
-	var player_tr = get_parent().get_global_transform()
+	var player_tr = get_tree().get_nodes_in_group("player")[0].get_child(0).get_global_transform()
+	#var player_tr = get_parent().get_parent().get_global_transform()
 	
 	var rel_loc = player_tr.xform_inv(global_loc)
 	return rel_loc
 	
 func get_AI_rel_loc(AI):
 	var global_loc = AI.get_global_transform().origin
-	var player_tr = get_parent().get_global_transform()
+	var player_tr = get_tree().get_nodes_in_group("player")[0].get_child(0).get_global_transform()
+	#var player_tr = get_parent().get_parent().get_global_transform()
 	
 	var rel_loc = player_tr.xform_inv(global_loc)
 		
