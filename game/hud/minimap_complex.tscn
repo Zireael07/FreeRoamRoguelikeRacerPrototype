@@ -1,0 +1,222 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://hud/camera_minimap.gd" type="Script" id=1]
+[ext_resource path="res://hud/border.png" type="Texture" id=2]
+[ext_resource path="res://map_edited.png" type="Texture" id=3]
+[ext_resource path="res://hud/map_texture.gd" type="Script" id=4]
+[ext_resource path="res://hud/Node2D.gd" type="Script" id=5]
+[ext_resource path="res://hud/Camera2D.gd" type="Script" id=6]
+[ext_resource path="res://hud/minimap_arrow_big_64 - cyan.png" type="Texture" id=7]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+
+render_priority = 0
+blend_mode = 0
+light_mode = 1
+
+[node name="minimap" type="Control" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 40.0
+margin_bottom = 40.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+script = ExtResource( 1 )
+_sections_unfolded = [ "Anchor", "Margin", "Rect" ]
+
+[node name="Container" type="Container" parent="." index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 500.0
+margin_bottom = 500.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+_sections_unfolded = [ "Margin", "Rect" ]
+
+[node name="Node2D" type="Node2D" parent="Container" index="0"]
+
+visible = false
+position = Vector2( 123, 125 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="border" type="TextureRect" parent="Container/Node2D" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -123.0
+margin_top = -122.0
+margin_right = 498.0
+margin_bottom = 499.0
+rect_scale = Vector2( 0.4, 0.4 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource( 2 )
+stretch_mode = 0
+
+[node name="clipper" type="Control" parent="Container" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 40.0
+margin_top = 40.0
+margin_right = 215.0
+margin_bottom = 215.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Rect", "Transform" ]
+
+[node name="Control_pos" type="Control" parent="Container/clipper" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 80.0
+margin_top = 100.0
+margin_right = 120.0
+margin_bottom = 140.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="Control" type="Control" parent="Container/clipper/Control_pos" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 40.0
+margin_bottom = 40.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="map_background" type="TextureRect" parent="Container/clipper/Control_pos/Control" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -500.0
+margin_top = -500.0
+margin_right = 500.0
+margin_bottom = 500.0
+rect_pivot_offset = Vector2( 500, 500 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 5
+script = ExtResource( 4 )
+_sections_unfolded = [ "Anchor", "Margin", "Material", "Rect", "Visibility" ]
+
+[node name="track" type="Node2D" parent="Container/clipper/Control_pos/Control" index="1"]
+
+script = ExtResource( 5 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="attach" type="Control" parent="Container/clipper/Control_pos/Control" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 40.0
+margin_bottom = 40.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+
+[node name="Camera2D" type="Camera2D" parent="Container/clipper/Control_pos/Control" index="3"]
+
+editor/display_folded = true
+material = SubResource( 1 )
+anchor_mode = 1
+rotating = false
+current = true
+zoom = Vector2( 1, 1 )
+limit_left = -10000000
+limit_top = -10000000
+limit_right = 10000000
+limit_bottom = 10000000
+limit_smoothed = false
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
+smoothing_enabled = false
+smoothing_speed = 5.0
+offset_v = 0.0
+offset_h = 0.0
+drag_margin_left = 0.2
+drag_margin_top = 0.2
+drag_margin_right = 0.2
+drag_margin_bottom = 0.2
+editor_draw_screen = true
+editor_draw_limits = false
+editor_draw_drag_margin = false
+script = ExtResource( 6 )
+_sections_unfolded = [ "Material", "Transform", "Visibility" ]
+
+[node name="test in-cam" type="TextureRect" parent="Container/clipper/Control_pos/Control/Camera2D" index="0"]
+
+visible = false
+self_modulate = Color( 1, 0.0078125, 0.0078125, 1 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -16.0
+margin_top = -16.0
+margin_right = 48.0
+margin_bottom = 48.0
+rect_scale = Vector2( 0.5, 0.5 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+texture = ExtResource( 7 )
+stretch_mode = 0
+_sections_unfolded = [ "Material", "Rect", "Visibility" ]
+
+

@@ -31,7 +31,9 @@ func _ready():
 		#print("UV offset is " + String(uv_offset))		
 		
 	#register ourselves with the minimap root
-	get_parent().get_parent().get_parent().minimap_bg = self
+	var player = get_tree().get_nodes_in_group("player")[0].get_child(0)
+	
+	player.get_node("Viewport_root/Viewport/minimap").minimap_bg = self
 		
 	pass
 
@@ -41,7 +43,9 @@ func make_map():
 	image = Image.new()
 	image.create(1000, 1000, false, Image.FORMAT_RGBA8)
 	
-	positions = get_parent().get_parent().get_parent().positions
+	#positions = get_parent().get_parent().get_parent().positions
+	var player = get_tree().get_nodes_in_group("player")[0].get_child(0)
+	positions = player.get_node("Viewport_root/Viewport/minimap").positions
 	
 	#draw background
 	# massive speed up
@@ -104,7 +108,10 @@ func make_map():
 	image.save_png("res://map_edited.png")
 
 	#register ourselves with the parent
-	get_parent().get_parent().get_parent().minimap_bg = self
+	#get_parent().get_parent().get_parent().minimap_bg = self
+	#player = get_tree().get_nodes_in_group("player")[0].get_child(0)
+	
+	player.get_node("Viewport_root/Viewport/minimap").minimap_bg = self
 	
 # drawing
 func pos3d_to_minimap_point(pos):

@@ -1,0 +1,54 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://hud/minimap_complex.tscn" type="PackedScene" id=1]
+
+[node name="Viewport" type="ViewportContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 770.0
+margin_top = 340.0
+margin_right = 1020.0
+margin_bottom = 590.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+stretch = true
+stretch_shrink = 1
+_sections_unfolded = [ "Rect", "Render Target", "Rendering" ]
+
+[node name="Viewport" type="Viewport" parent="." index="0"]
+
+arvr = false
+size = Vector2( 250, 250 )
+own_world = false
+world = null
+transparent_bg = true
+msaa = 0
+hdr = true
+disable_3d = true
+usage = 0
+debug_draw = 0
+render_target_v_flip = false
+render_target_clear_mode = 0
+render_target_update_mode = 3
+audio_listener_enable_2d = false
+audio_listener_enable_3d = false
+physics_object_picking = false
+gui_disable_input = true
+gui_snap_controls_to_pixels = true
+shadow_atlas_size = 0
+shadow_atlas_quad_0 = 2
+shadow_atlas_quad_1 = 2
+shadow_atlas_quad_2 = 3
+shadow_atlas_quad_3 = 4
+_sections_unfolded = [ "GUI", "Physics", "Render Target", "Rendering" ]
+
+[node name="minimap" parent="Viewport" index="0" instance=ExtResource( 1 )]
+
+
