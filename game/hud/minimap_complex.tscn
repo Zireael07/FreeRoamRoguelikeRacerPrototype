@@ -49,8 +49,9 @@ _sections_unfolded = [ "Margin", "Rect" ]
 
 [node name="Node2D" type="Node2D" parent="Container" index="0"]
 
+editor/display_folded = true
 visible = false
-position = Vector2( 123, 125 )
+position = Vector2( 125, 125 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="border" type="TextureRect" parent="Container/Node2D" index="0"]
@@ -149,6 +150,7 @@ _sections_unfolded = [ "Anchor", "Margin", "Material", "Rect", "Visibility" ]
 
 [node name="track" type="Node2D" parent="Container/clipper/Control_pos/Control" index="1"]
 
+position = Vector2( 2, 0 )
 script = ExtResource( 5 )
 _sections_unfolded = [ "Transform" ]
 

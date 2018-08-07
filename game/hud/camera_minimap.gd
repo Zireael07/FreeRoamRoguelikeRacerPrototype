@@ -99,7 +99,7 @@ func add_marker(pos, blue_flag):
 	#cam2d.add_child(marker_tex)
 	#marker_tex.set_position(Vector2(-16-pos.x, -16-pos.z))
 	# fudge factor necessary
-	marker_tex.set_position(Vector2(-pos.x, -pos.z))
+	marker_tex.set_position(Vector2(-pos.x, -pos.z-16))
 	#print("For pos " + str(pos) + "marker pos is " + str(marker_tex.get_position()))
 	marker_pos.push_back(pos)
 	markers.push_back(marker_tex.get_name())
