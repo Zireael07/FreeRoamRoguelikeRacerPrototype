@@ -1,4 +1,4 @@
-extends Control
+extends Node2D
 
 # class member variables go here, for example:
 var AIs = PoolStringArray()
@@ -26,11 +26,11 @@ func _ready():
 	var blue_flag = preload("res://hud/flag.png")
 	#var red_flag = preload("res://hud/flag_red.png")
 	
-	cam2d = get_node("Container/clipper/Control_pos/Control/Camera2D")
+	cam2d = get_node("Container/Node2D2/Control_pos/Camera2D")
 	print(cam2d.get_name())
 	
 	#attach = get_child(0)
-	attach = get_node("Container/clipper/Control_pos/Control/attach")
+	attach = get_node("Container/Node2D2/Control_pos/attach")
 	
 	getPositions()
 	

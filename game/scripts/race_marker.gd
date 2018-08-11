@@ -81,7 +81,7 @@ func _on_path_gotten():
 	player.create_race_path(raceline)
 	
 	# send the track to the map
-	var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/clipper/Control_pos/Control/track")
+	var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
 	track_map.points = track_map.vec3s_convert(raceline)
 	# force redraw
 	track_map.update()

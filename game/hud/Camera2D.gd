@@ -26,6 +26,9 @@ func _physics_process(delta):
 	if (player_rot.x < -deg2rad(150) or player_rot.x > deg2rad(150)) and (player_rot.z < - deg2rad(150) or player_rot.z > deg2rad(150)):
 		map_rot = deg2rad(180)+player_rot.y #1.02
 	
+	# For rotation to work, there must be NO Controls as it's parent/grandparent, in other words up the node tree
+	# siblings are fine
+	
 	set_rotation(-map_rot)
 
 func calc_panning():
