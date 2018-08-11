@@ -5,7 +5,6 @@
 [ext_resource path="res://hud/cam_icon.png" type="Texture" id=3]
 [ext_resource path="res://hud/battery_icon_full.png" type="Texture" id=4]
 
-
 [sub_resource type="DynamicFont" id=1]
 
 size = 20
@@ -159,10 +158,10 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 720.0
-margin_top = 500.0
-margin_right = 922.0
-margin_bottom = 600.0
+margin_left = 620.0
+margin_top = 495.0
+margin_right = 822.0
+margin_bottom = 595.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -176,6 +175,7 @@ valign = 2
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = 1
+_sections_unfolded = [ "Rect" ]
 
 [node name="Label clock" type="Label" parent="." index="3"]
 
@@ -183,9 +183,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 678.0
+margin_left = 638.0
 margin_top = 461.0
-margin_right = 880.0
+margin_right = 840.0
 margin_bottom = 561.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -201,7 +201,7 @@ valign = 2
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = 1
-_sections_unfolded = [ "custom_fonts" ]
+_sections_unfolded = [ "Rect", "custom_fonts" ]
 
 [node name="Label 2" type="Label" parent="." index="4"]
 
