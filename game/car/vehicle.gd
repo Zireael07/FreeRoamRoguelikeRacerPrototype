@@ -28,7 +28,7 @@ var steer_target = 0
 var predicted_steer = 0
 
 #speed
-var speed
+var speed = 0
 var speed_int = 0
 var speed_kph = 0
 
