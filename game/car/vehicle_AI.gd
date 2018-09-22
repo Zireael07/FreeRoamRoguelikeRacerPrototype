@@ -35,6 +35,15 @@ var start_secs = 1
 var emitted = false
 signal path_gotten
 
+# FSM
+onready var state = DrivingState.new(self)
+var prev_state
+
+const STATE_PATHING = 0
+const STATE_DRIVING  = 1
+
+
+signal state_changed
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -56,6 +65,25 @@ func _ready():
 	set_process(true)
 	set_physics_process(true)
 
+# fsm
+func set_state(new_state):
+	# if we need to clean up
+	#state.exit()
+	prev_state = get_state()
+	
+#	if new_state == STATE_PATHING:
+#		state = PathingState.new(self)
+#	el
+	if new_state == STATE_DRIVING:
+		state = DrivingState.new(self)
+	
+	emit_signal("state_changed", self)
+
+func get_state():
+	if state is DrivingState:
+		return STATE_DRIVING
+
+# debugging
 func debug_draw_lines():
 	#points
 	var pos = get_transform().origin #get_translation()
@@ -123,105 +151,118 @@ func _process(delta):
 				get_parent().draw_arc.draw_arc_poly(get_translation(), 90-get_rotation_degrees().y, -rad2deg(angle), Color(1,0,0))
 			else:
 				get_parent().draw_arc.draw_arc_poly(get_translation(), 90-get_rotation_degrees().y, -rad2deg(angle), Color(0,1,0))
-				
+
+# just call the state
 func _physics_process(delta):
-	flag = ""
+	state.update(delta)
 	
-	#input
-	gas = false
-	braking = false
-	left = false
-	right = false
-
-	#data
-	speed = get_linear_velocity().length();
-	var forward_vec = get_translation() + get_global_transform().basis.z
+# states ----------------------------------------------------
+class DrivingState:
+	var car
 	
-	rel_loc = get_global_transform().xform_inv(get_target(current))
-	
-	#2D angle to target (local coords)
-	angle = atan2(rel_loc.x, rel_loc.z)
-	
-	#is the target in front of us or not?
-	var pos = get_global_transform().origin
-	#B-A = from A to B
-	var target_vec = get_target(current) - pos
-	dot = forward_vec.dot(target_vec)
-	
-	# needed for race position
-	if path != null and path.size() > 0:
-		position_on_line = position_line(prev, current, pos, path)
-	
-	#BEHAVIOR
-	
-	#if we're over the limit, relax steering
-	limit = get_steering_limit()
-	if (get_steering() > limit):
-		left = true
-	if (get_steering() < -limit):
-		right = true
-
-
-	#stop if we're supposed to
-	if (stop):
-		stopping()
-	else:
-		# detect collisions
-		collision_avoidance()
-					
+	func _init(car):
+		self.car = car
 		
-		if not (flag.find("AVOID") != -1):
-			# go back on track if too far away from the drive line
-			go_back(pos)
+	func update(delta):
+		car.flag = ""
+		
+		# reset input
+		car.gas = false
+		car.braking = false
+		car.left = false
+		car.right = false
+
+		#data
+		car.speed = car.get_linear_velocity().length();
+		var forward_vec = car.get_translation() + car.get_global_transform().basis.z
+		
+		car.rel_loc = car.get_global_transform().xform_inv(car.get_target(car.current))
+		
+		#2D angle to target (local coords)
+		car.angle = atan2(car.rel_loc.x, car.rel_loc.z)
+		
+		#is the target in front of us or not?
+		var pos = car.get_global_transform().origin
+		#B-A = from A to B
+		var target_vec = car.get_target(car.current) - pos
+		car.dot = forward_vec.dot(target_vec)
+		
+		# needed for race position
+		if car.path != null and car.path.size() > 0:
+			car.position_on_line = car.position_line(car.prev, car.current, pos, car.path)
+		
+		#BEHAVIOR
+		
+		#if we're over the limit, relax steering
+		car.limit = car.get_steering_limit()
+		if (car.get_steering() > car.limit):
+			car.left = true
+		if (car.get_steering() < -car.limit):
+			car.right = true
+	
+	
+		#stop if we're supposed to
+		if (car.stop):
+			car.stopping()
+		else:
+			# detect collisions
+			car.collision_avoidance()
+						
 			
-			if not flag == "GOING BACK":
-				#handle gas/brake
-				if is_enough_dist(rel_loc, compare_pos, speed):
-					if (speed < top_speed):
-						gas = true
-				else:
-					if (speed > 1):
-						braking = true
+			if not (car.flag.find("AVOID") != -1):
+				# go back on track if too far away from the drive line
+				car.go_back(pos)
+				
+				if not car.flag == "GOING BACK":
+					#handle gas/brake
+					if car.is_enough_dist(car.rel_loc, car.compare_pos, car.speed):
+						if (car.speed < car.top_speed):
+							car.gas = true
+					else:
+						if (car.speed > 1):
+							car.braking = true
+			
+					#if we're close to target, do nothing
+					if (car.rel_loc.distance_to(car.compare_pos) < 3) and abs(car.angle) < 0.9:
+						#fixed_angling()
+						#print("Close to target, don't deviate")
+						#relax steering
+						if (abs(car.get_steering()) > 0.02):
+							car.left = false
+							car.right = false
+						
+					else:
+						#normal stuff
+						car.fixed_angling()
 		
-				#if we're close to target, do nothing
-				if (rel_loc.distance_to(compare_pos) < 3) and abs(angle) < 0.9:
-					#fixed_angling()
-					#print("Close to target, don't deviate")
-					#relax steering
-					if (abs(get_steering()) > 0.02):
-						left = false
-						right = false
-					
-				else:
-					#normal stuff
-					fixed_angling()
-	
-	# predict wheel angle
-	predicted_steer = predict_steer(delta, left, right)
-	
-	process_car_physics(delta, gas, braking, left, right)
-	
-	#if we passed the point, don't backtrack
-	if (dot < 0 and not stop):
-		##do we have a next point?
-		if (target_array.size() > current+1):
-			prev = current
-			current = current + 1
-		else:
-			#print("We're at the end")
-			stop = true
-	
-	
-	if (rel_loc.distance_to(Vector3(0,1.5,0)) < 2):
-		#print("We're close to target")
+		# predict wheel angle
+		car.predicted_steer = car.predict_steer(delta, car.left, car.right)
 		
-		##do we have a next point?
-		if (target_array.size() > current+1):
-			prev = current
-			current = current + 1
-		else:
-			#print("We're at the end")
-			stop = true
+		car.process_car_physics(delta, car.gas, car.braking, car.left, car.right)
+		
+		#if we passed the point, don't backtrack
+		if (car.dot < 0 and not car.stop):
+			##do we have a next point?
+			if (car.target_array.size() > car.current+1):
+				car.prev = car.current
+				car.current = car.current + 1
+			else:
+				#print("We're at the end")
+				car.stop = true
+		
+		
+		if (car.rel_loc.distance_to(Vector3(0,1.5,0)) < 2):
+			#print("We're close to target")
+			
+			##do we have a next point?
+			if (car.target_array.size() > car.current+1):
+				car.prev = car.current
+				car.current = car.current + 1
+			else:
+				#print("We're at the end")
+				car.stop = true
+
+#-------------------------------------------
 
 # AI	
 	
