@@ -10,6 +10,9 @@ var positions = []
 
 var points_arc = []
 
+var first_turn
+var last_turn
+
 func _ready():
 	draw = get_node("draw")
 	road_straight = preload("res://roads/road_segment_straight.tscn")
@@ -17,12 +20,11 @@ func _ready():
 	
 	connect_intersections(0,1)
 	connect_intersections(0,2)
-	# need to rotate straight for some reason?
-	connect_intersections(2,3, true)
+
+	connect_intersections(2,3)	
+	connect_intersections(0,4)
 	
-	connect_intersections(0,4, true)
-	
-func connect_intersections(one, two, straight_rot=false):
+func connect_intersections(one, two):
 	var src_exit = get_src_exit(get_child(one), get_child(two))
 	var loc_src_exit = to_local(get_child(one).to_global(src_exit))
 
@@ -39,11 +41,11 @@ func connect_intersections(one, two, straight_rot=false):
 
 	initial_road_test(data, corner_points[0])
 
-	set_straight(corner_points[1], corner_points[3], data[2], straight_rot)
-
 	data = calculate_last_turn(corner_points[2], corner_points[3], loc_dest_exit, extendeds[1], dest_exit)
 
 	last_turn_test(data, corner_points[2])	
+	
+	set_straight(corner_points[1], corner_points[3], data[2])
 
 func extend_lines(one, two, loc_src_exit, loc_dest_exit, extend):
 	#B-A: A->B
@@ -55,7 +57,7 @@ func extend_lines(one, two, loc_src_exit, loc_dest_exit, extend):
 	
 	var dest_line = loc_dest_exit-get_child(two).get_translation()
 	var loc_dest_extended = dest_line*extend + get_child(two).get_translation()
-	debug_cube(loc_dest_extended)
+	#debug_cube(loc_dest_extended)
 	
 	return [loc_src_extended, loc_dest_extended]
 	
@@ -69,7 +71,7 @@ func get_corner_points(one, two, loc_src_extended, loc_dest_extended, dist):
 	var corner_back = loc_src_extended + vec_back
 	corners.append(corner_back)
 	
-	debug_cube(Vector3(corner_back.x, 1, corner_back.z))
+	#debug_cube(Vector3(corner_back.x, 1, corner_back.z))
 	
 	var vec_forw = loc_dest_extended - loc_src_extended
 	vec_forw = vec_forw.normalized()*dist # x units away
@@ -77,7 +79,7 @@ func get_corner_points(one, two, loc_src_extended, loc_dest_extended, dist):
 	var corner_forw = loc_src_extended + vec_forw
 	corners.append(corner_forw)
 	
-	debug_cube(Vector3(corner_forw.x, 1, corner_forw.z))
+	#debug_cube(Vector3(corner_forw.x, 1, corner_forw.z))
 	
 	# the destinations
 	# B-A = A-> B
@@ -87,7 +89,7 @@ func get_corner_points(one, two, loc_src_extended, loc_dest_extended, dist):
 	corner_back = loc_dest_extended + vec_back
 	corners.append(corner_back)
 	
-	debug_cube(Vector3(corner_back.x, 1, corner_back.z))
+	#debug_cube(Vector3(corner_back.x, 1, corner_back.z))
 	
 	vec_forw = loc_src_extended - loc_dest_extended
 	vec_forw = vec_forw.normalized()*dist # x units away
@@ -95,7 +97,7 @@ func get_corner_points(one, two, loc_src_extended, loc_dest_extended, dist):
 	corner_forw = loc_dest_extended + vec_forw
 	corners.append(corner_forw)
 	
-	debug_cube(Vector3(corner_forw.x, 1, corner_forw.z))
+	#debug_cube(Vector3(corner_forw.x, 1, corner_forw.z))
 	
 	
 	return corners
@@ -182,37 +184,37 @@ func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, des
 	tang2 = tang2*tang_factor
 	var start = Vector2(corner1.x, corner1.z) + tang
 	
-	debug_cube(Vector3(start.x, 1, start.y))
+	#debug_cube(Vector3(start.x, 1, start.y))
 	
 	positions.append(Vector3(start.x, 0, start.y))
 	
 	#var start = Vector2(corner1.x, corner1.z)
 	var end = Vector2(Vector2(corner1.x, corner1.z) - tang)
 	
-	debug_cube(Vector3(end.x, 1, end.y))
+	#debug_cube(Vector3(end.x, 1, end.y))
 	positions.append(Vector3(end.x, 0, end.y))
 	
 	#var start_b = Vector2(corner2.x, corner2.z)
 	var start_b = Vector2(corner2.x, corner2.z) + tang2
-	debug_cube(Vector3(start_b.x, 1, start_b.y))
+	#debug_cube(Vector3(start_b.x, 1, start_b.y))
 	positions.append(Vector3(start_b.x, 0, start_b.y))
 	var end_b = Vector2(Vector2(corner2.x, corner2.z)-tang2)
 	positions.append(Vector3(end_b.x, 0, end_b.y))
-	debug_cube(Vector3(end_b.x, 1, end_b.y))
+	#debug_cube(Vector3(end_b.x, 1, end_b.y))
 	
 	# check for intersection (2D only)
 	var inters = Geometry.segment_intersects_segment_2d(start, end, start_b, end_b)
 	
 	if inters:
 		print("Intersect: " + str(inters))
-		debug_cube(Vector3(inters.x, 1, inters.y))
+		#debug_cube(Vector3(inters.x, 1, inters.y))
 	
 		var radius = inters.distance_to(Vector2(corner1.x, corner1.z))
 		
 		# the point to which 0 degrees corresponds
 		var angle0 = inters+Vector2(radius,0)
 		
-		debug_cube(Vector3(angle0.x, 1, angle0.y))
+		#debug_cube(Vector3(angle0.x, 1, angle0.y))
 		
 		var angles = get_arc_angle(inters, Vector2(corner1.x, corner1.z), Vector2(corner2.x, corner2.z), angle0)
 		# debug angles
@@ -239,14 +241,14 @@ func initial_road_test(data, loc):
 	var end_angle = data[2]
 	
 	
-	var curved = set_curved_road(radius, start_angle, end_angle, 0)
-	curved.set_translation(loc)
+	first_turn = set_curved_road(radius, start_angle, end_angle, 0)
+	first_turn.set_translation(loc)
 	
 	# place
 	if get_child(1).get_translation().y > get_child(0).get_translation().y:
 		print("Road in normal direction, positive y")
 	else:
-		curved.rotate_y(deg2rad(180))
+		first_turn.rotate_y(deg2rad(180))
 		print("Rotated because we're going back")
 
 func last_turn_test(data, loc):
@@ -255,18 +257,18 @@ func last_turn_test(data, loc):
 	var end_angle = data[2]
 	
 	
-	var curved = set_curved_road(radius, start_angle, end_angle, 1)
-	curved.set_translation(loc)
+	last_turn = set_curved_road(radius, start_angle, end_angle, 1)
+	last_turn.set_translation(loc)
 	
 	# place
 	if get_child(1).get_translation().y > get_child(0).get_translation().y:
 		print("Road in normal direction, positive y")
 	else:
-		curved.rotate_y(deg2rad(180))
+		last_turn.rotate_y(deg2rad(180))
 		print("Rotated because we're going back")
 	
 	
-func set_straight(loc, loc2, rot, rotate=False):
+func set_straight(loc, loc2, rot):
 	var road_node = road_straight.instance()
 	road_node.set_name("Road_instance 0")
 	# set length
@@ -276,25 +278,27 @@ func set_straight(loc, loc2, rot, rotate=False):
 	print("Rounding" + str(rounded))
 	road_node.length = (rounded+1)/2 # road section length
 	
+	# debug
+	debug_cube(Vector3(loc.x, 1, loc.z))
+	debug_cube(Vector3(loc2.x, 1, loc2.z))
+	
 	var spatial = Spatial.new()
 	spatial.set_name("Spatial0")
 	add_child(spatial)
 	spatial.add_child(road_node)
 	
-	spatial.rotate_y(deg2rad(360-rot))
-	
-	if rotate:
-		spatial.rotate_y(deg2rad(180))
-	
 	# place
-#	if dest.get_translation().y > src.get_translation().y:
-#		print("Road in normal direction, positive y")
-#	else:
-#		spatial.rotate_y(deg2rad(180))
-#		print("Rotated because we're going back")
-		
-	
 	spatial.set_translation(loc)
+	
+	# looking down -Z
+	var tg = to_global(loc2)
+	print("Look at target: " + str(tg))
+	
+	road_node.look_at(tg, Vector3(0,1,0))
+	# because we're pointing at +Z, sigh...
+	spatial.rotate_y(deg2rad(180))
+	
+	
 		
 	
 	return road_node	
