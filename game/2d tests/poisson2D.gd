@@ -30,6 +30,9 @@ var coords_list = []
 var cells = {}
 var samples = []
 
+var edges = []
+
+
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
@@ -163,11 +166,14 @@ func run():
 		# choose a random "reference" point from the active list.
 		#var idx = random.choice(active)
 		var idx = choice(active)
-		print("Idx: " + str(idx))
+		#print("Idx: " + str(idx))
 		var refpt = samples[idx]
 		# Try to pick a new point relative to the reference point.
 		pt = get_point(k, refpt, samples)
 		if pt:
+			# add to edges
+			edges.append([refpt, pt])
+			
 			# Point pt is valid: add it to the samples list and mark it as active
 			samples.append(pt)
 			nsamples += 1
@@ -183,11 +189,19 @@ func run():
 			#if active.size() > idx:
 			active.remove(idx)
 	
-	print(samples)
+	#print(samples)
 	return samples
 	
 func _draw():
-	for p in samples:
-		draw_circle(Vector2(p[0], p[1]), 2.0, Color(1,0,0))
+	for i in range(0, samples.size()-1):
+		var p = samples[i]
+		if i == 0:
+			draw_circle(Vector2(p[0], p[1]), 2.0, Color(0,1,0))
+		else:
+			draw_circle(Vector2(p[0], p[1]), 2.0, Color(1,0,0))
+	
+	for e in edges:
+		draw_line(Vector2(e[0][0], e[0][1]), Vector2(e[1][0], e[1][1]), Color(0,0,1))
+	
 		
 	update()
