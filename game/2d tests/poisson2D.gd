@@ -33,7 +33,8 @@ var samples = []
 
 var edges = []
 
-export var seede = 3046862638 setget set_seed
+#export var seede = 3046862638 setget set_seed
+var seede = 10000001 #3046862638
 
 
 func _ready():
@@ -53,8 +54,9 @@ func _ready():
 
 func set_seed(value):
 	print("Seed value is " + str(value))
+	# if not set_get we don't need this
 	#if !Engine.editor_hint:
-	yield(self, 'tree_entered')
+	#yield(self, 'tree_entered')
 	
 	for ix in range(nx):
 		for iy in range(ny):

@@ -3,7 +3,8 @@ extends "res://2d tests/poisson2D.gd"
 
 # class member variables go here, for example:
 var mult = 2
-export var seed3 = 3046862638 setget set_seed3
+#export var seed3 = 104686263 setget set_seed3
+var seed3 = 10000001 #3046862638
 
 func _ready():
 	# Called when the node is added to the scene for the first time.
@@ -37,8 +38,9 @@ func _ready():
 # because we can't use the extended?
 func set_seed3(value):
 	#print("Seed3 value is " + str(value))
+	# if not set_get we don't need this
 	#if !Engine.editor_hint:
-	yield(self, 'tree_entered')
+	#yield(self, 'tree_entered')
 	
 	for ix in range(nx):
 		for iy in range(ny):
