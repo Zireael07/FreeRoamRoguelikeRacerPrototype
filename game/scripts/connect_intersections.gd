@@ -18,13 +18,16 @@ func _ready():
 	road_straight = preload("res://roads/road_segment_straight.tscn")
 	road = preload("res://roads/road_segment.tscn")
 	
-	connect_intersections(0,1)
-	connect_intersections(0,2)
-
-	connect_intersections(2,3)	
-	connect_intersections(0,4)
-	
 func connect_intersections(one, two):
+	if one > get_child_count() -1 or two > get_child_count() -1:
+		print("Wrong indices given")
+		return
+	
+	if not "point_one" in get_child(one) or not "point_one" in get_child(two):
+		print("Targets are not intersections?")
+		return
+	
+	
 	var src_exit = get_src_exit(get_child(one), get_child(two))
 	var loc_src_exit = to_local(get_child(one).to_global(src_exit))
 
@@ -45,7 +48,7 @@ func connect_intersections(one, two):
 
 	last_turn_test(data, corner_points[2])	
 	
-	set_straight(corner_points[1], corner_points[3], data[2])
+	set_straight(corner_points[1], corner_points[3])
 
 func extend_lines(one, two, loc_src_exit, loc_dest_exit, extend):
 	#B-A: A->B
@@ -236,6 +239,10 @@ func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, des
 		print("Last turn, no inters detected")
 	
 func initial_road_test(data, loc):
+	if data == null:
+		print("No first turn data, return")
+		return
+		
 	var radius = data[0]
 	var start_angle = data[1]
 	var end_angle = data[2]
@@ -252,6 +259,11 @@ func initial_road_test(data, loc):
 		print("Rotated because we're going back")
 
 func last_turn_test(data, loc):
+	if data == null:
+		print("No last turn data, return")
+		return
+	
+	
 	var radius = data[0]
 	var start_angle = data[1]
 	var end_angle = data[2]
@@ -268,7 +280,7 @@ func last_turn_test(data, loc):
 		print("Rotated because we're going back")
 	
 	
-func set_straight(loc, loc2, rot):
+func set_straight(loc, loc2):
 	var road_node = road_straight.instance()
 	road_node.set_name("Road_instance 0")
 	# set length

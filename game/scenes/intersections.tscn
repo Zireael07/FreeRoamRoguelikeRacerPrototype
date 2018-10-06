@@ -7,7 +7,7 @@
 [ext_resource path="res://roads/intersection.tscn" type="PackedScene" id=5]
 [ext_resource path="res://roads/road_segment_straight.tscn" type="PackedScene" id=6]
 [ext_resource path="res://objects/garage_city.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scripts/connect_intersections.gd" type="Script" id=8]
+[ext_resource path="res://scripts/intersections_test.gd" type="Script" id=8]
 [ext_resource path="res://scripts/draw_line.gd" type="Script" id=9]
 [ext_resource path="res://car/car_base.tscn" type="PackedScene" id=10]
 
@@ -161,7 +161,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.493, 0, -24.2483 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00700378, 0, -109.752 )
 _sections_unfolded = [ "Transform" ]
 road_slope = 0.0
+sidewalks = false
+guardrails = false
 trees = null
+bamboo = null
 
 [node name="Position3D2" parent="sample/Spatial" index="1" instance=ExtResource( 6 )]
 
@@ -169,8 +172,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00700378, 0, 4.2483 )
 _sections_unfolded = [ "Transform" ]
 length = 20
 road_slope = 0.0
+sidewalks = false
+guardrails = false
 relative_end = Vector3( 0, 0, 40 )
 trees = null
+bamboo = null
 
 [node name="garage2" parent="sample" index="1" instance=ExtResource( 7 )]
 

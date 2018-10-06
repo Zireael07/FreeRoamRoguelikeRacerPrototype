@@ -70,15 +70,9 @@ directional_shadow_depth_range = 0
 directional_shadow_max_distance = 100.0
 _sections_unfolded = [ "Directional Shadow", "Shadow" ]
 
-[node name="car" type="Spatial" parent="." index="4" groups=[
-"player",
-] instance=ExtResource( 3 )]
+[node name="car" parent="." index="4" instance=ExtResource( 3 )]
 
-_import_path = NodePath(".")
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.2608, 0, 0 )
-__meta__ = {
-"__editor_plugin_screen__": "3D"
-}
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.38943, 0, 0 )
 
 [node name="Ground" type="Spatial" parent="." index="5"]
 
