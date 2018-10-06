@@ -1,3 +1,4 @@
+tool
 extends Node
 
 # Procedural algorithm for the generation of two-dimensional Poission-disc
@@ -172,7 +173,8 @@ func run():
 		pt = get_point(k, refpt, samples)
 		if pt:
 			# add to edges
-			edges.append([refpt, pt])
+			#edges.append([refpt, pt])
+			
 			
 			# Point pt is valid: add it to the samples list and mark it as active
 			samples.append(pt)
@@ -182,7 +184,11 @@ func run():
 			#key = coords[0] + coords[1] * nx
 			key = Vector2(coords[0], coords[1])
 			cells[key] = samples.size() -1
-			#cells[get_cell_coords(pt)] = len(samples) - 1
+			
+			#add indices to edges
+			# because the new point is always appended at the end
+			edges.append([idx, samples.size()-1])
+			
 		else:
 			# We had to give up looking for valid points near refpt, so remove it
 			# from the list of "active" points.
@@ -201,7 +207,10 @@ func _draw():
 			draw_circle(Vector2(p[0], p[1]), 2.0, Color(1,0,0))
 	
 	for e in edges:
-		draw_line(Vector2(e[0][0], e[0][1]), Vector2(e[1][0], e[1][1]), Color(0,0,1))
+		var p1 = samples[e[0]]
+		var p2 = samples[e[1]]
+		draw_line(Vector2(p1[0], p1[1]), Vector2(p2[0], p2[1]), Color(0,0,1))
+		#draw_line(Vector2(e[0][0], e[0][1]), Vector2(e[1][0], e[1][1]), Color(0,0,1))
 	
 		
 	update()
