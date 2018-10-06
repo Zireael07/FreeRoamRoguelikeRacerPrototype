@@ -34,6 +34,12 @@ func connect_intersections(one, two):
 	var dest_exit = get_dest_exit(get_child(one), get_child(two))
 	var loc_dest_exit = to_local(get_child(two).to_global(dest_exit))
 
+	# debugging
+	positions.append(loc_src_exit)
+	positions.append(loc_dest_exit)
+	
+	draw.draw_line(positions)
+
 	#print("Line length: " + str(loc_dest_exit.distance_to(loc_src_exit)))
 
 	var extendeds = extend_lines(one,two, loc_src_exit, loc_dest_exit, 2)
@@ -42,11 +48,11 @@ func connect_intersections(one, two):
 
 	var data = calculate_initial_turn(corner_points[0], corner_points[1], loc_src_exit, extendeds[0], src_exit)
 
-	initial_road_test(data, corner_points[0])
+	initial_road_test(one, two, data, corner_points[0])
 
 	data = calculate_last_turn(corner_points[2], corner_points[3], loc_dest_exit, extendeds[1], dest_exit)
 
-	last_turn_test(data, corner_points[2])	
+	last_turn_test(one, two, data, corner_points[2])	
 	
 	set_straight(corner_points[1], corner_points[3])
 
@@ -156,9 +162,9 @@ func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, sr
 	
 		var angles = get_arc_angle(inters, Vector2(corner1.x, corner1.z), Vector2(corner2.x, corner2.z), angle0)
 		# debug angles
-		positions.append(corner1)
-		positions.append(Vector3(angle0.x, 0, angle0.y))
-		positions.append(corner2)
+		#positions.append(corner1)
+		#positions.append(Vector3(angle0.x, 0, angle0.y))
+		#positions.append(corner2)
 		
 
 		var points_arc = get_circle_arc(inters, radius, angles[0], angles[1], true)
@@ -189,20 +195,20 @@ func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, des
 	
 	#debug_cube(Vector3(start.x, 1, start.y))
 	
-	positions.append(Vector3(start.x, 0, start.y))
+	#positions.append(Vector3(start.x, 0, start.y))
 	
 	#var start = Vector2(corner1.x, corner1.z)
 	var end = Vector2(Vector2(corner1.x, corner1.z) - tang)
 	
 	#debug_cube(Vector3(end.x, 1, end.y))
-	positions.append(Vector3(end.x, 0, end.y))
+	#positions.append(Vector3(end.x, 0, end.y))
 	
 	#var start_b = Vector2(corner2.x, corner2.z)
 	var start_b = Vector2(corner2.x, corner2.z) + tang2
 	#debug_cube(Vector3(start_b.x, 1, start_b.y))
-	positions.append(Vector3(start_b.x, 0, start_b.y))
+	#positions.append(Vector3(start_b.x, 0, start_b.y))
 	var end_b = Vector2(Vector2(corner2.x, corner2.z)-tang2)
-	positions.append(Vector3(end_b.x, 0, end_b.y))
+	#positions.append(Vector3(end_b.x, 0, end_b.y))
 	#debug_cube(Vector3(end_b.x, 1, end_b.y))
 	
 	# check for intersection (2D only)
@@ -221,15 +227,15 @@ func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, des
 		
 		var angles = get_arc_angle(inters, Vector2(corner1.x, corner1.z), Vector2(corner2.x, corner2.z), angle0)
 		# debug angles
-		positions.append(corner1)
-		positions.append(Vector3(angle0.x, 0, angle0.y))
-		positions.append(corner2)
+		#positions.append(corner1)
+		#positions.append(Vector3(angle0.x, 0, angle0.y))
+		#positions.append(corner2)
 	
 		var points_arc = get_circle_arc(inters, radius, angles[0], angles[1], true)
 		
 		# back to 3D
-		for i in range(points_arc.size()):
-			positions.append(Vector3(points_arc[i].x, 0.01, points_arc[i].y))
+		#for i in range(points_arc.size()):
+		#	positions.append(Vector3(points_arc[i].x, 0.01, points_arc[i].y))
 	
 		var fin = Vector3(points_arc[points_arc.size()-1].x, 0.01, points_arc[points_arc.size()-1].y)
 	
@@ -238,7 +244,7 @@ func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, des
 	else:
 		print("Last turn, no inters detected")
 	
-func initial_road_test(data, loc):
+func initial_road_test(one, two, data, loc):
 	if data == null:
 		print("No first turn data, return")
 		return
@@ -252,13 +258,13 @@ func initial_road_test(data, loc):
 	first_turn.set_translation(loc)
 	
 	# place
-	if get_child(1).get_translation().y > get_child(0).get_translation().y:
+	if get_child(two).get_translation().y > get_child(one).get_translation().y:
 		print("Road in normal direction, positive y")
 	else:
 		first_turn.rotate_y(deg2rad(180))
 		print("Rotated because we're going back")
 
-func last_turn_test(data, loc):
+func last_turn_test(one, two, data, loc):
 	if data == null:
 		print("No last turn data, return")
 		return
@@ -273,7 +279,7 @@ func last_turn_test(data, loc):
 	last_turn.set_translation(loc)
 	
 	# place
-	if get_child(1).get_translation().y > get_child(0).get_translation().y:
+	if get_child(two).get_translation().y > get_child(one).get_translation().y:
 		print("Road in normal direction, positive y")
 	else:
 		last_turn.rotate_y(deg2rad(180))
@@ -399,7 +405,7 @@ func get_arc_angle(center_point, start_point, end_point, angle0):
 	print("Angle 2 " + str(angle))
 	angles.append(angle)
 	
-	print("Arc angle" + str(angles[1]-angles[0]))
+	print("Arc angle " + str(angles[1]-angles[0]))
 	
 	return angles
 
