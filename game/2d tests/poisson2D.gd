@@ -33,10 +33,29 @@ var samples = []
 
 var edges = []
 
+export var seede = 3046862638 setget set_seed
+
 
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
+
+	# randomize the seed
+	#randomize()
+	#var s = randi()
+	#set_seed(s)
+	#seede = s
+	#seed(seede)
+	#run()
+	
+	set_seed(seede)
+	pass
+
+func set_seed(value):
+	print("Seed value is " + str(value))
+	#if !Engine.editor_hint:
+	yield(self, 'tree_entered')
+	
 	for ix in range(nx):
 		for iy in range(ny):
 			coords_list.append([ix, iy])
@@ -47,10 +66,11 @@ func _ready():
 		# we can't store null as value, so...
 		cells[key] = -1
 	
-	#print(cells[0])
-		
+	seed(value)
+	#rand_seed(value)
 	run()
-	#pass
+	
+	print("Seed " + str(seede))
 
 #func _process(delta):
 #	# Called every frame. Delta is time since last frame.
@@ -199,7 +219,7 @@ func run():
 	return samples
 	
 func _draw():
-	for i in range(0, samples.size()-1):
+	for i in range(0, samples.size()):
 		var p = samples[i]
 		if i == 0:
 			draw_circle(Vector2(p[0], p[1]), 2.0, Color(0,1,0))

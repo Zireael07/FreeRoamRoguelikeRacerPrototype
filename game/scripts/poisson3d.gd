@@ -2,13 +2,44 @@ tool
 extends "res://2d tests/poisson2D.gd"
 
 # class member variables go here, for example:
-var mult = 3
+var mult = 2
+export var seed3 = 3046862638 setget set_seed3
 
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
 	
 	# poisson stuff
+	set_seed3(seed3)
+	#seede = seed3
+	#set_seed(seed3)
+#	for ix in range(nx):
+#		for iy in range(ny):
+#			coords_list.append([ix, iy])
+#
+#	for coords in coords_list:
+#		# we can't use straightforward coords as key :(
+#		var key = Vector2(coords[0], coords[1])
+#		# we can't store null as value, so...
+#		cells[key] = -1
+#
+#
+#	run()
+
+	# 3d map
+	#print(samples)
+	
+	
+	map()
+	
+	#pass
+
+# because we can't use the extended?
+func set_seed3(value):
+	#print("Seed3 value is " + str(value))
+	#if !Engine.editor_hint:
+	yield(self, 'tree_entered')
+	
 	for ix in range(nx):
 		for iy in range(ny):
 			coords_list.append([ix, iy])
@@ -18,17 +49,14 @@ func _ready():
 		var key = Vector2(coords[0], coords[1])
 		# we can't store null as value, so...
 		cells[key] = -1
-
-		
+	
+	seed(value)
+	#rand_seed(value)
 	run()
+	
+	#print("Seed3 " + str(seede))
 
-	# 3d map
-	#print(samples)
-	
-	
-	map()
-	
-	#pass
+
 
 func map():
 	for p in samples:
