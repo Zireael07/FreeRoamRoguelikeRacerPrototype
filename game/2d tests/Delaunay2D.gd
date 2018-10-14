@@ -13,7 +13,12 @@ func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
 	
-	generate_points(500,500,10)
+	#generate_points(500,500,10)
+	var input = get_child(0).samples
+	for p in input:
+		points.append(Vector2(p[0], p[1]))
+	
+	print("Points " + str(points))
 	
 	var tris = TriangulatePolygon(points)
 	
