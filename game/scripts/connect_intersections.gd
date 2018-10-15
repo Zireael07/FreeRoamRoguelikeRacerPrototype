@@ -50,9 +50,9 @@ func connect_intersections(one, two):
 
 	initial_road_test(one, two, data, corner_points[0])
 
-	data = calculate_last_turn(corner_points[2], corner_points[3], loc_dest_exit, extendeds[1], dest_exit)
+	#data = calculate_last_turn(corner_points[2], corner_points[3], loc_dest_exit, extendeds[1], dest_exit)
 
-	last_turn_test(one, two, data, corner_points[2])	
+	#last_turn_test(one, two, data, corner_points[2])	
 	
 	set_straight(corner_points[1], corner_points[3])
 
@@ -166,7 +166,16 @@ func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, sr
 		#positions.append(Vector3(angle0.x, 0, angle0.y))
 		#positions.append(corner2)
 		
-
+		if angles[1]-angles[0] > 200:
+			print("Too big angle!")
+			# test
+			angles[1] = angles[0]+10
+			
+		if angles[1]-angles[0] < -200:
+			print("Too small angle!")
+			# test
+			angles[1] = angles[0]+10
+			
 		var points_arc = get_circle_arc(inters, radius, angles[0], angles[1], true)
 	
 		# back to 3D
@@ -252,7 +261,7 @@ func initial_road_test(one, two, data, loc):
 	var radius = data[0]
 	var start_angle = data[1]
 	var end_angle = data[2]
-	
+	print("R: " + str(radius) + " , start angle: " + str(start_angle) + " , end: " + str(end_angle))
 	
 	first_turn = set_curved_road(radius, start_angle, end_angle, 0)
 	first_turn.set_translation(loc)
