@@ -9,14 +9,18 @@ script = ExtResource( 1 )
 
 [node name="Node2D" parent="." index="0" instance=ExtResource( 2 )]
 
-position = Vector2( 10, 10 )
+position = Vector2( 33.875, 84 )
 
-[node name="Node2D2" parent="." index="1" instance=ExtResource( 2 )]
+[node name="Node2D4" parent="." index="1" instance=ExtResource( 2 )]
 
-position = Vector2( 66.5, 105 )
+position = Vector2( -76.75, 82.5 )
 
 [node name="Node2D3" parent="." index="2" instance=ExtResource( 2 )]
 
 position = Vector2( 103.25, 55 )
+
+[node name="Node2D2" parent="." index="3" instance=ExtResource( 2 )]
+
+position = Vector2( 73.75, 125.25 )
 
 
