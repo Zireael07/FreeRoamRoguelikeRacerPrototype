@@ -1,7 +1,7 @@
 # based on https://github.com/TassuP/GodotStuff/blob/master/DelaunayTriangulator/Delaunay.gd
 
 tool
-extends Node2D
+extends Node
 
 # class member variables go here, for example:
 var points = []
@@ -14,33 +14,12 @@ func _ready():
 	# Initialization here
 	
 	#generate_points(500,500,10)
+	pass
 	
-	# randomize
-	randomize()
-	get_child(0).set_seed(randi())
-	
-	
+func setup():
 	var input = get_child(0).samples
 	for p in input:
-		points.append(Vector2(p[0], p[1]))
-	
-	#print("Points " + str(points))
-	
-	var tris = TriangulatePolygon(points)
-	
-	var polys = []
-	
-	for t in tris:
-		var poly = []
-		#print("T: " + str(points[t.p1]) + str(points[t.p2]) + str(points[t.p3]))
-		poly.append(points[t.p1])
-		poly.append(points[t.p2])
-		poly.append(points[t.p3])
-		polys.append(poly)
-	
-	polygons(polys)
-	
-	#pass
+		points.append(Vector2(p[0], p[1]))		#pass
 
 func generate_points(width, height, num_points):
 	
@@ -77,6 +56,9 @@ class Triangle:
 		p1 = point1
 		p2 = point2
 		p3 = point3
+	func get_edges():
+		# can't use the Edge class below because it crashes
+		return [Vector2(p1, p2), Vector2(p2, p3), Vector2(p3, p1)]
 
 class Edge:
 	var p1
