@@ -14,11 +14,17 @@ func _ready():
 	# Initialization here
 	
 	#generate_points(500,500,10)
+	
+	# randomize
+	randomize()
+	get_child(0).set_seed(randi())
+	
+	
 	var input = get_child(0).samples
 	for p in input:
 		points.append(Vector2(p[0], p[1]))
 	
-	print("Points " + str(points))
+	#print("Points " + str(points))
 	
 	var tris = TriangulatePolygon(points)
 	
