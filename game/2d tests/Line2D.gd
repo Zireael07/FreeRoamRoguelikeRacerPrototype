@@ -93,7 +93,7 @@ func get_tangent(i,j):
 		return tang*tang_factor
 
 func get_intersection(index):
-	print("Getting intersection for index: " + str(index) + ", -1: " + str(index-1) + " next: " + str(index+1))
+	#print("Getting intersection for index: " + str(index) + ", -1: " + str(index-1) + " next: " + str(index+1))
 	#var start = corners[index]
 	var start = corners[index]-get_tangent(index-1,index)
 	
@@ -106,7 +106,7 @@ func get_intersection(index):
 	var inters = Geometry.segment_intersects_segment_2d(start, end, start_b, end_b)
 	
 	intersections.append(inters)
-	print("Appending intersection ... " + str(inters))	
+	#print("Appending intersection ... " + str(inters))	
 
 func get_intersections():
 	
@@ -172,28 +172,26 @@ func get_arc_angle(corner_id, intersect_id, corner2):
 	var angle0 = intersections[intersect_id]+Vector2(radius,0)
 	
 	# angle between line from intersection to angle0 and from intersection to corner id (the lower id one)
-	var angle = rad2deg((angle0-intersections[intersect_id]).angle_to(corners[corner_id]-intersections[intersect_id]))
-	angles.append(angle)
-	print("Angle " + str(angle))
+	var angle1 = rad2deg((angle0-intersections[intersect_id]).angle_to(corners[corner_id]-intersections[intersect_id]))
+	angles.append(angle1)
+	print("Angle one: " + str(angle1))
 	# equivalent angle for the higher id angle
-	angle = rad2deg((angle0-intersections[intersect_id]).angle_to(corners[corner2]-intersections[intersect_id]))
-	print("Angle " + str(angle))
-	angles.append(angle)
+	var angle2 = rad2deg((angle0-intersections[intersect_id]).angle_to(corners[corner2]-intersections[intersect_id]))
+	print("Angle two: " + str(angle2))
+	angles.append(angle2)
 	
-	#print("Difference is " + str(angl
+	var arc = angles[0]-angles[1]
+	print("Arc is " + str(arc))
 
-	
+	if arc > 200:
+		print("Too big arc!")
 
 func get_arc_angles():
 	# corner1, intersection, corner2
 	get_arc_angle(1,0,2)
 	
-	print("Difference is " + str(angles[0]-angles[1]))
-	
 	# corner1, intersection, corner2
 	get_arc_angle(3,1,4)
-	
-	print("Difference is " + str(angles[2]-angles[3]))
 		
 	#pass
 
