@@ -21,39 +21,20 @@ func _ready():
 	var dest_exits_1 = ["one", "two", "three"]
 	
 	var dest_exits_2 = ["one", "two", "three"]
+
+	connect_intersections(1,0, src_exits, dest_exits_1)
+	connect_intersections(0,2, src_exits, dest_exits_2)
+	connect_intersections(1,2, dest_exits_2, dest_exits_1)
 	
-	# basic stuff
-	# assuming 0 is source and 1 is target
-	var src_exit = get_src_exit(get_child(0), get_child(1), src_exits)
-	loc_src_exit = to_local(get_child(0).to_global(src_exit))
+
+func connect_intersections(one, two, src_exits, dest_exits):
+	var src_exit = get_src_exit(get_child(one), get_child(two), src_exits)
+	loc_src_exit = to_local(get_child(one).to_global(src_exit))
 	
-	var dest_exit = get_dest_exit(get_child(0), get_child(1), dest_exits_1)
-	loc_dest_exit = to_local(get_child(1).to_global(dest_exit))
+	var dest_exit = get_dest_exit(get_child(one), get_child(two), dest_exits)
+	loc_dest_exit = to_local(get_child(two).to_global(dest_exit))
 	
-	extend_lines(0,1)
-	
-	setup_line_2d()
-	
-	# try again
-	src_exit = get_src_exit(get_child(0), get_child(2), src_exits)
-	loc_src_exit = to_local(get_child(0).to_global(src_exit))
-	
-	dest_exit = get_dest_exit(get_child(0), get_child(2), dest_exits_2)
-	loc_dest_exit = to_local(get_child(2).to_global(dest_exit))
-	
-	extend_lines(0,2)
-	
-	setup_line_2d()
-	
-	
-	# one more time
-	src_exit = get_src_exit(get_child(2), get_child(1), dest_exits_2)
-	loc_src_exit = to_local(get_child(2).to_global(src_exit))
-	
-	dest_exit = get_dest_exit(get_child(2), get_child(1), dest_exits_1)
-	loc_dest_exit = to_local(get_child(1).to_global(dest_exit))
-	
-	extend_lines(2,1)
+	extend_lines(one,two)
 	
 	setup_line_2d()
 	
