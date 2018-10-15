@@ -147,7 +147,7 @@ func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, sr
 	var inters = Geometry.segment_intersects_segment_2d(start, end, start_b, end_b)
 	
 	if inters:
-		print("Intersect: " + str(inters))
+		#print("Intersect: " + str(inters))
 		#positions.append(Vector3(inters.x, 0, inters.y))
 		#debug_cube(Vector3(inters.x, 1, inters.y))
 	
@@ -215,7 +215,7 @@ func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, des
 	var inters = Geometry.segment_intersects_segment_2d(start, end, start_b, end_b)
 	
 	if inters:
-		print("Intersect: " + str(inters))
+		#print("Intersect: " + str(inters))
 		#debug_cube(Vector3(inters.x, 1, inters.y))
 	
 		var radius = inters.distance_to(Vector2(corner1.x, corner1.z))
@@ -291,9 +291,9 @@ func set_straight(loc, loc2):
 	road_node.set_name("Road_instance 0")
 	# set length
 	var dist = loc.distance_to(loc2)
-	print("Distance between points: " + str(dist))
+	#print("Distance between points: " + str(dist))
 	var rounded = int(round(dist))
-	print("Rounding" + str(rounded))
+	#print("Rounding" + str(rounded))
 	road_node.length = (rounded+1)/2 # road section length
 	
 	# debug
@@ -310,7 +310,7 @@ func set_straight(loc, loc2):
 	
 	# looking down -Z
 	var tg = to_global(loc2)
-	print("Look at target: " + str(tg))
+	#print("Look at target: " + str(tg))
 	
 	road_node.look_at(tg, Vector3(0,1,0))
 	# because we're pointing at +Z, sigh...
@@ -382,7 +382,7 @@ func debug_cube(loc):
 	add_child(node)
 	node.set_translation(loc)
 
-
+# calculated arc is in respect to X axis
 func get_arc_angle(center_point, start_point, end_point, angle0):
 	var angles = []
 	
