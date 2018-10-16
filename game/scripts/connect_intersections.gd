@@ -50,9 +50,9 @@ func connect_intersections(one, two):
 
 	initial_road_test(one, two, data, corner_points[0])
 
-	#data = calculate_last_turn(corner_points[2], corner_points[3], loc_dest_exit, extendeds[1], dest_exit)
+	data = calculate_last_turn(corner_points[2], corner_points[3], loc_dest_exit, extendeds[1], dest_exit)
 
-	#last_turn_test(one, two, data, corner_points[2])	
+	last_turn_test(one, two, data, corner_points[2])	
 	
 	set_straight(corner_points[1], corner_points[3])
 
