@@ -37,6 +37,7 @@ var last
 var global_start
 var global_end
 var relative_end
+var look_at_pos
 var start_axis
 var end_axis
 
@@ -81,6 +82,8 @@ func _ready():
 	#add_to_group("roads")
 	
 	draw = get_node("draw")
+	look_at_pos = get_node("Position3D")
+	
 	#draw_debug_point(loc, Color(1,1,1))
 	streetlight = preload("res://objects/streetlight.scn")
 	
@@ -391,6 +394,7 @@ func test_road():
 		
 	start_ref = positions[0]+start_axis
 	end_ref = positions[positions.size()-1]+end_axis
+	var inv_end_ref = positions[positions.size()-1]-end_axis
 	
 	#B-A = from a to b
 	start_vector = Vector3(start_ref-positions[0])
@@ -455,16 +459,16 @@ func test_road():
 		#nav_vertices2 = get_navi_vertices_alt()		
 						
 		placeStreetlight()
-	elif not Engine.is_editor_hint():	
+	if not Engine.is_editor_hint():	
 		# disable the emissiveness
 		reset_lite()
 		
-	elif not Engine.is_editor_hint():
+	if not Engine.is_editor_hint():
 		# kill debug draw in game
 		draw.queue_free()
 		
 	#draw an immediate line in editor instead
-	#else:
+	else:
 		#B-A = from a to b
 		#start_vector = Vector3(positions[1]-positions[0])
 		#end_vector = Vector3(positions[positions.size()-1] - positions[positions.size()-2])
@@ -507,7 +511,15 @@ func test_road():
 			
 			#draw.draw_line(debug_outer)
 			#draw.draw_line(debug_outer2)
-			
+		
+		if has_node("Position3D"):
+			print("We have position marker")
+			#get_node("Position3D").set_translation(end_ref)
+			# because look_at() uses -Z not +Z!
+			get_node("Position3D").set_translation(inv_end_ref)
+		#var tg = Position3D.new()
+		
+	
 #props
 func placeStreetlight():
 	var light = streetlight.instance()
