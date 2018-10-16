@@ -255,14 +255,15 @@ func initial_road_test(one, two, data, loc):
 	print("R: " + str(radius) + " , start angle: " + str(start_angle) + " , end: " + str(end_angle))
 	
 	first_turn = set_curved_road(radius, start_angle, end_angle, 0)
-	first_turn.set_translation(loc)
+	if first_turn != null:
+		first_turn.set_translation(loc)
 	
-	# place
-	if get_child(two).get_translation().y > get_child(one).get_translation().y:
-		print("Road in normal direction, positive y")
-	else:
-		first_turn.rotate_y(deg2rad(180))
-		print("Rotated because we're going back")
+		# place
+		if get_child(two).get_translation().y > get_child(one).get_translation().y:
+			print("Road in normal direction, positive y")
+		else:
+			first_turn.rotate_y(deg2rad(180))
+			print("Rotated because we're going back")
 
 func last_turn_test(one, two, data, loc):
 	if data == null:
@@ -276,14 +277,15 @@ func last_turn_test(one, two, data, loc):
 	
 	
 	last_turn = set_curved_road(radius, start_angle, end_angle, 1)
-	last_turn.set_translation(loc)
+	if last_turn != null:
+		last_turn.set_translation(loc)
 	
-	# place
-	if get_child(two).get_translation().y > get_child(one).get_translation().y:
-		print("Road in normal direction, positive y")
-	else:
-		last_turn.rotate_y(deg2rad(180))
-		print("Rotated because we're going back")
+		# place
+		if get_child(two).get_translation().y > get_child(one).get_translation().y:
+			print("Road in normal direction, positive y")
+		else:
+			last_turn.rotate_y(deg2rad(180))
+			print("Rotated because we're going back")
 	
 	
 func set_straight(loc, loc2):
@@ -335,6 +337,11 @@ func set_curved_road(radius, start_angle, end_angle, index):
 	# road angles are in respect to X axis, so let's subtract 90 to point down Y
 	road_node_right.get_child(0).get_child(0).start_angle = start_angle-90
 	road_node_right.get_child(0).get_child(0).end_angle = end_angle-90
+	
+	if radius < 3: # less than lanes we want
+		print("Bad radius given!")
+		return null
+	
 	#set the radius we wanted
 	road_node_right.get_child(0).get_child(0).radius = radius
 	
