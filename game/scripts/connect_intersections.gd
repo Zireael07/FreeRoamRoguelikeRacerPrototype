@@ -324,6 +324,13 @@ func set_straight(loc, loc2):
 func set_curved_road(radius, start_angle, end_angle, index):
 	var road_node_right = road.instance()
 	road_node_right.set_name("Road_instance"+String(index))
+
+	if start_angle-90 > end_angle-90 and end_angle-90 < 0:
+		print("Bad road settings: " + str(start_angle-90) + ", " + str(end_angle-90)) 
+		start_angle = start_angle+360
+	
+	print("Road settings: start: " + str(start_angle-90) + " end: " + str(end_angle-90))	
+	
 	#set the angles we wanted
 	# road angles are in respect to X axis, so let's subtract 90 to point down Y
 	road_node_right.get_child(0).get_child(0).start_angle = start_angle-90
@@ -331,11 +338,7 @@ func set_curved_road(radius, start_angle, end_angle, index):
 	#set the radius we wanted
 	road_node_right.get_child(0).get_child(0).radius = radius
 	
-	if start_angle-90 > end_angle-90:
-		print("Bad road settings")
-		
-	
-	print("Road settings: start: " + str(start_angle-90) + " end: " + str(end_angle-90))
+
 	
 	
 	add_child(road_node_right)
