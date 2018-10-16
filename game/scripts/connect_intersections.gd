@@ -165,17 +165,8 @@ func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, sr
 		#positions.append(corner1)
 		#positions.append(Vector3(angle0.x, 0, angle0.y))
 		#positions.append(corner2)
-		
-		if angles[1]-angles[0] > 200:
-			print("Too big angle!")
-			# test
-			angles[1] = angles[0]+10
 			
-		if angles[1]-angles[0] < -200:
-			print("Too small angle!")
-			# test
-			angles[1] = angles[0]+10
-			
+						
 		var points_arc = get_circle_arc(inters, radius, angles[0], angles[1], true)
 	
 		# back to 3D
@@ -339,6 +330,14 @@ func set_curved_road(radius, start_angle, end_angle, index):
 	road_node_right.get_child(0).get_child(0).end_angle = end_angle-90
 	#set the radius we wanted
 	road_node_right.get_child(0).get_child(0).radius = radius
+	
+	if start_angle-90 > end_angle-90:
+		print("Bad road settings")
+		
+	
+	print("Road settings: start: " + str(start_angle-90) + " end: " + str(end_angle-90))
+	
+	
 	add_child(road_node_right)
 	return road_node_right
 
@@ -396,25 +395,33 @@ func get_arc_angle(center_point, start_point, end_point, angle0):
 	var angles = []
 	
 	# angle between line from center point to angle0 and from center point to start point
-	var angle = rad2deg((angle0-center_point).angle_to(start_point-center_point))
+	var angle1 = rad2deg((angle0-center_point).angle_to(start_point-center_point))
 	
-	if angle < 0:
-		angle = 360+angle
-		print("Angle 1 " + str(angle))
+	if angle1 < 0:
+		angle1 = 360+angle1
+		#print("Angle 1 " + str(angle))
 	
-	angles.append(angle)
-	print("Angle 1 " + str(angle))
+	#angles.append(angle)
+	print("Angle 1 " + str(angle1))
 	# equivalent angle for the end point
-	angle = rad2deg((angle0-center_point).angle_to(end_point-center_point))
+	var angle2 = rad2deg((angle0-center_point).angle_to(end_point-center_point))
 	
-	if angle < 0:
-		angle = 360+angle
-		print("Angle 2 " + str(angle))
+	if angle2 < 0:
+		angle2 = 360+angle2
+		#print("Angle 2 " + str(angle))
 	
-	print("Angle 2 " + str(angle))
-	angles.append(angle)
+	print("Angle 2 " + str(angle2))
+	#angles.append(angle)
 	
-	print("Arc angle " + str(angles[1]-angles[0]))
+	var arc = angle1-angle2
+	
+	print("Arc angle " + str(arc))
+		
+	if arc > 200:
+		print("Too big arc " + str(angle1) + " , " + str(angle2))
+		angle2 = angle2+360
+		
+	angles = [angle1, angle2]
 	
 	return angles
 
