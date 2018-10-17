@@ -15,23 +15,17 @@ var helper_line
 
 func _ready():
 	helper_line = load("res://2d tests/Line2D.tscn")
-	
-	# ideally should be tracked by intersections themselves
-	var src_exits = [ "one", "two", "three"]
-	var dest_exits_1 = ["one", "two", "three"]
-	
-	var dest_exits_2 = ["one", "two", "three"]
 
-	connect_intersections(1,0, src_exits, dest_exits_1)
-	connect_intersections(0,2, src_exits, dest_exits_2)
-	connect_intersections(1,2, dest_exits_2, dest_exits_1)
+	connect_intersections(1,0)
+	connect_intersections(0,2)
+	connect_intersections(1,2)
 	
 
-func connect_intersections(one, two, src_exits, dest_exits):
-	var src_exit = get_src_exit(get_child(one), get_child(two), src_exits)
+func connect_intersections(one, two):
+	var src_exit = get_src_exit(get_child(one), get_child(two))
 	loc_src_exit = to_local(get_child(one).to_global(src_exit))
 	
-	var dest_exit = get_dest_exit(get_child(one), get_child(two), dest_exits)
+	var dest_exit = get_dest_exit(get_child(one), get_child(two))
 	loc_dest_exit = to_local(get_child(two).to_global(dest_exit))
 	
 	extend_lines(one,two)
@@ -78,36 +72,50 @@ func _draw():
 	#draw_polyline(arr, Color(0,0,1))
 
 # assume standard rotation for now
-func get_src_exit(src, dest, src_exits):
+func get_src_exit(src, dest):
+	var src_exits = src.open_exits
 	
 	if src_exits.size() < 0:
 		print("Error, no exits left")
 		return
 	
-	if abs(dest.get_position().x - src.get_position().x) > abs(dest.get_position().y - src.get_position().y) and src_exits.has("two"):
-	#if dest.get_position().x < src.get_position().x and src_exits.has("two"):
-		print("[src] " + str(src.get_name()) + " " + str(dest.get_name()) + " X rule" )
+	if abs(dest.get_position().x - src.get_position().x) > abs(dest.get_position().y - src.get_position().y):
+		if src_exits.has(src.point_two):
+		#if dest.get_position().x < src.get_position().x and src_exits.has("two"):
+			print("[src] " + str(src.get_name()) + " " + str(dest.get_name()) + " X rule" )
+			
+			src_exits.remove(src_exits.find(src.point_two))
+			#src_exits.remove(src_exits.find("two"))
+			
+			return src.point_two
+			
+		else:
+			print("[src] " + str(src.get_name()) + " " + str(dest.get_name()) + " X rule alt")
+			src_exits.remove(src_exits.find(src.point_one))
+			
+			return src.point_one
 		
-		src_exits.remove(src_exits.find("two"))
-		
-		return src.point_two
-		
-	elif dest.get_position().y > src.get_position().y and src_exits.has("one"):
+	elif dest.get_position().y > src.get_position().y and src_exits.has(src.point_one):
 		print("[src] " + str(src.get_name()) + " " + str(dest.get_name()) + " Y rule")
 		
-		src_exits.remove(src_exits.find("one"))
+		src_exits.remove(src_exits.find(src.point_one))
+		#src_exits.remove(src_exits.find("one"))
 		
 		return src.point_one
 		
-	elif src_exits.has("three"):
+	elif src_exits.has(src.point_three):
+	#src_exits.has("three"):
 	# else
 		print("[src] " + str(src.get_name()) + " " + str(dest.get_name()) + " Y rule 2")
 		
-		src_exits.remove(src_exits.find("three"))
+		src_exits.remove(src_exits.find(src.point_three))
+		#src_exits.remove(src_exits.find("three"))
 		return src.point_three	
 
 # assume standard rotation for now
-func get_dest_exit(src, dest, dest_exits):
+func get_dest_exit(src, dest): #, dest_exits):
+	var dest_exits = dest.open_exits
+	
 	print("X abs: " + str(abs(dest.get_position().x - src.get_position().x)))
 	print("Y abs: " + str(abs(dest.get_position().y - src.get_position().y)))
 	
@@ -117,18 +125,20 @@ func get_dest_exit(src, dest, dest_exits):
 		return
 	
 	if abs(dest.get_position().x - src.get_position().x) > abs(dest.get_position().y - src.get_position().y):
-		if dest_exits.has("three"):
+		if dest_exits.has(dest.point_three):
 		#if dest.get_position().x < src.get_position().x and dest_exits.has("one"):
 			print("[dest] " + str(src.get_name()) + " " + str(dest.get_name()) + " X rule")
 			
-			dest_exits.remove(dest_exits.find("three"))
+			dest_exits.remove(dest_exits.find(dest.point_three))
+			#dest_exits.remove(dest_exits.find("three"))
 			
 			return dest.point_three
 		
 		else:
 			print("[dest] " + src.get_name() + " " + dest.get_name() + " replacement for X rule")
 			
-			dest_exits.remove(dest_exits.find("one"))
+			dest_exits.remove(dest_exits.find(dest.point_one))
+			#dest_exits.remove(dest_exits.find("one"))
 			
 			return dest.point_one
 			
@@ -137,25 +147,29 @@ func get_dest_exit(src, dest, dest_exits):
 		#return dest.point_one
 	
 	elif dest.get_position().y > src.get_position().y:
-		if dest_exits.has("three"):
+		if dest_exits.has(dest.point_three):
+		#if dest_exits.has("three"):
 			print("[dest] " + str(src.get_name()) + " " + str(dest.get_name()) + " Y rule")
 			
-			dest_exits.remove(dest_exits.find("three"))
+			dest_exits.remove(dest_exits.find(dest.point_three))
+			#dest_exits.remove(dest_exits.find("three"))
 			
 			return dest.point_three
 		
 		else:
 			print("[dest] " + src.get_name() + " " + dest.get_name() + " replacement for Y rule")
 			
-			dest_exits.remove(dest_exits.find("two"))
+			dest_exits.remove(dest_exits.find(dest.point_two))
+			#dest_exits.remove(dest_exits.find("two"))
 			
 			return dest.point_two
 		
-		
-	elif dest_exits.has("one"):
+	elif dest_exits.has(dest.point_one):	
+	#elif dest_exits.has("one"):
 	#else:
 		print("[dest] " + str(src.get_name()) + " " + str(dest.get_name()) + " Y rule 2")
 		
-		dest_exits.remove(dest_exits.find("one"))
+		dest_exits.remove(dest_exits.find(dest.point_one))
+		#dest_exits.remove(dest_exits.find("one"))
 		
 		return dest.point_one

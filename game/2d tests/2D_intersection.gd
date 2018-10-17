@@ -7,6 +7,8 @@ var point_one = Vector2(0,10)
 var point_two = Vector2(12,0)
 var point_three = Vector2(0,-10)
 
+var open_exits = [point_one, point_two, point_three]
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
