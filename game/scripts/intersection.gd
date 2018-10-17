@@ -12,6 +12,7 @@ var point_one = Vector3(0,0,10)
 var point_two = Vector3(12,0,0)
 var point_three = Vector3(0,0,-10)
 
+var open_exits = [point_one, point_two, point_three]
 
 var pointone_left #= Vector3(2,0,4)
 var pointone_right #= Vector3(-2,0,4)

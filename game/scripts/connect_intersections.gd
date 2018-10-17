@@ -29,9 +29,11 @@ func connect_intersections(one, two):
 	
 	
 	var src_exit = get_src_exit(get_child(one), get_child(two))
+	print("Src exit: " + str(src_exit))
 	var loc_src_exit = to_local(get_child(one).to_global(src_exit))
 
 	var dest_exit = get_dest_exit(get_child(one), get_child(two))
+	print("Dest exit: " + str(dest_exit))
 	var loc_dest_exit = to_local(get_child(two).to_global(dest_exit))
 
 	# debugging
@@ -357,38 +359,75 @@ func get_src_exit(src, dest):
 	print("X abs: " + str(abs(dest.get_translation().x - src.get_translation().x)))
 	print("Z abs: " + str(abs(dest.get_translation().z - src.get_translation().z)))
 	
+	var src_exits = src.open_exits
+	
+	if src_exits.size() < 0:
+		print("Error, no exits left")
+		return
 	
 	if abs(dest.get_translation().x - src.get_translation().x) > abs(dest.get_translation().z - src.get_translation().z):
 	#if dest.get_translation().x > src.get_translation().x:
-		print("[src] " + src.get_name() + " " + dest.get_name() + " X rule")
-		return src.point_two
+		if src_exits.has(src.point_two):
+			print("[src] " + src.get_name() + " " + dest.get_name() + " X rule")
+			src_exits.remove(src_exits.find(src.point_two))
+			return src.point_two
+		else:
+			if src_exits.has(src.point_three):
+				print("[src] " + src.get_name() + " " + dest.get_name() + " X rule alt")
+				src_exits.remove(src_exits.find(src.point_three))
+				return src.point_three
 		
-	elif dest.get_translation().z > src.get_translation().z:
+	elif dest.get_translation().z > src.get_translation().z and src_exits.has(src.point_one):
 		print("[src] " + src.get_name() + " " + dest.get_name() + " Y rule")
+		src_exits.remove(src_exits.find(src.point_one))
 		return src.point_one
 		
 	else:
-		print("[src] " + src.get_name() + " " + dest.get_name() + " Y rule 2")
-		return src.point_three	
+		if src_exits.has(src.point_three):
+			print("[src] " + src.get_name() + " " + dest.get_name() + " Y rule 2")
+			src_exits.remove(src_exits.find(src.point_three))
+			return src.point_three	
 
 # assume standard rotation for now
 func get_dest_exit(src, dest):
+	var dest_exits = dest.open_exits
+	
+	if dest_exits.size() < 0:
+		print("Error, no exits left")
+		return
+	else:
+		print("available exits: " + str(dest_exits))
+	
 	if abs(dest.get_translation().x - src.get_translation().x) > abs(dest.get_translation().z - src.get_translation().z):
 		if dest.get_translation().z > src.get_translation().z:
-			print("[dest] " + src.get_name() + " " + dest.get_name() + " X rule a)")
-			return dest.point_three
+			if dest_exits.has(dest.point_three):
+				print("[dest] " + src.get_name() + " " + dest.get_name() + " X rule a)")
+				dest_exits.remove(dest_exits.find(dest.point_three))
+				return dest.point_three
 		else:
-			print("[dest] " + src.get_name() + " " + dest.get_name() + " X rule b)")
-			return dest.point_one
+			if dest_exits.has(dest.point_one):
+				print("[dest] " + src.get_name() + " " + dest.get_name() + " X rule b)")
+				dest_exits.remove(dest_exits.find(dest.point_one))
+				return dest.point_one
+			else:
+				print("[dest] " + src.get_name() + " " + dest.get_name() + " X rule b) alt")
+				dest_exits.remove(dest_exits.find(dest.point_three))
+				return dest.point_three
 	
-	elif dest.get_translation().z > src.get_translation().z:
+	elif dest.get_translation().z > src.get_translation().z and dest_exits.has(dest.point_three):
 		print("[dest] " + src.get_name() + " " + dest.get_name() + " Y rule")
+		dest_exits.remove(dest_exits.find(dest.point_three))
 		return dest.point_three
 		
 	else:
-		print("[dest] " + src.get_name() + " " + dest.get_name() + " Y rule 2")
-		return dest.point_one
-
+		if dest_exits.has(dest.point_one):
+			print("[dest] " + src.get_name() + " " + dest.get_name() + " Y rule 2")
+			dest_exits.remove(dest_exits.find(dest.point_one))
+			return dest.point_one
+		else:
+			print("[dest] " + src.get_name() + " " + dest.get_name() + " Y rule 2 alt")
+			dest_exits.remove(dest_exits.find(dest.point_three))
+			return dest.point_three
 
 # debug
 func debug_cube(loc):
