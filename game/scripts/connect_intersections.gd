@@ -366,16 +366,27 @@ func get_src_exit(src, dest):
 		return
 	
 	if abs(dest.get_translation().x - src.get_translation().x) > abs(dest.get_translation().z - src.get_translation().z):
-	#if dest.get_translation().x > src.get_translation().x:
-		if src_exits.has(src.point_two):
-			print("[src] " + src.get_name() + " " + dest.get_name() + " X rule")
-			src_exits.remove(src_exits.find(src.point_two))
-			return src.point_two
+		if dest.get_translation().x > src.get_translation().x:
+			if src_exits.has(src.point_two):
+				print("[src] " + src.get_name() + " " + dest.get_name() + " X rule")
+				src_exits.remove(src_exits.find(src.point_two))
+				return src.point_two
+			else:
+				if src_exits.has(src.point_three):
+					print("[src] " + src.get_name() + " " + dest.get_name() + " X rule alt")
+					src_exits.remove(src_exits.find(src.point_three))
+					return src.point_three
 		else:
 			if src_exits.has(src.point_three):
-				print("[src] " + src.get_name() + " " + dest.get_name() + " X rule alt")
+				print("[src] " + src.get_name() + " " + dest.get_name() + " X rule inv")
 				src_exits.remove(src_exits.find(src.point_three))
 				return src.point_three
+			else:
+				if src_exits.has(src.point_one):
+					print("[src] " + src.get_name() + " " + dest.get_name() + " X rule inv alt")
+					src_exits.remove(src_exits.find(src.point_one))
+					return src.point_one
+		
 		
 	elif dest.get_translation().z > src.get_translation().z and src_exits.has(src.point_one):
 		print("[src] " + src.get_name() + " " + dest.get_name() + " Y rule")
