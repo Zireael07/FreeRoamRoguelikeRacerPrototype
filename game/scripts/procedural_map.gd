@@ -7,7 +7,8 @@ var mult
 	
 var edges = []
 var samples = []
-
+var as
+#var tris = []
 
 func _ready():
 	# Called when the node is added to the scene for the first time.
@@ -44,6 +45,9 @@ func _ready():
 		# +1 because of the poisson node that comes first
 		connect_intersections(ed[0]+2, ed[1]+2)
 	
+	
+	setup_neighbors()
+	
 	spawn_markers()
 	
 	
@@ -54,14 +58,104 @@ func _ready():
 #	# Update game logic here.
 #	pass
 
+#-------------------------
+# Distance map
+
+func setup_neighbors():
+	# we'll use AStar to have an easy map of neighbors
+	as = AStar.new()
+	for i in range(0,samples.size()-1):
+		as.add_point(i, Vector3(samples[i][0]*mult, 0, samples[i][1]*mult))
+
+	for i in range(0, edges.size()):
+		var ed = edges[i]
+		as.connect_points(ed[0], ed[1])
+
+# yes it could be more efficient I guess
+func bfs_distances(start):
+	# keep track of all visited nodes
+	#var explored = []
+	var distance = {}
+	distance[start] = 0
+	
+	# keep track of nodes to be checked
+	var queue = [start]
+	
+	# keep looping until there are nodes still to be checked
+	while queue:
+		# pop shallowest node (first node) from queue
+		var node = queue.pop_front()
+		print("Visiting... " + str(node))
+		
+		var neighbours = as.get_point_connections(node)
+		# add neighbours of node to queue
+		for neighbour in neighbours:
+			# if not visited
+			#if not explored.has(neighbour):
+			if not distance.has(neighbour):
+				queue.append(neighbour)
+				distance[neighbour] = 1 + distance[node]
+		
+	
+	return distance
+	
+
+#-------------------------
+
 func spawn_markers():
+	var spots = []
+	
 	var mark = preload("res://objects/marker.tscn")
 	var sp_mark = preload("res://objects/speed_marker.tscn")
 	
-	var num_inters = get_node("triangulate/poisson").samples.size()-1
+	# random choice of an intersection to spawn at
+	# trick to copy the array
+	spots = [] + samples
+	spots.pop_back() # we don't want the last entry
+	var num_inters = spots.size()
 	var id = randi() % num_inters
-	var p = get_node("triangulate/poisson").samples[id]
+	var p = spots[id]
 	
 	var sp_marker = sp_mark.instance()
 	sp_marker.set_translation(Vector3(p[0]*mult, 0, p[1]*mult))
 	add_child(sp_marker)
+	
+	# remove from list of possible spots
+	spots.remove(id)
+
+	# random choice of an intersection to spawn at
+	id = randi() % spots.size()
+	p = spots[id]
+	var marker = mark.instance()
+	marker.set_translation(Vector3(p[0]*mult, 0, p[1]*mult))
+	
+	# create a distance map from our intersection
+	# because the spots map can have different id from the samples
+	var m_id = samples.find(p)
+	var distance_map = bfs_distances(m_id)
+	print(str(distance_map))
+	#print("Keys: " + str(distance_map.keys()))
+	#print("Values: " + str(distance_map.values()))
+	
+	# pick a target
+	var possible_targets = []
+	for n in distance_map.keys():
+		var v = distance_map[n]
+		if v > 1:
+			print("Possible target id: " + str(n))
+			possible_targets.append(n)
+	
+	var t_id = null
+	if possible_targets.size() > 1:
+		# pick randomly
+		t_id = possible_targets[randi() % possible_targets.size()]
+	else:
+		t_id = possible_targets[0]
+		
+	print("Target id: " + str(t_id))
+	
+	marker.target = Vector3(samples[t_id][0]*mult, 0, samples[t_id][1]*mult)
+	print("Marker target is " + str(marker.target))
+	
+	add_child(marker)
+	
