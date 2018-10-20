@@ -140,6 +140,7 @@ script = ExtResource( 5 )
 
 [node name="draw" type="ImmediateGeometry" parent="map" index="1"]
 
+visible = false
 layers = 1
 material_override = SubResource( 1 )
 cast_shadow = 0

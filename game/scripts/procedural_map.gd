@@ -44,27 +44,7 @@ func _ready():
 		# +1 because of the poisson node that comes first
 		connect_intersections(ed[0]+2, ed[1]+2)
 	
-#	edges = get_node("triangulate/poisson").edges
-#	#print("Edges : " + str(edges))
-#
-#	# cleanup
-#	var edges_copy = []
-#	for i in range(0,edges.size()):
-#		if not edges_copy.has(edges[i]):
-#			edges_copy.append(edges[i])
-#
-#	#print("Copy : " + str(edges_copy))
-#
-#
-#	# create the map
-#	for i in range(0, edges_copy.size()):
-#		var e = edges_copy[i]
-#		print("Connecting intersections for edge: " + str(i) + " 0: " + str(e[0]) + " 1: " + str(e[1]))
-#		var p1 = samples[e[0]]
-#		var p2 = samples[e[1]]
-#		# +1 because of the poisson node that comes first
-#		connect_intersections(e[0]+2, e[1]+2)
-	
+	spawn_markers()
 	
 	
 	#pass
@@ -73,3 +53,15 @@ func _ready():
 #	# Called every frame. Delta is time since last frame.
 #	# Update game logic here.
 #	pass
+
+func spawn_markers():
+	var mark = preload("res://objects/marker.tscn")
+	var sp_mark = preload("res://objects/speed_marker.tscn")
+	
+	var num_inters = get_node("triangulate/poisson").samples.size()-1
+	var id = randi() % num_inters
+	var p = get_node("triangulate/poisson").samples[id]
+	
+	var sp_marker = sp_mark.instance()
+	sp_marker.set_translation(Vector3(p[0]*mult, 0, p[1]*mult))
+	add_child(sp_marker)
