@@ -13,6 +13,10 @@ var positions = Array()
 var marker_pos = []
 var markers = []
 
+# gfx
+var blue_flag
+
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
@@ -20,13 +24,12 @@ func _ready():
 	
 	var arrow = preload("res://hud/minimap_arrow_big_64 - bordered grayscale.png")
 	var player_arrow = preload("res://hud/minimap_arrow_big_64 - cyan.png")
-	var blue_flag = preload("res://hud/flag.png")
+	blue_flag = preload("res://hud/flag.png")
 	#var red_flag = preload("res://hud/flag_red.png")
-	
 	
 	getPositions()
 	
-	setupMinimap(arrow, player_arrow, blue_flag)
+	setupMinimap(arrow, player_arrow)
 	
 	#get the minimap
 	#minimap_bg = get_child(0).get_child(0).get_child(0)
@@ -34,7 +37,7 @@ func _ready():
 	set_process(true)
 	pass
 
-func setupMinimap(arrow, player_arrow, blue_flag):
+func setupMinimap(arrow, player_arrow):
 	##we're child of player, AI are siblings of player
 	var AI = get_tree().get_nodes_in_group("player")[0].get_parent().get_node("AI")
 	var AI2 = get_tree().get_nodes_in_group("player")[0].get_parent().get_node("AI2")
@@ -63,7 +66,7 @@ func setupMinimap(arrow, player_arrow, blue_flag):
 	
 	for e in markers:
 		#print("We have a marker " + e.get_name())
-		add_marker(e.get_global_transform().origin, blue_flag)
+		add_marker(e.get_global_transform().origin)
 	
 	
 	# is last because needs to be on top of everything else
@@ -76,7 +79,7 @@ func setupMinimap(arrow, player_arrow, blue_flag):
 	get_child(0).add_child(player_tex)
 
 
-func add_marker(pos, blue_flag):
+func add_marker(pos):
 	var marker_tex = TextureRect.new()
 	marker_tex.set_texture(blue_flag)
 	#marker_tex.set_pos(pos3d_to_gamemap_point(Vector3(pos)))

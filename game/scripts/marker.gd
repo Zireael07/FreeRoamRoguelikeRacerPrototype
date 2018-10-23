@@ -94,6 +94,9 @@ func spawn_finish(start):
 	#finish.set_val(true)
 	
 	get_parent().add_child(finish)
+	
+	var minimap = player.get_node("Viewport_root/Viewport/minimap")
+	minimap.add_marker(finish.get_global_transform().origin, minimap.blue_flag)
 
 func play_replay():
 	if File.new().file_exists("res://replay/replay.tscn"):
