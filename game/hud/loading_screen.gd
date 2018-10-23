@@ -19,7 +19,7 @@ func _ready():
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() -1)
 	
-	goto_scene("res://scenes/Main.tscn")
+	goto_scene("res://scenes/scene_procedural.tscn")
 
 	pass
 
