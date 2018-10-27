@@ -14,6 +14,9 @@ var points_arc = []
 
 var angles = []
 
+var AS
+var arc_points = []
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
@@ -23,6 +26,11 @@ func _ready():
 	
 	get_arc_angles()
 
+	get_arc_points() # 32 points per arc
+	#print("Arc points: " + str(arc_points))
+
+	setup_astar()
+	
 
 func get_corner_points():
 	#for i in range(get_polygon().size()):
@@ -75,7 +83,6 @@ func get_corner_points():
 
 func get_tangent(i,j):
 	# calculate because cached vectors sometimes accumulate weird rounding errors
-	
 	
 	var tang = (points[i]-corners[j]).tangent()
 	
@@ -133,6 +140,50 @@ func get_intersections():
 	# now checks corner-tangent to corner+tangent
 	#intersections.append(Geometry.segment_intersects_segment_2d(corners[1]-get_tangent(1,1), corners[1]+get_tangent(1,1), corners[2]-get_tangent(1,2), corners[2]+get_tangent(1,2)))
 
+func setup_astar():
+	print("Setting up astar...")
+	AS = AStar.new()
+	
+	for i in range(points.size()):
+		AS.add_point(i, Vector3(points[i].x, 0, points[i].y))
+	# connect first two
+	AS.connect_points(0, 1)
+	
+	#print("Points: " + str(points))
+	# this starts at id = points.size()
+	var start_id = points.size()
+	for i in range(arc_points.size()):
+		AS.add_point(start_id+i, Vector3(arc_points[i].x, 0, arc_points[i].y))
+	
+	# connect endpoint to start of arc
+	# flipped
+	AS.connect_points(1, points.size()+31)
+	
+	# connect points.size() +31 ... points.size()
+	# 31 because we do i+1
+	for i in range(points.size(), points.size()+31):
+		AS.connect_points(i, i+1)
+	
+	# connect the two endpoints of arcs
+	AS.connect_points(points.size()+31, points.size()+32)
+	
+	# connect the other arc
+	for i in range(points.size() + 32, points.size() + 32+31):
+		AS.connect_points(i, i+1)
+
+	# connect endpoint to second-to-last
+	AS.connect_points(points.size()+32+31, 2)
+
+	# connect the last two points	
+	AS.connect_points(2,3)
+
+#	# test
+	#var path_test_id = 8 #random
+	var path_test_id = 2 # end path
+	var path_test = AS.get_point_path(0, path_test_id)
+	#print(str(path_test))
+
+# -----------------------
 
 func draw_circle_arc(center, radius, angle_from, angle_to, right, clr):
 	points_arc = get_circle_arc(center, radius, angle_from, angle_to, right)
@@ -195,6 +246,14 @@ func get_arc_angles():
 		
 	#pass
 
+func get_arc_points():
+	var arc_one = get_circle_arc(intersections[0], (corners[1]-intersections[0]).length(), angles[1], angles[1]+(angles[0]-angles[1]), true)
+	for i in range(0, arc_one.size()):
+		arc_points.append(arc_one[i])
+	
+	var arc_two = get_circle_arc(intersections[1], (corners[3]-intersections[1]).length(), angles[3], angles[3]+(angles[2]-angles[3]), true)
+	for i in range(0, arc_two.size()):
+		arc_points.append(arc_two[i])
 		
 func _draw():
 	#test
