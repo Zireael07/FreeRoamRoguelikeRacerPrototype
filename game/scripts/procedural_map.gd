@@ -57,48 +57,61 @@ func _ready():
 	
 	nav = AStar.new()
 	var pts = []
+	var begin_id = 0
 	for i in range(roads_start_id, roads_start_id+4):
-		print(get_child(i).get_name())
-		var turn1 = get_child(i).get_node("Road_instance0").get_child(0).get_child(0)
-		var turn2 = get_child(i).get_node("Road_instance1").get_child(0).get_child(0)
-		
-		#print("Straight positions: " + str(get_child(i).get_node("Spatial0").get_child(0).positions))
-		#print("Turn 1 positions: " + str(turn1.positions))
-		#print("Turn 2 positions: " + str(turn2.positions))
-		
-		# from local to global
-		for p in turn1.positions:
-			pts.append(turn1.get_global_transform().xform(p))
-		for p in turn2.positions:
-			pts.append(turn2.get_global_transform().xform(p))
+		var end_id = setup_nav_astar(pts, i, begin_id)
+		# increment begin_id
+		begin_id = end_id
 
-		# add pts to nav (road-level AStar)
-		for i in range(pts.size()):
-			nav.add_point(i, pts[i])
-			
-		# connect the points
-		# because of i+1
-		for i in range(turn1.positions.size()-1):
-			nav.connect_points(i, i+1)
-		
-		for i in range(turn1.positions.size(), turn1.positions.size()+turn2.positions.size()-1):
-			nav.connect_points(i, i+1)
-			
-		# connect the endpoints
-		nav.connect_points(turn1.positions.size()-1, turn1.positions.size())
-		
-		# test
-		var endpoint_id = turn1.positions.size()+turn2.positions.size()-2
-		print("Endpoint id " + str(endpoint_id))
-		print("Test: " + str(nav.get_point_path(0, endpoint_id)))
-
-		#print(pts)
-				
 
 #func _process(delta):
 #	# Called every frame. Delta is time since last frame.
 #	# Update game logic here.
 #	pass
+
+func setup_nav_astar(pts, i, begin_id):
+	print(get_child(i).get_name())
+	var turn1 = get_child(i).get_node("Road_instance0").get_child(0).get_child(0)
+	var turn2 = get_child(i).get_node("Road_instance1").get_child(0).get_child(0)
+	
+	#print("Straight positions: " + str(get_child(i).get_node("Spatial0").get_child(0).positions))
+	#print("Turn 1 positions: " + str(turn1.positions))
+	#print("Turn 2 positions: " + str(turn2.positions))
+	
+	#print("Turn 1 global pos: " + str(turn1.get_global_transform().origin))
+	#print("Turn 2 global pos: " + str(turn2.get_global_transform().origin))
+	
+	# from local to global
+	for p in turn1.positions:
+		#pts.append(turn1.get_global_transform().xform(p))
+		pts.append(turn1.to_global(p))
+	for p in turn2.positions:
+		#pts.append(turn2.get_global_transform().xform(p))
+		pts.append(turn2.to_global(p))
+
+	# add pts to nav (road-level AStar)
+	for i in range(pts.size()):
+		nav.add_point(i, pts[i])
+		
+	# connect the points
+	# because of i+1
+	for i in range(begin_id, begin_id + turn1.positions.size()-1):
+		nav.connect_points(i, i+1)
+		
+	for i in range(begin_id + turn1.positions.size(), begin_id + turn1.positions.size()+turn2.positions.size()-1):
+		nav.connect_points(i, i+1)
+			
+	# connect the endpoints
+	nav.connect_points(begin_id + turn1.positions.size()-1, begin_id + turn1.positions.size())
+		
+	# test
+	var endpoint_id = begin_id + turn1.positions.size()+turn2.positions.size()-2
+	#print("Endpoint id " + str(endpoint_id))
+	#print("Test: " + str(nav.get_point_path(begin_id, endpoint_id)))
+	return endpoint_id	
+
+
+
 
 #-------------------------
 # Distance map
