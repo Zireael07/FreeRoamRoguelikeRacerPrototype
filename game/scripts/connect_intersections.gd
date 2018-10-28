@@ -49,14 +49,18 @@ func connect_intersections(one, two):
 	var corner_points = get_corner_points(one,two, extendeds[0], extendeds[1], extendeds[0].distance_to(loc_src_exit))
 
 	var data = calculate_initial_turn(corner_points[0], corner_points[1], loc_src_exit, extendeds[0], src_exit)
+	
+	var top_node = Spatial.new()
+	top_node.set_name("Road " +str(one) + "-" + str(two))
+	add_child(top_node)
 
-	initial_road_test(one, two, data, corner_points[0])
+	initial_road_test(one, two, data, corner_points[0], top_node)
 
 	data = calculate_last_turn(corner_points[2], corner_points[3], loc_dest_exit, extendeds[1], dest_exit)
 
-	last_turn_test(one, two, data, corner_points[2])	
+	last_turn_test(one, two, data, corner_points[2], top_node)	
 	
-	set_straight(corner_points[1], corner_points[3])
+	set_straight(corner_points[1], corner_points[3], top_node)
 
 func extend_lines(one, two, loc_src_exit, loc_dest_exit, extend):
 	#B-A: A->B
@@ -246,7 +250,7 @@ func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, des
 	else:
 		print("Last turn, no inters detected")
 	
-func initial_road_test(one, two, data, loc):
+func initial_road_test(one, two, data, loc, node):
 	if data == null:
 		print("No first turn data, return")
 		return
@@ -256,7 +260,7 @@ func initial_road_test(one, two, data, loc):
 	var end_angle = data[2]
 	print("R: " + str(radius) + " , start angle: " + str(start_angle) + " , end: " + str(end_angle))
 	
-	first_turn = set_curved_road(radius, start_angle, end_angle, 0)
+	first_turn = set_curved_road(radius, start_angle, end_angle, 0, node)
 	if first_turn != null:
 		first_turn.set_translation(loc)
 	
@@ -267,7 +271,7 @@ func initial_road_test(one, two, data, loc):
 			first_turn.rotate_y(deg2rad(180))
 			print("Rotated because we're going back")
 
-func last_turn_test(one, two, data, loc):
+func last_turn_test(one, two, data, loc, node):
 	if data == null:
 		print("No last turn data, return")
 		return
@@ -278,7 +282,7 @@ func last_turn_test(one, two, data, loc):
 	var end_angle = data[2]
 	
 	
-	last_turn = set_curved_road(radius, start_angle, end_angle, 1)
+	last_turn = set_curved_road(radius, start_angle, end_angle, 1, node)
 	if last_turn != null:
 		last_turn.set_translation(loc)
 	
@@ -290,7 +294,7 @@ func last_turn_test(one, two, data, loc):
 			print("Rotated because we're going back")
 	
 	
-func set_straight(loc, loc2):
+func set_straight(loc, loc2, node):
 	var road_node = road_straight.instance()
 	road_node.set_name("Road_instance 0")
 	# set length
@@ -301,12 +305,12 @@ func set_straight(loc, loc2):
 	road_node.length = (rounded+1)/2 # road section length
 	
 	# debug
-	debug_cube(Vector3(loc.x, 1, loc.z))
-	debug_cube(Vector3(loc2.x, 1, loc2.z))
+	#debug_cube(Vector3(loc.x, 1, loc.z))
+	#debug_cube(Vector3(loc2.x, 1, loc2.z))
 	
 	var spatial = Spatial.new()
 	spatial.set_name("Spatial0")
-	add_child(spatial)
+	node.add_child(spatial)
 	spatial.add_child(road_node)
 	
 	# place
@@ -325,7 +329,7 @@ func set_straight(loc, loc2):
 	
 	return road_node	
 	
-func set_curved_road(radius, start_angle, end_angle, index):
+func set_curved_road(radius, start_angle, end_angle, index, node):
 	var road_node_right = road.instance()
 	road_node_right.set_name("Road_instance"+String(index))
 
@@ -347,10 +351,7 @@ func set_curved_road(radius, start_angle, end_angle, index):
 	#set the radius we wanted
 	road_node_right.get_child(0).get_child(0).radius = radius
 	
-
-	
-	
-	add_child(road_node_right)
+	node.add_child(road_node_right)
 	return road_node_right
 
 
