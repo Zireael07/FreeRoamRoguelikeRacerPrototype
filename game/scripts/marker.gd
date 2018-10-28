@@ -9,6 +9,9 @@ var count
 var finish = false
 var start
 
+# test
+export var raceline = PoolVector3Array() #[]
+
 export var target = Vector3()
 
 func _ready():
@@ -97,6 +100,12 @@ func spawn_finish(start):
 	
 	var minimap = player.get_node("Viewport_root/Viewport/minimap")
 	minimap.add_marker(finish.get_global_transform().origin, minimap.blue_flag)
+	
+	# test
+	var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+	track_map.points = track_map.vec3s_convert(raceline)
+	# force redraw
+	track_map.update()
 
 func play_replay():
 	if File.new().file_exists("res://replay/replay.tscn"):
