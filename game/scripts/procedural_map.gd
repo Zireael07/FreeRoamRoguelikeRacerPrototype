@@ -60,30 +60,17 @@ func _ready():
 	var begin_id = 0
 	#var path_data = []
 	var path_look = {}
+	
+	for i in range(roads_start_id, roads_start_id+4):
+		var data = setup_nav_astar(pts, i, begin_id)
+		#print('Begin: ' + str(begin_id) + " end: " + str(data[0]) + " inters: " + str(data[1]))
+		#path_data.append([data[1], [begin_id, data[0]]])
+		path_look[data[2]] = [begin_id, data[0]]
+		# just in case, map inverse too
+		path_look[[data[2][1], data[2][0]]] = [data[0], begin_id]
 
-	# test for a single road
-	var data = setup_nav_astar(pts, roads_start_id, begin_id)
-	path_look[data[2]] = [begin_id, data[0]]
-	# just in case, map inverse too
-	path_look[[data[2][1], data[2][0]]] = [data[0], begin_id]
-	var end = data[1]+1
-	
-	# second road
-	data = setup_nav_astar(pts, roads_start_id+1, end)
-	path_look[data[2]] = [end, data[0]]
-	# just in case, map inverse too
-	path_look[[data[2][1], data[2][0]]] = [data[0], end] 
-	
-#	for i in range(roads_start_id, roads_start_id+4):
-#		var data = setup_nav_astar(pts, i, begin_id)
-#		#print('Begin: ' + str(begin_id) + " end: " + str(data[0]) + " inters: " + str(data[1]))
-#		#path_data.append([data[1], [begin_id, data[0]]])
-#		path_look[data[1]] = [begin_id, data[0]]
-#		# just in case, map inverse too
-#		path_look[[data[1][1], data[1][0]]] = [data[0], begin_id]
-#
-#		# increment begin_id
-#		begin_id = data[0]+1
+		# increment begin_id
+		begin_id = data[1]+1
 
 	print(path_look)
 	
@@ -98,34 +85,34 @@ func _ready():
 	var int_path = as.get_id_path(marker_data[0], marker_data[1])
 	print("Intersections path" + str(int_path))
 
-	# test (get path_look entry at id x)
-	var test = path_look[path_look.keys()[2]]
-	print("Test: " + str(test))
-	var nav_path = nav.get_point_path(test[0], test[1])
-	#print("Nav path: " + str(nav_path))
-	# so that we can see
-	marker.raceline = nav_path
+#	# test (get path_look entry at id x)
+#	var test = path_look[path_look.keys()[5]]
+#	print("Test: " + str(test))
+#	var nav_path = nav.get_point_path(test[0], test[1])
+#	#print("Nav path: " + str(nav_path))
+#	# so that we can see
+#	marker.raceline = nav_path
 	
 	#print("First pair: " + str(int_path[0]) + "," + str(int_path[1]))
-#	var lookup_path = path_look[[int_path[0], int_path[1]]]
+	var lookup_path = path_look[[int_path[0], int_path[1]]]
 	#print("Lookup path pt1: " + str(lookup_path))
-#	var nav_path = nav.get_point_path(lookup_path[0], lookup_path[1])
-#	#print("Nav path: " + str(nav_path))
-#	# so that the player can see
-#	#marker.raceline = nav_path
-#
-#	#print("Second pair: " + str(int_path[1]) + "," + str(int_path[2]))
-#	lookup_path = path_look[[int_path[1], int_path[2]]]
-#	#print("Lookup path pt2: " + str(lookup_path))
-#	var nav_path2 = nav.get_point_path(lookup_path[0], lookup_path[1])
-#	#print("Nav path pt2 : " + str(nav_path2))
-#
-#	var nav_path3
-#	if int_path.size() > 3:
-#		#print("Third pair: " + str(int_path[2]) + "," + str(int_path[3]))
-#		lookup_path = path_look[[int_path[2], int_path[3]]]
-#		#print("Lookup path pt3: " + str(lookup_path))
-#		nav_path3 = nav.get_point_path(lookup_path[0], lookup_path[1])
+	var nav_path = nav.get_point_path(lookup_path[0], lookup_path[1])
+	#print("Nav path: " + str(nav_path))
+	# so that the player can see
+	marker.raceline = nav_path
+
+	#print("Second pair: " + str(int_path[1]) + "," + str(int_path[2]))
+	lookup_path = path_look[[int_path[1], int_path[2]]]
+	#print("Lookup path pt2: " + str(lookup_path))
+	var nav_path2 = nav.get_point_path(lookup_path[0], lookup_path[1])
+	#print("Nav path pt2 : " + str(nav_path2))
+
+	var nav_path3
+	if int_path.size() > 3:
+		#print("Third pair: " + str(int_path[2]) + "," + str(int_path[3]))
+		lookup_path = path_look[[int_path[2], int_path[3]]]
+		#print("Lookup path pt3: " + str(lookup_path))
+		nav_path3 = nav.get_point_path(lookup_path[0], lookup_path[1])
 		#print("Nav path pt3: " + str(nav_path3))
 
 #func _process(delta):
