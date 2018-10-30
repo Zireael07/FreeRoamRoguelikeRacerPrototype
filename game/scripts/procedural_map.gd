@@ -99,7 +99,7 @@ func _ready():
 	var nav_path = nav.get_point_path(lookup_path[0], lookup_path[1])
 	#print("Nav path: " + str(nav_path))
 	# so that the player can see
-	marker.raceline = nav_path
+	#marker.raceline = nav_path
 
 	#print("Second pair: " + str(int_path[1]) + "," + str(int_path[2]))
 	lookup_path = path_look[[int_path[1], int_path[2]]]
@@ -107,13 +107,16 @@ func _ready():
 	var nav_path2 = nav.get_point_path(lookup_path[0], lookup_path[1])
 	#print("Nav path pt2 : " + str(nav_path2))
 
-	var nav_path3
+	var nav_path3 = PoolVector3Array()
 	if int_path.size() > 3:
 		#print("Third pair: " + str(int_path[2]) + "," + str(int_path[3]))
 		lookup_path = path_look[[int_path[2], int_path[3]]]
 		#print("Lookup path pt3: " + str(lookup_path))
 		nav_path3 = nav.get_point_path(lookup_path[0], lookup_path[1])
 		#print("Nav path pt3: " + str(nav_path3))
+	
+	# display the whole path
+	marker.raceline = nav_path + nav_path2 + nav_path3
 
 #func _process(delta):
 #	# Called every frame. Delta is time since last frame.
