@@ -63,16 +63,16 @@ func _ready():
 
 	# test for a single road
 	var data = setup_nav_astar(pts, roads_start_id, begin_id)
-	path_look[data[1]] = [begin_id, data[0]]
+	path_look[data[2]] = [begin_id, data[0]]
 	# just in case, map inverse too
-	path_look[[data[1][1], data[1][0]]] = [data[0], begin_id]
-	var end = data[0]+1
+	path_look[[data[2][1], data[2][0]]] = [data[0], begin_id]
+	var end = data[1]+1
 	
 	# second road
 	data = setup_nav_astar(pts, roads_start_id+1, end)
-	path_look[data[1]] = [end, data[0]]
+	path_look[data[2]] = [end, data[0]]
 	# just in case, map inverse too
-	path_look[[data[1][1], data[1][0]]] = [data[0], end] 
+	path_look[[data[2][1], data[2][0]]] = [data[0], end] 
 	
 #	for i in range(roads_start_id, roads_start_id+4):
 #		var data = setup_nav_astar(pts, i, begin_id)
@@ -99,7 +99,7 @@ func _ready():
 	print("Intersections path" + str(int_path))
 
 	# test (get path_look entry at id x)
-	var test = path_look[path_look.keys()[3]]
+	var test = path_look[path_look.keys()[2]]
 	print("Test: " + str(test))
 	var nav_path = nav.get_point_path(test[0], test[1])
 	#print("Nav path: " + str(nav_path))
@@ -163,13 +163,19 @@ func setup_nav_astar(pts, i, begin_id):
 	for i in range(0,turn1.positions.size()):
 		var p = turn1.positions[i]
 		pts.append(turn1.to_global(p))
+	
+	#print(pts)
 	for i in range(0,turn2.positions.size()):
 		var p = turn2.positions[i]
 		pts.append(turn2.to_global(p))
-
+		
+	#print("With turn2: " + str(pts))
+	
 	# add pts to nav (road-level AStar)
 	for i in range(pts.size()):
 		nav.add_point(i, pts[i])
+
+	#print(nav.get_points())
 
 	# connect the points
 	var turn1_end = begin_id + turn1.positions.size()-1
@@ -181,18 +187,23 @@ func setup_nav_astar(pts, i, begin_id):
 	for i in range(begin_id + turn1.positions.size(), turn2_end):
 		nav.connect_points(i, i+1)
 
+	# because turn 2 is inverted
 	# connect the endpoints
-	#nav.connect_points(turn1_end, turn2_end)
-
+	nav.connect_points(turn1_end, turn2_end)
 	# full path
-	#var endpoint_id = begin_id + turn1.positions.size()-1+turn2.positions.size()-1
+	var endpoint_id = begin_id + turn1.positions.size() # beginning of turn2
+	
+	var last_id = turn2_end
+	
 	# turn1
-	var endpoint_id = turn1_end
+	#var endpoint_id = turn1_end
 	#print("Endpoint id " + str(endpoint_id))
-	print("Test: " + str(nav.get_point_path(begin_id, endpoint_id)))
-	print("Test 2: " + str(nav.get_point_path(begin_id + turn1.positions.size(), turn2_end)))
+	#print("Test: " + str(nav.get_point_path(begin_id, endpoint_id)))
+	# turn2 only
+	#print("Test 2: " + str(nav.get_point_path(begin_id + turn1.positions.size(), turn2_end)))
 
-	return [endpoint_id, ret]
+	# road's end, list end, intersections
+	return [endpoint_id, last_id, ret]
 
 
 
