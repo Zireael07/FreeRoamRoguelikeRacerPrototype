@@ -30,8 +30,8 @@ func _ready():
 	# 3d map
 	#print(samples)
 	
-	
-	map()
+	# debug
+	#map()
 	
 	#pass
 

@@ -542,7 +542,7 @@ func placeStreetlight():
 	#var offset = Vector3(-2,0,0)
 	
 	# place
-	debug_cube(right_positions[num]+offset)
+	#debug_cube(right_positions[num]+offset)
 	light.set_translation(right_positions[num]+offset)
 	
 	# rotations
