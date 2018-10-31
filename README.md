@@ -10,6 +10,8 @@ Features
 
 * main menu
 * loading screen
+* procedural map
+* procedural placement of race markers and finish markers
 * procedural generation of road segments (straight/curved)
 * procedural placement of said segments
 * procedural T intersections
