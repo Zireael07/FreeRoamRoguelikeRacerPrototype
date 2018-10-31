@@ -117,6 +117,21 @@ func _ready():
 	
 	# display the whole path
 	marker.raceline = nav_path + nav_path2 + nav_path3
+	
+	place_player()
+
+
+func place_player():
+	var player = get_tree().get_nodes_in_group("player")[0]
+	
+	var id = randi() % samples.size()-1
+	var p = samples[id]
+	
+	var pos = Vector3(p[0]*mult, 0, p[1]*mult)
+	
+	# because player is child of root which is at 0,0,0
+	player.set_translation(to_global(pos))
+	
 
 #func _process(delta):
 #	# Called every frame. Delta is time since last frame.
