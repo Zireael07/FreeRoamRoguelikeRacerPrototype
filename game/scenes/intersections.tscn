@@ -1,15 +1,14 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://scripts/daynight.gd" type="Script" id=2]
 [ext_resource path="res://scripts/ground_gen.gd" type="Script" id=3]
 [ext_resource path="res://assets/ground_material.tres" type="Material" id=4]
-[ext_resource path="res://roads/intersection.tscn" type="PackedScene" id=5]
-[ext_resource path="res://roads/road_segment_straight.tscn" type="PackedScene" id=6]
-[ext_resource path="res://objects/garage_city.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scripts/intersections_test.gd" type="Script" id=8]
-[ext_resource path="res://scripts/draw_line.gd" type="Script" id=9]
-[ext_resource path="res://car/car_base.tscn" type="PackedScene" id=10]
+[ext_resource path="res://objects/garage_road.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scripts/intersections_test.gd" type="Script" id=6]
+[ext_resource path="res://roads/intersection.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scripts/draw_line.gd" type="Script" id=8]
+[ext_resource path="res://car/car_base.tscn" type="PackedScene" id=9]
 
 [sub_resource type="PlaneShape" id=1]
 
@@ -147,67 +146,34 @@ constant_angular_velocity = Vector3( 0, 0, 0 )
 shape = SubResource( 1 )
 disabled = false
 
-[node name="sample" type="Spatial" parent="." index="5"]
-
-editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 76.114, 0, 47.0887 )
-
-[node name="Spatial" parent="sample" index="0" instance=ExtResource( 5 )]
-
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.493, 0, -24.2483 )
-
-[node name="Position3D" parent="sample/Spatial" index="0" instance=ExtResource( 6 )]
-
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00700378, 0, -109.752 )
-_sections_unfolded = [ "Transform" ]
-road_slope = 0.0
-sidewalks = false
-guardrails = false
-trees = null
-bamboo = null
-
-[node name="Position3D2" parent="sample/Spatial" index="1" instance=ExtResource( 6 )]
-
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00700378, 0, 4.2483 )
-_sections_unfolded = [ "Transform" ]
-length = 20
-road_slope = 0.0
-sidewalks = false
-guardrails = false
-relative_end = Vector3( 0, 0, 40 )
-trees = null
-bamboo = null
-
-[node name="garage2" parent="sample" index="1" instance=ExtResource( 7 )]
-
-transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 47.4969, 0, -24.2806 )
+[node name="sample" parent="." index="5" instance=ExtResource( 5 )]
 
 [node name="Spatial" type="Spatial" parent="." index="6"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2052, 0, 91.8753 )
-script = ExtResource( 8 )
+script = ExtResource( 6 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Spatial" parent="Spatial" index="0" instance=ExtResource( 5 )]
+[node name="Spatial" parent="Spatial" index="0" instance=ExtResource( 7 )]
 
 _sections_unfolded = [ "Transform" ]
 
-[node name="Spatial2" parent="Spatial" index="1" instance=ExtResource( 5 )]
+[node name="Spatial2" parent="Spatial" index="1" instance=ExtResource( 7 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16.3338, 0, -64.3236 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Spatial3" parent="Spatial" index="2" instance=ExtResource( 5 )]
+[node name="Spatial3" parent="Spatial" index="2" instance=ExtResource( 7 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 65.0786, 0, 33.0919 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Spatial4" parent="Spatial" index="3" instance=ExtResource( 5 )]
+[node name="Spatial4" parent="Spatial" index="3" instance=ExtResource( 7 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 117.773, 0, -14.9741 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Spatial6" parent="Spatial" index="4" instance=ExtResource( 5 )]
+[node name="Spatial6" parent="Spatial" index="4" instance=ExtResource( 7 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.2119, 0, 115.59 )
 _sections_unfolded = [ "Transform" ]
@@ -223,10 +189,10 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-script = ExtResource( 9 )
+script = ExtResource( 8 )
 color = Color( 1, 0.961243, 0.0078125, 1 )
 
-[node name="car" parent="." index="7" instance=ExtResource( 10 )]
+[node name="car" parent="." index="7" instance=ExtResource( 9 )]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.8615, 0, 87.3719 )
 

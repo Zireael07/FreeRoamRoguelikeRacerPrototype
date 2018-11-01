@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://roads/intersection.tscn" type="PackedScene" id=1]
+[ext_resource path="res://roads/road_segment_straight.tscn" type="PackedScene" id=2]
+[ext_resource path="res://objects/garage_city.tscn" type="PackedScene" id=3]
+
+[node name="sample" type="Spatial" index="0"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 107.574, 0, 66.8086 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Spatial" parent="." index="0" instance=ExtResource( 1 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -43.8901 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Position3D" parent="Spatial" index="1" instance=ExtResource( 2 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00700378, 0, -109.752 )
+_sections_unfolded = [ "Transform" ]
+road_slope = 0.0
+sidewalks = false
+guardrails = false
+trees = null
+bamboo = null
+
+[node name="Position3D2" parent="Spatial" index="2" instance=ExtResource( 2 )]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00700378, 0, 4.2483 )
+_sections_unfolded = [ "Transform" ]
+length = 20
+road_slope = 0.0
+sidewalks = false
+guardrails = false
+relative_end = Vector3( 0, 0, 40 )
+trees = null
+bamboo = null
+
+[node name="garage2" parent="." index="1" instance=ExtResource( 3 )]
+
+transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 15.8034, 0, -43.4658 )
+
+
