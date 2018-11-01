@@ -22,7 +22,7 @@ func _on_Area_body_entered( body ):
 			
 			# hide normal gui
 			var hud = player.get_node("root")
-			var map = player.get_node("minimap")
+			var map = player.get_node("Viewport_root/Viewport/minimap")
 			hud.hide()
 			map.hide()
 			
@@ -39,8 +39,9 @@ func _on_Area_body_entered( body ):
 			player.set_physics_process(false)
 			
 			# stop time passage
-			var world = get_parent().get_node("World")
-			var root = get_parent()
+			var root = get_parent().get_parent().get_parent()
+			print(root.get_name())
+			var world = root.get_node("World")
 			world.set_process(false)
 			# hide the sun
 			root.get_node("DirectionalLight").set_visible(false)

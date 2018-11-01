@@ -38,7 +38,7 @@ func go_back():
 		player.show()
 		# unhide gui
 		var hud = player.get_node("root")
-		var map = player.get_node("minimap")
+		var map = player.get_node("Viewport_root/Viewport/minimap")
 		hud.show()
 		map.show()
 		
@@ -49,8 +49,8 @@ func go_back():
 		player.set_physics_process(true)
 			
 		# restore time passage
-		var world = entrance.get_parent().get_node("World")
-		var root = entrance.get_parent()
+		var root = entrance.get_parent().get_parent().get_parent()
+		var world = root.get_node("World")
 		world.set_physics_process(true)
 		# show the sun
 		root.get_node("DirectionalLight").set_visible(true)
