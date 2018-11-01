@@ -12,6 +12,8 @@ var as
 var nav
 #var tris = []
 
+var garage
+
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
@@ -19,6 +21,7 @@ func _ready():
 	mult = get_node("triangulate/poisson").mult
 
 	intersects = preload("res://roads/intersection.tscn")
+	garage = preload("res://objects/garage_road.tscn")
 
 	samples = get_node("triangulate/poisson").samples
 
@@ -119,6 +122,28 @@ func _ready():
 	marker.raceline = nav_path + nav_path2 + nav_path3
 	
 	place_player()
+
+	# place garage road
+	var garage_opts = []
+	for i in range(2,2+5):
+		var inters = get_child(i)
+		#print(inters.get_name() + " exits: " + str(inters.open_exits))
+		if inters.open_exits.size() > 1:
+			print(inters.get_name() + " is an option for garage road")
+			garage_opts.append(inters)
+	
+	var sel = null		
+	if garage_opts.size() > 1:
+		sel = garage_opts[randi() % garage_opts.size()]
+	else:
+		sel = garage_opts[0]
+		
+	#print(sel.get_name())
+	var garage_rd = garage.instance()
+	# test
+	garage_rd.set_translation(sel.get_translation() + sel.open_exits[1])
+	garage_rd.set_rotation_degrees(Vector3(0,-90,0))
+	add_child(garage_rd)
 
 
 func place_player():
