@@ -33,7 +33,9 @@ func _on_Area_body_entered( body ):
 			player.hide()
 			
 			# brake
-			player.set_engine_force(-400)
+			#player.set_engine_force(-player.get_engine_force())
+			player.set_translation(player.get_translation())
+			#player.set_engine_force(-400)
 			
 			# stop car input
 			player.set_physics_process(false)

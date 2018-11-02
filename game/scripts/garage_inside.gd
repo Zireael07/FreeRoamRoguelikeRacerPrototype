@@ -32,7 +32,14 @@ func go_back():
 		
 		# move the player out of the garage
 		print("Moving the player")
-		player.translate(Vector3(10,0,20))
+		#print(str(entrance.get_parent().get_node("Position3D").get_translation()))
+		var gl = entrance.get_parent().get_node("Position3D").get_global_transform().origin
+		#print(gl)
+		# because player is child of 0,0,0 node
+		player.get_parent().set_translation(gl)
+		# actual player physics body relative to parent
+		player.set_translation(Vector3(0,0,0))
+		#print(player.get_parent().get_translation())
 		
 		# unhide player
 		player.show()

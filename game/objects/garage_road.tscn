@@ -40,4 +40,8 @@ bamboo = null
 
 transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 15.8034, 0, -43.4658 )
 
+[node name="Position3D" type="Position3D" parent="." index="2"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.67403, 0, -43.7808 )
+
 
