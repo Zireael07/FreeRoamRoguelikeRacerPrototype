@@ -18,6 +18,7 @@ var markers = []
 
 # gfx
 var blue_flag
+var poi_marker
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -27,6 +28,7 @@ func _ready():
 	var arrow = preload("res://hud/minimap_arrow_big_64 - bordered grayscale.png")
 	var player_arrow = preload("res://hud/minimap_arrow_big_64 - cyan.png")
 	blue_flag = preload("res://hud/flag.png")
+	poi_marker = preload("res://hud/big marker.png")
 	#var red_flag = preload("res://hud/flag_red.png")
 	
 	cam2d = get_node("Container/Node2D2/Control_pos/Camera2D")
@@ -76,7 +78,11 @@ func setupMinimap(arrow, player_arrow):
 	
 	for e in markers:
 		#print("We have a marker " + e.get_name())
-		add_marker(e.get_global_transform().origin, blue_flag)
+		add_marker(e.get_global_transform().origin, blue_flag, Vector2(0, -16))
+	
+	var pois = get_tree().get_nodes_in_group("poi")
+	for p in pois:
+		add_marker(p.get_global_transform().origin, poi_marker, Vector2(-16,-16))
 	
 	
 	# is last because needs to be on top of everything else
@@ -93,7 +99,7 @@ func setupMinimap(arrow, player_arrow):
 	#get_child(0).add_child(player_tex)
 
 
-func add_marker(pos, flag):
+func add_marker(pos, flag, offset=Vector2(0,0)):
 	var marker_tex = TextureRect.new()
 	marker_tex.set_texture(flag)
 	#marker_tex.set_pos(pos3d_to_gamemap_point(Vector3(pos)))
@@ -102,7 +108,8 @@ func add_marker(pos, flag):
 	#cam2d.add_child(marker_tex)
 	#marker_tex.set_position(Vector2(-16-pos.x, -16-pos.z))
 	# fudge factor necessary
-	marker_tex.set_position(Vector2(-pos.x, -pos.z-16))
+	marker_tex.set_position(Vector2(-pos.x, -pos.z)+offset)
+	#marker_tex.set_position(Vector2(-pos.x, -pos.z-16))
 	#print("For pos " + str(pos) + "marker pos is " + str(marker_tex.get_position()))
 	marker_pos.push_back(pos)
 	markers.push_back(marker_tex.get_name())
