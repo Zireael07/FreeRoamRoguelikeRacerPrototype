@@ -15,7 +15,7 @@ func _ready():
 	##GUI
 	var h = preload("res://hud/garage_hud.tscn")
 	garage_hud = h.instance()
-	#garage_hud.player = player
+	garage_hud.player = player
 	add_child(garage_hud)
 	
 	# Called every time the node is added to the scene.
