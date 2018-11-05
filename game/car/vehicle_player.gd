@@ -39,6 +39,11 @@ var dot = 0
 var rel_loc = Vector3()
 var race_path = PoolVector3Array()
 
+# performance testing
+var count
+var timer
+var perf_distance
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
@@ -120,6 +125,24 @@ func _physics_process(delta):
 	if (elapsed_secs > start_secs and not emitted):
 		emit_signal("load_ended")
 		emitted = true
+	
+	# performance testing
+	if count:
+		timer += delta
+	
+	if speed > 28:
+		count = false
+		if timer and timer > 0.0:
+			#var perc_str = str((timer/12.0)*100) + "% of 12s (1500 force)"
+			print("Reached 100 kph, timer: " + str(timer) + " " + str(perf_distance) + " m " + \
+			#"acc: " + str(accel_from_time(timer)) + " m/s^2 " + \
+			"acc: " + str(accel_from_data(timer, perf_distance)) + " m/s^2 " + \
+			str(time_from_accel(accel_from_data(timer, perf_distance))) + " s") 
+			# \n " + perc_str)
+			timer = 0.0
+		#else:
+		#	print("Reached 100")
+	
 	
 	# racing 
 	if race and race_path.size() > 0:
@@ -281,6 +304,9 @@ func _process(delta):
 	
 	#increment distance counter
 	distance = distance + get_translation().distance_to(last_pos)
+	# same for performance testing
+	if count:
+		perf_distance = perf_distance + get_translation().distance_to(last_pos)
 	last_pos = get_translation()
 	
 	distance_int = round(distance)
@@ -343,6 +369,14 @@ func _input(event):
 				else:
 					cam.look_back = false
 
+	if (Input.is_action_pressed("perf_debug")):
+		print("Performance testing started!")
+		count = true
+		timer = 0.0
+		#reset distance
+		perf_distance = 0
+
+
 func _on_BODY_body_entered(body):
 	#print("Collided with " + str(body.get_name()))
 
@@ -369,3 +403,26 @@ func create_race_path(path):
 	#emit_signal("race_path_gotten")
 	race.done = true
 	print("Race set up is done")
+
+# performance
+# a = 2s/t^2
+func accel_from_data(t,dist):
+	var t2 = pow(t,2)
+	
+#	print("T : " + str(t2) + " d: " + str(2*dist))
+
+	# test
+	#print("T: " + str(pow(12,2)) + "d: " + str(2*201) + " = " + str((2*201)/pow(12,2)))
+	
+	return 2*dist / t2
+
+# a = delta v/ t
+func accel_from_time(t):
+	return 28 / t
+
+# t = delta v/ a
+func time_from_accel(a):
+	var vel_change = 28 # in m/s, and the start vel is 0
+	# comes out to 10 for 2.79
+		
+	return vel_change / a
