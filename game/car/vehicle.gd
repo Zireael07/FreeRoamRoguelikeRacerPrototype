@@ -16,7 +16,9 @@ var FUDGE = 8 # account for TORCS timestep being 0.002 seconds (500Hz) and our p
 
 
 export var force = 1500
+# doing performance upgrades via multiplying makes it easier to balance
 var braking_force_mult = 4
+var engine_force_mult = 1
 
 var offset
 var position_on_line
@@ -101,12 +103,12 @@ func process_car_physics(delta, gas, braking, left, right):
 	if (gas): #(Input.is_action_pressed("ui_up")):
 		#obey max speed setting
 		if (speed < MAX_SPEED):
-			set_engine_force(force)
+			set_engine_force(force*engine_force_mult)
 		else:
 			set_engine_force(0)
 	else:
 		if (speed > 3):
-			set_engine_force(-force/4)
+			set_engine_force((-force*engine_force_mult)/4)
 		else:
 			set_engine_force(0)
 	

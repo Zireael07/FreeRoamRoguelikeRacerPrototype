@@ -30,3 +30,13 @@ func _on_TireButton_pressed():
 	player.get_node("wheel2").set_friction_slip(1.5)
 	player.get_node("wheel3").set_friction_slip(1.5)
 	player.get_node("wheel4").set_friction_slip(1.5)
+
+
+func _on_EngineButton_pressed():
+	player.engine_force_mult = 1.5
+	#pass # replace with function body
+
+
+func _on_EngineButton2_pressed():
+	player.engine_force_mult = 2
+	#pass # replace with function body

@@ -78,7 +78,6 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="EngineBlock" type="Control" parent="Control" index="0"]
 
-visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -125,7 +124,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 80.0
 margin_top = 20.0
-margin_right = 120.0
+margin_right = 133.0
 margin_bottom = 34.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -133,6 +132,55 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
+text = "Mult 1.5"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
+
+[node name="EngineButton2" type="TextureButton" parent="Control/EngineBlock" index="2"]
+
+modulate = Color( 0, 0, 0, 1 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 2.0
+margin_top = 55.0
+margin_right = 202.0
+margin_bottom = 254.0
+rect_scale = Vector2( 0.25, 0.25 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+texture_normal = ExtResource( 2 )
+_sections_unfolded = [ "Material", "Rect", "Textures", "Visibility" ]
+
+[node name="Label2" type="Label" parent="Control/EngineBlock" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 82.0
+margin_top = 75.0
+margin_right = 135.0
+margin_bottom = 89.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Mult 2"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -309,6 +357,10 @@ max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+
+[connection signal="pressed" from="Control/EngineBlock/EngineButton" to="." method="_on_EngineButton_pressed"]
+
+[connection signal="pressed" from="Control/EngineBlock/EngineButton2" to="." method="_on_EngineButton2_pressed"]
 
 [connection signal="pressed" from="Control/BrakesBlock/BrakeButton" to="." method="_on_BrakeButton_pressed"]
 
