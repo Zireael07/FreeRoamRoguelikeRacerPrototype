@@ -148,7 +148,7 @@ func get_light_color(time):
 	if time >= 17.5 && time < 17.8:
 		# sunset
 		light_color = Color(1,51/255.0,0)
-	if time >= 17.8 && time < 18:
+	elif time >= 17.8 && time < 18:
 		var d = (time-17.5)/0.5;
 		# 0.303474,0.375416,0.627212
 		light_color = Color(1-((1-42/255.0)*d), 1-((1-64/255.0)*d), 1-((1-141/255.0)*d));

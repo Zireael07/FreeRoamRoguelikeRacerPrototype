@@ -11,6 +11,7 @@ var label_clock = null
 var label_angle = null
 var angle_bar = null
 var angle_limit_bar = null
+var compass_label = null
 
 var health_bar = null
 var battery_bar = null
@@ -32,6 +33,8 @@ func _ready():
 	label_angle = get_node("WheelAngle")
 	angle_bar = get_node("WheelAngleBar")
 	angle_limit_bar = get_node("WheelAngleBar2")
+	compass_label = get_node("CompassLabel")
+	
 	health_bar = get_node("Health")
 	battery_bar = get_node("Battery")
 
@@ -64,6 +67,9 @@ func update_wheel_angle(val, maxx):
 	#var perc = 
 	#print("Calc: " + str(perc))
 	angle_bar.set_value((val/maxx)*100)
+
+func update_compass(val):
+	compass_label.set_text(val)
 	
 func update_health(val):
 	health_bar.set_value(val)

@@ -76,7 +76,6 @@ environment = ExtResource( 1 )
 [node name="World" type="Spatial" parent="." index="1"]
 
 script = ExtResource( 2 )
-SPEED = 10.0
 start_time = 8.0
 day_night = true
 weather = 0

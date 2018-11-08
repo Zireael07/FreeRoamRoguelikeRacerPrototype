@@ -313,6 +313,19 @@ func _process(delta):
 	#update distance HUD
 	hud.update_distance("Distance: " + String(distance_int) + " m")
 
+	# because E and W were easiest to identify (the sun @ longitude 0)
+	var ang_to_dir = {180: "E", -180: "E", 0: "W", 90: "N", -90: "S"}
+
+	# -180 -90 0 90 180 are the possible angles
+	var num_to_dir = {0: "E", 1:"S", 2:"W", 3:"N", 4:"E"}
+	# map from -180-180 to 0-4
+	var num_mapping = range_lerp(get_rotation_degrees().y, -180, 180, 0, 4)
+
+	#hud.update_compass(str(get_rotation_degrees().y))
+	var disp = num_to_dir[int(round(num_mapping))]
+	hud.update_compass(str(disp))
+
+
 	hud.update_health(health)
 	
 	hud.update_battery(battery)
