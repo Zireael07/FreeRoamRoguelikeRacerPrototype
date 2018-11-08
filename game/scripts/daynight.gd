@@ -158,12 +158,14 @@ func set_colors(time):
 	env.set_ambient_light_energy(0.2+(0.2*light))
 	
 	# set sky colors
-	# default sky color is 12, 116, 249
-	sky_color = Color(12/255.0*light, 116/255.0*light, 0.972*light)
+	# default sky color used to be 12, 116, 249
+	# 165, 214, 240
+	sky_color = Color(165/255.0*light, 214/255.0*light, 240/255.0*light)
 	# default horizon color is 142, 210, 232
 	horizon_color = Color(142/255.0*light, 210/255.0*light, 232/255.0*light)
 	# detault ground horizon color is 123, 201, 243
-	gr_horizon_color = Color(123/255.0*light, 201/255.0*light, 243/255.0*light)
+	# 107, 100, 94
+	gr_horizon_color = Color(107/255.0*light, 100/255.0*light, 94/255.0*light)
 	sky.set_sky_top_color(sky_color)
 	sky.set_sky_horizon_color(horizon_color)
 	sky.set_ground_horizon_color(gr_horizon_color)	
