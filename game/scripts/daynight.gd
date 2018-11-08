@@ -1,7 +1,8 @@
 # based on a script by Khairul Hidayat, https://www.youtube.com/watch?v=iTkLEP3Kwko
 extends Spatial
 
-export var SPEED = 20.0;
+#export var SPEED = 20.0;
+var DAY_SPEED = 5; # in real-time minutes
 const UPDATE_TIME = 1/30.0;
 
 export var start_time = 8.0
@@ -54,16 +55,29 @@ func _ready():
 	sun = get_parent().get_node("DirectionalLight")
 	env = get_parent().get_node("WorldEnvironment").get_environment()
 	sky = env.get_sky()
+	
+	#print("Real-life minutes/day is: " + str(DAY_SPEED) + ", 1 h is: " + str((DAY_SPEED/24.0)*60.0) + " s")
 
 func _process(delta):
 #	# Called every frame. Delta is time since last frame.
 #	# Update game logic here.
 
+	# real-time
+	#real_s_per_hour = (DAY_SPEED/24.0)*60.0
+	#real_s_per_min = (DAY_SPEED/24.0) # because real_s_per_hour/60.0
+
 	# set previous time
 	prev_time = time
 	
 	# passage of time
-	time += 1/60.0*SPEED*delta;
+	# delta = amount of seconds
+	
+	#time += delta/real_s_per_hour
+	time += delta/((DAY_SPEED/24.0)*60.0)
+
+	
+	#time += 1/60.0*SPEED*delta;
+	# time is measured in in-game hours
 	if time >= 24.0:
 		time -= 24.0;
 	
@@ -131,9 +145,15 @@ func calculate_sun_latitude(time):
 	return latitude
 	
 func get_light_color(time):
-	if time >= 17.5 && time < 18:
+	if time >= 17.5 && time < 17.8:
+		# sunset
+		light_color = Color(1,51/255.0,0)
+	if time >= 17.8 && time < 18:
 		var d = (time-17.5)/0.5;
+		# 0.303474,0.375416,0.627212
 		light_color = Color(1-((1-42/255.0)*d), 1-((1-64/255.0)*d), 1-((1-141/255.0)*d));
+		
+		#print(str(light_color))
 	elif time >= 6.0 && time < 6.5:
 		var d = (time-5.5)/0.5;
 		light_color = Color((42/255.0)+((1-42/255.0)*d), (64/255.0)+((1-64/255.0)*d), (141/255.0)+((1-141/255.0)*d));
