@@ -716,10 +716,12 @@ func reset_lite():
 func rain_shine():
 	var material = get_node("plane").get_mesh().surface_get_material(0)
 	material.set_roughness(0.2)
+	material.set_metallic(0.85)
 	
 func no_rain():
 	var material = get_node("plane").get_mesh().surface_get_material(0)
 	material.set_roughness(1.0)
+	material.set_metallic(0.0)
 	
 func debug_cube(loc):
 	var mesh = CubeMesh.new()

@@ -103,9 +103,15 @@ func _process(delta):
 	
 	if weather == WEATHER_RAIN:
 		get_tree().get_nodes_in_group("player")[0].get_node("BODY/RainParticles").set_emitting(true)
+		
+		# enable SSR
+		env.set_ssr_enabled(true) 
+		
 		if get_tree().get_nodes_in_group("roads").size() > 0:
 			get_tree().get_nodes_in_group("roads")[0].rain_shine()
 	else:
+		env.set_ssr_enabled(false)
+		
 		get_tree().get_nodes_in_group("player")[0].get_node("BODY/RainParticles").set_emitting(false)
 		if get_tree().get_nodes_in_group("roads").size() > 0:
 			get_tree().get_nodes_in_group("roads")[0].no_rain()
