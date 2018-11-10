@@ -49,7 +49,12 @@ func _on_Area_body_enter( body ):
 				var msg = body.get_node("Messages")
 				#msg.set_initial(false)
 				msg.set_text("TEST RACE! " + "\n" + "Drive along the road to the finish marker")
-				msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
+				if not msg.get_node("OK_button").is_connected("pressed", self, "_on_ok_click"):
+					print("Not connected")
+					msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
+					
+				else:
+					print("Connected")
 				msg.enable_ok(true)
 				msg.show()
 		#else:
