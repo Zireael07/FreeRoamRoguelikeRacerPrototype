@@ -12,6 +12,7 @@ var label_angle = null
 var angle_bar = null
 var angle_limit_bar = null
 var compass_label = null
+var money_label = null
 
 var health_bar = null
 var battery_bar = null
@@ -34,6 +35,7 @@ func _ready():
 	angle_bar = get_node("WheelAngleBar")
 	angle_limit_bar = get_node("WheelAngleBar2")
 	compass_label = get_node("CompassLabel")
+	money_label = get_node("DriverInfo/MoneyLabel")
 	
 	health_bar = get_node("Health")
 	battery_bar = get_node("Battery")
@@ -70,6 +72,9 @@ func update_wheel_angle(val, maxx):
 
 func update_compass(val):
 	compass_label.set_text(val)
+	
+func update_money(val):
+	money_label.set_text("Money:   " + str(val))
 	
 func update_health(val):
 	health_bar.set_value(val)

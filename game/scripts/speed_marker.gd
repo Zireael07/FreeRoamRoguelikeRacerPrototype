@@ -44,6 +44,7 @@ func _on_Area_body_enter( body ):
 			# prize
 			if speed_kph > 60: # more than the speed limit
 				player.money += 30
+				player.hud.update_money(player.money)
 			
 		#else:
 		#	print("Area entered by a car " + body.get_parent().get_name())
