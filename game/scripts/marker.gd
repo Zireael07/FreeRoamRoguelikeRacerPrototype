@@ -11,6 +11,8 @@ var start
 
 # test
 export var raceline = PoolVector3Array() #[]
+var dist = 0
+var target_time = 0
 
 export var target = Vector3()
 
@@ -42,6 +44,12 @@ func _on_Area_body_enter( body ):
 				#msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
 				msg.enable_ok(false)
 				msg.show()
+				
+				# prize
+				if start.time < target_time: # if we beat calculated target time
+					player.money += 80
+					player.hud.update_money(player.money)
+				
 				
 				#remove finish
 				queue_free()
@@ -92,6 +100,12 @@ func _on_Area_body_exit( body ):
 				
 func spawn_finish(start):
 	print("Should be spawning finish")
+	
+	# because we need distance to calculate target time
+	calculate_distance()
+	
+
+	
 	var loc = target
 	var our = preload("res://objects/marker.tscn")
 	var finish = our.instance()
@@ -99,6 +113,8 @@ func spawn_finish(start):
 	finish.set_translation(loc)
 	finish.finish = true
 	finish.start = start
+	finish.target_time = target_time()
+	print("Target time: " + str(finish.target_time) + " s")
 	#finish.set_val(true)
 	
 	get_parent().add_child(finish)
@@ -111,6 +127,25 @@ func spawn_finish(start):
 	track_map.points = track_map.vec3s_convert(raceline)
 	# force redraw
 	track_map.update()
+
+	
+func calculate_distance():
+	#var dist = 0
+	# because +1
+	for i in range(raceline.size()-2):
+		var p = raceline[i]
+		dist += p.distance_to(raceline[i+1])
+	
+	print("Length of race: " + str(dist) + "m")
+	
+func target_time():
+	# we assume we need to beat a time set by avg speed
+	# speed limit (60 kph) = 16.7 m/s
+	var calc = dist/18
+	
+	# buffer
+	
+	return calc*1.4
 
 func play_replay():
 	if File.new().file_exists("res://replay/replay.tscn"):
