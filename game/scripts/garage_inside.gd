@@ -27,6 +27,9 @@ func go_back():
 		# remove ourselves
 		queue_free()
 		
+		player.hud.update_money(player.money)
+		
+		
 		# set player cam as current
 		player.get_node("cambase").get_node("Camera").make_current()
 		

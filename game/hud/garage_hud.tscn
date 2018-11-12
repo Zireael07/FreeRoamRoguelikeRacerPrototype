@@ -1,9 +1,18 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://hud/garage_hud.gd" type="Script" id=1]
 [ext_resource path="res://hud/engine-icon.png" type="Texture" id=2]
 [ext_resource path="res://hud/Car_Brakes-512.png" type="Texture" id=3]
 [ext_resource path="res://hud/tire-icon.png" type="Texture" id=4]
+[ext_resource path="res://assets/851H-kktt.ttf" type="DynamicFontData" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+
+size = 20
+use_mipmaps = false
+use_filter = false
+font_data = ExtResource( 5 )
+_sections_unfolded = [ "Font", "Settings" ]
 
 [node name="Control" type="Control" index="0"]
 
@@ -114,7 +123,8 @@ enabled_focus_mode = 2
 shortcut = null
 group = null
 texture_normal = ExtResource( 2 )
-_sections_unfolded = [ "Material", "Rect", "Textures", "Visibility" ]
+texture_disabled = ExtResource( 2 )
+_sections_unfolded = [ "Material", "Textures", "Visibility" ]
 
 [node name="Label" type="Label" parent="Control/EngineBlock" index="1"]
 
@@ -201,7 +211,6 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-_sections_unfolded = [ "Rect" ]
 
 [node name="BrakeButton" type="TextureButton" parent="Control/BrakesBlock" index="0"]
 
@@ -219,12 +228,14 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+disabled = true
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
 texture_normal = ExtResource( 3 )
-_sections_unfolded = [ "Rect", "Textures" ]
+texture_disabled = ExtResource( 3 )
+_sections_unfolded = [ "Textures", "Visibility" ]
 
 [node name="Label2" type="Label" parent="Control/BrakesBlock" index="1"]
 
@@ -356,13 +367,68 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
+[node name="MoneyLabel" type="Label" parent="." index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 30.0
+margin_right = 93.0
+margin_bottom = 51.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.0117647, 0.988235, 0.988235, 1 )
+text = "Money:   0"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect", "custom_colors", "custom_fonts" ]
+
+[node name="Label" type="Label" parent="." index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 62.0
+margin_top = 32.0
+margin_right = 72.0
+margin_bottom = 46.0
+rect_scale = Vector2( 1.5, 1.5 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_colors/font_color = Color( 0.0117647, 0.988235, 0.988235, 1 )
+text = "¥"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect", "custom_colors" ]
+
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+
+[connection signal="draw" from="Control/EngineBlock/EngineButton" to="." method="_on_EngineButton_draw"]
 
 [connection signal="pressed" from="Control/EngineBlock/EngineButton" to="." method="_on_EngineButton_pressed"]
 
+[connection signal="draw" from="Control/EngineBlock/EngineButton2" to="." method="_on_EngineButton2_draw"]
+
 [connection signal="pressed" from="Control/EngineBlock/EngineButton2" to="." method="_on_EngineButton2_pressed"]
 
+[connection signal="draw" from="Control/BrakesBlock/BrakeButton" to="." method="_on_BrakeButton_draw"]
+
 [connection signal="pressed" from="Control/BrakesBlock/BrakeButton" to="." method="_on_BrakeButton_pressed"]
+
+[connection signal="draw" from="Control/BrakesBlock/BrakeButton2" to="." method="_on_BrakeButton2_draw"]
 
 [connection signal="pressed" from="Control/BrakesBlock/BrakeButton2" to="." method="_on_BrakeButton2_pressed"]
 
