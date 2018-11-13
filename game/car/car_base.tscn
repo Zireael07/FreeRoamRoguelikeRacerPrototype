@@ -582,7 +582,7 @@ romaji = "Ichiro"
 
 [node name="BODY" type="VehicleBody" parent="." index="0"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.001696, 0, -0.095518 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.095518 )
 input_ray_pickable = true
 input_capture_on_drag = false
 collision_layer = 1
@@ -618,7 +618,7 @@ force = 1500
 [node name="wheel1" type="VehicleWheel" parent="BODY" index="0"]
 
 editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573678, 0.359334, 0.864664 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.359334, 0.864664 )
 use_as_traction = true
 use_as_steering = true
 wheel_roll_influence = 0.1
@@ -651,7 +651,7 @@ material/0 = null
 [node name="wheel2" type="VehicleWheel" parent="BODY" index="1"]
 
 editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573678, 0.359334, -0.783403 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.359334, -0.783403 )
 use_as_traction = true
 use_as_steering = false
 wheel_roll_influence = 0.1
@@ -684,7 +684,7 @@ material/0 = null
 [node name="wheel3" type="VehicleWheel" parent="BODY" index="2"]
 
 editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.359334, 0.864664 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.359334, 0.864664 )
 use_as_traction = true
 use_as_steering = true
 wheel_roll_influence = 0.1
@@ -717,7 +717,7 @@ material/0 = null
 [node name="wheel4" type="VehicleWheel" parent="BODY" index="3"]
 
 editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.359334, -0.783403 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.359334, -0.783403 )
 use_as_traction = true
 use_as_steering = false
 wheel_roll_influence = 0.1
@@ -749,7 +749,7 @@ material/0 = null
 
 [node name="mesh" parent="BODY" index="4" instance=ExtResource( 3 )]
 
-transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, -0.469088, 0.298204, 0.591264 )
+transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, -0.5, 0.298204, 0.591264 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="car_mesh" type="Spatial" parent="BODY" index="5"]
