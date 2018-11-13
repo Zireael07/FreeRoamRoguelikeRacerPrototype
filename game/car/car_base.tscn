@@ -625,10 +625,10 @@ wheel_roll_influence = 0.1
 wheel_radius = 0.25
 wheel_rest_length = 0.15
 wheel_friction_slip = 10.5
-suspension_travel = 2.0
+suspension_travel = 1.0
 suspension_stiffness = 40.0
 suspension_max_force = 6000.0
-damping_compression = 0.88
+damping_compression = 0.83
 damping_relaxation = 0.88
 _sections_unfolded = [ "Transform" ]
 
@@ -658,10 +658,10 @@ wheel_roll_influence = 0.1
 wheel_radius = 0.25
 wheel_rest_length = 0.15
 wheel_friction_slip = 10.5
-suspension_travel = 2.0
+suspension_travel = 1.0
 suspension_stiffness = 40.0
 suspension_max_force = 6000.0
-damping_compression = 0.88
+damping_compression = 0.83
 damping_relaxation = 0.88
 _sections_unfolded = [ "Transform" ]
 
@@ -683,6 +683,7 @@ material/0 = null
 
 [node name="wheel3" type="VehicleWheel" parent="BODY" index="2"]
 
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.359334, 0.864664 )
 use_as_traction = true
 use_as_steering = true
@@ -690,10 +691,10 @@ wheel_roll_influence = 0.1
 wheel_radius = 0.25
 wheel_rest_length = 0.15
 wheel_friction_slip = 10.5
-suspension_travel = 2.0
+suspension_travel = 1.0
 suspension_stiffness = 40.0
 suspension_max_force = 6000.0
-damping_compression = 0.88
+damping_compression = 0.83
 damping_relaxation = 0.88
 _sections_unfolded = [ "Transform" ]
 
@@ -723,10 +724,10 @@ wheel_roll_influence = 0.1
 wheel_radius = 0.25
 wheel_rest_length = 0.15
 wheel_friction_slip = 10.5
-suspension_travel = 2.0
+suspension_travel = 1.0
 suspension_stiffness = 40.0
 suspension_max_force = 6000.0
-damping_compression = 0.88
+damping_compression = 0.83
 damping_relaxation = 0.88
 _sections_unfolded = [ "Transform" ]
 
