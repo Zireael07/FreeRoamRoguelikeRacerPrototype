@@ -148,7 +148,29 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="EngineButton2" type="TextureButton" parent="Control/EngineBlock" index="2"]
+[node name="Label3" type="Label" parent="Control/EngineBlock" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 140.0
+margin_top = 20.0
+margin_right = 180.0
+margin_bottom = 34.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "¥40"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
+
+[node name="EngineButton2" type="TextureButton" parent="Control/EngineBlock" index="3"]
 
 modulate = Color( 0, 0, 0, 1 )
 anchor_left = 0.0
@@ -174,7 +196,7 @@ group = null
 texture_normal = ExtResource( 2 )
 _sections_unfolded = [ "Material", "Rect", "Textures", "Visibility" ]
 
-[node name="Label2" type="Label" parent="Control/EngineBlock" index="3"]
+[node name="Label2" type="Label" parent="Control/EngineBlock" index="4"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -191,6 +213,28 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 text = "Mult 2"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Label4" type="Label" parent="Control/EngineBlock" index="5"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 140.0
+margin_top = 75.0
+margin_right = 180.0
+margin_bottom = 89.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "¥60"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
@@ -259,7 +303,29 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="BrakeButton2" type="TextureButton" parent="Control/BrakesBlock" index="2"]
+[node name="Label" type="Label" parent="Control/BrakesBlock" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 140.0
+margin_top = 20.0
+margin_right = 180.0
+margin_bottom = 34.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "¥10"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
+
+[node name="BrakeButton2" type="TextureButton" parent="Control/BrakesBlock" index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -283,7 +349,7 @@ group = null
 texture_normal = ExtResource( 3 )
 _sections_unfolded = [ "Rect", "Textures" ]
 
-[node name="Label3" type="Label" parent="Control/BrakesBlock" index="3"]
+[node name="Label3" type="Label" parent="Control/BrakesBlock" index="4"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -300,6 +366,28 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 text = "Mult 8"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Label4" type="Label" parent="Control/BrakesBlock" index="5"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 140.0
+margin_top = 120.0
+margin_right = 180.0
+margin_bottom = 134.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "¥20"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
