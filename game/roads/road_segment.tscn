@@ -68,7 +68,7 @@ script = ExtResource( 1 )
 "roads",
 ]]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.75536e-015, 0, 15 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 0 )
 script = ExtResource( 2 )
 sidewalks = false
 barriers = true
@@ -98,6 +98,20 @@ color = Color( 1, 1, 1, 1 )
 
 [node name="Position3D" type="Position3D" parent="Placer/Road" index="1"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.2234, 0, -13.251 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 15 )
+
+[node name="last_pos" type="Position3D" parent="Placer/Road" index="2"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.18455e-016, 0.01, 18 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="last_pos2" type="Position3D" parent="Placer/Road" index="3"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.40346, 0.01, 16.7954 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="last_pos3" type="Position3D" parent="Placer/Road" index="4"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.18455e-016, 0.01, 15 )
 
 

@@ -100,4 +100,18 @@ color = Color( 1, 1, 1, 1 )
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -25 )
 
+[node name="last_pos" type="Position3D" parent="Placer/Road" index="6"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.18455e-016, 0.01, 18 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="last_pos2" type="Position3D" parent="Placer/Road" index="7"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.40346, 0.01, 16.7954 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="last_pos3" type="Position3D" parent="Placer/Road" index="8"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.18455e-016, 0.01, 15 )
+
 

@@ -380,6 +380,22 @@ func test_road():
 	left_positions.push_back(Vector3(points_outer[points_outer.size()-1].x, road_height, points_outer[points_outer.size()-1].y))
 	right_positions.push_back(Vector3(points_inner[points_inner.size()-1].x, road_height, points_inner[points_inner.size()-1].y))
 	
+	# to perfect the connection
+	if has_node("last_pos"):
+		get_node("last_pos").set_translation(positions[positions.size()-1])
+		get_node("last_pos").set_rotation(Vector3(0,0,0))
+		get_node("last_pos").rotate_object_local(Vector3(0,0,1), deg2rad(end_angle))
+		get_node("last_pos").translate_object_local(Vector3(0, 0, lane_width))
+		
+	if has_node("last_pos2"):
+		get_node("last_pos2").set_translation(positions[positions.size()-1])
+		get_node("last_pos").set_rotation(Vector3(0,0,0))
+		get_node("last_pos2").rotate_object_local(Vector3(0,0,1), deg2rad(end_angle))
+		get_node("last_pos2").translate_object_local(Vector3(0,0, -lane_width))
+
+	if has_node("last_pos3"):
+		get_node("last_pos3").set_translation(positions[positions.size()-1])
+	
 	# 2D because 3D doesn't have tangent()
 	var start_axis_2d = -(points_center[0]-loc).tangent().normalized()*10
 	var end_axis_2d = -(points_center[points_center.size()-1]-loc).tangent().normalized()*10
