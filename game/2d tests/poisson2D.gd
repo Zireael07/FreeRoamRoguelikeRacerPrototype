@@ -221,12 +221,13 @@ func run():
 	return samples
 	
 func _draw():
-	for i in range(0, samples.size()):
-		var p = samples[i]
-		if i == 0:
-			draw_circle(Vector2(p[0], p[1]), 2.0, Color(0,1,0))
-		else:
-			draw_circle(Vector2(p[0], p[1]), 2.0, Color(1,0,0))
+	pass
+#	for i in range(0, samples.size()):
+#		var p = samples[i]
+#		if i == 0:
+#			draw_circle(Vector2(p[0], p[1]), 2.0, Color(0,1,0))
+#		else:
+#			draw_circle(Vector2(p[0], p[1]), 2.0, Color(1,0,0))
 #
 #	for e in edges:
 #		var p1 = samples[e[0]]
@@ -234,5 +235,5 @@ func _draw():
 #		draw_line(Vector2(p1[0], p1[1]), Vector2(p2[0], p2[1]), Color(0,0,1))
 		#draw_line(Vector2(e[0][0], e[0][1]), Vector2(e[1][0], e[1][1]), Color(0,0,1))
 	
-		
-	update()
+	# changing type to CanvasItem fixes this but breaks instancing
+	#update()

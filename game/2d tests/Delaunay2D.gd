@@ -28,8 +28,9 @@ func generate_points(width, height, num_points):
 		points.append(Vector2(rand_range(0, width), rand_range(0, height)))
 
 func _draw():
-	for p in points:
-		draw_circle(p, 5.0, Color(1,0,0))
+	pass
+#	for p in points:
+#		draw_circle(p, 5.0, Color(1,0,0))
 
 func polygons(polys):
 	for p in polys:
