@@ -1,5 +1,5 @@
 tool
-extends GeometryInstance
+extends ImmediateGeometry
 
 # class member variables go here, for example:
 var m = SpatialMaterial.new()

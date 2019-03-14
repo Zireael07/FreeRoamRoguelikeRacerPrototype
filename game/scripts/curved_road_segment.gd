@@ -152,7 +152,7 @@ func _ready():
 
 
 func draw_debug_point(loc, color):
-	addTestColor(m, color, null, loc.x, road_height, loc.y, 0.05,0.05,0.05)
+	.addTestColor(m, color, null, loc.x, road_height, loc.y, 0.05,0.05,0.05)
 
 	
 
@@ -413,8 +413,8 @@ func test_road():
 	var inv_end_ref = positions[positions.size()-1]-end_axis
 	
 	#B-A = from a to b
-	start_vector = Vector3(start_ref-positions[0])
-	end_vector = Vector3(positions[positions.size()-1] - end_ref)
+	start_vector = (start_ref-positions[0])
+	end_vector = (positions[positions.size()-1] - end_ref)
 	
 	
 	#only mesh in game because meshing in editor can take >900 ms
@@ -661,7 +661,7 @@ func navMesh(vertices, left):
 	
 	
 	if (vertices.size() <= 0):
-		nav_vertices = Vector3Array()
+		nav_vertices = PoolVector3Array()
 		nav_vertices.resize(0)
 		
 		#this gives us 124 nav vertices for left lane
