@@ -7,7 +7,7 @@ var mult
 
 var edges = []
 var samples = []
-var as
+var ast
 
 var nav
 #var tris = []
@@ -85,7 +85,7 @@ func _ready():
 	#print("tg : " + str(tg))
 
 #	print("Marker intersection id" + str(marker_data[0]) + " tg id" + str(marker_data[1]))
-	var int_path = as.get_id_path(marker_data[0], marker_data[1])
+	var int_path = ast.get_id_path(marker_data[0], marker_data[1])
 	print("Intersections path" + str(int_path))
 
 #	# test (get path_look entry at id x)
@@ -243,13 +243,13 @@ func setup_nav_astar(pts, i, begin_id):
 
 func setup_neighbors():
 	# we'll use AStar to have an easy map of neighbors
-	as = AStar.new()
+	ast = AStar.new()
 	for i in range(0,samples.size()-1):
-		as.add_point(i, Vector3(samples[i][0]*mult, 0, samples[i][1]*mult))
+		ast.add_point(i, Vector3(samples[i][0]*mult, 0, samples[i][1]*mult))
 
 	for i in range(0, edges.size()):
 		var ed = edges[i]
-		as.connect_points(ed[0], ed[1])
+		ast.connect_points(ed[0], ed[1])
 
 # yes it could be more efficient I guess
 func bfs_distances(start):
@@ -267,7 +267,7 @@ func bfs_distances(start):
 		var node = queue.pop_front()
 		#print("Visiting... " + str(node))
 
-		var neighbours = as.get_point_connections(node)
+		var neighbours = ast.get_point_connections(node)
 		# add neighbours of node to queue
 		for neighbour in neighbours:
 			# if not visited

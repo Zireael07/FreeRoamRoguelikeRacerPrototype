@@ -10,7 +10,7 @@ onready	var nameplate = get_node("BODY").get_node("Viewport 2").get_node("namepl
 
 
 func _ready():
-	set_name()
+	set_name_custom()
 	pass
 	
 func select_name(s_name, s_romaji):
@@ -18,9 +18,9 @@ func select_name(s_name, s_romaji):
 	player_name = s_name
 	romaji = s_romaji
 	
-	set_name()
+	set_name_custom()
 	
-func set_name():
+func set_name_custom():
 	#print("Setting name " + String(romaji))
 	
 	if player_name != "" and romaji != "":
