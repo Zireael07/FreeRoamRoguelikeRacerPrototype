@@ -3,16 +3,21 @@
 importer="texture"
 type="StreamTexture"
 path="res://.import/test mappo.png-a42c19af20ddf1a016cc77955969e6ae.stex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
-source_md5="e97c665435bd1f48ba240ce3ce5362f4"
+source_file="res://hud/test mappo.png"
+dest_files=[ "res://.import/test mappo.png-a42c19af20ddf1a016cc77955969e6ae.stex" ]
 
 [params]
 
 compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
+compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
 flags/filter=true
@@ -22,6 +27,7 @@ flags/srgb=2
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
+process/invert_color=false
 stream=false
 size_limit=0
 detect_3d=true

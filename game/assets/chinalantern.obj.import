@@ -8,8 +8,11 @@ path="res://.import/chinalantern.obj-8fc83460d42c9d3190d1da44793099e8.mesh"
 
 files=[ "res://.import/chinalantern.obj-8fc83460d42c9d3190d1da44793099e8.mesh" ]
 
-source_md5="55a285e067b979689e1a2af51597fd9a"
+source_file="res://assets/chinalantern.obj"
+dest_files=[ "res://.import/chinalantern.obj-8fc83460d42c9d3190d1da44793099e8.mesh", "res://.import/chinalantern.obj-8fc83460d42c9d3190d1da44793099e8.mesh" ]
 
 [params]
 
 generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

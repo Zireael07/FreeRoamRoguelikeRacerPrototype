@@ -4,20 +4,22 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/paredeTijolo_norm.png-0976bd1aaa93c69fd2c4fd081b6772c8.s3tc.stex"
 path.etc2="res://.import/paredeTijolo_norm.png-0976bd1aaa93c69fd2c4fd081b6772c8.etc2.stex"
+metadata={
+"imported_formats": [ "s3tc", "etc2" ],
+"vram_texture": true
+}
 
 [deps]
 
 source_file="res://assets/paredeTijolo_norm.png"
-source_md5="b63202d2ca22c4a3e93a4c78f206ae1f"
-
 dest_files=[ "res://.import/paredeTijolo_norm.png-0976bd1aaa93c69fd2c4fd081b6772c8.s3tc.stex", "res://.import/paredeTijolo_norm.png-0976bd1aaa93c69fd2c4fd081b6772c8.etc2.stex" ]
-dest_md5="2af95d228542c6e85f50cf8538737e1e"
 
 [params]
 
 compress/mode=2
 compress/lossy_quality=0.7
 compress/hdr_mode=0
+compress/bptc_ldr=0
 compress/normal_map=1
 flags/repeat=true
 flags/filter=true
@@ -27,6 +29,7 @@ flags/srgb=2
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
+process/invert_color=false
 stream=false
 size_limit=0
 detect_3d=false

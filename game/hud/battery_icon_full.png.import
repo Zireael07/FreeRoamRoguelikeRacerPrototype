@@ -3,20 +3,21 @@
 importer="texture"
 type="StreamTexture"
 path="res://.import/battery_icon_full.png-843c2f9557062c33bd6765d03323d7ef.stex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://hud/battery_icon_full.png"
-source_md5="0b387f841c3b61342bc22f42a3dc3a0f"
-
 dest_files=[ "res://.import/battery_icon_full.png-843c2f9557062c33bd6765d03323d7ef.stex" ]
-dest_md5="0a7903e1f1cd0a1d390303d6e73f10d1"
 
 [params]
 
 compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
+compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
 flags/filter=true
@@ -26,6 +27,7 @@ flags/srgb=2
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
+process/invert_color=false
 stream=false
 size_limit=0
 detect_3d=true

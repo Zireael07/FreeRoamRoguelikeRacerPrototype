@@ -9,12 +9,10 @@ path="res://.import/beech.obj-c6b87237909ba9b146a14ccda5db739c.mesh"
 files=[ "res://.import/beech.obj-c6b87237909ba9b146a14ccda5db739c.mesh" ]
 
 source_file="res://assets/beech.obj"
-source_md5="7e84d7fe3bf3e5705641be2dc2fe13c4"
-
 dest_files=[ "res://.import/beech.obj-c6b87237909ba9b146a14ccda5db739c.mesh", "res://.import/beech.obj-c6b87237909ba9b146a14ccda5db739c.mesh" ]
-dest_md5="e30f99e78cb2b7f97c8c6a9865c0a60a"
 
 [params]
 
 generate_tangents=true
 scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

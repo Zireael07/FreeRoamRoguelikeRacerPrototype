@@ -1,7 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=2]
 
 [sub_resource type="Shader" id=1]
-
 code = "shader_type spatial;
 
 /*void vertex() {
@@ -52,14 +51,10 @@ void fragment()
 	if (uv3 != vec2(0,0)) { EMISSION = vec3(0,0,g)+wind(w,hz,uv, TIME); }
 	if (uv4 != vec2(0,0)) { EMISSION = vec3(0,0,g)+wind(hx,w, uv, TIME); }
 }"
-_sections_unfolded = [ "Resource" ]
 
 [resource]
-
-render_priority = 0
 shader = SubResource( 1 )
 shader_param/w = 4.0
 shader_param/hx = 2.0
 shader_param/hz = 2.0
-_sections_unfolded = [ "shader_param" ]
 

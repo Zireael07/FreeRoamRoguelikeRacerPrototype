@@ -8,8 +8,11 @@ path="res://.import/truenohoudini.obj-87bbda06796b5427a9b01325d5434e36.mesh"
 
 files=[ "res://.import/truenohoudini.obj-87bbda06796b5427a9b01325d5434e36.mesh" ]
 
-source_md5="8e8c00d966407423bf4f55d2113239f8"
+source_file="res://assets/truenohoudini.obj"
+dest_files=[ "res://.import/truenohoudini.obj-87bbda06796b5427a9b01325d5434e36.mesh", "res://.import/truenohoudini.obj-87bbda06796b5427a9b01325d5434e36.mesh" ]
 
 [params]
 
 generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

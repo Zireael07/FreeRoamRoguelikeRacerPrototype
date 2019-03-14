@@ -1,7 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=2]
 
 [sub_resource type="Shader" id=1]
-
 code = "shader_type spatial;
 
 render_mode unshaded;
@@ -84,13 +83,10 @@ void fragment(){
 "
 
 [resource]
-
-render_priority = 0
 shader = SubResource( 1 )
 shader_param/cut_off = 0.15
 shader_param/cloud_cover = 30.0
 shader_param/move = true
 shader_param/light = Vector3( 1, 1, 1 )
 shader_param/ha_divider = 758.0
-_sections_unfolded = [ "shader_param" ]
 

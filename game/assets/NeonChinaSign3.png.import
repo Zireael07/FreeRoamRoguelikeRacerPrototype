@@ -4,20 +4,22 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/NeonChinaSign3.png-273859dbf3cc0067752c99ed0c2c7679.s3tc.stex"
 path.etc2="res://.import/NeonChinaSign3.png-273859dbf3cc0067752c99ed0c2c7679.etc2.stex"
+metadata={
+"imported_formats": [ "s3tc", "etc2" ],
+"vram_texture": true
+}
 
 [deps]
 
 source_file="res://assets/NeonChinaSign3.png"
-source_md5="bf43de506ccd308fae9b60a136d4c171"
-
 dest_files=[ "res://.import/NeonChinaSign3.png-273859dbf3cc0067752c99ed0c2c7679.s3tc.stex", "res://.import/NeonChinaSign3.png-273859dbf3cc0067752c99ed0c2c7679.etc2.stex" ]
-dest_md5="b28f8e04b1994b875136547aaf64a5d8"
 
 [params]
 
 compress/mode=2
 compress/lossy_quality=0.7
 compress/hdr_mode=0
+compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=true
 flags/filter=true
@@ -27,6 +29,7 @@ flags/srgb=1
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
+process/invert_color=false
 stream=false
 size_limit=0
 detect_3d=false

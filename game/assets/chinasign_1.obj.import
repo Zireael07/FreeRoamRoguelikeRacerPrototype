@@ -9,11 +9,10 @@ path="res://.import/chinasign_1.obj-58dc05e75e1ac0d78aa456d1b1b6b0b7.mesh"
 files=[ "res://.import/chinasign_1.obj-58dc05e75e1ac0d78aa456d1b1b6b0b7.mesh" ]
 
 source_file="res://assets/chinasign_1.obj"
-source_md5="4a12b7798659c1faa7548f1975a097b1"
-
 dest_files=[ "res://.import/chinasign_1.obj-58dc05e75e1ac0d78aa456d1b1b6b0b7.mesh", "res://.import/chinasign_1.obj-58dc05e75e1ac0d78aa456d1b1b6b0b7.mesh" ]
-dest_md5="ebc41352e1e5ad5adb79af177eaec2bc"
 
 [params]
 
 generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

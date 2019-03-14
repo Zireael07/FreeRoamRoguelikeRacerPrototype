@@ -3,16 +3,21 @@
 importer="texture"
 type="StreamTexture"
 path="res://.import/minimap_arrow_big_64 - bordered grayscale.png-179d8059fd57071bbfa086e1cc4a40e8.stex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
-source_md5="1db9028944824681f399bf5bcf6433b4"
+source_file="res://hud/minimap_arrow_big_64 - bordered grayscale.png"
+dest_files=[ "res://.import/minimap_arrow_big_64 - bordered grayscale.png-179d8059fd57071bbfa086e1cc4a40e8.stex" ]
 
 [params]
 
 compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
+compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
 flags/filter=true
@@ -22,6 +27,7 @@ flags/srgb=2
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
+process/invert_color=false
 stream=false
 size_limit=0
 detect_3d=true

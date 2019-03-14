@@ -3,16 +3,21 @@
 importer="texture"
 type="StreamTexture"
 path="res://.import/road2Lane - road.jpg-d2479e94be53b98f3a49a0290d917e43.stex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
-source_md5="0303c146d55cf7fc160f9acb4c5ac5ad"
+source_file="res://assets/road2Lane - road.jpg"
+dest_files=[ "res://.import/road2Lane - road.jpg-d2479e94be53b98f3a49a0290d917e43.stex" ]
 
 [params]
 
 compress/mode=3
 compress/lossy_quality=0.7
 compress/hdr_mode=0
+compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=true
 flags/filter=false
@@ -22,6 +27,7 @@ flags/srgb=1
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
+process/invert_color=false
 stream=false
 size_limit=0
 detect_3d=false

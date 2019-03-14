@@ -4,16 +4,22 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/LED taillights stock.jpg-dbbfa1d3a1861505878322762e481412.s3tc.stex"
 path.etc2="res://.import/LED taillights stock.jpg-dbbfa1d3a1861505878322762e481412.etc2.stex"
+metadata={
+"imported_formats": [ "s3tc", "etc2" ],
+"vram_texture": true
+}
 
 [deps]
 
-source_md5="5dd8b88c1ae838f99f91e1b216a24381"
+source_file="res://assets/LED taillights stock.jpg"
+dest_files=[ "res://.import/LED taillights stock.jpg-dbbfa1d3a1861505878322762e481412.s3tc.stex", "res://.import/LED taillights stock.jpg-dbbfa1d3a1861505878322762e481412.etc2.stex" ]
 
 [params]
 
 compress/mode=2
 compress/lossy_quality=0.7
 compress/hdr_mode=0
+compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=true
 flags/filter=true
@@ -23,6 +29,7 @@ flags/srgb=1
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
+process/invert_color=false
 stream=false
 size_limit=0
 detect_3d=false

@@ -7,10 +7,7 @@ path="res://.import/driver_sit.dae-6e9993c6f3d5f223a3838a3c3f92f8d4.scn"
 [deps]
 
 source_file="res://assets/driver_sit.dae"
-source_md5="3225b90de4eda13b4b21003cf1e55112"
-
 dest_files=[ "res://.import/driver_sit.dae-6e9993c6f3d5f223a3838a3c3f92f8d4.scn" ]
-dest_md5="3a73531c9f62a459a90e76229283bad6"
 
 [params]
 

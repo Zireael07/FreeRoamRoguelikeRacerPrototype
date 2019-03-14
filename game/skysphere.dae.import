@@ -7,10 +7,7 @@ path="res://.import/skysphere.dae-8c125df4190bc8044249b9deccb31f58.scn"
 [deps]
 
 source_file="res://skysphere.dae"
-source_md5="00d7ea43381f0390ff608376f193378b"
-
 dest_files=[ "res://.import/skysphere.dae-8c125df4190bc8044249b9deccb31f58.scn" ]
-dest_md5="8300a98e35d03d9380cbcb46548b39e0"
 
 [params]
 

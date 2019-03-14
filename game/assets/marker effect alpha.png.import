@@ -2,27 +2,35 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/marker effect alpha.png-381209182f3c175d9ebe405c0df1e4fa.stex"
+path.s3tc="res://.import/marker effect alpha.png-381209182f3c175d9ebe405c0df1e4fa.s3tc.stex"
+path.etc2="res://.import/marker effect alpha.png-381209182f3c175d9ebe405c0df1e4fa.etc2.stex"
+metadata={
+"imported_formats": [ "s3tc", "etc2" ],
+"vram_texture": true
+}
 
 [deps]
 
-source_md5="fbdb54d54273b0cd87484aede3f530d9"
+source_file="res://assets/marker effect alpha.png"
+dest_files=[ "res://.import/marker effect alpha.png-381209182f3c175d9ebe405c0df1e4fa.s3tc.stex", "res://.import/marker effect alpha.png-381209182f3c175d9ebe405c0df1e4fa.etc2.stex" ]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/lossy_quality=0.7
 compress/hdr_mode=0
+compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=0
+flags/repeat=true
 flags/filter=true
-flags/mipmaps=false
+flags/mipmaps=true
 flags/anisotropic=false
 flags/srgb=2
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
+process/invert_color=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0

@@ -4,16 +4,22 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/Streetlight_incadesence.jpg-0342f53f3503e950c898d7b159da5e00.s3tc.stex"
 path.etc2="res://.import/Streetlight_incadesence.jpg-0342f53f3503e950c898d7b159da5e00.etc2.stex"
+metadata={
+"imported_formats": [ "s3tc", "etc2" ],
+"vram_texture": true
+}
 
 [deps]
 
-source_md5="d8531c0db145a9c6029201a9dc5e7c5e"
+source_file="res://assets/Streetlight_incadesence.jpg"
+dest_files=[ "res://.import/Streetlight_incadesence.jpg-0342f53f3503e950c898d7b159da5e00.s3tc.stex", "res://.import/Streetlight_incadesence.jpg-0342f53f3503e950c898d7b159da5e00.etc2.stex" ]
 
 [params]
 
 compress/mode=2
 compress/lossy_quality=0.7
 compress/hdr_mode=0
+compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=true
 flags/filter=true
@@ -23,6 +29,7 @@ flags/srgb=1
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
+process/invert_color=false
 stream=false
 size_limit=0
 detect_3d=false

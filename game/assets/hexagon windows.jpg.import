@@ -4,20 +4,22 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/hexagon windows.jpg-a7820dc6ff4bdbcdd005e1ec90e9d5a0.s3tc.stex"
 path.etc2="res://.import/hexagon windows.jpg-a7820dc6ff4bdbcdd005e1ec90e9d5a0.etc2.stex"
+metadata={
+"imported_formats": [ "s3tc", "etc2" ],
+"vram_texture": true
+}
 
 [deps]
 
 source_file="res://assets/hexagon windows.jpg"
-source_md5="06747351814dd606c80d653bd2218e40"
-
 dest_files=[ "res://.import/hexagon windows.jpg-a7820dc6ff4bdbcdd005e1ec90e9d5a0.s3tc.stex", "res://.import/hexagon windows.jpg-a7820dc6ff4bdbcdd005e1ec90e9d5a0.etc2.stex" ]
-dest_md5="0bfa75a0958bc281f556b74dde7e99e0"
 
 [params]
 
 compress/mode=2
 compress/lossy_quality=0.7
 compress/hdr_mode=0
+compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=true
 flags/filter=true
@@ -27,6 +29,7 @@ flags/srgb=1
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
+process/invert_color=false
 stream=false
 size_limit=0
 detect_3d=false

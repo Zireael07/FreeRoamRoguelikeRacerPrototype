@@ -4,20 +4,22 @@ importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/induction_tex.jpg-367a9a0130d8bb78f79b9407d8e11988.s3tc.stex"
 path.etc2="res://.import/induction_tex.jpg-367a9a0130d8bb78f79b9407d8e11988.etc2.stex"
+metadata={
+"imported_formats": [ "s3tc", "etc2" ],
+"vram_texture": true
+}
 
 [deps]
 
 source_file="res://assets/induction_tex.jpg"
-source_md5="700db69e746424d7a72257a37113664f"
-
 dest_files=[ "res://.import/induction_tex.jpg-367a9a0130d8bb78f79b9407d8e11988.s3tc.stex", "res://.import/induction_tex.jpg-367a9a0130d8bb78f79b9407d8e11988.etc2.stex" ]
-dest_md5="79f7b84c4a472acfedb8cfb8c4ad32e2"
 
 [params]
 
 compress/mode=2
 compress/lossy_quality=0.7
 compress/hdr_mode=0
+compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=true
 flags/filter=true
@@ -27,6 +29,7 @@ flags/srgb=1
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
+process/invert_color=false
 stream=false
 size_limit=0
 detect_3d=false
