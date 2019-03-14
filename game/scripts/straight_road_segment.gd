@@ -290,9 +290,9 @@ func _ready():
 	if positions.size() > 0:
 		global_positions = get_global_positions()
 		
-		start_vector = Vector3(positions[1] - positions[0])
+		start_vector = (positions[1] - positions[0])
 		#B-A = from a to b
-		end_vector = Vector3(positions[positions.size()-1]- positions[positions.size()-2])
+		end_vector = (positions[positions.size()-1]- positions[positions.size()-2])
 		
 		start_ref = positions[0]+start_vector
 		end_ref = positions[positions.size()-1]+end_vector
@@ -642,12 +642,12 @@ func placeBamboo(index):
 	
 	
 # navmesh
-func setupNavi(navigation_node):
-	#nav mesh
-	nav_vertices = get_navi_vertices()
-	navMesh(navigation_node, nav_vertices, true)
-	nav_vertices_alt = get_navi_vertices_alt()
-	navMesh(navigation_node, nav_vertices_alt, false)
+#func setupNavi(navigation_node):
+#	#nav mesh
+#	nav_vertices = get_navi_vertices()
+#	navMesh(navigation_node, nav_vertices, true)
+#	nav_vertices_alt = get_navi_vertices_alt()
+#	navMesh(navigation_node, nav_vertices_alt, false)
 
 #func get_navi_vertices():
 #	var nav_vertices = PoolVector3Array()

@@ -174,7 +174,7 @@ func addTri(one, two, three, material, surface):
 	
 	
 func make_circle(center, segments, radius):
-	var points_arc = Vector2Array()
+	var points_arc = PoolVector2Array()
 	var angle_from = 0
 	var angle_to = 360
 

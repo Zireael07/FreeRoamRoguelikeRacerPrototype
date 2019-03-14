@@ -136,7 +136,7 @@ func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, sr
 	#positions.append(Vector3(start.x, 0, start.y))
 	
 	#var start = Vector2(corner1.x, corner1.z)
-	var end = Vector2(Vector2(corner1.x, corner1.z) - tang)
+	var end = Vector2(corner1.x, corner1.z) - tang
 	
 	#debug_cube(Vector3(end.x, 1, end.y))
 	#positions.append(Vector3(end.x, 0, end.y))
@@ -145,7 +145,7 @@ func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, sr
 	var start_b = Vector2(corner2.x, corner2.z) + tang2
 	#debug_cube(Vector3(start_b.x, 1, start_b.y))
 	#positions.append(Vector3(start_b.x, 0, start_b.y))
-	var end_b = Vector2(Vector2(corner2.x, corner2.z)-tang2)
+	var end_b = Vector2(corner2.x, corner2.z)-tang2
 	#positions.append(Vector3(end_b.x, 0, end_b.y))
 	#debug_cube(Vector3(end_b.x, 1, end_b.y))
 	
@@ -204,7 +204,7 @@ func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, des
 	#positions.append(Vector3(start.x, 0, start.y))
 	
 	#var start = Vector2(corner1.x, corner1.z)
-	var end = Vector2(Vector2(corner1.x, corner1.z) - tang)
+	var end = Vector2(corner1.x, corner1.z) - tang
 	
 	#debug_cube(Vector3(end.x, 1, end.y))
 	#positions.append(Vector3(end.x, 0, end.y))
@@ -213,7 +213,7 @@ func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, des
 	var start_b = Vector2(corner2.x, corner2.z) + tang2
 	#debug_cube(Vector3(start_b.x, 1, start_b.y))
 	#positions.append(Vector3(start_b.x, 0, start_b.y))
-	var end_b = Vector2(Vector2(corner2.x, corner2.z)-tang2)
+	var end_b = Vector2(corner2.x, corner2.z)-tang2
 	#positions.append(Vector3(end_b.x, 0, end_b.y))
 	#debug_cube(Vector3(end_b.x, 1, end_b.y))
 	
@@ -493,8 +493,8 @@ func draw_circle_arc(center, radius, angle_from, angle_to, right, clr):
 	var points_arc = get_circle_arc(center, radius, angle_from, angle_to, right)
 	#print("Points: " + str(points_arc))
 	
-	for index in range(points_arc.size()-1):
-		draw_line(points_arc[index], points_arc[index+1], clr, 1.5)
+#	for index in range(points_arc.size()-1):
+#		draw_line(points_arc[index], points_arc[index+1], clr, 1.5)
 
 	
 # from maths
