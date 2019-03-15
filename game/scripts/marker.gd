@@ -107,8 +107,10 @@ func spawn_finish(start):
 
 	
 	var loc = target
-	var our = preload("res://objects/marker.tscn")
-	var finish = our.instance()
+	# this was BAD, a leak waiting to happen
+	#var our = preload("res://objects/marker.tscn")
+	#var finish = our.instance()
+	var finish = self.duplicate()
 	finish.set_name("Finish")
 	finish.set_translation(loc)
 	finish.finish = true
