@@ -30,10 +30,14 @@ func connect_intersections(one, two):
 	
 	var src_exit = get_src_exit(get_child(one), get_child(two))
 	print("Src exit: " + str(src_exit))
+	if not src_exit:
+		return
 	var loc_src_exit = to_local(get_child(one).to_global(src_exit))
 
 	var dest_exit = get_dest_exit(get_child(one), get_child(two))
 	print("Dest exit: " + str(dest_exit))
+	if not dest_exit:
+		return
 	var loc_dest_exit = to_local(get_child(two).to_global(dest_exit))
 
 	# debugging

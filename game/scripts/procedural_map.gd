@@ -24,11 +24,12 @@ func _ready():
 	garage = preload("res://objects/garage_road.tscn")
 
 	samples = get_node("triangulate/poisson").samples
-
+	#print(samples.size()-1)
 	for i in range(0, get_node("triangulate/poisson").samples.size()-1):
 		var p = get_node("triangulate/poisson").samples[i]
 		var intersection = intersects.instance()
 		intersection.set_translation(Vector3(p[0]*mult, 0, p[1]*mult))
+		print("Placing intersection at " + str(p[0]*mult) + ", " + str(p[1]*mult))
 		intersection.set_name("intersection" + str(i))
 		add_child(intersection)
 
@@ -56,7 +57,7 @@ func _ready():
 	var marker_data = spawn_markers()
 
 	# test
-	var roads_start_id = 2+5 # 2 helper nodes + 5 intersections
+	var roads_start_id = 2+samples.size()-1 # 2 helper nodes + intersections for samples
 
 	nav = AStar.new()
 	var pts = []
@@ -65,15 +66,18 @@ func _ready():
 	var path_look = {}
 	
 	for i in range(roads_start_id, roads_start_id+4):
+		#print("Begin: " + str(begin_id))
 		var data = setup_nav_astar(pts, i, begin_id)
 		#print('Begin: ' + str(begin_id) + " end: " + str(data[0]) + " inters: " + str(data[1]))
 		#path_data.append([data[1], [begin_id, data[0]]])
-		path_look[data[2]] = [begin_id, data[0]]
-		# just in case, map inverse too
-		path_look[[data[2][1], data[2][0]]] = [data[0], begin_id]
+		# if we had something to set up
+		if data:
+			path_look[data[2]] = [begin_id, data[0]]
+			# just in case, map inverse too
+			path_look[[data[2][1], data[2][0]]] = [data[0], begin_id]
 
-		# increment begin_id
-		begin_id = data[1]+1
+			# increment begin_id
+			begin_id = data[1]+1
 
 	print(path_look)
 	
@@ -97,42 +101,47 @@ func _ready():
 #	marker.raceline = nav_path
 	
 	#print("First pair: " + str(int_path[0]) + "," + str(int_path[1]))
-	var lookup_path = path_look[[int_path[0], int_path[1]]]
-	#print("Lookup path pt1: " + str(lookup_path))
-	var nav_path = nav.get_point_path(lookup_path[0], lookup_path[1])
-	#print("Nav path: " + str(nav_path))
-	# so that the player can see
-	#marker.raceline = nav_path
-
-	#print("Second pair: " + str(int_path[1]) + "," + str(int_path[2]))
-	lookup_path = path_look[[int_path[1], int_path[2]]]
-	#print("Lookup path pt2: " + str(lookup_path))
-	var nav_path2 = nav.get_point_path(lookup_path[0], lookup_path[1])
-	#print("Nav path pt2 : " + str(nav_path2))
-
-	var nav_path3 = PoolVector3Array()
-	if int_path.size() > 3:
-		#print("Third pair: " + str(int_path[2]) + "," + str(int_path[3]))
-		lookup_path = path_look[[int_path[2], int_path[3]]]
-		#print("Lookup path pt3: " + str(lookup_path))
-		nav_path3 = nav.get_point_path(lookup_path[0], lookup_path[1])
-		#print("Nav path pt3: " + str(nav_path3))
+	#paranoia
+	if [int_path[0], int_path[1]] in path_look:		
+		var lookup_path = path_look[[int_path[0], int_path[1]]]
+		#print("Lookup path pt1: " + str(lookup_path))
+		var nav_path = nav.get_point_path(lookup_path[0], lookup_path[1])
+		#print("Nav path: " + str(nav_path))
+		# so that the player can see
+		#marker.raceline = nav_path
 	
-	# display the whole path
-	marker.raceline = nav_path + nav_path2 + nav_path3
+		#print("Second pair: " + str(int_path[1]) + "," + str(int_path[2]))
+		lookup_path = path_look[[int_path[1], int_path[2]]]
+		#print("Lookup path pt2: " + str(lookup_path))
+		var nav_path2 = nav.get_point_path(lookup_path[0], lookup_path[1])
+		#print("Nav path pt2 : " + str(nav_path2))
+	
+		var nav_path3 = PoolVector3Array()
+		if int_path.size() > 3:
+			#print("Third pair: " + str(int_path[2]) + "," + str(int_path[3]))
+			lookup_path = path_look[[int_path[2], int_path[3]]]
+			#print("Lookup path pt3: " + str(lookup_path))
+			nav_path3 = nav.get_point_path(lookup_path[0], lookup_path[1])
+			#print("Nav path pt3: " + str(nav_path3))
+		
+		# display the whole path
+		marker.raceline = nav_path + nav_path2 + nav_path3
 	
 	place_player()
 
 	# place garage road
 	var garage_opts = []
-	for i in range(2,2+5):
+	for i in range(2,2+samples.size()-1):
 		var inters = get_child(i)
-		#print(inters.get_name() + " exits: " + str(inters.open_exits))
+		print(inters.get_name() + " exits: " + str(inters.open_exits))
 		if inters.open_exits.size() > 1:
 			print(inters.get_name() + " is an option for garage road")
 			garage_opts.append(inters)
 	
-	var sel = null		
+	var sel = null
+	if not garage_opts:
+		return
+	
 	if garage_opts.size() > 1:
 		sel = garage_opts[randi() % garage_opts.size()]
 	else:
@@ -176,6 +185,12 @@ func setup_nav_astar(pts, i, begin_id):
 	
 	print(get_child(i).get_name() + " real numbers: " + str(ret))
 	
+	# paranoia
+	if not get_child(i).has_node("Road_instance0"):
+		return
+	if not get_child(i).has_node("Road_instance1"):
+		return
+		
 	var turn1 = get_child(i).get_node("Road_instance0").get_child(0).get_child(0)
 	var turn2 = get_child(i).get_node("Road_instance1").get_child(0).get_child(0)
 
