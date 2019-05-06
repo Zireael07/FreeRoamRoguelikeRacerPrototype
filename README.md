@@ -1,6 +1,6 @@
 # FreeRoamRoguelikeRacerPrototype
 
-This is a Godot 3.0.1 project.
+This is a Godot 3.1. project.
 
 For a 2.1.4 version (missing many features), see the 2.1.4 branch.
 
