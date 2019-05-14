@@ -370,7 +370,7 @@ func get_src_exit(src, dest):
 		print("Error, no exits left")
 		return
 		
-	var rel_pos = src.get_transform().xform_inv(dest.get_global_transform().origin)
+	var rel_pos = src.get_global_transform().xform_inv(dest.get_global_transform().origin)
 	print("Src exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.z, rel_pos.x)))
 	
 	# exits NEED to be listed CW (right = 2, bottom = 1 , top = 3) if we sort by y
@@ -423,12 +423,12 @@ func get_src_exit(src, dest):
 	# quadrant 3 (exclude bottom exit)
 	elif rel_pos.x > 0 and rel_pos.z < 0:
 		print("Quadrant 3")
-		if src_exits.has(src.point_two):
-			src_exits.remove(src_exits.find(src.point_two))
-			return src.point_two
-		elif src_exits.has(src.point_three):
+		if src_exits.has(src.point_three):
 			src_exits.remove(src_exits.find(src.point_three))
 			return src.point_three
+		elif src_exits.has(src.point_two):
+			src_exits.remove(src_exits.find(src.point_two))
+			return src.point_two
 		else:
 			print("No exits found")
 	# quadrant 4
@@ -488,7 +488,7 @@ func get_dest_exit(src, dest):
 	else:
 		print("available exits: " + str(dest_exits))
 	
-	var rel_pos = dest.get_transform().xform_inv(src.get_global_transform().origin)
+	var rel_pos = dest.get_global_transform().xform_inv(src.get_global_transform().origin)
 	print("Dest exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.z, rel_pos.x)))
 	
 	# exits NEED to be listed CW (right = 2, bottom = 1, top = 3)
@@ -525,12 +525,12 @@ func get_dest_exit(src, dest):
 	# quadrant 2
 	elif rel_pos.x < 0 and rel_pos.z > 0:
 		print("Dest quadrant 2")
-		if dest_exits.has(dest.point_three):
-			dest_exits.remove(dest_exits.find(dest.point_three))
-			return dest.point_three
-		elif dest_exits.has(dest.point_one):
+		if dest_exits.has(dest.point_one):
 			dest_exits.remove(dest_exits.find(dest.point_one))
 			return dest.point_one
+		elif dest_exits.has(dest.point_three):
+			dest_exits.remove(dest_exits.find(dest.point_three))
+			return dest.point_three
 	# quadrant 1, same
 	elif rel_pos.x > 0 and rel_pos.z > 0:
 		if dest_exits.has(dest.point_two):

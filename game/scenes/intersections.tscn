@@ -12,188 +12,73 @@
 
 [sub_resource type="PlaneShape" id=1]
 
-plane = Plane( 0, 1, 0, 0 )
-
 [sub_resource type="SpatialMaterial" id=2]
-
-render_priority = 0
-flags_transparent = false
 flags_unshaded = true
-flags_vertex_lighting = false
-flags_no_depth_test = false
 flags_use_point_size = true
-flags_world_triplanar = false
-flags_fixed_size = false
-flags_albedo_tex_force_srgb = false
-vertex_color_use_as_albedo = false
-vertex_color_is_srgb = false
-params_diffuse_mode = 0
-params_specular_mode = 0
-params_blend_mode = 0
-params_cull_mode = 0
-params_depth_draw_mode = 0
 params_line_width = 3.0
 params_point_size = 3.0
-params_billboard_mode = 0
-params_grow = false
-params_use_alpha_scissor = false
 albedo_color = Color( 1, 0.961243, 0.0078125, 1 )
-metallic = 0.0
-metallic_specular = 0.5
-metallic_texture_channel = 0
-roughness = 0.0
-roughness_texture_channel = 0
-emission_enabled = false
-normal_enabled = false
-rim_enabled = false
-clearcoat_enabled = false
-anisotropy_enabled = false
-ao_enabled = false
-depth_enabled = false
-subsurf_scatter_enabled = false
-transmission_enabled = false
-refraction_enabled = false
-detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
-uv1_triplanar = false
-uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
-uv2_triplanar = false
-uv2_triplanar_sharpness = 1.0
-proximity_fade_enable = false
-distance_fade_enable = false
 
-[node name="Navigation" type="Navigation" index="0"]
+[node name="Navigation" type="Navigation"]
 
-up_vector = Vector3( 0, 1, 0 )
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="0"]
-
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 1 )
 
-[node name="World" type="Spatial" parent="." index="1"]
-
+[node name="World" type="Spatial" parent="."]
 script = ExtResource( 2 )
-SPEED = 10.0
-start_time = 8.0
-day_night = true
-weather = 0
 
-[node name="Camera" type="Camera" parent="." index="2"]
-
+[node name="Camera" type="Camera" parent="."]
 transform = Transform( 0.999422, 0, 0.0339803, 0, 1, 0, -0.0339803, 0, 0.999422, 0.3423, 0.509534, -5.59995 )
 keep_aspect = 0
-cull_mask = 1048575
-environment = null
-h_offset = 0.0
-v_offset = 0.0
-doppler_tracking = 0
-projection = 0
 current = true
 fov = 60.0
-size = 1.0
 near = 0.1
-far = 100.0
 
-[node name="DirectionalLight" type="DirectionalLight" parent="." index="3"]
-
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -0.766045, 0.642788, 0, -0.642788, -0.766045, 0, 18.629, 0 )
-layers = 1
-light_color = Color( 1, 1, 1, 1 )
-light_energy = 1.0
-light_indirect_energy = 1.0
-light_negative = false
-light_specular = 0.5
-light_bake_mode = 1
-light_cull_mask = -1
 shadow_enabled = true
-shadow_color = Color( 0, 0, 0, 1 )
 shadow_bias = 0.0
-shadow_contact = 0.0
 shadow_reverse_cull_face = true
-editor_only = false
-directional_shadow_mode = 2
-directional_shadow_split_1 = 0.1
-directional_shadow_split_2 = 0.2
-directional_shadow_split_3 = 0.5
 directional_shadow_blend_splits = true
 directional_shadow_normal_bias = 0.0
 directional_shadow_bias_split_scale = 0.0
-directional_shadow_depth_range = 0
 directional_shadow_max_distance = 100.0
-_sections_unfolded = [ "Directional Shadow", "Shadow" ]
 
-[node name="Ground" type="Spatial" parent="." index="4"]
-
+[node name="Ground" type="Spatial" parent="."]
 script = ExtResource( 3 )
 terrainmaterial = ExtResource( 4 )
 
-[node name="StaticBody" type="StaticBody" parent="Ground" index="0"]
+[node name="StaticBody" type="StaticBody" parent="Ground"]
 
-input_ray_pickable = true
-input_capture_on_drag = false
-collision_layer = 1
-collision_mask = 1
-friction = 1.0
-bounce = 0.0
-constant_linear_velocity = Vector3( 0, 0, 0 )
-constant_angular_velocity = Vector3( 0, 0, 0 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Ground/StaticBody" index="0"]
-
+[node name="CollisionShape" type="CollisionShape" parent="Ground/StaticBody"]
 shape = SubResource( 1 )
-disabled = false
 
-[node name="sample" parent="." index="5" instance=ExtResource( 5 )]
+[node name="sample" parent="." instance=ExtResource( 5 )]
 
-[node name="Spatial" type="Spatial" parent="." index="6"]
-
+[node name="Spatial" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2052, 0, 91.8753 )
 script = ExtResource( 6 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="Spatial" parent="Spatial" index="0" instance=ExtResource( 7 )]
+[node name="Spatial" parent="Spatial" instance=ExtResource( 7 )]
 
-_sections_unfolded = [ "Transform" ]
-
-[node name="Spatial2" parent="Spatial" index="1" instance=ExtResource( 7 )]
-
+[node name="Spatial2" parent="Spatial" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16.3338, 0, -64.3236 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="Spatial3" parent="Spatial" index="2" instance=ExtResource( 7 )]
-
+[node name="Spatial3" parent="Spatial" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 65.0786, 0, 33.0919 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="Spatial4" parent="Spatial" index="3" instance=ExtResource( 7 )]
-
+[node name="Spatial4" parent="Spatial" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 117.773, 0, -14.9741 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="Spatial6" parent="Spatial" index="4" instance=ExtResource( 7 )]
-
+[node name="Spatial6" parent="Spatial" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.2119, 0, 115.59 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="draw" type="ImmediateGeometry" parent="Spatial" index="5"]
-
-layers = 1
+[node name="draw" type="ImmediateGeometry" parent="Spatial"]
 material_override = SubResource( 2 )
 cast_shadow = 0
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
 script = ExtResource( 8 )
 color = Color( 1, 0.961243, 0.0078125, 1 )
 
-[node name="car" parent="." index="7" instance=ExtResource( 9 )]
-
+[node name="car" parent="." instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.8615, 0, 87.3719 )
-
 
