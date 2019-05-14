@@ -29,7 +29,7 @@ func _ready():
 		var p = get_node("triangulate/poisson").samples[i]
 		var intersection = intersects.instance()
 		intersection.set_translation(Vector3(p[0]*mult, 0, p[1]*mult))
-		print("Placing intersection at " + str(p[0]*mult) + ", " + str(p[1]*mult))
+		#print("Placing intersection at " + str(p[0]*mult) + ", " + str(p[1]*mult))
 		intersection.set_name("intersection" + str(i))
 		add_child(intersection)
 
@@ -40,16 +40,42 @@ func _ready():
 		#var poly = []
 		#print("Edges: " + str(t.get_edges()))
 		for e in t.get_edges():
-			edges.append(e)
+			#print(str(e))
+			if edges.has(Vector2(e[0], e[1])):
+				pass
+				#print("Already has edge: " + str(e[0]) + " " + str(e[1]))
+			elif edges.has(Vector2(e[1], e[0])):
+				pass
+				#print("Already has edge: " + str(e[1]) + " " + str(e[0]))
+			else:
+				edges.append(e)
 
 	# create the map
-	for i in range(0, edges.size()):
-		var ed = edges[i]
-		#print("Connecting intersections for edge: " + str(i) + " 0: " + str(ed[0]) + " 1: " + str(ed[1]))
-		var p1 = samples[ed[0]]
-		var p2 = samples[ed[1]]
-		# +1 because of the poisson node that comes first
-		connect_intersections(ed[0]+2, ed[1]+2)
+	var sorted = sort_intersections_distance()
+#	var initial_int = sorted[0][1]
+#	print("Initial int: " + str(initial_int))
+
+	auto_connect(sorted[0][1])
+#	auto_connect(sorted[1][1])
+#	auto_connect(sorted[2][1])
+#	auto_connect(sorted[3][1])
+	auto_connect(sorted[4][1])
+	auto_connect(sorted[5][1])
+#	auto_connect(sorted[6][1])
+#	auto_connect(sorted[7][1])
+#	auto_connect(sorted[8][1]) # should be relatively simple to fix?
+#	auto_connect(sorted[9][1])
+#	auto_connect(sorted[10][1])
+#	auto_connect(sorted[11][1])
+
+
+#	for i in range(0, edges.size()):
+#		var ed = edges[i]
+#		#print("Connecting intersections for edge: " + str(i) + " 0: " + str(ed[0]) + " 1: " + str(ed[1]))
+#		var p1 = samples[ed[0]]
+#		var p2 = samples[ed[1]]
+#		# +1 because of the poisson node that comes first
+#		connect_intersections(ed[0]+2, ed[1]+2)
 
 
 	setup_neighbors()
@@ -64,7 +90,7 @@ func _ready():
 	var begin_id = 0
 	#var path_data = []
 	var path_look = {}
-	
+
 	for i in range(roads_start_id, roads_start_id+4):
 		#print("Begin: " + str(begin_id))
 		var data = setup_nav_astar(pts, i, begin_id)
@@ -80,7 +106,7 @@ func _ready():
 			begin_id = data[1]+1
 
 	print(path_look)
-	
+
 
 	# test the nav
 	var marker = get_node("tt_marker")
@@ -99,10 +125,10 @@ func _ready():
 #	#print("Nav path: " + str(nav_path))
 #	# so that we can see
 #	marker.raceline = nav_path
-	
+
 	#print("First pair: " + str(int_path[0]) + "," + str(int_path[1]))
 	#paranoia
-	if [int_path[0], int_path[1]] in path_look:		
+	if [int_path[0], int_path[1]] in path_look:
 		var lookup_path = path_look[[int_path[0], int_path[1]]]
 		#print("Lookup path pt1: " + str(lookup_path))
 		var nav_path = nav.get_point_path(lookup_path[0], lookup_path[1])
@@ -115,7 +141,7 @@ func _ready():
 		#print("Lookup path pt2: " + str(lookup_path))
 		var nav_path2 = nav.get_point_path(lookup_path[0], lookup_path[1])
 		#print("Nav path pt2 : " + str(nav_path2))
-	
+
 		var nav_path3 = PoolVector3Array()
 		if int_path.size() > 3:
 			if [int_path[2], int_path[3]] in path_look:
@@ -124,49 +150,151 @@ func _ready():
 				#print("Lookup path pt3: " + str(lookup_path))
 				nav_path3 = nav.get_point_path(lookup_path[0], lookup_path[1])
 			#print("Nav path pt3: " + str(nav_path3))
-		
+
 		# display the whole path
 		#marker.raceline = nav_path + nav_path2 + nav_path3
-	
+
 	#place_player()
 
 	# place garage road
-	var garage_opts = []
-	for i in range(2,2+samples.size()-1):
-		var inters = get_child(i)
-		print(inters.get_name() + " exits: " + str(inters.open_exits))
-		if inters.open_exits.size() > 1:
-			print(inters.get_name() + " is an option for garage road")
-			garage_opts.append(inters)
-	
-	var sel = null
-	if not garage_opts:
-		return
-	
-	if garage_opts.size() > 1:
-		sel = garage_opts[randi() % garage_opts.size()]
-	else:
-		sel = garage_opts[0]
-		
-	#print(sel.get_name())
-	var garage_rd = garage.instance()
-	# test
-	garage_rd.set_translation(sel.get_translation() + sel.open_exits[1])
-	garage_rd.set_rotation_degrees(Vector3(0,-90,0))
-	add_child(garage_rd)
+#	var garage_opts = []
+#	for i in range(2,2+samples.size()-1):
+#		var inters = get_child(i)
+#		print(inters.get_name() + " exits: " + str(inters.open_exits))
+#		if inters.open_exits.size() > 1:
+#			print(inters.get_name() + " is an option for garage road")
+#			garage_opts.append(inters)
+#
+#	var sel = null
+#	if not garage_opts:
+#		return
+#
+#	if garage_opts.size() > 1:
+#		sel = garage_opts[randi() % garage_opts.size()]
+#	else:
+#		sel = garage_opts[0]
+#
+#	#print(sel.get_name())
+#	var garage_rd = garage.instance()
+#	# test
+#	garage_rd.set_translation(sel.get_translation() + sel.open_exits[1])
+#	garage_rd.set_rotation_degrees(Vector3(0,-90,0))
+#	add_child(garage_rd)
+
+# -----------------
+func sort_intersections_distance():
+	var dists = []
+	var tmp = []
+	var closest = []
+	# exclude triangulate and draw
+	for i in range(2, get_child_count()):
+		var e = get_child(i)
+		var dist = e.translation.distance_to(Vector3(0,0,0))
+		#print("Distance: exit: " + str(e.get_name()) + " dist: " + str(dist))
+		tmp.append([dist, i])
+		dists.append(dist)
+
+	dists.sort()
+
+	#print("tmp" + str(tmp))
+	# while causes a lockup, whichever way we do it
+	#while tmp.size() > 0:
+	#	print("Tmp size > 0")
+	var max_s = tmp.size()
+	#while max_s > 0:
+	for i in range(0, max_s):
+		#print("Running add, attempt " + str(i))
+		#print("tmp: " + str(tmp))
+		for t in tmp:
+			#print("Check t " + str(t))
+			if t[0] == dists[0]:
+				closest.append(t)
+				tmp.remove(tmp.find(t))
+				# key line
+				dists.remove(0)
+				#print("Adding " + str(t))
+	# if it's not empty by now, we have an issue
+	#print(tmp)
+
+	print(closest)
+
+	return closest
+
+func auto_connect(initial_int):
+	var next_ints = []
+	var res = []
+	var sorted_n = []
+	# to remove properly
+	var to_remove = []
+
+	print("Auto connecting... " + get_child(initial_int).get_name() + " @ " + str(get_child(initial_int).get_global_transform().origin))
+
+	for e in edges:
+		if e.x == initial_int:
+			print("Edge with initial int" + str(e) + " other end " + str(e.y))
+			var data = [e.y, get_child(e.y).get_global_transform().origin]
+			next_ints.append(data)
+			#print(data[1].x)
+			#TODO: use relative angles?? it has to be robust!
+			sorted_n.append(atan2(data[1].z, data[1].x))
+			#sorted_n.append(data[1].x)
+			# remove from edge list so that we can use the list in other iterations
+			to_remove.append(edges.find(e))
+		if e.y == initial_int:
+			print("Edge with initial int" + str(e) + " other end " + str(e.x))
+			var data = [e.x, get_child(e.x).get_global_transform().origin]
+			next_ints.append(data)
+			#print(data[1].x)
+			#sorted_n.append(data[1].x)
+			sorted_n.append(atan2(data[1].z, data[1].x))
+			# remove from edge list so that we can use the list in other iterations
+			to_remove.append(edges.find(e))
+
+	# remove ids to remove
+	for i in to_remove:
+		edges.remove(i)
+
+	#print(sorted_n)
+
+	# this sorts by natural order (lower value first)
+	sorted_n.sort()
+	# but we want higher?
+	#sorted_n.invert()
+
+	print("Sorted: " + str(sorted_n))
+
+	for i in range(0, next_ints.size()):
+		#print("Attempt " + str(i))
+		for d in next_ints:
+			#print(str(d) + " " + str(sorted_n[0]))
+			# the first part of this needs to match what was used for sorting
+			if atan2(d[1].z, d[1].x) == sorted_n[0]:
+				next_ints.remove(next_ints.find(d))
+				res.append(d)
+				sorted_n.remove(0)
+
+	#print("Res " + str(res) + " lower y: " + str(res[0]))
+	#print("next ints: " + str(next_ints))
+	for i in range(0, res.size()):
+		var p = res[i]
+		print("Intersection " + str(p))
+		# +2 because of the poisson node that comes first
+		connect_intersections(initial_int+2, p[0]+2)
+
+
 
 
 func place_player():
 	var player = get_tree().get_nodes_in_group("player")[0]
-	
+
 	var id = randi() % samples.size()-1
 	var p = samples[id]
-	
+
 	var pos = Vector3(p[0]*mult, 0, p[1]*mult)
-	
+
 	# because player is child of root which is at 0,0,0
 	player.set_translation(to_global(pos))
-	
+
 
 #func _process(delta):
 #	# Called every frame. Delta is time since last frame.
@@ -175,23 +303,27 @@ func place_player():
 
 func setup_nav_astar(pts, i, begin_id):
 	#print(get_child(i).get_name())
-	
+	# catch any errors
+	if i >= get_child_count():
+		print("No child at index : " + str(i))
+		return
+
 	# extract intersection id's
 	var sub = get_child(i).get_name().substr(5, 3)
 	var nrs = sub.split("-")
-	
+
 	var ret = []
 	for i in nrs:
 		ret.append(int(i)-2)
-	
+
 	print(get_child(i).get_name() + " real numbers: " + str(ret))
-	
+
 	# paranoia
 	if not get_child(i).has_node("Road_instance0"):
 		return
 	if not get_child(i).has_node("Road_instance1"):
 		return
-		
+
 	var turn1 = get_child(i).get_node("Road_instance0").get_child(0).get_child(0)
 	var turn2 = get_child(i).get_node("Road_instance1").get_child(0).get_child(0)
 
@@ -201,7 +333,7 @@ func setup_nav_astar(pts, i, begin_id):
 
 	#print("Turn 1 global pos: " + str(turn1.get_global_transform().origin))
 	#print("Turn 2 global pos: " + str(turn2.get_global_transform().origin))
-	
+
 	#debug_cube(to_local(Vector3(turn1.get_global_transform().origin.x, 3, turn1.get_global_transform().origin.z)))
 	#debug_cube(to_local(Vector3(turn2.get_global_transform().origin.x, 3, turn2.get_global_transform().origin.z)))
 
@@ -209,14 +341,14 @@ func setup_nav_astar(pts, i, begin_id):
 	for i in range(0,turn1.positions.size()):
 		var p = turn1.positions[i]
 		pts.append(turn1.to_global(p))
-	
+
 	#print(pts)
 	for i in range(0,turn2.positions.size()):
 		var p = turn2.positions[i]
 		pts.append(turn2.to_global(p))
-		
+
 	#print("With turn2: " + str(pts))
-	
+
 	# add pts to nav (road-level AStar)
 	for i in range(pts.size()):
 		nav.add_point(i, pts[i])
@@ -238,9 +370,9 @@ func setup_nav_astar(pts, i, begin_id):
 	nav.connect_points(turn1_end, turn2_end)
 	# full path
 	var endpoint_id = begin_id + turn1.positions.size() # beginning of turn2
-	
+
 	var last_id = turn2_end
-	
+
 	# turn1
 	#var endpoint_id = turn1_end
 	#print("Endpoint id " + str(endpoint_id))

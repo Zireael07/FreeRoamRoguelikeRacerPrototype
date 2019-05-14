@@ -361,89 +361,215 @@ func set_curved_road(radius, start_angle, end_angle, index, node):
 
 # assume standard rotation for now
 func get_src_exit(src, dest):
-	print("X abs: " + str(abs(dest.get_translation().x - src.get_translation().x)))
-	print("Z abs: " + str(abs(dest.get_translation().z - src.get_translation().z)))
+	#print("X abs: " + str(abs(dest.get_translation().x - src.get_translation().x)))
+	#print("Z abs: " + str(abs(dest.get_translation().z - src.get_translation().z)))
 	
 	var src_exits = src.open_exits
 	
-	if src_exits.size() < 0:
+	if src_exits.size() < 1:
 		print("Error, no exits left")
 		return
+		
+	var rel_pos = src.get_transform().xform_inv(dest.get_global_transform().origin)
+	print("Src exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.z, rel_pos.x)))
 	
-	if abs(dest.get_translation().x - src.get_translation().x) > abs(dest.get_translation().z - src.get_translation().z):
-		if dest.get_translation().x > src.get_translation().x:
+	# exits NEED to be listed CW (right = 2, bottom = 1 , top = 3) if we sort by y
+	# or CCW if sorted by angle?
+	
+	#quadrant 1 (we exclude top exit to avoid crossing over)
+	if rel_pos.x > 0 and rel_pos.z > 0:
+		print("Quadrant 1... angle: " + str(atan2(rel_pos.z, rel_pos.x)))
+		if atan2(rel_pos.z, rel_pos.x) > 1:
+			if src_exits.has(src.point_one):
+				src_exits.remove(src_exits.find(src.point_one))
+				return src.point_one
+			elif src_exits.has(src.point_two):
+				src_exits.remove(src_exits.find(src.point_two))
+				return src.point_two
+			else: 
+				print("No exits found!")
+		else:
 			if src_exits.has(src.point_two):
-				print("[src] " + src.get_name() + " " + dest.get_name() + " X rule")
+				src_exits.remove(src_exits.find(src.point_two))
+				return src.point_two
+			elif src_exits.has(src.point_one):
+				src_exits.remove(src_exits.find(src.point_one))
+				return src.point_one
+			else:
+				print("No exits found")
+	# quadrant 2
+	# same
+	elif rel_pos.x < 0 and rel_pos.z > 0:
+		print("Quadrant 2")
+		# if angle is small, consider only bottom and right
+		if atan2(rel_pos.z, rel_pos.x) < 2:
+			if src_exits.has(src.point_one):
+				src_exits.remove(src_exits.find(src.point_one))
+				return src.point_one
+			elif src_exits.has(src.point_two):
 				src_exits.remove(src_exits.find(src.point_two))
 				return src.point_two
 			else:
-				if src_exits.has(src.point_three):
-					print("[src] " + src.get_name() + " " + dest.get_name() + " X rule alt")
-					src_exits.remove(src_exits.find(src.point_three))
-					return src.point_three
+				print("No exits found")
 		else:
 			if src_exits.has(src.point_three):
-				print("[src] " + src.get_name() + " " + dest.get_name() + " X rule inv")
 				src_exits.remove(src_exits.find(src.point_three))
 				return src.point_three
+			elif src_exits.has(src.point_one):
+				src_exits.remove(src_exits.find(src.point_one))
+				return src.point_one
 			else:
-				if src_exits.has(src.point_one):
-					print("[src] " + src.get_name() + " " + dest.get_name() + " X rule inv alt")
-					src_exits.remove(src_exits.find(src.point_one))
-					return src.point_one
-		
-		
-	elif dest.get_translation().z > src.get_translation().z and src_exits.has(src.point_one):
-		print("[src] " + src.get_name() + " " + dest.get_name() + " Y rule")
-		src_exits.remove(src_exits.find(src.point_one))
-		return src.point_one
-		
-	else:
-		if src_exits.has(src.point_three):
-			print("[src] " + src.get_name() + " " + dest.get_name() + " Y rule 2")
+				print("No exits found")
+	# quadrant 3 (exclude bottom exit)
+	elif rel_pos.x > 0 and rel_pos.z < 0:
+		print("Quadrant 3")
+		if src_exits.has(src.point_two):
+			src_exits.remove(src_exits.find(src.point_two))
+			return src.point_two
+		elif src_exits.has(src.point_three):
 			src_exits.remove(src_exits.find(src.point_three))
-			return src.point_three	
+			return src.point_three
+		else:
+			print("No exits found")
+	# quadrant 4
+	elif rel_pos.x < 0 and rel_pos.z < 0:
+		print("Quadrant 4")
+		if src_exits.has(src.point_three):
+			src_exits.remove(src_exits.find(src.point_three))
+			return src.point_three
+		elif src_exits.has(src.point_one):
+			src_exits.remove(src_exits.find(src.point_one))
+			return src.point_one
+		else:
+			print("No exit found")
+	
+	
+#	if abs(dest.get_translation().x - src.get_translation().x) > abs(dest.get_translation().z - src.get_translation().z):
+#		if dest.get_translation().x > src.get_translation().x:
+#			if src_exits.has(src.point_two):
+#				print("[src] " + src.get_name() + " " + dest.get_name() + " X rule")
+#				src_exits.remove(src_exits.find(src.point_two))
+#				return src.point_two
+#			else:
+#				if src_exits.has(src.point_three):
+#					print("[src] " + src.get_name() + " " + dest.get_name() + " X rule alt")
+#					src_exits.remove(src_exits.find(src.point_three))
+#					return src.point_three
+#		else:
+#			if src_exits.has(src.point_three):
+#				print("[src] " + src.get_name() + " " + dest.get_name() + " X rule inv")
+#				src_exits.remove(src_exits.find(src.point_three))
+#				return src.point_three
+#			else:
+#				if src_exits.has(src.point_one):
+#					print("[src] " + src.get_name() + " " + dest.get_name() + " X rule inv alt")
+#					src_exits.remove(src_exits.find(src.point_one))
+#					return src.point_one
+#
+#
+#	elif dest.get_translation().z > src.get_translation().z and src_exits.has(src.point_one):
+#		print("[src] " + src.get_name() + " " + dest.get_name() + " Y rule")
+#		src_exits.remove(src_exits.find(src.point_one))
+#		return src.point_one
+#
+#	else:
+#		if src_exits.has(src.point_three):
+#			print("[src] " + src.get_name() + " " + dest.get_name() + " Y rule 2")
+#			src_exits.remove(src_exits.find(src.point_three))
+#			return src.point_three	
 
 # assume standard rotation for now
 func get_dest_exit(src, dest):
 	var dest_exits = dest.open_exits
 	
-	if dest_exits.size() < 0:
+	if dest_exits.size() < 1:
 		print("Error, no exits left")
 		return
 	else:
 		print("available exits: " + str(dest_exits))
 	
-	if abs(dest.get_translation().x - src.get_translation().x) > abs(dest.get_translation().z - src.get_translation().z):
-		if dest.get_translation().z > src.get_translation().z:
+	var rel_pos = dest.get_transform().xform_inv(src.get_global_transform().origin)
+	print("Dest exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.z, rel_pos.x)))
+	
+	# exits NEED to be listed CW (right = 2, bottom = 1, top = 3)
+	# listed CCW if we sort by angle?
+	
+	# quadrant 4, exclude right exit to avoid crossing over
+	if rel_pos.x < 0 and rel_pos.z < 0:
+		print("Dest quadrant 4... " + str(atan2(rel_pos.z, rel_pos.x)))
+		if atan2(rel_pos.z, rel_pos.x) > -2:
+			print("Case 1")
 			if dest_exits.has(dest.point_three):
-				print("[dest] " + src.get_name() + " " + dest.get_name() + " X rule a)")
 				dest_exits.remove(dest_exits.find(dest.point_three))
 				return dest.point_three
+			elif dest_exits.has(dest.point_two):
+				dest_exits.remove(dest_exits.find(dest.point_two))
+				return dest.point_two
 		else:
-			if dest_exits.has(dest.point_one):
-				print("[dest] " + src.get_name() + " " + dest.get_name() + " X rule b)")
+			print("Case 2")
+			if dest_exits.has(dest.point_three):
+				dest_exits.remove(dest_exits.find(dest.point_three))
+				return dest.point_three
+			elif dest_exits.has(dest.point_one):
 				dest_exits.remove(dest_exits.find(dest.point_one))
 				return dest.point_one
-			else:
-				print("[dest] " + src.get_name() + " " + dest.get_name() + " X rule b) alt")
-				dest_exits.remove(dest_exits.find(dest.point_three))
-				return dest.point_three
-	
-	elif dest.get_translation().z > src.get_translation().z and dest_exits.has(dest.point_three):
-		print("[dest] " + src.get_name() + " " + dest.get_name() + " Y rule")
-		dest_exits.remove(dest_exits.find(dest.point_three))
-		return dest.point_three
-		
-	else:
-		if dest_exits.has(dest.point_one):
-			print("[dest] " + src.get_name() + " " + dest.get_name() + " Y rule 2")
-			dest_exits.remove(dest_exits.find(dest.point_one))
-			return dest.point_one
-		else:
-			print("[dest] " + src.get_name() + " " + dest.get_name() + " Y rule 2 alt")
+	# quadrant 3, same
+	elif rel_pos.x > 0 and rel_pos.z < 0:
+		print("Dest quadrant 3")
+		if dest_exits.has(dest.point_three):
 			dest_exits.remove(dest_exits.find(dest.point_three))
 			return dest.point_three
+		elif dest_exits.has(dest.point_two):
+			dest_exits.remove(dest_exits.find(dest.point_two))
+			return dest.point_two
+	# quadrant 2
+	elif rel_pos.x < 0 and rel_pos.z > 0:
+		print("Dest quadrant 2")
+		if dest_exits.has(dest.point_three):
+			dest_exits.remove(dest_exits.find(dest.point_three))
+			return dest.point_three
+		elif dest_exits.has(dest.point_one):
+			dest_exits.remove(dest_exits.find(dest.point_one))
+			return dest.point_one
+	# quadrant 1, same
+	elif rel_pos.x > 0 and rel_pos.z > 0:
+		if dest_exits.has(dest.point_two):
+			dest_exits.remove(dest_exits.find(dest.point_two))
+			return dest.point_two
+		elif dest_exits.has(dest.point_three):
+			dest_exits.remove(dest_exits.find(dest.point_three))
+			return dest.point_three
+	
+#	if abs(dest.get_translation().x - src.get_translation().x) > abs(dest.get_translation().z - src.get_translation().z):
+#		if dest.get_translation().z > src.get_translation().z:
+#			if dest_exits.has(dest.point_three):
+#				print("[dest] " + src.get_name() + " " + dest.get_name() + " X rule a)")
+#				dest_exits.remove(dest_exits.find(dest.point_three))
+#				return dest.point_three
+#		else:
+#			if dest_exits.has(dest.point_one):
+#				print("[dest] " + src.get_name() + " " + dest.get_name() + " X rule b)")
+#				dest_exits.remove(dest_exits.find(dest.point_one))
+#				return dest.point_one
+#			else:
+#				print("[dest] " + src.get_name() + " " + dest.get_name() + " X rule b) alt")
+#				dest_exits.remove(dest_exits.find(dest.point_three))
+#				return dest.point_three
+#
+#	elif dest.get_translation().z > src.get_translation().z and dest_exits.has(dest.point_three):
+#		print("[dest] " + src.get_name() + " " + dest.get_name() + " Y rule")
+#		dest_exits.remove(dest_exits.find(dest.point_three))
+#		return dest.point_three
+#
+#	else:
+#		if dest_exits.has(dest.point_one):
+#			print("[dest] " + src.get_name() + " " + dest.get_name() + " Y rule 2")
+#			dest_exits.remove(dest_exits.find(dest.point_one))
+#			return dest.point_one
+#		else:
+#			print("[dest] " + src.get_name() + " " + dest.get_name() + " Y rule 2 alt")
+#			dest_exits.remove(dest_exits.find(dest.point_three))
+#			return dest.point_three
 
 # debug
 func debug_cube(loc):
