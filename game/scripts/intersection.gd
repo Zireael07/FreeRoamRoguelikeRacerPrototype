@@ -9,7 +9,7 @@ var road_width = 3
 
 # points
 var point_one = Vector3(0,0,10)
-var point_two = Vector3(12,0,0)
+var point_two = Vector3(10,0,0)
 var point_three = Vector3(0,0,-10)
 
 var open_exits = [point_one, point_two, point_three]
