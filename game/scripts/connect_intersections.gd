@@ -129,7 +129,7 @@ func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, sr
 	var tang2 = (Vector2(corner2.x, corner2.z)-Vector2(loc_src_extended.x, loc_src_extended.z)).tangent()
 	
 	# extend them
-	var tang_factor = 20 # 10 is too little for some turns
+	var tang_factor = 30 # 10 is too little for some turns
 	tang = tang*tang_factor
 	tang2 = tang2*tang_factor
 	
@@ -337,11 +337,18 @@ func set_curved_road(radius, start_angle, end_angle, index, node):
 	var road_node_right = road.instance()
 	road_node_right.set_name("Road_instance"+String(index))
 
+
 	if start_angle-90 > end_angle-90 and end_angle-90 < 0:
 		print("Bad road settings: " + str(start_angle-90) + ", " + str(end_angle-90)) 
 		start_angle = start_angle+360
 	
-	print("Road settings: start: " + str(start_angle-90) + " end: " + str(end_angle-90))	
+	print("Road settings: start: " + str(start_angle-90) + " end: " + str(end_angle-90))
+	
+	# if start is negative and end is slightly positive, something probably went wrong
+	if start_angle - 90 < 0 and end_angle-90 > 0 and end_angle-90 < 90:
+		print("Negative start but positive end: " + str(start_angle-90) + " end: " + str(end_angle-90))
+		# bring the end angle around
+		end_angle = end_angle + 360
 	
 	#set the angles we wanted
 	# road angles are in respect to X axis, so let's subtract 90 to point down Y
@@ -412,12 +419,12 @@ func get_src_exit(src, dest):
 			else:
 				print("No exits found")
 		else:
-			if src_exits.has(src.point_three):
-				src_exits.remove(src_exits.find(src.point_three))
-				return src.point_three
-			elif src_exits.has(src.point_one):
+			if src_exits.has(src.point_one):
 				src_exits.remove(src_exits.find(src.point_one))
 				return src.point_one
+			elif src_exits.has(src.point_three):
+				src_exits.remove(src_exits.find(src.point_three))
+				return src.point_three
 			else:
 				print("No exits found")
 	# quadrant 3 (exclude bottom exit)
