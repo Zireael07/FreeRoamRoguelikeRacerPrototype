@@ -376,6 +376,8 @@ func get_src_exit(src, dest):
 	if src_exits.size() < 1:
 		print("Error, no exits left")
 		return
+	else:
+		print("available exits: " + str(src_exits))
 		
 	var rel_pos = src.get_global_transform().xform_inv(dest.get_global_transform().origin)
 	print("Src exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.z, rel_pos.x)))
@@ -409,7 +411,7 @@ func get_src_exit(src, dest):
 	elif rel_pos.x < 0 and rel_pos.z > 0:
 		print("Quadrant 2")
 		# if angle is small, consider only bottom and right
-		if atan2(rel_pos.z, rel_pos.x) < 2:
+		if atan2(rel_pos.z, rel_pos.x) < 2.5:
 			if src_exits.has(src.point_one):
 				src_exits.remove(src_exits.find(src.point_one))
 				return src.point_one

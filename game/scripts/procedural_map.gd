@@ -55,15 +55,16 @@ func _ready():
 #	var initial_int = sorted[0][1]
 #	print("Initial int: " + str(initial_int))
 
+	# this is a layout that works (0,2,3,4,8)
 	auto_connect(sorted[0][1])
-	auto_connect(sorted[1][1])
-	auto_connect(sorted[2][1]) # 90 deg corner results in a building sticking out on the road a bit
-#	auto_connect(sorted[3][1])
-#	auto_connect(sorted[4][1])
-	auto_connect(sorted[5][1])
+#	auto_connect(sorted[1][1])
+	auto_connect(sorted[2][1])
+	auto_connect(sorted[3][1])
+	auto_connect(sorted[4][1])
+#	auto_connect(sorted[5][1])
 #	auto_connect(sorted[6][1])
 #	auto_connect(sorted[7][1])
-#	auto_connect(sorted[8][1]) # results in a too sharp corner and buildings on the other road
+	auto_connect(sorted[8][1])
 #	auto_connect(sorted[9][1])
 #	auto_connect(sorted[10][1])
 #	auto_connect(sorted[11][1])
