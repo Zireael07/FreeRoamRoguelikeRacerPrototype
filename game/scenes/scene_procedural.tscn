@@ -62,7 +62,7 @@ script = ExtResource( 6 )
 color = Color( 1, 0.961243, 0.0078125, 1 )
 
 [node name="car" parent="." instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.38943, 0, 0 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 154.707, 1.13199, 65.6732 )
 
 [node name="Ground" type="Spatial" parent="."]
 script = ExtResource( 8 )
