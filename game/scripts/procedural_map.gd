@@ -51,20 +51,22 @@ func _ready():
 				edges.append(e)
 
 	# create the map
+	# for storing roads that actually got created
+	var real_edges = []
 	var sorted = sort_intersections_distance()
 #	var initial_int = sorted[0][1]
 #	print("Initial int: " + str(initial_int))
 
 	# this is a layout that works (0,2,3,4,8)
-	auto_connect(sorted[0][1])
+	auto_connect(sorted[0][1], real_edges)
 #	auto_connect(sorted[1][1])
-	auto_connect(sorted[2][1])
-	auto_connect(sorted[3][1])
-	auto_connect(sorted[4][1])
+	auto_connect(sorted[2][1], real_edges)
+	auto_connect(sorted[3][1], real_edges)
+	auto_connect(sorted[4][1], real_edges)
 #	auto_connect(sorted[5][1])
 #	auto_connect(sorted[6][1])
 #	auto_connect(sorted[7][1])
-	auto_connect(sorted[8][1])
+	auto_connect(sorted[8][1], real_edges)
 #	auto_connect(sorted[9][1])
 #	auto_connect(sorted[10][1])
 #	auto_connect(sorted[11][1])
@@ -79,7 +81,7 @@ func _ready():
 #		connect_intersections(ed[0]+2, ed[1]+2)
 
 
-	setup_neighbors()
+	setup_neighbors(real_edges)
 
 	var marker_data = spawn_markers()
 
@@ -92,7 +94,7 @@ func _ready():
 	#var path_data = []
 	var path_look = {}
 
-	for i in range(roads_start_id, roads_start_id+4):
+	for i in range(roads_start_id, roads_start_id+ real_edges.size()-1): #4):
 		#print("Begin: " + str(begin_id))
 		var data = setup_nav_astar(pts, i, begin_id)
 		#print('Begin: ' + str(begin_id) + " end: " + str(data[0]) + " inters: " + str(data[1]))
@@ -106,7 +108,7 @@ func _ready():
 			# increment begin_id
 			begin_id = data[1]+1
 
-	print(path_look)
+	print("Path_look: " + str(path_look))
 
 
 	# test the nav
@@ -117,7 +119,7 @@ func _ready():
 
 #	print("Marker intersection id" + str(marker_data[0]) + " tg id" + str(marker_data[1]))
 	var int_path = ast.get_id_path(marker_data[0], marker_data[1])
-	print("Intersections path" + str(int_path))
+	print("Intersections path: " + str(int_path))
 
 #	# test (get path_look entry at id x)
 #	var test = path_look[path_look.keys()[5]]
@@ -129,10 +131,11 @@ func _ready():
 
 	#print("First pair: " + str(int_path[0]) + "," + str(int_path[1]))
 	#paranoia
+	var nav_path
 	if [int_path[0], int_path[1]] in path_look:
 		var lookup_path = path_look[[int_path[0], int_path[1]]]
 		#print("Lookup path pt1: " + str(lookup_path))
-		var nav_path = nav.get_point_path(lookup_path[0], lookup_path[1])
+		nav_path = nav.get_point_path(lookup_path[0], lookup_path[1])
 		#print("Nav path: " + str(nav_path))
 		# so that the player can see
 		#marker.raceline = nav_path
@@ -153,7 +156,7 @@ func _ready():
 			#print("Nav path pt3: " + str(nav_path3))
 
 		# display the whole path
-		#marker.raceline = nav_path + nav_path2 + nav_path3
+		marker.raceline = nav_path + nav_path2 + nav_path3
 
 	#place_player()
 
@@ -221,7 +224,7 @@ func sort_intersections_distance():
 
 	return closest
 
-func auto_connect(initial_int):
+func auto_connect(initial_int, real_edges):
 	var next_ints = []
 	var res = []
 	var sorted_n = []
@@ -280,7 +283,10 @@ func auto_connect(initial_int):
 		var p = res[i]
 		print("Intersection " + str(p))
 		# +2 because of the poisson node that comes first
-		connect_intersections(initial_int+2, p[0]+2)
+		var ret = connect_intersections(initial_int+2, p[0]+2)
+		if ret != false:
+			print("We did create a connection")
+			real_edges.append(Vector2(initial_int, p[0]))
 
 
 
@@ -310,8 +316,9 @@ func setup_nav_astar(pts, i, begin_id):
 		return
 
 	# extract intersection id's
-	var sub = get_child(i).get_name().substr(5, 3)
-	var nrs = sub.split("-")
+	#var sub = get_child(i).get_name().substr(5, 3)
+	var nrs = get_child(i).get_name().split("-")
+	nrs[0] = nrs[0].lstrip("Road ")
 
 	var ret = []
 	for i in nrs:
@@ -390,7 +397,7 @@ func setup_nav_astar(pts, i, begin_id):
 #-------------------------
 # Distance map
 
-func setup_neighbors():
+func setup_neighbors(edges):
 	# we'll use AStar to have an easy map of neighbors
 	ast = AStar.new()
 	for i in range(0,samples.size()-1):
@@ -464,6 +471,7 @@ func spawn_markers():
 	var m_id = samples.find(p)
 	var distance_map = bfs_distances(m_id)
 	print(str(distance_map))
+	
 	#print("Keys: " + str(distance_map.keys()))
 	#print("Values: " + str(distance_map.values()))
 

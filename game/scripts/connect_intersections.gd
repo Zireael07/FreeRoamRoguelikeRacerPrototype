@@ -21,23 +21,23 @@ func _ready():
 func connect_intersections(one, two):
 	if one > get_child_count() -1 or two > get_child_count() -1:
 		print("Wrong indices given")
-		return
+		return false
 	
 	if not "point_one" in get_child(one) or not "point_one" in get_child(two):
 		print("Targets are not intersections?")
-		return
+		return false
 	
 	
 	var src_exit = get_src_exit(get_child(one), get_child(two))
 	print("Src exit: " + str(src_exit))
 	if not src_exit:
-		return
+		return false
 	var loc_src_exit = to_local(get_child(one).to_global(src_exit))
 
 	var dest_exit = get_dest_exit(get_child(one), get_child(two))
 	print("Dest exit: " + str(dest_exit))
 	if not dest_exit:
-		return
+		return false
 	var loc_dest_exit = to_local(get_child(two).to_global(dest_exit))
 
 	# debugging
