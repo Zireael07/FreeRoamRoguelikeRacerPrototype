@@ -91,7 +91,7 @@ func _ready():
 	#Create a node that will hold the mesh
 	var steer_node = MeshInstance.new()
 	steer_node.set_name("steering")
-	add_child(steer_node)
+	get_node("Spatial").add_child(steer_node)
 	
 	if polygon.size() < 1:
 		return
@@ -128,23 +128,19 @@ func createSteeringWheel(steering_surf, steering_material):
 	
 	# these values seem to fit the Trueno outline - it's roughly the position of the window bottom left
 	
-	# TODO: define x,y,z of the center and work from that
-	
-	side_poly.append(Vector2(0.15, 0.40))
-	side_poly.append(Vector2(0.18, 0.40))
-	side_poly.append(Vector2(0.18, 0.50))
-	side_poly.append(Vector2(0.15, 0.50))
+	side_poly.append(Vector2(-0.015, -0.05))
+	side_poly.append(Vector2(0.015, -0.05))
+	side_poly.append(Vector2(0.015, 0.05))
+	side_poly.append(Vector2(-0.015, 0.05))
 	
 	var indices = Array(Geometry.triangulate_polygon(PoolVector2Array(side_poly)))
 	
-	# 0.2 and 0.4 make a right-hand drive
+	createSide(indices, side_poly, steering_surf, 0.0)
+	createSide(indices, side_poly, steering_surf, 0.0, true)
+	createSide(indices, side_poly, steering_surf, 0.2, true)
+	createSide(indices, side_poly, steering_surf, 0.2)
 	
-	createSide(indices, side_poly, steering_surf, 0.58)
-	createSide(indices, side_poly, steering_surf, 0.58, true)
-	createSide(indices, side_poly, steering_surf, 0.78, true)
-	createSide(indices, side_poly, steering_surf, 0.78)
-	
-	linkSides(indices, side_poly, steering_surf, 0.58, 0.78, true)
+	linkSides(indices, side_poly, steering_surf, 0.0, 0.2, true)
 	
 	# add missing top
 	var p0 = side_poly[2]
@@ -153,8 +149,8 @@ func createSteeringWheel(steering_surf, steering_material):
 	print(str(p0))
 	print(str(p1))
 	
-	createQuadNoUV(steering_surf, Vector3(p0.x, p0.y, 0.58), Vector3(p0.x, p0.y, 0.78), Vector3(p1.x, p1.y, 0.78), Vector3(p1.x, p1.y, 0.58))
-	createQuadNoUV(steering_surf, Vector3(p0.x, p0.y, 0.58), Vector3(p0.x, p0.y, 0.78), Vector3(p1.x, p1.y, 0.78), Vector3(p1.x, p1.y, 0.58), true)
+	createQuadNoUV(steering_surf, Vector3(p0.x, p0.y, 0.0), Vector3(p0.x, p0.y, 0.2), Vector3(p1.x, p1.y, 0.2), Vector3(p1.x, p1.y, 0.0))
+	createQuadNoUV(steering_surf, Vector3(p0.x, p0.y, 0.0), Vector3(p0.x, p0.y, 0.2), Vector3(p1.x, p1.y, 0.2), Vector3(p1.x, p1.y, 0.0), true)
 	
 func createCar(trueno, window_poly, surface, glass_surf):
 	var poly_bottom = []
