@@ -99,6 +99,7 @@ func _ready():
 	
 	last_pos = get_translation()
 	
+	
 	set_physics_process(true)
 	set_process(true)
 	set_process_input(true)
@@ -118,6 +119,8 @@ func on_load_ended():
 	# enable our cam
 	var chase_cam = get_node("cambase/Camera")
 	chase_cam.make_current()
+	
+	get_node("driver_new").setup_ik()
 
 func _physics_process(delta):
 	# were we peeking last tick?
@@ -253,6 +256,8 @@ func _physics_process(delta):
 		
 	#make physics happen!
 	process_car_physics(delta, gas, braking, left, right)
+	
+	get_node("driver_new/Armature/Spatial").set_rotation(Vector3(get_steering()*2,0,0))
 	
 	#reset
 	if (Input.is_action_pressed("steer_reset")):
