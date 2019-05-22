@@ -135,12 +135,12 @@ func createSteeringWheel(steering_surf, steering_material):
 	
 	var indices = Array(Geometry.triangulate_polygon(PoolVector2Array(side_poly)))
 	
-	createSide(indices, side_poly, steering_surf, 0.0)
-	createSide(indices, side_poly, steering_surf, 0.0, true)
-	createSide(indices, side_poly, steering_surf, 0.2, true)
-	createSide(indices, side_poly, steering_surf, 0.2)
+	createSide(indices, side_poly, steering_surf, -0.1)
+	createSide(indices, side_poly, steering_surf, -0.1, true)
+	createSide(indices, side_poly, steering_surf, 0.1, true)
+	createSide(indices, side_poly, steering_surf, 0.1)
 	
-	linkSides(indices, side_poly, steering_surf, 0.0, 0.2, true)
+	linkSides(indices, side_poly, steering_surf, -0.1, 0.1, true)
 	
 	# add missing top
 	var p0 = side_poly[2]
@@ -149,8 +149,8 @@ func createSteeringWheel(steering_surf, steering_material):
 	print(str(p0))
 	print(str(p1))
 	
-	createQuadNoUV(steering_surf, Vector3(p0.x, p0.y, 0.0), Vector3(p0.x, p0.y, 0.2), Vector3(p1.x, p1.y, 0.2), Vector3(p1.x, p1.y, 0.0))
-	createQuadNoUV(steering_surf, Vector3(p0.x, p0.y, 0.0), Vector3(p0.x, p0.y, 0.2), Vector3(p1.x, p1.y, 0.2), Vector3(p1.x, p1.y, 0.0), true)
+	createQuadNoUV(steering_surf, Vector3(p0.x, p0.y, -0.1), Vector3(p0.x, p0.y, 0.1), Vector3(p1.x, p1.y, 0.1), Vector3(p1.x, p1.y, -0.1))
+	createQuadNoUV(steering_surf, Vector3(p0.x, p0.y, -0.1), Vector3(p0.x, p0.y, 0.1), Vector3(p1.x, p1.y, 0.1), Vector3(p1.x, p1.y, -0.1), true)
 	
 func createCar(trueno, window_poly, surface, glass_surf):
 	var poly_bottom = []

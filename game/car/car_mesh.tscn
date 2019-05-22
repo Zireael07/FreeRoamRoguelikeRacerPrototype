@@ -15,4 +15,4 @@ glass_material = ExtResource( 3 )
 steering_material = SubResource( 1 )
 
 [node name="Spatial" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.131065, 0.404197, 0.537807 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, 0.404, 0.655 )
