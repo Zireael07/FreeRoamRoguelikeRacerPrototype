@@ -2,9 +2,9 @@
 
 [ext_resource path="res://car/procedural_car_better.gd" type="Script" id=1]
 [ext_resource path="res://assets/car_blue.tres" type="Material" id=2]
-[ext_resource path="res://assets/modular car glass.tres" type="Material" id=3]
+[ext_resource path="res://assets/shadermaterial_glass_rain.tres" type="Material" id=3]
 
-[sub_resource type="SpatialMaterial" id=1]
+[sub_resource type="SpatialMaterial" id=3]
 albedo_color = Color( 0.988281, 0.675432, 0.0115814, 1 )
 roughness = 0.0
 
@@ -12,7 +12,7 @@ roughness = 0.0
 script = ExtResource( 1 )
 material = ExtResource( 2 )
 glass_material = ExtResource( 3 )
-steering_material = SubResource( 1 )
+steering_material = SubResource( 3 )
 
 [node name="Spatial" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, 0.404, 0.655 )

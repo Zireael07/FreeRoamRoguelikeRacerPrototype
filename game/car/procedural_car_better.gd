@@ -21,7 +21,7 @@ var indices_rear = []
 var indices_body = []
 	
 export(SpatialMaterial) var material = SpatialMaterial.new()
-export(SpatialMaterial) var glass_material = SpatialMaterial.new()
+export(ShaderMaterial) var glass_material = ShaderMaterial.new()
 export(SpatialMaterial) var steering_material = SpatialMaterial.new()
 
 func _ready():

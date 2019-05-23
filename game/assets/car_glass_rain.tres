@@ -1,0 +1,20 @@
+[gd_resource type="SpatialMaterial" load_steps=3 format=2]
+
+[sub_resource type="OpenSimplexNoise" id=4]
+period = 16.0
+lacunarity = 4.0
+
+[sub_resource type="NoiseTexture" id=5]
+seamless = true
+bump_strength = 15.8
+noise = SubResource( 4 )
+
+[resource]
+flags_transparent = true
+flags_do_not_receive_shadows = true
+params_cull_mode = 2
+albedo_color = Color( 0.843137, 0.827451, 0.827451, 0.705882 )
+albedo_texture = SubResource( 5 )
+metallic = 0.85
+roughness = 0.2
+uv1_triplanar = true
