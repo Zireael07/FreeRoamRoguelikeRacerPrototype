@@ -344,11 +344,23 @@ transform = Transform( -1.04907e-07, 0, -2.4, 0, 2.4, 0, 2.4, 0, -1.04907e-07, 0
 script = ExtResource( 18 )
 
 [node name="RainParticles" type="Particles" parent="BODY"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 5, 0 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 5, -6.0586 )
 material_override = ExtResource( 19 )
 cast_shadow = 0
 emitting = false
-amount = 512
+amount = 256
+fract_delta = false
+visibility_aabb = AABB( -6, -6, -6, 12, 16, 12 )
+process_material = ExtResource( 20 )
+draw_pass_1 = SubResource( 19 )
+script = ExtResource( 18 )
+
+[node name="RainParticles2" type="Particles" parent="BODY"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 5, 8.69194 )
+material_override = ExtResource( 19 )
+cast_shadow = 0
+emitting = false
+amount = 256
 fract_delta = false
 visibility_aabb = AABB( -6, -6, -6, 12, 16, 12 )
 process_material = ExtResource( 20 )

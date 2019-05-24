@@ -24,9 +24,13 @@ export(SpatialMaterial) var material = SpatialMaterial.new()
 export(ShaderMaterial) var glass_material = ShaderMaterial.new()
 export(SpatialMaterial) var steering_material = SpatialMaterial.new()
 
+var rain_glass_mat
+
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here.	
+	
+	rain_glass_mat = preload("res://assets/shadermaterial_glass_rain.tres")
 	
 	var trueno_side_window = [Vector2(0.102906, 0.489506), Vector2(0.45022, 0.745425), Vector2(1.13577, 0.741807), Vector2(1.19646, 0.511102)]
 	window_poly = trueno_side_window
@@ -489,4 +493,10 @@ func linkSides(indices, polygon, surface, offset, begin=0, dup=false):
 		
 		#addQuad(Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, offset), Vector3(p1.x, p1.y, offset), Vector3(p1.x, p1.y, 0), material, surface, false) 
 		
-		
+func rain_glass():
+	get_node("plane").set_surface_material(1, rain_glass_mat)
+	
+	#pass		
+
+func rain_clear():
+	get_node("plane").set_surface_material(1, glass_material)

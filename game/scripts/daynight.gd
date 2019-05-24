@@ -1,4 +1,4 @@
-# based on a script by Khairul Hidayat, https://www.youtube.com/watch?v=iTkLEP3Kwko
+# originally based on a script by Khairul Hidayat, https://www.youtube.com/watch?v=iTkLEP3Kwko
 extends Spatial
 
 #export var SPEED = 20.0;
@@ -42,6 +42,8 @@ const WEATHER_SUNNY = 0
 const WEATHER_OVERCAST = 1
 const WEATHER_RAIN = 2
 
+var player
+
 
 func _ready():
 	
@@ -57,6 +59,8 @@ func _ready():
 	sky = env.get_sky()
 	
 	#print("Real-life minutes/day is: " + str(DAY_SPEED) + ", 1 h is: " + str((DAY_SPEED/24.0)*60.0) + " s")
+	
+	player = get_tree().get_nodes_in_group("player")[0]
 
 func _process(delta):
 #	# Called every frame. Delta is time since last frame.
@@ -94,28 +98,35 @@ func _process(delta):
 	if day_night:
 		day_night_cycle(time)
 		
+	# TODO: weather should be a fsm and effects should be applied only on weather change
 	# weather
 	if weather == WEATHER_SUNNY:
-		get_tree().get_nodes_in_group("player")[0].get_node("BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 25)
+		player.get_node("BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 25)
 	elif weather == WEATHER_OVERCAST or weather == WEATHER_RAIN:
-		get_tree().get_nodes_in_group("player")[0].get_node("BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 85)
+		player.get_node("BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 85)
 	
 	
 	if weather == WEATHER_RAIN:
-		get_tree().get_nodes_in_group("player")[0].get_node("BODY/RainParticles").set_emitting(true)
+		player.get_node("BODY/RainParticles").set_emitting(true)
+		player.get_node("BODY/RainParticles2").set_emitting(true)
 		
 		# enable SSR
 		env.set_ssr_enabled(true) 
 		
 		if get_tree().get_nodes_in_group("roads").size() > 0:
 			get_tree().get_nodes_in_group("roads")[0].rain_shine()
+			
+		player.get_node("BODY/mesh").rain_glass()
 	else:
 		env.set_ssr_enabled(false)
 		
-		get_tree().get_nodes_in_group("player")[0].get_node("BODY/RainParticles").set_emitting(false)
+		player.get_node("BODY/RainParticles").set_emitting(false)
+		player.get_node("BODY/RainParticles2").set_emitting(false)
 		if get_tree().get_nodes_in_group("roads").size() > 0:
 			get_tree().get_nodes_in_group("roads")[0].no_rain()
 
+		# car glass
+		player.get_node("BODY/mesh").rain_clear()
 
 func calculate_lightning(hour, minute):
 	var lightningMin = 0.1
