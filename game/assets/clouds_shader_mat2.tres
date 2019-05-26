@@ -51,6 +51,11 @@ float fbm(vec2 n) {
 
 // -----------------------------------------------
 
+void vertex() {
+	UV = UV*vec2(6.0, 6.0);
+	//UV=UV*uv1_scale.xy+uv1_offset.xy;
+}
+
 void fragment() {
 	// from my other cloud shader
 	vec2 position = (vec2(1) - UV);
@@ -128,6 +133,7 @@ void fragment() {
    
     f = cloudcover + cloudalpha*f*r;
     
+	//vec3 result = cloudcolour;
     vec3 result = mix(skycolour, clamp(skytint * skycolour + cloudcolour, 0.0, 1.0), clamp(f + c, 0.0, 1.0));
 		
 	ALBEDO.rgb = vec3(result);
@@ -139,7 +145,7 @@ void fragment() {
 	
 	// set alpha depending on cloud_col
 	//if ((cloud_col.r > 0.15) && (cloud_col.g > 0.0) && (cloud_col.b > 0.0))
-	if (f > cut_off)
+	if (c+f > cut_off)
 	//if (cloud_col.r > r_cut)
 		a = 1.0;
 	else
@@ -155,9 +161,9 @@ shader_param/cloudscale = 0.1
 shader_param/speed = 0.001
 shader_param/clouddark = 0.5
 shader_param/cloudlight = 0.3
-shader_param/cloudcover = 0.2
+shader_param/cloudcover = 0.1
 shader_param/cloudalpha = 8.0
 shader_param/skytint = 0.5
 shader_param/skycolour = Vector3( 0.2, 0.4, 0.6 )
-shader_param/cut_off = 0.15
+shader_param/cut_off = 0.1
 shader_param/m = Transform2D( 1.6, -1.2, 1.2, 1.6, 0, 0 )
