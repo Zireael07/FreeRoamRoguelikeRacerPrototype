@@ -134,7 +134,7 @@ void fragment() {
     f = cloudcover + cloudalpha*f*r;
     
 	//vec3 result = cloudcolour;
-    vec3 result = mix(skycolour, clamp(skytint * skycolour + cloudcolour, 0.0, 1.0), clamp(f + c, 0.0, 1.0));
+    vec3 result = mix(skycolour, clamp(skytint * skycolour + cloudcolour, 0.0, 1.0), clamp(f + c, 0.0, 1.0));	
 		
 	ALBEDO.rgb = vec3(result);
 	
@@ -150,6 +150,16 @@ void fragment() {
 		a = 1.0;
 	else
 		a = 0.0;
+
+	//cheapo tiling (better a line of pure empty sky than a seam)
+	if (UV.x < 0.02) {
+		a = 0.0;
+	}
+	
+	if (UV.x > 5.185) { //experimental value for a scale of 6.
+		a = 0.0;
+	}
+
 
 	ALPHA = a;
 }
