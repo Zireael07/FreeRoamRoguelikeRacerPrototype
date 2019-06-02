@@ -2,96 +2,28 @@
 
 [ext_resource path="res://hud/pause_menu.gd" type="Script" id=1]
 
-[node name="Control" type="Control" index="0"]
-
+[node name="Control" type="Control"]
 pause_mode = 2
 visible = false
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
 margin_left = 3.0
 margin_right = 1026.0
 margin_bottom = 136.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 script = ExtResource( 1 )
-_sections_unfolded = [ "Pause" ]
 
-[node name="ColorRect" type="ColorRect" parent="." index="0"]
-
+[node name="ColorRect" type="ColorRect" parent="."]
 modulate = Color( 1, 1, 1, 0.314902 )
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
 margin_right = 1021.0
 margin_bottom = 138.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
 color = Color( 0, 0.155029, 0.992188, 0.552471 )
-_sections_unfolded = [ "Visibility" ]
 
-[node name="Button" type="Button" parent="." index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Button" type="Button" parent="."]
 margin_left = 490.0
 margin_top = 115.0
 margin_right = 576.0
 margin_bottom = 135.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
 size_flags_horizontal = 2
 size_flags_vertical = 2
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
 text = "Resume"
-flat = false
-align = 1
-
-[node name="CheckButton" type="CheckButton" parent="." index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 490.0
-margin_top = 61.0
-margin_right = 566.0
-margin_bottom = 101.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = true
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "GI"
-flat = false
-align = 0
-
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
-
-[connection signal="pressed" from="CheckButton" to="." method="_on_CheckGIButton_pressed"]
-
-

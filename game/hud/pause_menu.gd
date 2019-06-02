@@ -18,15 +18,15 @@ func _input(event):
 			hide()
 			get_tree().set_pause(false)
 
-func _on_CheckGIButton_pressed():
-	var root = get_parent().get_parent().get_parent()
-	# disable GI
-	if root.get_node("GIProbe").is_visible():
-		root.get_node("GIProbe").hide()
-	else:
-		root.get_node("GIProbe").show()
-	
-	#pass # replace with function body
+#func _on_CheckGIButton_pressed():
+#	var root = get_parent().get_parent().get_parent()
+#	# disable GI
+#	if root.get_node("GIProbe").is_visible():
+#		root.get_node("GIProbe").hide()
+#	else:
+#		root.get_node("GIProbe").show()
+#
+#	#pass # replace with function body
 
 
 func _on_Button_pressed():
