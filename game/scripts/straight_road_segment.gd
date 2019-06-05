@@ -3,8 +3,7 @@ tool
 extends "mesh_gen.gd"
 
 # class member variables go here, for example:
-var m = SpatialMaterial.new()
-var color = Color(1,0,0)
+#var color = Color(1,0,0)
 export(SpatialMaterial)    var material    = preload("res://assets/road_material.tres")
 var temp_positions = PoolVector3Array()
 
@@ -12,7 +11,7 @@ var temp_positions = PoolVector3Array()
 var positions = PoolVector3Array()
 var left_positions = PoolVector3Array()
 var right_positions = PoolVector3Array()
-var draw
+var draw = null
 
 
 export(int) var length = 5
@@ -37,35 +36,35 @@ var rail_positions_right = PoolVector3Array()
 var support_positions = PoolVector3Array()
 
 #for matching
-var start_point
+var start_point = null
 export(Vector3) var relative_end
 
 #navigation mesh
-var nav_vertices
-var global_vertices
-var nav_vertices_alt
-var global_vertices_alt
+#var nav_vertices
+#var global_vertices
+#var nav_vertices_alt
+#var global_vertices_alt
 # margin
 #var margin = 1
 #var left_nav_positions = PoolVector3Array()
 #var right_nav_positions = PoolVector3Array()
 
 #for minimap
-var mid_point
+var mid_point = null
 var global_positions = PoolVector3Array()
 
 #for rotations
-var end_vector
-var start_vector
-var start_ref
-var end_ref
+var end_vector = null
+var start_vector = null
+var start_ref = null
+var end_ref = null
 
-export(bool) var trees
-export(bool) var bamboo
+export(bool) var trees = false
+export(bool) var bamboo = false
 
 #props
-var building
-var building_test
+var building = null
+#var building_test = null
 var buildDistance = 10
 #var numBuildings = 6
 var buildingSpacing = 15
@@ -74,17 +73,17 @@ var treeSpacing = 10
 var buildOffset = 6
 
 # materials
-var railing_tex
-var building_tex1
-var building_tex2
-var sign_tex1
-var sign_tex2
-var sign_tex3
-var win_mat
-var win_mat2
-var cables
-var cherry_tree
-var bamboo_clump
+var railing_tex = null
+var building_tex1 = null
+var building_tex2 = null
+var sign_tex1 = null
+var sign_tex2 = null
+var sign_tex3 = null
+var win_mat = null
+var win_mat2 = null
+var cables = null
+var cherry_tree = null
+var bamboo_clump = null
 
 
 func _ready():
@@ -103,7 +102,7 @@ func _ready():
 	building_tex1 = preload("res://assets/cement.tres")
 	building_tex2 = preload("res://assets/brick_wall.tres")
 	
-	building_test = preload("res://objects/test_shader_building.tscn")
+	#building_test = preload("res://objects/test_shader_building.tscn")
 	
 	# more props
 	sign_tex1 = preload("res://assets/neon_sign1.tres")
@@ -130,7 +129,7 @@ func _ready():
 	#print("Positions: " + str(positions.size()))
 	
 	var quads = []
-	var support_quads = []
+	#var support_quads = []
 	var rail_quads = []
 	
 	#overdraw fix
@@ -161,7 +160,7 @@ func _ready():
 			
 	
 			#mesh
-			var num = temp_positions.size()
+			#var num = temp_positions.size()
 			#for index in range(num):
 				#print("Index from temp_positions " + str(index))
 				##draw_debug_point(positions[index], color)
@@ -405,10 +404,6 @@ func get_global_positions():
 		
 	return global_positions
 
-
-#func draw_debug_point(loc, color):
-#	addTestColor(m, color, null, loc.x, 0.01, loc.z, 0.05,0.05,0.05)
-
 func getQuadsSimple(array):
 	var quad_one = [array[0], array[1], array[2], array[3], false]
 	
@@ -485,9 +480,9 @@ func setupBuilding(index):
 	build.storeys = 16 + rani
 	
 	# windows color
-	var ran_color_r = randf()
-	var ran_color_g = randf()
-	var ran_color_b = randf()
+#	var ran_color_r = randf()
+#	var ran_color_g = randf()
+#	var ran_color_b = randf()
 	
 	if ran < 0.5:
 		var win_color = win_mat
@@ -527,14 +522,14 @@ func setupBuilding(index):
 	
 	return build
 
-func setupBuildingSimple(index):
-	#var build = building.instance()
-	var build = building_test.instance()
-
-	build.set_name("Skyscraper"+String(index))
-	add_child(build)
-	
-	return build
+#func setupBuildingSimple(index):
+#	#var build = building.instance()
+#	var build = building_test.instance()
+#
+#	build.set_name("Skyscraper"+String(index))
+#	add_child(build)
+#
+#	return build
 
 func placeBuilding(index):
 	var build = setupBuilding(index)
@@ -671,80 +666,80 @@ func placeBamboo(index):
 #
 #	return nav_vertices
 
-func navMesh(navigation_node, nav_vertices, left):
-	
-	var nav_mesh = NavigationMesh.new()
-	
-	nav_mesh.set_vertices(nav_vertices)
-	
-	var indices = []
-	indices.push_back(0)
-	indices.push_back(1)
-	indices.push_back(2)
-	indices.push_back(3)
-	
-	nav_mesh.add_polygon(indices)
-	
-	# create the actual navmesh and enable it
-	var nav_mesh_inst = NavigationMeshInstance.new()	
-	nav_mesh_inst.set_navigation_mesh(nav_mesh)
-	nav_mesh_inst.set_enabled(true)
-	
-	# assign lane
-	if (left):
-		nav_mesh_inst.add_to_group("left_lane")
-		nav_mesh_inst.set_name("nav_mesh_left_lane")
-	else:
-		nav_mesh_inst.add_to_group("right_lane")
-		nav_mesh_inst.set_name("nav_mesh_right_lane")
-		
-	#navigation_node.call_deferred("add_child", nav_mesh_inst)
-	navigation_node.add_child(nav_mesh_inst)
-	
-	# set global vertices
-	global_vertices = PoolVector3Array()
-	for index in range (nav_vertices.size()):
-		global_vertices.push_back(get_global_transform().xform(nav_vertices[index]))
-
-
-func updateGlobalVerts():
-	if nav_vertices == null or nav_vertices.size() < 1:
-		return
-	
-	print("Updating global verts")
-	
-	global_vertices = PoolVector3Array()
-	for index in range (nav_vertices.size()):
-		# from local to global space
-		var gl = get_global_transform().xform(nav_vertices[index])
-		# from global to local relative to our parent (which is what is rotated/moved)
-		var par_loc = get_parent().get_global_transform().xform_inv(gl)
-		# from parent's local to global again
-		var res = get_parent().get_global_transform().xform(par_loc)
-		global_vertices.push_back(res) 
-		
-	# do the same for nav_vertices_alt
-	global_vertices_alt = PoolVector3Array()
-	for index in range (nav_vertices_alt.size()):
-		#print("Writing alt vert to global")
-		# from local to global space
-		var gl = get_global_transform().xform(nav_vertices_alt[index])
-		#print("Gl : " + str(gl))
-		# from global to local relative to our parent (which is what is rotated/moved)
-		var par_loc = get_parent().get_global_transform().xform_inv(gl)
-		#print("Relative to parent " + str(par_loc))
-		# from parent's local to global again
-		var res = get_parent().get_global_transform().xform(par_loc)
-		#print("Global again " + str(res))
-		global_vertices_alt.push_back(res)
-
-
-func move_key_navi_vertices(index1, pos1, index2, pos2):
-	nav_vertices.set(index1, pos1)
-	#print("Setting vertex " + String(index1) + " to " + String(pos1))
-	nav_vertices.set(index2, pos2)
-	#print("Setting vertex " + String(index2) + " to " + String(pos2))
-	#print("New straight vertices " + String(nav_vertices[index1]) + " & " + String(nav_vertices[index2]))
+#func navMesh(navigation_node, nav_vertices, left):
+#
+#	var nav_mesh = NavigationMesh.new()
+#
+#	nav_mesh.set_vertices(nav_vertices)
+#
+#	var indices = []
+#	indices.push_back(0)
+#	indices.push_back(1)
+#	indices.push_back(2)
+#	indices.push_back(3)
+#
+#	nav_mesh.add_polygon(indices)
+#
+#	# create the actual navmesh and enable it
+#	var nav_mesh_inst = NavigationMeshInstance.new()	
+#	nav_mesh_inst.set_navigation_mesh(nav_mesh)
+#	nav_mesh_inst.set_enabled(true)
+#
+#	# assign lane
+#	if (left):
+#		nav_mesh_inst.add_to_group("left_lane")
+#		nav_mesh_inst.set_name("nav_mesh_left_lane")
+#	else:
+#		nav_mesh_inst.add_to_group("right_lane")
+#		nav_mesh_inst.set_name("nav_mesh_right_lane")
+#
+#	#navigation_node.call_deferred("add_child", nav_mesh_inst)
+#	navigation_node.add_child(nav_mesh_inst)
+#
+#	# set global vertices
+#	global_vertices = PoolVector3Array()
+#	for index in range (nav_vertices.size()):
+#		global_vertices.push_back(get_global_transform().xform(nav_vertices[index]))
+#
+#
+#func updateGlobalVerts():
+#	if nav_vertices == null or nav_vertices.size() < 1:
+#		return
+#
+#	print("Updating global verts")
+#
+#	global_vertices = PoolVector3Array()
+#	for index in range (nav_vertices.size()):
+#		# from local to global space
+#		var gl = get_global_transform().xform(nav_vertices[index])
+#		# from global to local relative to our parent (which is what is rotated/moved)
+#		var par_loc = get_parent().get_global_transform().xform_inv(gl)
+#		# from parent's local to global again
+#		var res = get_parent().get_global_transform().xform(par_loc)
+#		global_vertices.push_back(res) 
+#
+#	# do the same for nav_vertices_alt
+#	global_vertices_alt = PoolVector3Array()
+#	for index in range (nav_vertices_alt.size()):
+#		#print("Writing alt vert to global")
+#		# from local to global space
+#		var gl = get_global_transform().xform(nav_vertices_alt[index])
+#		#print("Gl : " + str(gl))
+#		# from global to local relative to our parent (which is what is rotated/moved)
+#		var par_loc = get_parent().get_global_transform().xform_inv(gl)
+#		#print("Relative to parent " + str(par_loc))
+#		# from parent's local to global again
+#		var res = get_parent().get_global_transform().xform(par_loc)
+#		#print("Global again " + str(res))
+#		global_vertices_alt.push_back(res)
+#
+#
+#func move_key_navi_vertices(index1, pos1, index2, pos2):
+#	nav_vertices.set(index1, pos1)
+#	#print("Setting vertex " + String(index1) + " to " + String(pos1))
+#	nav_vertices.set(index2, pos2)
+#	#print("Setting vertex " + String(index2) + " to " + String(pos2))
+#	#print("New straight vertices " + String(nav_vertices[index1]) + " & " + String(nav_vertices[index2]))
 
 func global_to_local_vert(pos):
 	return get_global_transform().xform_inv(pos)

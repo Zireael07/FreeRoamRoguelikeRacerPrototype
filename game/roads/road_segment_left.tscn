@@ -1,117 +1,41 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://roads/segment_placer_left.gd" type="Script" id=1]
 [ext_resource path="res://scripts/curved_road_segment.gd" type="Script" id=2]
-[ext_resource path="res://assets/road_material.tres" type="Material" id=3]
-[ext_resource path="res://assets/cement.tres" type="Material" id=4]
-[ext_resource path="res://assets/barrier_material.tres" type="Material" id=5]
-[ext_resource path="res://scripts/draw_line.gd" type="Script" id=6]
+[ext_resource path="res://scripts/draw_line.gd" type="Script" id=3]
 
 [sub_resource type="SpatialMaterial" id=1]
-
-render_priority = 0
-flags_transparent = false
 flags_unshaded = true
-flags_vertex_lighting = false
-flags_no_depth_test = false
 flags_use_point_size = true
-flags_world_triplanar = false
-flags_fixed_size = false
-flags_albedo_tex_force_srgb = false
-vertex_color_use_as_albedo = false
-vertex_color_is_srgb = false
-params_diffuse_mode = 0
-params_specular_mode = 0
-params_blend_mode = 0
-params_cull_mode = 0
-params_depth_draw_mode = 0
 params_line_width = 3.0
 params_point_size = 3.0
-params_billboard_mode = 0
-params_grow = false
-params_use_alpha_scissor = false
-albedo_color = Color( 1, 1, 1, 1 )
-metallic = 0.0
-metallic_specular = 0.5
-metallic_texture_channel = 0
-roughness = 0.0
-roughness_texture_channel = 0
-emission_enabled = false
-normal_enabled = false
-rim_enabled = false
-clearcoat_enabled = false
-anisotropy_enabled = false
-ao_enabled = false
-depth_enabled = false
-subsurf_scatter_enabled = false
-transmission_enabled = false
-refraction_enabled = false
-detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
-uv1_triplanar = false
-uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
-uv2_triplanar = false
-uv2_triplanar_sharpness = 1.0
-proximity_fade_enable = false
-distance_fade_enable = false
 
-[node name="Spatial" type="Spatial" index="0"]
+[node name="Spatial" type="Spatial"]
 
-[node name="Placer" type="Position3D" parent="." index="0"]
-
+[node name="Placer" type="Position3D" parent="."]
 script = ExtResource( 1 )
 
-[node name="Road" type="Position3D" parent="Placer" index="0" groups=[
+[node name="Road" type="Position3D" parent="Placer" groups=[
 "roads",
 ]]
-
-transform = Transform( -1, 0, -8.74228e-008, 0, 1, 0, 8.74228e-008, 0, -1, 25, 0, 0 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 25, 0, 0 )
 script = ExtResource( 2 )
-sidewalks = false
-barriers = true
-lane_width = 3.0
 radius = 25
-loc = Vector2( 0, 0 )
 left_turn = true
-start_angle = 90
-end_angle = 180
-material = ExtResource( 3 )
-sidewalk_material = ExtResource( 4 )
-barrier_material = ExtResource( 5 )
 
-[node name="draw" type="ImmediateGeometry" parent="Placer/Road" index="0"]
-
-layers = 1
+[node name="draw" type="ImmediateGeometry" parent="Placer/Road"]
 material_override = SubResource( 1 )
 cast_shadow = 0
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
-script = ExtResource( 6 )
-color = Color( 1, 1, 1, 1 )
+script = ExtResource( 3 )
 
-[node name="Position3D" type="Position3D" parent="Placer/Road" index="1"]
-
+[node name="Position3D" type="Position3D" parent="Placer/Road"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -25 )
 
-[node name="last_pos" type="Position3D" parent="Placer/Road" index="6"]
+[node name="last_pos" type="Position3D" parent="Placer/Road"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.53081e-15, 0.01, -22 )
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.18455e-016, 0.01, 18 )
-_sections_unfolded = [ "Transform" ]
+[node name="last_pos2" type="Position3D" parent="Placer/Road"]
+transform = Transform( -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 1.53081e-15, 0.01, -28 )
 
-[node name="last_pos2" type="Position3D" parent="Placer/Road" index="7"]
-
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.40346, 0.01, 16.7954 )
-_sections_unfolded = [ "Transform" ]
-
-[node name="last_pos3" type="Position3D" parent="Placer/Road" index="8"]
-
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.18455e-016, 0.01, 15 )
-
-
+[node name="last_pos3" type="Position3D" parent="Placer/Road"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.53081e-15, 0.01, -25 )
