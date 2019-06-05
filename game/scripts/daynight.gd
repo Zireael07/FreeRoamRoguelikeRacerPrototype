@@ -36,11 +36,16 @@ var night_fired = false
 
 # weather
 
-export(int) var weather = 0
+export(int) var weather = 2
+# we can't init it on ready because it relies on our own setup
+var state = null #WeatherSunny.new(self)
+var prev_state
 
 const WEATHER_SUNNY = 0
 const WEATHER_OVERCAST = 1
 const WEATHER_RAIN = 2
+
+signal state_changed
 
 var player
 
@@ -61,6 +66,9 @@ func _ready():
 	#print("Real-life minutes/day is: " + str(DAY_SPEED) + ", 1 h is: " + str((DAY_SPEED/24.0)*60.0) + " s")
 	
 	player = get_tree().get_nodes_in_group("player")[0]
+	
+	# set weather
+	call_deferred("set_state", weather)
 
 func _process(delta):
 #	# Called every frame. Delta is time since last frame.
@@ -100,34 +108,17 @@ func _process(delta):
 		
 	# TODO: weather should be a fsm and effects should be applied only on weather change
 	# weather
-	if weather == WEATHER_SUNNY:
-		player.get_node("BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 25)
-	elif weather == WEATHER_OVERCAST or weather == WEATHER_RAIN:
-		player.get_node("BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 85)
+#	if weather == WEATHER_SUNNY:
+#		player.get_node("BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 25)
+#	elif weather == WEATHER_OVERCAST or weather == WEATHER_RAIN:
+#		player.get_node("BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 85)
 	
-	
-	if weather == WEATHER_RAIN:
-		player.get_node("BODY/RainParticles").set_emitting(true)
-		player.get_node("BODY/RainParticles2").set_emitting(true)
-		
-		# enable SSR
-		env.set_ssr_enabled(true) 
-		
-		if get_tree().get_nodes_in_group("roads").size() > 0:
-			get_tree().get_nodes_in_group("roads")[0].rain_shine()
-			
-		player.get_node("BODY/mesh").rain_glass()
-	else:
-		env.set_ssr_enabled(false)
-		
-		player.get_node("BODY/RainParticles").set_emitting(false)
-		player.get_node("BODY/RainParticles2").set_emitting(false)
-		if get_tree().get_nodes_in_group("roads").size() > 0:
-			get_tree().get_nodes_in_group("roads")[0].no_rain()
+#	if weather == WEATHER_RAIN:
+#		rain()
+#	else:
+#		no_rain()
 
-		# car glass
-		player.get_node("BODY/mesh").rain_clear()
-
+# day/night cycle
 func calculate_lightning(hour, minute):
 	var lightningMin = 0.1
 	var lightningMax = 1.0
@@ -230,8 +221,6 @@ func day_night_cycle(time):
 		
 		env.background_energy = 1
 		
-		# switching gi settings causes stutter
-		#get_parent().get_node("GIProbe").set_interior(false)
 	elif time >= 17.5 && not night_fired:
 		#disable shadows
 		sun.set_shadow(false)
@@ -240,8 +229,6 @@ func day_night_cycle(time):
 		env.background_energy = 0.1
 		print("[DAYNIGHT] switch to night settings")
 		night_fired = true
-		# GI probe interior switch causes stutter
-		#get_parent().get_node("GIProbe").set_interior(true)
 		
 
 	
@@ -249,4 +236,77 @@ func day_night_cycle(time):
 	sky.set_sun_latitude(sunmoon_lat)
 	
 	#env.set_background_param(Environment.BG_PARAM_COLOR, col);
+
+# weather
+func rain():
+	player.get_node("BODY/RainParticles").set_emitting(true)
+	player.get_node("BODY/RainParticles2").set_emitting(true)
 	
+	# enable SSR
+	env.set_ssr_enabled(true) 
+	
+	if get_tree().get_nodes_in_group("roads").size() > 0:
+		get_tree().get_nodes_in_group("roads")[0].rain_shine()
+		
+	player.get_node("BODY/mesh").rain_glass()
+
+func no_rain():
+	env.set_ssr_enabled(false)
+		
+	player.get_node("BODY/RainParticles").set_emitting(false)
+	player.get_node("BODY/RainParticles2").set_emitting(false)
+	if get_tree().get_nodes_in_group("roads").size() > 0:
+		get_tree().get_nodes_in_group("roads")[0].no_rain()
+
+	# car glass
+	player.get_node("BODY/mesh").rain_clear()
+	
+# fsm
+func set_state(new_state):
+	# if we need to clean up
+	#state.exit()
+	if state != null:
+		prev_state = get_state()
+	
+	if new_state == WEATHER_SUNNY:
+		state = WeatherSunny.new(self)
+	elif new_state == WEATHER_OVERCAST:
+		state = WeatherOvercast.new(self)
+	elif new_state == WEATHER_RAIN:
+		state = WeatherRain.new(self)
+	
+	emit_signal("state_changed", self)
+
+func get_state():
+	if state is WeatherSunny:
+		return WEATHER_SUNNY
+	elif state is WeatherOvercast:
+		return WEATHER_OVERCAST
+	elif state is WeatherRain:
+		return WEATHER_RAIN
+		
+# states ----------------------------------------------------
+
+class WeatherSunny:
+	var world
+	
+	func _init(wd):
+		world = wd
+		# weather init
+		world.no_rain()
+
+class WeatherOvercast:
+	var world
+	
+	func _init(wd):
+		world = wd
+		# weather init
+		world.no_rain()
+		
+class WeatherRain:
+	var world
+	
+	func _init(wd):
+		world = wd
+		# weather init
+		world.rain()
