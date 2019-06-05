@@ -37,7 +37,7 @@ var support_positions = PoolVector3Array()
 
 #for matching
 var start_point = null
-export(Vector3) var relative_end
+export(Vector3) var relative_end = Vector3(0,0,100)
 
 #navigation mesh
 #var nav_vertices

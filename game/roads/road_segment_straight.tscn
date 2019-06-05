@@ -10,7 +10,6 @@
 ]]
 script = ExtResource( 1 )
 length = 50
-relative_end = Vector3( 0, 0, 100 )
 
 [node name="draw" type="ImmediateGeometry" parent="."]
 material_override = SubResource( 1 )
