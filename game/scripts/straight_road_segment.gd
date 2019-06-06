@@ -36,7 +36,7 @@ var rail_positions_right = PoolVector3Array()
 var support_positions = PoolVector3Array()
 
 #for matching
-var start_point = null
+var start_point = Vector3()
 export(Vector3) var relative_end = Vector3(0,0,100)
 
 #navigation mesh
@@ -50,14 +50,14 @@ export(Vector3) var relative_end = Vector3(0,0,100)
 #var right_nav_positions = PoolVector3Array()
 
 #for minimap
-var mid_point = null
+var mid_point = Vector3()
 var global_positions = PoolVector3Array()
 
 #for rotations
-var end_vector = null
-var start_vector = null
-var start_ref = null
-var end_ref = null
+var end_vector = Vector3()
+var start_vector = Vector3()
+var start_ref = Vector3()
+var end_ref = Vector3()
 
 export(bool) var trees = false
 export(bool) var bamboo = false
