@@ -112,14 +112,15 @@ func _ready():
 
 
 	# test the nav
-	var marker = get_node("tt_marker")
+	if marker_data != null:
+		var marker = get_node("tt_marker")
 	#print(marker.get_translation())
-	var tg = marker.target
+		var tg = marker.target
 	#print("tg : " + str(tg))
 
 #	print("Marker intersection id" + str(marker_data[0]) + " tg id" + str(marker_data[1]))
-	var int_path = ast.get_id_path(marker_data[0], marker_data[1])
-	print("Intersections path: " + str(int_path))
+		var int_path = ast.get_id_path(marker_data[0], marker_data[1])
+		print("Intersections path: " + str(int_path))
 
 #	# test (get path_look entry at id x)
 #	var test = path_look[path_look.keys()[5]]
@@ -130,33 +131,33 @@ func _ready():
 #	marker.raceline = nav_path
 
 	#print("First pair: " + str(int_path[0]) + "," + str(int_path[1]))
-	#paranoia
-	var nav_path
-	if [int_path[0], int_path[1]] in path_look:
-		var lookup_path = path_look[[int_path[0], int_path[1]]]
-		#print("Lookup path pt1: " + str(lookup_path))
-		nav_path = nav.get_point_path(lookup_path[0], lookup_path[1])
-		#print("Nav path: " + str(nav_path))
-		# so that the player can see
-		#marker.raceline = nav_path
-	if [int_path[1], int_path[2]] in path_look:
-		#print("Second pair: " + str(int_path[1]) + "," + str(int_path[2]))
-		var lookup_path = path_look[[int_path[1], int_path[2]]]
-		#print("Lookup path pt2: " + str(lookup_path))
-		var nav_path2 = nav.get_point_path(lookup_path[0], lookup_path[1])
-		#print("Nav path pt2 : " + str(nav_path2))
-
-		var nav_path3 = PoolVector3Array()
-		if int_path.size() > 3:
-			if [int_path[2], int_path[3]] in path_look:
-				#print("Third pair: " + str(int_path[2]) + "," + str(int_path[3]))
-				lookup_path = path_look[[int_path[2], int_path[3]]]
-				#print("Lookup path pt3: " + str(lookup_path))
-				nav_path3 = nav.get_point_path(lookup_path[0], lookup_path[1])
-			#print("Nav path pt3: " + str(nav_path3))
-
-		# display the whole path
-		marker.raceline = nav_path + nav_path2 + nav_path3
+		#paranoia
+		var nav_path
+		if [int_path[0], int_path[1]] in path_look:
+			var lookup_path = path_look[[int_path[0], int_path[1]]]
+			#print("Lookup path pt1: " + str(lookup_path))
+			nav_path = nav.get_point_path(lookup_path[0], lookup_path[1])
+			#print("Nav path: " + str(nav_path))
+			# so that the player can see
+			#marker.raceline = nav_path
+		if [int_path[1], int_path[2]] in path_look:
+			#print("Second pair: " + str(int_path[1]) + "," + str(int_path[2]))
+			var lookup_path = path_look[[int_path[1], int_path[2]]]
+			#print("Lookup path pt2: " + str(lookup_path))
+			var nav_path2 = nav.get_point_path(lookup_path[0], lookup_path[1])
+			#print("Nav path pt2 : " + str(nav_path2))
+	
+			var nav_path3 = PoolVector3Array()
+			if int_path.size() > 3:
+				if [int_path[2], int_path[3]] in path_look:
+					#print("Third pair: " + str(int_path[2]) + "," + str(int_path[3]))
+					lookup_path = path_look[[int_path[2], int_path[3]]]
+					#print("Lookup path pt3: " + str(lookup_path))
+					nav_path3 = nav.get_point_path(lookup_path[0], lookup_path[1])
+				#print("Nav path pt3: " + str(nav_path3))
+	
+			# display the whole path
+			marker.raceline = nav_path + nav_path2 + nav_path3
 
 	#place_player()
 
@@ -484,6 +485,9 @@ func spawn_markers():
 			possible_targets.append(n)
 
 	var t_id = null
+	if possible_targets.size() < 1:
+		return
+		
 	if possible_targets.size() > 1:
 		# pick randomly
 		t_id = possible_targets[randi() % possible_targets.size()]
