@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/straight_road_segment.gd" type="Script" id=1]
 [ext_resource path="res://scripts/draw_line.gd" type="Script" id=2]
+[ext_resource path="res://scripts/straight_road_props.gd" type="Script" id=3]
 
 [sub_resource type="SpatialMaterial" id=1]
 
@@ -15,3 +16,6 @@ length = 50
 material_override = SubResource( 1 )
 cast_shadow = 0
 script = ExtResource( 2 )
+
+[node name="Spatial" type="Spatial" parent="."]
+script = ExtResource( 3 )
