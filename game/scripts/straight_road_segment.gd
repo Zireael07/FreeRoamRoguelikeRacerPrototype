@@ -38,16 +38,6 @@ var support_positions = PoolVector3Array()
 var start_point = Vector3()
 export(Vector3) var relative_end = Vector3(0,0,100)
 
-#navigation mesh
-#var nav_vertices
-#var global_vertices
-#var nav_vertices_alt
-#var global_vertices_alt
-# margin
-#var margin = 1
-#var left_nav_positions = PoolVector3Array()
-#var right_nav_positions = PoolVector3Array()
-
 #for minimap
 var mid_point = Vector3()
 var global_positions = PoolVector3Array()
@@ -79,10 +69,10 @@ func _ready():
 	positions.resize(0) # = []
 	left_positions.resize(0) # = []
 	right_positions.resize(0) #= []
-	
+
 	points_inner_side.resize(0)
 	points_outer_side.resize(0)
-	
+
 	points_inner_rail.resize(0)
 	points_outer_rail.resize(0)
 	
@@ -97,9 +87,6 @@ func _ready():
 		# find out slope
 		var slope_diff = road_slope/length
 		#print("Slope diff" + str(slope_diff))
-		
-		#if slope_diff > 0:
-			
 		
 		for index in range(length):
 			#print("Index " + str(index))
@@ -403,111 +390,6 @@ func meshCreate(array, material):
 	
 	#Turn off shadows
 	node.set_cast_shadows_setting(0)
-	
-# navmesh
-#func setupNavi(navigation_node):
-#	#nav mesh
-#	nav_vertices = get_navi_vertices()
-#	navMesh(navigation_node, nav_vertices, true)
-#	nav_vertices_alt = get_navi_vertices_alt()
-#	navMesh(navigation_node, nav_vertices_alt, false)
-
-#func get_navi_vertices():
-#	var nav_vertices = PoolVector3Array()
-#
-#	var pos_size = positions.size()-1
-#	nav_vertices.push_back(right_nav_positions[0])
-#	nav_vertices.push_back(positions[0])
-#	nav_vertices.push_back(positions[pos_size])
-#	nav_vertices.push_back(right_nav_positions[pos_size])
-#
-#	return nav_vertices
-#
-#func get_navi_vertices_alt():
-#	var nav_vertices = PoolVector3Array()
-#
-#	var pos_size = positions.size()-1
-#	nav_vertices.push_back(positions[0])
-#	nav_vertices.push_back(left_nav_positions[0])
-#	nav_vertices.push_back(left_nav_positions[pos_size])
-#	nav_vertices.push_back(positions[pos_size])
-#
-#	return nav_vertices
-
-#func navMesh(navigation_node, nav_vertices, left):
-#
-#	var nav_mesh = NavigationMesh.new()
-#
-#	nav_mesh.set_vertices(nav_vertices)
-#
-#	var indices = []
-#	indices.push_back(0)
-#	indices.push_back(1)
-#	indices.push_back(2)
-#	indices.push_back(3)
-#
-#	nav_mesh.add_polygon(indices)
-#
-#	# create the actual navmesh and enable it
-#	var nav_mesh_inst = NavigationMeshInstance.new()	
-#	nav_mesh_inst.set_navigation_mesh(nav_mesh)
-#	nav_mesh_inst.set_enabled(true)
-#
-#	# assign lane
-#	if (left):
-#		nav_mesh_inst.add_to_group("left_lane")
-#		nav_mesh_inst.set_name("nav_mesh_left_lane")
-#	else:
-#		nav_mesh_inst.add_to_group("right_lane")
-#		nav_mesh_inst.set_name("nav_mesh_right_lane")
-#
-#	#navigation_node.call_deferred("add_child", nav_mesh_inst)
-#	navigation_node.add_child(nav_mesh_inst)
-#
-#	# set global vertices
-#	global_vertices = PoolVector3Array()
-#	for index in range (nav_vertices.size()):
-#		global_vertices.push_back(get_global_transform().xform(nav_vertices[index]))
-#
-#
-#func updateGlobalVerts():
-#	if nav_vertices == null or nav_vertices.size() < 1:
-#		return
-#
-#	print("Updating global verts")
-#
-#	global_vertices = PoolVector3Array()
-#	for index in range (nav_vertices.size()):
-#		# from local to global space
-#		var gl = get_global_transform().xform(nav_vertices[index])
-#		# from global to local relative to our parent (which is what is rotated/moved)
-#		var par_loc = get_parent().get_global_transform().xform_inv(gl)
-#		# from parent's local to global again
-#		var res = get_parent().get_global_transform().xform(par_loc)
-#		global_vertices.push_back(res) 
-#
-#	# do the same for nav_vertices_alt
-#	global_vertices_alt = PoolVector3Array()
-#	for index in range (nav_vertices_alt.size()):
-#		#print("Writing alt vert to global")
-#		# from local to global space
-#		var gl = get_global_transform().xform(nav_vertices_alt[index])
-#		#print("Gl : " + str(gl))
-#		# from global to local relative to our parent (which is what is rotated/moved)
-#		var par_loc = get_parent().get_global_transform().xform_inv(gl)
-#		#print("Relative to parent " + str(par_loc))
-#		# from parent's local to global again
-#		var res = get_parent().get_global_transform().xform(par_loc)
-#		#print("Global again " + str(res))
-#		global_vertices_alt.push_back(res)
-#
-#
-#func move_key_navi_vertices(index1, pos1, index2, pos2):
-#	nav_vertices.set(index1, pos1)
-#	#print("Setting vertex " + String(index1) + " to " + String(pos1))
-#	nav_vertices.set(index2, pos2)
-#	#print("Setting vertex " + String(index2) + " to " + String(pos2))
-#	#print("New straight vertices " + String(nav_vertices[index1]) + " & " + String(nav_vertices[index2]))
 
 func global_to_local_vert(pos):
 	return get_global_transform().xform_inv(pos)
