@@ -1,35 +1,18 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/procedural_building.gd" type="Script" id=1]
-[ext_resource path="res://assets/cement.tres" type="Material" id=2]
+[ext_resource path="res://assets/procedural_building_metal_mat.tres" type="Material" id=2]
 [ext_resource path="res://assets/windows_material2.tres" type="Material" id=3]
 [ext_resource path="res://assets/chinasign_1.obj" type="ArrayMesh" id=4]
 [ext_resource path="res://assets/neon_sign1.tres" type="Material" id=5]
 
-[node name="Spatial" type="Spatial" index="0"]
-
+[node name="Spatial" type="Spatial"]
 script = ExtResource( 1 )
-storeys = 18
-width = 6
-thick = 6
 material = ExtResource( 2 )
 windows_mat = ExtResource( 3 )
 
-[node name="MeshInstance" type="MeshInstance" parent="." index="0"]
-
+[node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 1, 7.63328, 8.47983, 0 )
-layers = 1
-material_override = null
 cast_shadow = 0
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
 mesh = ExtResource( 4 )
-skeleton = NodePath("..")
 material/0 = ExtResource( 5 )
-_sections_unfolded = [ "Geometry", "Transform", "material" ]
-
-

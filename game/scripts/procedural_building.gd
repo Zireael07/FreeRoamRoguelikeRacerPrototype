@@ -8,8 +8,8 @@ export(int) var width = 6
 var height = 4
 export(int) var thick = 6
 
-var wind_width = 0.5
-var wind_height = 0.5
+var wind_width = 1.0 #0.95
+var wind_height = 0.95
 var wind_thick = 0.1
 
 export(SpatialMaterial) var material = SpatialMaterial.new()

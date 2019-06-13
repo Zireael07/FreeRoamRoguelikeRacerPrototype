@@ -49,10 +49,6 @@ func _ready():
 	cables = preload("res://objects/china_cable.tscn")
 	cherry_tree = preload("res://objects/cherry_tree.tscn")
 	bamboo_clump = preload("res://objects/bamboo_clump.tscn")
-	
-	
-	
-	pass # Replace with function body.
 
 
 func place_props(trees, bamboo, long):
@@ -103,7 +99,9 @@ func setupBuilding(index):
 		var win_color = win_mat2
 		build.windows_mat = win_color
 	
-	#build.windows_mat.
+	# windows
+	build.wind_width = 0.5
+	build.wind_height = 0.5
 	
 	#build.windows_mat.set_albedo(Color(ran_color_r, ran_color_g, ran_color_b))
 	
