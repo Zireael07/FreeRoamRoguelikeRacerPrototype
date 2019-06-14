@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scripts/procedural_building.gd" type="Script" id=1]
 [ext_resource path="res://assets/procedural_building_metal_mat.tres" type="Material" id=2]
 [ext_resource path="res://assets/windows_material2.tres" type="Material" id=3]
 [ext_resource path="res://assets/chinasign_1.obj" type="ArrayMesh" id=4]
 [ext_resource path="res://assets/neon_sign1.tres" type="Material" id=5]
+[ext_resource path="res://assets/china_cable.obj" type="ArrayMesh" id=6]
+[ext_resource path="res://assets/metal_mat.tres" type="Material" id=7]
 
 [node name="Spatial" type="Spatial"]
 script = ExtResource( 1 )
@@ -16,3 +18,23 @@ transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 1, 7.63328, 8.47983, 0 )
 cast_shadow = 0
 mesh = ExtResource( 4 )
 material/0 = ExtResource( 5 )
+
+[node name="cable" type="MeshInstance" parent="."]
+transform = Transform( 1.47721, 0.17101, 0.0603075, 0, 0.173648, -1.96962, -0.260472, 0.969847, 0.342021, 6.76171, 21.4082, -2.15234 )
+mesh = ExtResource( 6 )
+material/0 = ExtResource( 7 )
+
+[node name="cable3" type="MeshInstance" parent="."]
+transform = Transform( 1.5, 0, 0, 0, 0.0871559, -1.99239, 0, 0.996195, 0.174312, 2.56961, 20.8978, 7.03558 )
+mesh = ExtResource( 6 )
+material/0 = ExtResource( 7 )
+
+[node name="cable4" type="MeshInstance" parent="."]
+transform = Transform( 1.5, 0, 0, 0, -0.0871559, -1.99239, 0, 0.996195, -0.174312, 2.56961, 20.8978, -7.38459 )
+mesh = ExtResource( 6 )
+material/0 = ExtResource( 7 )
+
+[node name="cable2" type="MeshInstance" parent="."]
+transform = Transform( 1.44889, 0.254887, -0.0674152, 0, 0.173648, 1.47721, 0.388229, -0.951251, 0.251597, 6.51664, 12.8601, -4.0928 )
+mesh = ExtResource( 6 )
+material/0 = ExtResource( 7 )
