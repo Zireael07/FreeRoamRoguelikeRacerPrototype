@@ -366,8 +366,14 @@ func _input(event):
 		var cockpit_cam = get_node("cambase/CameraCockpit")
 		if chase_cam.is_current():
 			cockpit_cam.make_current()
+			# enable rear view mirror
+			$"cambase/Viewport/CameraCockpitBack".make_current()
+			$"cambase/Viewport".set_update_mode(Viewport.UPDATE_ALWAYS)
 		else:
 			chase_cam.make_current()
+			# disable rear view mirror
+			$"cambase/Viewport/CameraCockpitBack".clear_current()
+			$"cambase/Viewport".set_update_mode(Viewport.UPDATE_DISABLED)
 	
 	
 	
