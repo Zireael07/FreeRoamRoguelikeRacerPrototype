@@ -346,11 +346,11 @@ func _process(delta):
 		get_node("skysphere/Skysphere").get_material_override().set_shader_param("light", color) #Color(World_node.light_color.r, World_node.light_color.g, World_node.light_color.b))
 	#print("Shader color: " + str(get_node("skysphere/Skysphere").get_material_override().get_shader_param("light")))
 	
+	# motion blur
 #	if speed > 28: #100 kphs
-#		get_node("cambase/Camera/blur_quad").set_visible(true)
-#		#get_mesh().surface_get_material(0).set_shader_param
+#		get_node("cambase/Camera/motion_blur").set_visible(true)
 #	else:
-#		get_node("cambase/Camera/blur_quad").set_visible(false)
+#		get_node("cambase/Camera/motion_blur").set_visible(false)
 	
 #doesn't interact with physics
 func _input(event):

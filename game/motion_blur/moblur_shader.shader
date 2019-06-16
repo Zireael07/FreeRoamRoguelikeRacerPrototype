@@ -43,5 +43,5 @@ void fragment()
 	}
 	ALBEDO = col / counter;
 	//added to workaround capture being after opaque pass
-	ALPHA = 0.3;
+	//ALPHA = 0.3;
 }
