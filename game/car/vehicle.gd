@@ -186,7 +186,7 @@ func _physics_process(delta):
 	#just to have something here
 	var basis = get_transform().basis.y
 	
-	#kill_debugs()
+	#kill_sparks()
 	
 func _integrate_forces(state):
 	if state.get_contact_count() > 0:
@@ -242,7 +242,7 @@ func _integrate_forces(state):
 			#debug_cube(local)
 			spawn_sparks(local, normal)
 
-func kill_debugs():	
+func kill_sparks():	
 	# kill old cubes
 	for c in get_children():
 		if c.get_name().find("Spark") != -1:
@@ -379,3 +379,5 @@ func spawn_sparks(loc, normal):
 	spark.set_emitting(true)
 	#print("Normal " + str(normal))
 	spark.get_process_material().set_gravity(normal)
+	# set timer
+	spark.get_node("Timer").start()
