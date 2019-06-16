@@ -121,6 +121,9 @@ func on_load_ended():
 	chase_cam.make_current()
 	
 	get_node("driver_new").setup_ik()
+	
+	# optimize label/nameplate rendering
+	get_node("..").freeze_viewports()
 
 func _physics_process(delta):
 	# were we peeking last tick?

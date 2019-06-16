@@ -104,26 +104,27 @@ roughness = 0.0
 [sub_resource type="BoxShape" id=9]
 extents = Vector3( 0.477039, 0.413218, 1.32118 )
 
-[sub_resource type="QuadMesh" id=12]
+[sub_resource type="QuadMesh" id=10]
 resource_local_to_scene = true
+size = Vector2( 0.5, 0.5 )
 
-[sub_resource type="SpatialMaterial" id=13]
+[sub_resource type="SpatialMaterial" id=11]
 flags_transparent = true
 flags_unshaded = true
 params_diffuse_mode = 1
 params_use_alpha_scissor = true
 params_alpha_scissor_threshold = 0.98
 
-[sub_resource type="QuadMesh" id=14]
+[sub_resource type="QuadMesh" id=12]
 resource_local_to_scene = true
 
-[sub_resource type="SpatialMaterial" id=15]
+[sub_resource type="SpatialMaterial" id=13]
 params_diffuse_mode = 1
 albedo_texture = ExtResource( 7 )
 roughness = 0.0
 uv1_scale = Vector3( 0.2, 0.2, 1 )
 
-[sub_resource type="ArrayMesh" id=16]
+[sub_resource type="ArrayMesh" id=14]
 surfaces/0 = {
 "aabb": AABB( -0.4027, 0.0012, -0.0986, 0.8086, 0.02501, 0.0999 ),
 "array_data": PoolByteArray( 113, 182, 181, 38, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 60, 0, 60, 113, 182, 234, 20, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 0, 0, 60, 124, 178, 181, 38, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 60, 0, 0, 124, 178, 234, 20, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 0, 0, 0, 124, 178, 181, 38, 83, 21, 0, 60, 0, 0, 127, 0, 0, 127, 0, 127, 0, 60, 0, 60, 124, 178, 234, 20, 83, 21, 0, 60, 0, 0, 127, 0, 247, 126, 0, 127, 0, 0, 0, 60, 113, 182, 181, 38, 83, 21, 0, 60, 0, 0, 127, 0, 163, 85, 0, 127, 0, 60, 0, 0, 164, 181, 234, 20, 83, 21, 0, 60, 0, 0, 127, 0, 143, 56, 0, 127, 0, 0, 0, 0, 124, 178, 181, 38, 79, 174, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 60, 0, 60, 124, 178, 181, 38, 83, 21, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 0, 0, 60, 113, 182, 181, 38, 79, 174, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 60, 0, 0, 113, 182, 181, 38, 83, 21, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 0, 0, 0, 113, 182, 234, 20, 79, 174, 0, 60, 0, 129, 0, 0, 200, 0, 143, 127, 0, 60, 0, 60, 164, 181, 234, 20, 83, 21, 0, 60, 0, 129, 0, 0, 215, 0, 136, 127, 0, 0, 0, 60, 124, 178, 234, 20, 79, 174, 0, 60, 0, 129, 0, 0, 235, 0, 131, 127, 0, 60, 0, 0, 124, 178, 234, 20, 83, 21, 0, 60, 0, 129, 0, 0, 0, 0, 129, 127, 0, 0, 0, 0, 113, 182, 181, 38, 83, 21, 0, 60, 168, 168, 22, 0, 166, 88, 249, 127, 0, 60, 0, 60, 164, 181, 234, 20, 83, 21, 0, 60, 168, 168, 22, 0, 166, 89, 253, 127, 0, 0, 0, 60, 113, 182, 181, 38, 79, 174, 0, 60, 168, 168, 22, 0, 169, 91, 13, 127, 0, 60, 0, 0, 113, 182, 234, 20, 79, 174, 0, 60, 168, 168, 22, 0, 171, 91, 21, 127, 0, 0, 0, 0, 124, 178, 181, 38, 79, 174, 0, 60, 127, 0, 0, 0, 0, 127, 0, 127, 0, 60, 0, 60, 124, 178, 234, 20, 79, 174, 0, 60, 127, 0, 0, 0, 0, 127, 0, 127, 0, 0, 0, 60, 124, 178, 181, 38, 83, 21, 0, 60, 127, 0, 0, 0, 0, 127, 0, 127, 0, 60, 0, 0, 124, 178, 234, 20, 83, 21, 0, 60, 127, 0, 0, 0, 0, 127, 0, 127, 0, 0, 0, 0, 150, 50, 181, 38, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 60, 0, 60, 150, 50, 234, 20, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 0, 0, 60, 126, 54, 181, 38, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 60, 0, 0, 126, 54, 234, 20, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 0, 0, 0, 126, 54, 181, 38, 83, 21, 0, 60, 0, 0, 127, 0, 116, 49, 0, 127, 0, 60, 0, 60, 142, 53, 234, 20, 83, 21, 0, 60, 0, 0, 127, 0, 113, 56, 0, 127, 0, 0, 0, 60, 150, 50, 181, 38, 83, 21, 0, 60, 0, 0, 127, 0, 13, 126, 0, 127, 0, 60, 0, 0, 150, 50, 234, 20, 83, 21, 0, 60, 0, 0, 127, 0, 0, 127, 0, 127, 0, 0, 0, 0, 126, 54, 181, 38, 79, 174, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 60, 0, 60, 126, 54, 181, 38, 83, 21, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 0, 0, 60, 150, 50, 181, 38, 79, 174, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 60, 0, 0, 150, 50, 181, 38, 83, 21, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 0, 0, 0, 150, 50, 234, 20, 79, 174, 0, 60, 0, 129, 0, 0, 0, 0, 129, 127, 0, 60, 0, 60, 150, 50, 234, 20, 83, 21, 0, 60, 0, 129, 0, 0, 19, 0, 131, 127, 0, 0, 0, 60, 126, 54, 234, 20, 79, 174, 0, 60, 0, 129, 0, 0, 36, 0, 135, 127, 0, 60, 0, 0, 142, 53, 234, 20, 83, 21, 0, 60, 0, 129, 0, 0, 64, 0, 147, 127, 0, 0, 0, 0, 150, 50, 181, 38, 83, 21, 0, 60, 129, 0, 0, 0, 0, 127, 0, 127, 0, 60, 0, 60, 150, 50, 234, 20, 83, 21, 0, 60, 129, 0, 0, 0, 0, 127, 0, 127, 0, 0, 0, 60, 150, 50, 181, 38, 79, 174, 0, 60, 129, 0, 0, 0, 0, 127, 0, 127, 0, 60, 0, 0, 150, 50, 234, 20, 79, 174, 0, 60, 129, 0, 0, 0, 0, 127, 0, 127, 0, 0, 0, 0, 126, 54, 181, 38, 79, 174, 0, 60, 80, 162, 23, 0, 91, 84, 26, 127, 0, 60, 0, 60, 126, 54, 234, 20, 79, 174, 0, 60, 80, 162, 23, 0, 93, 83, 16, 127, 0, 0, 0, 60, 126, 54, 181, 38, 83, 21, 0, 60, 80, 162, 23, 0, 97, 81, 253, 127, 0, 60, 0, 0, 142, 53, 234, 20, 83, 21, 0, 60, 80, 162, 23, 0, 97, 81, 249, 127, 0, 0, 0, 0 ),
@@ -131,28 +132,28 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 98071,
 "index_count": 72,
-"material": SubResource( 15 ),
+"material": SubResource( 13 ),
 "name": "taillights_simple",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 48
 }
 
-[sub_resource type="SpatialMaterial" id=17]
+[sub_resource type="SpatialMaterial" id=15]
 flags_vertex_lighting = true
 albedo_color = Color( 0.679688, 0.679688, 0.679688, 1 )
 roughness = 0.0
 
-[sub_resource type="SpatialMaterial" id=18]
+[sub_resource type="SpatialMaterial" id=16]
 params_diffuse_mode = 1
 roughness = 0.0
 
-[sub_resource type="QuadMesh" id=19]
+[sub_resource type="QuadMesh" id=17]
 
-[sub_resource type="QuadMesh" id=20]
+[sub_resource type="QuadMesh" id=18]
 size = Vector2( 0.5, 0.5 )
 
-[sub_resource type="CylinderMesh" id=21]
+[sub_resource type="CylinderMesh" id=19]
 top_radius = 0.55
 bottom_radius = 0.55
 height = 0.01
@@ -269,6 +270,7 @@ render_target_update_mode = 3
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24017, -1.06042 )
 
 [node name="Camera" type="Camera" parent="BODY/cambase"]
+editor/display_folded = true
 transform = Transform( -1, 8.74228e-08, 0, 8.74228e-08, 1, 8.74228e-08, 7.64274e-15, 8.74228e-08, -1, 0, 1, -4.39379 )
 current = true
 fov = 60.0
@@ -304,18 +306,18 @@ current = true
 fov = 60.0
 
 [node name="MirrorMesh" type="MeshInstance" parent="BODY/cambase"]
-transform = Transform( -0.25, 0, -1.50996e-07, 0, 0.125, 0, 3.7749e-08, 0, -1, -0.0301905, -0.114581, 1.4927 )
+transform = Transform( -0.25, 0, -1.50996e-07, 0, 0.125, 0, 3.7749e-08, 0, -1, 0.075, -0.25, 1.281 )
 material_override = ExtResource( 12 )
 cast_shadow = 0
-mesh = SubResource( 12 )
+mesh = SubResource( 10 )
 material/0 = null
 script = ExtResource( 13 )
 
 [node name="MeshInstance" type="MeshInstance" parent="BODY"]
 transform = Transform( -1, 0, 8.74228e-08, 0, 0.5, 0, -8.74228e-08, 0, -1, 0, 1.36496, 0 )
-material_override = SubResource( 13 )
+material_override = SubResource( 11 )
 cast_shadow = 0
-mesh = SubResource( 14 )
+mesh = SubResource( 12 )
 material/0 = null
 script = ExtResource( 14 )
 
@@ -327,13 +329,13 @@ transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.47207
 
 [node name="taillights" type="MeshInstance" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.67614, -1.32023 )
-mesh = SubResource( 16 )
+mesh = SubResource( 14 )
 material/0 = null
 
 [node name="frontlights" type="MeshInstance" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.575843, 1.38515 )
-mesh = SubResource( 16 )
-material/0 = SubResource( 17 )
+mesh = SubResource( 14 )
+material/0 = SubResource( 15 )
 
 [node name="Viewport 2" type="Viewport" parent="BODY"]
 size = Vector2( 400, 150 )
@@ -345,8 +347,8 @@ render_target_update_mode = 3
 
 [node name="MeshInstance2" type="MeshInstance" parent="BODY"]
 transform = Transform( -0.4, 0, 8.74228e-08, 0, 0.2, 0, -3.49691e-08, 0, -1, 0, 0.606774, -1.41142 )
-material_override = SubResource( 18 )
-mesh = SubResource( 19 )
+material_override = SubResource( 16 )
+mesh = SubResource( 17 )
 material/0 = null
 script = ExtResource( 16 )
 
@@ -366,7 +368,7 @@ amount = 256
 fract_delta = false
 visibility_aabb = AABB( -6, -6, -6, 12, 16, 12 )
 process_material = ExtResource( 21 )
-draw_pass_1 = SubResource( 20 )
+draw_pass_1 = SubResource( 18 )
 script = ExtResource( 19 )
 
 [node name="RainParticles2" type="Particles" parent="BODY"]
@@ -378,13 +380,13 @@ amount = 256
 fract_delta = false
 visibility_aabb = AABB( -6, -6, -6, 12, 16, 12 )
 process_material = ExtResource( 21 )
-draw_pass_1 = SubResource( 20 )
+draw_pass_1 = SubResource( 18 )
 script = ExtResource( 19 )
 
 [node name="neon_under" type="MeshInstance" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.001696, 0.115021, 0.0230836 )
 cast_shadow = 0
-mesh = SubResource( 21 )
+mesh = SubResource( 19 )
 material/0 = ExtResource( 22 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

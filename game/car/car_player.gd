@@ -11,7 +11,7 @@ onready	var nameplate = get_node("BODY").get_node("Viewport 2").get_node("namepl
 
 func _ready():
 	set_name_custom()
-	pass
+	#pass
 	
 func select_name(s_name, s_romaji):
 	#print("Selected name " + s_name + " " + s_romaji)
@@ -28,3 +28,7 @@ func set_name_custom():
 		#print("Panel name " + panel.name)
 		nameplate.set_name(player_name)
 		#print("Nameplate " + nameplate.name)
+
+func freeze_viewports():
+	get_node("BODY/Viewport").set_update_mode(Viewport.UPDATE_DISABLED)
+	get_node("BODY/Viewport 2").set_update_mode(Viewport.UPDATE_DISABLED)
