@@ -9,10 +9,13 @@ var camera = null
 func _ready():
 	#$"../Viewport".set_size(Vector2(1024/2, 600/2))
 	
+	$"../Viewport".set_update_mode(Viewport.UPDATE_ALWAYS)
 	
 	var t = $"../Viewport".get_texture()
 	#get_material_override().albedo_texture = t
 	get_material_override().set_shader_param("refl_tx", t)
+	
+	$"../Viewport".set_update_mode(Viewport.UPDATE_DISABLED)
 	
 	#get_surface_material(0).albedo_texture = t
 	
