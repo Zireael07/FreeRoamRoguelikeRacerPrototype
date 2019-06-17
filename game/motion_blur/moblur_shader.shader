@@ -1,5 +1,7 @@
 shader_type spatial;
-render_mode depth_test_disable, depth_draw_never, unshaded, cull_disabled;
+//render_mode depth_test_disable, depth_draw_never, unshaded, cull_disabled;
+//render_mode unshaded, depth_draw_never, cull_disabled;
+render_mode unshaded, cull_disabled;
 
 uniform vec3 linear_velocity; 
 uniform vec3 angular_velocity; //rads

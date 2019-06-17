@@ -12,12 +12,18 @@ export var motion_blur = false
 func _ready():
 	mat = get_surface_material(0)
 	cam = get_parent()
-	assert cam is Camera
+	#assert cam is Camera
 	
 	set_process(motion_blur)
-	set_visible(motion_blur)
+	#set_visible(motion_blur)
 
 func _process(delta):
+	# paranoia
+	if not cam:
+		return
+	if not cam is Camera:
+		return
+		
 	# Linear velocity is just difference in positions between two frames.
 	var velocity = cam.global_transform.origin - cam_pos_prev
 	
