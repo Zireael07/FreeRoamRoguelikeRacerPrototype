@@ -1,0 +1,34 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=10]
+code = "shader_type spatial;
+render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx;
+
+uniform float proximity_fade_distance;
+
+void vertex() {
+	UV=UV;
+}
+
+
+void fragment() {
+	float depth = texture(DEPTH_TEXTURE, SCREEN_UV).r;
+	//float depth = textureLod(DEPTH_TEXTURE, SCREEN_UV, 0.0).r;
+	
+	//Turn the current pixel from ndc to world coordinates
+//	vec3 pixel_pos_ndc = vec3(SCREEN_UV*2.0-1.0, depth*2.0-1.0); 
+//    vec4 pixel_pos_clip = INV_PROJECTION_MATRIX * vec4(pixel_pos_ndc,1.0);
+//    vec3 pixel_pos_cam = pixel_pos_clip.xyz / pixel_pos_clip.w;
+//	vec3 pixel_pos_world = (inverse(INV_CAMERA_MATRIX) * vec4(pixel_pos_cam, 1.0)).xyz;
+	
+	//float col = clamp(1.0-pixel_pos_world.z, 0.0, 1.0);
+	
+	depth = depth * 50.0 - 49.0;
+	
+	ALBEDO = vec3(depth, 0.0, 0.0);
+}
+"
+
+[resource]
+shader = SubResource( 10 )
+shader_param/proximity_fade_distance = 1.0
