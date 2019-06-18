@@ -414,6 +414,8 @@ func _on_BODY_body_entered(body):
 		print("Speed at collision: " + str(round(speed*3.6)) + "km/h, deducting: " + str(round(speed)))
 		# deduct health
 		health -= round(speed)
+		# deform
+		$"mesh".hit_deform(Vector3())
 
 	if health <= 0:
 		# game over!

@@ -25,6 +25,7 @@ export(ShaderMaterial) var glass_material = ShaderMaterial.new()
 export(SpatialMaterial) var steering_material = SpatialMaterial.new()
 
 var rain_glass_mat
+var car_surface = null
 
 func _ready():
 	# Called when the node is added to the scene for the first time.
@@ -124,6 +125,8 @@ func _ready():
 	#Add the other surfaces
 	node.set_mesh(glass_surf.commit(node.get_mesh()))
 	
+	# store the surface because it'll be used later
+	car_surface = surface
 	
 	#pass
 
@@ -492,11 +495,59 @@ func linkSides(indices, polygon, surface, offset, begin=0, dup=false):
 		
 		
 		#addQuad(Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, offset), Vector3(p1.x, p1.y, offset), Vector3(p1.x, p1.y, 0), material, surface, false) 
-		
+
+# functions called by in-game events		
 func rain_glass():
-	get_node("plane").set_surface_material(1, rain_glass_mat)
-	
-	#pass		
+	get_node("plane").set_surface_material(1, rain_glass_mat)		
 
 func rain_clear():
 	get_node("plane").set_surface_material(1, glass_material)
+
+# 'pos' is local space?	
+func hit_deform(pos):
+	#var start = float(OS.get_ticks_msec())
+	# setup
+	var mdt = MeshDataTool.new()
+	#var st = SurfaceTool.new()
+	var mesh = $"plane".get_mesh()
+	
+	# copies the surface into mesh data tool
+	var error = mdt.create_from_surface(mesh, 0)
+	
+	# Magic happens here
+	var center = Vector3(0, 0, width/2)
+	
+	#var vtx = mdt.get_vertex(10)
+	#print("Deforming vertex... " + " 10 " + str(vtx))
+	var p0 = polygon[0]
+	var vtx = Vector3(p0.x, p0.y, 0)
+	
+	var done = false
+	# Find all vertices that share the position, just in case
+	for i in range(mdt.get_vertex_count()):
+		var vt = mdt.get_vertex(i)
+		if vt == vtx:
+			# deform towards center
+			# B-A = A->B
+			var deform = (center - vt).normalized()*0.25
+			vt.x += deform.x
+			vt.y += deform.y
+			mdt.set_vertex(i, vt)
+			print("Deformed a vertex")
+			done = true
+	
+	# don't waste time if nothing to do
+	if done:
+		# Remove existing surface
+		#for s in range(mesh.get_surface_count()):
+		mesh.surface_remove(0)
+		
+		# this always adds at the end
+		mdt.commit_to_surface(mesh)
+		car_surface.create_from(mesh, mesh.get_surface_count()-1)
+		car_surface.generate_normals()
+		$"plane".mesh = car_surface.commit(mesh)
+	# time it
+	#var endtt = float(OS.get_ticks_msec())
+	#print("Execution time: %.2f" % ((endtt - start)/1000))
+
