@@ -14,10 +14,18 @@ func _ready():
 	cam = get_parent()
 	#assert cam is Camera
 	
-	set_process(motion_blur)
-	#set_visible(motion_blur)
+	#set_process(motion_blur)
+	set_visible(motion_blur)
+
+func switch_motion_blur(boo):
+	motion_blur = boo
+	set_visible(boo)
 
 func _process(delta):
+	# don't waste time if not on
+	if not motion_blur:
+		return
+	
 	# paranoia
 	if not cam:
 		return

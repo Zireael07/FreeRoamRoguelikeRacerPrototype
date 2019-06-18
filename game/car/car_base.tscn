@@ -280,8 +280,8 @@ min_distance = 1.0
 
 [node name="motion_blur" parent="BODY/cambase/Camera" instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, -1 )
+visible = false
 skeleton = NodePath("")
-motion_blur = true
 
 [node name="CameraCockpit" type="Camera" parent="BODY/cambase"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.2, -0.318065, 1.09905 )

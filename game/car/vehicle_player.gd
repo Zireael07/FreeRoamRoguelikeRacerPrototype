@@ -350,10 +350,10 @@ func _process(delta):
 	#print("Shader color: " + str(get_node("skysphere/Skysphere").get_material_override().get_shader_param("light")))
 	
 	# motion blur
-#	if speed > 28: #100 kphs
-#		get_node("cambase/Camera/motion_blur").set_visible(true)
-#	else:
-#		get_node("cambase/Camera/motion_blur").set_visible(false)
+	if speed > 28: #100 kphs
+		get_node("cambase/Camera/motion_blur").switch_motion_blur(true)
+	else:
+		get_node("cambase/Camera/motion_blur").switch_motion_blur(false)
 	
 #doesn't interact with physics
 func _input(event):
