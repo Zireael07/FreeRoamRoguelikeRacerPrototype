@@ -51,6 +51,9 @@ func _ready():
 	# yay GD 3
 	node.create_convex_collision()
 	
+	#Turn off shadows
+	#node.set_cast_shadows_setting(0)
+	
 	# test
 	#node.set_visible(false)
 
