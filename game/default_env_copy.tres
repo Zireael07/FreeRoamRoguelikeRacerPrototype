@@ -9,11 +9,11 @@ ground_horizon_color = Color( 0.419608, 0.392157, 0.368627, 1 )
 ground_curve = 0.017411
 sun_color = Color( 0.996094, 0.990075, 0.926056, 1 )
 sun_latitude = 5.0
-sun_energy = 16.0
 
 [resource]
-background_mode = 2
+background_mode = 1
 background_sky = SubResource( 1 )
+background_color = Color( 0.647059, 0.839216, 0.941176, 1 )
 ambient_light_color = Color( 1, 1, 1, 1 )
 ambient_light_energy = 0.5
 ambient_light_sky_contribution = 0.3
