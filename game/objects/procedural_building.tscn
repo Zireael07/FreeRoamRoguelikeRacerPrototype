@@ -18,30 +18,35 @@ windows_mat = ExtResource( 3 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 1, 7.63328, 8.47983, 0 )
+layers = 4
 cast_shadow = 0
 mesh = ExtResource( 4 )
 material/0 = ExtResource( 5 )
 
 [node name="cable" type="MeshInstance" parent="."]
 transform = Transform( 1.47721, 0.17101, 0.0603075, 0, 0.173648, -1.96962, -0.260472, 0.969847, 0.342021, 6.76171, 21.4082, -2.15234 )
+layers = 8
 cast_shadow = 0
 mesh = ExtResource( 6 )
 material/0 = ExtResource( 7 )
 
 [node name="cable3" type="MeshInstance" parent="."]
 transform = Transform( 1.5, 0, 0, 0, 0.0871559, -1.99239, 0, 0.996195, 0.174312, 2.56961, 20.8978, 7.03558 )
+layers = 8
 cast_shadow = 0
 mesh = ExtResource( 6 )
 material/0 = ExtResource( 7 )
 
 [node name="cable4" type="MeshInstance" parent="."]
 transform = Transform( 1.5, 0, 0, 0, -0.0871559, -1.99239, 0, 0.996195, -0.174312, 2.56961, 20.8978, -7.38459 )
+layers = 8
 cast_shadow = 0
 mesh = ExtResource( 6 )
 material/0 = ExtResource( 7 )
 
 [node name="cable2" type="MeshInstance" parent="."]
 transform = Transform( 1.44889, 0.254887, -0.0674152, 0, 0.173648, 1.47721, 0.388229, -0.951251, 0.251597, 6.51664, 12.8601, -4.0928 )
+layers = 8
 cast_shadow = 0
 mesh = ExtResource( 6 )
 material/0 = ExtResource( 7 )

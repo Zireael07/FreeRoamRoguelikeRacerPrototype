@@ -88,6 +88,12 @@ perf_debug={
 
 pointing/emulate_touch_from_mouse=true
 
+[layer_names]
+
+3d_render/layer_1="general"
+3d_render/layer_2="sky"
+3d_render/layer_3="not-in-mirror"
+
 [network]
 
 limits/websocket_client/max_in_buffer_kb=128
@@ -105,5 +111,6 @@ shadow_filter=3
 
 [rendering]
 
+quality/directional_shadow/size=2048
 quality/shadows/filter_mode=2
 quality/voxel_cone_tracing/high_quality=false
