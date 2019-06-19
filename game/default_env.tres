@@ -4,12 +4,11 @@
 sky_top_color = Color( 0.647059, 0.839216, 0.941176, 1 )
 sky_horizon_color = Color( 0.556863, 0.819608, 0.909804, 1 )
 sky_curve = 0.0947323
-ground_bottom_color = Color( 0.156863, 0.184314, 0.211765, 1 )
-ground_horizon_color = Color( 0.419608, 0.392157, 0.368627, 1 )
+ground_bottom_color = Color( 0.701961, 0.701961, 0.701961, 1 )
+ground_horizon_color = Color( 0.603922, 0.603922, 0.603922, 1 )
 ground_curve = 0.017411
 sun_color = Color( 0.996094, 0.990075, 0.926056, 1 )
 sun_latitude = 5.0
-sun_energy = 16.0
 
 [resource]
 background_mode = 2
