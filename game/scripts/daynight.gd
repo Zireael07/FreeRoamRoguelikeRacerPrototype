@@ -36,7 +36,7 @@ var night_fired = false
 
 # weather
 
-export(int) var weather = 2
+export(int) var weather = 0
 # we can't init it on ready because it relies on our own setup
 var state = null #WeatherSunny.new(self)
 var prev_state
@@ -155,7 +155,7 @@ func calculate_sun_latitude(time):
 func get_light_color(time):
 	if time >= 17.5 && time < 17.8:
 		# sunset
-		light_color = Color(1,51/255.0,0)
+		light_color = Color(1,0.75,0)
 	elif time >= 17.8 && time < 18:
 		var d = (time-17.5)/0.5;
 		# 0.303474,0.375416,0.627212
@@ -173,6 +173,18 @@ func get_light_color(time):
 	#print("Time: " + str(time) + " " + str(light_color))
 	
 	return light_color
+
+func get_light_energy(time):
+	var lit = light
+	if time >= 6.0 && time < 6.5:
+		lit = lit * 0.5
+	
+	elif time >= 17.5 && time < 17.8:
+		lit = lit * 0.5
+	else:
+		lit = lit
+		
+	return lit
 	
 func set_colors(time):
 	light_color = get_light_color(time)	
@@ -183,7 +195,7 @@ func set_colors(time):
 	
 	# set ambient light colors
 	env.set_ambient_light_color(ambient_color)
-	env.set_ambient_light_energy(0.2+(0.2*light))
+	env.set_ambient_light_energy(0.2+(0.2*get_light_energy(time)))
 	
 	# set sky colors
 	# default sky color used to be 12, 116, 249
