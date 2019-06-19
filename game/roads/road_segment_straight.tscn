@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/straight_road_segment.gd" type="Script" id=1]
-[ext_resource path="res://scripts/draw_line.gd" type="Script" id=2]
-[ext_resource path="res://scripts/straight_road_props.gd" type="Script" id=3]
+[ext_resource path="res://assets/road_shadermat.tres" type="Material" id=2]
+[ext_resource path="res://scripts/draw_line.gd" type="Script" id=3]
+[ext_resource path="res://scripts/straight_road_props.gd" type="Script" id=4]
 
 [sub_resource type="SpatialMaterial" id=1]
 
@@ -10,12 +11,13 @@
 "roads",
 ]]
 script = ExtResource( 1 )
+material = ExtResource( 2 )
 length = 50
 
 [node name="draw" type="ImmediateGeometry" parent="."]
 material_override = SubResource( 1 )
 cast_shadow = 0
-script = ExtResource( 2 )
+script = ExtResource( 3 )
 
 [node name="Spatial" type="Spatial" parent="."]
-script = ExtResource( 3 )
+script = ExtResource( 4 )

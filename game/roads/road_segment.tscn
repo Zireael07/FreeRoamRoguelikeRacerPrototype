@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://roads/segment_placer.gd" type="Script" id=1]
 [ext_resource path="res://scripts/curved_road_segment.gd" type="Script" id=2]
-[ext_resource path="res://scripts/draw_line.gd" type="Script" id=3]
+[ext_resource path="res://assets/road_shadermat.tres" type="Material" id=3]
+[ext_resource path="res://scripts/draw_line.gd" type="Script" id=4]
 
 [sub_resource type="SpatialMaterial" id=1]
 flags_unshaded = true
@@ -20,11 +21,13 @@ script = ExtResource( 1 )
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 0 )
 script = ExtResource( 2 )
+material = ExtResource( 3 )
 
 [node name="draw" type="ImmediateGeometry" parent="Placer/Road"]
+visible = false
 material_override = SubResource( 1 )
 cast_shadow = 0
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 
 [node name="Position3D" type="Position3D" parent="Placer/Road"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 15 )
@@ -33,7 +36,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 15 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.18485e-16, 0.01, 18 )
 
 [node name="last_pos2" type="Position3D" parent="Placer/Road"]
-transform = Transform( -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 9.18485e-16, 0.01, 12 )
+transform = Transform( -1, 2.62269e-07, 0, -2.62269e-07, -1, 0, 0, 0, 1, 9.18485e-16, 0.01, 12 )
 
 [node name="last_pos3" type="Position3D" parent="Placer/Road"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.18485e-16, 0.01, 15 )

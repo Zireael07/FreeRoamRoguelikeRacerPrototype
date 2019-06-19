@@ -721,13 +721,16 @@ func send_positions(map):
 func lite_up():
 	#print("Lit up road")
 	var material = get_node("plane").get_mesh().surface_get_material(0)
-	material.set_feature(SpatialMaterial.FEATURE_EMISSION, true)
-	material.set_emission(Color(0,0,1))
+	material.set_shader_param("emission_energy", 3)
+	material.set_shader_param("emission", Color(0,0,1))
+	#material.set_feature(SpatialMaterial.FEATURE_EMISSION, true)
+	#material.set_emission(Color(0,0,1))
 	
 func reset_lite():
 	#print("Reset lite")
 	var material = get_node("plane").get_mesh().surface_get_material(0)
-	material.set_feature(SpatialMaterial.FEATURE_EMISSION, false)
+	material.set_shader_param("emission_energy", 0)
+	#material.set_feature(SpatialMaterial.FEATURE_EMISSION, false)
 
 func rain_shine():
 	var material = get_node("plane").get_mesh().surface_get_material(0)
@@ -736,8 +739,10 @@ func rain_shine():
 	
 func no_rain():
 	var material = get_node("plane").get_mesh().surface_get_material(0)
-	material.set_roughness(1.0)
-	material.set_metallic(0.0)
+	material.set_shader_param("roughness", 1.0)
+	material.set_shader_param("metallic", 0.0)
+	#material.set_roughness(1.0)
+	#material.set_metallic(0.0)
 	
 func debug_cube(loc):
 	var mesh = CubeMesh.new()

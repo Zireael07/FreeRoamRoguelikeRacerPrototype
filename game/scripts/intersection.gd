@@ -1,7 +1,7 @@
 tool
 extends "mesh_gen.gd"
 
-export(SpatialMaterial)    var material    = preload("res://assets/road_material.tres")
+export(Material)    var material    = preload("res://assets/road_material.tres")
 var m = SpatialMaterial.new()
 
 var road_height = 0.05
