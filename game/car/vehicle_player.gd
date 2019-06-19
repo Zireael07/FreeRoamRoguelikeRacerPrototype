@@ -119,6 +119,10 @@ func on_load_ended():
 	# enable our cam
 	var chase_cam = get_node("cambase/Camera")
 	chase_cam.make_current()
+	# disable rear view mirror
+	$"cambase/MirrorMesh".set_visible(false)
+	$"cambase/Viewport/CameraCockpitBack".clear_current()
+	$"cambase/Viewport".set_update_mode(Viewport.UPDATE_DISABLED)
 	
 	get_node("driver_new").setup_ik()
 	
@@ -372,9 +376,11 @@ func _input(event):
 			# enable rear view mirror
 			$"cambase/Viewport/CameraCockpitBack".make_current()
 			$"cambase/Viewport".set_update_mode(Viewport.UPDATE_ALWAYS)
+			$"cambase/MirrorMesh".set_visible(true)
 		else:
 			chase_cam.make_current()
 			# disable rear view mirror
+			$"cambase/MirrorMesh".set_visible(false)
 			$"cambase/Viewport/CameraCockpitBack".clear_current()
 			$"cambase/Viewport".set_update_mode(Viewport.UPDATE_DISABLED)
 	
