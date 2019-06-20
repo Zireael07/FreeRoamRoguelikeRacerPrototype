@@ -5,10 +5,9 @@ export var wheel_thick = 0.2
 export var wheel_radius = 0.25
 
 # class member variables go here, for example:
-var m = FixedMaterial.new()
+var m = SpatialMaterial.new()
 
-#export(FixedMaterial) var material = FixedMaterial.new()
-export(Material) var material = FixedMaterial.new()
+export(Material) var material = SpatialMaterial.new()
 
 func _ready():
 	var half_thick = wheel_thick/2
@@ -70,5 +69,5 @@ func _ready():
 	#Set the created mesh to the node
 	node.set_mesh(surface.commit())
 
-func draw_debug_point(loc, color):
-	addTestColor(m, color, null, loc.x, 0, loc.y, 0.05,0.05,0.05)
+#func draw_debug_point(loc, color):
+#	addTestColor(m, color, null, loc.x, 0, loc.y, 0.05,0.05,0.05)
