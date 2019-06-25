@@ -13,7 +13,7 @@ var right_positions = PoolVector3Array()
 var draw = null
 
 
-var length = 5
+var length = 5.0 # how many sections?
 var roadwidth = 3
 var sectionlength = 2
 var roadheight = 0.01
@@ -100,7 +100,7 @@ func makeRoad():
 
 	#print("L: " + str(length) + " rounded " + str(int(length)) + " diff " + str(length-int(length)))
 		
-	for index in range(length):
+	for index in range(int(length)):
 		#print("Index " + str(index))
 		#clear the array
 		temp_positions.resize(0)
