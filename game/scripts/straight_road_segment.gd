@@ -91,6 +91,7 @@ func _ready():
 
 func makeRoad():
 	var quads = []
+	var cap_quads = []
 	#var support_quads = []
 	var rail_quads = []
 	
@@ -293,7 +294,27 @@ func makeRoad():
 	else:
 		draw.queue_free()
 
-func initSection(start, slope):
+func roadCap(diff, cap_quads, slope_diff):
+	temp_positions.resize(0)
+
+	var start = Vector3(0,roadheight+(int(length)*slope_diff),(int(length))*sectionlength)
+	#print("Cap start: " + str(start))
+	initSection(start, slope_diff, diff*2)
+	#print(str(temp_positions))
+	
+	# calculate UVs
+	var uv_r = length-int(length)/1
+	#var uv_r = 1
+	var uvs_cap = [Vector2(0,0), Vector2(0,1), Vector2(uv_r,1), Vector2(uv_r,0), Vector2(1-uv_r, 1), Vector2(1-uv_r, 0)]
+	
+	var array = temp_positions
+	var quad_one = [array[0], array[1], array[2], array[3], uvs_cap[0], uvs_cap[1], uvs_cap[2], uvs_cap[3]]
+	var quad_two = [array[1], array[4], array[5], array[2], uvs_cap[2], uvs_cap[3], uvs_cap[0], uvs_cap[1]]
+	
+	cap_quads.append(quad_one)
+	cap_quads.append(quad_two)
+
+func initSection(start, slope, length=sectionlength):
 	var start_height = start.y
 	var end_height = start.y + slope
 #	if slope > 0:
@@ -302,25 +323,25 @@ func initSection(start, slope):
 	#init positions
 	temp_positions.push_back(Vector3(start.x-roadwidth, start_height, start.z))
 	temp_positions.push_back(start)
-	temp_positions.push_back(Vector3(0, end_height, start.z+sectionlength))
-	temp_positions.push_back(Vector3(start.x-roadwidth, end_height, start.z+sectionlength))
+	temp_positions.push_back(Vector3(0, end_height, start.z+length))
+	temp_positions.push_back(Vector3(start.x-roadwidth, end_height, start.z+length))
 	temp_positions.push_back(Vector3(start.x+roadwidth, start_height, start.z))
-	temp_positions.push_back(Vector3(start.x+roadwidth, end_height, start.z+sectionlength))
+	temp_positions.push_back(Vector3(start.x+roadwidth, end_height, start.z+length))
 	
 	# sides
 	if sidewalks:
 		var width_with_side = roadwidth*1.25
 		
 		temp_positions.push_back(Vector3(start.x-width_with_side, start_height, start.z))
-		temp_positions.push_back(Vector3(start.x-width_with_side, end_height, start.z+sectionlength))
+		temp_positions.push_back(Vector3(start.x-width_with_side, end_height, start.z+length))
 		temp_positions.push_back(Vector3(start.x+width_with_side, start_height, start.z))
-		temp_positions.push_back(Vector3(start.x+width_with_side, end_height, start.z+sectionlength))
+		temp_positions.push_back(Vector3(start.x+width_with_side, end_height, start.z+length))
 	
 	if guardrails:
 		temp_positions.push_back(Vector3(start.x-roadwidth, start_height + 1, start.z))
-		temp_positions.push_back(Vector3(start.x-roadwidth, end_height + 1, start.z+sectionlength))
+		temp_positions.push_back(Vector3(start.x-roadwidth, end_height + 1, start.z+length))
 		temp_positions.push_back(Vector3(start.x+roadwidth, start_height + 1, start.z))
-		temp_positions.push_back(Vector3(start.x+roadwidth, end_height + 1, start.z + sectionlength))
+		temp_positions.push_back(Vector3(start.x+roadwidth, end_height + 1, start.z + length))
 	
 	
 	# navmesh (#6-9)
@@ -368,7 +389,7 @@ func getQuads(array):
 	
 	return [quad_one, quad_two]
 
-func optimizedmeshCreate(quads, material):
+func optimizedmeshCreate(quads, cap_quads, material):
 	var surface = SurfaceTool.new()
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
@@ -379,6 +400,9 @@ func optimizedmeshCreate(quads, material):
 	
 	for qu in quads:
 		addQuad(qu[0], qu[1], qu[2], qu[3], material, surface, qu[4])
+	
+	for qu in cap_quads:
+		addQuadCustUV(qu[0], qu[1], qu[2], qu[3], qu[4], qu[5], qu[6], qu[7], material, surface)
 	
 	surface.generate_normals()
 	
