@@ -13,7 +13,7 @@ var right_positions = PoolVector3Array()
 var draw = null
 
 
-export(int) var length = 5
+var length = 5
 var roadwidth = 3
 var sectionlength = 2
 var roadheight = 0.01
@@ -78,6 +78,9 @@ func _ready():
 	
 	#print("Positions: " + str(positions.size()))
 	
+	# calculate length
+	length = (relative_end/sectionlength).z
+	#print("Calculated length: " + str(length))
 	
 	#overdraw fix
 	if (get_parent().get_name().find("Spatial") != -1):
@@ -94,6 +97,8 @@ func makeRoad():
 	# find out slope
 	var slope_diff = road_slope/length
 	#print("Slope diff" + str(slope_diff))
+
+	#print("L: " + str(length) + " rounded " + str(int(length)) + " diff " + str(length-int(length)))
 		
 	for index in range(length):
 		#print("Index " + str(index))
