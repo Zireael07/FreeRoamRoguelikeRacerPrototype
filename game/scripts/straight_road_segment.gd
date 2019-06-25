@@ -7,9 +7,9 @@ export(Material)    var material    = preload("res://assets/road_material.tres")
 var temp_positions = PoolVector3Array()
 
 #editor drawing
-var positions = PoolVector3Array()
-var left_positions = PoolVector3Array()
-var right_positions = PoolVector3Array()
+var positions = [] # PoolVector3Array() PV3 does not have has() ...
+var left_positions = [] #PoolVector3Array()
+var right_positions = [] #PoolVector3Array()
 var draw = null
 
 
@@ -130,12 +130,21 @@ func makeRoad():
 		quads.append(getQuads(temp_positions)[0])
 		quads.append(getQuads(temp_positions)[1])
 
-		positions.push_back(temp_positions[1])
-		positions.push_back(temp_positions[2])
-		left_positions.push_back(temp_positions[0])
-		left_positions.push_back(temp_positions[3])
-		right_positions.push_back(temp_positions[4])
-		right_positions.push_back(temp_positions[5])
+		# avoid inserting duplicates
+		if not positions.has(temp_positions[1]):
+			positions.push_back(temp_positions[1])
+		if not positions.has(temp_positions[2]):
+			positions.push_back(temp_positions[2])
+		
+		if not left_positions.has(temp_positions[0]):	
+			left_positions.push_back(temp_positions[0])
+		if not left_positions.has(temp_positions[3]):
+			left_positions.push_back(temp_positions[3])
+		
+		if not right_positions.has(temp_positions[4]):
+			right_positions.push_back(temp_positions[4])
+		if not right_positions.has(temp_positions[5]):
+			right_positions.push_back(temp_positions[5])
 		
 		if sidewalks:
 			#print("We have sidewalks or guardrails, need more positions")
