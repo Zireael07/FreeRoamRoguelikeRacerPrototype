@@ -229,13 +229,13 @@ func day_night_cycle(time):
 		get_tree().get_nodes_in_group("roads")[0].reset_lite()
 		#get_tree().call_group("roads", "reset_lite")
 		#re-enable shadows
-		sun.set_shadow(true)
+		#sun.set_shadow(true)
 		
 		env.background_energy = 1
 		
 	elif time >= 17.5 && not night_fired:
 		#disable shadows
-		sun.set_shadow(false)
+		#sun.set_shadow(false)
 		get_tree().get_nodes_in_group("roads")[0].lite_up()
 		# so that emissives light effect is better visible
 		env.background_energy = 0.1
