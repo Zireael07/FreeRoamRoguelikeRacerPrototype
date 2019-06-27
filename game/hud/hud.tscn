@@ -103,7 +103,11 @@ custom_colors/font_color = Color( 0.996094, 0.00389099, 0.0736552, 1 )
 align = 1
 valign = 1
 
-[node name="CAM" type="Label" parent="."]
+[node name="CAM blink" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="CAM" type="Label" parent="CAM blink"]
 margin_left = 29.0
 margin_top = 7.0
 margin_right = 69.0
@@ -112,7 +116,7 @@ size_flags_horizontal = 2
 size_flags_vertical = 0
 text = "CAM"
 
-[node name="TextureFrame" type="TextureRect" parent="."]
+[node name="TextureFrame" type="TextureRect" parent="CAM blink"]
 margin_left = 6.0
 margin_top = 3.0
 margin_right = 46.0

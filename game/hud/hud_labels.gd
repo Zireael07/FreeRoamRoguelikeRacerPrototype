@@ -17,6 +17,8 @@ var money_label = null
 var health_bar = null
 var battery_bar = null
 
+var cam_control = null
+
 var fps
 var draws
 var vertices
@@ -36,6 +38,8 @@ func _ready():
 	angle_limit_bar = get_node("WheelAngleBar2")
 	compass_label = get_node("CompassLabel")
 	money_label = get_node("DriverInfo/MoneyLabel")
+	
+	cam_control = get_node("CAM blink")
 	
 	health_bar = get_node("Health")
 	battery_bar = get_node("Battery")
@@ -81,3 +85,13 @@ func update_health(val):
 	
 func update_battery(val):
 	battery_bar.set_value(val)
+
+# for changing HUD between chase and cockpit cams
+func toggle_cam(boo):
+	cam_control.set_visible(boo)
+
+func speed_chase():
+	label.set_position(Vector2(25, -22))
+	
+func speed_cockpit():
+	label.set_position(Vector2(425, 392))	
