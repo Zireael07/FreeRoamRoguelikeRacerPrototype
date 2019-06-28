@@ -1,28 +1,29 @@
-[gd_scene load_steps=43 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://car/car_player.gd" type="Script" id=1]
 [ext_resource path="res://car/vehicle_player.gd" type="Script" id=2]
-[ext_resource path="res://car/car_mesh.tscn" type="PackedScene" id=3]
-[ext_resource path="res://car/procedural_car.gd" type="Script" id=4]
-[ext_resource path="res://assets/car_blue_outline.tres" type="Material" id=5]
-[ext_resource path="res://assets/modular car glass.tres" type="Material" id=6]
-[ext_resource path="res://assets/LED taillights stock.jpg" type="Texture" id=7]
-[ext_resource path="res://hud/test_car_label.tscn" type="PackedScene" id=8]
-[ext_resource path="res://car/follow_camera.gd" type="Script" id=9]
-[ext_resource path="res://motion_blur/motion_blur.tscn" type="PackedScene" id=10]
-[ext_resource path="res://default_env_copy.tres" type="Environment" id=11]
-[ext_resource path="res://assets/car_mirror.tres" type="Material" id=12]
-[ext_resource path="res://car/MeshInstance.gd" type="Script" id=13]
-[ext_resource path="res://hud/label_3d.gd" type="Script" id=14]
-[ext_resource path="res://hud/test_car_nameplate.tscn" type="PackedScene" id=15]
-[ext_resource path="res://hud/nameplate_3d.gd" type="Script" id=16]
-[ext_resource path="res://car/untitled.tscn" type="PackedScene" id=17]
-[ext_resource path="res://objects/skysphere.tscn" type="PackedScene" id=18]
-[ext_resource path="res://scripts/skysphere.gd" type="Script" id=19]
-[ext_resource path="res://assets/rain_material.tres" type="Material" id=20]
-[ext_resource path="res://assets/rain_particles.tres" type="Material" id=21]
-[ext_resource path="res://assets/neon_under_material.tres" type="Material" id=22]
-[ext_resource path="res://car/replay_system.gd" type="Script" id=23]
+[ext_resource path="res://car/car_wheel.tscn" type="PackedScene" id=3]
+[ext_resource path="res://car/car_mesh.tscn" type="PackedScene" id=4]
+[ext_resource path="res://car/procedural_car.gd" type="Script" id=5]
+[ext_resource path="res://assets/car_blue_outline.tres" type="Material" id=6]
+[ext_resource path="res://assets/modular car glass.tres" type="Material" id=7]
+[ext_resource path="res://assets/LED taillights stock.jpg" type="Texture" id=8]
+[ext_resource path="res://hud/test_car_label.tscn" type="PackedScene" id=9]
+[ext_resource path="res://car/follow_camera.gd" type="Script" id=10]
+[ext_resource path="res://motion_blur/motion_blur.tscn" type="PackedScene" id=11]
+[ext_resource path="res://default_env_copy.tres" type="Environment" id=12]
+[ext_resource path="res://assets/car_mirror.tres" type="Material" id=13]
+[ext_resource path="res://car/MeshInstance.gd" type="Script" id=14]
+[ext_resource path="res://hud/label_3d.gd" type="Script" id=15]
+[ext_resource path="res://hud/test_car_nameplate.tscn" type="PackedScene" id=16]
+[ext_resource path="res://hud/nameplate_3d.gd" type="Script" id=17]
+[ext_resource path="res://car/untitled.tscn" type="PackedScene" id=18]
+[ext_resource path="res://objects/skysphere.tscn" type="PackedScene" id=19]
+[ext_resource path="res://scripts/skysphere.gd" type="Script" id=20]
+[ext_resource path="res://assets/rain_material.tres" type="Material" id=21]
+[ext_resource path="res://assets/rain_particles.tres" type="Material" id=22]
+[ext_resource path="res://assets/neon_under_material.tres" type="Material" id=23]
+[ext_resource path="res://car/replay_system.gd" type="Script" id=24]
 
 [sub_resource type="SpatialMaterial" id=1]
 params_diffuse_mode = 1
@@ -90,7 +91,7 @@ surfaces/0 = {
 
 [sub_resource type="SpatialMaterial" id=6]
 params_diffuse_mode = 1
-albedo_texture = ExtResource( 7 )
+albedo_texture = ExtResource( 8 )
 roughness = 0.0
 uv1_scale = Vector3( 0.2, 0.2, 1 )
 
@@ -120,7 +121,7 @@ resource_local_to_scene = true
 
 [sub_resource type="SpatialMaterial" id=13]
 params_diffuse_mode = 1
-albedo_texture = ExtResource( 7 )
+albedo_texture = ExtResource( 8 )
 roughness = 0.0
 uv1_scale = Vector3( 0.2, 0.2, 1 )
 
@@ -176,7 +177,6 @@ can_sleep = false
 script = ExtResource( 2 )
 
 [node name="wheel1" type="VehicleWheel" parent="BODY"]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.359334, 0.864664 )
 use_as_traction = true
 use_as_steering = true
@@ -186,11 +186,16 @@ suspension_stiffness = 40.0
 
 [node name="wheel1" type="MeshInstance" parent="BODY/wheel1"]
 _import_path = NodePath("BODY-vehicle/wheel1-wheel")
+visible = false
 mesh = SubResource( 2 )
 material/0 = null
 
+[node name="Spatial" parent="BODY/wheel1" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, 0, 0, 0 )
+wheel_thick = 0.1
+wheel_radius = 0.25
+
 [node name="wheel2" type="VehicleWheel" parent="BODY"]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.359334, -0.783403 )
 use_as_traction = true
 wheel_radius = 0.25
@@ -199,11 +204,16 @@ suspension_stiffness = 40.0
 
 [node name="wheel2" type="MeshInstance" parent="BODY/wheel2"]
 _import_path = NodePath("BODY-vehicle/wheel2-wheel")
+visible = false
 mesh = SubResource( 3 )
 material/0 = null
 
+[node name="Spatial" parent="BODY/wheel2" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, 0, 0, 0 )
+wheel_thick = 0.1
+wheel_radius = 0.25
+
 [node name="wheel3" type="VehicleWheel" parent="BODY"]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.359334, 0.864664 )
 use_as_traction = true
 use_as_steering = true
@@ -213,11 +223,16 @@ suspension_stiffness = 40.0
 
 [node name="wheel3" type="MeshInstance" parent="BODY/wheel3"]
 _import_path = NodePath("BODY-vehicle/wheel3-wheel")
+visible = false
 mesh = SubResource( 4 )
 material/0 = null
 
+[node name="Spatial" parent="BODY/wheel3" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, 0, 0, 0 )
+wheel_thick = 0.1
+wheel_radius = 0.25
+
 [node name="wheel4" type="VehicleWheel" parent="BODY"]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.359334, -0.783403 )
 use_as_traction = true
 wheel_radius = 0.25
@@ -226,16 +241,22 @@ suspension_stiffness = 40.0
 
 [node name="wheel4" type="MeshInstance" parent="BODY/wheel4"]
 _import_path = NodePath("BODY-vehicle/wheel4-wheel")
+visible = false
 mesh = SubResource( 5 )
 material/0 = null
 
-[node name="mesh" parent="BODY" instance=ExtResource( 3 )]
+[node name="Spatial" parent="BODY/wheel4" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, 0, 0, 0 )
+wheel_thick = 0.1
+wheel_radius = 0.25
+
+[node name="mesh" parent="BODY" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.5, 0.298204, 0.591264 )
 
 [node name="car_mesh" type="Spatial" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.244165, 0.576408 )
 visible = false
-script = ExtResource( 4 )
+script = ExtResource( 5 )
 door_h = 0.55
 window_h = 0.4
 rh = 0.35
@@ -246,8 +267,8 @@ roof_w = 0.5
 well_h = 0.3
 well_w = 0.4
 width = 1.1
-material = ExtResource( 5 )
-glass_material = ExtResource( 6 )
+material = ExtResource( 6 )
+glass_material = ExtResource( 7 )
 taillights_material = SubResource( 6 )
 inside_material = SubResource( 7 )
 steering_material = SubResource( 8 )
@@ -264,7 +285,7 @@ usage = 0
 render_target_v_flip = true
 render_target_update_mode = 3
 
-[node name="Nametag" parent="BODY/Viewport" instance=ExtResource( 8 )]
+[node name="Nametag" parent="BODY/Viewport" instance=ExtResource( 9 )]
 
 [node name="cambase" type="Spatial" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24017, -1.06042 )
@@ -275,10 +296,10 @@ current = true
 fov = 60.0
 near = 0.1
 far = 200.0
-script = ExtResource( 9 )
+script = ExtResource( 10 )
 min_distance = 1.0
 
-[node name="motion_blur" parent="BODY/cambase/Camera" instance=ExtResource( 10 )]
+[node name="motion_blur" parent="BODY/cambase/Camera" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, -1 )
 visible = false
 skeleton = NodePath("")
@@ -302,17 +323,17 @@ render_target_update_mode = 0
 [node name="CameraCockpitBack" type="Camera" parent="BODY/cambase/Viewport"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.46854, -2.02346 )
 cull_mask = 1048449
-environment = ExtResource( 11 )
+environment = ExtResource( 12 )
 current = true
 fov = 60.0
 
 [node name="MirrorMesh" type="MeshInstance" parent="BODY/cambase"]
 transform = Transform( -0.25, 0, -1.50996e-07, 0, 0.125, 0, 3.7749e-08, 0, -1, 0.075, -0.25, 1.281 )
-material_override = ExtResource( 12 )
+material_override = ExtResource( 13 )
 cast_shadow = 0
 mesh = SubResource( 10 )
 material/0 = null
-script = ExtResource( 13 )
+script = ExtResource( 14 )
 
 [node name="MeshInstance" type="MeshInstance" parent="BODY"]
 transform = Transform( -1, 0, 8.74228e-08, 0, 0.5, 0, -8.74228e-08, 0, -1, 0, 1.36496, 0 )
@@ -320,7 +341,7 @@ material_override = SubResource( 11 )
 cast_shadow = 0
 mesh = SubResource( 12 )
 material/0 = null
-script = ExtResource( 14 )
+script = ExtResource( 15 )
 
 [node name="SpotLight" type="SpotLight" parent="BODY"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.466324, 0.426194, 1.3591 )
@@ -344,53 +365,53 @@ hdr = false
 render_target_v_flip = true
 render_target_update_mode = 3
 
-[node name="nameplate" parent="BODY/Viewport 2" instance=ExtResource( 15 )]
+[node name="nameplate" parent="BODY/Viewport 2" instance=ExtResource( 16 )]
 
 [node name="MeshInstance2" type="MeshInstance" parent="BODY"]
 transform = Transform( -0.4, 0, 8.74228e-08, 0, 0.2, 0, -3.49691e-08, 0, -1, 0, 0.606774, -1.41142 )
 material_override = SubResource( 16 )
 mesh = SubResource( 17 )
 material/0 = null
-script = ExtResource( 16 )
+script = ExtResource( 17 )
 
-[node name="driver_new" parent="BODY" instance=ExtResource( 17 )]
+[node name="driver_new" parent="BODY" instance=ExtResource( 18 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.158, -0.04, 0.06 )
 
-[node name="skysphere" parent="BODY" instance=ExtResource( 18 )]
+[node name="skysphere" parent="BODY" instance=ExtResource( 19 )]
 transform = Transform( -1.04907e-07, 0, -2.4, 0, 2.4, 0, 2.4, 0, -1.04907e-07, 0, 3, 0 )
-script = ExtResource( 19 )
+script = ExtResource( 20 )
 
 [node name="RainParticles" type="Particles" parent="BODY"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 5, -6.0586 )
-material_override = ExtResource( 20 )
+material_override = ExtResource( 21 )
 cast_shadow = 0
 emitting = false
 amount = 256
 fract_delta = false
 visibility_aabb = AABB( -6, -6, -6, 12, 16, 12 )
-process_material = ExtResource( 21 )
+process_material = ExtResource( 22 )
 draw_pass_1 = SubResource( 18 )
-script = ExtResource( 19 )
+script = ExtResource( 20 )
 
 [node name="RainParticles2" type="Particles" parent="BODY"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 5, 8.69194 )
-material_override = ExtResource( 20 )
+material_override = ExtResource( 21 )
 cast_shadow = 0
 emitting = false
 amount = 256
 fract_delta = false
 visibility_aabb = AABB( -6, -6, -6, 12, 16, 12 )
-process_material = ExtResource( 21 )
+process_material = ExtResource( 22 )
 draw_pass_1 = SubResource( 18 )
-script = ExtResource( 19 )
+script = ExtResource( 20 )
 
 [node name="neon_under" type="MeshInstance" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.001696, 0.115021, 0.0230836 )
 cast_shadow = 0
 mesh = SubResource( 19 )
-material/0 = ExtResource( 22 )
+material/0 = ExtResource( 23 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 _import_path = NodePath("AnimationPlayer")
-script = ExtResource( 23 )
+script = ExtResource( 24 )
 [connection signal="body_entered" from="BODY" to="BODY" method="_on_BODY_body_entered"]
