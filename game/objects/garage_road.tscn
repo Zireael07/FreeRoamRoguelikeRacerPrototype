@@ -4,31 +4,24 @@
 [ext_resource path="res://roads/road_segment_straight.tscn" type="PackedScene" id=2]
 [ext_resource path="res://objects/garage_city.tscn" type="PackedScene" id=3]
 
-[node name="sample" type="Spatial" index="0"]
+[node name="sample" type="Spatial"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 107.574, 0, 66.8086 )
-_sections_unfolded = [ "Transform" ]
+[node name="Spatial2" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -44 )
 
-[node name="Spatial" parent="." index="0" instance=ExtResource( 1 )]
+[node name="Spatial" parent="Spatial2" instance=ExtResource( 1 )]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -43.8901 )
-_sections_unfolded = [ "Transform" ]
-
-[node name="Position3D" parent="Spatial" index="1" instance=ExtResource( 2 )]
-
+[node name="Position3D" parent="Spatial2/Spatial" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00700378, 0, -109.752 )
-_sections_unfolded = [ "Transform" ]
 road_slope = 0.0
 sidewalks = false
 guardrails = false
+relative_end = Vector3( 0, 0, 100 )
 trees = null
 bamboo = null
 
-[node name="Position3D2" parent="Spatial" index="2" instance=ExtResource( 2 )]
-
+[node name="Position3D2" parent="Spatial2/Spatial" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00700378, 0, 4.2483 )
-_sections_unfolded = [ "Transform" ]
-length = 20
 road_slope = 0.0
 sidewalks = false
 guardrails = false
@@ -36,12 +29,8 @@ relative_end = Vector3( 0, 0, 40 )
 trees = null
 bamboo = null
 
-[node name="garage2" parent="." index="1" instance=ExtResource( 3 )]
+[node name="garage2" parent="Spatial2" instance=ExtResource( 3 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 15.8034, 0, -0.471615 )
 
-transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 15.8034, 0, -43.4658 )
-
-[node name="Position3D" type="Position3D" parent="." index="2"]
-
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.67403, 0, -43.7808 )
-
-
+[node name="Position3D" type="Position3D" parent="Spatial2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9.67403, 0, -0.171604 )

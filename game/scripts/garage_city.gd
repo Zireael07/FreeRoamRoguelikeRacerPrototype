@@ -41,7 +41,7 @@ func _on_Area_body_entered( body ):
 			player.set_physics_process(false)
 			
 			# stop time passage
-			var root = get_parent().get_parent().get_parent()
+			var root = get_parent().get_parent().get_parent().get_parent()
 			print(root.get_name())
 			var world = root.get_node("World")
 			world.set_process(false)

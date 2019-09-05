@@ -59,7 +59,7 @@ func go_back():
 		player.set_physics_process(true)
 			
 		# restore time passage
-		var root = entrance.get_parent().get_parent().get_parent()
+		var root = entrance.get_parent().get_parent().get_parent().get_parent()
 		var world = root.get_node("World")
 		world.set_physics_process(true)
 		# show the sun
