@@ -162,29 +162,47 @@ func _ready():
 	#place_player()
 
 	# place garage road
-#	var garage_opts = []
-#	for i in range(2,2+samples.size()-1):
-#		var inters = get_child(i)
-#		print(inters.get_name() + " exits: " + str(inters.open_exits))
-#		if inters.open_exits.size() > 1:
-#			print(inters.get_name() + " is an option for garage road")
-#			garage_opts.append(inters)
-#
-#	var sel = null
-#	if not garage_opts:
-#		return
-#
-#	if garage_opts.size() > 1:
-#		sel = garage_opts[randi() % garage_opts.size()]
-#	else:
-#		sel = garage_opts[0]
-#
-#	#print(sel.get_name())
-#	var garage_rd = garage.instance()
-#	# test
-#	garage_rd.set_translation(sel.get_translation() + sel.open_exits[1])
-#	garage_rd.set_rotation_degrees(Vector3(0,-90,0))
-#	add_child(garage_rd)
+	var garage_opts = []
+	for i in range(2, samples.size()-1):
+		var inters = get_child(i)
+		print(inters.get_name() + " exits: " + str(inters.open_exits))
+		if inters.open_exits.size() > 1:
+			# is it in the edges that actually were connected?
+			for e in real_edges:
+				if e.x == i or e.y == i:
+					print(inters.get_name() + " is an option for garage road")
+					garage_opts.append(inters)
+					break #the first find should be enough
+			
+			if garage_opts.find(inters) == -1:
+				print(inters.get_name() + " is not in the actual connected map")
+				
+	var sel = null
+	if not garage_opts:
+		return
+
+	#if garage_opts.size() > 1:
+	#	sel = garage_opts[randi() % garage_opts.size()]
+	#else:
+	#	sel = garage_opts[0]
+
+	# force for testing
+	var wanted = get_child(2) # intersection 0
+	sel = wanted
+
+	print(sel.get_name())
+	var garage_rd = garage.instance()
+	# test placement
+	garage_rd.set_translation(sel.get_translation() + sel.open_exits[1])
+	#print(str(garage_rd.get_translation()))
+	print(str(sel.open_exits[1]))
+	
+	# assign correct rotation
+	var rots = { Vector3(10,0,0): Vector3(0,-90,0) }
+	if rots.has(sel.open_exits[1]): 
+		garage_rd.set_rotation_degrees(rots[sel.open_exits[1]])
+	
+	add_child(garage_rd)
 
 # -----------------
 func sort_intersections_distance():
