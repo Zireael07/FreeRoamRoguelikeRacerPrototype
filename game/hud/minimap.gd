@@ -1,3 +1,4 @@
+# obsolete, kept only for comparison purposes
 extends Control
 
 # class member variables go here, for example:

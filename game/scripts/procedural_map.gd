@@ -13,6 +13,7 @@ var nav
 #var tris = []
 
 var garage
+var recharge
 
 func _ready():
 	# Called when the node is added to the scene for the first time.
@@ -22,6 +23,7 @@ func _ready():
 
 	intersects = preload("res://roads/intersection.tscn")
 	garage = preload("res://objects/garage_road.tscn")
+	recharge = preload("res://objects/recharge_station.tscn")
 
 	samples = get_node("triangulate/poisson").samples
 	#print(samples.size()-1)
@@ -203,6 +205,20 @@ func _ready():
 		garage_rd.set_rotation_degrees(rots[sel.open_exits[1]])
 	
 	add_child(garage_rd)
+	
+	# place recharging station
+	wanted = get_child(5) # intersection 3
+	sel = wanted
+	print(sel.get_name() + str(sel.open_exits[1]))
+	var station = recharge.instance()
+	# place including offset that accounts for the size
+	station.set_translation(sel.get_translation() + sel.open_exits[1] + Vector3(4,0,4))
+	
+	# assign correct rotation
+	if rots.has(sel.open_exits[1]): 
+		station.set_rotation_degrees(rots[sel.open_exits[1]])
+	
+	add_child(station)
 
 # -----------------
 func sort_intersections_distance():
