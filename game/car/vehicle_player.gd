@@ -5,11 +5,12 @@ var health = 100
 var battery = 50
 	
 var World_node
+var map
 	
 #hud
 var hud
 var speed_text
-var map
+var minimap
 var panel
 var game_over
 
@@ -65,12 +66,18 @@ func _ready():
 	var h = preload("res://hud/hud.tscn")
 	hud = h.instance()
 	add_child(hud)
+	
+	# get map seed
+	map = get_parent().get_parent().get_node("map")
+	if map != null:
+		hud.update_seed(map.get_node("triangulate/poisson").seed3)
+	
 	#var m = preload("res://hud/minimap.tscn")
 	var m = preload("res://hud/Viewport.tscn")
-	map = m.instance()
-	map.set_name("Viewport_root")
-	add_child(map)
-	map.set_name("Viewport_root")
+	minimap = m.instance()
+	minimap.set_name("Viewport_root")
+	add_child(minimap)
+	minimap.set_name("Viewport_root")
 	
 	var msg = preload("res://hud/message_panel.tscn")
 	panel = msg.instance()

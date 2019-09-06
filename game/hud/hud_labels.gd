@@ -18,6 +18,7 @@ var health_bar = null
 var battery_bar = null
 
 var cam_control = null
+var seed_label = null
 
 var fps
 var draws
@@ -43,6 +44,8 @@ func _ready():
 	
 	health_bar = get_node("Health")
 	battery_bar = get_node("Battery")
+	
+	seed_label = get_node("SeedLabel")
 
 func update_speed(text):
 	label.set_text(text)
@@ -85,6 +88,9 @@ func update_health(val):
 	
 func update_battery(val):
 	battery_bar.set_value(val)
+	
+func update_seed(val):
+	seed_label.set_text("Seed: " + str(val))
 
 # for changing HUD between chase and cockpit cams
 func toggle_cam(boo):
