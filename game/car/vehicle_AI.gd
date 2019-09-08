@@ -58,7 +58,7 @@ func _ready():
 	
 	target_array.resize(0)
 	
-	navigation_node = get_node("/root/root")
+	navigation_node = get_node("/root/Navigation")
 	
 	var source = get_global_transform().origin
 	
@@ -126,7 +126,8 @@ func _process(delta):
 	if (elapsed_secs > start_secs):
 		if (path == null):
 #			
-			path = get_parent().find_path()
+			pass
+			#path = get_parent().find_path()
 			#if path != null:
 			#	print(get_parent().get_name() + " found path: " + String(path))
 #			

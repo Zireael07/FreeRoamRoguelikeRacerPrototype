@@ -10,6 +10,7 @@ var samples = []
 var ast
 
 var nav
+var path_look = {} # calculated paths
 #var tris = []
 
 var garage
@@ -94,7 +95,7 @@ func _ready():
 	var pts = []
 	var begin_id = 0
 	#var path_data = []
-	var path_look = {}
+	path_look = {}
 
 	for i in range(roads_start_id, roads_start_id+ real_edges.size()-1): #4):
 		#print("Begin: " + str(begin_id))
