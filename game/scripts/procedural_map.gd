@@ -167,17 +167,17 @@ func _ready():
 	var garage_opts = []
 	for i in range(2, samples.size()-1):
 		var inters = get_child(i)
-		print(inters.get_name() + " exits: " + str(inters.open_exits))
+		Logger.mapgen_print(inters.get_name() + " exits: " + str(inters.open_exits))
 		if inters.open_exits.size() > 1:
 			# is it in the edges that actually were connected?
 			for e in real_edges:
 				if e.x == i or e.y == i:
-					print(inters.get_name() + " is an option for garage road")
+					Logger.mapgen_print(inters.get_name() + " is an option for garage road")
 					garage_opts.append(inters)
 					break #the first find should be enough
 			
 			if garage_opts.find(inters) == -1:
-				print(inters.get_name() + " is not in the actual connected map")
+				Logger.mapgen_print(inters.get_name() + " is not in the actual connected map")
 				
 	var sel = null
 	if not garage_opts:
@@ -266,11 +266,11 @@ func auto_connect(initial_int, real_edges):
 	# to remove properly
 	var to_remove = []
 
-	print("Auto connecting... " + get_child(initial_int).get_name() + " @ " + str(get_child(initial_int).get_global_transform().origin))
+	Logger.mapgen_print("Auto connecting... " + get_child(initial_int).get_name() + " @ " + str(get_child(initial_int).get_global_transform().origin))
 
 	for e in edges:
 		if e.x == initial_int:
-			print("Edge with initial int" + str(e) + " other end " + str(e.y))
+			Logger.mapgen_print("Edge with initial int" + str(e) + " other end " + str(e.y))
 			var data = [e.y, get_child(e.y).get_global_transform().origin]
 			next_ints.append(data)
 			#print(data[1].x)
@@ -280,7 +280,7 @@ func auto_connect(initial_int, real_edges):
 			# remove from edge list so that we can use the list in other iterations
 			to_remove.append(edges.find(e))
 		if e.y == initial_int:
-			print("Edge with initial int" + str(e) + " other end " + str(e.x))
+			Logger.mapgen_print("Edge with initial int" + str(e) + " other end " + str(e.x))
 			var data = [e.x, get_child(e.x).get_global_transform().origin]
 			next_ints.append(data)
 			#print(data[1].x)
@@ -300,7 +300,7 @@ func auto_connect(initial_int, real_edges):
 	# but we want higher?
 	#sorted_n.invert()
 
-	print("Sorted: " + str(sorted_n))
+	Logger.mapgen_print("Sorted: " + str(sorted_n))
 
 	for i in range(0, next_ints.size()):
 		#print("Attempt " + str(i))
@@ -316,11 +316,11 @@ func auto_connect(initial_int, real_edges):
 	#print("next ints: " + str(next_ints))
 	for i in range(0, res.size()):
 		var p = res[i]
-		print("Intersection " + str(p))
+		Logger.mapgen_print("Intersection " + str(p))
 		# +2 because of the poisson node that comes first
 		var ret = connect_intersections(initial_int+2, p[0]+2)
 		if ret != false:
-			print("We did create a connection")
+			Logger.mapgen_print("We did create a connection")
 			real_edges.append(Vector2(initial_int, p[0]))
 
 
@@ -347,7 +347,7 @@ func setup_nav_astar(pts, i, begin_id):
 	#print(get_child(i).get_name())
 	# catch any errors
 	if i >= get_child_count():
-		print("No child at index : " + str(i))
+		Logger.error_print("No child at index : " + str(i))
 		return
 
 	# extract intersection id's
@@ -359,7 +359,7 @@ func setup_nav_astar(pts, i, begin_id):
 	for i in nrs:
 		ret.append(int(i)-2)
 
-	print(get_child(i).get_name() + " real numbers: " + str(ret))
+	Logger.mapgen_print(get_child(i).get_name() + " real numbers: " + str(ret))
 
 	# paranoia
 	if not get_child(i).has_node("Road_instance0"):
@@ -515,7 +515,7 @@ func spawn_markers():
 	for n in distance_map.keys():
 		var v = distance_map[n]
 		if v > 1:
-			print("Possible target id: " + str(n))
+			Logger.mapgen_print("Possible target id: " + str(n))
 			possible_targets.append(n)
 
 	var t_id = null
@@ -528,7 +528,7 @@ func spawn_markers():
 	else:
 		t_id = possible_targets[0]
 
-	print("Target id: " + str(t_id))
+	Logger.mapgen_print("Target id: " + str(t_id))
 
 	marker.target = Vector3(samples[t_id][0]*mult, 0, samples[t_id][1]*mult)
 	print("Marker target is " + str(marker.target))

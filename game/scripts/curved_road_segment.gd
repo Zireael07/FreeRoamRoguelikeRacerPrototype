@@ -171,11 +171,11 @@ func fix_stuff():
 
 func debug():
 	start_point = Vector3(points_center[0].x, road_height, points_center[0].y) 
-	print("Position of start point is " + String(start_point))
+	Logger.road_print("Position of start point is " + String(start_point))
 	#addTestColor(m, Color(0, 1,0), "start_cube", start_point.x, start_point.y, start_point.z, 0.1, 0.1, 0.1)
 
 	last = Vector3(points_center[points_center.size()-1].x, road_height, points_center[points_center.size()-1].y)
-	print("Position of last point is " + String(last))
+	Logger.road_print("Position of last point is " + String(last))
 	
 	#var loc3d = Vector3(loc.x, 0, loc.y)
 	#if (left_turn):
@@ -195,7 +195,7 @@ func debug():
 	#relative_end = start_point-last 
 	
 	relative_end = global_start - global_end
-	print("Last relative to start is " + String(relative_end))
+	Logger.road_print("Last relative to start is " + String(relative_end))
 	
 	var mid_loc = points_center[(round(32/2))]
 	mid_point = Vector3(mid_loc.x, road_height, mid_loc.y)
@@ -529,7 +529,7 @@ func test_road():
 			#draw.draw_line(debug_outer2)
 		
 		if has_node("Position3D"):
-			print("We have position marker")
+			#print("We have position marker")
 			#get_node("Position3D").set_translation(end_ref)
 			# because look_at() uses -Z not +Z!
 			get_node("Position3D").set_translation(inv_end_ref)

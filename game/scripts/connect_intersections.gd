@@ -29,13 +29,13 @@ func connect_intersections(one, two):
 	
 	
 	var src_exit = get_src_exit(get_child(one), get_child(two))
-	print("Src exit: " + str(src_exit))
+	Logger.mapgen_print("Src exit: " + str(src_exit))
 	if not src_exit:
 		return false
 	var loc_src_exit = to_local(get_child(one).to_global(src_exit))
 
 	var dest_exit = get_dest_exit(get_child(one), get_child(two))
-	print("Dest exit: " + str(dest_exit))
+	Logger.mapgen_print("Dest exit: " + str(dest_exit))
 	if not dest_exit:
 		return false
 	var loc_dest_exit = to_local(get_child(two).to_global(dest_exit))
@@ -270,10 +270,10 @@ func initial_road_test(one, two, data, loc, node):
 	
 		# place
 		if get_child(two).get_translation().y > get_child(one).get_translation().y:
-			print("Road in normal direction, positive y")
+			Logger.mapgen_print("Road in normal direction, positive y")
 		else:
 			first_turn.rotate_y(deg2rad(180))
-			print("Rotated because we're going back")
+			Logger.mapgen_print("Rotated because we're going back")
 
 func last_turn_test(one, two, data, loc, node):
 	if data == null:
@@ -292,10 +292,10 @@ func last_turn_test(one, two, data, loc, node):
 	
 		# place
 		if get_child(two).get_translation().y > get_child(one).get_translation().y:
-			print("Road in normal direction, positive y")
+			Logger.mapgen_print("Road in normal direction, positive y")
 		else:
 			last_turn.rotate_y(deg2rad(180))
-			print("Rotated because we're going back")
+			Logger.mapgen_print("Rotated because we're going back")
 	
 	
 func set_straight(loc, loc2, node):
@@ -340,14 +340,14 @@ func set_curved_road(radius, start_angle, end_angle, index, node):
 
 
 	if start_angle-90 > end_angle-90 and end_angle-90 < 0:
-		print("Bad road settings: " + str(start_angle-90) + ", " + str(end_angle-90)) 
+		Logger.mapgen_print("Bad road settings: " + str(start_angle-90) + ", " + str(end_angle-90)) 
 		start_angle = start_angle+360
 	
-	print("Road settings: start: " + str(start_angle-90) + " end: " + str(end_angle-90))
+	Logger.mapgen_print("Road settings: start: " + str(start_angle-90) + " end: " + str(end_angle-90))
 	
 	# if start is negative and end is slightly positive, something probably went wrong
 	if start_angle - 90 < 0 and end_angle-90 > 0 and end_angle-90 < 90:
-		print("Negative start but positive end: " + str(start_angle-90) + " end: " + str(end_angle-90))
+		Logger.mapgen_print("Negative start but positive end: " + str(start_angle-90) + " end: " + str(end_angle-90))
 		# bring the end angle around
 		end_angle = end_angle + 360
 	
@@ -357,7 +357,7 @@ func set_curved_road(radius, start_angle, end_angle, index, node):
 	road_node_right.get_child(0).get_child(0).end_angle = end_angle-90
 	
 	if radius < 3: # less than lanes we want
-		print("Bad radius given!")
+		Logger.mapgen_print("Bad radius given!")
 		return null
 	
 	#set the radius we wanted
@@ -378,17 +378,17 @@ func get_src_exit(src, dest):
 		print("Error, no exits left")
 		return
 	else:
-		print("available exits: " + str(src_exits))
+		Logger.mapgen_print("available exits: " + str(src_exits))
 		
 	var rel_pos = src.get_global_transform().xform_inv(dest.get_global_transform().origin)
-	print("Src exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.z, rel_pos.x)))
+	Logger.mapgen_print("Src exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.z, rel_pos.x)))
 	
 	# exits NEED to be listed CW (right = 2, bottom = 1 , top = 3) if we sort by y
 	# or CCW if sorted by angle?
 	
 	#quadrant 1 (we exclude top exit to avoid crossing over)
 	if rel_pos.x > 0 and rel_pos.z > 0:
-		print("Quadrant 1... angle: " + str(atan2(rel_pos.z, rel_pos.x)))
+		Logger.mapgen_print("Quadrant 1... angle: " + str(atan2(rel_pos.z, rel_pos.x)))
 		if atan2(rel_pos.z, rel_pos.x) > 1:
 			if src_exits.has(src.point_one):
 				src_exits.remove(src_exits.find(src.point_one))
@@ -410,7 +410,7 @@ func get_src_exit(src, dest):
 	# quadrant 2
 	# same
 	elif rel_pos.x < 0 and rel_pos.z > 0:
-		print("Quadrant 2")
+		Logger.mapgen_print("Quadrant 2")
 		# if angle is small, consider only bottom and right
 		if atan2(rel_pos.z, rel_pos.x) < 2.5:
 			if src_exits.has(src.point_one):
@@ -432,7 +432,7 @@ func get_src_exit(src, dest):
 				print("No exits found")
 	# quadrant 3 (exclude bottom exit)
 	elif rel_pos.x > 0 and rel_pos.z < 0:
-		print("Quadrant 3")
+		Logger.mapgen_print("Quadrant 3")
 		if src_exits.has(src.point_three):
 			src_exits.remove(src_exits.find(src.point_three))
 			return src.point_three
@@ -443,7 +443,7 @@ func get_src_exit(src, dest):
 			print("No exits found")
 	# quadrant 4
 	elif rel_pos.x < 0 and rel_pos.z < 0:
-		print("Quadrant 4")
+		Logger.mapgen_print("Quadrant 4")
 		if src_exits.has(src.point_three):
 			src_exits.remove(src_exits.find(src.point_three))
 			return src.point_three
@@ -496,19 +496,19 @@ func get_dest_exit(src, dest):
 		print("Error, no exits left")
 		return
 	else:
-		print("available exits: " + str(dest_exits))
+		Logger.mapgen_print("available exits: " + str(dest_exits))
 	
 	var rel_pos = dest.get_global_transform().xform_inv(src.get_global_transform().origin)
-	print("Dest exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.z, rel_pos.x)))
+	Logger.mapgen_print("Dest exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.z, rel_pos.x)))
 	
 	# exits NEED to be listed CW (right = 2, bottom = 1, top = 3)
 	# listed CCW if we sort by angle?
 	
 	# quadrant 4, exclude right exit to avoid crossing over
 	if rel_pos.x < 0 and rel_pos.z < 0:
-		print("Dest quadrant 4... " + str(atan2(rel_pos.z, rel_pos.x)))
+		Logger.mapgen_print("Dest quadrant 4... " + str(atan2(rel_pos.z, rel_pos.x)))
 		if atan2(rel_pos.z, rel_pos.x) > -2:
-			print("Case 1")
+			Logger.mapgen_print("Case 1")
 			if dest_exits.has(dest.point_three):
 				dest_exits.remove(dest_exits.find(dest.point_three))
 				return dest.point_three
@@ -516,7 +516,7 @@ func get_dest_exit(src, dest):
 				dest_exits.remove(dest_exits.find(dest.point_two))
 				return dest.point_two
 		else:
-			print("Case 2")
+			Logger.mapgen_print("Case 2")
 			if dest_exits.has(dest.point_three):
 				dest_exits.remove(dest_exits.find(dest.point_three))
 				return dest.point_three
@@ -525,7 +525,7 @@ func get_dest_exit(src, dest):
 				return dest.point_one
 	# quadrant 3, same
 	elif rel_pos.x > 0 and rel_pos.z < 0:
-		print("Dest quadrant 3")
+		Logger.mapgen_print("Dest quadrant 3")
 		if dest_exits.has(dest.point_three):
 			dest_exits.remove(dest_exits.find(dest.point_three))
 			return dest.point_three
@@ -534,7 +534,7 @@ func get_dest_exit(src, dest):
 			return dest.point_two
 	# quadrant 2
 	elif rel_pos.x < 0 and rel_pos.z > 0:
-		print("Dest quadrant 2")
+		Logger.mapgen_print("Dest quadrant 2")
 		if dest_exits.has(dest.point_one):
 			dest_exits.remove(dest_exits.find(dest.point_one))
 			return dest.point_one
@@ -603,7 +603,7 @@ func get_arc_angle(center_point, start_point, end_point, angle0):
 		#print("Angle 1 " + str(angle))
 	
 	#angles.append(angle)
-	print("Angle 1 " + str(angle1))
+	Logger.mapgen_print("Angle 1 " + str(angle1))
 	# equivalent angle for the end point
 	var angle2 = rad2deg((angle0-center_point).angle_to(end_point-center_point))
 	
@@ -611,15 +611,15 @@ func get_arc_angle(center_point, start_point, end_point, angle0):
 		angle2 = 360+angle2
 		#print("Angle 2 " + str(angle))
 	
-	print("Angle 2 " + str(angle2))
+	Logger.mapgen_print("Angle 2 " + str(angle2))
 	#angles.append(angle)
 	
 	var arc = angle1-angle2
 	
-	print("Arc angle " + str(arc))
+	Logger.mapgen_print("Arc angle " + str(arc))
 		
 	if arc > 200:
-		print("Too big arc " + str(angle1) + " , " + str(angle2))
+		Logger.mapgen_print("Too big arc " + str(angle1) + " , " + str(angle2))
 		angle2 = angle2+360
 		
 	angles = [angle1, angle2]

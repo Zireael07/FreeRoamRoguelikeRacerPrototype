@@ -20,6 +20,10 @@ icon="res://icon.png"
 main_scene="res://hud/main_menu.tscn"
 name="FreeRoamRacerPrototype"
 
+[autoload]
+
+Logger="*res://scripts/logger.gd"
+
 [debug]
 
 gdscript/warnings/enable=false

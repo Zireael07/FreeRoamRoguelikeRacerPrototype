@@ -22,7 +22,7 @@ func place_road():
 			#print("We have a road")
 			
 			var begin = road.start_point
-			print(road.get_parent().get_parent().get_name() + " beginning is " + String(begin))
+			Logger.road_print(road.get_parent().get_parent().get_name() + " beginning is " + String(begin))
 			
 			var locate = Vector3(-begin.x, 0, -begin.z)
 			
