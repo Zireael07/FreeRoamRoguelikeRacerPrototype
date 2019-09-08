@@ -2,7 +2,7 @@
 extends Control
 
 # class member variables go here, for example:
-var AIs = PoolStringArray()
+var AIs = []
 var player_pos = Vector2(110, 110)
 var minimap_bg
 
@@ -39,20 +39,7 @@ func _ready():
 	pass
 
 func setupMinimap(arrow, player_arrow):
-	##we're child of player, AI are siblings of player
-	var AI = get_tree().get_nodes_in_group("player")[0].get_parent().get_node("AI")
-	var AI2 = get_tree().get_nodes_in_group("player")[0].get_parent().get_node("AI2")
-	# TODO: clean this up!
-	#var AI = get_parent().get_parent().get_parent().get_parent().get_parent().get_node("AI")
-	#var AI2 = get_parent().get_parent().get_parent().get_parent().get_parent().get_node("AI2")
-	#var AI1 = get_parent().get_parent().get_parent().get_node("AI1")
-	
-	if (AI != null):
-		AIs.push_back("AI")
-	if (AI2 != null):
-		AIs.push_back("AI2")
-	#if (AI1 != null):
-	#	AIs.push_back("AI1")
+	AIs = get_tree().get_nodes_in_group("AI")
 	
 	for index in range(AIs.size()):
 		var tex = TextureRect.new()
@@ -118,9 +105,8 @@ func getPositions():
 func _process(delta):
 	for index in range(AIs.size()):
 		#the actual AI lives in the child of the spatial
-		var AI_node = get_tree().get_nodes_in_group("player")[0].get_parent().get_node(AIs[index]).get_child(0)
-		# TODO: clear this up!
-		#var AI_node = get_parent().get_parent().get_parent().get_parent().get_node(AIs[index]).get_child(0)
+		var AI_node = AIs[index].get_child(0)
+
 		var rel_loc = get_AI_rel_loc(AI_node)
 		
 		#arrows are children of container, which is below us

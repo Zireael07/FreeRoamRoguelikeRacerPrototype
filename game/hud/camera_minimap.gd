@@ -1,7 +1,8 @@
 extends Node2D
 
 # class member variables go here, for example:
-var AIs = PoolStringArray()
+#var AIs = PoolStringArray()
+var AIs = []
 #var player_pos = Vector2(110, 110)
 var minimap_bg
 var cam2d
@@ -48,25 +49,13 @@ func _ready():
 	pass
 
 func setupMinimap(arrow, player_arrow):
-	##we're child of player, AI are siblings of player
-	var AI = get_tree().get_nodes_in_group("player")[0].get_parent().get_node("AI")
-	var AI2 = get_tree().get_nodes_in_group("player")[0].get_parent().get_node("AI2")
-	# TODO: clean this up!
-	#var AI = get_parent().get_parent().get_parent().get_parent().get_parent().get_node("AI")
-	#var AI2 = get_parent().get_parent().get_parent().get_parent().get_parent().get_node("AI2")
-	#var AI1 = get_parent().get_parent().get_parent().get_node("AI1")
-	
-	if (AI != null):
-		AIs.push_back("AI")
-	if (AI2 != null):
-		AIs.push_back("AI2")
-	#if (AI1 != null):
-	#	AIs.push_back("AI1")
+	AIs = get_tree().get_nodes_in_group("AI")
 	
 	for index in range(AIs.size()):
 		var tex = TextureRect.new()
 		tex.set_texture(arrow)
-		tex.set_name(AIs[index])
+		tex.set_name("traffic-AI")
+		#tex.set_name(AIs[index].get_name())
 		tex.set_scale(Vector2(0.5, 0.5))
 		
 		attach.add_child(tex)
@@ -102,6 +91,7 @@ func setupMinimap(arrow, player_arrow):
 func add_marker(pos, flag, offset=Vector2(0,0)):
 	var marker_tex = TextureRect.new()
 	marker_tex.set_texture(flag)
+	marker_tex.set_name("marker")
 	#marker_tex.set_pos(pos3d_to_gamemap_point(Vector3(pos)))
 	#marker_tex.set_scale(Vector2(0.5, 0.5))
 	attach.add_child(marker_tex)
@@ -144,7 +134,7 @@ func _process(delta):
 	#cam2d.get_node("player").set_position(Vector2(-16-player_coord.x, -16-player_coord.z))
 	for index in range(AIs.size()):
 		#the actual AI lives in the child of the spatial
-		var AI_node = get_tree().get_nodes_in_group("player")[0].get_parent().get_node(AIs[index]).get_child(0)
+		var AI_node = AIs[index].get_child(0)
 		
 		var AI_pos = AI_node.get_global_transform().origin
 		
