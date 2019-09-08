@@ -86,7 +86,7 @@ func _ready():
 
 	setup_neighbors(real_edges)
 
-	var marker_data = spawn_markers()
+	var marker_data = spawn_markers(real_edges)
 
 	# test
 	var roads_start_id = 2+samples.size()-1 # 2 helper nodes + intersections for samples
@@ -133,10 +133,10 @@ func _ready():
 #	# so that we can see
 #	marker.raceline = nav_path
 
-	#print("First pair: " + str(int_path[0]) + "," + str(int_path[1]))
 		#paranoia
 		var nav_path
 		if [int_path[0], int_path[1]] in path_look:
+			#print("First pair: " + str(int_path[0]) + "," + str(int_path[1]))			
 			var lookup_path = path_look[[int_path[0], int_path[1]]]
 			#print("Lookup path pt1: " + str(lookup_path))
 			nav_path = nav.get_point_path(lookup_path[0], lookup_path[1])
@@ -161,7 +161,7 @@ func _ready():
 	
 			# display the whole path
 			marker.raceline = nav_path + nav_path2 + nav_path3
-
+			#print(str(marker.raceline))
 	#place_player()
 
 	# place garage road
@@ -193,15 +193,15 @@ func _ready():
 	var wanted = get_child(2) # intersection 0
 	sel = wanted
 
-	print(sel.get_name())
+	print(sel.get_name() + str(sel.open_exits[1]))
 	var garage_rd = garage.instance()
 	# test placement
 	garage_rd.set_translation(sel.get_translation() + sel.open_exits[1])
 	#print(str(garage_rd.get_translation()))
-	print(str(sel.open_exits[1]))
+	#print(str(sel.open_exits[1]))
 	
 	# assign correct rotation
-	var rots = { Vector3(10,0,0): Vector3(0,-90,0) }
+	var rots = { Vector3(10,0,0): Vector3(0,-90,0), Vector3(0,0,10): Vector3(0, 180, 0) }
 	if rots.has(sel.open_exits[1]): 
 		garage_rd.set_rotation_degrees(rots[sel.open_exits[1]])
 	
@@ -393,6 +393,7 @@ func setup_nav_astar(pts, i, begin_id):
 		var p = turn2.positions[i]
 		pts.append(turn2.to_global(p))
 
+	#print("All points: " + str(pts.size()))
 	#print("With turn2: " + str(pts))
 
 	# add pts to nav (road-level AStar)
@@ -476,19 +477,32 @@ func bfs_distances(start):
 
 #-------------------------
 
-func spawn_markers():
+func spawn_markers(real_edges):
 	var spots = []
 
 	var mark = preload("res://objects/marker.tscn")
 	var sp_mark = preload("res://objects/speed_marker.tscn")
 
 	# random choice of an intersection to spawn at
+	
+	# ensure the spots considered are actually connected 
+	for i in range(samples.size()-1):
+		for e in real_edges:
+			if e.x == i or e.y == i:
+				spots.append(i)
+				break #the first find should be enough
+	
+	print("Spots list: " + str(spots))
+	
 	# trick to copy the array
-	spots = [] + samples
-	spots.pop_back() # we don't want the last entry
+	#spots = [] + samples
+	#spots.pop_back() # we don't want the last entry
+	
 	var num_inters = spots.size()
-	var id = randi() % num_inters
-	var p = spots[id]
+	var sel = randi() % num_inters
+	var id = spots[sel]
+	#print(str(id))
+	var p = samples[id]
 
 	var sp_marker = sp_mark.instance()
 	sp_marker.set_translation(Vector3(p[0]*mult, 0, p[1]*mult))
@@ -497,9 +511,12 @@ func spawn_markers():
 	# remove from list of possible spots
 	spots.remove(id)
 
-	# random choice of an intersection to spawn at
-	id = randi() % spots.size()
-	p = spots[id]
+	# random choice of a connected (!) intersection to spawn at
+	sel = randi() % spots.size()
+	id = spots[sel]
+	#print(str(id))
+	p = samples[id]
+	
 	var marker = mark.instance()
 	marker.set_name("tt_marker")
 	marker.set_translation(Vector3(p[0]*mult, 0, p[1]*mult))
