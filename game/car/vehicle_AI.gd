@@ -39,8 +39,8 @@ var emitted = false
 signal path_gotten
 
 # FSM
-#onready var state = DrivingState.new(self)
-onready var state = LaneChangeState.new(self)
+onready var state = DrivingState.new(self)
+#onready var state = LaneChangeState.new(self)
 var prev_state
 
 const STATE_PATHING = 0
@@ -126,7 +126,8 @@ func _process(delta):
 	if (elapsed_secs > start_secs):
 		if (path == null):
 #			
-			pass
+			path = get_parent().path
+			#pass
 			#path = get_parent().find_path()
 			#if path != null:
 			#	print(get_parent().get_name() + " found path: " + String(path))
@@ -137,15 +138,14 @@ func _process(delta):
 			emit_signal("path_gotten")
 			
 			# stuff to do after getting path
-#			print("We have a path to follow")
+			print("[AI] We have a path to follow")
 			for index in range(path.size()):
 				if (index > 0): #because #0 is our own location
 					target_array.push_back(path[index])
 
 			#var pt_locs_rel = []
 			for pt in path:
-				#var pt_gl = get_global_transform().xform(pt)
-				pt_locs_rel.push_back(get_parent().get_global_transform().xform_inv(pt))
+				pt_locs_rel.push_back(get_parent().to_local(pt))
 				
 			# debug
 			for i in pt_locs_rel.size()-1:

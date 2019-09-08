@@ -111,8 +111,6 @@ script = ExtResource( 1 )
 __meta__ = {
 "__editor_plugin_screen__": "3D"
 }
-target = Vector3( 0, 0, 0 )
-left = true
 
 [node name="BODY" type="VehicleBody" parent="."]
 editor/display_folded = true

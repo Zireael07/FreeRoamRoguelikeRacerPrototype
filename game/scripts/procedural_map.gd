@@ -222,14 +222,15 @@ func _ready():
 	add_child(station)
 
 # -----------------
-func sort_intersections_distance():
+# returns a list of [dist, index] lists, operates on child ids
+func sort_intersections_distance(tg = Vector3(0,0,0), debug=true):
 	var dists = []
 	var tmp = []
 	var closest = []
 	# exclude triangulate and draw
-	for i in range(2, get_child_count()):
+	for i in range(2, 2+samples.size()-1):
 		var e = get_child(i)
-		var dist = e.translation.distance_to(Vector3(0,0,0))
+		var dist = e.translation.distance_to(tg)
 		#print("Distance: exit: " + str(e.get_name()) + " dist: " + str(dist))
 		tmp.append([dist, i])
 		dists.append(dist)
@@ -256,7 +257,8 @@ func sort_intersections_distance():
 	# if it's not empty by now, we have an issue
 	#print(tmp)
 
-	print(closest)
+	if debug:
+		print(closest)
 
 	return closest
 

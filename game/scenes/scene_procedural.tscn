@@ -63,7 +63,7 @@ color = Color( 1, 0.961243, 0.0078125, 1 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 154, 0, 65 )
 
 [node name="Spatial" parent="AI" instance=ExtResource( 8 )]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.66101, 0, 0 )
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.64328, 0, 1.32462 )
 
 [node name="car" parent="." instance=ExtResource( 9 )]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 154.707, 1.13199, 65.6732 )
