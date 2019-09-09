@@ -111,6 +111,10 @@ func debug_draw_lines():
 	#if braking, draw red line
 	elif not is_enough_dist(rel_loc, compare_pos, speed):  #(round(rel_loc.distance_to(compare_pos)) < round(speed)):
 		get_parent().draw.draw_line_color(points, 3, Color(1,0,0,1))
+	
+	# debug dot
+	elif dot < 0:
+		get_parent().draw.draw_line_color(points, 3, Color(0,1,0,1)) # green line means dot < 0
 	else:
 		get_parent().draw.draw_line_color(points, 3, Color(0,0,1,1))
 		
@@ -138,7 +142,7 @@ func _process(delta):
 			emit_signal("path_gotten")
 			
 			# stuff to do after getting path
-			print("[AI] We have a path to follow")
+			#print("[AI] We have a path to follow")
 			for index in range(path.size()):
 				if (index > 0): #because #0 is our own location
 					target_array.push_back(path[index])
@@ -154,8 +158,8 @@ func _process(delta):
 
 		# debug
 		if (get_parent().draw != null):
-			#debug_draw_lines()
-			debug_draw_path(pt_locs_rel)
+			debug_draw_lines()
+			#debug_draw_path(pt_locs_rel)
 			
 		if (get_parent().draw_arc != null):
 			if angle > 0:
@@ -186,7 +190,8 @@ class DrivingState:
 
 		#data
 		car.speed = car.get_linear_velocity().length();
-		var forward_vec = car.get_translation() + car.get_global_transform().basis.z
+		#var forward_vec = car.get_translation() + car.get_global_transform().basis.z
+		var forward_vec = car.get_global_transform().xform(Vector3(0, 0, 4))
 		
 		car.rel_loc = car.get_global_transform().xform_inv(car.get_target(car.current))
 		
@@ -197,7 +202,9 @@ class DrivingState:
 		var pos = car.get_global_transform().origin
 		#B-A = from A to B
 		var target_vec = car.get_target(car.current) - pos
+		#print("[AI] target_vec " + str(target_vec))
 		car.dot = forward_vec.dot(target_vec)
+		#print("Dot: " + str(car.dot))
 		
 		# needed for race position
 		if car.path != null and car.path.size() > 0:
@@ -264,7 +271,7 @@ class DrivingState:
 		
 		
 		if (car.rel_loc.distance_to(Vector3(0,1.5,0)) < 2):
-			#print("We're close to target")
+			#print("[AI] We're close to target")
 			
 			##do we have a next point?
 			if (car.target_array.size() > car.current+1):

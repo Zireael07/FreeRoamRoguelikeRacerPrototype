@@ -42,7 +42,7 @@ func _ready():
 	var nav_path = map.nav.get_point_path(lookup_path[0], lookup_path[1])
 	#print("[AI] Nav path: " + str(nav_path))
 	
-	path = nav_path
+	path = reduce_path(nav_path)
 	
 	# Initialization here
 	if has_node("draw"):
