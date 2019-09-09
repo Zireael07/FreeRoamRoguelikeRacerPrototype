@@ -177,6 +177,7 @@ can_sleep = false
 script = ExtResource( 2 )
 
 [node name="wheel1" type="VehicleWheel" parent="BODY"]
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.359334, 0.864664 )
 use_as_traction = true
 use_as_steering = true
@@ -196,6 +197,7 @@ wheel_thick = 0.1
 wheel_radius = 0.25
 
 [node name="wheel2" type="VehicleWheel" parent="BODY"]
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.359334, -0.783403 )
 use_as_traction = true
 wheel_radius = 0.25
@@ -214,6 +216,7 @@ wheel_thick = 0.1
 wheel_radius = 0.25
 
 [node name="wheel3" type="VehicleWheel" parent="BODY"]
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.359334, 0.864664 )
 use_as_traction = true
 use_as_steering = true
@@ -233,6 +236,7 @@ wheel_thick = 0.1
 wheel_radius = 0.25
 
 [node name="wheel4" type="VehicleWheel" parent="BODY"]
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.359334, -0.783403 )
 use_as_traction = true
 wheel_radius = 0.25
@@ -252,6 +256,7 @@ wheel_radius = 0.25
 
 [node name="mesh" parent="BODY" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.5, 0.298204, 0.591264 )
+width = 1.0
 
 [node name="car_mesh" type="Spatial" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.244165, 0.576408 )
@@ -291,6 +296,7 @@ render_target_update_mode = 3
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24017, -1.06042 )
 
 [node name="Camera" type="Camera" parent="BODY/cambase"]
+editor/display_folded = true
 transform = Transform( -1, 8.74228e-08, 0, 8.74228e-08, 1, 8.74228e-08, 7.64274e-15, 8.74228e-08, -1, 0, 1, -4.39379 )
 current = true
 fov = 60.0
@@ -303,6 +309,13 @@ min_distance = 1.0
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, -1 )
 visible = false
 skeleton = NodePath("")
+motion_blur = false
+
+[node name="CameraDebug" type="Camera" parent="BODY/cambase"]
+transform = Transform( -1, 8.74228e-08, 3.82137e-15, 0, -4.37114e-08, 1, 8.74228e-08, 1, 4.37114e-08, 0, 50, 0.732 )
+fov = 60.0
+near = 0.1
+far = 200.0
 
 [node name="CameraCockpit" type="Camera" parent="BODY/cambase"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.2, -0.318065, 1.09905 )
@@ -313,6 +326,7 @@ far = 200.0
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2355, -0.920672 )
 
 [node name="Viewport" type="Viewport" parent="BODY/cambase"]
+editor/display_folded = true
 size = Vector2( 256, 150 )
 handle_input_locally = false
 hdr = false

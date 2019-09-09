@@ -32,6 +32,8 @@ var cockpit_cam_angle = 0
 var cockpit_cam_max_angle = 5
 var peek
 
+var debug_cam
+
 # racing
 var race
 var prev = 0
@@ -61,6 +63,7 @@ func _ready():
 	
 	World_node = get_parent().get_parent().get_node("World")
 	cockpit_cam = $"cambase/CameraCockpit"
+	debug_cam = $"cambase/CameraDebug"
 	
 	##GUI
 	var h = preload("res://hud/hud.tscn")
@@ -404,12 +407,21 @@ func _input(event):
 	
 	
 	if (Input.is_action_pressed("camera_debug")):
-		var cam = get_node("cambase/Camera")
-		if (cam !=null):
-			if (not cam.debug):
-				cam.set_debug(true)
-			else:
-				cam.set_debug(false)
+		var chase_cam = get_node("cambase/Camera")
+		if debug_cam.is_current():
+			chase_cam.make_current()
+			# hud changes
+			hud.toggle_cam(true)
+			hud.speed_chase()
+		else:
+			debug_cam.make_current()
+			
+#		var cam = get_node("cambase/Camera")
+#		if (cam !=null):
+#			if (not cam.debug):
+#				cam.set_debug(true)
+#			else:
+#				cam.set_debug(false)
 				
 				
 	if (Input.is_action_pressed("look_back")):

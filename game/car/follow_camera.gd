@@ -49,14 +49,14 @@ func _physics_process(dt):
 		set_transform(t)
 		
 	#debug mode
-	else:
-		#follow the player
-		var target = get_parent().get_global_transform().origin
-		var delta = target - target_orig
-		
-		#move up and rotate to look down
-		set_translation(origin+Vector3(0, 50, -origin.z)+delta)
-		set_rotation_degrees(Vector3(-90, 0, 180))
+#	else:
+#		#follow the player
+#		var target = get_parent().get_global_transform().origin
+#		var delta = target - target_orig
+#
+#		#move up and rotate to look down
+#		set_translation(origin+Vector3(0, 50, -origin.z)+delta)
+#		set_rotation_degrees(Vector3(-90, 0, 180))
 
 
 	# look back
