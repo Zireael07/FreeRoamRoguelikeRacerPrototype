@@ -2,23 +2,26 @@ extends Control
  
 
 # class member variables go here, for example:
-var label = null
-var debug_label = null
-var fps_label = null
-var dist_label = null
-var label_timer = null
-var label_clock = null
-var label_angle = null
-var angle_bar = null
-var angle_limit_bar = null
-var compass_label = null
-var money_label = null
+onready var label = get_node("Label")
+onready var debug_label = get_node("Label 2")
+onready var fps_label = get_node("Label FPS")
+onready var dist_label = get_node("Label dist")
+onready var label_timer = get_node("Label timer")
+onready var label_clock = get_node("Label clock")
+onready var compass_label = get_node("CompassLabel")
 
-var health_bar = null
-var battery_bar = null
+# wheel/turn debug
+onready var label_angle = get_node("WheelAngle")
+onready var angle_bar = get_node("WheelAngleBar")
+onready var angle_limit_bar = get_node("WheelAngleBar2")
 
-var cam_control = null
-var seed_label = null
+onready var money_label = get_node("DriverInfo/MoneyLabel")
+
+onready var health_bar = get_node("Health")
+onready var battery_bar = get_node("Battery")
+
+onready var cam_control = get_node("CAM blink")
+onready var seed_label = get_node("SeedLabel")
 
 var fps
 var draws
@@ -28,24 +31,8 @@ var vertices
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
-	label = get_node("Label")
-	debug_label = get_node("Label 2")
-	fps_label = get_node("Label FPS")
-	dist_label = get_node("Label dist")
-	label_timer = get_node("Label timer")
-	label_clock = get_node("Label clock")
-	label_angle = get_node("WheelAngle")
-	angle_bar = get_node("WheelAngleBar")
-	angle_limit_bar = get_node("WheelAngleBar2")
-	compass_label = get_node("CompassLabel")
-	money_label = get_node("DriverInfo/MoneyLabel")
 	
-	cam_control = get_node("CAM blink")
-	
-	health_bar = get_node("Health")
-	battery_bar = get_node("Battery")
-	
-	seed_label = get_node("SeedLabel")
+	pass
 
 func update_speed(text):
 	label.set_text(text)
