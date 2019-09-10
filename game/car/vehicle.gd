@@ -55,7 +55,7 @@ func _ready():
 	taillights = get_node("taillights")
 
 
-func process_car_physics(delta, gas, braking, left, right):
+func process_car_physics(delta, gas, braking, left, right, joy):
 	speed = get_linear_velocity().length();
 	
 	# hack solution to keep car under control
@@ -79,24 +79,38 @@ func process_car_physics(delta, gas, braking, left, right):
 #		STEER_LIMIT = 1
 #		STEER_SPEED = 1
 	
-	if (left):
-		steer_target = STEER_LIMIT
-		
-		# TORCS approach:
-		# keep previous value, add steering changes as on line 170, clamped to 0-1.0
-		
-	elif (right): # for usual
-	# torcs-style would be if (so that neither key has precedence)
-		steer_target = -STEER_LIMIT
-		
-		# TORCS approach: see line 77, but deduce change instead of adding, clamped to -1.0-0
-
-	else: 
-		steer_target = 0
+	# joystick
+	if joy != Vector2(0,0) and abs(joy.x) > 0.1: # deadzone
+		steer_target = joy.x*STEER_LIMIT
+	else:
+		if (left):
+			steer_target = STEER_LIMIT
+			
+			# TORCS approach:
+			# keep previous value, add steering changes as on line 170, clamped to 0-1.0
+			
+		elif (right): # for usual
+		# torcs-style would be if (so that neither key has precedence)
+			steer_target = -STEER_LIMIT
+			
+			# TORCS approach: see line 77, but deduce change instead of adding, clamped to -1.0-0
+	
+		else: 
+			steer_target = 0
 	
 	# TORCS approach would sum up here
 #	steer_input = left_steer_input + right_steer_input
 	#print(steer_input)
+	
+	# use joy for gas/brake, too
+	if joy != Vector2(0,0) and abs(joy.y) > 0.4: # deadzone
+		if joy.y > 0:
+			gas = true
+		elif joy.y < 0:
+			braking = true
+		else:
+			gas = false
+			braking = false
 	
 	
 	#gas

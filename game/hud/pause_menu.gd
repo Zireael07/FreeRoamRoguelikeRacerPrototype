@@ -36,3 +36,13 @@ func _on_Button_pressed():
 	#hide the menu again
 	hide()
 	pass # replace with function body
+
+
+func _on_MouseSteerButton_pressed():
+	if !get_parent().mouse_steer:
+		get_parent().mouse_steer = true
+	else:
+		get_parent().mouse_steer = false
+	
+	
+	#pass # Replace with function body.

@@ -21,6 +21,7 @@ var gas = false
 var braking = false
 var left = false
 var right = false
+var joy = Vector2(0,0)
 
 #flag telling us to come to a halt
 var stop = false
@@ -257,7 +258,7 @@ class DrivingState:
 		# predict wheel angle
 		car.predicted_steer = car.predict_steer(delta, car.left, car.right)
 		
-		car.process_car_physics(delta, car.gas, car.braking, car.left, car.right)
+		car.process_car_physics(delta, car.gas, car.braking, car.left, car.right, car.joy)
 		
 		#if we passed the point, don't backtrack
 		if (car.dot < 0 and not car.stop):

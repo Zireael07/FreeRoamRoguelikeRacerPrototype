@@ -13,6 +13,9 @@ var speed_text
 var minimap
 var panel
 var game_over
+var vjoy
+
+var mouse_steer = false
 
 var last_pos
 var distance = 0
@@ -69,6 +72,12 @@ func _ready():
 	var h = preload("res://hud/hud.tscn")
 	hud = h.instance()
 	add_child(hud)
+	
+	var v = preload("res://hud/virtual_joystick.tscn")
+	vjoy = v.instance()
+	vjoy.set_name("Joystick")
+	add_child(vjoy)
+	
 	
 	# get map seed
 	map = get_parent().get_parent().get_node("map")
@@ -189,6 +198,7 @@ func _physics_process(delta):
 	var braking = false
 	var left = false
 	var right = false
+	var joy = Vector2(0,0)
 	
 	peek = false
 	
@@ -227,6 +237,13 @@ func _physics_process(delta):
 		# tilt cam
 		if cockpit_cam.is_current() and cockpit_cam_target_angle < 11:
 			cockpit_cam_target_angle -= 1
+	
+	# virtual joystick
+	if mouse_steer:
+		joy = get_node("Joystick/Control").val
+		
+		
+	
 	
 	# reset cam
 	if not left and not right and not peek:
@@ -272,7 +289,7 @@ func _physics_process(delta):
 	
 		
 	#make physics happen!
-	process_car_physics(delta, gas, braking, left, right)
+	process_car_physics(delta, gas, braking, left, right, joy)
 	
 	get_node("driver_new/Armature/Spatial").set_rotation(Vector3(get_steering()*2,0,0))
 	get_node("mesh/Spatial/steering").set_rotation(Vector3(get_steering()*2, 0, 0))
