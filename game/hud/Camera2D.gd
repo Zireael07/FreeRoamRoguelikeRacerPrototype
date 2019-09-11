@@ -29,7 +29,7 @@ func _physics_process(delta):
 	# For rotation to work, there must be NO Controls as it's parent/grandparent, in other words up the node tree
 	# siblings are fine
 	
-	set_rotation(-map_rot)
+	set_rotation(map_rot)
 
 func calc_panning():
 	#print("Minimap offset is " + String(minimap_bg.uv_offset))
