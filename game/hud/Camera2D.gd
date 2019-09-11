@@ -1,8 +1,8 @@
 extends Camera2D
 
 # class member variables go here, for example:
-# var a = 2
-# var b = "textvar"
+var map_rot = 0
+var arr_rot = 0
 
 func _ready():
 	# Called when the node is added to the scene for the first time.
@@ -20,7 +20,7 @@ func _physics_process(delta):
 
 	var player_rot = get_tree().get_nodes_in_group("player")[0].get_child(0).get_rotation()
 	#var player_rot = get_parent().get_parent().get_parent().get_parent().get_rotation()
-	var map_rot = player_rot.y
+	map_rot = player_rot.y
 	
 	#this resolves the gimbal lock issues
 	if (player_rot.x < -deg2rad(150) or player_rot.x > deg2rad(150)) and (player_rot.z < - deg2rad(150) or player_rot.z > deg2rad(150)):
@@ -30,6 +30,15 @@ func _physics_process(delta):
 	# siblings are fine
 	
 	set_rotation(map_rot)
+	
+	# rotate the player arrow
+	arr_rot = -map_rot
+	if player_rot.y > deg2rad(30) and player_rot.y < deg2rad(120) or player_rot.y > deg2rad(-120) and player_rot.y < deg2rad(-30):
+		arr_rot = arr_rot+deg2rad(90)
+	if abs(player_rot.y) < deg2rad(48):
+		arr_rot = arr_rot+deg2rad(180)
+	
+	get_node("player").set_rotation(arr_rot)
 
 func calc_panning():
 	#print("Minimap offset is " + String(minimap_bg.uv_offset))

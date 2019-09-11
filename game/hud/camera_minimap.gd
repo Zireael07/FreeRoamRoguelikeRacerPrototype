@@ -83,6 +83,7 @@ func setupMinimap(arrow, player_arrow):
 	cam2d.add_child(player_tex)
 	# so that the player is always centered
 	player_tex.set_position(Vector2(-16,-16))
+	player_tex.set_pivot_offset(Vector2(16,16))
 	
 	#player_tex.set_position(player_pos)
 	#get_child(0).add_child(player_tex)
