@@ -1,13 +1,14 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://car/AI_pathing.gd" type="Script" id=1]
 [ext_resource path="res://car/vehicle_AI.gd" type="Script" id=2]
 [ext_resource path="res://assets/truenohoudini.obj" type="ArrayMesh" id=3]
 [ext_resource path="res://assets/car_gray.tres" type="Material" id=4]
-[ext_resource path="res://car/follow_camera.gd" type="Script" id=5]
-[ext_resource path="res://assets/LED taillights stock.jpg" type="Texture" id=6]
-[ext_resource path="res://car/detect_obstacles_ray.gd" type="Script" id=7]
-[ext_resource path="res://scripts/draw_line.gd" type="Script" id=8]
+[ext_resource path="res://car/brain.gd" type="Script" id=5]
+[ext_resource path="res://car/follow_camera.gd" type="Script" id=6]
+[ext_resource path="res://assets/LED taillights stock.jpg" type="Texture" id=7]
+[ext_resource path="res://car/detect_obstacles_ray.gd" type="Script" id=8]
+[ext_resource path="res://scripts/draw_line.gd" type="Script" id=9]
 
 [sub_resource type="SpatialMaterial" id=1]
 params_diffuse_mode = 1
@@ -78,7 +79,7 @@ extents = Vector3( 0.477039, 0.413218, 1.32118 )
 
 [sub_resource type="SpatialMaterial" id=7]
 params_diffuse_mode = 1
-albedo_texture = ExtResource( 6 )
+albedo_texture = ExtResource( 7 )
 roughness = 0.0
 uv1_scale = Vector3( 0.2, 0.2, 1 )
 
@@ -113,7 +114,6 @@ __meta__ = {
 }
 
 [node name="BODY" type="VehicleBody" parent="."]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00169557, 0.222867, -0.0955184 )
 mass = 1500.0
 script = ExtResource( 2 )
@@ -182,6 +182,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.149868, 0 )
 mesh = ExtResource( 3 )
 material/0 = ExtResource( 4 )
 
+[node name="brain" type="Spatial" parent="BODY"]
+script = ExtResource( 5 )
+
 [node name="CollisionShape" type="CollisionShape" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.439856, 0.0630786 )
 shape = SubResource( 6 )
@@ -194,7 +197,7 @@ transform = Transform( 1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 1, -
 fov = 60.0
 near = 0.1
 far = 200.0
-script = ExtResource( 5 )
+script = ExtResource( 6 )
 
 [node name="SpotLight" type="SpotLight" parent="BODY"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.466324, 0.182029, 1.3591 )
@@ -211,19 +214,19 @@ material/0 = null
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.44403 )
 enabled = true
 cast_to = Vector3( 0, 0, 5 )
-script = ExtResource( 7 )
+script = ExtResource( 8 )
 
 [node name="RayLeftFront" type="RayCast" parent="BODY"]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 1.44403 )
 enabled = true
 cast_to = Vector3( 0, 0, 5 )
-script = ExtResource( 7 )
+script = ExtResource( 8 )
 
 [node name="RayRightFront" type="RayCast" parent="BODY"]
 transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, 1.44403 )
 enabled = true
 cast_to = Vector3( 0, 0, 5 )
-script = ExtResource( 7 )
+script = ExtResource( 8 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 _import_path = NodePath("AnimationPlayer")
@@ -231,11 +234,11 @@ _import_path = NodePath("AnimationPlayer")
 [node name="draw" type="ImmediateGeometry" parent="."]
 material_override = SubResource( 9 )
 cast_shadow = 0
-script = ExtResource( 8 )
+script = ExtResource( 9 )
 color = Color( 1, 1, 1, 1 )
 
 [node name="draw2" type="ImmediateGeometry" parent="."]
 material_override = SubResource( 9 )
 cast_shadow = 0
-script = ExtResource( 8 )
+script = ExtResource( 9 )
 color = Color( 1, 1, 1, 1 )
