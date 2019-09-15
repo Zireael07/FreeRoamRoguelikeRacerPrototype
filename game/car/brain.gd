@@ -53,13 +53,13 @@ class DrivingState:
 		# the target passed is already local unless something went very wrong
 		#steer = seek(to_local(target))
 		# keeps enough speed to move while staying on track
-		var spd_steer = car.match_velocity_length(50)
+		var spd_steer = car.match_velocity_length(10)
 		#print("Spd steer" + str(spd_steer))
-		# the value here (how many car lengths) should probably be speed dependent (15 works fine for speeds < 50)
 		
 		# we're a 3D node, so unfortunately we can only convert Vec3
 		var to_loc = car.get_global_transform().xform_inv(car.target)
-		var arr = car.arrive(Vector2(to_loc.x, to_loc.z), 3)
+		# the value here should probably be speed dependent
+		var arr = car.arrive(Vector2(to_loc.x, to_loc.z), 8)
 		#var arr = car.arrive(car.to_local(car.target), 10)
 		#print("Arr" + str(arr))
 		#car.steer = arr;
@@ -71,15 +71,17 @@ class DrivingState:
 	#	steer = arrive(to_local(target), 30*30)
 	
 		# our actual velocity
-		#car.velocity = Vector2(car.get_parent().get_linear_velocity().x, car.get_parent().get_linear_velocity().z)
+		# The x parameter doesn't seem to reflect wheel angle?
+		# -z means we're moving forward
+		car.velocity = Vector2(car.get_parent().get_linear_velocity().x, -car.get_parent().get_linear_velocity().z)
 		# forward vector scaled by our speed
 		
-		var gl_tg = car.get_parent().get_global_transform().xform(Vector3(0, 0, 4))
-		var rel = car.get_parent().get_global_transform().xform_inv(gl_tg)
-		var vel = rel * car.get_parent().get_linear_velocity().length()
+		#var gl_tg = car.get_parent().get_global_transform().xform(Vector3(0, 0, 4))
+		#var rel = car.get_parent().get_global_transform().xform_inv(gl_tg)
+		#var vel = rel * car.get_parent().get_linear_velocity().length()
 		
 		#var vel = car.get_parent().forward_vec * car.get_parent().get_linear_velocity().length()
-		car.velocity = Vector2(vel.x, vel.z)
-		print("Vel: " + str(car.velocity))
+		#car.velocity = Vector2(vel.x, vel.z)
+		#print("Vel: " + str(car.velocity))
 
 	

@@ -11,7 +11,7 @@ var dist = 0.0
 
 var max_speed = 50
 var max_force = 9
-export(Vector2) var target = Vector2(800,700)
+export(Vector2) var target = Vector2(800,700) # dummy
 
 var lane_change_deg = 20
 var lane_change_dist_factor = 1
@@ -21,7 +21,7 @@ var loc_tg
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
-	max_speed = 100 # speed limit   #get_parent().top_speed
+	max_speed = 50 # speed limit   #get_parent().top_speed
 	#marker = get_parent().get_node("target_marker")
 	
 	# test changing lanes
@@ -182,7 +182,6 @@ func match_velocity_length(target, reverse=false):
 		
 	#print("Vel: " + str(vel_for_des) + " normalized " + str(vel_for_des.normalized()))
 	
-	# we change the sign because we press gas when steering.y is negative
 	desired = vel_for_des.normalized() * target
 	#print("Des: " + str(desired))
 	

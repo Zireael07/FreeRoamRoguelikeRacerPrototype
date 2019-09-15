@@ -2,6 +2,10 @@ extends "vehicle.gd"
 
 # class member variables go here, for example:
 #export (Vector3Array) var target_array = null
+
+onready var brain = get_node("brain")
+
+
 var target_array = PoolVector3Array()
 var current = 0
 var prev = 0
@@ -39,19 +43,6 @@ var start_secs = 1
 var emitted = false
 signal path_gotten
 
-# FSM
-onready var state = DrivingState.new(self)
-#onready var state = LaneChangeState.new(self)
-var prev_state
-
-const STATE_PATHING = 0
-const STATE_DRIVING  = 1
-const STATE_LANE_CHANGE = 2
-
-signal state_changed
-
-signal lane_change_done
-
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -67,33 +58,16 @@ func _ready():
 	var forw_global = get_global_transform().xform(Vector3(0, 0, 4))
 	var target = forw_global
 	
-	target_array.resize(0)
-	target_array.push_back(target)
+	# the brain is a 3D node, so it converts Vec3
+	# it takes care of converting to local coords
+	brain.target = target
+	
+	#target_array.resize(0)
+	#target_array.push_back(target)
 	
 	set_process(true)
 	set_physics_process(true)
 
-# fsm
-func set_state(new_state):
-	# if we need to clean up
-	#state.exit()
-	prev_state = get_state()
-	
-#	if new_state == STATE_PATHING:
-#		state = PathingState.new(self)
-#	el
-	if new_state == STATE_DRIVING:
-		state = DrivingState.new(self)
-	elif new_state == STATE_LANE_CHANGE:
-		state = LaneChangeState.new(self)
-	
-	emit_signal("state_changed", self)
-
-func get_state():
-	if state is DrivingState:
-		return STATE_DRIVING
-	if state is LaneChangeState:
-		return STATE_LANE_CHANGE
 
 # debugging
 func debug_draw_lines():
@@ -106,8 +80,9 @@ func debug_draw_lines():
 	var par_rel = get_parent().get_global_transform().xform_inv(gl_tg)
 	points.push_back(Vector3(par_rel.x, 1, par_rel.z))
 	
+	var dist = rel_loc.distance_to(compare_pos)
 	#if doing nothing because close to target, yellow
-	if (rel_loc.distance_to(compare_pos) < 3):
+	if (dist < 3):
 		get_parent().draw.draw_line_color(points, 3, Color(1,1,0,1))
 	#if braking, draw red line
 	elif not is_enough_dist(rel_loc, compare_pos, speed):  #(round(rel_loc.distance_to(compare_pos)) < round(speed)):
@@ -156,6 +131,14 @@ func _process(delta):
 			for i in pt_locs_rel.size()-1:
 				var pt_loc = pt_locs_rel[i]
 				get_parent().debug_cube(pt_loc)
+				
+			# pass target to brain
+			brain.target = target_array[current]
+			
+			# brain needs local coords
+			#var loc = get_global_transform().xform_inv(target_array[current])
+			# steering behaviors decide in 2D, so we discard the y axis
+			#brain.target = Vector2(loc.x, loc.z)
 
 		# debug
 		if (get_parent().draw != null):
@@ -163,223 +146,301 @@ func _process(delta):
 			#debug_draw_path(pt_locs_rel)
 			
 		if (get_parent().draw_arc != null):
-			if angle > 0:
-				# the minus is there solely for display purposes
-				get_parent().draw_arc.draw_arc_poly(get_translation(), 90-get_rotation_degrees().y, -rad2deg(angle), Color(1,0,0))
-			else:
-				get_parent().draw_arc.draw_arc_poly(get_translation(), 90-get_rotation_degrees().y, -rad2deg(angle), Color(0,1,0))
+#			if angle > 0:
+#				# the minus is there solely for display purposes
+#				get_parent().draw_arc.draw_arc_poly(get_translation(), 90-get_rotation_degrees().y, -rad2deg(angle), Color(1,0,0))
+#			else:
+#				get_parent().draw_arc.draw_arc_poly(get_translation(), 90-get_rotation_degrees().y, -rad2deg(angle), Color(0,1,0))
 
-# just call the state
+			# draw desired steer
+			#points
+			var pos = get_transform().origin #get_translation()
+			var points = PoolVector3Array()
+			points.push_back(get_translation())
+			
+			# from relative location
+			#var loc_to_dr = Vector3(0, 0, 4)
+			var loc_to_dr = Vector3(brain.velocity.x, 1, brain.velocity.y)
+			var gl_tg = get_global_transform().xform(loc_to_dr)
+			var par_rel = get_parent().get_global_transform().xform_inv(gl_tg)
+			points.push_back(Vector3(par_rel.x, 1, par_rel.z))
+			
+			#points.push_back(Vector3(brain.steer.x, 1, brain.steer.y))
+			get_parent().draw_arc.draw_line_color(points, 3, Color(1,0,1))
+
+# translates steering behaviors output 
+# into actual steering input (gas/brake/left/right)
 func _physics_process(delta):
-	state.update(delta)
 	
-# states ----------------------------------------------------
-class DrivingState:
-	var car
-	
-	func _init(car):
-		self.car = car
-		
-	func update(delta):
-		car.flag = ""
-		
 		# reset input
-		car.gas = false
-		car.braking = false
-		car.left = false
-		car.right = false
+		gas = false
+		braking = false
+		left = false
+		right = false
+		joy = Vector2(0,0)
 
-		#data
-		car.speed = car.get_linear_velocity().length();
-		#var forward_vec = car.get_translation() + car.get_global_transform().basis.z
-		var forward_vec = car.get_global_transform().xform(Vector3(0, 0, 4))
+		rel_loc = get_global_transform().xform_inv(brain.target)
+
+		# needs to be 3D, so fake it
+		#rel_loc = Vector3(loc.x, 1, loc.brain.target.y)
 		
-		car.rel_loc = car.get_global_transform().xform_inv(car.get_target(car.current))
+		#this one actually reacts to rotations unlike the one using basis.z or linear velocity.z
+		forward_vec = get_global_transform().xform(Vector3(0, 0, 4))
+		dot = forward_vec.dot(rel_loc)
 		
 		#2D angle to target (local coords)
-		car.angle = atan2(car.rel_loc.x, car.rel_loc.z)
+		angle = atan2(rel_loc.x, rel_loc.z)
+	
+		# steering from boid
+		if brain.steer != Vector2(0,0):
+			print("Brain steer: " + str(brain.steer))
 		
-		#is the target in front of us or not?
-		var pos = car.get_global_transform().origin
-		#B-A = from A to B
-		var target_vec = car.get_target(car.current) - pos
-		#print("[AI] target_vec " + str(target_vec))
-		car.dot = forward_vec.dot(target_vec)
-		#print("Dot: " + str(car.dot))
-		
+		var clx = clamp(brain.steer.x/2, -0.5, 0.5)
+		print("Clamped x: " + str(clx))
+
 		# needed for race position
-		if car.path != null and car.path.size() > 0:
-			car.position_on_line = car.position_line(car.prev, car.current, pos, car.path)
+		if path != null and path.size() > 0:
+			var pos = get_global_transform().origin
+			position_on_line = position_line(prev, current, pos, path)
 		
-		#BEHAVIOR
+		#stop if we're supposed to
+		if (stop):
+			stopping()
+		else:	
+			if brain.steer.y > 0: # and speed <= 200:
+				# brake for sharp turns if going at speed
+				if abs(clx) > 0.75 and speed > 30:
+					if not reverse:
+						braking = true
+					else:
+						gas = true
+				else:
+					gas = true
+					#print(get_name() + " gas")
+			else:
+				if speed > 0 and speed < 100:
+					braking = true
+		
+
+#		if brain.steer.x < 0:
+#			left = true
+#		else:
+#			right = true
+
+		
+
 		
 		#if we're over the limit, relax steering
-		car.limit = car.get_steering_limit()
-		if (car.get_steering() > car.limit):
-			car.left = true
-		if (car.get_steering() < -car.limit):
-			car.right = true
-	
-	
-		#stop if we're supposed to
-		if (car.stop):
-			car.stopping()
-		else:
-			# detect collisions
-			car.collision_avoidance()
-						
-			
-			if not (car.flag.find("AVOID") != -1):
-				# go back on track if too far away from the drive line
-				car.go_back(pos)
-				
-				if not car.flag == "GOING BACK":
-					#handle gas/brake
-					if car.is_enough_dist(car.rel_loc, car.compare_pos, car.speed):
-						if (car.speed < car.top_speed):
-							car.gas = true
-					else:
-						if (car.speed > 1):
-							car.braking = true
-			
-					#if we're close to target, do nothing
-					if (car.rel_loc.distance_to(car.compare_pos) < 3) and abs(car.angle) < 0.9:
-						#fixed_angling()
-						#print("Close to target, don't deviate")
-						#relax steering
-						if (abs(car.get_steering()) > 0.02):
-							car.left = false
-							car.right = false
-						
-					else:
-						#normal stuff
-						car.fixed_angling()
+#		limit = get_steering_limit()
+#		if (get_steering() > limit):
+#			left = true
+#		if (get_steering() < -limit):
+#			right = true
+#
 		
-		# predict wheel angle
-		car.predicted_steer = car.predict_steer(delta, car.left, car.right)
-		
-		car.process_car_physics(delta, car.gas, car.braking, car.left, car.right, car.joy)
-		
-		#if we passed the point, don't backtrack
-		if (car.dot < 0 and not car.stop):
-			##do we have a next point?
-			if (car.target_array.size() > car.current+1):
-				car.prev = car.current
-				car.current = car.current + 1
-			else:
-				#print("We're at the end")
-				car.stop = true
-		
-		
-		if (car.rel_loc.distance_to(Vector3(0,1.5,0)) < 2):
-			#print("[AI] We're close to target")
-			
-			##do we have a next point?
-			if (car.target_array.size() > car.current+1):
-				car.prev = car.current
-				car.current = car.current + 1
-			else:
-				#print("We're at the end")
-				car.stop = true
 
-class LaneChangeState:
-	var car
-	var mark
-	
-	var lane_change_tg
-	var lane_change_angle = -0.2
-	var or_target 
-	var initial_pos
-	var delta_change = null
-	var mx_speed = 10 #200
-	var done = false
-	
-	# how it works - head (angle) to right lane, then -(angle) again to straighten up
-	
-	func _init(car):
-		self.car = car
-		
-		self.initial_pos = car.get_global_transform()
-		print("Starting lane change: " + str(self.initial_pos.origin))
-		print("Angle " + str(lane_change_angle) + " mx speed: " + str(mx_speed))
 		
 		
-		# set target = forced heading
-		var test_dist = car.get_test_dist_from_angle_speed(lane_change_angle, mx_speed)
-		print("Calculated test_dist " + str(test_dist))
-		car.rel_target = (Vector3(0, 0, 1)*test_dist).rotated(Vector3(0,1,0), lane_change_angle)
-		car.target = car.to_global(car.rel_target)
-		self.or_target = car.target
-		print("Target: " + str(car.target))
-	
-	
-	func update(delta):
-		# setup
-		car.flag = ""
+		# we don't use the joy for gas/brake, so far
+		#TODO: Left/right input is too big, the car overshoots
+		joy = Vector2(clx, 0)
 		
-		# reset input
-		car.gas = false
-		car.braking = false
-		car.left = false
-		car.right = false
-	
-		car.speed = car.get_linear_velocity().length();
-		var forward_vec = car.get_translation() + car.get_global_transform().basis.z
-		
-		car.rel_loc = car.get_global_transform().xform_inv(car.target)
-	
-		#2D angle to target (local coords)
-		car.angle = atan2(car.rel_loc.x, car.rel_loc.z)
-		
-		#is the target in front of us or not?
-		var pos = car.get_transform().origin
-		#B-A = from A to B
-		var target_vec = car.target - pos
-		car.dot = forward_vec.dot(target_vec)
+		process_car_physics(delta, gas, braking, left, right, joy)
 		
 		
-		# obstacle avoidance
-		#car.collision_avoidance()
-		
-		car.car_movement_lanes(mx_speed)
-		
-		# predict wheel angle
-		car.predicted_steer = car.predict_steer(delta, car.left, car.right)
-		
-		car.process_car_physics(delta, car.gas, car.braking, car.left, car.right)
-		
-		# roughly half the car length
-		if (car.rel_loc.distance_to(Vector3(0,1.5,0)) < 2):
-			# usual behavior
-			# speedup
-			if self.or_target == car.target:
-				# pause
-				#Input.action_press("ui_cancel")
-				
-				#car.emit_signal("changed_dir", car.get_transform().origin)
-#				print("Location when turning back " + str(car.get_transform().origin))
-#				delta_change = self.initial_pos.xform_inv(car.get_transform().origin)
-				#print("Delta pos: " + str(delta_change))
-#				print("Speed when turning back: " + str(car.speed))
-#				print("Angle when turning back: " + str(car.angle) + " " + str(rad2deg(car.angle)) + " deg")
-				var new_angle = -lane_change_angle
-				var test_dist = car.get_test_dist_from_angle_speed(new_angle, max(car.speed, mx_speed))
-				car.rel_target = (Vector3(0, 0, 1)*test_dist).rotated(Vector3(0,1,0), new_angle) # test angle
-				car.target = car.to_global(car.rel_target)
+		#if brain.dist <= 2 and not stop:
+		if rel_loc.distance_to(compare_pos) <= 2:
+			#print("[AI] We're close to target")
+
+			##do we have a next point?
+			if (target_array.size() > current+1):
+				prev = current
+				current = current + 1
+				# send to brain
+				brain.target = target_array[current]
 			else:
-				#print("Location when maneuver finished " + str(car.get_transform().origin))
-#				var comp = self.initial_pos.translated(delta_change)
-				#print("Delta pos: " + str(comp.xform_inv(car.get_transform().origin)))
-				car.stop = true
-				if not done:
-					car.emit_signal("lane_change_done", car.get_transform().origin)
-					done = true
+				#print("We're at the end")
+				stop = true
+		
+#	func update(delta):
+#		car.flag = ""
+#
+#		#data
+#		car.speed = car.get_linear_velocity().length();
+#		#var forward_vec = car.get_translation() + car.get_global_transform().basis.z
+#		var forward_vec = car.get_global_transform().xform(Vector3(0, 0, 4))
+#
+#		car.rel_loc = car.get_global_transform().xform_inv(car.get_target(car.current))
+#
+#		#2D angle to target (local coords)
+#		car.angle = atan2(car.rel_loc.x, car.rel_loc.z)
+#
+#		#is the target in front of us or not?
+#		var pos = car.get_global_transform().origin
+#		#B-A = from A to B
+#		var target_vec = car.get_target(car.current) - pos
+#		#print("[AI] target_vec " + str(target_vec))
+#		car.dot = forward_vec.dot(target_vec)
+#		#print("Dot: " + str(car.dot))
+#
+#		
+#
+#		#BEHAVIOR
+#
+#		#if we're over the limit, relax steering
+#		car.limit = car.get_steering_limit()
+#		if (car.get_steering() > car.limit):
+#			car.left = true
+#		if (car.get_steering() < -car.limit):
+#			car.right = true
+#
+#
+
+#			# detect collisions
+#			car.collision_avoidance()
+#
+#
+#			if not (car.flag.find("AVOID") != -1):
+#				# go back on track if too far away from the drive line
+#				car.go_back(pos)
+#
+#				if not car.flag == "GOING BACK":
+#					#handle gas/brake
+#					if car.is_enough_dist(car.rel_loc, car.compare_pos, car.speed):
+#						if (car.speed < car.top_speed):
+#							car.gas = true
+#					else:
+#						if (car.speed > 1):
+#							car.braking = true
+#
+#					#if we're close to target, do nothing
+#					if (car.rel_loc.distance_to(car.compare_pos) < 3) and abs(car.angle) < 0.9:
+#						#fixed_angling()
+#						#print("Close to target, don't deviate")
+#						#relax steering
+#						if (abs(car.get_steering()) > 0.02):
+#							car.left = false
+#							car.right = false
+#
+#					else:
+#						#normal stuff
+#						car.fixed_angling()
+#
+#		# predict wheel angle
+#		car.predicted_steer = car.predict_steer(delta, car.left, car.right)
+#
+#		car.process_car_physics(delta, car.gas, car.braking, car.left, car.right, car.joy)
+#
+#		#if we passed the point, don't backtrack
+#		if (car.dot < 0 and not car.stop):
+#			##do we have a next point?
+#			if (car.target_array.size() > car.current+1):
+#				car.prev = car.current
+#				car.current = car.current + 1
+#			else:
+#				#print("We're at the end")
+#				car.stop = true
+
+
+
+#class LaneChangeState:
+#	var car
+#	var mark
+#
+#	var lane_change_tg
+#	var lane_change_angle = -0.2
+#	var or_target 
+#	var initial_pos
+#	var delta_change = null
+#	var mx_speed = 10 #200
+#	var done = false
+#
+#	# how it works - head (angle) to right lane, then -(angle) again to straighten up
+#
+#	func _init(car):
+#		self.car = car
+#
+#		self.initial_pos = car.get_global_transform()
+#		print("Starting lane change: " + str(self.initial_pos.origin))
+#		print("Angle " + str(lane_change_angle) + " mx speed: " + str(mx_speed))
+#
+#
+#		# set target = forced heading
+#		var test_dist = car.get_test_dist_from_angle_speed(lane_change_angle, mx_speed)
+#		print("Calculated test_dist " + str(test_dist))
+#		car.rel_target = (Vector3(0, 0, 1)*test_dist).rotated(Vector3(0,1,0), lane_change_angle)
+#		car.target = car.to_global(car.rel_target)
+#		self.or_target = car.target
+#		print("Target: " + str(car.target))
+#
+#
+#	func update(delta):
+#		# setup
+#		car.flag = ""
+#
+#		# reset input
+#		car.gas = false
+#		car.braking = false
+#		car.left = false
+#		car.right = false
+#
+#		car.speed = car.get_linear_velocity().length();
+#		var forward_vec = car.get_translation() + car.get_global_transform().basis.z
+#
+#		car.rel_loc = car.get_global_transform().xform_inv(car.target)
+#
+#		#2D angle to target (local coords)
+#		car.angle = atan2(car.rel_loc.x, car.rel_loc.z)
+#
+#		#is the target in front of us or not?
+#		var pos = car.get_transform().origin
+#		#B-A = from A to B
+#		var target_vec = car.target - pos
+#		car.dot = forward_vec.dot(target_vec)
+#
+#
+#		# obstacle avoidance
+#		#car.collision_avoidance()
+#
+#		car.car_movement_lanes(mx_speed)
+#
+#		# predict wheel angle
+#		car.predicted_steer = car.predict_steer(delta, car.left, car.right)
+#
+#		car.process_car_physics(delta, car.gas, car.braking, car.left, car.right)
+#
+#		# roughly half the car length
+#		if (car.rel_loc.distance_to(Vector3(0,1.5,0)) < 2):
+#			# usual behavior
+#			# speedup
+#			if self.or_target == car.target:
+#				# pause
+#				#Input.action_press("ui_cancel")
+#
+#				#car.emit_signal("changed_dir", car.get_transform().origin)
+##				print("Location when turning back " + str(car.get_transform().origin))
+##				delta_change = self.initial_pos.xform_inv(car.get_transform().origin)
+#				#print("Delta pos: " + str(delta_change))
+##				print("Speed when turning back: " + str(car.speed))
+##				print("Angle when turning back: " + str(car.angle) + " " + str(rad2deg(car.angle)) + " deg")
+#				var new_angle = -lane_change_angle
+#				var test_dist = car.get_test_dist_from_angle_speed(new_angle, max(car.speed, mx_speed))
+#				car.rel_target = (Vector3(0, 0, 1)*test_dist).rotated(Vector3(0,1,0), new_angle) # test angle
+#				car.target = car.to_global(car.rel_target)
+#			else:
+#				#print("Location when maneuver finished " + str(car.get_transform().origin))
+##				var comp = self.initial_pos.translated(delta_change)
+#				#print("Delta pos: " + str(comp.xform_inv(car.get_transform().origin)))
+#				car.stop = true
+#				if not done:
+#					car.emit_signal("lane_change_done", car.get_transform().origin)
+#					done = true
 
 
 
 #-------------------------------------------
 
-# AI	
+# AI generic functions
 	
 func stopping():
 	#relax steering
