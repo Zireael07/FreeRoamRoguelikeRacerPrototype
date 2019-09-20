@@ -59,13 +59,13 @@ class DrivingState:
 		# we're a 3D node, so unfortunately we can only convert Vec3
 		var to_loc = car.get_global_transform().xform_inv(car.target)
 		# the value here should probably be speed dependent
-		var arr = car.arrive(Vector2(to_loc.x, to_loc.z), 8)
-		#var arr = car.arrive(car.to_local(car.target), 10)
+		var arr = car.arrive(Vector2(to_loc.x, to_loc.z), 20)
+
 		#print("Arr" + str(arr))
 		#car.steer = arr;
-		car.steer = spd_steer + arr;
+		#car.steer = spd_steer + arr;
 		#car.steer = Vector2(0, car.steer.y);
-		#car.steer = Vector2(arr.x, spd_steer.y);
+		car.steer = Vector2(arr.x, min(arr.y, spd_steer.y));
 		#print("Post: " + str(car.steer))
 		# arrives exactly
 	#	steer = arrive(to_local(target), 30*30)
@@ -73,7 +73,7 @@ class DrivingState:
 		# our actual velocity
 		# The x parameter doesn't seem to reflect wheel angle?
 		# -z means we're moving forward
-		car.velocity = Vector2(car.get_parent().get_linear_velocity().x, -car.get_parent().get_linear_velocity().z)
+		car.velocity = Vector2(car.get_parent().get_angular_velocity().y, -car.get_parent().get_linear_velocity().z)
 		# forward vector scaled by our speed
 		
 		#var gl_tg = car.get_parent().get_global_transform().xform(Vector3(0, 0, 4))

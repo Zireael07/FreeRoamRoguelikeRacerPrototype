@@ -193,10 +193,11 @@ func _physics_process(delta):
 	
 		# steering from boid
 		if brain.steer != Vector2(0,0):
-			print("Brain steer: " + str(brain.steer))
+			print("Brain steer: " + str(brain.steer) + " div: " + str(brain.steer.x/15))
 		
-		var clx = clamp(brain.steer.x/2, -0.5, 0.5)
-		print("Clamped x: " + str(clx))
+		# magic number to make inputs smaller
+		var clx = clamp(brain.steer.x/15, -1, 1)
+		#print("Clamped x: " + str(clx))
 
 		# needed for race position
 		if path != null and path.size() > 0:
@@ -236,13 +237,9 @@ func _physics_process(delta):
 #			left = true
 #		if (get_steering() < -limit):
 #			right = true
-#
-		
-
 		
 		
 		# we don't use the joy for gas/brake, so far
-		#TODO: Left/right input is too big, the car overshoots
 		joy = Vector2(clx, 0)
 		
 		process_car_physics(delta, gas, braking, left, right, joy)
