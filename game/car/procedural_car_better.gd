@@ -45,8 +45,7 @@ func _ready():
 	Vector2(1.47597, 0.635872), Vector2(1.19123, 0.778995), Vector2(0.419381, 0.784911), Vector2(-0.04922, 0.452933), Vector2(-0.338839, 0.437128), 
 	Vector2(-0.743482, 0.322674)]
 
-	
-	print(str(trueno.size()-1))
+	#print(str(trueno.size()-1))
 
 	var car = []
 	# trueno skips points 1, 6, 10
@@ -54,6 +53,13 @@ func _ready():
 	for i in range(trueno.size()):
 		if not skip.has(i):
 			car.append(trueno[i])
+	
+	# missing point in trueno
+	var val = (car[9]+car[8])/2 # midpoint
+	var add = [[9, val]]
+
+	for p in add:
+		car.insert(p[0], p[1])
 
 	#var car = trueno
 	polygon.resize(0)
@@ -75,14 +81,13 @@ func _ready():
 	polygon.append(car[7]) # 1.1816
 	# top of wheel well
 	polygon.append(car[8]) # 1.38462
-	# missing point in trueno
-	polygon.append((car[9]+car[8])/2) # midpoint
-	polygon.append(car[9]) # 1.56198
+	polygon.append(car[9])
+	polygon.append(car[10]) # 1.56198
 	
 	# the rear
-	polygon.append(car[10]) # 1.83
-	polygon.append(car[11]) # the kink in the rear - 1.88706
-	polygon.append(car[12]) # 1.81
+	polygon.append(car[11]) # 1.83
+	polygon.append(car[12]) # the kink in the rear - 1.88706
+	polygon.append(car[13]) # 1.81
 	# top part
 	polygon.append(car[car.size()-5]) # 1.19123
 	polygon.append(car[car.size()-4]) # 0.41938
