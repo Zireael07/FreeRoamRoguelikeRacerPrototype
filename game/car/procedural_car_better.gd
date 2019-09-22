@@ -40,39 +40,42 @@ func _ready():
 	Vector2(-0.036215, 0.007574), Vector2(1.15943, 0.007378), Vector2(1.1816, 0.145438), Vector2(1.28406, 0.247247), Vector2(1.38462, 0.288478), 
 	Vector2(1.56198, 0.060509), Vector2(1.83474, 0.060503), Vector2(1.88706, 0.297294), Vector2(1.81217, 0.563924), Vector2(1.59168, 0.581192), Vector2(1.47597, 0.635872), Vector2(1.19123, 0.778995), Vector2(0.419381, 0.784911), Vector2(-0.04922, 0.452933), Vector2(-0.338839, 0.437128), Vector2(-0.743482, 0.322674)]
 
-	#polygon = trueno
+
+
+
+	var car = trueno
 	polygon.resize(0)
 
 
 	# this is just the outline: 0-13-15-22
-	polygon.append(trueno[0]) # -0.764126 #beginning
+	polygon.append(car[0]) # -0.764126 #beginning
 	# front wheel well
-	polygon.append(trueno[2]) # -0.4567
-	polygon.append(trueno[3]) # -0.33
+	polygon.append(car[2]) # -0.4567
+	polygon.append(car[3]) # -0.33
 	# top of wheel well
-	polygon.append(trueno[4]) #-0.20
-	polygon.append(trueno[5]) # -0.08
-	polygon.append(trueno[7]) # -0.03
+	polygon.append(car[4]) #-0.20
+	polygon.append(car[5]) # -0.08
+	polygon.append(car[7]) # -0.03
 	
 	# rear wheel well
-	polygon.append(trueno[8]) # 1.15943
-	polygon.append(trueno[9]) # 1.1816
-	#polygon.append(trueno[10]) # 1.28406
+	polygon.append(car[8]) # 1.15943
+	polygon.append(car[9]) # 1.1816
+	#polygon.append(car[10]) # 1.28406
 	# top of wheel well
-	polygon.append(trueno[11]) # 1.38462
+	polygon.append(car[11]) # 1.38462
 	# missing point in original
-	polygon.append((trueno[12]+trueno[11])/2) # midpoint
-	polygon.append(trueno[12]) # 1.56198
+	polygon.append((car[12]+car[11])/2) # midpoint
+	polygon.append(car[12]) # 1.56198
 	
 	# the rear
-	polygon.append(trueno[13]) # 1.83
-	polygon.append(trueno[14]) # the kink in the rear - 1.88706
-	polygon.append(trueno[15]) # 1.81
+	polygon.append(car[13]) # 1.83
+	polygon.append(car[14]) # the kink in the rear - 1.88706
+	polygon.append(car[15]) # 1.81
 	# top part
-	polygon.append(trueno[18]) # 1.19123
-	polygon.append(trueno[19]) # 0.41938
-	polygon.append(trueno[20]) # -0.04
-	polygon.append(trueno[22]) # -0.74 #end
+	polygon.append(car[18]) # 1.19123
+	polygon.append(car[19]) # 0.41938
+	polygon.append(car[20]) # -0.04
+	polygon.append(car[22]) # -0.74 #end
 	
 	
 	
@@ -98,13 +101,16 @@ func _ready():
 	steer_node.set_name("steering")
 	get_node("Spatial").add_child(steer_node)
 	
+	#Turn off shadows
+	steer_node.set_cast_shadows_setting(0)
+	
 	if polygon.size() < 1:
 		return
 		
 	#print(str(polygon))
 	#polygon.invert()
 	
-	createCar(trueno, window_poly, surface, glass_surf)
+	createCar(car, window_poly, surface, glass_surf)
 	
 	createSteeringWheel(steering_surf, steering_material)
 	
@@ -159,10 +165,10 @@ func createSteeringWheel(steering_surf, steering_material):
 	createQuadNoUV(steering_surf, Vector3(p0.x, p0.y, -0.1), Vector3(p0.x, p0.y, 0.1), Vector3(p1.x, p1.y, 0.1), Vector3(p1.x, p1.y, -0.1))
 	createQuadNoUV(steering_surf, Vector3(p0.x, p0.y, -0.1), Vector3(p0.x, p0.y, 0.1), Vector3(p1.x, p1.y, 0.1), Vector3(p1.x, p1.y, -0.1), true)
 	
-func createCar(trueno, window_poly, surface, glass_surf):
+func createCar(car, window_poly, surface, glass_surf):
 	var poly_bottom = []
-	poly_bottom.append(trueno[7]) # end of front wheel well
-	poly_bottom.append(trueno[8]) # beginning of rear wheel well
+	poly_bottom.append(car[7]) # end of front wheel well
+	poly_bottom.append(car[8]) # beginning of rear wheel well
 	poly_bottom.append(window_poly[3]) # bottom right of window
 	poly_bottom.append(window_poly[0]) # bottom left of window
 	
@@ -174,9 +180,9 @@ func createCar(trueno, window_poly, surface, glass_surf):
 	poly_top.append(window_poly[1]) # top left
 	poly_top.append(window_poly[2]) # top right
 	# car top, right to left
-	poly_top.append(trueno[18])
-	poly_top.append(trueno[19])
-	poly_top.append(trueno[20])
+	poly_top.append(car[18])
+	poly_top.append(car[19])
+	poly_top.append(car[20])
 	
 	indices_top = Array(Geometry.triangulate_polygon(PoolVector2Array(poly_top)))
 	
