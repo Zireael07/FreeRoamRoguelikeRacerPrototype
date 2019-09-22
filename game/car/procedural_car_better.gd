@@ -48,8 +48,9 @@ func _ready():
 	#print(str(trueno.size()-1))
 
 	var car = []
-	# trueno skips points 1, 6, 10
-	var skip = [1,6,10]
+	
+	# trueno skips some points
+	var skip = [1,6,10, trueno.size()-2]
 	for i in range(trueno.size()):
 		if not skip.has(i):
 			car.append(trueno[i])
@@ -89,9 +90,9 @@ func _ready():
 	polygon.append(car[12]) # the kink in the rear - 1.88706
 	polygon.append(car[13]) # 1.81
 	# top part
-	polygon.append(car[car.size()-5]) # 1.19123
-	polygon.append(car[car.size()-4]) # 0.41938
-	polygon.append(car[car.size()-3]) # -0.04
+	polygon.append(car[car.size()-4]) # 1.19123
+	polygon.append(car[car.size()-3]) # 0.41938
+	polygon.append(car[car.size()-2]) # -0.04
 	polygon.append(car[car.size()-1]) # -0.74 #end
 	
 	
@@ -197,9 +198,9 @@ func createCar(car, window_poly, surface, glass_surf):
 	poly_top.append(window_poly[1]) # top left
 	poly_top.append(window_poly[2]) # top right
 	# car top, right to left
-	poly_top.append(car[car.size()-5])
 	poly_top.append(car[car.size()-4])
 	poly_top.append(car[car.size()-3])
+	poly_top.append(car[car.size()-2])
 	
 	indices_top = Array(Geometry.triangulate_polygon(PoolVector2Array(poly_top)))
 	
