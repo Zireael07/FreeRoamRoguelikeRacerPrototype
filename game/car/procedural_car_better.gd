@@ -36,46 +36,58 @@ func _ready():
 	var trueno_side_window = [Vector2(0.102906, 0.489506), Vector2(0.45022, 0.745425), Vector2(1.13577, 0.741807), Vector2(1.19646, 0.511102)]
 	window_poly = trueno_side_window
 	
-	var trueno = [Vector2(-0.764126, 0.07102), Vector2(-0.587397, 0.011519), Vector2(-0.456753, -0.004075), Vector2(-0.338316, 0.180084), Vector2(-0.20599, 0.293982), Vector2(-0.083261, 0.209353), Vector2(-0.03591, 0.106849), 
-	Vector2(-0.036215, 0.007574), Vector2(1.15943, 0.007378), Vector2(1.1816, 0.145438), Vector2(1.28406, 0.247247), Vector2(1.38462, 0.288478), 
-	Vector2(1.56198, 0.060509), Vector2(1.83474, 0.060503), Vector2(1.88706, 0.297294), Vector2(1.81217, 0.563924), Vector2(1.59168, 0.581192), Vector2(1.47597, 0.635872), Vector2(1.19123, 0.778995), Vector2(0.419381, 0.784911), Vector2(-0.04922, 0.452933), Vector2(-0.338839, 0.437128), Vector2(-0.743482, 0.322674)]
+	# 5 entries in first row, 2 (originally 7 in one row), five each in the next, all the rest
+	
+	var trueno = [Vector2(-0.764126, 0.07102), Vector2(-0.587397, 0.011519), Vector2(-0.456753, -0.004075), Vector2(-0.338316, 0.180084), Vector2(-0.20599, 0.293982), 
+	Vector2(-0.083261, 0.209353), Vector2(-0.03591, 0.106849),
+	Vector2(-0.036215, 0.007574), Vector2(1.15943, 0.007378), Vector2(1.1816, 0.145438), Vector2(1.28406, 0.247247), Vector2(1.38462, 0.288478),
+	Vector2(1.56198, 0.060509), Vector2(1.83474, 0.060503), Vector2(1.88706, 0.297294), Vector2(1.81217, 0.563924), Vector2(1.59168, 0.581192),
+	Vector2(1.47597, 0.635872), Vector2(1.19123, 0.778995), Vector2(0.419381, 0.784911), Vector2(-0.04922, 0.452933), Vector2(-0.338839, 0.437128), 
+	Vector2(-0.743482, 0.322674)]
 
+	
+	print(str(trueno.size()-1))
 
+	var car = []
+	# trueno skips points 1, 6, 10
+	var skip = [1,6,10]
+	for i in range(trueno.size()):
+		if not skip.has(i):
+			car.append(trueno[i])
 
-
-	var car = trueno
+	#var car = trueno
 	polygon.resize(0)
-
-
+	print(str(car.size()-1))
+	
 	# this is just the outline: 0-13-15-22
 	polygon.append(car[0]) # -0.764126 #beginning
+	
 	# front wheel well
-	polygon.append(car[2]) # -0.4567
-	polygon.append(car[3]) # -0.33
+	polygon.append(car[1]) # -0.4567
+	polygon.append(car[2]) # -0.33
 	# top of wheel well
-	polygon.append(car[4]) #-0.20
-	polygon.append(car[5]) # -0.08
-	polygon.append(car[7]) # -0.03
+	polygon.append(car[3]) #-0.20
+	polygon.append(car[4]) # -0.08
+	polygon.append(car[5]) # -0.03
 	
 	# rear wheel well
-	polygon.append(car[8]) # 1.15943
-	polygon.append(car[9]) # 1.1816
-	#polygon.append(car[10]) # 1.28406
+	polygon.append(car[6]) # 1.15943
+	polygon.append(car[7]) # 1.1816
 	# top of wheel well
-	polygon.append(car[11]) # 1.38462
-	# missing point in original
-	polygon.append((car[12]+car[11])/2) # midpoint
-	polygon.append(car[12]) # 1.56198
+	polygon.append(car[8]) # 1.38462
+	# missing point in trueno
+	polygon.append((car[9]+car[8])/2) # midpoint
+	polygon.append(car[9]) # 1.56198
 	
 	# the rear
-	polygon.append(car[13]) # 1.83
-	polygon.append(car[14]) # the kink in the rear - 1.88706
-	polygon.append(car[15]) # 1.81
+	polygon.append(car[10]) # 1.83
+	polygon.append(car[11]) # the kink in the rear - 1.88706
+	polygon.append(car[12]) # 1.81
 	# top part
-	polygon.append(car[18]) # 1.19123
-	polygon.append(car[19]) # 0.41938
-	polygon.append(car[20]) # -0.04
-	polygon.append(car[22]) # -0.74 #end
+	polygon.append(car[car.size()-5]) # 1.19123
+	polygon.append(car[car.size()-4]) # 0.41938
+	polygon.append(car[car.size()-3]) # -0.04
+	polygon.append(car[car.size()-1]) # -0.74 #end
 	
 	
 	
@@ -167,8 +179,8 @@ func createSteeringWheel(steering_surf, steering_material):
 	
 func createCar(car, window_poly, surface, glass_surf):
 	var poly_bottom = []
-	poly_bottom.append(car[7]) # end of front wheel well
-	poly_bottom.append(car[8]) # beginning of rear wheel well
+	poly_bottom.append(car[5]) # end of front wheel well
+	poly_bottom.append(car[6]) # beginning of rear wheel well
 	poly_bottom.append(window_poly[3]) # bottom right of window
 	poly_bottom.append(window_poly[0]) # bottom left of window
 	
@@ -180,14 +192,14 @@ func createCar(car, window_poly, surface, glass_surf):
 	poly_top.append(window_poly[1]) # top left
 	poly_top.append(window_poly[2]) # top right
 	# car top, right to left
-	poly_top.append(car[18])
-	poly_top.append(car[19])
-	poly_top.append(car[20])
+	poly_top.append(car[car.size()-5])
+	poly_top.append(car[car.size()-4])
+	poly_top.append(car[car.size()-3])
 	
 	indices_top = Array(Geometry.triangulate_polygon(PoolVector2Array(poly_top)))
 	
 	var poly_front = []
-	for i in range(0, 7):
+	for i in range(0, 6):
 		poly_front.append(polygon[i])
 		
 	poly_front.append(window_poly[0])
