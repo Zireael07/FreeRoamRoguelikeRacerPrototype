@@ -3,19 +3,11 @@
 [ext_resource path="res://2d tests/2d_curve_placer.gd" type="Script" id=1]
 [ext_resource path="res://2d tests/2d_curve_draw.gd" type="Script" id=2]
 
-[node name="Node2D" type="Node2D" index="0"]
+[node name="Node2D" type="Node2D"]
 
-[node name="Placer" type="Node2D" parent="." index="0"]
-
+[node name="Placer" type="Node2D" parent="."]
 script = ExtResource( 1 )
 
-[node name="curve" type="Node2D" parent="Placer" index="0"]
-
+[node name="curve" type="Node2D" parent="Placer"]
 position = Vector2( -9.18485e-16, 15 )
 script = ExtResource( 2 )
-radius = 15
-angle_from = 0
-angle_to = 90
-right = true
-
-

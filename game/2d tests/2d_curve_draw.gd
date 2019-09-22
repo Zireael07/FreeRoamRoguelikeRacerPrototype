@@ -51,10 +51,10 @@ func _ready():
 		start_axis_2d = -start_axis_2d
 		end_axis_2d = -end_axis_2d
 		
-	start_vector = Vector2((first+start_axis_2d)-first).normalized()*10
+	start_vector = ((first+start_axis_2d)-first).normalized()*10
 	start_ref = first+start_vector
 	#print("[Curve] start_ref: " + str(start_ref))
-	end_vector = Vector2(last - (last+end_axis_2d)).normalized()*10
+	end_vector = (last - (last+end_axis_2d)).normalized()*10
 	end_ref = last+end_vector
 	#print("[Curve] end ref: " + str(end_ref))
 	
