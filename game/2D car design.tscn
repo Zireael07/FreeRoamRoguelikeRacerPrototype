@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://2d car comparison.gd" type="Script" id=1]
+[ext_resource path="res://assets/Toyota Yaris 2015.png" type="Texture" id=2]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Polygon2D2" type="Polygon2D" parent="."]
+position = Vector2( 0, 600 )
+scale = Vector2( 1, -1 )
+color = Color( 0.8, 0.8, 0.8, 0.627451 )
+polygon = PoolVector2Array( -764.126, 71.02, -587.397, 11.519, -456.753, -4.075, -338.316, 180.084, -205.99, 293.982, -83.261, 209.353, -35.91, 106.849, -36.215, 7.574, 1159.43, 7.378, 1181.6, 145.438, 1284.06, 247.247, 1384.62, 288.478, 1561.98, 60.509, 1834.74, 60.503, 1887.06, 297.294, 1812.17, 563.924, 1591.68, 581.192, 1475.97, 635.872, 1191.23, 778.995, 419.381, 784.911, -49.22, 452.933, -338.839, 437.128, -743.482, 322.674 )
+script = ExtResource( 1 )
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2( -600, 0 )
+
+[node name="TextureRect" type="TextureRect" parent="Node2D"]
+margin_right = 1792.0
+margin_bottom = 1393.0
+texture = ExtResource( 2 )
+
+[node name="Polygon2D" type="Polygon2D" parent="Node2D"]
+color = Color( 0.0745098, 0.0235294, 0.972549, 1 )
+polygon = PoolVector2Array( 113.375, 338.25, 245, 284.25, 508.25, 240.375, 818.75, 88.5, 1051.62, 58.125, 1439.75, 71.625, 1578.12, 88.5, 1564.62, 118.875, 1736.75, 257.25, 1763.75, 307.875, 1753.62, 385.5, 1773.88, 422.625, 1773.88, 554.25, 1665.88, 574.5, 1618.62, 466.5, 1527.5, 419.25, 1443.12, 422.625, 1382.38, 469.875, 1352, 594.75, 555.5, 601.5, 535.25, 503.625, 457.625, 412.5, 373.25, 402.375, 278.75, 459.75, 261.875, 527.25, 261.875, 598.125, 76.25, 601.5, 56, 496.875, 69.5, 395.625 )
