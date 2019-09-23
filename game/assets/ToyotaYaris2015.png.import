@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Toyota Yaris 2015.png-8ce7ddaa781cd8fe07e9974a7a121d14.stex"
+path="res://.import/ToyotaYaris2015.png-17eddd28d47f6a35343c9e8ba551d642.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Toyota Yaris 2015.png"
-dest_files=[ "res://.import/Toyota Yaris 2015.png-8ce7ddaa781cd8fe07e9974a7a121d14.stex" ]
+source_file="res://assets/ToyotaYaris2015.png"
+dest_files=[ "res://.import/ToyotaYaris2015.png-17eddd28d47f6a35343c9e8ba551d642.stex" ]
 
 [params]
 
