@@ -9,7 +9,7 @@ var poly = []
 func _ready():
 	if get_name() == "reartest":
 		poly.resize(0)
-		var poly = get_polygon()
+		poly = get_polygon()
 		# split 4-5 edge to get proper number of points for a wheel well
 		var tmp = (poly[5]+poly[4])/2 # midpoint
 		poly.insert(5, tmp)
