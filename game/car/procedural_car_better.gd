@@ -31,7 +31,7 @@ func _ready():
 	
 	# bottom left, top left, top right, bottom right
 	var trueno_side_window = [Vector2(0.102906, 0.489506), Vector2(0.45022, 0.745425), Vector2(1.13577, 0.741807), Vector2(1.19646, 0.511102)]
-	window_poly = trueno_side_window
+	#window_poly = trueno_side_window
 	
 	# 5 entries in first row, 2 (originally 7 in one row), five each in the next, all the rest	
 #	var trueno = [Vector2(-0.764126, 0.07102), Vector2(-0.587397, 0.011519), Vector2(-0.456753, -0.004075), Vector2(-0.338316, 0.180084), Vector2(-0.20599, 0.293982), 
@@ -49,20 +49,41 @@ func _ready():
 	Vector2(0.419381, 0.784911), Vector2(-0.04922, 0.452933), Vector2(-0.743482, 0.322674)
 	]
 
-	# missing points for wheel wells trueno
-	var val1 = (trueno_front[2]+trueno_front[1])/2 # midpoint
-	var val2 = (trueno_front[5]+trueno_front[4])/2 # midpoint
-	var add = [[3, val1], [6, val2]] #need to remember that the first point is inserted already, so the index is increased by 1
+#	# missing points for wheel wells trueno
+#	var val1 = (trueno_front[2]+trueno_front[1])/2 # midpoint
+#	var val2 = (trueno_front[5]+trueno_front[4])/2 # midpoint
+#	var add = [[3, val1], [6, val2]] #need to remember that the first point is inserted already, so the index is increased by 1
+#
+#	for i in range(add.size()):
+#		var p = add[i]
+#		trueno_front.insert(p[0], p[1])
+#
+	# bottom left, top left, top right, bottom right
+	var yris_side_window = [Vector2(0.166, 0.3415), Vector2(0.166, 0.4015), Vector2(1.44, 0.4715), Vector2(1.45, 0.3715), ]
 
-	for i in range(add.size()):
-		var p = add[i]
-		trueno_front.insert(p[0], p[1])
-		
+	# bottom front [0], the next seven describe a wheel well 
+	# [1].y < [2].y < [3].y < [4].y > [5].y > [6].y > [7].y and same for x (they angle up and then down)
+	var yris_front = [ Vector2(-0.52375, 0), Vector2(-0.338125, 0.003375), Vector2(-0.338125, 0.029), Vector2(-0.32125, 0.14175), Vector2(-0.22675, 0.20626), 
+	Vector2(-0.142375, 0.189), Vector2(-0.06475, 0.097875), Vector2(-0.0445, 0),
+	# top part
+	# this is the point above the window (so x > window left edge and y > window top edge)
+	Vector2(0.21875, 0.513),
+	Vector2(0.09175, 0.361125), Vector2(-0.355, 0.31725), Vector2(-0.486625, 0.26325),  Vector2(-0.5305, 0.205875), Vector2(-0.544, 0.104625)
+	]
+
+	window_poly = yris_side_window
+	var car_front = yris_front
+
 	# windows
 	var front_wheel_end = 7
+	
+	# split edge to avoid problems polygonizing when windows are involved
+	var tmp = (car_front[9]+car_front[8])/2 # midpoint
+	car_front.insert(9, tmp)
+	
 	# inverted because the second insertion pushes the first forward
-	trueno_front.insert(front_wheel_end+1, trueno_side_window[1])
-	trueno_front.insert(front_wheel_end+1, trueno_side_window[0])
+	car_front.insert(front_wheel_end+1, window_poly[1])
+	car_front.insert(front_wheel_end+1, window_poly[0])
 
 
 	var trueno_rear = [Vector2(1.15943, 0.007378), Vector2(1.1816, 0.145438), Vector2(1.28406, 0.247247), Vector2(1.38462, 0.288478),
@@ -77,7 +98,7 @@ func _ready():
 	trueno_rear.insert(5, val4)
 
 	# split final edge to avoid problems polygonizing when windows are involved
-	var tmp = (trueno_rear[0]+trueno_rear[trueno_rear.size()-1])/2 # midpoint
+	tmp = (trueno_rear[0]+trueno_rear[trueno_rear.size()-1])/2 # midpoint
 	trueno_rear.append(tmp)
 		
 	# windows
@@ -85,8 +106,8 @@ func _ready():
 	var i = trueno_rear.size()-1
 	# top right, bottom right
 	# inverted because the second insertion pushes the first forward
-	trueno_rear.insert(i, trueno_side_window[3])
-	trueno_rear.insert(i, trueno_side_window[2])
+	trueno_rear.insert(i, window_poly[3])
+	trueno_rear.insert(i, window_poly[2])
 
 
 	#print(str(trueno.size()-1))
@@ -100,13 +121,13 @@ func _ready():
 #			car.append(trueno[i])
 
 	# exclude windows
-	for i in range(trueno_front.size()):
-		if not trueno_side_window.has(trueno_front[i]):
-			car.append(trueno_front[i])
+	for i in range(car_front.size()):
+		if not window_poly.has(car_front[i]):
+			car.append(car_front[i])
 
 	# exclude windows
 	for i in range(trueno_rear.size()):
-		if not trueno_side_window.has(trueno_rear[i]):
+		if not window_poly.has(trueno_rear[i]):
 			car.append(trueno_rear[i])	
 	
 	polygon.resize(0)
@@ -189,7 +210,7 @@ func _ready():
 	steer_node.set_cast_shadows_setting(0)
 	
 	# magic happens here!
-	createCar(trueno_front, trueno_rear, car, window_poly, surface, glass_surf)
+	createCar(car_front, trueno_rear, car, window_poly, surface, glass_surf)
 	
 	createSteeringWheel(steering_surf, steering_material)
 	
@@ -244,11 +265,11 @@ func createSteeringWheel(steering_surf, steering_material):
 	createQuadNoUV(steering_surf, Vector3(p0.x, p0.y, -0.1), Vector3(p0.x, p0.y, 0.1), Vector3(p1.x, p1.y, 0.1), Vector3(p1.x, p1.y, -0.1))
 	createQuadNoUV(steering_surf, Vector3(p0.x, p0.y, -0.1), Vector3(p0.x, p0.y, 0.1), Vector3(p1.x, p1.y, 0.1), Vector3(p1.x, p1.y, -0.1), true)
 	
-func createCar(trueno_front, trueno_rear, car, window_poly, surface, glass_surf):
+func createCar(car_front, trueno_rear, car, window_poly, surface, glass_surf):
 	# make the bottom
 	var front_wheel_end = 7
 	var poly_bottom = []
-	poly_bottom.append(trueno_front[front_wheel_end]) # end of front wheel well
+	poly_bottom.append(car_front[front_wheel_end]) # end of front wheel well
 	poly_bottom.append(trueno_rear[0]) # beginning of rear wheel well
 	poly_bottom.append(window_poly[3]) # bottom right of window
 	poly_bottom.append(window_poly[0]) # bottom left of window
@@ -261,28 +282,20 @@ func createCar(trueno_front, trueno_rear, car, window_poly, surface, glass_surf)
 	poly_top.append(window_poly[1]) # top left
 	poly_top.append(window_poly[2]) # top right
 	# car top, right to left
+	# this should be higher (y>y1) than window top
 	poly_top.append(trueno_rear[trueno_rear.size()-4])
-	poly_top.append(trueno_front[trueno_front.size()-3])
-#	var top_start = -4
-#	poly_top.append(car[car.size()+top_start])
-#	poly_top.append(car[car.size()+top_start+1])
-#	poly_top.append(car[car.size()+top_start+2])
+	poly_top.append(car_front[front_wheel_end+3]) # the point above the front windows
 	
 	indices_top = Array(Geometry.triangulate_polygon(PoolVector2Array(poly_top)))
 	# error message if something went wrong
 	if indices_top.size() < 1:
-		print("Front polygon couldn't be triangulated!")
+		print("Top polygon couldn't be triangulated!")
 	
 	# front polygon
 	var poly_front = []
-	poly_front = trueno_front
-#	for i in range(0, front_wheel_end+1): # not inclusive
-#		poly_front.append(car[i])
-#
-#	poly_front.append(window_poly[0])
-#	poly_front.append(car[car.size()-2])
-#	poly_front.append(car[car.size()-1])
-#
+	poly_front = car_front
+
+
 	indices_front = Array(Geometry.triangulate_polygon(PoolVector2Array(poly_front)))
 	# error message if something went wrong
 	if indices_front.size() < 1:
@@ -291,11 +304,7 @@ func createCar(trueno_front, trueno_rear, car, window_poly, surface, glass_surf)
 	# rear polygon
 	var poly_rear = []
 	poly_rear = trueno_rear
-#	for i in range(rear_wheel_begin, polygon.size()-3):
-#		poly_rear.append(polygon[i])
-#
-#	poly_rear.append(window_poly[2]) # top right
-#	poly_rear.append(window_poly[3]) # bottom right
+
 	
 	indices_rear = Array(Geometry.triangulate_polygon(PoolVector2Array(poly_rear)))
 	# error message if something went wrong
@@ -333,11 +342,12 @@ func createCar(trueno_front, trueno_rear, car, window_poly, surface, glass_surf)
 	
 	createRear(surface, glass_surf, poly_rear)
 	
-	createFront(surface, glass_surf, poly_front)
+	createFront(surface, glass_surf, poly_front, front_wheel_end+3)
 	
 	# add missing parts (hood, roof) due to exclusion below	
 	# hood
-	var p = poly_front.size()-6
+	#var p = poly_front.size()-6
+	var p = front_wheel_end+3+1 # where the front window ends
 	var p0 = poly_front[p]
 	var p1 = poly_front[p+1]
 	
@@ -356,7 +366,7 @@ func createCar(trueno_front, trueno_rear, car, window_poly, surface, glass_surf)
 	
 	# we need to exclude the parts where the front/rear windows go (see above)
 	#car.remove(car.find(poly_front[poly_front.size()-2]))
-	car.remove(car.find(poly_front[poly_front.size()-3]))
+	car.remove(car.find(poly_front[front_wheel_end+3]))
 	#car.remove(car.find(poly_rear[poly_rear.size()-5]))
 	car.remove(car.find(poly_rear[poly_rear.size()-4]))
 	
@@ -376,13 +386,13 @@ func createCar(trueno_front, trueno_rear, car, window_poly, surface, glass_surf)
 
 
 # TODO: write a common function for both front and rear (90% of logic is duplicated)
-func calculateFrontWindow(polygon):
-	var index = 2
+func calculateFrontWindow(polygon, index):
+	#var index = 2
 	
-	var p0 = Vector3(polygon[polygon.size()-index].x, polygon[polygon.size()-index].y, 0)
-	var p1 = Vector3(polygon[polygon.size()-index].x, polygon[polygon.size()-index].y, width)
-	var p2 = Vector3(polygon[polygon.size()-(index+1)].x, polygon[polygon.size()-(index+1)].y, 0)
-	var p3 = Vector3(polygon[polygon.size()-(index+1)].x, polygon[polygon.size()-(index+1)].y, width)
+	var p0 = Vector3(polygon[index+1].x, polygon[index+1].y, 0)
+	var p1 = Vector3(polygon[index+1].x, polygon[index+1].y, width)
+	var p2 = Vector3(polygon[index].x, polygon[index].y, 0)
+	var p3 = Vector3(polygon[index].x, polygon[index].y, width)
 	
 	# line between A and B = B-A
 	var front_line = (p1 - p0)
@@ -409,15 +419,15 @@ func calculateFrontWindow(polygon):
 	
 	return front_window_poly
 
-func createFront(surface, glass_surf, polygon):
-	var front_window_poly = calculateFrontWindow(polygon)	
+func createFront(surface, glass_surf, polygon, index):
+	var front_window_poly = calculateFrontWindow(polygon, index)	
 	
 	createWindow(front_window_poly, glass_surf)
 	#createWindow(front_window_poly, glass_surf, true)
 	
 	var bottom_front = []
-	bottom_front.append(Vector3(polygon[polygon.size()-2].x, polygon[polygon.size()-2].y, 0))
-	bottom_front.append(Vector3(polygon[polygon.size()-2].x, polygon[polygon.size()-2].y, width))
+	bottom_front.append(Vector3(polygon[index+1].x, polygon[index+1].y, 0))
+	bottom_front.append(Vector3(polygon[index+1].x, polygon[index+1].y, width))
 	bottom_front.append(front_window_poly[1])
 	bottom_front.append(front_window_poly[0])
 	
@@ -427,8 +437,8 @@ func createFront(surface, glass_surf, polygon):
 	var top_front = []
 	top_front.append(front_window_poly[2])
 	top_front.append(front_window_poly[3])
-	top_front.append(Vector3(polygon[polygon.size()-3].x, polygon[polygon.size()-3].y, 0))
-	top_front.append(Vector3(polygon[polygon.size()-3].x, polygon[polygon.size()-3].y, width))
+	top_front.append(Vector3(polygon[index].x, polygon[index].y, 0))
+	top_front.append(Vector3(polygon[index].x, polygon[index].y, width))
 	
 	createQuadNoUV(surface, top_front[0], top_front[1], top_front[2], top_front[3])
 	#createQuadNoUV(surface, top_front[0], top_front[1], top_front[2], top_front[3], true)
