@@ -279,17 +279,19 @@ func createCar(car_front, trueno_rear, car, window_poly, surface, glass_surf):
 	
 	# make the top
 	var poly_top = []
-	poly_top.append(window_poly[1]) # top left
-	poly_top.append(window_poly[2]) # top right
-	# car top, right to left
-	# this should be higher (y>y1) than window top
-	poly_top.append(trueno_rear[trueno_rear.size()-4])
-	poly_top.append(car_front[front_wheel_end+3]) # the point above the front windows
-	
-	indices_top = Array(Geometry.triangulate_polygon(PoolVector2Array(poly_top)))
-	# error message if something went wrong
-	if indices_top.size() < 1:
-		print("Top polygon couldn't be triangulated!")
+	# if top too low, don't make it (cabrio)
+	if car_front[front_wheel_end+3].y > 0.6:	
+		poly_top.append(window_poly[1]) # top left
+		poly_top.append(window_poly[2]) # top right
+		# car top, right to left
+		# this should be higher (y>y1) than window top
+		poly_top.append(trueno_rear[trueno_rear.size()-4])
+		poly_top.append(car_front[front_wheel_end+3]) # the point above the front windows
+		
+		indices_top = Array(Geometry.triangulate_polygon(PoolVector2Array(poly_top)))
+		# error message if something went wrong
+		if indices_top.size() < 1:
+			print("Top polygon couldn't be triangulated!")
 	
 	# front polygon
 	var poly_front = []
@@ -314,7 +316,9 @@ func createCar(car_front, trueno_rear, car, window_poly, surface, glass_surf):
 	
 	# build car
 	createSide(indices, poly_bottom, surface, 0)
-	createSide(indices_top, poly_top, surface, 0)
+	# if top too low, don't make it (cabrio)
+	if car_front[front_wheel_end+3].y > 0.6:
+		createSide(indices_top, poly_top, surface, 0)
 	createSide(indices_front, poly_front, surface, 0)
 	createSide(indices_rear, poly_rear, surface, 0)
 	#other side
@@ -324,7 +328,9 @@ func createCar(car_front, trueno_rear, car, window_poly, surface, glass_surf):
 #	createSide(indices_rear, poly_rear, surface, 0, true)
 	
 	createSide(indices, poly_bottom, surface, width, true)
-	createSide(indices_top, poly_top, surface, width, true)
+	# if top too low, don't make it (cabrio)
+	if car_front[front_wheel_end+3].y > 0.6:
+		createSide(indices_top, poly_top, surface, width, true)
 	createSide(indices_front, poly_front, surface, width, true)
 	createSide(indices_rear, poly_rear, surface, width, true)
 	#other side
@@ -356,10 +362,11 @@ func createCar(car_front, trueno_rear, car, window_poly, surface, glass_surf):
 	#createQuadNoUV(surface, Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, width), Vector3(p1.x, p1.y, width), Vector3(p1.x, p1.y, 0), true)
 	
 	# roof
-	p0 = poly_top[2]
-	p1 = poly_top[3]
-	
-	createQuadNoUV(surface, Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, width), Vector3(p1.x, p1.y, width), Vector3(p1.x, p1.y, 0))
+	# if top too low, don't make it (cabrio)
+	if car_front[front_wheel_end+3].y > 0.6:
+		p0 = poly_top[2]
+		p1 = poly_top[3]
+		createQuadNoUV(surface, Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, width), Vector3(p1.x, p1.y, width), Vector3(p1.x, p1.y, 0))
 	
 	#createQuadNoUV(surface, Vector3(p0.x, p0.y, 0), Vector3(p0.x, p0.y, width), Vector3(p1.x, p1.y, width), Vector3(p1.x, p1.y, 0), true)
 	
