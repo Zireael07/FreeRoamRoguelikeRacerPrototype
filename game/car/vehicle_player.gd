@@ -76,6 +76,8 @@ func _ready():
 	var v = preload("res://hud/virtual_joystick.tscn")
 	vjoy = v.instance()
 	vjoy.set_name("Joystick")
+	# we default to mouse steering off
+	vjoy.hide()
 	add_child(vjoy)
 	
 	
@@ -367,6 +369,11 @@ func _process(delta):
 	var disp = num_to_dir[int(round(num_mapping))]
 	hud.update_compass(str(disp))
 
+	var cam_minimap = minimap.get_node("Viewport/minimap").cam2d
+	var cam_rot = (cam_minimap.arr_rot)
+	
+	hud.update_debug("Player vel: x: " + str(get_linear_velocity().x) + "y: " + str(get_linear_velocity().z))
+	#hud.update_debug("Player: " + str(get_rotation_degrees()) + '\n' + " Arrow : " + str(cam_rot))
 
 	hud.update_health(health)
 	

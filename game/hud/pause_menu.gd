@@ -41,8 +41,10 @@ func _on_Button_pressed():
 func _on_MouseSteerButton_pressed():
 	if !get_parent().mouse_steer:
 		get_parent().mouse_steer = true
+		get_parent().get_node("Joystick").show()
 	else:
 		get_parent().mouse_steer = false
+		get_parent().get_node("Joystick").hide()
 	
 	
 	#pass # Replace with function body.
