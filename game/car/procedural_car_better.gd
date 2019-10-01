@@ -3,7 +3,7 @@ extends "res://scripts/mesh_gen.gd"
 
 # class member variables go here, for example:
 
-var polygon = []
+var car_front = [] 
 var window_poly = []
 
 export(float) var width = 1.0
@@ -72,7 +72,7 @@ func _ready():
 	]
 
 	window_poly = yris_side_window
-	var car_front = yris_front
+	car_front = yris_front
 
 	# windows
 	var front_wheel_end = 7
@@ -130,7 +130,6 @@ func _ready():
 		if not window_poly.has(trueno_rear[i]):
 			car.append(trueno_rear[i])	
 	
-	polygon.resize(0)
 	print("Car final id: " + str(car.size()-1))
 	
 
@@ -641,7 +640,7 @@ func hit_deform(pos):
 	
 	#var vtx = mdt.get_vertex(10)
 	#print("Deforming vertex... " + " 10 " + str(vtx))
-	var p0 = polygon[0]
+	var p0 = car_front[0]
 	var vtx = Vector3(p0.x, p0.y, 0)
 	
 	var done = false
