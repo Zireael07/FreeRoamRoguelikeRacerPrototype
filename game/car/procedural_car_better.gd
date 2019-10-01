@@ -3,7 +3,8 @@ extends "res://scripts/mesh_gen.gd"
 
 # class member variables go here, for example:
 
-var car_front = [] 
+var car_front = []
+var car_rear = []
 var window_poly = []
 
 export(float) var width = 1.0
@@ -91,26 +92,24 @@ func _ready():
 	Vector2(1.47597, 0.635872), Vector2(1.19123, 0.778995)
 	]
 
+	car_rear = trueno_rear
 	# missing wheel well points
-	var val3 = (trueno_rear[4]+trueno_rear[3])/2 # midpoint
-	trueno_rear.insert(4, val3)
-	var val4 = (trueno_rear[5]+trueno_rear[4])/2 # midpoint
-	trueno_rear.insert(5, val4)
+	var val3 = (car_rear[4]+car_rear[3])/2 # midpoint
+	car_rear.insert(4, val3)
+	var val4 = (car_rear[5]+car_rear[4])/2 # midpoint
+	car_rear.insert(5, val4)
 
 	# split final edge to avoid problems polygonizing when windows are involved
-	tmp = (trueno_rear[0]+trueno_rear[trueno_rear.size()-1])/2 # midpoint
-	trueno_rear.append(tmp)
+	tmp = (car_rear[0]+car_rear[car_rear.size()-1])/2 # midpoint
+	car_rear.append(tmp)
 		
 	# windows
 	# because the final point is the midpoint
-	var i = trueno_rear.size()-1
+	var i = car_rear.size()-1
 	# top right, bottom right
 	# inverted because the second insertion pushes the first forward
-	trueno_rear.insert(i, window_poly[3])
-	trueno_rear.insert(i, window_poly[2])
-
-
-	#print(str(trueno.size()-1))
+	car_rear.insert(i, window_poly[3])
+	car_rear.insert(i, window_poly[2])
 
 	var car = []
 	
@@ -126,12 +125,11 @@ func _ready():
 			car.append(car_front[i])
 
 	# exclude windows
-	for i in range(trueno_rear.size()):
-		if not window_poly.has(trueno_rear[i]):
-			car.append(trueno_rear[i])	
+	for i in range(car_rear.size()):
+		if not window_poly.has(car_rear[i]):
+			car.append(car_rear[i])	
 	
 	print("Car final id: " + str(car.size()-1))
-	
 
 	
 #	# bottom front point
@@ -209,7 +207,7 @@ func _ready():
 	steer_node.set_cast_shadows_setting(0)
 	
 	# magic happens here!
-	createCar(car_front, trueno_rear, car, window_poly, surface, glass_surf)
+	createCar(car_front, car_rear, car, window_poly, surface, glass_surf)
 	
 	createSteeringWheel(steering_surf, steering_material)
 	
@@ -626,6 +624,7 @@ func rain_clear():
 
 # 'pos' is local space?	
 func hit_deform(pos):
+	#print("Deform pos: " + str(pos))
 	#var start = float(OS.get_ticks_msec())
 	# setup
 	var mdt = MeshDataTool.new()
@@ -633,15 +632,22 @@ func hit_deform(pos):
 	var mesh = $"plane".get_mesh()
 	
 	# copies the surface into mesh data tool
-	var error = mdt.create_from_surface(mesh, 0)
+	mdt.create_from_surface(mesh, 0)
 	
 	# Magic happens here
 	var center = Vector3(0, 0, width/2)
 	
 	#var vtx = mdt.get_vertex(10)
 	#print("Deforming vertex... " + " 10 " + str(vtx))
-	var p0 = car_front[0]
-	var vtx = Vector3(p0.x, p0.y, 0)
+	var pt
+	if pos.z > 0:
+		pt = car_front[0]
+		#print("Deform front")
+	else:
+		pt = car_rear[car_rear.size()-8]
+		#print("Deform rear" + str(pt))
+	
+	var vtx = Vector3(pt.x, pt.y, 0)
 	
 	var done = false
 	# Find all vertices that share the position, just in case

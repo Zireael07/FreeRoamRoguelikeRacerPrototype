@@ -467,14 +467,20 @@ func _input(event):
 
 
 func _on_BODY_body_entered(body):
-	#print("Collided with " + str(body.get_name()))
+	var obj = body.get_parent().get_parent()
+	if body.get_parent().get_name() == "Ground":
+		obj = body.get_parent()
+
+	#print("Collided with " + str(obj.get_name()))
+	#print("Collided with body at " + str(obj.get_global_transform().origin))
 
 	if speed > 5:
 		print("Speed at collision: " + str(round(speed*3.6)) + "km/h, deducting: " + str(round(speed)))
 		# deduct health
 		health -= round(speed)
 		# deform
-		$"mesh".hit_deform(Vector3())
+		var local = get_global_transform().xform_inv((obj.get_global_transform().origin))
+		$"mesh".hit_deform(local)
 
 	if health <= 0:
 		# game over!
