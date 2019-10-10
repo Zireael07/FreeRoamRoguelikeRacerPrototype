@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://dynamic_sky/shaders/Sky.shader" type="Shader" id=1]
+[ext_resource path="res://dynamic_sky/textures/noise.png" type="Texture" id=2]
+[ext_resource path="res://dynamic_sky/scripts/Sky.gd" type="Script" id=3]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 1 )
+shader_param/iTime = null
+shader_param/iFrame = null
+shader_param/COVERAGE = 0.5
+shader_param/THICKNESS = 20.0
+shader_param/ABSORPTION = 1.031
+shader_param/STEPS = 25
+shader_param/SUN = 0.9
+shader_param/iChannel0 = ExtResource( 2 )
+
+[sub_resource type="ImageTexture" id=2]
+size = Vector2( 1280, 720 )
+
+[node name="Sprite" type="Sprite"]
+material = SubResource( 1 )
+texture = SubResource( 2 )
+centered = false
+script = ExtResource( 3 )
