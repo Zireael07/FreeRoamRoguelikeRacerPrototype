@@ -1,0 +1,23 @@
+[gd_resource type="Environment" load_steps=2 format=2]
+
+[sub_resource type="PanoramaSky" id=1]
+
+[resource]
+background_mode = 2
+background_sky = SubResource( 1 )
+ambient_light_color = Color( 1, 1, 1, 1 )
+ambient_light_energy = 0.5
+ambient_light_sky_contribution = 0.3
+fog_enabled = true
+fog_depth_begin = 180.0
+ss_reflections_roughness = false
+ssao_enabled = true
+glow_enabled = true
+glow_levels/2 = true
+glow_levels/3 = false
+glow_levels/5 = false
+glow_intensity = 3.0
+glow_strength = 1.2
+glow_hdr_threshold = 4.0
+glow_hdr_scale = 1.0
+glow_bicubic_upscale = true

@@ -256,7 +256,6 @@ wheel_radius = 0.25
 
 [node name="mesh" parent="BODY" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.5, 0.298204, 0.591264 )
-width = 1.0
 
 [node name="car_mesh" type="Spatial" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.244165, 0.576408 )
@@ -393,6 +392,7 @@ transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.158, 
 
 [node name="skysphere" parent="BODY" instance=ExtResource( 19 )]
 transform = Transform( -1.04907e-07, 0, -2.4, 0, 2.4, 0, 2.4, 0, -1.04907e-07, 0, 3, 0 )
+visible = false
 script = ExtResource( 20 )
 
 [node name="RainParticles" type="Particles" parent="BODY"]
