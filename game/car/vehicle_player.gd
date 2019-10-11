@@ -64,7 +64,7 @@ func _ready():
 	# our custom signal
 	connect("load_ended", self, "on_load_ended")
 	
-	World_node = get_parent().get_parent().get_node("World")
+	World_node = get_parent().get_parent().get_node("scene")
 	cockpit_cam = $"cambase/CameraCockpit"
 	debug_cam = $"cambase/CameraDebug"
 	
