@@ -168,7 +168,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord, in vec2 iResolution)
 
     panorama_uv(fragCoord,ro,rd,iResolution);
     
-    vec3 sky = render_sky_color(rd);
+    //vec3 sky = render_sky_color(rd);
     vec4 cld = vec4(0.);
 	float skyPow = dot(rd, vec3(0.0, -1.0, 0.0));
     float horizonPow =1.-pow(1.0-abs(skyPow), 5.0);
@@ -179,17 +179,17 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord, in vec2 iResolution)
     cld*=clamp((  1.0 - exp(-2.3 * pow(max((0.0), horizonPow), (2.6)))),0.,1.);
     }
 	else{
-    cld.rgb = cube_bot(rd,vec3(1.5,1.49,1.71), vec3(1.1,1.15,1.5));
-    cld*=cld;
-    //cld=clamp(cld,vec4(0.),vec4(1.));
-    cld.a=1.;
-    cld*=clamp((  1.0 - exp(-1.3 * pow(max((0.0), horizonPow), (2.6)))),0.,1.);
+//    cld.rgb = cube_bot(rd,vec3(1.5,1.49,1.71), vec3(1.1,1.15,1.5));
+//    cld*=cld;
+//    //cld=clamp(cld,vec4(0.),vec4(1.));
+//    cld.a=1.;
+//    cld*=clamp((  1.0 - exp(-1.3 * pow(max((0.0), horizonPow), (2.6)))),0.,1.);
     }
-    //col = cld.rgb;
-	col=mix(sky, cld.rgb/(0.0001+cld.a), cld.a);
+    col = cld.rgb;
+	//col=mix(sky, cld.rgb/(0.0001+cld.a), cld.a);
 	//col=sky;
 	//col*=col;
-    fragColor = vec4(col,1.0);
+    fragColor = vec4(col,cld.a);
 }
 
 void fragment(){

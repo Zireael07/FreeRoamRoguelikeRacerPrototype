@@ -2,7 +2,7 @@ extends Viewport
 
 signal sky_updated
 
-onready var material = $Sprite2.material
+onready var material = get_node("Node2D/Sprite2").material
 var trigger_count = 0
 
 func _ready():

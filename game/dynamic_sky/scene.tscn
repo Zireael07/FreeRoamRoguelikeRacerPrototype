@@ -2,7 +2,7 @@
 
 [ext_resource path="res://dynamic_sky/scripts/scene.gd" type="Script" id=1]
 [ext_resource path="res://dynamic_sky/SkyTexture.gd" type="Script" id=2]
-[ext_resource path="res://dynamic_sky/Sprite.tscn" type="PackedScene" id=3]
+[ext_resource path="res://dynamic_sky/sky_texture.tscn" type="PackedScene" id=3]
 
 [node name="scene" type="Spatial" groups=[
 "root",
@@ -10,10 +10,9 @@
 script = ExtResource( 1 )
 
 [node name="Sky" type="Viewport" parent="."]
-editor/display_folded = true
 size = Vector2( 1280, 720 )
 render_target_update_mode = 3
 script = ExtResource( 2 )
 
-[node name="Sprite2" parent="Sky" instance=ExtResource( 3 )]
+[node name="Node2D" parent="Sky" instance=ExtResource( 3 )]
 [connection signal="sky_updated" from="Sky" to="." method="_on_Sky_sky_updated"]
