@@ -7,7 +7,7 @@ var env = null
 # the part here originally based on a script by Khairul Hidayat, https://www.youtube.com/watch?v=iTkLEP3Kwko
 
 #export var SPEED = 20.0;
-var DAY_SPEED = 5; # in real-time minutes
+var DAY_SPEED = 10; # in real-time minutes
 
 var trigger_count = 0
 #const UPDATE_TIME = 1/30.0;
@@ -171,8 +171,8 @@ func calculate_sun_height(time):
 	# so that the lowest points are at 6h and 18h
 	var sun_height = clamp(1-sin((time-6.0)/4.0), 0.0, 1.0)
 	
-	if time> 18:
-		sun_height = 1.2 # below the horizon
+	if time> 18.5:
+		sun_height = 1.4 # below the horizon
 	
 	var sun_lat = 0.85 # west
 	if time > 12:
@@ -181,11 +181,11 @@ func calculate_sun_height(time):
 	return Vector2(sun_lat, sun_height)
 	
 func get_light_color(time):
-	if time >= 17.5 && time < 17.8:
+	if time >= 18.4 && time < 18.5:
 		# sunset
 		light_color = Color(1,0.75,0)
-	elif time >= 17.8 && time < 18:
-		var d = (time-17.5)/0.5;
+	elif time >= 18.5 && time < 18.7:
+		var d = (time-18.5)/0.5;
 		# 0.303474,0.375416,0.627212
 		light_color = Color(1-((1-42/255.0)*d), 1-((1-64/255.0)*d), 1-((1-141/255.0)*d));
 		
@@ -193,7 +193,7 @@ func get_light_color(time):
 	elif time >= 6.0 && time < 6.5:
 		var d = (time-5.5)/0.5;
 		light_color = Color((42/255.0)+((1-42/255.0)*d), (64/255.0)+((1-64/255.0)*d), (141/255.0)+((1-141/255.0)*d));
-	elif time >= 18 or time < 5.5:
+	elif time >= 18.7 or time < 5.5:
 		light_color = Color(42/255.0, 64/255.0, 141/255.0);
 	else:
 		light_color = Color(1,1,1)
@@ -207,7 +207,7 @@ func get_light_energy(time):
 	if time >= 6.0 && time < 6.5:
 		lit = lit * 0.5
 	
-	elif time >= 17.5 && time < 17.8:
+	elif time >= 18.5 && time < 19:
 		lit = lit * 0.5
 	else:
 		lit = lit
@@ -269,7 +269,7 @@ func day_night_cycle(time):
 		
 		env.background_energy = 1
 		
-	elif time >= 17.5 && not night_fired:
+	elif time >= 18.5 && not night_fired:
 		#disable shadows
 		#sun.set_shadow(false)
 		get_tree().get_nodes_in_group("roads")[0].lite_up()
