@@ -29,7 +29,7 @@ var sun = null
 var sunmoon_angle
 var sunmoon_lat
 var sky = null
-
+var clouds = null
 
 # colors
 var light_color
@@ -37,6 +37,8 @@ var ambient_color
 var sky_color
 var horizon_color
 var gr_horizon_color
+var cloud_tint
+var cloud_tint_dist
 
 var night_fired = false
 
@@ -69,6 +71,7 @@ func _ready():
 	env = get_parent().get_node("WorldEnvironment").get_environment()
 	#sky = env.get_sky()
 	sky = get_node("Sky/Node2D/sky_rect")
+	clouds = get_node("Sky/Node2D/Sprite2")
 	
 	#print("Real-life minutes/day is: " + str(DAY_SPEED) + ", 1 h is: " + str((DAY_SPEED/24.0)*60.0) + " s")
 	
@@ -228,12 +231,12 @@ func set_colors(time):
 	# set sky colors
 	# default sky color used to be 12, 116, 249
 	# 165, 214, 240
-	sky_color = Color(165/255.0*light, 214/255.0*light, 240/255.0*light)
+	#sky_color = Color(165/255.0*light, 214/255.0*light, 240/255.0*light)
 	# default horizon color is 142, 210, 232
 	horizon_color = Color(142/255.0*light, 210/255.0*light, 232/255.0*light)
 	# detault ground horizon color is 123, 201, 243
 	# 107, 100, 94
-	gr_horizon_color = Color(107/255.0*light, 100/255.0*light, 94/255.0*light)
+	#gr_horizon_color = Color(107/255.0*light, 100/255.0*light, 94/255.0*light)
 	
 	
 	#sky.set_sky_top_color(sky_color)
@@ -241,6 +244,16 @@ func set_colors(time):
 	#sky.set_ground_horizon_color(gr_horizon_color)	
 	env.set_fog_color(horizon_color)
 
+func set_clouds(time):
+	if time >= 18.4 && time < 18.5:
+		# sunset
+		cloud_tint = Color(0.8,0.2,0.1, 0.35)
+		cloud_tint_dist = 6.4
+	else:
+		cloud_tint = Color(1.0, 1.0, 1.0, 0.0)
+		cloud_tint_dist = 6.4
+	
+	return [cloud_tint, cloud_tint_dist];
 
 func day_night_cycle(time):
 	#print(str(time))
@@ -257,6 +270,8 @@ func day_night_cycle(time):
 	if time >= 5.5 and time <= 19.0:
 		# set sun latitude
 		sky.set_sun(sunmoon_lat)
+		var cloud_data = set_clouds(time)
+		clouds.set_cloud_tint(cloud_data[0])
 		#sky.set_sun_latitude(sunmoon_lat)		
 	
 	if time >= 5.5 && time < 6.0:

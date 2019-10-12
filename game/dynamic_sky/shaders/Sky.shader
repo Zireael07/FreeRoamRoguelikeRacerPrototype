@@ -9,8 +9,9 @@ uniform float COVERAGE :hint_range(0,1); //0.5
 uniform float THICKNESS :hint_range(0,100); //25.
 uniform float ABSORPTION :hint_range(0,10); //1.030725
 uniform int STEPS :hint_range(0,100); //25
-uniform float SUN: hint_range(0,1);
 
+uniform vec4 HORIZON_COL :hint_color = vec4(0.8, 0.2, 0.1, 0.35);
+uniform float TINT_DIST = 6.4; //10.4;
 
 float noise( in vec3 x )
 {
@@ -38,17 +39,17 @@ float get_noise(vec3 x)
 	return fbm(x, FBM_FREQ);
 }
 
-vec3 render_sky_color(vec3 rd){
-	vec3 sun_color = vec3(1., .7, .55);
-	vec3 SUN_DIR = normalize(vec3(0, abs(sin(SUN)), -1));
-	float sun_amount = max(dot(rd, SUN_DIR), 0.0);
-
-	vec3  sky = mix(vec3(.0, .1, .4), vec3(.3, .6, .8), 1.0 - rd.y);
-	sky = sky + sun_color * min(pow(sun_amount, 1500.0) * 5.0, 1.0);
-	sky = sky + sun_color * min(pow(sun_amount, 10.0) * .6, 1.0);
-
-	return sky;
-}
+//vec3 render_sky_color(vec3 rd){
+//	vec3 sun_color = vec3(1., .7, .55);
+//	vec3 SUN_DIR = normalize(vec3(0, abs(sin(SUN)), -1));
+//	float sun_amount = max(dot(rd, SUN_DIR), 0.0);
+//
+//	vec3  sky = mix(vec3(.0, .1, .4), vec3(.3, .6, .8), 1.0 - rd.y);
+//	sky = sky + sun_color * min(pow(sun_amount, 1500.0) * 5.0, 1.0);
+//	sky = sky + sun_color * min(pow(sun_amount, 10.0) * .6, 1.0);
+//
+//	return sky;
+//}
 
 bool SphereIntersect(vec3 SpPos, float SpRad, vec3 ro, vec3 rd, out float t, out vec3 norm) {
     ro -= SpPos;
@@ -175,16 +176,22 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord, in vec2 iResolution)
     if(rd.y>0.)
     {cld=render_clouds(ro,rd);
     cld=clamp(cld,vec4(0.),vec4(1.));
-    cld.rgb+=0.04*cld.rgb*horizonPow;
-    cld*=clamp((  1.0 - exp(-2.3 * pow(max((0.0), horizonPow), (2.6)))),0.,1.);
+    cld.rgb+=0.04*cld.rgb; //*horizonPow;
+	//shades according to horizon distance
+	float hor_dist = clamp((  1.0 - exp(-2.3 * pow(max((0.0), horizonPow), (2.6)))),0.,1.);
+	float tint_dist = clamp((  1.0 - exp(-2.3 * pow(max((0.0), horizonPow), (TINT_DIST)))),0.,1.);
+	//cld.rgb *= (1.-tint_dist)*HORIZON_COL.rgb;
+	cld.rgb = mix(cld.rgb, HORIZON_COL.rgb, 1.-tint_dist);
+	//cld.rgb *= (1.-tint_dist)*HORIZON_COL.rgb;
+	cld*= hor_dist;
     }
-	else{
-//    cld.rgb = cube_bot(rd,vec3(1.5,1.49,1.71), vec3(1.1,1.15,1.5));
-//    cld*=cld;
-//    //cld=clamp(cld,vec4(0.),vec4(1.));
-//    cld.a=1.;
-//    cld*=clamp((  1.0 - exp(-1.3 * pow(max((0.0), horizonPow), (2.6)))),0.,1.);
-    }
+//	else{
+////    cld.rgb = cube_bot(rd,vec3(1.5,1.49,1.71), vec3(1.1,1.15,1.5));
+////    cld*=cld;
+////    //cld=clamp(cld,vec4(0.),vec4(1.));
+////    cld.a=1.;
+////    cld*=clamp((  1.0 - exp(-1.3 * pow(max((0.0), horizonPow), (2.6)))),0.,1.);
+//    }
     col = cld.rgb;
 	//col=mix(sky, cld.rgb/(0.0001+cld.a), cld.a);
 	//col=sky;
