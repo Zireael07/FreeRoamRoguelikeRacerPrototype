@@ -734,8 +734,8 @@ func reset_lite():
 
 func rain_shine():
 	var material = get_node("plane").get_mesh().surface_get_material(0)
-	material.set_roughness(0.2)
-	material.set_metallic(0.85)
+	material.set_shader_param("roughness", 0.2)
+	material.set_shader_param("metallic", 0.85)
 	
 func no_rain():
 	var material = get_node("plane").get_mesh().surface_get_material(0)

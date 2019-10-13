@@ -322,6 +322,13 @@ func no_rain():
 
 	# car glass
 	player.get_node("BODY/mesh").rain_clear()
+
+func overcast():
+	# in percent
+	clouds.set_coverage(70)
+	
+func normal_sky():
+	clouds.set_coverage(50)
 	
 # fsm
 func set_state(new_state):
@@ -356,6 +363,7 @@ class WeatherSunny:
 		world = wd
 		# weather init
 		world.no_rain()
+		world.normal_sky()
 
 class WeatherOvercast:
 	var world
@@ -364,6 +372,7 @@ class WeatherOvercast:
 		world = wd
 		# weather init
 		world.no_rain()
+		world.overcast()
 		
 class WeatherRain:
 	var world
@@ -372,6 +381,7 @@ class WeatherRain:
 		world = wd
 		# weather init
 		world.rain()
+		world.overcast()
 
 
 # from danilw
