@@ -11,6 +11,7 @@ var start
 
 export var target = Vector3()
 var raceline = PoolVector3Array()
+var ai_data
 
 # race
 var racer
@@ -255,9 +256,10 @@ func spawn_racer(loc):
 	
 	car.set_translation(local+loc)
 	car.target = target
-
+	# pass intersection data to AI
+	car.race_int_path = ai_data
 	car.race = self
-
+	
 	car.left = false
 	
 	cars.add_child(car)

@@ -174,9 +174,9 @@ func _ready():
 		print("Intersections path: " + str(int_path))
 
 		#paranoia
-		nav_path = []
+		nav_path = PoolVector3Array()
 		if [int_path[0], int_path[1]] in path_look:
-			print("First pair: " + str(int_path[0]) + "," + str(int_path[1]))			
+			#print("First pair: " + str(int_path[0]) + "," + str(int_path[1]))			
 			var lookup_path = path_look[[int_path[0], int_path[1]]]
 			#print("Lookup path pt1: " + str(lookup_path))
 			nav_path = nav.get_point_path(lookup_path[0], lookup_path[1])
@@ -563,6 +563,13 @@ func spawn_marker(spots, mark, _name, limit=2):
 	print("Marker target is " + str(marker.target))
 
 	add_child(marker)
+	
+	# remove from list of possible spots
+	spots.remove(id)
+	
+	if _name == "race_marker":
+		print("Set marker ai data")
+		marker.ai_data = [m_id, t_id]
 
 	return [m_id, t_id]
 

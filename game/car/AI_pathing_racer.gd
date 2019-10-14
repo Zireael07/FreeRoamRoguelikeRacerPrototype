@@ -14,10 +14,28 @@ var romaji2_list = ["ro"]
 var name2_list = ["郎"]
 
 var race
+var race_int_path = []
 
 func _ready():
-	._ready()
+	#._ready()
+	if is_in_group("race_AI"):
+		print("Race AI pathing")
+		map = get_node("/root/Navigation").get_node("map")
+		var lookup_path = map.path_look[[race_int_path[0], race_int_path[1]]]
+		#print("[AI] Lookup path: " + str(lookup_path))
+		var nav_path = map.nav.get_point_path(lookup_path[0], lookup_path[1])
+		
+		path = reduce_path(nav_path)
+		print("AI has path: " + str(path))
+		
 	random_name()
+	
+	# Initialization here
+	if has_node("draw"):
+		draw = get_node("draw")
+	if has_node("draw2"):
+		draw_arc = get_node("draw2")
+	
 	if race:
 		get_node("BODY").connect("path_gotten", race, "_on_path_gotten")
 	

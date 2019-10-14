@@ -45,9 +45,6 @@ func _ready():
 		#print("[AI] Nav path: " + str(nav_path))
 		
 		path = reduce_path(nav_path)
-		
-	elif is_in_group("race_AI"):
-		print("Race AI pathing")
 	
 	# Initialization here
 	if has_node("draw"):
