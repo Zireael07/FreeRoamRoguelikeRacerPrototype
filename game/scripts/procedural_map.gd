@@ -476,49 +476,15 @@ func bfs_distances(start):
 
 
 #-------------------------
-
-func spawn_markers(real_edges):
-	var spots = []
-
-	var mark = preload("res://objects/marker.tscn")
-	var sp_mark = preload("res://objects/speed_marker.tscn")
-
-	# random choice of an intersection to spawn at
-	
-	# ensure the spots considered are actually connected 
-	for i in range(samples.size()-1):
-		for e in real_edges:
-			if e.x == i or e.y == i:
-				spots.append(i)
-				break #the first find should be enough
-	
-	print("Spots list: " + str(spots))
-	
-	# trick to copy the array
-	#spots = [] + samples
-	#spots.pop_back() # we don't want the last entry
-	
-	var num_inters = spots.size()
-	var sel = randi() % num_inters
+func spawn_marker(spots, mark, _name):
+	# random choice of a connected (!) intersection to spawn at
+	var sel = randi() % spots.size()
 	var id = spots[sel]
 	#print(str(id))
 	var p = samples[id]
-
-	var sp_marker = sp_mark.instance()
-	sp_marker.set_translation(Vector3(p[0]*mult, 0, p[1]*mult))
-	add_child(sp_marker)
-
-	# remove from list of possible spots
-	spots.remove(id)
-
-	# random choice of a connected (!) intersection to spawn at
-	sel = randi() % spots.size()
-	id = spots[sel]
-	#print(str(id))
-	p = samples[id]
 	
 	var marker = mark.instance()
-	marker.set_name("tt_marker")
+	marker.set_name(_name)
 	marker.set_translation(Vector3(p[0]*mult, 0, p[1]*mult))
 
 	# create a distance map from our intersection
@@ -554,4 +520,45 @@ func spawn_markers(real_edges):
 	print("Marker target is " + str(marker.target))
 
 	add_child(marker)
+
 	return [m_id, t_id]
+
+func spawn_markers(real_edges):
+	var spots = []
+
+	var mark = preload("res://objects/marker.tscn")
+	var sp_mark = preload("res://objects/speed_marker.tscn")
+
+	# random choice of an intersection to spawn at
+	
+	# ensure the spots considered are actually connected 
+	for i in range(samples.size()-1):
+		for e in real_edges:
+			if e.x == i or e.y == i:
+				spots.append(i)
+				break #the first find should be enough
+	
+	print("Spots list: " + str(spots))
+	
+	# trick to copy the array
+	#spots = [] + samples
+	#spots.pop_back() # we don't want the last entry
+	
+	var num_inters = spots.size()
+	var sel = randi() % num_inters
+	var id = spots[sel]
+	#print(str(id))
+	var p = samples[id]
+
+	var sp_marker = sp_mark.instance()
+	sp_marker.set_translation(Vector3(p[0]*mult, 0, p[1]*mult))
+	add_child(sp_marker)
+
+	# remove from list of possible spots
+	spots.remove(id)
+
+	var marker_data = spawn_marker(spots, mark, "tt_marker")
+	print("Marker data: " + str(marker_data))
+	
+	return marker_data
+
