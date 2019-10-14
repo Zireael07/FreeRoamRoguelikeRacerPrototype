@@ -10,6 +10,7 @@ var finish = false
 var start
 
 export var target = Vector3()
+var raceline = PoolVector3Array()
 
 # race
 var racer
@@ -90,7 +91,7 @@ func get_AI_position_on_raceline():
 	if not done: return null
 	else:
 		var ai = car.get_node("BODY")
-		var raceline = ai.path
+		#var raceline = ai.path
 		var AI_pos = ai.position_on_line
 	
 		return AI_pos
@@ -221,8 +222,9 @@ func _on_Area_body_exit( body ):
 func spawn_finish(start):
 	print("Should be spawning finish")
 	var loc = target
-	var our = preload("res://objects/race_marker.tscn")
-	var finish = our.instance()
+	#var our = preload("res://objects/race_marker.tscn")
+	#var finish = our.instance()
+	var finish = self.duplicate()
 	finish.set_name("Finish")
 	finish.set_translation(Vector3(loc.x, 0.25, loc.z))
 	finish.finish = true
@@ -230,6 +232,17 @@ func spawn_finish(start):
 	#finish.set_val(true)
 	
 	get_parent().add_child(finish)
+	#add to minimap
+	var minimap = player.get_node("Viewport_root/Viewport/minimap")
+	minimap.add_marker(finish.get_global_transform().origin, minimap.blue_flag)
+	
+	# test
+	var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+	track_map.points = track_map.vec3s_convert(raceline)
+	if raceline.size() > 0:
+		print("Got raceline")
+	# force redraw
+	track_map.update()
 
 # differences to normal marker start here
 func spawn_racer(loc):
@@ -238,8 +251,9 @@ func spawn_racer(loc):
 	
 	# find the root of the scene
 	var cars = player.get_parent().get_parent()
+	var local = cars.to_local(get_global_transform().origin)
 	
-	car.set_translation(get_translation()+loc)
+	car.set_translation(local+loc)
 	car.target = target
 
 	car.race = self

@@ -17,32 +17,37 @@ func _ready():
 	# Called every time the node is added to the scene.
 	
 	#navigation_node = get_node("/root/root")
-	map = get_node("/root/Navigation").get_node("map")
-	
-	# look up the closest intersection
-	var map_loc = map.to_local(get_global_transform().origin)
-	#print("global: " + str(get_global_transform().origin) + ", map_loc: " + str(map_loc))
-	
-	var sorted = map.sort_intersections_distance(map_loc, true)
-	var closest_ind = sorted[0][1]
-	
-	var closest = map.get_child(closest_ind)
-	print(closest.get_name() + " " + str(closest.get_translation()))
-	
-	#print("[AI] Path_look: " + str(map.path_look))
-	var int_path = []
-	for p in map.path_look:
-		if p[0] == closest_ind-2:
-			int_path = p
-			
-	#print("[AI] our intersection path" + str(int_path))
-	
-	var lookup_path = map.path_look[[int_path[0], int_path[1]]]
-	#print("[AI] Lookup path: " + str(lookup_path))
-	var nav_path = map.nav.get_point_path(lookup_path[0], lookup_path[1])
-	#print("[AI] Nav path: " + str(nav_path))
-	
-	path = reduce_path(nav_path)
+	# only traffic AI
+	if is_in_group("AI"):
+		map = get_node("/root/Navigation").get_node("map")
+		
+		# look up the closest intersection
+		var map_loc = map.to_local(get_global_transform().origin)
+		#print("global: " + str(get_global_transform().origin) + ", map_loc: " + str(map_loc))
+		
+		var sorted = map.sort_intersections_distance(map_loc, true)
+		var closest_ind = sorted[0][1]
+		
+		var closest = map.get_child(closest_ind)
+		print(closest.get_name() + " " + str(closest.get_translation()))
+		
+		#print("[AI] Path_look: " + str(map.path_look))
+		var int_path = []
+		for p in map.path_look:
+			if p[0] == closest_ind-2:
+				int_path = p
+				
+		#print("[AI] our intersection path" + str(int_path))
+		
+		var lookup_path = map.path_look[[int_path[0], int_path[1]]]
+		#print("[AI] Lookup path: " + str(lookup_path))
+		var nav_path = map.nav.get_point_path(lookup_path[0], lookup_path[1])
+		#print("[AI] Nav path: " + str(nav_path))
+		
+		path = reduce_path(nav_path)
+		
+	elif is_in_group("race_AI"):
+		print("Race AI pathing")
 	
 	# Initialization here
 	if has_node("draw"):

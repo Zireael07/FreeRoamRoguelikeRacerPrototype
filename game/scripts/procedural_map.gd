@@ -143,7 +143,7 @@ func _ready():
 			#print("Nav path: " + str(nav_path))
 			# so that the player can see
 			#marker.raceline = nav_path
-		if [int_path[1], int_path[2]] in path_look:
+		if int_path.size() > 2 and [int_path[1], int_path[2]] in path_look:
 			#print("Second pair: " + str(int_path[1]) + "," + str(int_path[2]))
 			var lookup_path = path_look[[int_path[1], int_path[2]]]
 			#print("Lookup path pt2: " + str(lookup_path))
@@ -162,6 +162,49 @@ func _ready():
 			# display the whole path
 			marker.raceline = nav_path + nav_path2 + nav_path3
 			#print(str(marker.raceline))
+		
+		# the same for race marker	
+		marker = get_node("race_marker")
+	#print(marker.get_translation())
+		tg = marker.target
+	#print("tg : " + str(tg))
+
+#	print("Marker intersection id" + str(marker_data[0]) + " tg id" + str(marker_data[1]))
+		int_path = ast.get_id_path(marker_data[2], marker_data[3])
+		print("Intersections path: " + str(int_path))
+
+		#paranoia
+		nav_path = []
+		if [int_path[0], int_path[1]] in path_look:
+			print("First pair: " + str(int_path[0]) + "," + str(int_path[1]))			
+			var lookup_path = path_look[[int_path[0], int_path[1]]]
+			#print("Lookup path pt1: " + str(lookup_path))
+			nav_path = nav.get_point_path(lookup_path[0], lookup_path[1])
+			#print("Nav path: " + str(nav_path))
+			# so that the player can see
+			#marker.raceline = nav_path
+		var nav_path2 = PoolVector3Array()
+		var nav_path3 = PoolVector3Array()
+		if int_path.size() > 2 and [int_path[1], int_path[2]] in path_look:
+			#print("Second pair: " + str(int_path[1]) + "," + str(int_path[2]))
+			var lookup_path = path_look[[int_path[1], int_path[2]]]
+			#print("Lookup path pt2: " + str(lookup_path))
+			nav_path2 = nav.get_point_path(lookup_path[0], lookup_path[1])
+			#print("Nav path pt2 : " + str(nav_path2))
+	
+			
+		if int_path.size() > 3:
+			if [int_path[2], int_path[3]] in path_look:
+				#print("Third pair: " + str(int_path[2]) + "," + str(int_path[3]))
+				var lookup_path = path_look[[int_path[2], int_path[3]]]
+				#print("Lookup path pt3: " + str(lookup_path))
+				nav_path3 = nav.get_point_path(lookup_path[0], lookup_path[1])
+			#print("Nav path pt3: " + str(nav_path3))
+	
+		# display the whole path
+		marker.raceline = nav_path + nav_path2 + nav_path3
+		#print("Race raceline: " + str(marker.raceline))
+			
 	#place_player()
 
 	# place garage road
@@ -476,7 +519,7 @@ func bfs_distances(start):
 
 
 #-------------------------
-func spawn_marker(spots, mark, _name):
+func spawn_marker(spots, mark, _name, limit=2):
 	# random choice of a connected (!) intersection to spawn at
 	var sel = randi() % spots.size()
 	var id = spots[sel]
@@ -500,7 +543,7 @@ func spawn_marker(spots, mark, _name):
 	var possible_targets = []
 	for n in distance_map.keys():
 		var v = distance_map[n]
-		if v > 1:
+		if v >= 1 and v < limit:
 			Logger.mapgen_print("Possible target id: " + str(n))
 			possible_targets.append(n)
 
@@ -528,6 +571,7 @@ func spawn_markers(real_edges):
 
 	var mark = preload("res://objects/marker.tscn")
 	var sp_mark = preload("res://objects/speed_marker.tscn")
+	var race_mark = preload("res://objects/race_marker.tscn")
 
 	# random choice of an intersection to spawn at
 	
@@ -558,6 +602,12 @@ func spawn_markers(real_edges):
 	spots.remove(id)
 
 	var marker_data = spawn_marker(spots, mark, "tt_marker")
+	print("Marker data: " + str(marker_data))
+	
+	var mark_data = spawn_marker(spots, race_mark, "race_marker")
+	marker_data.append(mark_data[0])
+	marker_data.append(mark_data[1])
+	
 	print("Marker data: " + str(marker_data))
 	
 	return marker_data
