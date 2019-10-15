@@ -11,7 +11,7 @@ var start
 
 export var target = Vector3()
 var raceline = PoolVector3Array()
-var ai_data
+var ai_data = []
 
 # race
 var racer
@@ -69,7 +69,11 @@ func _on_ok_click():
 	count = true
 	time = 0.0
 	spawn_finish(self)
-	spawn_racer(Vector3(0,0,4))
+	#print("Our pos: " + str(get_global_transform().origin))
+	#print("Raceline end: " + str(raceline[0]))
+	var pos = to_local(raceline[0])
+	#print("Pos: " + str(pos))
+	spawn_racer(pos)
 	print("Clicked ok!")
 	
 # race positioning system
@@ -81,7 +85,7 @@ func _on_path_gotten():
 	#print("Race line is " + str(raceline))
 	player.race = self
 	player.create_race_path(raceline)
-	
+
 	# send the track to the map
 	var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
 	track_map.points = track_map.vec3s_convert(raceline)
@@ -221,6 +225,12 @@ func _on_Area_body_exit( body ):
 				msg.hide()
 				
 func spawn_finish(start):
+	if raceline.size() > 0:
+		print("Got raceline")
+	else:
+		print("No raceline, abort")
+		return
+		
 	print("Should be spawning finish")
 	var loc = target
 	#var our = preload("res://objects/race_marker.tscn")
@@ -240,13 +250,12 @@ func spawn_finish(start):
 	# test
 	var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
 	track_map.points = track_map.vec3s_convert(raceline)
-	if raceline.size() > 0:
-		print("Got raceline")
 	# force redraw
 	track_map.update()
 
 # differences to normal marker start here
 func spawn_racer(loc):
+	print("Offset: " + str(loc))
 	car = racer.instance()
 	car.set_name("Racer")
 	
@@ -254,7 +263,11 @@ func spawn_racer(loc):
 	var cars = player.get_parent().get_parent()
 	var local = cars.to_local(get_global_transform().origin)
 	
+	car.look_at(loc, Vector3(0,1,0))
+	car.rotate_y(deg2rad(180))
+	# needs to come AFTER rotations
 	car.set_translation(local+loc)
+	#print("Translation:" + str((local+loc)))
 	car.target = target
 	# pass intersection data to AI
 	car.race_int_path = ai_data
