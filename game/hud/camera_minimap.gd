@@ -19,6 +19,7 @@ var markers = []
 
 # gfx
 var blue_flag
+var red_flag
 var poi_marker
 
 func _ready():
@@ -29,8 +30,8 @@ func _ready():
 	var arrow = preload("res://hud/minimap_arrow_big_64 - bordered grayscale.png")
 	var player_arrow = preload("res://hud/minimap_arrow_big_64 - cyan.png")
 	blue_flag = preload("res://hud/flag.png")
+	red_flag = preload("res://hud/flag_red.png")
 	poi_marker = preload("res://hud/big marker.png")
-	#var red_flag = preload("res://hud/flag_red.png")
 	
 	cam2d = get_node("Container/Node2D2/Control_pos/Camera2D")
 	#print(cam2d.get_name())
@@ -66,9 +67,11 @@ func setupMinimap(arrow, player_arrow):
 	var markers = get_tree().get_nodes_in_group("marker")
 	
 	for e in markers:
-		#print("We have a marker " + e.get_name())
-		add_marker(e.get_global_transform().origin, blue_flag, Vector2(0, -16))
-	
+		if not e.is_in_group("race_marker"):
+			#print("We have a marker " + e.get_name())
+			add_marker(e.get_global_transform().origin, blue_flag, Vector2(0, -16))
+		else:
+			add_marker(e.get_global_transform().origin, red_flag, Vector2(0,-16))
 	var pois = get_tree().get_nodes_in_group("poi")
 	for p in pois:
 		add_marker(p.get_global_transform().origin, poi_marker, Vector2(-16,-16))

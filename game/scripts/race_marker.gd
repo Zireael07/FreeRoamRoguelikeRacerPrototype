@@ -245,7 +245,7 @@ func spawn_finish(start):
 	get_parent().add_child(finish)
 	#add to minimap
 	var minimap = player.get_node("Viewport_root/Viewport/minimap")
-	minimap.add_marker(finish.get_global_transform().origin, minimap.blue_flag)
+	minimap.add_marker(finish.get_global_transform().origin, minimap.red_flag)
 	
 	# test
 	var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
