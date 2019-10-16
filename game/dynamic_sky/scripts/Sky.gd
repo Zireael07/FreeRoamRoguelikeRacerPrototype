@@ -28,11 +28,11 @@ func set_thickness(value):
 # new
 func set_cloud_tint(value):
 	self.material.set("shader_param/HORIZON_COL", value)
-	get_parent().get_parent()._trigger_update_sky()
+	#get_parent().get_parent()._trigger_update_sky()
 
 func set_tint_dist(value):
 	self.material.set("shader_param/TINT_DIST", value)
-	get_parent().get_parent()._trigger_update_sky()
+	#get_parent().get_parent()._trigger_update_sky()
 
 
 func step_scb(value):

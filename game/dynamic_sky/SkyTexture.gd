@@ -33,6 +33,9 @@ func _trigger_update_sky():
 	
 	# delay sending out our changed signal
 	trigger_count = 2
+	
+	# restore original
+	render_target_update_mode = Viewport.UPDATE_ALWAYS
 
 func _process(delta):
 	# We don't seem to have a way to detect if the viewport has actually been updated so we just wait a few frames

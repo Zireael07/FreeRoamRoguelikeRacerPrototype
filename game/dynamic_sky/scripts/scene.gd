@@ -283,6 +283,8 @@ func day_night_cycle(time):
 		#sun.set_shadow(true)
 		
 		env.background_energy = 1
+	if time >= 18.4 && time < 18.5:
+		get_node("Sky")._trigger_update_sky()
 		
 	elif time >= 18.5 && not night_fired:
 		#disable shadows
