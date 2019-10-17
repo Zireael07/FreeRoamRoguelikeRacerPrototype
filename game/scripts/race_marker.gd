@@ -28,7 +28,6 @@ func _ready():
 	set_process(true)
 	# Called every time the node is added to the scene.
 	# Initialization here
-	pass
 
 func set_finish(val):
 	finish = val
@@ -56,6 +55,10 @@ func _on_Area_body_enter( body ):
 				var msg = body.get_node("Messages")
 				#msg.set_initial(false)
 				msg.set_text("TEST RACE! " + "\n" + "Race one guy to the finish marker")
+				# disconnect all others to prevent bugs
+				for d in msg.get_node("OK_button").get_signal_connection_list("pressed"):
+						print(d["target"])
+						msg.get_node("OK_button").disconnect("pressed", d["target"], "_on_ok_click")
 				msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
 				msg.enable_ok(true)
 				msg.show()
