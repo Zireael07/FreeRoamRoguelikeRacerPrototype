@@ -15,10 +15,13 @@ func _ready():
 	player_script = load("res://car/vehicle_player.gd")
 	count = false
 
+	# set color (doesn't work because materials are shared)
+	#var material = get_node("MeshInstance").get_mesh().surface_get_material(0)
+	#material.set_albedo(Color(1, 1,0))
+
 	#set_process(true)
 	# Called every time the node is added to the scene.
 	# Initialization here
-	pass
 
 func _on_Area_body_enter( body ):
 	if body is VehicleBody:
@@ -61,14 +64,14 @@ func _on_ok_click():
 	msg.hide()
 
 
-func _process(delta):
-	if count:
-		time += delta
-		#print("Timer is " + str(time))
-		player.get_node("root").get_node("Label timer").show()
-		player.get_node("root").update_timer(str(time))
-	#else:
-	#	print("Count is off")
+#func _process(delta):
+#	if count:
+#		time += delta
+#		#print("Timer is " + str(time))
+#		player.get_node("root").get_node("Label timer").show()
+#		player.get_node("root").update_timer(str(time))
+#	#else:
+#	#	print("Count is off")
 
 func _on_Area_body_exit( body ):
 	if body is VehicleBody:
