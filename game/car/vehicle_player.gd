@@ -380,12 +380,12 @@ func _process(delta):
 	hud.update_battery(battery)
 
 	# shaders stuff
-	#print("Light color" + str(World_node.light_color))
-	if "light_color" in World_node and World_node.light_color != null:
-		var color = Vector3(World_node.light_color.r, World_node.light_color.g, World_node.light_color.b)
-	#print("Color input: " + str(color))
-		get_node("skysphere/Skysphere").get_material_override().set_shader_param("light", color) #Color(World_node.light_color.r, World_node.light_color.g, World_node.light_color.b))
-	#print("Shader color: " + str(get_node("skysphere/Skysphere").get_material_override().get_shader_param("light")))
+#	#print("Light color" + str(World_node.light_color))
+#	if "light_color" in World_node and World_node.light_color != null:
+#		var color = Vector3(World_node.light_color.r, World_node.light_color.g, World_node.light_color.b)
+#	#print("Color input: " + str(color))
+#		get_node("skysphere/Skysphere").get_material_override().set_shader_param("light", color) #Color(World_node.light_color.r, World_node.light_color.g, World_node.light_color.b))
+#	#print("Shader color: " + str(get_node("skysphere/Skysphere").get_material_override().get_shader_param("light")))
 	
 	# motion blur
 	if speed > 28: #100 kphs
