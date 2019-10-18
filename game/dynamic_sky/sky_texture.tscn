@@ -28,7 +28,7 @@ shader_param/COVERAGE = 0.5
 shader_param/THICKNESS = 20.0
 shader_param/ABSORPTION = 1.031
 shader_param/STEPS = 25
-shader_param/HORIZON_COL = Color( 0.8, 0.2, 0.1, 0.35 )
+shader_param/HORIZON_COL = Color( 1, 1, 1, 1 )
 shader_param/TINT_DIST = 6.4
 shader_param/iChannel0 = ExtResource( 5 )
 
