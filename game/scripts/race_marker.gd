@@ -290,3 +290,8 @@ func spawn_racer(loc):
 	
 	cars.add_child(car)
 	print("Added the car")
+	
+	# add a minimap arrow
+	var minimap = player.get_node("Viewport_root/Viewport/minimap")
+	minimap.add_arrow(car)
+	

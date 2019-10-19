@@ -17,17 +17,21 @@ var positions = Array()
 var marker_pos = []
 var markers = []
 
+# AI car arrows
+var arrows = []
+
 # gfx
 var blue_flag
 var red_flag
 var poi_marker
+var arrow
 
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
 	positions.resize(0)
 	
-	var arrow = preload("res://hud/minimap_arrow_big_64 - bordered grayscale.png")
+	arrow = preload("res://hud/minimap_arrow_big_64 - bordered grayscale.png")
 	var player_arrow = preload("res://hud/minimap_arrow_big_64 - cyan.png")
 	blue_flag = preload("res://hud/flag.png")
 	red_flag = preload("res://hud/flag_red.png")
@@ -60,6 +64,7 @@ func setupMinimap(arrow, player_arrow):
 		tex.set_scale(Vector2(0.5, 0.5))
 		
 		attach.add_child(tex)
+		arrows.append(tex)
 		#add the arrows beneath the camera
 		#cam2d.add_child(tex)
 	
@@ -108,6 +113,20 @@ func add_marker(pos, flag, offset=Vector2(0,0)):
 	marker_pos.push_back(pos)
 	markers.push_back(marker_tex.get_name())
 
+func add_arrow(AI, racer=true):
+	var tex = TextureRect.new()
+	tex.set_texture(arrow)
+	tex.set_name("traffic-AI")
+	#tex.set_name(AIs[index].get_name())
+	tex.set_scale(Vector2(0.5, 0.5))
+	if racer:
+		tex.set_modulate(Color(1,0,0))
+	
+	attach.add_child(tex)
+	arrows.append(tex)
+	
+	# add to AI list
+	AIs.append(AI)
 
 # get the positions we need for actual mapgen
 func add_positions(pos):
@@ -144,5 +163,7 @@ func _process(delta):
 		
 		#print("AI pos: " + str(AI_pos) + " map pos " + str(Vector2(-16-AI_pos.x, -AI_pos.z)))
 		
-		attach.get_child(index).set_position(Vector2(-16-AI_pos.x, -AI_pos.z))
+		var arr = arrows[index]
+		arr.set_position(Vector2(-16-AI_pos.x, -AI_pos.z))
+		#attach.get_child(index).set_position(Vector2(-16-AI_pos.x, -AI_pos.z))
 		
