@@ -53,6 +53,12 @@ func _on_Area_body_enter( body ):
 				player.get_node("root").get_node("Label timer").set_text("")
 				player.get_node("root").get_node("Label timer").hide()
 				
+				# remove raceline from map
+				var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+				track_map.points = []
+				# force redraw
+				track_map.update()
+				
 				#remove finish
 				queue_free()
 			else:

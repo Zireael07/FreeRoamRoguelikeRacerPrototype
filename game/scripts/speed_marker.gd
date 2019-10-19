@@ -37,6 +37,10 @@ func _on_Area_body_enter( body ):
 			msg.set_text("TEST SPEED! " + "\n" + "Speed at marker is " + str(speed_kph))
 			if not msg.get_node("OK_button").is_connected("pressed", self, "_on_ok_click"):
 				print("Not connected")
+				# disconnect all others just in case
+				for d in msg.get_node("OK_button").get_signal_connection_list("pressed"):
+					print(d["target"])
+					msg.get_node("OK_button").disconnect("pressed", d["target"], "_on_ok_click")
 				msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
 			else:
 				print("Connected")
