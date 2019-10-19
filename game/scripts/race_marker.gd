@@ -49,6 +49,10 @@ func _on_Area_body_enter( body ):
 				msg.enable_ok(false)
 				msg.show()
 				
+				# clear & hide timing
+				player.get_node("root").get_node("Label timer").set_text("")
+				player.get_node("root").get_node("Label timer").hide()
+				
 				#remove finish
 				queue_free()
 			else:
