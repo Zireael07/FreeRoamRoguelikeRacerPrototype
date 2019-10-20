@@ -44,7 +44,9 @@ func _on_Area_body_enter( body ):
 				
 				var msg = body.get_node("Messages")
 				#msg.set_initial(false)
-				msg.set_text("FINISH TEST RACE!")
+				
+				var results = player.get_node("root").get_node("Label timer").get_text()
+				msg.set_text("FINISH TEST RACE!" + "\n" + results)
 				#msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
 				msg.enable_ok(false)
 				msg.show()
