@@ -520,10 +520,11 @@ func bfs_distances(start):
 
 #-------------------------
 func spawn_marker(spots, mark, _name, limit=2):
+	#print("Spawning @ spots: " + str(spots))
 	# random choice of a connected (!) intersection to spawn at
 	var sel = randi() % spots.size()
 	var id = spots[sel]
-	#print(str(id))
+	#print("Selected spot: " + str(id))
 	var p = samples[id]
 	
 	var marker = mark.instance()
@@ -560,15 +561,15 @@ func spawn_marker(spots, mark, _name, limit=2):
 	Logger.mapgen_print("Target id: " + str(t_id))
 
 	marker.target = Vector3(samples[t_id][0]*mult, 0, samples[t_id][1]*mult)
-	print("Marker target is " + str(marker.target))
+	Logger.mapgen_print("Marker target is " + str(marker.target))
 
 	add_child(marker)
 	
 	# remove from list of possible spots
-	spots.remove(id)
+	spots.remove(sel) # this works by id not value!
 	
 	if _name == "race_marker":
-		print("Set marker ai data")
+		#print("Set marker ai data")
 		marker.ai_data = [m_id, t_id]
 
 	return [m_id, t_id]
@@ -606,7 +607,7 @@ func spawn_markers(real_edges):
 	add_child(sp_marker)
 
 	# remove from list of possible spots
-	spots.remove(id)
+	spots.remove(sel) # this works by id not value, unlike Python!
 
 	var marker_data = spawn_marker(spots, mark, "tt_marker")
 	print("Marker data: " + str(marker_data))
