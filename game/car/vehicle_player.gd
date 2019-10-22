@@ -11,6 +11,7 @@ var map
 var hud
 var speed_text
 var minimap
+var map_big
 var panel
 var game_over
 var vjoy
@@ -92,6 +93,15 @@ func _ready():
 	minimap.set_name("Viewport_root")
 	add_child(minimap)
 	minimap.set_name("Viewport_root")
+	
+	m = preload("res://hud/MapView.tscn")
+	map_big = m.instance()
+	map_big.set_name("Map")
+	# share the world with the minimap
+	map_big.get_node("Viewport").world_2d = get_node("Viewport_root/Viewport").world_2d
+	add_child(map_big)
+	map_big.hide()
+	
 	
 	var msg = preload("res://hud/message_panel.tscn")
 	panel = msg.instance()
@@ -465,6 +475,12 @@ func _input(event):
 		#reset distance
 		perf_distance = 0
 
+	if (Input.is_action_pressed("map")):
+		if get_node("Map").is_visible():
+			get_node("Map").hide()
+		else:
+			print("Show map!")
+			get_node("Map").show()
 
 func _on_BODY_body_entered(body):
 	var obj = body.get_parent().get_parent()

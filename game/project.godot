@@ -87,6 +87,11 @@ perf_debug={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":80,"unicode":0,"echo":false,"script":null)
  ]
 }
+map={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":77,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [input_devices]
 
@@ -118,3 +123,4 @@ shadow_filter=3
 quality/directional_shadow/size=2048
 quality/shadows/filter_mode=2
 quality/voxel_cone_tracing/high_quality=false
+environment/default_environment="res://default_env.tres"
