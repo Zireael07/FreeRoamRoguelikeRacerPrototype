@@ -67,12 +67,20 @@ func _on_Area_body_enter( body ):
 				var msg = body.get_node("Messages")
 				#msg.set_initial(false)
 				msg.set_text("TEST RACE! " + "\n" + "Race one guy to the finish marker")
+
 				# disconnect all others to prevent bugs
 				for d in msg.get_node("OK_button").get_signal_connection_list("pressed"):
 						print(d["target"])
 						msg.get_node("OK_button").disconnect("pressed", d["target"], "_on_ok_click")
+								
 				msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
-				msg.enable_ok(true)
+				if raceline.size() > 0:
+					print("Got raceline")
+					msg.enable_ok(true)	
+				else:
+					print("No raceline, abort")
+					msg.enable_ok(false)
+				
 				msg.show()
 		#else:
 		#	print("Area entered by a car " + body.get_parent().get_name())
