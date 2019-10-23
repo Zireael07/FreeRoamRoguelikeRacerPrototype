@@ -118,7 +118,12 @@ func _process(delta):
 			emit_signal("path_gotten")
 			
 			# stuff to do after getting path
-			#print("[AI] We have a path to follow")
+			print("[AI] We have a path to follow")
+			
+			# bugfix
+			if stop:
+				stop = false
+			
 			for index in range(path.size()):
 				if (index > 0): #because #0 is our own location
 					target_array.push_back(path[index])
