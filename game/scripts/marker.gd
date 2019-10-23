@@ -168,6 +168,12 @@ func play_replay():
 	if File.new().file_exists("res://replay/replay.tscn"):
 		print("We have a replay")
 		
+		# find the root of the scene
+		var cars = player.get_parent().get_parent()
+		if cars.has_node("Ghost"):
+			print("We already have a ghost")
+			cars.get_node("Ghost").queue_free()
+		
 		# load our stuff
 		var ghost = preload("res://car/car_replay.tscn")
 		var ghost_in = ghost.instance()
@@ -179,11 +185,22 @@ func play_replay():
 		# test
 		replay.set_script(preload("res://replay/replay.gd"))
 		
+		# place it
+		#print("Player position is: " + str(player.get_parent().get_global_transform().origin))
+		var rot = player.get_parent().get_global_transform().basis.get_euler()
+		#print("Y rot: " + str(player.get_parent().get_global_transform().basis.get_euler()))
+		var local = cars.to_local(player.get_parent().get_global_transform().origin)
+		#print("Local is: " + str(local))
+				
 		# fix offset
-		ghost_in.set_translation(player.get_parent().get_translation())
+		ghost_in.set_translation(local)
+		ghost_in.set_rotation(rot)
+		#ghost_in.set_translation(player.get_parent().get_translation())
 		
-		get_parent().add_child(ghost_in)
+		cars.add_child(ghost_in)
 		ghost_in.add_child(replay)
+		#print("Ghost in: " + str(ghost_in.get_global_transform().origin))
+		#print("Ghost local: " + str(cars.to_local(ghost_in.get_global_transform().origin)))
 		
 		# play
 		ghost_in.get_node("replay").play("BODY")
