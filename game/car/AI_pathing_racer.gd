@@ -15,6 +15,7 @@ var name2_list = ["郎"]
 
 var race
 var race_int_path = []
+var race_target = null
 
 func _ready():
 	#._ready()
@@ -26,6 +27,8 @@ func _ready():
 		var nav_path = map.nav.get_point_path(lookup_path[0], lookup_path[1])
 		
 		path = reduce_path(nav_path)
+		# append target point
+		path.append(race_target)
 		print("AI has path: " + str(path))
 		
 	random_name()

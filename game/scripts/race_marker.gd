@@ -285,7 +285,8 @@ func spawn_racer(loc):
 	#print("Translation:" + str((local+loc)))
 	car.target = target
 	# pass intersection data to AI
-	car.race_int_path = ai_data
+	car.race_int_path = [ai_data[0], ai_data[1]]
+	car.race_target = ai_data[2]
 	car.race = self
 	
 	car.left = false

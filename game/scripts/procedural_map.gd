@@ -570,7 +570,7 @@ func spawn_marker(spots, mark, _name, limit=2):
 	
 	if _name == "race_marker":
 		#print("Set marker ai data")
-		marker.ai_data = [m_id, t_id]
+		marker.ai_data = [m_id, t_id, to_global(marker.target)]
 
 	return [m_id, t_id]
 
