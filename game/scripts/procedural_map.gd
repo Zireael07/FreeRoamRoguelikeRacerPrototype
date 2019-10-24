@@ -97,7 +97,8 @@ func _ready():
 	#var path_data = []
 	path_look = {}
 
-	for i in range(roads_start_id, roads_start_id+ real_edges.size()-1): #4):
+	for i in range(roads_start_id, roads_start_id+ real_edges.size()): #4):
+		#print("Index: " + str(i))
 		#print("Begin: " + str(begin_id))
 		var data = setup_nav_astar(pts, i, begin_id)
 		#print('Begin: ' + str(begin_id) + " end: " + str(data[0]) + " inters: " + str(data[1]))
@@ -390,6 +391,7 @@ func place_player():
 #	pass
 
 func setup_nav_astar(pts, i, begin_id):
+	#print("Index: " + str(i) + " " + get_child(i).get_name())
 	#print(get_child(i).get_name())
 	# catch any errors
 	if i >= get_child_count():
