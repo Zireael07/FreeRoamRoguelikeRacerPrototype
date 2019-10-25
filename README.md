@@ -20,7 +20,7 @@ Features
 * procedural car
 * pause menu
 * two kinds of AI (traffic and racer)
-* basic (radar-like) 2D minimap (without a camera)
+* 2d minimap using a viewport and a camera
 
 
 Keys
