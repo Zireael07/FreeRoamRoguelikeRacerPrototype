@@ -16,6 +16,7 @@ var positions = Array()
 # for static markers (races, POIs)
 var marker_pos = []
 var markers = []
+var mapping_marker = {}
 
 # AI car arrows
 var arrows = []
@@ -111,7 +112,18 @@ func add_marker(pos, flag, offset=Vector2(0,0)):
 	#marker_tex.set_position(Vector2(-pos.x, -pos.z-16))
 	#print("For pos " + str(pos) + "marker pos is " + str(marker_tex.get_position()))
 	marker_pos.push_back(pos)
-	markers.push_back(marker_tex.get_name())
+	markers.push_back(marker_tex)
+	mapping_marker[pos] = marker_tex
+
+func remove_marker(pos):
+	print("Removing marker for: " + str(pos))
+	if marker_pos.find(pos) != -1:
+		marker_pos.remove(marker_pos.find(pos))
+	var marker = mapping_marker[pos]
+	markers.remove(markers.find(marker))
+	attach.remove_child(marker)
+	# clear the mapping
+	mapping_marker[pos] = null	
 
 func add_arrow(AI, racer=true):
 	var tex = TextureRect.new()

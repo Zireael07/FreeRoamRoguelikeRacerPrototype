@@ -61,6 +61,10 @@ func _on_Area_body_enter( body ):
 				# force redraw
 				track_map.update()
 				
+				# remove target flag from minimap
+				var minimap = player.get_node("Viewport_root/Viewport/minimap")
+				minimap.remove_marker(self.get_global_transform().origin)
+				
 				#remove finish
 				queue_free()
 			else:

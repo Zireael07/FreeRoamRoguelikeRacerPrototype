@@ -56,6 +56,10 @@ func _on_Area_body_enter( body ):
 				# force redraw
 				track_map.update()
 				
+				# remove target flag from minimap
+				var minimap = player.get_node("Viewport_root/Viewport/minimap")
+				minimap.remove_marker(self.get_global_transform().origin)
+				
 				# prize
 				if start.time < target_time: # if we beat calculated target time
 					player.money += 80
@@ -72,7 +76,7 @@ func _on_Area_body_enter( body ):
 					print("Not connected")
 					# disconnect all others just in case
 					for d in msg.get_node("OK_button").get_signal_connection_list("pressed"):
-						print(d["target"])
+						#print(d["target"])
 						msg.get_node("OK_button").disconnect("pressed", d["target"], "_on_ok_click")
 					msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
 
