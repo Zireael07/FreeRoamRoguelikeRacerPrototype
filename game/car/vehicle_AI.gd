@@ -190,15 +190,18 @@ func _physics_process(delta):
 		#rel_loc = Vector3(loc.x, 1, loc.brain.target.y)
 		
 		#this one actually reacts to rotations unlike the one using basis.z or linear velocity.z
-		forward_vec = get_global_transform().xform(Vector3(0, 0, 4))
-		dot = forward_vec.dot(rel_loc)
+		var forward_global = get_global_transform().xform(Vector3(0, 0, 4))
+		#B-A = from A to B
+		forward_vec = forward_global-get_global_transform().origin
+		var tg_dir = brain.target - get_global_transform().origin
+		dot = forward_vec.dot(tg_dir)
 		
 		#2D angle to target (local coords)
 		angle = atan2(rel_loc.x, rel_loc.z)
 	
 		# steering from boid
-		if brain.steer != Vector2(0,0):
-			print("Brain steer: " + str(brain.steer) + " div: " + str(brain.steer.x/15))
+#		if brain.steer != Vector2(0,0):
+#			print("Brain steer: " + str(brain.steer) + " div: " + str(brain.steer.x/15))
 		
 		# magic number to make inputs smaller
 		var clx = clamp(brain.steer.x/15, -1, 1)
@@ -254,6 +257,18 @@ func _physics_process(delta):
 		if rel_loc.distance_to(compare_pos) <= 2:
 			#print("[AI] We're close to target")
 
+			##do we have a next point?
+			if (target_array.size() > current+1):
+				prev = current
+				current = current + 1
+				# send to brain
+				brain.target = target_array[current]
+			else:
+				#print("We're at the end")
+				stop = true
+				
+		#if we passed the point, don't backtrack
+		if (dot < 0 and not stop):
 			##do we have a next point?
 			if (target_array.size() > current+1):
 				prev = current
