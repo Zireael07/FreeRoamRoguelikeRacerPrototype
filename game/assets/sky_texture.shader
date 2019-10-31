@@ -6,7 +6,7 @@ uniform vec4 horizon_color : hint_color = vec4(0.8, 0.2, 0.1, 0.35);
 uniform vec4 day_horizon_color: hint_color = vec4(0.55, 0.82, 0.91, 0.35);
 //uniform vec4 green_color : hint_color = vec4(0, 0.3, 0, 0.5);
 uniform vec4 sun_color1 : hint_color = vec4(1.0, 1.0, 1.0, 1.0);
-uniform vec4 sun_color2 : hint_color = vec4(1.0, 0.75, 0.0, 0.75);
+uniform vec4 sun_color2 : hint_color = vec4(1.0, 0.05, 0.0, 0.75); // yellow (1.0, 0.75, 0.0, 0.75)
 
 // Other params
 uniform float horizon_size = 0.015; //needs to be small because otherwise it curves visibly 
@@ -14,7 +14,7 @@ uniform float sun_size1 = 0.01;
 uniform float sun_size2 = 0.2;
 
 //new
-uniform vec3 sun_pos = vec3(0.4, 0.2, 0.0);
+uniform vec2 sun_pos = vec2(0.4, 0.2); //0.0);
 //bounds of actually visible area
 uniform vec2 bounds = vec2(0.5, 0.5);
 
@@ -25,9 +25,16 @@ void fragment() {
 	// sun color, high=color1, low=color2
 	vec4 sunc_mix = mix(sun_color1, sun_color2, clamp(sun_pos.y, 0,1));
 	// pow(uv.y,6) works amazingly for slowing down the transitions
+	//high = sunsize1, low=sunsize2
 	float sun_size = mix(sun_size1, sun_size2, clamp(pow(sun_pos.y, 6), 0,1));
 	
 	//draw sun
+	// based on https://www.shadertoy.com/view/MdtXD2
+	//float len = distance(UV, vec2(sun_pos.x*bounds.x, sun_pos.y*bounds.y));
+	//float len = length(UV-sun_pos*bounds);
+	//float sun = max(1.0 - (sun_size*200.0 * len), 0.0);
+	//float sun = max(1.0 - (1.0 + sun_size*200.0 + 1.0 * UV.y) * len, 0.0);
+	
 	//based on https://www.shadertoy.com/view/MsVSWt
 	float sun = 1.0 - distance(UV, vec2(sun_pos.x*bounds.x, sun_pos.y*bounds.y));
     sun = clamp(sun,0.0,1.0);
@@ -64,8 +71,10 @@ void fragment() {
 	vec4 outc = mix(skyc, hc, smoothstep(top, bounds.y, UV.y));
 	//outc = mix(outc, skyc, smoothstep(bounds.y, bounds.y+horizon_size, UV.y));
 	
-	COLOR = outc.rgba+sunc;
+	COLOR = mix(outc, sunc, sun);
 	
+	//COLOR = outc.rgba+sunc;
+	//COLOR = sunc;
 	//why do we mix in the green?
 	//COLOR = mix(COLOR,mix(COLOR, green_color.rgba, green_color.a), clamp(sun_pos.y, 0, 1));
 	
