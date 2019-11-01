@@ -17,7 +17,7 @@ shader_param/sun_color2 = Color( 1, 0, 0, 0.952941 )
 shader_param/horizon_size = 0.015
 shader_param/sun_size1 = 0.01
 shader_param/sun_size2 = 0.1
-shader_param/sun_pos = Vector2( 0.5, 1 )
+shader_param/sun_pos = Vector2( 0.5, 0.5 )
 shader_param/bounds = Vector2( 0.5, 0.5 )
 
 [sub_resource type="ShaderMaterial" id=2]

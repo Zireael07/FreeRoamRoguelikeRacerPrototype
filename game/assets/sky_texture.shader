@@ -23,7 +23,7 @@ void fragment() {
 	vec4 skyc = mix(sky_color_day, sky_color_night, clamp(sun_pos.y,0,1));
 	
 	// sun color, high=color1, low=color2
-	vec4 sunc_mix = mix(sun_color1, sun_color2, clamp(sun_pos.y, 0,1));
+	vec4 sunc_mix = mix(sun_color1, sun_color2, clamp(pow(sun_pos.y, 4), 0,1));
 	// pow(uv.y,6) works amazingly for slowing down the transitions
 	//high = sunsize1, low=sunsize2
 	float sun_size = mix(sun_size1, sun_size2, clamp(pow(sun_pos.y, 6), 0,1));

@@ -262,7 +262,7 @@ func set_colors(time):
 	env.set_fog_color(horizon_color)
 
 func set_clouds(time):
-	if time >= 18.4 && time < 18.5:
+	if time >= 18.1 && time < 18.5:
 		# sunset
 		cloud_tint = Color(0.8,0.2,0.1, 0.35)
 		cloud_tint_dist = 6.4
