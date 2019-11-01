@@ -11,3 +11,6 @@ func _ready():
 func set_sun(value):
 	self.material.set("shader_param/sun_pos", value)
 	#get_parent().get_parent()._trigger_update_sky()
+	
+func set_sun_color(value):
+	self.material.set("shader_param/sun_color2", value)

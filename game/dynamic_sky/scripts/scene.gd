@@ -79,8 +79,25 @@ func _ready():
 	
 	trigger_count = 2
 	
+	sunset_color()
+	
 	# set weather
 	call_deferred("set_state", weather)
+
+func sunset_color():
+	# random sunset color
+	# seed the rng
+	randomize()
+	var ran = randf()
+
+	if ran < 0.2:
+		# red
+		sky.set_sun_color(Color(1.0, 0.05, 0.0, 0.75))
+		print("Selected red sunset")
+	else:
+		# yellow
+		sky.set_sun_color(Color(1.0, 0.75, 0.0, 0.75))
+		print("Selected yellow sunset")
 
 func _process(delta):
 #	# Called every frame. Delta is time since last frame.
@@ -210,7 +227,7 @@ func get_light_energy(time):
 	if time >= 6.0 && time < 6.5:
 		lit = lit * 0.5
 	
-	elif time >= 18.5 && time < 19:
+	elif time >= 18.5 && time < 19.5:
 		lit = lit * 0.5
 	else:
 		lit = lit
@@ -287,6 +304,8 @@ func day_night_cycle(time):
 		get_node("Sky")._trigger_update_sky()
 		
 	elif time >= 18.5 && not night_fired:
+
+		
 		#disable shadows
 		#sun.set_shadow(false)
 		get_tree().get_nodes_in_group("roads")[0].lite_up()
