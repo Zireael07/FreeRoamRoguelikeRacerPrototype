@@ -84,6 +84,13 @@ func _on_Area_body_enter( body ):
 				#	print("Connected")
 				msg.enable_ok(true)
 				msg.show()
+				
+				# show raceline on map
+				var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+				track_map.points = track_map.vec3s_convert(raceline)
+				# force redraw
+				track_map.update()
+				
 		#else:
 		#	print("Area entered by a car " + body.get_parent().get_name())
 	#else:
@@ -116,6 +123,12 @@ func _on_Area_body_exit( body ):
 			if not finish:
 				var msg = body.get_node("Messages")
 				msg.hide()
+				if not count:
+					# remove raceline (preview) from map
+					var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+					track_map.points = []
+					# force redraw
+					track_map.update()
 				
 func spawn_finish(start):
 	print("Should be spawning finish")
@@ -142,12 +155,6 @@ func spawn_finish(start):
 	
 	var minimap = player.get_node("Viewport_root/Viewport/minimap")
 	minimap.add_marker(finish.get_global_transform().origin, minimap.blue_flag)
-	
-	# test
-	var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
-	track_map.points = track_map.vec3s_convert(raceline)
-	# force redraw
-	track_map.update()
 
 	
 func calculate_distance():

@@ -80,7 +80,14 @@ func _on_Area_body_enter( body ):
 				msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
 				if raceline.size() > 0:
 					print("Got raceline")
-					msg.enable_ok(true)	
+					msg.enable_ok(true)
+					
+					# show raceline on minimap
+					var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+					track_map.points = track_map.vec3s_convert(raceline)
+					# force redraw
+					track_map.update()
+					
 				else:
 					print("No raceline, abort")
 					msg.enable_ok(false)
@@ -250,6 +257,12 @@ func _on_Area_body_exit( body ):
 			if not finish:
 				var msg = body.get_node("Messages")
 				msg.hide()
+				if not count:
+					# remove raceline (preview) from map
+					var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+					track_map.points = []
+					# force redraw
+					track_map.update()
 				
 func spawn_finish(start):
 	if raceline.size() > 0:
@@ -274,11 +287,6 @@ func spawn_finish(start):
 	var minimap = player.get_node("Viewport_root/Viewport/minimap")
 	minimap.add_marker(finish.get_global_transform().origin, minimap.red_flag)
 	
-	# test
-	var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
-	track_map.points = track_map.vec3s_convert(raceline)
-	# force redraw
-	track_map.update()
 
 # differences to normal marker start here
 func spawn_racer(loc):
