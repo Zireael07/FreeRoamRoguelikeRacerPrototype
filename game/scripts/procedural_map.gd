@@ -22,7 +22,7 @@ func _ready():
 
 	mult = get_node("triangulate/poisson").mult
 
-	intersects = preload("res://roads/intersection.tscn")
+	intersects = preload("res://roads/intersection4way.tscn")
 	garage = preload("res://objects/garage_road.tscn")
 	recharge = preload("res://objects/recharge_station.tscn")
 

@@ -383,10 +383,13 @@ func get_src_exit(src, dest):
 	var rel_pos = src.get_global_transform().xform_inv(dest.get_global_transform().origin)
 	Logger.mapgen_print("Src exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.z, rel_pos.x)))
 	
-	# exits NEED to be listed CW (right = 2, bottom = 1 , top = 3) if we sort by y
-	# or CCW if sorted by angle?
 	
-	#quadrant 1 (we exclude top exit to avoid crossing over)
+	# top = point_one, right = point_two, bottom = point_three, left = point_four
+	# exits NEED to be listed CW (right = 2, bottom = 1 , top = 3, left = 4) if we sort by y
+	# or CCW if sorted by angle?
+	# left = 4 bottom = 1 right = 2 top = 3?
+	
+	#NE = quadrant 1 (we exclude top exit to avoid crossing over)
 	if rel_pos.x > 0 and rel_pos.z > 0:
 		Logger.mapgen_print("Quadrant 1... angle: " + str(atan2(rel_pos.z, rel_pos.x)))
 		if atan2(rel_pos.z, rel_pos.x) > 1:
@@ -407,7 +410,7 @@ func get_src_exit(src, dest):
 				return src.point_one
 			else:
 				print("No exits found")
-	# quadrant 2
+	# NW - quadrant 2
 	# same
 	elif rel_pos.x < 0 and rel_pos.z > 0:
 		Logger.mapgen_print("Quadrant 2")
@@ -430,7 +433,7 @@ func get_src_exit(src, dest):
 				return src.point_three
 			else:
 				print("No exits found")
-	# quadrant 3 (exclude bottom exit)
+	# SE = quadrant 3 (exclude bottom exit)
 	elif rel_pos.x > 0 and rel_pos.z < 0:
 		Logger.mapgen_print("Quadrant 3")
 		if src_exits.has(src.point_three):
@@ -441,9 +444,11 @@ func get_src_exit(src, dest):
 			return src.point_two
 		else:
 			print("No exits found")
-	# quadrant 4
+	# SW = quadrant 4
 	elif rel_pos.x < 0 and rel_pos.z < 0:
 		Logger.mapgen_print("Quadrant 4")
+		if src_exits.has(src.point_four):
+			src_exits.remove(src_exits.find(src.point_four))
 		if src_exits.has(src.point_three):
 			src_exits.remove(src_exits.find(src.point_three))
 			return src.point_three
@@ -503,6 +508,7 @@ func get_dest_exit(src, dest):
 	
 	# exits NEED to be listed CW (right = 2, bottom = 1, top = 3)
 	# listed CCW if we sort by angle?
+	# top = 3 right = 2 bottom = 1 
 	
 	# quadrant 4, exclude right exit to avoid crossing over
 	if rel_pos.x < 0 and rel_pos.z < 0:
@@ -512,12 +518,18 @@ func get_dest_exit(src, dest):
 			if dest_exits.has(dest.point_three):
 				dest_exits.remove(dest_exits.find(dest.point_three))
 				return dest.point_three
+			elif dest_exits.has(dest.point_four):
+				dest_exits.remove(dest_exits.find(dest.point_four))
+				return dest.point_four
 			elif dest_exits.has(dest.point_two):
 				dest_exits.remove(dest_exits.find(dest.point_two))
 				return dest.point_two
 		else:
 			Logger.mapgen_print("Case 2")
-			if dest_exits.has(dest.point_three):
+			if dest_exits.has(dest.point_four):
+				dest_exits.remove(dest_exits.find(dest.point_four))
+				return dest.point_four
+			elif dest_exits.has(dest.point_three):
 				dest_exits.remove(dest_exits.find(dest.point_three))
 				return dest.point_three
 			elif dest_exits.has(dest.point_one):

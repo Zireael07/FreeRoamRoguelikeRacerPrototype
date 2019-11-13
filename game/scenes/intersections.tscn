@@ -81,4 +81,3 @@ color = Color( 1, 0.961243, 0.0078125, 1 )
 
 [node name="car" parent="." instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.8615, 0, 87.3719 )
-
