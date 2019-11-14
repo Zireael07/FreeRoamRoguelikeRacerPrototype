@@ -33,15 +33,16 @@ func connect_intersections(one, two):
 	print("Connecting intersections " + get_child(one).get_name() + " " + get_child(two).get_name())
 	
 	var src_exit = get_src_exit(get_child(one), get_child(two))
-	Logger.mapgen_print("Src exit: " + str(src_exit) + " " + str(lookup_names[src_exit]))
 	if not src_exit:
 		return false
+	Logger.mapgen_print("Src exit: " + str(src_exit) + " " + str(lookup_names[src_exit]))
 	var loc_src_exit = to_local(get_child(one).to_global(src_exit))
 
 	var dest_exit = get_dest_exit(get_child(one), get_child(two))
-	Logger.mapgen_print("Dest exit: " + str(dest_exit) + " " + str(lookup_names[dest_exit]))
+	
 	if not dest_exit:
 		return false
+	Logger.mapgen_print("Dest exit: " + str(dest_exit) + " " + str(lookup_names[dest_exit]))
 	var loc_dest_exit = to_local(get_child(two).to_global(dest_exit))
 
 	# debugging
@@ -404,7 +405,7 @@ func get_src_exit(src, dest):
 				src_exits.remove(src_exits.find(src.point_two))
 				return src.point_two
 			else: 
-				print("No exits found!")
+				print("No exits found for src quadrant 1!")
 		else:
 			if src_exits.has(src.point_two):
 				src_exits.remove(src_exits.find(src.point_two))
@@ -413,7 +414,7 @@ func get_src_exit(src, dest):
 				src_exits.remove(src_exits.find(src.point_one))
 				return src.point_one
 			else:
-				print("No exits found")
+				print("No exits found for src quadrant 1!")
 	# NW - quadrant 2
 	# same
 	elif rel_pos.x < 0 and rel_pos.z > 0:
@@ -423,11 +424,15 @@ func get_src_exit(src, dest):
 			if src_exits.has(src.point_one):
 				src_exits.remove(src_exits.find(src.point_one))
 				return src.point_one
-			elif src_exits.has(src.point_two):
+			# forbid picking two if one is taken, to avoid crossing over
+			elif src_exits.has(src.point_two) and src_exits.has(src.point_one):
 				src_exits.remove(src_exits.find(src.point_two))
 				return src.point_two
+			elif src_exits.has(src.point_four):
+				src_exits.remove(src_exits.find(src.point_four))
+				return src.point_four
 			else:
-				print("No exits found")
+				print("No exits found for src quadrant 2")
 		else:
 			if src_exits.has(src.point_one):
 				src_exits.remove(src_exits.find(src.point_one))
