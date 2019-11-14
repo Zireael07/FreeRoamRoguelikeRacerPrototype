@@ -17,25 +17,29 @@ func _ready():
 	draw = get_node("draw")
 	road_straight = preload("res://roads/road_segment_straight.tscn")
 	road = preload("res://roads/road_segment.tscn")
-	
+
+
+var lookup_names = { Vector3(0,0,10): "point one", Vector3(10,0,0) : "point two", Vector3(0,0,-10) : "point three", Vector3(-10,0,0) : "point four"}
+
 func connect_intersections(one, two):
 	if one > get_child_count() -1 or two > get_child_count() -1:
 		print("Wrong indices given")
 		return false
 	
 	if not "point_one" in get_child(one) or not "point_one" in get_child(two):
-		print("Targets are not intersections?")
+		print("Targets are not intersections?" + get_child(one).get_name() + " " + get_child(two).get_name())
 		return false
 	
+	print("Connecting intersections " + get_child(one).get_name() + " " + get_child(two).get_name())
 	
 	var src_exit = get_src_exit(get_child(one), get_child(two))
-	Logger.mapgen_print("Src exit: " + str(src_exit))
+	Logger.mapgen_print("Src exit: " + str(src_exit) + " " + str(lookup_names[src_exit]))
 	if not src_exit:
 		return false
 	var loc_src_exit = to_local(get_child(one).to_global(src_exit))
 
 	var dest_exit = get_dest_exit(get_child(one), get_child(two))
-	Logger.mapgen_print("Dest exit: " + str(dest_exit))
+	Logger.mapgen_print("Dest exit: " + str(dest_exit) + " " + str(lookup_names[dest_exit]))
 	if not dest_exit:
 		return false
 	var loc_dest_exit = to_local(get_child(two).to_global(dest_exit))
@@ -378,7 +382,7 @@ func get_src_exit(src, dest):
 		print("Error, no exits left")
 		return
 	else:
-		Logger.mapgen_print("available exits: " + str(src_exits))
+		Logger.mapgen_print("available src exits: " + str(src_exits))
 		
 	var rel_pos = src.get_global_transform().xform_inv(dest.get_global_transform().origin)
 	Logger.mapgen_print("Src exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.z, rel_pos.x)))
@@ -447,8 +451,11 @@ func get_src_exit(src, dest):
 	# SW = quadrant 4
 	elif rel_pos.x < 0 and rel_pos.z < 0:
 		Logger.mapgen_print("Quadrant 4")
-		if src_exits.has(src.point_four):
-			src_exits.remove(src_exits.find(src.point_four))
+#		if src_exits.has(src.point_four):
+#			src_exits.remove(src_exits.find(src.point_four))
+#			print("Src exit 4 picked")
+#			return src.point_four
+#		el
 		if src_exits.has(src.point_three):
 			src_exits.remove(src_exits.find(src.point_three))
 			return src.point_three
@@ -501,7 +508,7 @@ func get_dest_exit(src, dest):
 		print("Error, no exits left")
 		return
 	else:
-		Logger.mapgen_print("available exits: " + str(dest_exits))
+		Logger.mapgen_print("available dest exits: " + str(dest_exits))
 	
 	var rel_pos = dest.get_global_transform().xform_inv(src.get_global_transform().origin)
 	Logger.mapgen_print("Dest exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.z, rel_pos.x)))
@@ -520,16 +527,21 @@ func get_dest_exit(src, dest):
 				return dest.point_three
 			elif dest_exits.has(dest.point_four):
 				dest_exits.remove(dest_exits.find(dest.point_four))
+				print("Picked exit 4")
 				return dest.point_four
 			elif dest_exits.has(dest.point_two):
 				dest_exits.remove(dest_exits.find(dest.point_two))
 				return dest.point_two
 		else:
 			Logger.mapgen_print("Case 2")
-			if dest_exits.has(dest.point_four):
-				dest_exits.remove(dest_exits.find(dest.point_four))
-				return dest.point_four
-			elif dest_exits.has(dest.point_three):
+			# additional requirement to prevent crossing over (for now)
+			if atan2(rel_pos.z, rel_pos.x) < -2.5:
+				if dest_exits.has(dest.point_four):
+					dest_exits.remove(dest_exits.find(dest.point_four))
+					print("Picked exit 4... " + str(atan2(rel_pos.z, rel_pos.x)))
+					return dest.point_four
+			
+			if dest_exits.has(dest.point_three):
 				dest_exits.remove(dest_exits.find(dest.point_three))
 				return dest.point_three
 			elif dest_exits.has(dest.point_one):
