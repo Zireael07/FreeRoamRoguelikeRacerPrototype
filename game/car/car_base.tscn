@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=2]
+[gd_scene load_steps=45 format=2]
 
 [ext_resource path="res://car/car_player.gd" type="Script" id=1]
 [ext_resource path="res://car/vehicle_player.gd" type="Script" id=2]
@@ -23,7 +23,8 @@
 [ext_resource path="res://assets/rain_material.tres" type="Material" id=21]
 [ext_resource path="res://assets/rain_particles.tres" type="Material" id=22]
 [ext_resource path="res://assets/neon_under_material.tres" type="Material" id=23]
-[ext_resource path="res://car/replay_system.gd" type="Script" id=24]
+[ext_resource path="res://scripts/RayCast.gd" type="Script" id=24]
+[ext_resource path="res://car/replay_system.gd" type="Script" id=25]
 
 [sub_resource type="SpatialMaterial" id=1]
 params_diffuse_mode = 1
@@ -172,6 +173,7 @@ __meta__ = {
 
 [node name="BODY" type="VehicleBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.095518 )
+collision_mask = 3
 mass = 1500.0
 can_sleep = false
 script = ExtResource( 2 )
@@ -425,7 +427,12 @@ cast_shadow = 0
 mesh = SubResource( 19 )
 material/0 = ExtResource( 23 )
 
+[node name="RayCast" type="RayCast" parent="BODY"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.251327, 0 )
+enabled = true
+script = ExtResource( 24 )
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 _import_path = NodePath("AnimationPlayer")
-script = ExtResource( 24 )
+script = ExtResource( 25 )
 [connection signal="body_entered" from="BODY" to="BODY" method="_on_BODY_body_entered"]

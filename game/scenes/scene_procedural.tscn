@@ -76,6 +76,7 @@ script = ExtResource( 11 )
 terrainmaterial = ExtResource( 12 )
 
 [node name="StaticBody" type="StaticBody" parent="Ground"]
+collision_layer = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="Ground/StaticBody"]
 shape = SubResource( 2 )
