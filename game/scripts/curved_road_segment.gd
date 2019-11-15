@@ -313,6 +313,9 @@ func optimizedmeshCreate(quads, material):
 	
 	#Turn off shadows
 	node.set_cast_shadows_setting(0)
+	
+	# yay GD 3
+	node.create_convex_collision()
 
 
 #make the mesh

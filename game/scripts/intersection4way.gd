@@ -167,6 +167,9 @@ func meshCreate(material, array):
 
 	#Turn off shadows
 	node.set_cast_shadows_setting(0)
+	
+	# yay GD 3
+	node.create_convex_collision()
 
 # debug
 func debug_cube(loc):
