@@ -57,10 +57,17 @@ func _ready():
 	# for storing roads that actually got created
 	var real_edges = []
 	var sorted = sort_intersections_distance()
+
 #	var initial_int = sorted[0][1]
 #	print("Initial int: " + str(initial_int))
 
-	# this is a layout that works (0,2,3,4,8)
+	# this is a layout that works (0,2,3,4,8,9)
+#	var layout = [0,2,3,4,8,9]
+#	for i in range(0, layout.size()-1):
+#		var ind = layout[i]
+#		auto_connect(sorted[ind][1], real_edges)
+	
+	
 	auto_connect(sorted[0][1], real_edges)
 #	auto_connect(sorted[1][1])
 	auto_connect(sorted[2][1], real_edges)
@@ -70,7 +77,7 @@ func _ready():
 #	auto_connect(sorted[6][1])
 #	auto_connect(sorted[7][1])
 	auto_connect(sorted[8][1], real_edges)
-#	auto_connect(sorted[9][1])
+	auto_connect(sorted[9][1], real_edges)
 #	auto_connect(sorted[10][1])
 #	auto_connect(sorted[11][1])
 
@@ -245,9 +252,13 @@ func _ready():
 	#print(str(sel.open_exits[1]))
 	
 	# assign correct rotation
-	var rots = { Vector3(10,0,0): Vector3(0,-90,0), Vector3(0,0,10): Vector3(0, 180, 0) }
+	var rots = { Vector3(10,0,0): Vector3(0,-90,0), Vector3(0,0,10): Vector3(0, 180, 0), Vector3(-10,0,0) : Vector3(0, 90, 0) }
 	if rots.has(sel.open_exits[1]): 
 		garage_rd.set_rotation_degrees(rots[sel.open_exits[1]])
+	else:
+		# prevent weirdness
+		print("Couldn't find correct rotation for " + str(sel.open_exits[1]))
+		return
 	
 	add_child(garage_rd)
 	
@@ -361,9 +372,14 @@ func auto_connect(initial_int, real_edges):
 
 	#print("Res " + str(res) + " lower y: " + str(res[0]))
 	#print("next ints: " + str(next_ints))
+	var last_int = 1+get_node("triangulate/poisson").samples.size()-1
 	for i in range(0, res.size()):
 		var p = res[i]
 		Logger.mapgen_print("Intersection " + str(p))
+		#Logger.mapgen_print("Target id " + str(p[0]+2) + "last intersection " + str(1+get_node("triangulate/poisson").samples.size()-1))
+		# prevent trying to connect to unsuitable things
+		if p[0]+2 > last_int:
+			return
 		# +2 because of the poisson node that comes first
 		var ret = connect_intersections(initial_int+2, p[0]+2)
 		if ret != false:
