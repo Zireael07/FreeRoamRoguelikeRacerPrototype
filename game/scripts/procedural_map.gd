@@ -212,8 +212,10 @@ func _ready():
 		# display the whole path
 		marker.raceline = nav_path + nav_path2 + nav_path3
 		#print("Race raceline: " + str(marker.raceline))
-			
-	#place_player()
+	
+	# place cars on intersection
+	place_player(1)
+	place_AI(1)
 
 	# place garage road
 	var garage_opts = []
@@ -389,7 +391,7 @@ func auto_connect(initial_int, real_edges):
 
 
 
-func place_player():
+func place_player_random():
 	var player = get_tree().get_nodes_in_group("player")[0]
 
 	var id = randi() % samples.size()-1
@@ -399,6 +401,22 @@ func place_player():
 
 	# because player is child of root which is at 0,0,0
 	player.set_translation(to_global(pos))
+
+func place_player(id):
+	var player = get_tree().get_nodes_in_group("player")[0]
+	var p = samples[id]
+	var pos = Vector3(p[0]*mult, 0, p[1]*mult)
+
+	# because player is child of root which is at 0,0,0
+	player.set_translation(to_global(pos))
+
+func place_AI(id):
+	var car = get_tree().get_nodes_in_group("AI")[0].get_parent()
+	var p = samples[id]
+	var pos = Vector3(p[0]*mult, 0, p[1]*mult)
+
+	# because player is child of root which is at 0,0,0
+	car.set_translation(to_global(pos))
 
 
 #func _process(delta):
