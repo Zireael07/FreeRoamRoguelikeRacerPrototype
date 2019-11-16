@@ -59,7 +59,9 @@ func connect_intersections(one, two):
 
 	var data = calculate_initial_turn(corner_points[0], corner_points[1], loc_src_exit, extendeds[0], src_exit)
 	
+	# make top node (which holds road name)
 	var top_node = Spatial.new()
+	# this uses child id
 	top_node.set_name("Road " +str(one) + "-" + str(two))
 	add_child(top_node)
 

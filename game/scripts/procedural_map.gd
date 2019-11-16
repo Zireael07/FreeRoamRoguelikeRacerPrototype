@@ -387,8 +387,23 @@ func auto_connect(initial_int, real_edges):
 		if ret != false:
 			Logger.mapgen_print("We did create a connection")
 			real_edges.append(Vector2(initial_int, p[0]))
+			
+			# update naming
+			var added = get_child(get_child_count()-1)
+			print("Last child: " + added.get_name())
+			# extract numbers (ids)
+			var nrs = added.get_name().split("-")
+			nrs[0] = nrs[0].lstrip("Road ")
+		
+			var real = []
+			# -2 because of the two nodes ahead of intersections
+			for i in nrs:
+				real.append(int(i)-2)
 
-
+			Logger.mapgen_print(added.get_name() + " real numbers: " + str(real))
+			added.set_name("Road " + str(real[0]) + "-" + str(real[1]))
+			
+			#pass
 
 
 func place_player_random():
@@ -432,16 +447,13 @@ func setup_nav_astar(pts, i, begin_id):
 		Logger.error_print("No child at index : " + str(i))
 		return
 
-	# extract intersection id's
-	#var sub = get_child(i).get_name().substr(5, 3)
-	var nrs = get_child(i).get_name().split("-")
-	nrs[0] = nrs[0].lstrip("Road ")
-
+	# extract intersection numbers
 	var ret = []
-	for i in nrs:
-		ret.append(int(i)-2)
-
-	Logger.mapgen_print(get_child(i).get_name() + " real numbers: " + str(ret))
+	var strs = get_child(i).get_name().split("-")
+	# convert to int
+	ret.append(int(strs[0].lstrip("Road ")))
+	ret.append(int(strs[1]))
+	print("Ret: " + str(ret))
 
 	# paranoia
 	if not get_child(i).has_node("Road_instance0"):
