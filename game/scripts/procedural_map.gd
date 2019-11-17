@@ -390,7 +390,7 @@ func auto_connect(initial_int, real_edges):
 			
 			# update naming
 			var added = get_child(get_child_count()-1)
-			print("Last child: " + added.get_name())
+			#print("Last child: " + added.get_name())
 			# extract numbers (ids)
 			var nrs = added.get_name().split("-")
 			nrs[0] = nrs[0].lstrip("Road ")
@@ -453,7 +453,7 @@ func setup_nav_astar(pts, i, begin_id):
 	# convert to int
 	ret.append(int(strs[0].lstrip("Road ")))
 	ret.append(int(strs[1]))
-	print("Ret: " + str(ret))
+	#print("Ret: " + str(ret))
 
 	# paranoia
 	if not get_child(i).has_node("Road_instance0"):

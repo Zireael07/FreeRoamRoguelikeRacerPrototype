@@ -52,8 +52,8 @@ func connect_intersections(one, two):
 	draw.draw_line(positions)
 
 	#print("Line length: " + str(loc_dest_exit.distance_to(loc_src_exit)))
-
-	var extendeds = extend_lines(one,two, loc_src_exit, loc_dest_exit, 2)
+	# 2.5 is enough for every road on our map except for 10-7
+	var extendeds = extend_lines(one,two, loc_src_exit, loc_dest_exit, 3) #2.5) #2)
 
 	var corner_points = get_corner_points(one,two, extendeds[0], extendeds[1], extendeds[0].distance_to(loc_src_exit))
 
@@ -136,7 +136,7 @@ func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, sr
 	var tang2 = (Vector2(corner2.x, corner2.z)-Vector2(loc_src_extended.x, loc_src_extended.z)).tangent()
 	
 	# extend them
-	var tang_factor = 30 # 10 is too little for some turns
+	var tang_factor = 100 # to cover absolutely everything
 	tang = tang*tang_factor
 	tang2 = tang2*tang_factor
 	
@@ -205,7 +205,7 @@ func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, des
 	var tang2 = (Vector2(corner2.x, corner2.z)-Vector2(loc_dest_extended.x, loc_dest_extended.z)).tangent()
 	
 	# extend them
-	var tang_factor = 20 # 10 is too little for some turns
+	var tang_factor = 100 # to cover absolutely everything
 	tang = tang*tang_factor
 	tang2 = tang2*tang_factor
 	var start = Vector2(corner1.x, corner1.z) + tang
