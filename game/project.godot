@@ -122,5 +122,4 @@ shadow_filter=3
 
 quality/directional_shadow/size=2048
 quality/shadows/filter_mode=2
-quality/voxel_cone_tracing/high_quality=false
 environment/default_environment="res://default_env.tres"
