@@ -76,8 +76,8 @@ func _ready():
 #	auto_connect(sorted[5][1])
 #	auto_connect(sorted[6][1])
 #	auto_connect(sorted[7][1])
-	auto_connect(sorted[8][1], real_edges)
-	auto_connect(sorted[9][1], real_edges)
+#	auto_connect(sorted[8][1], real_edges)
+#	auto_connect(sorted[9][1], real_edges)
 #	auto_connect(sorted[10][1])
 #	auto_connect(sorted[11][1])
 

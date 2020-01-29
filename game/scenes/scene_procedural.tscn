@@ -45,7 +45,6 @@ directional_shadow_bias_split_scale = 0.0
 directional_shadow_max_distance = 50.0
 
 [node name="map" type="Spatial" parent="."]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -128.754, 0, -209.444 )
 script = ExtResource( 5 )
 
@@ -63,13 +62,13 @@ script = ExtResource( 8 )
 color = Color( 1, 0.961243, 0.0078125, 1 )
 
 [node name="AI" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 154, 0, 65 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 47.594, 0, 192.855 )
 
 [node name="Spatial" parent="AI" instance=ExtResource( 9 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.64328, 0, 1.32462 )
 
 [node name="car" parent="." instance=ExtResource( 10 )]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 154.707, 1.13199, 65.6732 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 47.594, 0, 192.855 )
 
 [node name="Ground" type="Spatial" parent="."]
 script = ExtResource( 11 )
