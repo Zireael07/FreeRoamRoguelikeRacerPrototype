@@ -16,6 +16,9 @@ var dot_size = 4
 # positioning
 var positions = [] #Vector3Array()
 var positions_2d = [] #Vector2Array()
+var intersections = []
+var intersections_2d = []
+
 var indices = []
 
 
@@ -57,6 +60,35 @@ func make_map():
 	#draw center point (=0,0)
 	image.set_pixel(image.get_width()/2, image.get_height()/2, testcolor)
 	
+	intersections = player.get_node("Viewport_root/Viewport/minimap").intersections
+	
+	if intersections.size() == 0:
+		print("No intersections detected")
+	else:
+		for ind in range (intersections.size()):
+			var pos = intersections[ind]
+			var temp = []
+			var calc_point = pos3d_to_minimap_point(pos)
+			temp.push_back(calc_point)
+			#positions_2d.push_back(calc_point)
+			intersections_2d.append(temp)
+			
+		# draw them as real big dots
+		for ind in range (intersections_2d.size()):
+			var pos = intersections_2d[ind][0]
+			#print("Pos: " + str(pos))
+			if pos.x > 1000-dot_size+1 or pos.y > 1000-dot_size+1 or pos.x-dot_size+1 < 0 or pos.y-dot_size+1 < 0:
+				print("Out of borders")
+			else:
+				#center the point
+				for i in range (pos.x-(dot_size+1), pos.x+(dot_size+1)):
+					for j in range (pos.y-(dot_size+1), pos.y+(dot_size+1)):
+						# paranoia
+						if i > 0 and i < 1000 and j > 0 and j < 1000:
+							# necessary in 3.0
+							image.lock()
+							image.set_pixel(i,j, road)
+							
 	if positions.size() == 0:
 		print("No positions detected")
 	else:

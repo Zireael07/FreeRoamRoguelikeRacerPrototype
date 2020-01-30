@@ -4,9 +4,14 @@
 [ext_resource path="res://assets/road_shadermat.tres" type="Material" id=2]
 [ext_resource path="res://objects/procedural_building.tscn" type="PackedScene" id=3]
 
-[node name="Spatial" type="Spatial"]
+[node name="Spatial" type="Spatial" groups=[
+"intersection",
+]]
 script = ExtResource( 1 )
 material = ExtResource( 2 )
 
 [node name="Spatial" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.1921, 0, 0 )
+storeys = 18
+width = 6
+thick = 6

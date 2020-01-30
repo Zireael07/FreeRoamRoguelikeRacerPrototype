@@ -12,6 +12,7 @@ var attach
 # for storing positions
 var temp_positions = Array()
 var positions = Array()
+var intersections = Array()
 
 # for static markers (races, POIs)
 var marker_pos = []
@@ -45,6 +46,8 @@ func _ready():
 	attach = get_node("Container/Node2D2/Control_pos/attach")
 	
 	getPositions()
+	
+	getIntersections()
 	
 	setupMinimap(arrow, player_arrow)
 	
@@ -163,6 +166,14 @@ func getPositions():
 		r.send_positions(self)
 		
 	print("Should have positions")
+
+func add_intersection(pos):
+	intersections.append(pos)
+
+func getIntersections():
+	var inters = get_tree().get_nodes_in_group("intersection")
+	for i in inters:
+		i.send_position(self)
 	
 func _process(delta):
 	#var player_coord = get_tree().get_nodes_in_group("player")[0].get_child(0).get_global_transform().origin
