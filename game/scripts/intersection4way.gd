@@ -180,3 +180,6 @@ func debug_cube(loc):
 	node.set_name("Debug")
 	add_child(node)
 	node.set_translation(loc)
+
+func send_position(map):
+	map.add_intersection(get_global_transform().xform(Vector3(0,0,0)))

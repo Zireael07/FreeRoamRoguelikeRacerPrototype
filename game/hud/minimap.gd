@@ -1,4 +1,5 @@
 # obsolete, kept only for comparison purposes
+# use camera_minimap instead
 extends Control
 
 # class member variables go here, for example:
@@ -100,7 +101,6 @@ func getPositions():
 		r.send_positions(self)
 		
 	print("Should have positions")
-
 
 func _process(delta):
 	for index in range(AIs.size()):
