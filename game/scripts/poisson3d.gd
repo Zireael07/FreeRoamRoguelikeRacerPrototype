@@ -1,5 +1,5 @@
 tool
-extends "res://2d tests/poisson2D.gd"
+extends "res://2d tests/poisson2DNode.gd"
 
 # class member variables go here, for example:
 var mult = 2
