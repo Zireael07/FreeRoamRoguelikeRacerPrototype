@@ -299,10 +299,11 @@ func last_turn_test(one, two, data, loc, node):
 	
 		# place
 		if get_child(two).get_translation().y > get_child(one).get_translation().y:
-			Logger.mapgen_print("Road in normal direction, positive y")
+			pass
+			#Logger.mapgen_print("Road in normal direction, positive y")
 		else:
 			last_turn.rotate_y(deg2rad(180))
-			Logger.mapgen_print("Rotated because we're going back")
+			#Logger.mapgen_print("Rotated because we're going back")
 	
 	
 func set_straight(loc, loc2, node):
@@ -569,7 +570,7 @@ func get_arc_angle(center_point, start_point, end_point, angle0):
 		#print("Angle 1 " + str(angle))
 	
 	#angles.append(angle)
-	Logger.mapgen_print("Angle 1 " + str(angle1))
+	#Logger.mapgen_print("Angle 1 " + str(angle1))
 	# equivalent angle for the end point
 	var angle2 = rad2deg((angle0-center_point).angle_to(end_point-center_point))
 	
@@ -577,16 +578,19 @@ func get_arc_angle(center_point, start_point, end_point, angle0):
 		angle2 = 360+angle2
 		#print("Angle 2 " + str(angle))
 	
-	Logger.mapgen_print("Angle 2 " + str(angle2))
+	#Logger.mapgen_print("Angle 1 " + str(angle1) + ", angle 2 " + str(angle2))
 	#angles.append(angle)
 	
 	var arc = angle1-angle2
 	
-	Logger.mapgen_print("Arc angle " + str(arc))
+	Logger.mapgen_print("Angle 1 " + str(angle1) + ", angle 2 " + str(angle2) + " = arc angle " + str(arc))
 		
 	if arc > 200:
 		Logger.mapgen_print("Too big arc " + str(angle1) + " , " + str(angle2))
 		angle2 = angle2+360
+	if arc < -200:
+		Logger.mapgen_print("Too big arc " + str(angle1) + " , " + str(angle2))
+		angle1 = angle1+360
 		
 	angles = [angle1, angle2]
 	

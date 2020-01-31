@@ -27,7 +27,7 @@ func _ready():
 	recharge = preload("res://objects/recharge_station.tscn")
 
 	samples = get_node("triangulate/poisson").samples
-	#print(samples.size()-1)
+	print("Number of intersections: " + str(samples.size()-1))
 	for i in range(0, get_node("triangulate/poisson").samples.size()-1):
 		var p = get_node("triangulate/poisson").samples[i]
 		var intersection = intersects.instance()
@@ -61,6 +61,11 @@ func _ready():
 #	var initial_int = sorted[0][1]
 #	print("Initial int: " + str(initial_int))
 
+	# automate it!
+	#for i in range(sorted.size()-1):
+	#	auto_connect(sorted[i][1], real_edges)
+
+
 	# this is a layout that works (0,2,3,4,8,9)
 #	var layout = [0,2,3,4,8,9]
 #	for i in range(0, layout.size()-1):
@@ -69,13 +74,18 @@ func _ready():
 	
 	
 	auto_connect(sorted[0][1], real_edges)
-#	auto_connect(sorted[1][1])
+	# [0][1] and [1][1] end up too close to each other, buildings extend onto the other road
+#	auto_connect(sorted[1][1], real_edges)
 	auto_connect(sorted[2][1], real_edges)
 	auto_connect(sorted[3][1], real_edges)
 	auto_connect(sorted[4][1], real_edges)
-#	auto_connect(sorted[5][1])
-#	auto_connect(sorted[6][1])
-#	auto_connect(sorted[7][1])
+	# crosses over one of the roads
+	#auto_connect(sorted[5][1], real_edges)
+	auto_connect(sorted[6][1], real_edges)
+	# it ends up overlapping [6][1]
+	#auto_connect(sorted[7][1], real_edges)
+	
+	
 #	auto_connect(sorted[8][1], real_edges)
 #	auto_connect(sorted[9][1], real_edges)
 #	auto_connect(sorted[10][1])
@@ -315,7 +325,7 @@ func sort_intersections_distance(tg = Vector3(0,0,0), debug=true):
 	#print(tmp)
 
 	if debug:
-		print(closest)
+		print("Sorted inters: " + str(closest))
 
 	return closest
 
@@ -330,7 +340,7 @@ func auto_connect(initial_int, real_edges):
 
 	for e in edges:
 		if e.x == initial_int:
-			Logger.mapgen_print("Edge with initial int" + str(e) + " other end " + str(e.y))
+			#Logger.mapgen_print("Edge with initial int" + str(e) + " other end " + str(e.y))
 			var data = [e.y, get_child(e.y).get_global_transform().origin]
 			next_ints.append(data)
 			#print(data[1].x)
@@ -340,7 +350,7 @@ func auto_connect(initial_int, real_edges):
 			# remove from edge list so that we can use the list in other iterations
 			to_remove.append(edges.find(e))
 		if e.y == initial_int:
-			Logger.mapgen_print("Edge with initial int" + str(e) + " other end " + str(e.x))
+			#Logger.mapgen_print("Edge with initial int" + str(e) + " other end " + str(e.x))
 			var data = [e.x, get_child(e.x).get_global_transform().origin]
 			next_ints.append(data)
 			#print(data[1].x)
@@ -400,7 +410,7 @@ func auto_connect(initial_int, real_edges):
 			for i in nrs:
 				real.append(int(i)-2)
 
-			Logger.mapgen_print(added.get_name() + " real numbers: " + str(real))
+			#Logger.mapgen_print(added.get_name() + " real numbers: " + str(real))
 			added.set_name("Road " + str(real[0]) + "-" + str(real[1]))
 			
 			#pass
