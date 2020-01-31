@@ -155,7 +155,8 @@ func on_load_ended():
 	$"cambase/Viewport/CameraCockpitBack".clear_current()
 	$"cambase/Viewport".set_update_mode(Viewport.UPDATE_DISABLED)
 
-	get_node("driver_new").setup_ik()
+	# temporarily disable
+	#get_node("driver_new").setup_ik()
 
 	# optimize label/nameplate rendering
 	get_node("..").freeze_viewports()
