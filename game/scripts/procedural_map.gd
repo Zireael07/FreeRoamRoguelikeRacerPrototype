@@ -80,7 +80,7 @@ func _ready():
 	auto_connect(sorted[3][1], real_edges)
 	auto_connect(sorted[4][1], real_edges)
 	# crosses over one of the roads
-	#auto_connect(sorted[5][1], real_edges)
+	#auto_connect(sorted[5][1], real_edges, true)
 	auto_connect(sorted[6][1], real_edges)
 	# it ends up overlapping [6][1]
 	#auto_connect(sorted[7][1], real_edges)
@@ -231,7 +231,7 @@ func _ready():
 	var garage_opts = []
 	for i in range(2, samples.size()-1):
 		var inters = get_child(i)
-		Logger.mapgen_print(inters.get_name() + " exits: " + str(inters.open_exits))
+		#Logger.mapgen_print(inters.get_name() + " exits: " + str(inters.open_exits))
 		if inters.open_exits.size() > 1:
 			# is it in the edges that actually were connected?
 			for e in real_edges:
@@ -241,7 +241,8 @@ func _ready():
 					break #the first find should be enough
 			
 			if garage_opts.find(inters) == -1:
-				Logger.mapgen_print(inters.get_name() + " is not in the actual connected map")
+				pass
+				#Logger.mapgen_print(inters.get_name() + " is not in the actual connected map")
 				
 	var sel = null
 	if not garage_opts:
@@ -329,14 +330,16 @@ func sort_intersections_distance(tg = Vector3(0,0,0), debug=true):
 
 	return closest
 
-func auto_connect(initial_int, real_edges):
+func auto_connect(initial_int, real_edges, verbose=false):
 	var next_ints = []
 	var res = []
 	var sorted_n = []
 	# to remove properly
 	var to_remove = []
 
-	Logger.mapgen_print("Auto connecting... " + get_child(initial_int).get_name() + " @ " + str(get_child(initial_int).get_global_transform().origin))
+	if verbose:
+		# +2 because of the poisson node that comes first
+		Logger.mapgen_print("Auto connecting... " + get_child(initial_int+2).get_name() + " @ " + str(get_child(initial_int+2).get_global_transform().origin))
 
 	for e in edges:
 		if e.x == initial_int:
@@ -370,7 +373,8 @@ func auto_connect(initial_int, real_edges):
 	# but we want higher?
 	#sorted_n.invert()
 
-	Logger.mapgen_print("Sorted: " + str(sorted_n))
+	if verbose:
+		Logger.mapgen_print("Sorted: " + str(sorted_n))
 
 	for i in range(0, next_ints.size()):
 		#print("Attempt " + str(i))
@@ -387,15 +391,17 @@ func auto_connect(initial_int, real_edges):
 	var last_int = 1+get_node("triangulate/poisson").samples.size()-1
 	for i in range(0, res.size()):
 		var p = res[i]
-		Logger.mapgen_print("Intersection " + str(p))
+		if verbose:
+			Logger.mapgen_print("Intersection " + str(p))
 		#Logger.mapgen_print("Target id " + str(p[0]+2) + "last intersection " + str(1+get_node("triangulate/poisson").samples.size()-1))
 		# prevent trying to connect to unsuitable things
 		if p[0]+2 > last_int:
 			return
 		# +2 because of the poisson node that comes first
-		var ret = connect_intersections(initial_int+2, p[0]+2)
+		var ret = connect_intersections(initial_int+2, p[0]+2, verbose)
 		if ret != false:
-			Logger.mapgen_print("We did create a connection")
+			if verbose:
+				Logger.mapgen_print("We did create a connection")
 			real_edges.append(Vector2(initial_int, p[0]))
 			
 			# update naming
