@@ -81,9 +81,9 @@ func _ready():
 	auto_connect(sorted[4][1], real_edges)
 	# crosses over one of the roads
 	#auto_connect(sorted[5][1], real_edges, true)
-	auto_connect(sorted[6][1], real_edges)
-	# it ends up overlapping [6][1]
-	#auto_connect(sorted[7][1], real_edges)
+	#auto_connect(sorted[6][1], real_edges, true)
+	# it ends up overlapping [6][1] which connects to 3's point one
+	auto_connect(sorted[7][1], real_edges, true)
 	
 	
 #	auto_connect(sorted[8][1], real_edges)
@@ -391,8 +391,8 @@ func auto_connect(initial_int, real_edges, verbose=false):
 	var last_int = 1+get_node("triangulate/poisson").samples.size()-1
 	for i in range(0, res.size()):
 		var p = res[i]
-		if verbose:
-			Logger.mapgen_print("Intersection " + str(p))
+		#if verbose:
+		#	Logger.mapgen_print("Intersection " + str(p))
 		#Logger.mapgen_print("Target id " + str(p[0]+2) + "last intersection " + str(1+get_node("triangulate/poisson").samples.size()-1))
 		# prevent trying to connect to unsuitable things
 		if p[0]+2 > last_int:
@@ -401,7 +401,7 @@ func auto_connect(initial_int, real_edges, verbose=false):
 		var ret = connect_intersections(initial_int+2, p[0]+2, verbose)
 		if ret != false:
 			if verbose:
-				Logger.mapgen_print("We did create a connection")
+				Logger.mapgen_print("We did create a connection... " + str(initial_int) + " to " + str(p[0]))
 			real_edges.append(Vector2(initial_int, p[0]))
 			
 			# update naming

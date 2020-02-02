@@ -34,6 +34,7 @@ func connect_intersections(one, two, verbose=false):
 	
 	var src_exit = get_src_exit(get_child(one), get_child(two), verbose)
 	if not src_exit:
+		Logger.mapgen_print("No src exits left, abort")
 		return false
 	if verbose:
 		Logger.mapgen_print("Src exit: " + str(src_exit) + " " + str(lookup_names[src_exit]))
@@ -42,6 +43,7 @@ func connect_intersections(one, two, verbose=false):
 	var dest_exit = get_dest_exit(get_child(one), get_child(two), verbose)
 	
 	if not dest_exit:
+		Logger.mapgen_print("No dest exits left, abort")
 		return false
 	if verbose:
 		Logger.mapgen_print("Dest exit: " + str(dest_exit) + " " + str(lookup_names[dest_exit]))
@@ -272,7 +274,7 @@ func initial_road_test(one, two, data, loc, node, verbose=false):
 	var start_angle = data[1]
 	var end_angle = data[2]
 	if verbose:
-		print("R: " + str(radius) + " , start angle: " + str(start_angle) + " , end: " + str(end_angle))
+		print("First turn: R: " + str(radius) + " , start angle: " + str(start_angle) + " , end: " + str(end_angle))
 	
 	first_turn = set_curved_road(radius, start_angle, end_angle, 0, node, verbose)
 	if first_turn != null:
@@ -281,10 +283,12 @@ func initial_road_test(one, two, data, loc, node, verbose=false):
 		# place
 		if get_child(two).get_translation().y > get_child(one).get_translation().y:
 			pass
-			#Logger.mapgen_print("Road in normal direction, positive y")
+			#if verbose:
+			#	Logger.mapgen_print("Road in normal direction, positive y")
 		else:
 			first_turn.rotate_y(deg2rad(180))
-			#Logger.mapgen_print("Rotated because we're going back")
+			if verbose:
+				Logger.mapgen_print("Rotated because we're going back")
 
 func last_turn_test(one, two, data, loc, node, verbose=false):
 	if data == null:
@@ -295,7 +299,8 @@ func last_turn_test(one, two, data, loc, node, verbose=false):
 	var radius = data[0]
 	var start_angle = data[1]
 	var end_angle = data[2]
-	
+	if verbose:
+		print("Last turn: R: " + str(radius) + " , start angle: " + str(start_angle) + " , end: " + str(end_angle))
 	
 	last_turn = set_curved_road(radius, start_angle, end_angle, 1, node, verbose)
 	if last_turn != null:
@@ -304,10 +309,12 @@ func last_turn_test(one, two, data, loc, node, verbose=false):
 		# place
 		if get_child(two).get_translation().y > get_child(one).get_translation().y:
 			pass
-			#Logger.mapgen_print("Road in normal direction, positive y")
+			#if verbose:
+			#	Logger.mapgen_print("Road in normal direction, positive y")
 		else:
 			last_turn.rotate_y(deg2rad(180))
-			#Logger.mapgen_print("Rotated because we're going back")
+			if verbose:
+				Logger.mapgen_print("Rotated because we're going back")
 	
 	
 func set_straight(loc, loc2, node):
@@ -347,9 +354,14 @@ func set_straight(loc, loc2, node):
 	return road_node	
 	
 func set_curved_road(radius, start_angle, end_angle, index, node, verbose):
+	if radius < 3: # less than lanes we want
+		Logger.mapgen_print("Bad radius given!")
+		return null
+
 	var road_node_right = road.instance()
 	road_node_right.set_name("Road_instance"+String(index))
-
+	#set the radius we wanted
+	road_node_right.get_child(0).get_child(0).radius = radius
 
 	if start_angle-90 > end_angle-90 and end_angle-90 < 0:
 		if verbose:
@@ -370,13 +382,6 @@ func set_curved_road(radius, start_angle, end_angle, index, node, verbose):
 	# road angles are in respect to X axis, so let's subtract 90 to point down Y
 	road_node_right.get_child(0).get_child(0).start_angle = start_angle-90
 	road_node_right.get_child(0).get_child(0).end_angle = end_angle-90
-	
-	if radius < 3: # less than lanes we want
-		Logger.mapgen_print("Bad radius given!")
-		return null
-	
-	#set the radius we wanted
-	road_node_right.get_child(0).get_child(0).radius = radius
 	
 	node.add_child(road_node_right)
 	return road_node_right
