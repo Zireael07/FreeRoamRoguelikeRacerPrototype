@@ -34,7 +34,7 @@ func connect_intersections(one, two, verbose=false):
 	
 	var src_exit = get_src_exit(get_child(one), get_child(two), verbose)
 	if not src_exit:
-		Logger.mapgen_print("No src exits left, abort")
+		Logger.mapgen_print("No src exits found or left, abort")
 		return false
 	if verbose:
 		Logger.mapgen_print("Src exit: " + str(src_exit) + " " + str(lookup_names[src_exit]))
@@ -43,7 +43,7 @@ func connect_intersections(one, two, verbose=false):
 	var dest_exit = get_dest_exit(get_child(one), get_child(two), verbose)
 	
 	if not dest_exit:
-		Logger.mapgen_print("No dest exits left, abort")
+		Logger.mapgen_print("No dest exits found or left, abort")
 		return false
 	if verbose:
 		Logger.mapgen_print("Dest exit: " + str(dest_exit) + " " + str(lookup_names[dest_exit]))
@@ -386,7 +386,8 @@ func set_curved_road(radius, start_angle, end_angle, index, node, verbose):
 	node.add_child(road_node_right)
 	return road_node_right
 
-
+# -------------------------------------
+# this is the meat of this whole script (selects the intersection exits so that we don't overlap/cross)
 # assume standard rotation for now
 func get_src_exit(src, dest, verbose=false):
 	#print("X abs: " + str(abs(dest.get_translation().x - src.get_translation().x)))
@@ -395,7 +396,7 @@ func get_src_exit(src, dest, verbose=false):
 	var src_exits = src.open_exits
 	
 	if src_exits.size() < 1:
-		print("Error, no exits left")
+		#print("Error, no exits left")
 		return
 	else:
 		if verbose:
@@ -449,12 +450,13 @@ func get_src_exit(src, dest, verbose=false):
 				src_exits.remove(src_exits.find(src.point_one))
 				src.used_exits[src.point_one] = 2 #quadrant
 				return src.point_one
-			# forbid picking two if one is taken, to avoid crossing over
-			elif src_exits.has(src.point_two) and src_exits.has(src.point_one):
+			elif src_exits.has(src.point_two) and \
+			src.used_exits[src.point_one] != 1:
 				src_exits.remove(src_exits.find(src.point_two))
 				src.used_exits[src.point_two] = 2 # quadrant
 				return src.point_two
-			elif src_exits.has(src.point_four):
+			elif src_exits.has(src.point_four) and \
+			src.used_exits[src.point_one] != 2:
 				src_exits.remove(src_exits.find(src.point_four))
 				src.used_exits[src.point_four] = 2 # quadrant
 				return src.point_four
@@ -470,7 +472,7 @@ func get_src_exit(src, dest, verbose=false):
 				src.used_exits[src.point_three] = 2 # quadrant
 				return src.point_three
 			else:
-				print("No exits found")
+				print("No exits found for src quadrant 2")
 	# SE = quadrant 3 (exclude bottom exit)
 	elif rel_pos.x > 0 and rel_pos.z < 0:
 		if verbose:
@@ -484,7 +486,7 @@ func get_src_exit(src, dest, verbose=false):
 			src.used_exits[src.point_two] = 3 # quadrant
 			return src.point_two
 		else:
-			print("No exits found")
+			print("No exits found for src quadrant 3")
 	# SW = quadrant 4
 	elif rel_pos.x < 0 and rel_pos.z < 0:
 		if verbose:
@@ -503,14 +505,14 @@ func get_src_exit(src, dest, verbose=false):
 			src.used_exits[src.point_one] = 4 # quadrant
 			return src.point_one
 		else:
-			print("No exit found")
+			print("No exits found for src quadrant 4")
 
 # assume standard rotation for now
 func get_dest_exit(src, dest, verbose=false):
 	var dest_exits = dest.open_exits
 	
 	if dest_exits.size() < 1:
-		print("Error, no exits left")
+		#print("Error, no exits left")
 		return
 	else:
 		if verbose:
@@ -539,7 +541,8 @@ func get_dest_exit(src, dest, verbose=false):
 			elif dest_exits.has(dest.point_four):
 				dest_exits.remove(dest_exits.find(dest.point_four))
 				dest.used_exits[dest.point_four] = 4 # quadrant
-				print("Picked exit 4")
+				if verbose:
+					Logger.mapgen_print("Picked exit 4")
 				return dest.point_four
 			elif dest_exits.has(dest.point_two):
 				dest_exits.remove(dest_exits.find(dest.point_two))

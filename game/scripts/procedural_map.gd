@@ -65,13 +65,6 @@ func _ready():
 	#for i in range(sorted.size()-1):
 	#	auto_connect(sorted[i][1], real_edges)
 
-
-	# this is a layout that works (0,2,3,4,8,9)
-#	var layout = [0,2,3,4,8,9]
-#	for i in range(0, layout.size()-1):
-#		var ind = layout[i]
-#		auto_connect(sorted[ind][1], real_edges)
-	
 	
 	auto_connect(sorted[0][1], real_edges)
 	# [0][1] and [1][1] end up too close to each other, buildings extend onto the other road
@@ -79,26 +72,9 @@ func _ready():
 	auto_connect(sorted[2][1], real_edges)
 	auto_connect(sorted[3][1], real_edges)
 	auto_connect(sorted[4][1], real_edges)
-	# crosses over one of the roads
-	#auto_connect(sorted[5][1], real_edges, true)
-	#auto_connect(sorted[6][1], real_edges, true)
-	# it ends up overlapping [6][1] which connects to 3's point one
-	auto_connect(sorted[7][1], real_edges, true)
-	
-	
-#	auto_connect(sorted[8][1], real_edges)
-#	auto_connect(sorted[9][1], real_edges)
-#	auto_connect(sorted[10][1])
-#	auto_connect(sorted[11][1])
-
-
-#	for i in range(0, edges.size()):
-#		var ed = edges[i]
-#		#print("Connecting intersections for edge: " + str(i) + " 0: " + str(ed[0]) + " 1: " + str(ed[1]))
-#		var p1 = samples[ed[0]]
-#		var p2 = samples[ed[1]]
-#		# +1 because of the poisson node that comes first
-#		connect_intersections(ed[0]+2, ed[1]+2)
+	auto_connect(sorted[5][1], real_edges)
+	auto_connect(sorted[6][1], real_edges)
+	auto_connect(sorted[7][1], real_edges)
 
 
 	setup_neighbors(real_edges)
