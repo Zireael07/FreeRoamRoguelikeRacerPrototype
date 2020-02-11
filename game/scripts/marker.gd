@@ -25,6 +25,14 @@ func _ready():
 	# Initialization here
 	pass
 
+func extract_numbers():
+	var split = get_name().split(">")
+	print(get_name())
+	if split.size() > 1:
+		var nrs = split[1].split("-")
+		return nrs
+	return null
+
 func set_finish(val):
 	finish = val
 
@@ -41,7 +49,7 @@ func _on_Area_body_enter( body ):
 				var msg = body.get_node("Messages")
 				#msg.set_initial(false)
 				var results = player.get_node("root").get_node("Label timer").get_text()
-				msg.set_text("FINISH TEST RACE!" + "\n" + results)
+				msg.set_text("FINISH TIME TRIAL!" + "\n" + results)
 				#msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
 				msg.enable_ok(false)
 				msg.show()
@@ -71,7 +79,12 @@ func _on_Area_body_enter( body ):
 			else:
 				var msg = body.get_node("Messages")
 				#msg.set_initial(false)
-				msg.set_text("TEST RACE! " + "\n" + "Drive along the road to the finish marker")
+				var numbers = extract_numbers()
+				var race_name = ""
+				if numbers != null:
+					race_name = "Route " + str(numbers[0]) + "-" + str(numbers[1])
+				msg.set_text("TIME TRIAL RACE! " + "\n" + race_name + "\n" +
+				"Drive along the road to the finish marker")
 				if not msg.get_node("OK_button").is_connected("pressed", self, "_on_ok_click"):
 					print("Not connected")
 					# disconnect all others just in case

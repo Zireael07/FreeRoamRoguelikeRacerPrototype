@@ -110,7 +110,8 @@ func _ready():
 
 	# test the nav
 	if marker_data != null:
-		var marker = get_node("tt_marker")
+		#var marker = get_node("tt_marker")
+		var marker = get_marker("tt_marker")
 	#print(marker.get_translation())
 		var tg = marker.target
 	#print("tg : " + str(tg))
@@ -158,7 +159,8 @@ func _ready():
 		marker.raceline = nav_path + nav_path2 + nav_path3
 		
 		# the same for race marker	
-		marker = get_node("race_marker")
+		marker = get_marker("race_marker")
+		#marker = get_node("race_marker")
 	#print(marker.get_translation())
 		tg = marker.target
 	#print("tg : " + str(tg))
@@ -559,6 +561,12 @@ func bfs_distances(start):
 
 
 #-------------------------
+func get_marker(_name):
+	for c in get_children():
+		if c.get_name().find(_name) != -1:
+			return c
+
+
 func spawn_marker(spots, mark, _name, limit=2):
 	#print("Spawning @ spots: " + str(spots))
 	# random choice of a connected (!) intersection to spawn at
@@ -568,7 +576,7 @@ func spawn_marker(spots, mark, _name, limit=2):
 	var p = samples[id]
 	
 	var marker = mark.instance()
-	marker.set_name(_name)
+	#marker.set_name(_name)
 	marker.set_translation(Vector3(p[0]*mult, 0, p[1]*mult))
 
 	# create a distance map from our intersection
@@ -604,6 +612,8 @@ func spawn_marker(spots, mark, _name, limit=2):
 	Logger.mapgen_print("Marker target is " + str(marker.target))
 
 	add_child(marker)
+	# neither : nor @ works here, so I had to use something else
+	marker.set_name(_name + ">" + str(id)+"-"+str(t_id))
 	
 	# remove from list of possible spots
 	spots.remove(sel) # this works by id not value!
