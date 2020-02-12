@@ -45,6 +45,7 @@ var current = 0
 var dot = 0
 var rel_loc = Vector3()
 var race_path = PoolVector3Array()
+var finished = false
 
 # performance testing
 var count

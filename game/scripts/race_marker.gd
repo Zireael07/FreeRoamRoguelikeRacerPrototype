@@ -40,6 +40,10 @@ func _on_Area_body_enter( body ):
 			
 			if finish:
 				print("Reached finish marker")
+				
+				# flag player as finished
+				player.finished = true
+				
 				start.count = false
 				
 				var msg = body.get_node("Messages")
@@ -93,7 +97,12 @@ func _on_Area_body_enter( body ):
 					msg.enable_ok(false)
 				
 				msg.show()
-		#else:
+		else:
+			print("Area entered by AI car")
+			if finish:
+				print("Finish area entered by AI")
+				# flag AI as finished
+				body.finished = true
 		#	print("Area entered by a car " + body.get_parent().get_name())
 	#else:
 	#	print("Area entered by something else")
@@ -200,29 +209,38 @@ func get_positions_simple():
 	
 		var raceline = ai.path
 		
-		if ai.current > player.current:
-			#print("AI's current higher")
+		# check for crossing the finish line first
+		if ai.finished and not player.finished:
 			positions.push_back(car.romaji)
 			positions.push_back(player.get_parent().romaji)
-		elif ai.current == player.current:
-			#print("Same current, comparing distances")
-			var AI_dist = get_distance_from_prev(get_AI_position_on_raceline(), raceline)
-			#print("AI dist: " + str(AI_dist))
-			var player_dist = get_distance_from_prev(get_player_position_on_raceline(), raceline)
-			#print("Player dist: " + str(player_dist))
-			if AI_dist != null and player_dist != null:
-				if AI_dist > player_dist:
-					#print("AI dist higher")
-					positions.push_back(car.romaji)
-					positions.push_back(player.get_parent().romaji)
-				else:
-					#print("player dist higher")
-					positions.push_back(player.get_parent().romaji)
-					positions.push_back(car.romaji)
+		elif player.finished and not ai.finished:
+			positions.push_back(player.get_parent().romaji)
+			positions.push_back(car.romaji)
+		# check points on raceline
 		else:
-			#print("player current higher")
-			positions.push_back(player.get_parent().romaji)
-			positions.push_back(car.romaji)
+			if ai.current > player.current:
+				#print("AI's current higher")
+				positions.push_back(car.romaji)
+				positions.push_back(player.get_parent().romaji)
+			elif ai.current == player.current:
+				#print("Same current, comparing distances")
+				var AI_dist = get_distance_from_prev(get_AI_position_on_raceline(), raceline)
+				#print("AI dist: " + str(AI_dist))
+				var player_dist = get_distance_from_prev(get_player_position_on_raceline(), raceline)
+				#print("Player dist: " + str(player_dist))
+				if AI_dist != null and player_dist != null:
+					if AI_dist > player_dist:
+						#print("AI dist higher")
+						positions.push_back(car.romaji)
+						positions.push_back(player.get_parent().romaji)
+					else:
+						#print("player dist higher")
+						positions.push_back(player.get_parent().romaji)
+						positions.push_back(car.romaji)
+			else:
+				#print("player current higher")
+				positions.push_back(player.get_parent().romaji)
+				positions.push_back(car.romaji)
 		
 		
 		#print(str(positions))
@@ -231,7 +249,7 @@ func get_positions_simple():
 
 func displayed_positions():
 	var string = ""
-	var positions = get_positions_simple()
+	var positions = get_positions_simple() #wtf was I thinking naming it?
 	
 	for i in range(positions.size()):
 		string = string + "\n" + str(i+1) + " " + str(positions[i])
@@ -280,6 +298,10 @@ func spawn_finish(start):
 	finish.set_translation(Vector3(loc.x, 0.25, loc.z))
 	finish.finish = true
 	finish.start = start
+	
+	# make the detection area wide...
+	finish.get_node("Area/CollisionShape").shape.set_extents(Vector3(4, 1, 0.85))
+	
 	#finish.set_val(true)
 	
 	get_parent().add_child(finish)

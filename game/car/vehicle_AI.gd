@@ -43,6 +43,8 @@ var start_secs = 1
 var emitted = false
 signal path_gotten
 
+# for race AI only
+var finished = false
 
 func _ready():
 	# Called every time the node is added to the scene.
