@@ -77,6 +77,7 @@ func connect_intersections(one, two, verbose=false):
 	
 	set_straight(corner_points[1], corner_points[3], top_node)
 
+# the length of the extend parameter here determines the radii of start and end turns
 func extend_lines(one, two, loc_src_exit, loc_dest_exit, extend):
 	#B-A: A->B
 	var src_line = loc_src_exit-get_child(one).get_translation()
@@ -141,6 +142,7 @@ func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, sr
 	
 	# extend them
 	var tang_factor = 100 # to cover absolutely everything
+	
 	tang = tang*tang_factor
 	tang2 = tang2*tang_factor
 	
@@ -209,7 +211,7 @@ func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, des
 	var tang2 = (Vector2(corner2.x, corner2.z)-Vector2(loc_dest_extended.x, loc_dest_extended.z)).tangent()
 	
 	# extend them
-	var tang_factor = 100 # to cover absolutely everything
+	var tang_factor = 150 # to cover absolutely everything
 	tang = tang*tang_factor
 	tang2 = tang2*tang_factor
 	var start = Vector2(corner1.x, corner1.z) + tang
@@ -429,7 +431,12 @@ func get_src_exit(src, dest, verbose=false):
 			else: 
 				print("No exits found for src quadrant 1!")
 		else:
-			if src_exits.has(src.point_two):
+			if src_exits.has(src.point_two) and \
+				src.used_exits.has(src.point_three) and src.used_exits[src.point_three] != 3:
+				# extending doesn't quite work, so just forbid
+				#if src.used_exits.has(src.point_three) and src.used_exits[src.point_three] == 3:
+					 #print("Extending turns...")
+					 #extend_turns = true
 				src_exits.remove(src_exits.find(src.point_two))
 				src.used_exits[src.point_two] = 1 #quadrant
 				return src.point_two
@@ -481,7 +488,8 @@ func get_src_exit(src, dest, verbose=false):
 			src_exits.remove(src_exits.find(src.point_three))
 			src.used_exits[src.point_three] = 3 #quadrant
 			return src.point_three
-		elif src_exits.has(src.point_two):
+		elif src_exits.has(src.point_two) and \
+			src.used_exits.has(src.point_three) and src.used_exits[src.point_three] != 3:
 			src_exits.remove(src_exits.find(src.point_two))
 			src.used_exits[src.point_two] = 3 # quadrant
 			return src.point_two
