@@ -62,19 +62,18 @@ func _ready():
 #	print("Initial int: " + str(initial_int))
 
 	# automate it!
-	#for i in range(sorted.size()-1):
-	#	auto_connect(sorted[i][1], real_edges)
+	for i in range(sorted.size()-1):
+		auto_connect(sorted[i][1], real_edges)
 
 	
-	auto_connect(sorted[0][1], real_edges)
-	# [0][1] and [1][1] end up too close to each other, buildings extend onto the other road
+#	auto_connect(sorted[0][1], real_edges)
 #	auto_connect(sorted[1][1], real_edges)
-	auto_connect(sorted[2][1], real_edges)
-	auto_connect(sorted[3][1], real_edges)
-	auto_connect(sorted[4][1], real_edges)
-	auto_connect(sorted[5][1], real_edges)
-	auto_connect(sorted[6][1], real_edges)
-	auto_connect(sorted[7][1], real_edges)
+#	auto_connect(sorted[2][1], real_edges)
+#	auto_connect(sorted[3][1], real_edges)
+#	auto_connect(sorted[4][1], real_edges)
+#	auto_connect(sorted[5][1], real_edges)
+#	auto_connect(sorted[6][1], real_edges)
+#	auto_connect(sorted[7][1], real_edges)
 
 
 	setup_neighbors(real_edges)
