@@ -202,11 +202,11 @@ func _physics_process(delta):
 		angle = atan2(rel_loc.x, rel_loc.z)
 	
 		# steering from boid
-#		if brain.steer != Vector2(0,0):
-#			print("Brain steer: " + str(brain.steer) + " div: " + str(brain.steer.x/15))
+		#if brain.steer != Vector2(0,0):
+		#	print("Brain steer: " + str(brain.steer) + " div: " + str(brain.steer.x/25))
 		
 		# magic number to make inputs smaller
-		var clx = clamp(brain.steer.x/15, -1, 1)
+		var clx = clamp(brain.steer.x/25, -1, 1)
 		#print("Clamped x: " + str(clx))
 
 		# needed for race position
