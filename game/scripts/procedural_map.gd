@@ -256,16 +256,17 @@ func _ready():
 	# place recharging station
 	wanted = get_child(5) # intersection 3
 	sel = wanted
-	print(sel.get_name() + str(sel.open_exits[1]))
-	var station = recharge.instance()
-	# place including offset that accounts for the size
-	station.set_translation(sel.get_translation() + sel.open_exits[1] + Vector3(4,0,4))
+	if sel.open_exits.size() > 2:
+		print(sel.get_name() + str(sel.open_exits[1]))
+		var station = recharge.instance()
+		# place including offset that accounts for the size
+		station.set_translation(sel.get_translation() + sel.open_exits[1] + Vector3(4,0,4))
 	
-	# assign correct rotation
-	if rots.has(sel.open_exits[1]): 
-		station.set_rotation_degrees(rots[sel.open_exits[1]])
+		# assign correct rotation
+		if rots.has(sel.open_exits[1]): 
+			station.set_rotation_degrees(rots[sel.open_exits[1]])
 	
-	add_child(station)
+		add_child(station)
 
 # -----------------
 # returns a list of [dist, index] lists, operates on child ids
