@@ -231,6 +231,10 @@ func _ready():
 	# store the surface because it'll be used later
 	car_surface = surface
 	
+	# post-process
+	node.get_mesh().surface_set_name(0, "body")
+	node.get_mesh().surface_set_name(1, "glass")
+	
 	#pass
 
 func createSteeringWheel(steering_surf, steering_material):
@@ -628,11 +632,18 @@ func hit_deform(pos):
 	#var start = float(OS.get_ticks_msec())
 	# setup
 	var mdt = MeshDataTool.new()
+	mdt.clear()
 	#var st = SurfaceTool.new()
 	var mesh = $"plane".get_mesh()
+	#if mesh.get_surface_count() > 2:
+	print("Number of surfaces: " + str(mesh.get_surface_count()))
+		
+	var id = 0
+	if mesh.surface_find_by_name("glass") == 0:
+		id = 1
 	
 	# copies the surface into mesh data tool
-	mdt.create_from_surface(mesh, 0)
+	mdt.create_from_surface(mesh, id)
 	
 	# Magic happens here
 	var center = Vector3(0, 0, width/2)
@@ -667,13 +678,16 @@ func hit_deform(pos):
 	if done:
 		# Remove existing surface
 		#for s in range(mesh.get_surface_count()):
-		mesh.surface_remove(0)
+		mesh.surface_remove(id)
 		
 		# this always adds at the end
 		mdt.commit_to_surface(mesh)
 		car_surface.create_from(mesh, mesh.get_surface_count()-1)
+		# don't multiply surfaces!
+		#mesh.surface_remove(mesh.get_surface_count()-1)
 		car_surface.generate_normals()
 		$"plane".mesh = car_surface.commit(mesh)
+	
 	# time it
 	#var endtt = float(OS.get_ticks_msec())
 	#print("Execution time: %.2f" % ((endtt - start)/1000))
