@@ -30,61 +30,70 @@ func _ready():
 	
 	rain_glass_mat = preload("res://assets/shadermaterial_glass_rain.tres")
 	
-	var car = defineCar()
-	
-	var surface = SurfaceTool.new()
-	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
-	
-	var glass_surf = SurfaceTool.new()
-	glass_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
-	
-	var inside_surf = SurfaceTool.new()
-	inside_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
-	
-	#Create a node that will hold the mesh
-	var node = MeshInstance.new()
-	node.set_name("plane")
-	add_child(node)
-	
-	var steering_surf = SurfaceTool.new()
-	steering_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
-	
-	#Create a node that will hold the mesh
-	var steer_node = MeshInstance.new()
-	steer_node.set_name("steering")
-	get_node("Spatial").add_child(steer_node)
-	
-	#Turn off shadows
-	steer_node.set_cast_shadows_setting(0)
-	
-	# magic happens here!
-	createCar(car_front, car_rear, car, window_poly, surface, glass_surf)
-	
-	createSteeringWheel(steering_surf, steering_material)
-	
-	steering_surf.generate_normals()
-	steering_surf.set_material(steering_material)
-	steer_node.set_mesh(steering_surf.commit())
-	
-	
-	# finish
-	surface.generate_normals()
-	surface.set_material(material)
-	glass_surf.generate_normals()
-	glass_surf.set_material(glass_material)
-	
-	
-	#Set the created mesh to the node
-	node.set_mesh(surface.commit())
-	#Add the other surfaces
-	node.set_mesh(glass_surf.commit(node.get_mesh()))
-	
-	# store the surface because it'll be used later
-	car_surface = surface
-	
-	# post-process
-	node.get_mesh().surface_set_name(0, "body")
-	node.get_mesh().surface_set_name(1, "glass")
+	if Engine.is_editor_hint():
+		var car = defineCar()
+		
+		var surface = SurfaceTool.new()
+		surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+		
+		var glass_surf = SurfaceTool.new()
+		glass_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
+		
+		var inside_surf = SurfaceTool.new()
+		inside_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
+		
+		#Create a node that will hold the mesh
+		var node = MeshInstance.new()
+		node.set_name("plane")
+		add_child(node)
+		
+		var steering_surf = SurfaceTool.new()
+		steering_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
+		
+		#Create a node that will hold the mesh
+		var steer_node = MeshInstance.new()
+		steer_node.set_name("steering")
+		get_node("Spatial").add_child(steer_node)
+		
+		#Turn off shadows
+		steer_node.set_cast_shadows_setting(0)
+		
+		# magic happens here!
+		createCar(car_front, car_rear, car, window_poly, surface, glass_surf)
+		
+		createSteeringWheel(steering_surf, steering_material)
+		
+		steering_surf.generate_normals()
+		steering_surf.set_material(steering_material)
+		steer_node.set_mesh(steering_surf.commit())
+		
+		# name mats
+		glass_material.set_name("Glass")
+		material.set_name("Body")
+		
+		# finish
+		surface.generate_normals()
+		surface.set_material(material)
+		glass_surf.generate_normals()
+		glass_surf.set_material(glass_material)
+		
+		
+		#Set the created mesh to the node
+		node.set_mesh(surface.commit())
+		#Add the other surfaces
+		node.set_mesh(glass_surf.commit(node.get_mesh()))
+		
+		# store the surface because it'll be used later
+		car_surface = surface
+		
+		# post-process
+		node.get_mesh().surface_set_name(0, "body")
+		node.get_mesh().surface_set_name(1, "glass")
+		
+		# save
+		# Saves mesh to a .tres file with compression enabled.
+		# one-time
+		#ResourceSaver.save("res://save_test.tres", node.get_mesh(), 32)
 
 func defineCar():
 	# bottom left, top left, top right, bottom right
