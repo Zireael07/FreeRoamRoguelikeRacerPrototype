@@ -30,6 +30,63 @@ func _ready():
 	
 	rain_glass_mat = preload("res://assets/shadermaterial_glass_rain.tres")
 	
+	var car = defineCar()
+	
+	var surface = SurfaceTool.new()
+	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	var glass_surf = SurfaceTool.new()
+	glass_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	var inside_surf = SurfaceTool.new()
+	inside_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	#Create a node that will hold the mesh
+	var node = MeshInstance.new()
+	node.set_name("plane")
+	add_child(node)
+	
+	var steering_surf = SurfaceTool.new()
+	steering_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	#Create a node that will hold the mesh
+	var steer_node = MeshInstance.new()
+	steer_node.set_name("steering")
+	get_node("Spatial").add_child(steer_node)
+	
+	#Turn off shadows
+	steer_node.set_cast_shadows_setting(0)
+	
+	# magic happens here!
+	createCar(car_front, car_rear, car, window_poly, surface, glass_surf)
+	
+	createSteeringWheel(steering_surf, steering_material)
+	
+	steering_surf.generate_normals()
+	steering_surf.set_material(steering_material)
+	steer_node.set_mesh(steering_surf.commit())
+	
+	
+	# finish
+	surface.generate_normals()
+	surface.set_material(material)
+	glass_surf.generate_normals()
+	glass_surf.set_material(glass_material)
+	
+	
+	#Set the created mesh to the node
+	node.set_mesh(surface.commit())
+	#Add the other surfaces
+	node.set_mesh(glass_surf.commit(node.get_mesh()))
+	
+	# store the surface because it'll be used later
+	car_surface = surface
+	
+	# post-process
+	node.get_mesh().surface_set_name(0, "body")
+	node.get_mesh().surface_set_name(1, "glass")
+
+func defineCar():
 	# bottom left, top left, top right, bottom right
 	var trueno_side_window = [Vector2(0.102906, 0.489506), Vector2(0.45022, 0.745425), Vector2(1.13577, 0.741807), Vector2(1.19646, 0.511102)]
 	#window_poly = trueno_side_window
@@ -130,112 +187,58 @@ func _ready():
 			car.append(car_rear[i])	
 	
 	print("Car final id: " + str(car.size()-1))
-
 	
-#	# bottom front point
-#	polygon.append(car[0]) # -0.764126 #beginning
-#
-#	# front wheel well
-#	# two points between wheel well bottom and top
-#	polygon.append(car[1]) # -0.4567
-#	polygon.append(car[2]) # -0.33
-#	polygon.append(car[3])
-#	# top of wheel well
-#	polygon.append(car[4]) #-0.20
-#	polygon.append(car[5])
-#	polygon.append(car[6]) # -0.08
-#	polygon.append(car[7]) # -0.03
-	
-#	# rear wheel well
-#	# two points between wheel well bottom and top
-#	polygon.append(car[8]) # 1.15943
-#	polygon.append(car[9]) # 1.1816
-#	polygon.append(car[10])
-#	# top of wheel well
-#	polygon.append(car[11]) # 1.38462
-#	polygon.append(car[12])
-#	polygon.append(car[13])
-#	polygon.append(car[14]) # 1.56198
-	
-	# the rear
-#	var rear_length = 2
-#	polygon.append(car[15]) # 1.83
-#	for i in range(1, rear_length+1): # because it's not inclusive
-#		#print(str(i))
-#		polygon.append(car[15+i])
-			
-#	polygon.append(car[16]) # the kink in the rear - 1.88706
-#	polygon.append(car[17]) # 1.81
-	
-	# top part
-#	var top_length = 3
-#	for i in range(top_length, 0, -1): # inverted is inclusive for some reason
-#		#print(str(i) + " " + str(-1-i) + " " + str(car.size()-1-i))
-#		polygon.append(car[car.size()-1-i])
-	#polygon.append(car[car.size()-4]) # 1.19123
-	#polygon.append(car[car.size()-3]) # 0.41938
-	#polygon.append(car[car.size()-2]) # -0.04
-	
-	# closes the polygon
-#	polygon.append(car[car.size()-1]) # -0.74 #end
-	
-	#print("Polygon final id: " + str(polygon.size()-1))
-	
-	var surface = SurfaceTool.new()
-	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
-	
-	var glass_surf = SurfaceTool.new()
-	glass_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
-	
-	var inside_surf = SurfaceTool.new()
-	inside_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
-	
-	#Create a node that will hold the mesh
-	var node = MeshInstance.new()
-	node.set_name("plane")
-	add_child(node)
-	
-	var steering_surf = SurfaceTool.new()
-	steering_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
-	
-	#Create a node that will hold the mesh
-	var steer_node = MeshInstance.new()
-	steer_node.set_name("steering")
-	get_node("Spatial").add_child(steer_node)
-	
-	#Turn off shadows
-	steer_node.set_cast_shadows_setting(0)
-	
-	# magic happens here!
-	createCar(car_front, car_rear, car, window_poly, surface, glass_surf)
-	
-	createSteeringWheel(steering_surf, steering_material)
-	
-	steering_surf.generate_normals()
-	steering_surf.set_material(steering_material)
-	steer_node.set_mesh(steering_surf.commit())
-	
-	
-	# finish
-	surface.generate_normals()
-	surface.set_material(material)
-	glass_surf.generate_normals()
-	glass_surf.set_material(glass_material)
-	
-	
-	#Set the created mesh to the node
-	node.set_mesh(surface.commit())
-	#Add the other surfaces
-	node.set_mesh(glass_surf.commit(node.get_mesh()))
-	
-	# store the surface because it'll be used later
-	car_surface = surface
-	
-	# post-process
-	node.get_mesh().surface_set_name(0, "body")
-	node.get_mesh().surface_set_name(1, "glass")
-	
-	#pass
+		
+	#	# bottom front point
+	#	polygon.append(car[0]) # -0.764126 #beginning
+	#
+	#	# front wheel well
+	#	# two points between wheel well bottom and top
+	#	polygon.append(car[1]) # -0.4567
+	#	polygon.append(car[2]) # -0.33
+	#	polygon.append(car[3])
+	#	# top of wheel well
+	#	polygon.append(car[4]) #-0.20
+	#	polygon.append(car[5])
+	#	polygon.append(car[6]) # -0.08
+	#	polygon.append(car[7]) # -0.03
+		
+	#	# rear wheel well
+	#	# two points between wheel well bottom and top
+	#	polygon.append(car[8]) # 1.15943
+	#	polygon.append(car[9]) # 1.1816
+	#	polygon.append(car[10])
+	#	# top of wheel well
+	#	polygon.append(car[11]) # 1.38462
+	#	polygon.append(car[12])
+	#	polygon.append(car[13])
+	#	polygon.append(car[14]) # 1.56198
+		
+		# the rear
+	#	var rear_length = 2
+	#	polygon.append(car[15]) # 1.83
+	#	for i in range(1, rear_length+1): # because it's not inclusive
+	#		#print(str(i))
+	#		polygon.append(car[15+i])
+				
+	#	polygon.append(car[16]) # the kink in the rear - 1.88706
+	#	polygon.append(car[17]) # 1.81
+		
+		# top part
+	#	var top_length = 3
+	#	for i in range(top_length, 0, -1): # inverted is inclusive for some reason
+	#		#print(str(i) + " " + str(-1-i) + " " + str(car.size()-1-i))
+	#		polygon.append(car[car.size()-1-i])
+		#polygon.append(car[car.size()-4]) # 1.19123
+		#polygon.append(car[car.size()-3]) # 0.41938
+		#polygon.append(car[car.size()-2]) # -0.04
+		
+		# closes the polygon
+	#	polygon.append(car[car.size()-1]) # -0.74 #end
+		
+		#print("Polygon final id: " + str(polygon.size()-1))
+		
+	return car
 
 func createSteeringWheel(steering_surf, steering_material):
 	var side_poly = []
@@ -681,6 +684,7 @@ func hit_deform(pos):
 		mesh.surface_remove(id)
 		
 		# this always adds at the end
+		# doesn't seem to be enough because Godot messes up material assignments, resulting in body being glass
 		mdt.commit_to_surface(mesh)
 		car_surface.create_from(mesh, mesh.get_surface_count()-1)
 		# don't multiply surfaces!
