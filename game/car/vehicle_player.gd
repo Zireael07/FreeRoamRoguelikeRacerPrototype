@@ -306,7 +306,7 @@ func _physics_process(delta):
 	process_car_physics(delta, gas, braking, left, right, joy)
 
 	get_node("driver_new/Armature/Spatial").set_rotation(Vector3(get_steering()*2,0,0))
-	get_node("mesh/Spatial/steering").set_rotation(Vector3(get_steering()*2, 0, 0))
+	#get_node("proc_mesh/Spatial/steering").set_rotation(Vector3(get_steering()*2, 0, 0))
 
 	#reset
 	if (Input.is_action_pressed("steer_reset")):
@@ -514,7 +514,7 @@ func _on_BODY_body_entered(body):
 		health -= round(speed)
 		# deform
 		var local = get_global_transform().xform_inv((obj.get_global_transform().origin))
-		$"mesh".hit_deform(local)
+		$"car_mesh".hit_deform(local)
 
 	if health <= 0:
 		# game over!

@@ -260,7 +260,7 @@ func rain():
 	if get_tree().get_nodes_in_group("roads").size() > 0:
 		get_tree().get_nodes_in_group("roads")[0].rain_shine()
 		
-	player.get_node("BODY/mesh").rain_glass()
+	player.get_node("BODY/proc_mesh").rain_glass()
 
 func no_rain():
 	env.set_ssr_enabled(false)
@@ -271,7 +271,7 @@ func no_rain():
 		get_tree().get_nodes_in_group("roads")[0].no_rain()
 
 	# car glass
-	player.get_node("BODY/mesh").rain_clear()
+	player.get_node("BODY/proc_mesh").rain_clear()
 	
 # fsm
 func set_state(new_state):

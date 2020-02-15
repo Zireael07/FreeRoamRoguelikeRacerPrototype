@@ -30,6 +30,20 @@ func _ready():
 	
 	rain_glass_mat = preload("res://assets/shadermaterial_glass_rain.tres")
 	
+	#Create a node that will hold the mesh
+	var node = MeshInstance.new()
+	node.set_name("plane")
+	add_child(node)
+	
+	#Create a node that will hold the mesh
+	var steer_node = MeshInstance.new()
+	steer_node.set_name("steering")
+	get_node("Spatial").add_child(steer_node)
+		
+	#Turn off shadows
+	steer_node.set_cast_shadows_setting(0)
+	
+	
 	if Engine.is_editor_hint():
 		var car = defineCar()
 		
@@ -42,21 +56,10 @@ func _ready():
 		var inside_surf = SurfaceTool.new()
 		inside_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
 		
-		#Create a node that will hold the mesh
-		var node = MeshInstance.new()
-		node.set_name("plane")
-		add_child(node)
 		
 		var steering_surf = SurfaceTool.new()
 		steering_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
 		
-		#Create a node that will hold the mesh
-		var steer_node = MeshInstance.new()
-		steer_node.set_name("steering")
-		get_node("Spatial").add_child(steer_node)
-		
-		#Turn off shadows
-		steer_node.set_cast_shadows_setting(0)
 		
 		# magic happens here!
 		createCar(car_front, car_rear, car, window_poly, surface, glass_surf)
