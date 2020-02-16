@@ -341,6 +341,12 @@ func auto_connect(initial_int, real_edges, verbose=false):
 			to_remove.append(edges.find(e))
 
 	# remove ids to remove
+	#print("Before: " + str(to_remove))
+	to_remove.sort()
+	#print("Sorted: " + str(to_remove))
+	# By removing highest index first, we avoid errors
+	to_remove.invert()
+	#print("Inverted: " + str(to_remove))
 	for i in to_remove:
 		edges.remove(i)
 
