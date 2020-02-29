@@ -155,17 +155,16 @@ func setup_path(path):
 		stop = false
 	
 	for index in range(path.size()):
-		if (index > 0): #because #0 is our own location
+		if (index > 0): #because #0 is our own location when we start
 			target_array.push_back(path[index])
-
-	#var pt_locs_rel = []
-	for pt in path:
-		pt_locs_rel.push_back(get_parent().to_local(pt))
 		
+		pt_locs_rel.push_back(get_parent().to_local(path[index]))
+			
 	# debug
 	for i in pt_locs_rel.size()-1:
 		var pt_loc = pt_locs_rel[i]
-		get_parent().debug_cube(pt_loc)
+		if i == 0:
+			get_parent().debug_cube(pt_loc)
 		
 	# pass target to brain
 	brain.target = target_array[current]
@@ -475,6 +474,18 @@ func stopping():
 		braking = true
 	if (speed > 0.1 and reverse):
 		gas = true
+	
+	# TODO: put into own function	
+	# are we stopped?
+	if speed < 0.3 and stop:
+		#print("Have stopped...")
+		#have_stopped = true
+		# only traffic AI
+		if get_parent().is_in_group("AI") and not emitted:
+			print("[AI] Traffic looks for new path...")
+			get_parent().look_for_path(get_parent().end_ind+2, get_parent().last_ind)
+			emitted = true
+			return
 
 func collision_avoidance():
 	if has_node("RayFront") and get_node("RayFront").get_collider_hit() != null:
