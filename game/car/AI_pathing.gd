@@ -5,6 +5,8 @@ export(Vector3) var target = Vector3(0,0,0)
 export(bool) var left = true
 
 var path
+var end_ind
+var last_ind
 
 #var navigation_node
 var map
@@ -31,20 +33,7 @@ func _ready():
 		var closest = map.get_child(closest_ind)
 		print(closest.get_name() + " " + str(closest.get_translation()))
 		
-		#print("[AI] Path_look: " + str(map.path_look))
-		var int_path = []
-		for p in map.path_look:
-			if p[0] == closest_ind-2:
-				int_path = p
-				
-		#print("[AI] our intersection path" + str(int_path))
-		
-		var lookup_path = map.path_look[[int_path[0], int_path[1]]]
-		#print("[AI] Lookup path: " + str(lookup_path))
-		var nav_path = map.nav.get_point_path(lookup_path[0], lookup_path[1])
-		#print("[AI] Nav path: " + str(nav_path))
-		
-		path = reduce_path(nav_path)
+		look_for_path(closest_ind)
 	
 	# Initialization here
 	if has_node("draw"):
@@ -52,6 +41,28 @@ func _ready():
 	if has_node("draw2"):
 		draw_arc = get_node("draw2")
 	
+func look_for_path(start_ind, exclude=null):
+	print("Looking for path, start_ind: " + str(start_ind))
+	#print("[AI] Path_look: " + str(map.path_look))
+	var int_path = []
+	for p in map.path_look:
+		if p[0] == start_ind-2:
+			if exclude != null and not p[1] == exclude:
+				int_path = p
+				break #the first find should be enough
+			else:
+				int_path = p
+			
+	print("[AI] our intersection path" + str(int_path))
+	
+	var lookup_path = map.path_look[[int_path[0], int_path[1]]]
+	#print("[AI] Lookup path: " + str(lookup_path))
+	var nav_path = map.nav.get_point_path(lookup_path[0], lookup_path[1])
+	#print("[AI] Nav path: " + str(nav_path))
+	
+	path = reduce_path(nav_path)
+	last_ind = start_ind
+	end_ind = int_path[1]
 
 # this used navmesh
 #func find_path():
@@ -116,7 +127,7 @@ func reduce_path(path):
 	
 	
 	#print("New path" + str(new_path))
-	print("New path: " + str(new_path.size()))
+	#print("New path: " + str(new_path.size()))
 		
 	return new_path
 			
