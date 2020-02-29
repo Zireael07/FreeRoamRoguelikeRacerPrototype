@@ -228,6 +228,10 @@ enabled = true
 cast_to = Vector3( 0, 0, 5 )
 script = ExtResource( 8 )
 
+[node name="Timer" type="Timer" parent="BODY"]
+process_mode = 0
+one_shot = true
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 _import_path = NodePath("AnimationPlayer")
 
@@ -242,3 +246,4 @@ material_override = SubResource( 9 )
 cast_shadow = 0
 script = ExtResource( 9 )
 color = Color( 1, 1, 1, 1 )
+[connection signal="timeout" from="BODY/Timer" to="BODY" method="_on_Timer_timeout"]

@@ -151,20 +151,13 @@ func _process(delta):
 func setup_path(path):
 	target_array.resize(0) #= []
 	pt_locs_rel.resize(0) #= []
-	# reset points
-	current = 0
-	prev = 0
 	# clear debug cubes
 	get_parent().clear_cubes()
 	
 	emit_signal("path_gotten")
 	
 	# stuff to do after getting path
-	print("[AI] We have a path to follow")
-	
-	# bugfix
-	if stop:
-		stop = false
+	#print("[AI] We have a path to follow")
 	
 	for index in range(path.size()):
 		#if (index > 0): #because #0 is our own location when we start
@@ -182,20 +175,31 @@ func setup_path(path):
 #			get_parent().debug_cube(pt_loc)	
 		if pt_loc == get_parent().to_local(target_array[0]):
 			get_parent().debug_cube(pt_loc)
+	
+	# because the loops above take some time, to be 1000% certain we have the correct targets
+	get_node("Timer").start()
+
+
+func _on_path_found(path):
+	#print("Path was found!")
+	setup_path(path)
+
+func _on_Timer_timeout():
+	print("Timed out timer")
+	# reset points
+	current = 0
+	prev = 0
 		
 	# pass target to brain
 	#print("Current: " + str(current))
 	brain.target = target_array[current]
-	#print("Target: " + str(brain.target))
+	print("Target: " + str(brain.target))
 	
-	# brain needs local coords
-	#var loc = get_global_transform().xform_inv(target_array[current])
-	# steering behaviors decide in 2D, so we discard the y axis
-	#brain.target = Vector2(loc.x, loc.z)
-
-func _on_path_found(path):
-	print("Path was found!")
-	setup_path(path)
+	# bugfix
+	if stop:
+		stop = false
+	
+	#pass # Replace with function body.
 
 # translates steering behaviors output 
 # into actual steering input (gas/brake/left/right)
@@ -290,12 +294,13 @@ func _physics_process(delta):
 				#if not debug: #dummy out for now
 				prev = current
 				current = current + 1
-				if debug:
-					print("Get next target") 
+				#else:
+				#	stop = true
+				#	print("Stopping")
 				# send to brain
 				brain.target = target_array[current]
-				if debug:
-					print("New target" + str(brain.target))
+				#if debug:
+				#	print("New target" + str(brain.target))
 			else:
 				#print("We're at the end")
 				stop = true
