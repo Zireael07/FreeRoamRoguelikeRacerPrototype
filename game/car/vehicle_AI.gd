@@ -127,16 +127,25 @@ func _process(delta):
 			var pos = get_transform().origin #get_translation()
 			var points = PoolVector3Array()
 			points.push_back(get_translation())
-			
+#
+			# draw velocity
+#			# from relative location
+#			var loc_to_dr = Vector3(brain.velocity.x, 1, brain.velocity.y)
+#			var gl_tg = get_global_transform().xform(loc_to_dr)
+#			var par_rel = get_parent().get_global_transform().xform_inv(gl_tg)
+#			points.push_back(Vector3(par_rel.x, 1, par_rel.z))
+#
+#			#points.push_back(Vector3(brain.steer.x, 1, brain.steer.y))
+#			get_parent().draw_arc.draw_line_color(points, 3, Color(1,0,1))
+
+			# draw forward vector
 			# from relative location
-			#var loc_to_dr = Vector3(0, 0, 4)
-			var loc_to_dr = Vector3(brain.velocity.x, 1, brain.velocity.y)
-			var gl_tg = get_global_transform().xform(loc_to_dr)
+			var loc_dr = Vector3(0, 0, 4)
+			var gl_tg = get_global_transform().xform(loc_dr)
 			var par_rel = get_parent().get_global_transform().xform_inv(gl_tg)
 			points.push_back(Vector3(par_rel.x, 1, par_rel.z))
-			
-			#points.push_back(Vector3(brain.steer.x, 1, brain.steer.y))
 			get_parent().draw_arc.draw_line_color(points, 3, Color(1,0,1))
+
 
 func setup_path(path):
 	target_array.resize(0) #= []
