@@ -213,9 +213,10 @@ func _physics_process(delta):
 		#print("Clamped x: " + str(clx))
 
 		# needed for race position
-		if path != null and path.size() > 0:
-			var pos = get_global_transform().origin
-			position_on_line = position_line(prev, current, pos, path)
+		if get_parent().is_in_group("race_AI"):
+			if path != null and path.size() > 0:
+				var pos = get_global_transform().origin
+				position_on_line = position_line(prev, current, pos, path)
 		
 		#stop if we're supposed to
 		if (stop):
@@ -257,7 +258,6 @@ func _physics_process(delta):
 		
 		process_car_physics(delta, gas, braking, left, right, joy)
 		
-		
 		#if brain.dist <= 2 and not stop:
 		if rel_loc.distance_to(compare_pos) <= 2:
 			#print("[AI] We're close to target")
@@ -273,16 +273,18 @@ func _physics_process(delta):
 				stop = true
 				
 		#if we passed the point, don't backtrack
-		if (dot < 0 and not stop):
-			##do we have a next point?
-			if (target_array.size() > current+1):
-				prev = current
-				current = current + 1
-				# send to brain
-				brain.target = target_array[current]
-			else:
-				#print("We're at the end")
-				stop = true
+		if get_parent().is_in_group("race_AI"):
+			if (dot < 0 and not stop):
+				#print("Passed the point")
+				##do we have a next point?
+				if (target_array.size() > current+1):
+					prev = current
+					current = current + 1
+					# send to brain
+					brain.target = target_array[current]
+				else:
+					#print("We're at the end")
+					stop = true
 		
 #	func update(delta):
 #		car.flag = ""
