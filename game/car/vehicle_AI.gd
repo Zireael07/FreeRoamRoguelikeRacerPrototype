@@ -49,6 +49,7 @@ var finished = false
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
+	get_parent().connect("found_path", self, "_on_path_found")
 	
 	target_array.resize(0)
 	
@@ -106,21 +107,11 @@ func _process(delta):
 	elapsed_secs += delta
 	
 	if (elapsed_secs > start_secs):
-		if (path == null):
-#			
-			path = get_parent().path
-			#pass
-			#path = get_parent().find_path()
-			#if path != null:
-			#	print(get_parent().get_name() + " found path: " + String(path))
-#			
-		if (path != null and path.size() > 0 and not emitted):
-			setup_path(path)
 
 		# debug
 		if (get_parent().draw != null):
-			#debug_draw_lines()
-			debug_draw_path(pt_locs_rel)
+			debug_draw_lines()
+			#debug_draw_path(pt_locs_rel)
 			
 		if (get_parent().draw_arc != null):
 #			if angle > 0:
@@ -148,7 +139,9 @@ func _process(delta):
 func setup_path(path):
 	target_array = []
 	pt_locs_rel = []
-	emitted = true
+	# reset points
+	current = 0
+	prev = 0
 	
 	emit_signal("path_gotten")
 	
@@ -180,6 +173,9 @@ func setup_path(path):
 	# steering behaviors decide in 2D, so we discard the y axis
 	#brain.target = Vector2(loc.x, loc.z)
 
+func _on_path_found(path):
+	print("Path was found!")
+	setup_path(path)
 
 # translates steering behaviors output 
 # into actual steering input (gas/brake/left/right)

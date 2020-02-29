@@ -7,6 +7,7 @@ export(bool) var left = true
 var path
 var end_ind
 var last_ind
+signal found_path
 
 #var navigation_node
 var map
@@ -63,6 +64,7 @@ func look_for_path(start_ind, exclude=null):
 	path = reduce_path(nav_path)
 	last_ind = start_ind
 	end_ind = int_path[1]
+	emit_signal("found_path", path)
 
 # this used navmesh
 #func find_path():
