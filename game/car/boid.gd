@@ -10,7 +10,7 @@ var dist = 0.0
 
 
 var max_speed = 50
-var max_force = 9
+var max_force = 15 #9
 export(Vector2) var target = Vector2(800,700) # dummy
 
 var lane_change_deg = 20
