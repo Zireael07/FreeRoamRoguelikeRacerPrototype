@@ -33,6 +33,8 @@ var flag
 
 var compare_pos = Vector3(0,0,0)
 
+var debug = false
+
 # pathing
 var navigation_node
 var path
@@ -137,8 +139,8 @@ func _process(delta):
 			get_parent().draw_arc.draw_line_color(points, 3, Color(1,0,1))
 
 func setup_path(path):
-	target_array = []
-	pt_locs_rel = []
+	target_array.resize(0) #= []
+	pt_locs_rel.resize(0) #= []
 	# reset points
 	current = 0
 	prev = 0
@@ -155,19 +157,26 @@ func setup_path(path):
 		stop = false
 	
 	for index in range(path.size()):
-		if (index > 0): #because #0 is our own location when we start
-			target_array.push_back(path[index])
+		#if (index > 0): #because #0 is our own location when we start
+		target_array.push_back(path[index])
 		
 		pt_locs_rel.push_back(get_parent().to_local(path[index]))
 			
+		#print(target_array.size() == pt_locs_rel.size())
+		#print("Target array " + str(target_array[target_array.size()-1]) + "pt_locs:" + str(pt_locs_rel[pt_locs_rel.size()-1]))
+	
 	# debug
 	for i in pt_locs_rel.size()-1:
 		var pt_loc = pt_locs_rel[i]
-		if i == 0:
+#		if i == 0:
+#			get_parent().debug_cube(pt_loc)	
+		if pt_loc == get_parent().to_local(target_array[0]):
 			get_parent().debug_cube(pt_loc)
 		
 	# pass target to brain
+	#print("Current: " + str(current))
 	brain.target = target_array[current]
+	#print("Target: " + str(brain.target))
 	
 	# brain needs local coords
 	#var loc = get_global_transform().xform_inv(target_array[current])
@@ -190,6 +199,8 @@ func _physics_process(delta):
 		joy = Vector2(0,0)
 
 		rel_loc = get_global_transform().xform_inv(brain.target)
+		# dummy out the y value
+		rel_loc = Vector3(rel_loc.x, 0, rel_loc.z)
 
 		# needs to be 3D, so fake it
 		#rel_loc = Vector3(loc.x, 1, loc.brain.target.y)
@@ -259,15 +270,21 @@ func _physics_process(delta):
 		process_car_physics(delta, gas, braking, left, right, joy)
 		
 		#if brain.dist <= 2 and not stop:
-		if rel_loc.distance_to(compare_pos) <= 2:
-			#print("[AI] We're close to target")
+		if rel_loc.distance_to(compare_pos) <= 3:
+			if debug:
+				print("[AI] We're close to target" + str(brain.target) + " rel loc: " + str(rel_loc))
 
 			##do we have a next point?
 			if (target_array.size() > current+1):
+				#if not debug: #dummy out for now
 				prev = current
 				current = current + 1
+				if debug:
+					print("Get next target") 
 				# send to brain
 				brain.target = target_array[current]
+				if debug:
+					print("New target" + str(brain.target))
 			else:
 				#print("We're at the end")
 				stop = true
@@ -487,6 +504,8 @@ func stopping():
 			print("[AI] Traffic looks for new path...")
 			get_parent().look_for_path(get_parent().end_ind+2, get_parent().last_ind)
 			emitted = true
+			#debug
+			debug = true
 			return
 
 func collision_avoidance():
