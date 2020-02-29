@@ -85,9 +85,10 @@ func debug_draw_lines():
 	var par_rel = get_parent().get_global_transform().xform_inv(gl_tg)
 	points.push_back(Vector3(par_rel.x, 1, par_rel.z))
 	
-	var dist = rel_loc.distance_to(compare_pos)
+	#var dist = rel_loc.distance_to(compare_pos)
+	var dist = rel_loc.length()
 	#if doing nothing because close to target, yellow
-	if (dist < 3):
+	if (dist < 2):
 		get_parent().draw.draw_line_color(points, 3, Color(1,1,0,1))
 	#if braking, draw red line
 	elif not is_enough_dist(rel_loc, compare_pos, speed):  #(round(rel_loc.distance_to(compare_pos)) < round(speed)):
@@ -279,7 +280,8 @@ func _physics_process(delta):
 		process_car_physics(delta, gas, braking, left, right, joy)
 		
 		#if brain.dist <= 2 and not stop:
-		if rel_loc.distance_to(compare_pos) <= 3:
+		if rel_loc.length() <= 2 and not stop:
+		#if rel_loc.distance_to(compare_pos) <= 2:
 			if debug:
 				print("[AI] We're close to target" + str(brain.target) + " rel loc: " + str(rel_loc))
 
