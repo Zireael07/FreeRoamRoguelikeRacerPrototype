@@ -31,9 +31,6 @@ func _ready():
 		var sorted = map.sort_intersections_distance(map_loc, true)
 		var closest_ind = sorted[0][1]
 		
-		var closest = map.get_child(closest_ind)
-		print(closest.get_name() + " " + str(closest.get_translation()))
-		
 		look_for_path(closest_ind)
 	
 	# Initialization here
@@ -43,7 +40,9 @@ func _ready():
 		draw_arc = get_node("draw2")
 	
 func look_for_path(start_ind, exclude=null):
-	print("Looking for path, start_ind: " + str(start_ind))
+	print("Looking for path, start_ind: " + str(start_ind) + ", exclude: " + str(exclude))
+	var closest = map.get_child(start_ind)
+	#print("Closest int: " + closest.get_name() + " " + str(closest.get_translation()))
 	#print("[AI] Path_look: " + str(map.path_look))
 	var int_path = []
 	for p in map.path_look:
@@ -60,6 +59,10 @@ func look_for_path(start_ind, exclude=null):
 	#print("[AI] Lookup path: " + str(lookup_path))
 	var nav_path = map.nav.get_point_path(lookup_path[0], lookup_path[1])
 	#print("[AI] Nav path: " + str(nav_path))
+	
+	if exclude != null:
+		# append intersection position
+		nav_path.insert(0, closest.get_global_transform().origin)
 	
 	path = reduce_path(nav_path)
 	last_ind = start_ind
