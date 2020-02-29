@@ -115,42 +115,12 @@ func _process(delta):
 			#	print(get_parent().get_name() + " found path: " + String(path))
 #			
 		if (path != null and path.size() > 0 and not emitted):
-			emitted = true
-			
-			emit_signal("path_gotten")
-			
-			# stuff to do after getting path
-			print("[AI] We have a path to follow")
-			
-			# bugfix
-			if stop:
-				stop = false
-			
-			for index in range(path.size()):
-				if (index > 0): #because #0 is our own location
-					target_array.push_back(path[index])
-
-			#var pt_locs_rel = []
-			for pt in path:
-				pt_locs_rel.push_back(get_parent().to_local(pt))
-				
-			# debug
-			for i in pt_locs_rel.size()-1:
-				var pt_loc = pt_locs_rel[i]
-				get_parent().debug_cube(pt_loc)
-				
-			# pass target to brain
-			brain.target = target_array[current]
-			
-			# brain needs local coords
-			#var loc = get_global_transform().xform_inv(target_array[current])
-			# steering behaviors decide in 2D, so we discard the y axis
-			#brain.target = Vector2(loc.x, loc.z)
+			setup_path(path)
 
 		# debug
 		if (get_parent().draw != null):
-			debug_draw_lines()
-			#debug_draw_path(pt_locs_rel)
+			#debug_draw_lines()
+			debug_draw_path(pt_locs_rel)
 			
 		if (get_parent().draw_arc != null):
 #			if angle > 0:
@@ -174,6 +144,42 @@ func _process(delta):
 			
 			#points.push_back(Vector3(brain.steer.x, 1, brain.steer.y))
 			get_parent().draw_arc.draw_line_color(points, 3, Color(1,0,1))
+
+func setup_path(path):
+	target_array = []
+	pt_locs_rel = []
+	emitted = true
+	
+	emit_signal("path_gotten")
+	
+	# stuff to do after getting path
+	print("[AI] We have a path to follow")
+	
+	# bugfix
+	if stop:
+		stop = false
+	
+	for index in range(path.size()):
+		if (index > 0): #because #0 is our own location
+			target_array.push_back(path[index])
+
+	#var pt_locs_rel = []
+	for pt in path:
+		pt_locs_rel.push_back(get_parent().to_local(pt))
+		
+	# debug
+	for i in pt_locs_rel.size()-1:
+		var pt_loc = pt_locs_rel[i]
+		get_parent().debug_cube(pt_loc)
+		
+	# pass target to brain
+	brain.target = target_array[current]
+	
+	# brain needs local coords
+	#var loc = get_global_transform().xform_inv(target_array[current])
+	# steering behaviors decide in 2D, so we discard the y axis
+	#brain.target = Vector2(loc.x, loc.z)
+
 
 # translates steering behaviors output 
 # into actual steering input (gas/brake/left/right)
