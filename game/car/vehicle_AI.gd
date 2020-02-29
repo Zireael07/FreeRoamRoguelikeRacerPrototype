@@ -142,6 +142,8 @@ func setup_path(path):
 	# reset points
 	current = 0
 	prev = 0
+	# clear debug cubes
+	get_parent().clear_cubes()
 	
 	emit_signal("path_gotten")
 	

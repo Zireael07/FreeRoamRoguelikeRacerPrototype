@@ -138,7 +138,11 @@ func debug_cube(loc):
 	mesh.set_size(Vector3(0.5,0.5,0.5))
 	var node = MeshInstance.new()
 	node.set_mesh(mesh)
+	node.add_to_group("debug")
 	add_child(node)
 	node.set_translation(loc)
 	
-	
+func clear_cubes():
+	for c in get_children():
+		if c.is_in_group("debug") and c.is_class("MeshInstance"):
+			c.queue_free()
