@@ -86,13 +86,16 @@ func debug_draw_lines():
 	points.push_back(Vector3(par_rel.x, 1, par_rel.z))
 	
 	#var dist = rel_loc.distance_to(compare_pos)
-	var dist = rel_loc.length()
+	#var dist = rel_loc.length()
+	
 	#if doing nothing because close to target, yellow
-	if (dist < 2):
+	if is_close_to_target():
+	#if (dist < 3):
 		get_parent().draw.draw_line_color(points, 3, Color(1,1,0,1))
 	#if braking, draw red line
-	elif not is_enough_dist(rel_loc, compare_pos, speed):  #(round(rel_loc.distance_to(compare_pos)) < round(speed)):
-		get_parent().draw.draw_line_color(points, 3, Color(1,0,0,1))
+	#if braking:
+	#elif not is_enough_dist(rel_loc, compare_pos, speed):  #(round(rel_loc.distance_to(compare_pos)) < round(speed)):
+	#	get_parent().draw.draw_line_color(points, 3, Color(1,0,0,1))
 	
 	# debug dot
 	elif dot < 0:
