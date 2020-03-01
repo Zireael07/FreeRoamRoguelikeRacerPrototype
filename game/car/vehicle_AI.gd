@@ -289,11 +289,10 @@ func _physics_process(delta):
 		
 		process_car_physics(delta, gas, braking, left, right, joy)
 		
-		#if brain.dist <= 2 and not stop:
-		if rel_loc.length() <= 2 and not stop:
-		#if rel_loc.distance_to(compare_pos) <= 2:
-			if debug:
-				print("[AI] We're close to target" + str(brain.target) + " rel loc: " + str(rel_loc))
+		# select the next target if close enough (roughly half car length)
+		if is_close_to_target() and not stop:
+			#if debug:
+			#	print("[AI] We're close to target" + str(brain.target) + " rel loc: " + str(rel_loc))
 
 			##do we have a next point?
 			if (target_array.size() > current+1):
@@ -504,6 +503,27 @@ func _physics_process(delta):
 #-------------------------------------------
 
 # AI generic functions
+func is_close_to_target():
+	var ret = false
+	#print("Dist: " + str(rel_loc.length()))
+	# only traffic AI
+	if get_parent().is_in_group("AI"):
+		##do we have a next point? if not, start stopping a bit earlier
+		if (target_array.size() > current+1) == false:
+			#print("Final point")
+			if rel_loc.length() < 5:
+				ret = true
+
+	# if angle is very sharp and we're roughly a road width's to the side... 
+	if abs(angle) > 1.4:
+		if rel_loc.length() < 3.5:
+			ret = true
+	else:
+		if rel_loc.length() <=2:
+			ret = true
+	
+	#if ret: print("Close to target!")		
+	return ret
 	
 func stopping():
 	#relax steering
