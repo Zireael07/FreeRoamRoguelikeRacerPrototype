@@ -59,53 +59,34 @@ func look_for_path(start_ind, exclude=null):
 	#print("[AI] Lookup path: " + str(lookup_path))
 	var nav_path = map.nav.get_point_path(lookup_path[0], lookup_path[1])
 	#print("[AI] Nav path: " + str(nav_path))
+	#print("Nav path length: " + str(nav_path.size()-1))
 	
 	if exclude != null:
 		# append intersection position
 		nav_path.insert(0, closest.get_global_transform().origin)
 	
-	path = reduce_path(nav_path)
+	#path = reduce_path(nav_path)
+	path = traffic_reduce_path(nav_path)
 	last_ind = start_ind
 	end_ind = int_path[1]
 	emit_signal("found_path", path)
 
-# this used navmesh
-#func find_path():
-#	if (navigation_node != null):
-#		#print("We have a navigation node")
-#
-#		# enable the navmesh we're interested in
-##		if (left):
-##			get_tree().call_group("right_lane", "set_enabled", false)
-##			get_tree().call_group("left_lane", "set_enabled", true)
-##		else:
-##			get_tree().call_group("left_lane", "set_enabled", false)
-##			get_tree().call_group("right_lane", "set_enabled", true)
-#
-#		# get the points on navmesh relative to ourselves and target
-#		var pos = get_translation()
-#		var source = navigation_node.get_closest_point(pos)
-#		print(get_name() + " looking for closest point to own position : " + String(pos) + " is " + String(source))
-#		var t = navigation_node.get_closest_point(target)
-#		print(get_name() + " looking for closest point to target : " + String(target) + " is " + String(t))
-#		#print("Trying to find path from " + String(source) + " to " + String(t))
-#		var path = navigation_node.get_simple_path(source, t)
-#
-#
-#		if (path.size() > 0):
-#			print(get_name() + " has a path: " + str(path.size()))
-#			#print(get_name() + " has a path " + String(path))
-#			#print(get_name() + " AI has a path")				
-#
-#			# reduce number of points
-#			var new_path = reduce_path(path)
-#			return new_path
-#
-#			#return path
-#		else:
-#			#print("No path")
-#			return null
+func traffic_reduce_path(path):
+	var new_path = []
+	# lots of magic numbers here, taken from setup_nav_astar() in procedural_map.gd
+	# curve midpoint, curve endpoint, 2nd curve endpoint, some more...
+	var to_keep = [0, 31, 62, 63, 93, 94, 95, path.size()-3, path.size()-1] #63+31
+	# if we added an intersection, we need to keep point #1 too
+	if path.size() > 125:
+		to_keep = [0, 1, 32, 63, 64, 94, 95, 96, path.size()-1] #64+31
+		
+	for i in range(path.size()):
+		if i in to_keep:
+			new_path.append(path[i])
+			
+	return new_path
 
+# this one cuts corners
 func reduce_path(path):
 	var new_path = Array(path).duplicate() # can't iterate and remove
 			
