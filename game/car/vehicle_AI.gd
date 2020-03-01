@@ -269,7 +269,7 @@ func _physics_process(delta):
 					gas = true
 					#print(get_name() + " gas")
 			else:
-				if speed > 0 and speed < 100:
+				if speed > 0 and speed < 10:
 					braking = true
 		
 
