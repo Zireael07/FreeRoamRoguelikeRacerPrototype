@@ -190,6 +190,7 @@ func _on_path_found(path):
 
 func _on_Timer_timeout():
 	print("Timed out timer")
+	emitted = false
 	# reset points
 	current = 0
 	prev = 0
@@ -197,7 +198,7 @@ func _on_Timer_timeout():
 	# pass target to brain
 	#print("Current: " + str(current))
 	brain.target = target_array[current]
-	print("Target: " + str(brain.target))
+	#print("Target: " + str(brain.target))
 	
 	# bugfix
 	if stop:
