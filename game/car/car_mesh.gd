@@ -192,7 +192,7 @@ func hit_deform(pos):
 	#var st = SurfaceTool.new()
 	var mesh = get_mesh()
 	#if mesh.get_surface_count() > 2:
-	print("Number of surfaces: " + str(mesh.get_surface_count()))
+	#print("Number of surfaces: " + str(mesh.get_surface_count()))
 		
 	var id = 0
 	if mesh.surface_find_by_name("glass") == 0:
@@ -260,7 +260,7 @@ func hit_deform(pos):
 		#car_surface.create_from(mesh, mesh.get_surface_count()-1)
 #		#car_surface.generate_normals(true)
 #		$"plane".mesh = car_surface.commit($"plane".mesh)
-		print("Number of surfaces after we're done: " + str(mesh.get_surface_count()))
+		#print("Number of surfaces after we're done: " + str(mesh.get_surface_count()))
 		
 		#for i in range($"plane".mesh.get_surface_count()):
 		#	print("Mat name: " + str($"plane".mesh.surface_get_material(i).get_name()))

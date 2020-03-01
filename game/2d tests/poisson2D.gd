@@ -53,7 +53,8 @@ func _ready():
 	pass
 
 func set_seed(value):
-	print("Seed value is " + str(value))
+	if Engine.is_editor_hint():
+		print("Seed value is " + str(value))
 	# if not set_get we don't need this
 	#if !Engine.editor_hint:
 	#yield(self, 'tree_entered')
@@ -72,7 +73,7 @@ func set_seed(value):
 	#rand_seed(value)
 	run()
 	
-	print("Seed " + str(seede))
+	#print("Seed " + str(seede))
 
 #func _process(delta):
 #	# Called every frame. Delta is time since last frame.
