@@ -172,12 +172,13 @@ func setup_path(path):
 		#print("Target array " + str(target_array[target_array.size()-1]) + "pt_locs:" + str(pt_locs_rel[pt_locs_rel.size()-1]))
 	
 	# debug
-	for i in pt_locs_rel.size()-1:
+	for i in range(pt_locs_rel.size()):
 		var pt_loc = pt_locs_rel[i]
+		get_parent().debug_cube(pt_loc)
 #		if i == 0:
 #			get_parent().debug_cube(pt_loc)	
-		if pt_loc == get_parent().to_local(target_array[0]):
-			get_parent().debug_cube(pt_loc)
+		#if pt_loc == get_parent().to_local(target_array[0]):
+		#	get_parent().debug_cube(pt_loc)
 	
 	# because the loops above take some time, to be 1000% certain we have the correct targets
 	get_node("Timer").start()
