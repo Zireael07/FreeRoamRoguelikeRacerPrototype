@@ -641,70 +641,70 @@ func rain_glass():
 func rain_clear():
 	get_node("plane").set_surface_material(1, glass_material)
 
-# 'pos' is local space?	
-func hit_deform(pos):
-	#print("Deform pos: " + str(pos))
-	#var start = float(OS.get_ticks_msec())
-	# setup
-	var mdt = MeshDataTool.new()
-	mdt.clear()
-	#var st = SurfaceTool.new()
-	var mesh = $"plane".get_mesh()
-	#if mesh.get_surface_count() > 2:
-	print("Number of surfaces: " + str(mesh.get_surface_count()))
-		
-	var id = 0
-	if mesh.surface_find_by_name("glass") == 0:
-		id = 1
-	
-	# copies the surface into mesh data tool
-	mdt.create_from_surface(mesh, id)
-	
-	# Magic happens here
-	var center = Vector3(0, 0, width/2)
-	
-	#var vtx = mdt.get_vertex(10)
-	#print("Deforming vertex... " + " 10 " + str(vtx))
-	var pt
-	if pos.z > 0:
-		pt = car_front[0]
-		#print("Deform front")
-	else:
-		pt = car_rear[car_rear.size()-8]
-		#print("Deform rear" + str(pt))
-	
-	var vtx = Vector3(pt.x, pt.y, 0)
-	
-	var done = false
-	# Find all vertices that share the position, just in case
-	for i in range(mdt.get_vertex_count()):
-		var vt = mdt.get_vertex(i)
-		if vt == vtx:
-			# deform towards center
-			# B-A = A->B
-			var deform = (center - vt).normalized()*0.25
-			vt.x += deform.x
-			vt.y += deform.y
-			mdt.set_vertex(i, vt)
-			print("Deformed a vertex")
-			done = true
-	
-	# don't waste time if nothing to do
-	if done:
-		# Remove existing surface
-		#for s in range(mesh.get_surface_count()):
-		mesh.surface_remove(id)
-		
-		# this always adds at the end
-		# doesn't seem to be enough because Godot messes up material assignments, resulting in body being glass
-		mdt.commit_to_surface(mesh)
-		car_surface.create_from(mesh, mesh.get_surface_count()-1)
-		# don't multiply surfaces!
-		#mesh.surface_remove(mesh.get_surface_count()-1)
-		car_surface.generate_normals()
-		$"plane".mesh = car_surface.commit(mesh)
-	
-	# time it
-	#var endtt = float(OS.get_ticks_msec())
-	#print("Execution time: %.2f" % ((endtt - start)/1000))
+## 'pos' is local space?	
+#func hit_deform(pos):
+#	#print("Deform pos: " + str(pos))
+#	#var start = float(OS.get_ticks_msec())
+#	# setup
+#	var mdt = MeshDataTool.new()
+#	mdt.clear()
+#	#var st = SurfaceTool.new()
+#	var mesh = $"plane".get_mesh()
+#	#if mesh.get_surface_count() > 2:
+#	print("Number of surfaces: " + str(mesh.get_surface_count()))
+#
+#	var id = 0
+#	if mesh.surface_find_by_name("glass") == 0:
+#		id = 1
+#
+#	# copies the surface into mesh data tool
+#	mdt.create_from_surface(mesh, id)
+#
+#	# Magic happens here
+#	var center = Vector3(0, 0, width/2)
+#
+#	#var vtx = mdt.get_vertex(10)
+#	#print("Deforming vertex... " + " 10 " + str(vtx))
+#	var pt
+#	if pos.z > 0:
+#		pt = car_front[0]
+#		#print("Deform front")
+#	else:
+#		pt = car_rear[car_rear.size()-8]
+#		#print("Deform rear" + str(pt))
+#
+#	var vtx = Vector3(pt.x, pt.y, 0)
+#
+#	var done = false
+#	# Find all vertices that share the position, just in case
+#	for i in range(mdt.get_vertex_count()):
+#		var vt = mdt.get_vertex(i)
+#		if vt == vtx:
+#			# deform towards center
+#			# B-A = A->B
+#			var deform = (center - vt).normalized()*0.25
+#			vt.x += deform.x
+#			vt.y += deform.y
+#			mdt.set_vertex(i, vt)
+#			print("Deformed a vertex")
+#			done = true
+#
+#	# don't waste time if nothing to do
+#	if done:
+#		# Remove existing surface
+#		#for s in range(mesh.get_surface_count()):
+#		mesh.surface_remove(id)
+#
+#		# this always adds at the end
+#		# doesn't seem to be enough because Godot messes up material assignments, resulting in body being glass
+#		mdt.commit_to_surface(mesh)
+#		car_surface.create_from(mesh, mesh.get_surface_count()-1)
+#		# don't multiply surfaces!
+#		#mesh.surface_remove(mesh.get_surface_count()-1)
+#		car_surface.generate_normals()
+#		$"plane".mesh = car_surface.commit(mesh)
+#
+#	# time it
+#	#var endtt = float(OS.get_ticks_msec())
+#	#print("Execution time: %.2f" % ((endtt - start)/1000))
 
