@@ -130,7 +130,6 @@ mass = 1500.0
 script = ExtResource( 2 )
 
 [node name="wheel1" type="VehicleWheel" parent="BODY"]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573678, 0.115169, 0.864664 )
 use_as_traction = true
 use_as_steering = true
@@ -145,7 +144,6 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="wheel2" type="VehicleWheel" parent="BODY"]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573678, 0.115169, -0.783403 )
 use_as_traction = true
 wheel_radius = 0.25
@@ -159,7 +157,6 @@ mesh = SubResource( 3 )
 material/0 = null
 
 [node name="wheel3" type="VehicleWheel" parent="BODY"]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.115169, 0.864664 )
 use_as_traction = true
 use_as_steering = true
@@ -174,7 +171,6 @@ mesh = SubResource( 4 )
 material/0 = null
 
 [node name="wheel4" type="VehicleWheel" parent="BODY"]
-editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.115169, -0.783403 )
 use_as_traction = true
 wheel_radius = 0.25
@@ -255,6 +251,10 @@ transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0
 enabled = true
 cast_to = Vector3( 0, 0, 5 )
 script = ExtResource( 10 )
+
+[node name="Timer" type="Timer" parent="BODY"]
+process_mode = 0
+one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 _import_path = NodePath("AnimationPlayer")

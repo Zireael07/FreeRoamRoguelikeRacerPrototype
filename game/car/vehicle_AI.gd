@@ -157,7 +157,9 @@ func setup_path(path):
 	# clear debug cubes
 	get_parent().clear_cubes()
 	
-	emit_signal("path_gotten")
+	# fix
+	if get_parent().is_in_group("race_AI"):
+		self.path = path
 	
 	# stuff to do after getting path
 	#print("[AI] We have a path to follow")
@@ -180,7 +182,8 @@ func setup_path(path):
 		#if pt_loc == get_parent().to_local(target_array[0]):
 		#	get_parent().debug_cube(pt_loc)
 	
-	# because the loops above take some time, to be 1000% certain we have the correct targets
+	
+	# because the loops above take some time, to be 1000% certain we have the correct targets once we get moving
 	get_node("Timer").start()
 
 
@@ -244,9 +247,12 @@ func _physics_process(delta):
 
 		# needed for race position
 		if get_parent().is_in_group("race_AI"):
-			if path != null and path.size() > 0:
+			#print("Race AI")
+			#print("Path: " + str(self.path))
+			if self.path != null and self.path.size() > 0:
 				var pos = get_global_transform().origin
-				position_on_line = position_line(prev, current, pos, path)
+				position_on_line = position_line(prev, current, pos, self.path)
+				#print("Position on line: " + str(position_on_line))
 		
 		#stop if we're supposed to
 		if (stop):
