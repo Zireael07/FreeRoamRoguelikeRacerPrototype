@@ -117,17 +117,18 @@ func _on_ok_click():
 	var pos = to_local(raceline[0])
 	#print("Pos: " + str(pos))
 	spawn_racer(pos)
-	print("Clicked ok!")
+	print("[RACE] Clicked ok!")
 	
 # race positioning system
 # the AI sends us a signal when it has the path
 func _on_path_gotten():
-	print("On path gotten")
+	print("[RACE] On path gotten")
 	var ai = car.get_node("BODY")
 	var raceline = ai.path
 	#print("Race line is " + str(raceline))
 	player.race = self
 	player.create_race_path(raceline)
+	#print("[RACE] Player was given the path")
 
 	# send the track to the map
 	var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
@@ -141,7 +142,7 @@ func get_AI_position_on_raceline():
 		var ai = car.get_node("BODY")
 		#var raceline = ai.path
 		var AI_pos = ai.position_on_line
-	
+		#print("AI position on racelone " + str(AI_pos) )
 		return AI_pos
 
 func get_player_position_on_raceline():
@@ -208,6 +209,7 @@ func get_positions_simple():
 		var ai = car.get_node("BODY")
 	
 		var raceline = ai.path
+		#print("Raceline: " + str(ai.path))
 		
 		# check for crossing the finish line first
 		if ai.finished and not player.finished:

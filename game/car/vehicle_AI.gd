@@ -160,6 +160,12 @@ func setup_path(path):
 	# fix
 	if get_parent().is_in_group("race_AI"):
 		self.path = path
+	if get_parent().is_in_group("race_AI"):
+#		emit_signal("path_gotten")
+#		print("Emitted path_gotten signal")
+		# call directly because the signal seems to have gone MIA somehow
+		if get_parent().race:
+			get_parent().race._on_path_gotten()
 	
 	# stuff to do after getting path
 	#print("[AI] We have a path to follow")
@@ -206,8 +212,6 @@ func _on_Timer_timeout():
 	# bugfix
 	if stop:
 		stop = false
-	
-	#pass # Replace with function body.
 
 # translates steering behaviors output 
 # into actual steering input (gas/brake/left/right)

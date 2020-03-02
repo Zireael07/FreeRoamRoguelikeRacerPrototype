@@ -29,7 +29,7 @@ func _ready():
 		path = reduce_path(nav_path)
 		# append target point
 		path.append(race_target)
-		print("AI has path: " + str(path))
+		#print("AI has path: " + str(path))
 		emit_signal("found_path", path)
 		
 	random_name()
@@ -40,8 +40,11 @@ func _ready():
 	if has_node("draw2"):
 		draw_arc = get_node("draw2")
 	
-	if race:
-		get_node("BODY").connect("path_gotten", race, "_on_path_gotten")
+#	if race:
+#		print("Connect race " + str(race) + " to path_gotten")
+#		get_node("BODY").connect("path_gotten", race, "_on_path_gotten")
+#		print(get_node("BODY").is_connected("path_gotten", race, "_on_path_gotten"))
+#		print(str(get_node("BODY").get_signal_connection_list("path_gotten")))
 	
 func random_name():
 	# seed the rng
