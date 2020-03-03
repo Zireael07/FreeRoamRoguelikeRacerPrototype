@@ -619,100 +619,6 @@ func make_barrier(quads, material):
 	#Turn off shadows
 	node.set_cast_shadows_setting(0)
 
-
-		
-# navmesh
-func get_navi_vertices():
-	var nav_vertices = PoolVector3Array()
-	for index in range (positions.size()): #0 #1
-		nav_vertices.push_back(positions[index]) #0 #2
-		nav_vertices.push_back(right_nav_positions[index]) #1 #3
-		
-	return nav_vertices
-
-func get_navi_vertices_alt():
-	var nav_vertices = PoolVector3Array()
-	for index in range (positions.size()): #0 #1
-		nav_vertices.push_back(left_nav_positions[index]) #0 #2
-		nav_vertices.push_back(positions[index]) #1 #3
-		
-	return nav_vertices
-
-func make_navi(index, index_two, index_three, index_four):
-	var navi = navQuad(index, index_two, index_three, index_four)
-	return navi
-	
-func navQuad(one, two, three, four):
-	var quad = []
-	
-	quad.push_back(one)
-	quad.push_back(two)
-	quad.push_back(three)
-	quad.push_back(four)
-	
-	return quad
-
-func makeNav(index, nav_mesh):
-	var navi_poly = make_navi(index+1, index, index+2, index+3)
-	nav_mesh.add_polygon(navi_poly)
-
-func navMesh(vertices, left):
-	#print("Making navmesh")
-	var nav_polygones = []
-	
-	var nav_mesh = NavigationMesh.new()
-	
-	
-	if (vertices.size() <= 0):
-		nav_vertices = PoolVector3Array()
-		nav_vertices.resize(0)
-		
-		#this gives us 124 nav vertices for left lane
-		nav_vertices = get_navi_vertices()
-	else:
-		nav_vertices = vertices
-		
-	nav_mesh.set_vertices(nav_vertices)
-	
-	# skip every 4 verts
-	for i in range(0,124,4):
-		makeNav(i, nav_mesh)
-	
-	# add the actual navmesh and enable it
-	var nav_mesh_inst = NavigationMeshInstance.new()
-	nav_mesh_inst.set_navigation_mesh(nav_mesh)
-	nav_mesh_inst.set_enabled(true)
-	
-	# assign lane
-	if (left):
-		nav_mesh_inst.add_to_group("left_lane")
-		nav_mesh_inst.set_name("nav_mesh_left_lane_turn")
-	else:
-		nav_mesh_inst.add_to_group("right_lane")
-		nav_mesh_inst.set_name("nav_mesh_right_lane_turn")
-	
-	add_child(nav_mesh_inst)
-
-func get_key_navi_vertices():
-	var key_nav_vertices = PoolVector3Array()
-	key_nav_vertices.push_back(nav_vertices[0])
-	key_nav_vertices.push_back(nav_vertices[1])
-	key_nav_vertices.push_back(nav_vertices[nav_vertices.size()-1])
-	key_nav_vertices.push_back(nav_vertices[nav_vertices.size()-2])
-	
-	return key_nav_vertices
-
-func move_key_navi_vertices(index1, pos1, index2, pos2):
-	nav_vertices.set(index1, pos1)
-	print("Setting vertex " + String(index1) + " to " + String(pos1))
-	nav_vertices.set(index2, pos2)
-	print("Setting vertex " + String(index2) + " to " + String(pos2))
-	#print("New vertices " + String(nav_vertices[index1]) + " & " + String(nav_vertices[index2]))
-	
-func move_key_nav2_vertices(index1, pos1, index2, pos2):
-	nav_vertices2.set(index1, pos1)
-	nav_vertices2.set(index2, pos2)
-	
 func global_to_local_vert(pos):
 	return get_global_transform().xform_inv(pos)
 	
@@ -755,3 +661,98 @@ func debug_cube(loc):
 	node.set_name("Debug")
 	add_child(node)
 	node.set_translation(loc)
+
+		
+# navmesh
+#func get_navi_vertices():
+#	var nav_vertices = PoolVector3Array()
+#	for index in range (positions.size()): #0 #1
+#		nav_vertices.push_back(positions[index]) #0 #2
+#		nav_vertices.push_back(right_nav_positions[index]) #1 #3
+#
+#	return nav_vertices
+#
+#func get_navi_vertices_alt():
+#	var nav_vertices = PoolVector3Array()
+#	for index in range (positions.size()): #0 #1
+#		nav_vertices.push_back(left_nav_positions[index]) #0 #2
+#		nav_vertices.push_back(positions[index]) #1 #3
+#
+#	return nav_vertices
+#
+#func make_navi(index, index_two, index_three, index_four):
+#	var navi = navQuad(index, index_two, index_three, index_four)
+#	return navi
+#
+#func navQuad(one, two, three, four):
+#	var quad = []
+#
+#	quad.push_back(one)
+#	quad.push_back(two)
+#	quad.push_back(three)
+#	quad.push_back(four)
+#
+#	return quad
+#
+#func makeNav(index, nav_mesh):
+#	var navi_poly = make_navi(index+1, index, index+2, index+3)
+#	nav_mesh.add_polygon(navi_poly)
+#
+#func navMesh(vertices, left):
+#	#print("Making navmesh")
+#	var nav_polygones = []
+#
+#	var nav_mesh = NavigationMesh.new()
+#
+#
+#	if (vertices.size() <= 0):
+#		nav_vertices = PoolVector3Array()
+#		nav_vertices.resize(0)
+#
+#		#this gives us 124 nav vertices for left lane
+#		nav_vertices = get_navi_vertices()
+#	else:
+#		nav_vertices = vertices
+#
+#	nav_mesh.set_vertices(nav_vertices)
+#
+#	# skip every 4 verts
+#	for i in range(0,124,4):
+#		makeNav(i, nav_mesh)
+#
+#	# add the actual navmesh and enable it
+#	var nav_mesh_inst = NavigationMeshInstance.new()
+#	nav_mesh_inst.set_navigation_mesh(nav_mesh)
+#	nav_mesh_inst.set_enabled(true)
+#
+#	# assign lane
+#	if (left):
+#		nav_mesh_inst.add_to_group("left_lane")
+#		nav_mesh_inst.set_name("nav_mesh_left_lane_turn")
+#	else:
+#		nav_mesh_inst.add_to_group("right_lane")
+#		nav_mesh_inst.set_name("nav_mesh_right_lane_turn")
+#
+#	add_child(nav_mesh_inst)
+#
+#func get_key_navi_vertices():
+#	var key_nav_vertices = PoolVector3Array()
+#	key_nav_vertices.push_back(nav_vertices[0])
+#	key_nav_vertices.push_back(nav_vertices[1])
+#	key_nav_vertices.push_back(nav_vertices[nav_vertices.size()-1])
+#	key_nav_vertices.push_back(nav_vertices[nav_vertices.size()-2])
+#
+#	return key_nav_vertices
+#
+#func move_key_navi_vertices(index1, pos1, index2, pos2):
+#	nav_vertices.set(index1, pos1)
+#	print("Setting vertex " + String(index1) + " to " + String(pos1))
+#	nav_vertices.set(index2, pos2)
+#	print("Setting vertex " + String(index2) + " to " + String(pos2))
+#	#print("New vertices " + String(nav_vertices[index1]) + " & " + String(nav_vertices[index2]))
+#
+#func move_key_nav2_vertices(index1, pos1, index2, pos2):
+#	nav_vertices2.set(index1, pos1)
+#	nav_vertices2.set(index2, pos2)
+#
+

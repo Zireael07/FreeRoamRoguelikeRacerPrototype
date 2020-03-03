@@ -407,18 +407,7 @@ func _physics_process(delta):
 #
 #		# predict wheel angle
 #		car.predicted_steer = car.predict_steer(delta, car.left, car.right)
-#
-#		car.process_car_physics(delta, car.gas, car.braking, car.left, car.right, car.joy)
-#
-#		#if we passed the point, don't backtrack
-#		if (car.dot < 0 and not car.stop):
-#			##do we have a next point?
-#			if (car.target_array.size() > car.current+1):
-#				car.prev = car.current
-#				car.current = car.current + 1
-#			else:
-#				#print("We're at the end")
-#				car.stop = true
+
 
 
 
