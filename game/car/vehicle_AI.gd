@@ -247,16 +247,18 @@ func _physics_process(delta):
 		
 		# magic number to make inputs smaller
 		var clx = clamp(brain.steer.x/25, -1, 1)
-		#print("Clamped x: " + str(clx))
+		#if debug: print("Clamped x: " + str(clx))
 
 		# needed for race position
 		if get_parent().is_in_group("race_AI"):
 			#print("Race AI")
 			#print("Path: " + str(self.path))
-			if self.path != null and self.path.size() > 0:
-				var pos = get_global_transform().origin
-				position_on_line = position_line(prev, current, pos, self.path)
-				#print("Position on line: " + str(position_on_line))
+			if self.path != null and self.path.size() > 0 and not self.finished:
+				# paranoia
+				if current < path.size()-1: 
+					var pos = get_global_transform().origin
+					position_on_line = position_line(prev, current, pos, self.path)
+					#print("Position on line: " + str(position_on_line))
 		
 		#stop if we're supposed to
 		if (stop):
@@ -555,8 +557,8 @@ func stopping():
 	# are we stopped?
 	if speed < 0.3 and stop:
 		#print("Have stopped...")
-		#have_stopped = true
-		# only traffic AI
+
+		# only traffic AI looks for new intersection target
 		if get_parent().is_in_group("AI") and not emitted:
 			print("[AI] Traffic looks for new path...")
 			get_parent().look_for_path(get_parent().end_ind+2, get_parent().last_ind)
@@ -564,7 +566,14 @@ func stopping():
 			#debug
 			debug = true
 			return
+		# race AI just wants to drive off the intersection
+		if get_parent().is_in_group("race_AI") and not emitted:
+			emitted = true
+			var forw_global = get_global_transform().xform(Vector3(0, 0, 4))
+			target_array.append(forw_global)
+			stop = false
 
+# -----------------------------------------------
 func collision_avoidance():
 	if has_node("RayFront") and get_node("RayFront").get_collider_hit() != null:
 		# if all rays hit
