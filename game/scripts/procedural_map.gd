@@ -466,6 +466,7 @@ func setup_nav_astar(pts, i, begin_id):
 
 	#print("Straight positions: " + str(get_child(i).get_node("Spatial0").get_child(0).positions))
 	#print("Turn 1 positions: " + str(turn1.positions))
+	#print("Turn 1 center points: " + str(turn1.points_center))
 	#print("Turn 2 positions: " + str(turn2.positions))
 
 	#print("Turn 1 global pos: " + str(turn1.get_global_transform().origin))
@@ -475,13 +476,19 @@ func setup_nav_astar(pts, i, begin_id):
 	#debug_cube(to_local(Vector3(turn2.get_global_transform().origin.x, 3, turn2.get_global_transform().origin.z)))
 
 	# from local to global
-	for i in range(0,turn1.positions.size()):
-		var p = turn1.positions[i]
+	for i in range(0,turn1.points_center.size()):
+		# this seemingly small change cuts down on the number of points by half!! 
+		# yay me for noticing positions has double the number of points
+		#var p = turn1.positions[i]
+		var c = turn1.points_center[i]
+		var p = Vector3(c.x, turn1.road_height, c.y)
 		pts.append(turn1.to_global(p))
 
 	#print(pts)
-	for i in range(0,turn2.positions.size()):
-		var p = turn2.positions[i]
+	for i in range(0,turn2.points_center.size()):
+		#var p = turn2.positions[i]
+		var c = turn2.points_center[i]
+		var p = Vector3(c.x, turn1.road_height, c.y)
 		pts.append(turn2.to_global(p))
 
 	#print("All points: " + str(pts.size()))
@@ -494,20 +501,20 @@ func setup_nav_astar(pts, i, begin_id):
 	#print(nav.get_points())
 
 	# connect the points
-	var turn1_end = begin_id + turn1.positions.size()-1
+	var turn1_end = begin_id + turn1.points_center.size()-1
 	# because of i+1
 	for i in range(begin_id, turn1_end):
 		nav.connect_points(i, i+1)
 
-	var turn2_end = begin_id + turn1.positions.size()+turn2.positions.size()-1
-	for i in range(begin_id + turn1.positions.size(), turn2_end):
+	var turn2_end = begin_id + turn1.points_center.size()+turn2.points_center.size()-1
+	for i in range(begin_id + turn1.points_center.size(), turn2_end):
 		nav.connect_points(i, i+1)
 
 	# because turn 2 is inverted
 	# connect the endpoints
 	nav.connect_points(turn1_end, turn2_end)
 	# full path
-	var endpoint_id = begin_id + turn1.positions.size() # beginning of turn2
+	var endpoint_id = begin_id + turn1.points_center.size() # beginning of turn2
 
 	var last_id = turn2_end
 

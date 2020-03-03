@@ -26,7 +26,7 @@ func _ready():
 		#print("[AI] Lookup path: " + str(lookup_path))
 		var nav_path = map.nav.get_point_path(lookup_path[0], lookup_path[1])
 		
-		path = reduce_path(nav_path)
+		path = racer_reduce_path(nav_path)
 		# append target point
 		path.append(race_target)
 		#print("AI has path: " + str(path))

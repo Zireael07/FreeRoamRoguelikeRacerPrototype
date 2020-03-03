@@ -75,11 +75,22 @@ func traffic_reduce_path(path):
 	var new_path = []
 	# lots of magic numbers here, taken from setup_nav_astar() in procedural_map.gd
 	# curve midpoint, curve endpoint, 2nd curve endpoint, some more...
-	var to_keep = [0, 31, 62, 63, 93, 94, 95, path.size()-3, path.size()-1] #63+31
+	var to_keep = [0, 16, 32, 33, 48, 49, 50, path.size()-3, path.size()-1] #33+15
 	# if we added an intersection, we need to keep point #1 too
-	if path.size() > 125:
-		to_keep = [0, 1, 32, 63, 64, 94, 95, 96, path.size()-1] #64+31
+	if path.size() > 65:
+		to_keep = [0, 1, 17, 33, 34, 49, 50, 51, path.size()-1] #34+15
 		
+	for i in range(path.size()):
+		if i in to_keep:
+			new_path.append(path[i])
+			
+	return new_path
+
+func racer_reduce_path(path):
+	var new_path = []
+	# because we know how the path is set up, we can clean up spurious points w/o having to compare angles
+	var to_keep = [0, 32, 48, path.size()-1]
+	
 	for i in range(path.size()):
 		if i in to_keep:
 			new_path.append(path[i])
@@ -89,6 +100,7 @@ func traffic_reduce_path(path):
 # this one cuts corners
 func reduce_path(path):
 	var new_path = Array(path).duplicate() # can't iterate and remove
+	print("Before reduce: " + str(new_path.size()))
 			
 	var to_remove = []
 	# size()-1 is normal, deduce 2 so that i-2 works:
@@ -113,7 +125,7 @@ func reduce_path(path):
 	
 	
 	#print("New path" + str(new_path))
-	#print("New path: " + str(new_path.size()))
+	print("New path: " + str(new_path.size()))
 		
 	return new_path
 			
