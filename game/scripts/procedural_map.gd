@@ -538,18 +538,31 @@ func get_lane(road, flip, left_side):
 
 	var turn1 = road.get_node("Road_instance0").get_child(0).get_child(0)
 	var turn2 = road.get_node("Road_instance1").get_child(0).get_child(0)
+	
+	var lane_lists = []
+	# side
+	if left_side:
+		if not flip:
+			lane_lists = [turn1.points_inner_nav, turn2.points_outer_nav]
+		else:
+			lane_lists = [turn1.points_outer_nav, turn2.points_inner_nav]
+	else:
+		if not flip:
+			lane_lists = [turn1.points_outer_nav, turn2.points_inner_nav]
+		else:
+			lane_lists = [turn1.points_inner_nav, turn2.points_outer_nav]
 
 	# keeping 'em global for consistency with the A* centerline
 	# from local to global
-	for i in range(0,turn1.points_inner_nav.size()):
-		var c = turn1.points_inner_nav[i]
+	for i in range(0,lane_lists[0].size()):
+		var c = lane_lists[0][i]
 		var p = Vector3(c.x, turn1.road_height, c.y)
 		pts.append(turn1.to_global(p))
 
 	#print(pts)
 	# because turn 2 is inverted
-	for i in range(turn2.points_outer_nav.size()-1, 0, -1):
-		var c = turn2.points_outer_nav[i]
+	for i in range(lane_lists[1].size()-1, 0, -1):
+		var c = lane_lists[1][i]
 		var p = Vector3(c.x, turn1.road_height, c.y)
 		pts.append(turn2.to_global(p))
 

@@ -2,7 +2,7 @@ extends Spatial
 
 # class member variables go here, for example:
 export(Vector3) var target = Vector3(0,0,0)
-export(bool) var left = true
+export(bool) var left = true # because Japan is LHD
 
 var path
 var end_ind
