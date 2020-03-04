@@ -550,13 +550,15 @@ func stopping():
 		# only traffic AI looks for new intersection target
 		if get_parent().is_in_group("AI") and not emitted:
 			print("[AI] Traffic looks for new path...")
-			get_parent().look_for_path(get_parent().end_ind+2, get_parent().last_ind)
+			get_parent().look_for_path(get_parent().end_ind+2, get_parent().left, get_parent().last_ind)
 			emitted = true
 			#debug
 			debug = true
 			return
 		# race AI just wants to drive off the intersection
 		if get_parent().is_in_group("race_AI") and not emitted:
+			# axe the debug cubes
+			get_parent().clear_cubes()
 			emitted = true
 			var forw_global = get_global_transform().xform(Vector3(0, 0, 4))
 			target_array.append(forw_global)

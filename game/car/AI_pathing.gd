@@ -31,7 +31,7 @@ func _ready():
 		var sorted = map.sort_intersections_distance(map_loc, true)
 		var closest_ind = sorted[0][1]
 		
-		look_for_path(closest_ind)
+		look_for_path(closest_ind, left)
 	
 	# Initialization here
 	if has_node("draw"):
@@ -39,7 +39,7 @@ func _ready():
 	if has_node("draw2"):
 		draw_arc = get_node("draw2")
 	
-func look_for_path(start_ind, exclude=null):
+func look_for_path(start_ind, left_side, exclude=null):
 	print("Looking for path, start_ind: " + str(start_ind) + ", exclude: " + str(exclude))
 	var closest = map.get_child(start_ind)
 	#print("Closest int: " + closest.get_name() + " " + str(closest.get_translation()))
@@ -60,6 +60,21 @@ func look_for_path(start_ind, exclude=null):
 	var nav_path = map.nav.get_point_path(lookup_path[0], lookup_path[1])
 	#print("[AI] Nav path: " + str(nav_path))
 	#print("Nav path length: " + str(nav_path.size()-1))
+	
+	#var tg_inters = map.get_child(int_path[1]+2) 
+	#print("Target inters: " + tg_inters.get_name())
+	var rd_name = "Road "+str(int_path[0])+"-"+str(int_path[1])
+	var flip = false
+	
+	if not map.has_node(rd_name):
+		# try the other way?
+		rd_name = "Road " + str(int_path[1])+"-"+str(int_path[0])
+		flip = true
+	#print("Road name: " + rd_name)
+	var road = map.get_node(rd_name)
+	print("Road: " + str(road))
+	
+	nav_path = map.get_lane(road, flip, left)
 	
 	if exclude != null:
 		# append intersection position
