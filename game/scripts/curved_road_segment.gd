@@ -53,7 +53,7 @@ var nav_vertices2
 var global_vertices
 var global_vertices2
 # margin
-var margin = 1
+var margin = 1.0
 var left_nav_positions = PoolVector3Array()
 var right_nav_positions = PoolVector3Array()
 
@@ -86,6 +86,8 @@ func _ready():
 	
 	#draw_debug_point(loc, Color(1,1,1))
 	streetlight = preload("res://objects/streetlight.scn")
+	
+	margin = float(lane_width)/2
 	
 	# angle fix
 	if end_angle < 0:
@@ -121,10 +123,16 @@ func _ready():
 	
 	
 	fix_stuff()
-	test_road()
+	create_road()
 	
-	pass
-	
+	# debug
+#	for p in points_inner_nav:
+#		debug_cube(Vector3(p.x, 0, p.y))
+#
+#	for p in points_outer_nav:
+#		debug_cube(Vector3(p.x, 0, p.y))
+
+#----------------------------------
 
 #func get_start_angle():
 #	var ret = 90-angle/2
@@ -360,7 +368,7 @@ func get_global_positions():
 
 	
 			
-func test_road():
+func create_road():
 	
 	#clear to prevent weird stuff
 	positions.resize(0)

@@ -20,6 +20,7 @@ func get_circle_arc_simple(center, radius, angle):
 		var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
 		points_arc.push_back( point )
 	
+	#print("Arc length: " + str(points_arc.size()))
 	return points_arc
 
 
@@ -37,6 +38,7 @@ func get_circle_arc( center, radius, angle_from, angle_to, right ):
 			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
 			points_arc.push_back( point )
 	
+	#print("Arc length: " + str(points_arc.size()))
 	return points_arc
 	
 ##MESHES
