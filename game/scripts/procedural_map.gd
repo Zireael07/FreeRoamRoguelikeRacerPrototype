@@ -528,8 +528,35 @@ func setup_nav_astar(pts, i, begin_id):
 	# road's end, list end, intersections
 	return [endpoint_id, last_id, ret]
 
+func get_lane(road, flip, left_side):
+	var pts = []
+	# paranoia
+	if not road.has_node("Road_instance0"):
+		return
+	if not road.has_node("Road_instance1"):
+		return
 
+	var turn1 = road.get_node("Road_instance0").get_child(0).get_child(0)
+	var turn2 = road.get_node("Road_instance1").get_child(0).get_child(0)
 
+	# keeping 'em global for consistency with the A* centerline
+	# from local to global
+	for i in range(0,turn1.points_inner_nav.size()):
+		var c = turn1.points_inner_nav[i]
+		var p = Vector3(c.x, turn1.road_height, c.y)
+		pts.append(turn1.to_global(p))
+
+	#print(pts)
+	# because turn 2 is inverted
+	for i in range(turn2.points_outer_nav.size()-1, 0, -1):
+		var c = turn2.points_outer_nav[i]
+		var p = Vector3(c.x, turn1.road_height, c.y)
+		pts.append(turn2.to_global(p))
+
+	if flip:
+		pts.invert()
+
+	return pts
 
 #-------------------------
 # Distance map
