@@ -28,6 +28,7 @@ func _ready():
 		var map_loc = map.to_local(get_global_transform().origin)
 		#print("global: " + str(get_global_transform().origin) + ", map_loc: " + str(map_loc))
 		
+		# this operates on child ids
 		var sorted = map.sort_intersections_distance(map_loc, true)
 		var closest_ind = sorted[0][1]
 		
@@ -38,20 +39,15 @@ func _ready():
 		draw = get_node("draw")
 	if has_node("draw2"):
 		draw_arc = get_node("draw2")
-	
-func look_for_path(start_ind, left_side, exclude=null):
+
+# start_ind operates on child ids but exclude operates on intersection id
+func look_for_path(start_ind, left_side, exclude=-1):
 	print("Looking for path, start_ind: " + str(start_ind) + ", exclude: " + str(exclude))
 	var closest = map.get_child(start_ind)
 	#print("Closest int: " + closest.get_name() + " " + str(closest.get_translation()))
-	#print("[AI] Path_look: " + str(map.path_look))
-	var int_path = []
-	for p in map.path_look:
-		if p[0] == start_ind-2:
-			if exclude != null and not p[1] == exclude:
-				int_path = p
-				break #the first find should be enough
-			else:
-				int_path = p
+
+	# this operates on ids, therefore we subtract 2 from child id
+	var int_path = map.get_path_look(start_ind-2, exclude)
 			
 	print("[AI] our intersection path" + str(int_path))
 	
@@ -72,11 +68,11 @@ func look_for_path(start_ind, left_side, exclude=null):
 		flip = true
 	#print("Road name: " + rd_name)
 	var road = map.get_node(rd_name)
-	print("Road: " + str(road))
+	#print("Road: " + str(road))
 	
 	nav_path = map.get_lane(road, flip, left)
 	
-	if exclude != null:
+	if exclude != -1:
 		# append intersection position
 		nav_path.insert(0, closest.get_global_transform().origin)
 	

@@ -439,6 +439,7 @@ func place_AI(id):
 #	# Update game logic here.
 #	pass
 
+# this is being used by racelines, therefore it can't be simplified further
 func setup_nav_astar(pts, i, begin_id):
 	#print("Index: " + str(i) + " " + get_child(i).get_name())
 	#print(get_child(i).get_name())
@@ -525,7 +526,7 @@ func setup_nav_astar(pts, i, begin_id):
 	# turn2 only
 	#print("Test 2: " + str(nav.get_point_path(begin_id + turn1.positions.size(), turn2_end)))
 
-	# road's end, list end, intersections
+	# road's end, list end, intersection numbers
 	return [endpoint_id, last_id, ret]
 
 func get_lane(road, flip, left_side):
@@ -570,6 +571,42 @@ func get_lane(road, flip, left_side):
 		pts.invert()
 
 	return pts
+
+# called from the outside, eg. by AI when pathing
+func get_path_look(id, exclude=-1):
+	print("Get path for id: " + str(id) + ", exclude: " + str(exclude))
+	#print("Path_look: " + str(self.path_look))
+	var int_path = null
+	var possible_paths = []
+	for p in self.path_look:
+	#for i in range(self.path_look.size()):
+	#	var p = self.path_look.keys()[i]
+		#print("Path considered: " + str(p))
+		if p[0] == id:
+			possible_paths.append(p)
+
+	print("Possible paths for id : " + str(id) + " " + str(possible_paths))
+
+	# if only one path, just pick it
+	if possible_paths.size() == 1:
+		return possible_paths[0]
+
+	for p in possible_paths:
+		if exclude != -1:
+			#print("We have an exclusion: " + str(exclude))
+			#print("Path: " + str(p))
+			if not p[1] == exclude:
+				#print("Not excluded " + str(p[1]))
+				int_path = p
+				break #the first find should be enough
+		else:
+			# no exclusion, just grab one
+			int_path = p
+	
+
+				
+	return int_path
+
 
 #-------------------------
 # Distance map

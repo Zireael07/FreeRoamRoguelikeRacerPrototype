@@ -240,6 +240,7 @@ func _physics_process(delta):
 		
 		#2D angle to target (local coords)
 		angle = atan2(rel_loc.x, rel_loc.z)
+		#if debug: print(str(angle))
 	
 		# steering from boid
 		#if brain.steer != Vector2(0,0):
@@ -272,7 +273,8 @@ func _physics_process(delta):
 					else:
 						gas = true
 				# brake for sharp turns if going at speed
-				if abs(clx) > 0.75 and speed > 30:
+				if abs(clx) > 0.45 and speed > 30:
+					if debug: print("Braking")
 					if not reverse:
 						braking = true
 					else:
@@ -550,10 +552,10 @@ func stopping():
 		# only traffic AI looks for new intersection target
 		if get_parent().is_in_group("AI") and not emitted:
 			print("[AI] Traffic looks for new path...")
-			get_parent().look_for_path(get_parent().end_ind+2, get_parent().left, get_parent().last_ind)
+			get_parent().look_for_path(get_parent().end_ind+2, get_parent().left, get_parent().last_ind-2)
 			emitted = true
 			#debug
-			debug = true
+			#debug = true
 			return
 		# race AI just wants to drive off the intersection
 		if get_parent().is_in_group("race_AI") and not emitted:
