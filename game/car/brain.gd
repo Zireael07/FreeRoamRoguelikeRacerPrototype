@@ -57,18 +57,29 @@ class DrivingState:
 		
 		# we're a 3D node, so unfortunately we can only convert Vec3
 		var to_loc = car.get_global_transform().xform_inv(car.target)
-		# the value here should probably be speed dependent
-		var arr = car.arrive(Vector2(to_loc.x, to_loc.z), 10)
-		#var seek = car.seek(Vector2(to_loc.x, to_loc.z))
-
-		#print("Arr" + str(arr))
-		#car.steer = arr;
-		#car.steer = spd_steer + arr;
-		#car.steer = Vector2(0, car.steer.y);
-		if 'race' in car.get_parent().get_parent():
-			car.steer = Vector2(arr.x, spd_steer.y);
-		else:
-			car.steer = Vector2(arr.x, min(arr.y, spd_steer.y));
+		
+		var arr = null
+		# special case for target behind us
+		if car.get_parent().dot < 0:
+			spd_steer = car.match_velocity_length(5) # keep going forward but very slowly...
+			arr = car.align(Vector2(to_loc.x, to_loc.z))
+			
+			car.steer = Vector2(arr.x, spd_steer.y)
+		else:	
+			# the value here should probably be speed dependent
+			arr = car.arrive(Vector2(to_loc.x, to_loc.z), 10)
+			#var seek = car.seek(Vector2(to_loc.x, to_loc.z))
+	
+			car.get_parent().debug = false
+	
+			#print("Arr" + str(arr))
+			#car.steer = arr;
+			#car.steer = spd_steer + arr;
+			#car.steer = Vector2(0, car.steer.y);
+			if 'race' in car.get_parent().get_parent():
+				car.steer = Vector2(arr.x, spd_steer.y);
+			else:
+				car.steer = Vector2(arr.x, min(arr.y, spd_steer.y));
 		#print("Post: " + str(car.steer))
 		# arrives exactly
 	#	steer = arrive(to_local(target), 30*30)

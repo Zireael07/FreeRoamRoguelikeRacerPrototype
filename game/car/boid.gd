@@ -123,16 +123,18 @@ func mapToRange(orientation):
 
 	return orientation;
 	
-# align works on global rotations
+# target is a vector2
 func align(target):
 	var steering = Vector2(0,0)
 	
-	# tuned so that we avoid the "brake for sharp turn" code
-	var max_force = 6
-	
-	var gl_rot = get_parent().get_global_transform().get_rotation()
-	var change = target - gl_rot
+	#2D angle to target (local coords)
+	var angle = atan2(target.x, target.y)
+
+	var change = angle
 	change = mapToRange(change)
+	
+	#our priority is to angle up asap
+	var max_force = 25 # assume this behavior is always used at low speed 
 	
 	# match sign
 	if sign(change) == -1:
@@ -155,6 +157,7 @@ func align(target):
 			steering = Vector2(max_force, 0)
 			#print("Steer: " + str(steering))
 	
+	#print("Align steer: " + str(steering))
 	return (steering)
 
 # for holding speed
