@@ -27,7 +27,7 @@ func _ready():
 
 func extract_numbers():
 	var split = get_name().split(">")
-	print(get_name())
+	#print(get_name())
 	if split.size() > 1:
 		var nrs = split[1].split("-")
 		return nrs

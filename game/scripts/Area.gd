@@ -16,6 +16,6 @@ func _ready():
 func _on_Area_body_entered(body):
 	if body is VehicleBody:
 		if body is player_script:
-			print("Intersection: " + get_parent().get_name())
-	
-	#pass # Replace with function body.
+			pass
+			#print("Intersection: " + get_parent().get_name())
+
