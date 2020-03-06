@@ -6,17 +6,23 @@
 [ext_resource path="res://scripts/straight_road_props.gd" type="Script" id=4]
 
 [sub_resource type="SpatialMaterial" id=1]
+flags_unshaded = true
+flags_use_point_size = true
+params_line_width = 3.0
+params_point_size = 3.0
 
 [node name="Position3D" type="Position3D" groups=[
 "roads",
 ]]
 script = ExtResource( 1 )
 material = ExtResource( 2 )
+sidewalks = true
 
 [node name="draw" type="ImmediateGeometry" parent="."]
 material_override = SubResource( 1 )
 cast_shadow = 0
 script = ExtResource( 3 )
+color = Color( 1, 1, 1, 1 )
 
 [node name="Spatial" type="Spatial" parent="."]
 script = ExtResource( 4 )

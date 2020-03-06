@@ -21,6 +21,7 @@ script = ExtResource( 1 )
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 0 )
 script = ExtResource( 2 )
+sidewalks = true
 material = ExtResource( 3 )
 
 [node name="draw" type="ImmediateGeometry" parent="Placer/Road"]
