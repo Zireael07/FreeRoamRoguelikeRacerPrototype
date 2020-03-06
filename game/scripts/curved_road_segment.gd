@@ -237,7 +237,10 @@ func make_quad(index_one, index_two, inner):
 #			if (left_turn):
 #				addRoadCurve(sidewalk_material, start, left, ahead_left, ahead_right, false)
 #			else:
+			# the final parameter flips uvs
 			addRoadCurve(sidewalk_material, start, left, ahead_left, ahead_right, false)
+			# to be two-sided :P
+			addRoadCurve(sidewalk_material, left, start, ahead_right, ahead_left, false)
 
 #make the mesh (less objects)
 func make_strip_single(index_one, index_two, parent):

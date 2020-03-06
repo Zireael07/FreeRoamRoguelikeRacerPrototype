@@ -236,8 +236,7 @@ func makeRoad():
 			node.set_cast_shadows_setting(0)
 			
 			# yay GD 3
-			#node.create_convex_collision()
-			node.create_trimesh_collision()
+			node.create_convex_collision()
 			
 
 		
@@ -367,21 +366,21 @@ func initSection(start, slope, length=sectionlength):
 #		print("Start height " + str(start_height) + " end height" + str(end_height))
 	
 	#init positions
-	temp_positions.push_back(Vector3(start.x-roadwidth, start_height, start.z))
-	temp_positions.push_back(start)
-	temp_positions.push_back(Vector3(0, end_height, start.z+length))
-	temp_positions.push_back(Vector3(start.x-roadwidth, end_height, start.z+length))
-	temp_positions.push_back(Vector3(start.x+roadwidth, start_height, start.z))
-	temp_positions.push_back(Vector3(start.x+roadwidth, end_height, start.z+length))
+	temp_positions.push_back(Vector3(start.x-roadwidth, start_height, start.z)) #0
+	temp_positions.push_back(start) #1
+	temp_positions.push_back(Vector3(0, end_height, start.z+length)) #2
+	temp_positions.push_back(Vector3(start.x-roadwidth, end_height, start.z+length)) #3
+	temp_positions.push_back(Vector3(start.x+roadwidth, start_height, start.z)) #4
+	temp_positions.push_back(Vector3(start.x+roadwidth, end_height, start.z+length)) #5
 	
 	# sides
 	if sidewalks:
-		var width_with_side = roadwidth*1.25
+		var width_with_side = roadwidth*1.5
 		
-		temp_positions.push_back(Vector3(start.x-width_with_side, start_height, start.z))
-		temp_positions.push_back(Vector3(start.x-width_with_side, end_height, start.z+length))
-		temp_positions.push_back(Vector3(start.x+width_with_side, start_height, start.z))
-		temp_positions.push_back(Vector3(start.x+width_with_side, end_height, start.z+length))
+		temp_positions.push_back(Vector3(start.x-width_with_side, start_height+0.05, start.z)) #6
+		temp_positions.push_back(Vector3(start.x-width_with_side, end_height+0.05, start.z+length))
+		temp_positions.push_back(Vector3(start.x+width_with_side, start_height+0.05, start.z))
+		temp_positions.push_back(Vector3(start.x+width_with_side, end_height+0.05, start.z+length)) #9
 	
 	if guardrails:
 		temp_positions.push_back(Vector3(start.x-roadwidth, start_height + 1, start.z))
