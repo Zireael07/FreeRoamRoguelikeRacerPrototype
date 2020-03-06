@@ -577,33 +577,36 @@ func get_path_look(id, exclude=-1):
 	print("Get path for id: " + str(id) + ", exclude: " + str(exclude))
 	#print("Path_look: " + str(self.path_look))
 	var int_path = null
-	var possible_paths = []
+	var paths = []
 	for p in self.path_look:
 	#for i in range(self.path_look.size()):
 	#	var p = self.path_look.keys()[i]
 		#print("Path considered: " + str(p))
 		if p[0] == id:
-			possible_paths.append(p)
+			paths.append(p)
 
-	print("Possible paths for id : " + str(id) + " " + str(possible_paths))
+	print("Paths for id : " + str(id) + " " + str(paths))
 
 	# if only one path, just pick it
-	if possible_paths.size() == 1:
-		return possible_paths[0]
+	if paths.size() == 1:
+		return paths[0]
 
-	for p in possible_paths:
-		if exclude != -1:
-			#print("We have an exclusion: " + str(exclude))
-			#print("Path: " + str(p))
-			if not p[1] == exclude:
-				#print("Not excluded " + str(p[1]))
-				int_path = p
-				break #the first find should be enough
-		else:
-			# no exclusion, just grab one
-			int_path = p
+	# remove excluded paths
+	if exclude != -1:
+		for p in paths:
+			if p[1] == exclude:
+				paths.remove(paths.find(p))
 	
-
+	print("Possible paths for id : " + str(id) + " " + str(paths))
+	
+	# if only one path after we removed exclusions, just pick it
+	if paths.size() == 1:
+		return paths[0]
+		
+	# randomize selection
+	randomize()
+	id = randi() % paths.size()
+	int_path = paths[id]
 				
 	return int_path
 

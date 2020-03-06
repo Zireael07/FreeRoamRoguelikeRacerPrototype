@@ -42,14 +42,14 @@ func _ready():
 
 # start_ind operates on child ids but exclude operates on intersection id
 func look_for_path(start_ind, left_side, exclude=-1):
-	print("Looking for path, start_ind: " + str(start_ind) + ", exclude: " + str(exclude))
+	#print("Looking for path, start_ind: " + str(start_ind) + ", exclude: " + str(exclude))
 	var closest = map.get_child(start_ind)
 	#print("Closest int: " + closest.get_name() + " " + str(closest.get_translation()))
 
 	# this operates on ids, therefore we subtract 2 from child id
 	var int_path = map.get_path_look(start_ind-2, exclude)
 			
-	print("[AI] our intersection path" + str(int_path))
+	print("[AI] our intersection path: " + str(int_path))
 	
 	var lookup_path = map.path_look[[int_path[0], int_path[1]]]
 	#print("[AI] Lookup path: " + str(lookup_path))
