@@ -98,11 +98,12 @@ func _on_Area_body_enter( body ):
 				
 				msg.show()
 		else:
-			print("Area entered by AI car")
+			#print("Area entered by AI car")
 			if finish:
 				print("Finish area entered by AI")
-				# flag AI as finished
-				body.finished = true
+				if body.get_parent().is_in_group("race_AI"):
+					# flag AI as finished
+					body.finished = true
 		#	print("Area entered by a car " + body.get_parent().get_name())
 	#else:
 	#	print("Area entered by something else")
