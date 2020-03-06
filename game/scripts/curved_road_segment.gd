@@ -214,11 +214,19 @@ func make_quad(index_one, index_two, inner):
 	var right_side = null
 	var left_side = null
 	if inner:
-		left_side = points_inner
-		right_side = points_inner_side
+		if (left_turn):
+			left_side = points_inner_side
+			right_side = points_inner
+		else:
+			left_side = points_inner
+			right_side = points_inner_side
 	else:
-		left_side = points_outer_side
-		right_side = points_outer
+		if (left_turn):
+			left_side = points_outer
+			right_side = points_outer_side
+		else:
+			left_side = points_outer_side
+			right_side = points_outer
 	
 	if (index_one != index_two):
 			var start = Vector3(right_side[index_one].x, road_height, right_side[index_one].y)
@@ -226,8 +234,10 @@ func make_quad(index_one, index_two, inner):
 			var ahead_right = Vector3(right_side[index_two].x, road_height, right_side[index_two].y)
 			var ahead_left = Vector3(left_side[index_two].x, road_height, left_side[index_two].y)
 #			
-			#if (right):
-			addRoadCurve(sidewalk_material, start, left, ahead_left, ahead_right, false)	
+#			if (left_turn):
+#				addRoadCurve(sidewalk_material, start, left, ahead_left, ahead_right, false)
+#			else:
+			addRoadCurve(sidewalk_material, start, left, ahead_left, ahead_right, false)
 
 #make the mesh (less objects)
 func make_strip_single(index_one, index_two, parent):
