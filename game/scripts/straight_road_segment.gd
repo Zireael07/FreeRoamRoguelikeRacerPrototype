@@ -23,6 +23,9 @@ export(float) var road_slope = 0.0
 export(bool) var sidewalks = false
 var points_inner_side = PoolVector3Array()
 var points_outer_side = PoolVector3Array()
+# mesh
+var sidewalk_left = PoolVector3Array()
+var sidewalk_right = PoolVector3Array()
 
 export(bool) var guardrails = false
 # debugging
@@ -94,6 +97,7 @@ func makeRoad():
 	var cap_quads = []
 	#var support_quads = []
 	var rail_quads = []
+	var side_quads = []
 	
 	# find out slope
 	var slope_diff = road_slope/length
@@ -108,6 +112,8 @@ func makeRoad():
 		support_positions.resize(0)
 		rail_positions_left.resize(0)
 		rail_positions_right.resize(0)
+		sidewalk_left.resize(0)
+		sidewalk_right.resize(0)
 		
 		
 		var start = Vector3(0,roadheight+(index*slope_diff),index*sectionlength)
@@ -154,6 +160,19 @@ func makeRoad():
 			points_outer_side.push_back(temp_positions[8])
 			points_outer_side.push_back(temp_positions[9])
 			
+			sidewalk_left.push_back(temp_positions[0])
+			sidewalk_left.push_back(temp_positions[6])
+			sidewalk_left.push_back(temp_positions[7])
+			sidewalk_left.push_back(temp_positions[3])
+			
+			sidewalk_right.push_back(temp_positions[4])
+			sidewalk_right.push_back(temp_positions[8])
+			sidewalk_right.push_back(temp_positions[9])
+			sidewalk_right.push_back(temp_positions[5])
+			
+			side_quads.append(getQuadsSimple(sidewalk_left))
+			side_quads.append(getQuadsSimple(sidewalk_right))
+			
 		
 		if guardrails and not sidewalks:
 			points_inner_rail.push_back(temp_positions[6])
@@ -195,6 +214,33 @@ func makeRoad():
 		optimizedmeshCreate(quads, cap_quads, material)
 		
 		# bonus stuffs
+		if sidewalks:
+			var surface = SurfaceTool.new()
+			surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+			#Create a node that will hold the mesh
+			var node = MeshInstance.new()
+			node.set_name("sidewalk")
+			add_child(node)
+			
+			for qu in side_quads:
+				addQuad(qu[0], qu[1], qu[2], qu[3], cement_tex, surface, false)
+				addQuad(qu[3], qu[2], qu[1], qu[0], cement_tex, surface, false)
+
+			surface.generate_normals()
+			surface.index()
+		
+			#Set the created mesh to the node
+			node.set_mesh(surface.commit())
+			
+			#Turn off shadows
+			node.set_cast_shadows_setting(0)
+			
+			# yay GD 3
+			#node.create_convex_collision()
+			node.create_trimesh_collision()
+			
+
+		
 		if support_positions.size() > 0:
 			#optimizedmeshCreate(support_quads, building_tex1)
 			var array = support_positions
@@ -400,6 +446,7 @@ func optimizedmeshCreate(quads, cap_quads, material):
 	
 	for qu in quads:
 		addQuad(qu[0], qu[1], qu[2], qu[3], material, surface, qu[4])
+	
 	
 	for qu in cap_quads:
 		addQuadCustUV(qu[0], qu[1], qu[2], qu[3], qu[4], qu[5], qu[6], qu[7], material, surface)
