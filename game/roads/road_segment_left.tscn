@@ -27,15 +27,4 @@ left_turn = true
 material_override = SubResource( 1 )
 cast_shadow = 0
 script = ExtResource( 3 )
-
-[node name="Position3D" type="Position3D" parent="Placer/Road"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -25 )
-
-[node name="last_pos" type="Position3D" parent="Placer/Road"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.53081e-15, 0.01, -22 )
-
-[node name="last_pos2" type="Position3D" parent="Placer/Road"]
-transform = Transform( -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 1.53081e-15, 0.01, -28 )
-
-[node name="last_pos3" type="Position3D" parent="Placer/Road"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.53081e-15, 0.01, -25 )
+color = Color( 1, 1, 1, 1 )
