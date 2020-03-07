@@ -284,7 +284,10 @@ func _physics_process(delta):
 					#print(get_name() + " gas")
 			else:
 				if speed > 0 and speed < 10:
-					braking = true
+					if not reverse:
+						braking = true
+					else:
+						gas = true
 		
 
 #		if brain.steer.x < 0:
@@ -522,9 +525,9 @@ func is_close_to_target():
 			if rel_loc.length() < 5:
 				ret = true
 
-	# if angle is very sharp and we're roughly a road width's to the side... 
+	# if angle is very sharp and we're not too far to the side... 
 	if abs(angle) > 1.4:
-		if rel_loc.length() < 3.5:
+		if rel_loc.length() < 5:
 			ret = true
 	else:
 		if rel_loc.length() <=2:
