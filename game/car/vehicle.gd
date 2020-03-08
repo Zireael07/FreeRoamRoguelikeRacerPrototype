@@ -6,7 +6,7 @@ extends VehicleBody
 const MAX_SPEED = 55 #m/s = 200 kph
 #var steer_inc = 0.02 #radians
 const STEER_SPEED = 1
-const STEER_LIMIT = 0.4 # 23 degrees # usually up to 30 deg
+var STEER_LIMIT = 0.4 #23 degrees # usually up to 30 deg
 
 # based on torcs
 var SPEED_SENS = 0.7 # speed sensitivity factor
