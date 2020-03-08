@@ -30,7 +30,7 @@ func _input(event):
 
 
 func _on_Button_pressed():
-	print("Pressed resume")
+	#print("Pressed resume")
 	get_tree().set_pause(false)
 	
 	#hide the menu again

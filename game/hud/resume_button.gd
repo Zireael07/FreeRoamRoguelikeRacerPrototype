@@ -11,7 +11,7 @@ func _ready():
 
 
 func _on_resume_button_pressed():
-	print("Pressed resume")
+	#print("Pressed resume")
 	get_tree().set_pause(false)
 	
 	#hide the menu again

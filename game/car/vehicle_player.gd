@@ -497,7 +497,7 @@ func _input(event):
 		if get_node("Map").is_visible():
 			get_node("Map").hide()
 		else:
-			print("Show map!")
+			#print("Show map!")
 			get_node("Map").show()
 
 func _on_BODY_body_entered(body):

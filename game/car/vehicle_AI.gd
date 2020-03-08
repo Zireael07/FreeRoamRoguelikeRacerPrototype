@@ -9,18 +9,20 @@ onready var brain = get_node("brain")
 var target_array = PoolVector3Array()
 var current = 0
 var prev = 0
-export var target_angle = 0.2
+#export var target_angle = 0.2
 export var top_speed = 15 #50 kph?
 
 var rel_loc
 var dot
 
-var target
-var rel_target # for heading set
+#var target
+#var rel_target # for setting a set heading
 
 #steering
 var angle = 0
 var limit
+var steer # just to make it easier to watch in remote tree
+# to avoid creating new variables every tick
 var gas = false
 var braking = false
 var left = false
@@ -36,7 +38,7 @@ var compare_pos = Vector3(0,0,0)
 var debug = false
 
 # pathing
-var navigation_node
+#var navigation_node
 var path
 var pt_locs_rel = []
 
@@ -55,11 +57,11 @@ func _ready():
 	
 	target_array.resize(0)
 	
-	navigation_node = get_node("/root/Navigation")
+	#navigation_node = get_node("/root/Navigation")
 	
 	var source = get_global_transform().origin
 	
-	# need a dummy target for before we get navigation
+	# need a dummy target for before we get path
 	var forw_global = get_global_transform().xform(Vector3(0, 0, 4))
 	var target = forw_global
 	
@@ -243,6 +245,7 @@ func _physics_process(delta):
 		#if debug: print(str(angle))
 	
 		# steering from boid
+		steer = brain.steer
 		#if brain.steer != Vector2(0,0):
 		#	print("Brain steer: " + str(brain.steer) + " div: " + str(brain.steer.x/25))
 		
