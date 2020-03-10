@@ -53,11 +53,13 @@ var end_ref = Vector3()
 
 export(bool) var trees = false
 export(bool) var bamboo = false
+export(bool) var tunnel = false
 
 ## materials
 var railing_tex = null
 var cement_tex = null
 
+var tunnel_obj = null
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -68,6 +70,7 @@ func _ready():
 	
 	railing_tex = preload("res://assets/railing_material.tres")
 	cement_tex = preload("res://assets/cement.tres")	
+	tunnel_obj = preload("res://objects/tunnel_mesh.tscn")
 	
 	positions.resize(0) # = []
 	left_positions.resize(0) # = []
@@ -86,8 +89,8 @@ func _ready():
 	#print("Calculated length: " + str(length))
 	
 	#overdraw fix
-	if (get_parent().get_name().find("Spatial") != -1):
-		makeRoad()
+	#if (get_parent().get_name().find("Spatial") != -1):
+	makeRoad()
 		
 	#place props
 	get_node("Spatial").place_props(trees, bamboo, sectionlength*length)
@@ -194,15 +197,7 @@ func makeRoad():
 			rail_positions_right.push_back(temp_positions[4]) #3
 			
 			rail_quads.append(getQuadsSimple(rail_positions_right))
-			
-		# navmesh margin
-		#left_nav_positions.push_back(temp_positions[6])
-		#left_nav_positions.push_back(temp_positions[7])
-		#right_nav_positions.push_back(temp_positions[8])
-		#right_nav_positions.push_back(temp_positions[9])
-		
-		
-		
+		# end loop	
 	
 	if Engine.is_editor_hint() or not Engine.is_editor_hint():
 		#setupNavi(self)
@@ -262,6 +257,8 @@ func makeRoad():
 
 			#Set the created mesh to the node
 			node.set_mesh(surface.commit())
+			
+			
 		
 		if rail_quads.size() > 0:
 			var surface = SurfaceTool.new()
@@ -292,6 +289,13 @@ func makeRoad():
 			# yay GD 3
 			#node.create_convex_collision()
 			node.create_trimesh_collision()
+				
+		if tunnel:
+			var tun = tunnel_obj.instance()
+			var sc = round(floor(relative_end.z/50))
+			tun.set_scale(Vector3(1.0, 1.0, sc))
+			add_child(tun)
+		
 		
 	if not Engine.is_editor_hint():
 		# disable the emissiveness
@@ -387,15 +391,6 @@ func initSection(start, slope, length=sectionlength):
 		temp_positions.push_back(Vector3(start.x-roadwidth, end_height + 1, start.z+length))
 		temp_positions.push_back(Vector3(start.x+roadwidth, start_height + 1, start.z))
 		temp_positions.push_back(Vector3(start.x+roadwidth, end_height + 1, start.z + length))
-	
-	
-	# navmesh (#6-9)
-	#temp_positions.push_back(Vector3(start.x-roadwidth+margin, start_height, start.z))
-	#temp_positions.push_back(Vector3(start.x-roadwidth+margin, end_height, start.z+sectionlength))
-	#temp_positions.push_back(Vector3(start.x+roadwidth-margin, start_height, start.z))
-	#temp_positions.push_back(Vector3(start.x+roadwidth-margin, end_height, start.z+sectionlength))
-	
-	
 	
 
 func makeSupport(start, slope):
