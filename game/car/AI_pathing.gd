@@ -51,6 +51,11 @@ func look_for_path(start_ind, left_side, exclude=-1):
 			
 	print("[AI] our intersection path: " + str(int_path))
 	
+	# are we going back?
+	var back = false
+	if exclude == int_path[1]:
+		back = true
+	
 	var lookup_path = map.path_look[[int_path[0], int_path[1]]]
 	#print("[AI] Lookup path: " + str(lookup_path))
 	var nav_path = map.nav.get_point_path(lookup_path[0], lookup_path[1])
@@ -74,7 +79,16 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	
 	if exclude != -1:
 		# append intersection position
-		nav_path.insert(0, closest.get_global_transform().origin)
+		var pos = closest.get_global_transform().origin
+		# append at an offset if we're going back
+		if back:
+			if left:
+				# make use of the fact the intersections are never rotated
+				pos = pos + Vector3(-4.0, 0.0, 0.0)
+			else:
+				pos = pos + Vector3(4.0, 0.0, 0.0)
+				
+		nav_path.insert(0, pos)
 	
 	#path = reduce_path(nav_path)
 	path = traffic_reduce_path(nav_path)
