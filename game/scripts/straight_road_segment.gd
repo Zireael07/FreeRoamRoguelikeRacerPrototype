@@ -293,7 +293,7 @@ func makeRoad():
 		if tunnel:
 			var tun = tunnel_obj.instance()
 			var sc = round(floor(relative_end.z/50))
-			tun.set_scale(Vector3(1.0, 1.0, sc))
+			tun.set_scale(Vector3(1.2, 1.0, sc))
 			add_child(tun)
 		
 		

@@ -324,15 +324,16 @@ func set_straight(loc, loc2, node):
 	road_node.set_name("Road_instance 0")
 	# set length
 	var dist = loc.distance_to(loc2)
-	#print("Distance between points: " + str(dist))
-	#var rounded = int(round(dist))
-	#print("Rounding" + str(rounded))
 	road_node.relative_end = Vector3(0,0, dist)
-	#road_node.length = (rounded+1)/2 # road section length
 	
 	# debug
 	#debug_cube(Vector3(loc.x, 1, loc.z))
 	#debug_cube(Vector3(loc2.x, 1, loc2.z))
+	
+	# decorate
+	if dist > 51.0:
+		road_node.tunnel = true
+	
 	
 	var spatial = Spatial.new()
 	spatial.set_name("Spatial0")
