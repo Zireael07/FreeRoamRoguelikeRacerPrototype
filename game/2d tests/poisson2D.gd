@@ -29,9 +29,11 @@ var coords_list = []
 # corresponding value is the index of that cell's point's coordinates in the
 # samples list (or None if the cell is empty).
 var cells = {}
-var samples = []
+var samples = [] # a list of lists (we don't use Vector2 here for speed)
 
 var edges = []
+
+var out_edges = []
 
 #export var seede = 3046862638 setget set_seed
 var seede = 10000001 #3046862638
@@ -50,7 +52,7 @@ func _ready():
 	#run()
 	
 	set_seed(seede)
-	pass
+
 
 func set_seed(value):
 	if Engine.is_editor_hint():
@@ -73,12 +75,57 @@ func set_seed(value):
 	#rand_seed(value)
 	run()
 	
+	# sort
+	#var closest = sort_distance()
+	
+	# convex (outline)
+	var vec2 = []
+	for s in samples:
+		vec2.append(Vector2(s[0], s[1]))
+		
+	var conv = Geometry.convex_hull_2d(vec2)
+	#print("Convex hull: " + str(conv))
+	for i in range(0, conv.size()-1):
+		var ed = [conv[i], conv[i+1]]
+		out_edges.append(ed)
+	
 	#print("Seed " + str(seede))
 
-#func _process(delta):
-#	# Called every frame. Delta is time since last frame.
-#	# Update game logic here.
-#	pass
+func sort_distance(tg = Vector2(0,0)):
+	var dists = []
+	var tmp = []
+	var closest = []
+
+	for i in range(0, samples.size()-1):
+		var s = samples[i]
+		var dist = s-tg
+		tmp.append([dist, i])
+		dists.append(dist)
+
+	dists.sort()
+
+	var max_s = tmp.size()
+
+	for i in range(0, max_s):
+		#print("Running add, attempt " + str(i))
+		#print("tmp: " + str(tmp))
+		for t in tmp:
+			#print("Check t " + str(t))
+			if t[0] == dists[0]:
+				closest.append(t)
+				tmp.remove(tmp.find(t))
+				# key line
+				dists.remove(0)
+				#print("Adding " + str(t))
+	# if it's not empty by now, we have an issue
+	#print(tmp)
+
+	print("Sorted inters: " + str(closest))
+
+	return closest
+
+
+# ------------------------------------
 
 func choice(list):
 	var i = randi() % list.size()
@@ -230,11 +277,16 @@ func _draw():
 		else:
 			draw_circle(Vector2(p[0], p[1]), 2.0, Color(1,0,0))
 
+	for e in out_edges:
+		draw_line(e[0], e[1], Color(1,0,1))
+	
+
 	for e in edges:
 		var p1 = samples[e[0]]
 		var p2 = samples[e[1]]
 		draw_line(Vector2(p1[0], p1[1]), Vector2(p2[0], p2[1]), Color(0,0,1))
 		#draw_line(Vector2(e[0][0], e[0][1]), Vector2(e[1][0], e[1][1]), Color(0,0,1))
 	
+
 	# changing type to CanvasItem fixes this but breaks instancing
 	update()
