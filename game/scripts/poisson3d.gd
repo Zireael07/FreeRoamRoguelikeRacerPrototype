@@ -56,6 +56,17 @@ func set_seed3(value):
 	#rand_seed(value)
 	run()
 	
+	# convex (outline)
+	var vec2 = []
+	for s in samples:
+		vec2.append(Vector2(s[0], s[1]))
+		
+	var conv = Geometry.convex_hull_2d(vec2)
+	print("Convex hull: " + str(conv))
+	for i in range(0, conv.size()-1):
+		var ed = [conv[i], conv[i+1]]
+		out_edges.append(ed)
+	
 	#print("Seed3 " + str(seede))
 
 

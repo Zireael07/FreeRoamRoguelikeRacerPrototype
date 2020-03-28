@@ -1,4 +1,5 @@
 tool
+# this one extends node to work nicely in 3D, later on
 extends Node
 
 # Procedural algorithm for the generation of two-dimensional Poission-disc
@@ -29,9 +30,10 @@ var coords_list = []
 # corresponding value is the index of that cell's point's coordinates in the
 # samples list (or None if the cell is empty).
 var cells = {}
-var samples = []
+var samples = [] # a list of lists (we don't use Vector2 here for speed)
 
 var edges = []
+var out_edges = []
 
 #export var seede = 3046862638 setget set_seed
 var seede = 10000001 #3046862638
@@ -72,6 +74,17 @@ func set_seed(value):
 	seed(value)
 	#rand_seed(value)
 	run()
+	
+	# convex (outline)
+	var vec2 = []
+	for s in samples:
+		vec2.append(Vector2(s[0], s[1]))
+		
+	var conv = Geometry.convex_hull_2d(vec2)
+	#print("Convex hull: " + str(conv))
+	for i in range(0, conv.size()-1):
+		var ed = [conv[i], conv[i+1]]
+		out_edges.append(ed)
 	
 	if Engine.is_editor_hint():
 		print("Seed " + str(seede))
