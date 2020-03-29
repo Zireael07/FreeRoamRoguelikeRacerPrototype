@@ -43,6 +43,8 @@ func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
 
+	out_edges.resize(0)
+
 	# randomize the seed
 	#randomize()
 	#var s = randi()
@@ -82,17 +84,52 @@ func set_seed(value):
 		
 	var conv = Geometry.convex_hull_2d(vec2)
 	#print("Convex hull: " + str(conv))
-	for i in range(0, conv.size()-1):
-		var ed = [conv[i], conv[i+1]]
-		out_edges.append(ed)
+	
+	#convex_pos_to_edge_indices(conv)
+	
+	# this gives list of Vec2 (positions)
+#	for i in range(0, conv.size()-1):
+#		var ed = [conv[i], conv[i+1]]
+#		out_edges.append(ed)
 	
 	if Engine.is_editor_hint():
 		print("Seed " + str(seede))
 
-#func _process(delta):
-#	# Called every frame. Delta is time since last frame.
-#	# Update game logic here.
-#	pass
+func convex_pos_to_edge_indices(conv):
+	#print("Samples: " + str(samples))
+	for i in range(0, conv.size()-1):
+		var pt = conv[i]
+		#print("pt: " + str(pt))
+		#print("pt list: " + str([pt.x, pt.y]))
+		#var id = samples.find([pt.x, pt.y])
+		var id = -1
+		for i in range(0, samples.size()-1):
+			var s = samples[i]
+			# fudge needed for some reason
+			if s[0]-pt.x < 0.001 and s[1]-pt.y < 0.001:
+				id = i
+				break # break the loop
+		
+		#print(id)
+		
+		var pt2 = conv[i+1]
+		#var id2 = samples.find([pt2.x, pt2.y])
+		var id2 = -1
+		for i in range(0, samples.size()-1):
+			var s = samples[i]
+			#if s[0] == pt.x and s[1] == pt.y:
+			# fudge needed for some reason
+			if s[0]-pt2.x < 0.001 and s[1]-pt2.y < 0.001:
+				id2 = i
+				break # break the loop
+		
+		#print(id2)
+		if id != -1 and id2 != -1:
+			var ed = [id, id2]
+			out_edges.append(ed)
+
+
+# ------------------------------------------------------
 
 func choice(list):
 	var i = randi() % list.size()

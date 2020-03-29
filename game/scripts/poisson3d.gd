@@ -10,6 +10,8 @@ func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
 	
+	out_edges.resize(0)
+	
 	# poisson stuff
 	set_seed3(seed3)
 	#seede = seed3
@@ -63,9 +65,13 @@ func set_seed3(value):
 		
 	var conv = Geometry.convex_hull_2d(vec2)
 	print("Convex hull: " + str(conv))
-	for i in range(0, conv.size()-1):
-		var ed = [conv[i], conv[i+1]]
-		out_edges.append(ed)
+	
+	convex_pos_to_edge_indices(conv)
+	
+	# this gives list of Vec2 (positions)
+#	for i in range(0, conv.size()-1):
+#		var ed = [conv[i], conv[i+1]]
+#		out_edges.append(ed)
 	
 	#print("Seed3 " + str(seede))
 
