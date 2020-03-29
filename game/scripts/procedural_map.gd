@@ -74,6 +74,32 @@ func _ready():
 #	auto_connect(sorted[6][1], real_edges)
 #	auto_connect(sorted[7][1], real_edges)
 
+	# road around
+	var out_edges = get_node("triangulate/poisson").out_edges
+	print("Outer edges: " + str(out_edges))
+
+	# remove any edges that we already connected
+	var to_remove = []
+	for e in real_edges:
+		#print("Check real edge: " + str(e))
+		#out_edges.remove(out_edges.find(e))
+		for i in range(0, out_edges.size()):
+			var e_o = out_edges[i]
+			#print("Outer edge: " + str(e_o))
+			if e[0] == e_o[0] and e[1] == e_o[1]:
+				to_remove.append(i)
+			# check the other way round, too
+			if e[1] == e_o[0] and e[0] == e_o[1]:
+				to_remove.append(i)
+				
+	for i in to_remove:
+		out_edges.remove(i)
+		
+	print("Outer edges post filter: " + str(out_edges))
+
+	for e in out_edges:
+		# +2 because of poisson node which comes first
+		var ret = connect_intersections(e[0]+2, e[1]+2, false)
 
 	setup_neighbors(real_edges)
 
