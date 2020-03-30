@@ -253,12 +253,13 @@ func _ready():
 				
 	var sel = null
 	if not garage_opts:
+		print("No garage options found")
 		return
 
-	#if garage_opts.size() > 1:
-	#	sel = garage_opts[randi() % garage_opts.size()]
-	#else:
-	#	sel = garage_opts[0]
+#	if garage_opts.size() > 1:
+#		sel = garage_opts[randi() % garage_opts.size()]
+#	else:
+#		sel = garage_opts[0]
 
 	var rots = { Vector3(10,0,0): Vector3(0,-90,0), Vector3(0,0,10): Vector3(0, 180, 0), Vector3(-10,0,0) : Vector3(0, 90, 0) }
 
@@ -266,20 +267,20 @@ func _ready():
 	var wanted = get_child(2) # intersection 0
 	sel = wanted
 
-	if sel.open_exits.size() > 1:
-		print(sel.get_name() + str(sel.open_exits[1]))
+	if sel.open_exits.size() > 0:
+		print(sel.get_name() + str(sel.open_exits[0]))
 		var garage_rd = garage.instance()
 		# test placement
-		garage_rd.set_translation(sel.get_translation() + sel.open_exits[1])
+		garage_rd.set_translation(sel.get_translation() + sel.open_exits[0])
 		#print(str(garage_rd.get_translation()))
 		#print(str(sel.open_exits[1]))
 		
 		# assign correct rotation
-		if rots.has(sel.open_exits[1]): 
-			garage_rd.set_rotation_degrees(rots[sel.open_exits[1]])
+		if rots.has(sel.open_exits[0]): 
+			garage_rd.set_rotation_degrees(rots[sel.open_exits[0]])
 		else:
 			# prevent weirdness
-			print("Couldn't find correct rotation for " + str(sel.open_exits[1]))
+			print("Couldn't find correct rotation for " + str(sel.open_exits[0]))
 			return
 		
 		add_child(garage_rd)
