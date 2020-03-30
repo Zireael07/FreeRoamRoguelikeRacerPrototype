@@ -100,6 +100,9 @@ func _ready():
 	for e in out_edges:
 		# +2 because of poisson node which comes first
 		var ret = connect_intersections(e[0]+2, e[1]+2, false)
+		if ret != false:
+			# update naming
+			fix_road_naming()
 
 	setup_neighbors(real_edges)
 
@@ -416,21 +419,24 @@ func auto_connect(initial_int, real_edges, verbose=false):
 			real_edges.append(Vector2(initial_int, p[0]))
 			
 			# update naming
-			var added = get_child(get_child_count()-1)
-			#print("Last child: " + added.get_name())
-			# extract numbers (ids)
-			var nrs = added.get_name().split("-")
-			nrs[0] = nrs[0].lstrip("Road ")
-		
-			var real = []
-			# -2 because of the two nodes ahead of intersections
-			for i in nrs:
-				real.append(int(i)-2)
+			fix_road_naming()
 
-			#Logger.mapgen_print(added.get_name() + " real numbers: " + str(real))
-			added.set_name("Road " + str(real[0]) + "-" + str(real[1]))
-			
-			#pass
+
+func fix_road_naming():
+	# update naming
+	var added = get_child(get_child_count()-1)
+	#print("Last child: " + added.get_name())
+	# extract numbers (ids)
+	var nrs = added.get_name().split("-")
+	nrs[0] = nrs[0].lstrip("Road ")
+
+	var real = []
+	# -2 because of the two nodes ahead of intersections
+	for i in nrs:
+		real.append(int(i)-2)
+
+	#Logger.mapgen_print(added.get_name() + " real numbers: " + str(real))
+	added.set_name("Road " + str(real[0]) + "-" + str(real[1]))
 
 
 func place_player_random():
