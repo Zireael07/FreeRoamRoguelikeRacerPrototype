@@ -87,13 +87,15 @@ func _ready():
 			var e_o = out_edges[i]
 			#print("Outer edge: " + str(e_o))
 			if e[0] == e_o[0] and e[1] == e_o[1]:
-				to_remove.append(i)
+				to_remove.append(e_o)
 			# check the other way round, too
 			if e[1] == e_o[0] and e[0] == e_o[1]:
-				to_remove.append(i)
+				to_remove.append(e_o)
 				
-	for i in to_remove:
-		out_edges.remove(i)
+	for e in to_remove:
+		#print("To remove: " + str(e))
+		# works because e is taken directly from out_edges (see line 87)
+		out_edges.remove(out_edges.find(e))
 		
 	print("Outer edges post filter: " + str(out_edges))
 
@@ -264,7 +266,7 @@ func _ready():
 	var wanted = get_child(2) # intersection 0
 	sel = wanted
 
-	if sel.open_exits.size() > 0:
+	if sel.open_exits.size() > 1:
 		print(sel.get_name() + str(sel.open_exits[1]))
 		var garage_rd = garage.instance()
 		# test placement
