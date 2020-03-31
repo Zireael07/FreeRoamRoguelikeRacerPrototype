@@ -46,8 +46,8 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	var closest = map.get_child(start_ind)
 	#print("Closest int: " + closest.get_name() + " " + str(closest.get_translation()))
 
-	# this operates on ids, therefore we subtract 2 from child id
-	var int_path = map.get_path_look(start_ind-2, exclude)
+	# this operates on ids, therefore we subtract 3 from child id
+	var int_path = map.get_node("nav").get_path_look(start_ind-3, exclude)
 			
 	print("[AI] our intersection path: " + str(int_path))
 	
@@ -56,9 +56,9 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	if exclude == int_path[1]:
 		back = true
 	
-	var lookup_path = map.path_look[[int_path[0], int_path[1]]]
+	var lookup_path = map.get_node("nav").path_look[[int_path[0], int_path[1]]]
 	#print("[AI] Lookup path: " + str(lookup_path))
-	var nav_path = map.nav.get_point_path(lookup_path[0], lookup_path[1])
+	var nav_path = map.get_node("nav").nav.get_point_path(lookup_path[0], lookup_path[1])
 	#print("[AI] Nav path: " + str(nav_path))
 	#print("Nav path length: " + str(nav_path.size()-1))
 	
@@ -75,7 +75,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	var road = map.get_node(rd_name)
 	#print("Road: " + str(road))
 	
-	nav_path = map.get_lane(road, flip, left)
+	nav_path = map.get_node("nav").get_lane(road, flip, left)
 	
 	if exclude != -1:
 		# append intersection position

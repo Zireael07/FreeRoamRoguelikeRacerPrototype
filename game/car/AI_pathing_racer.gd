@@ -21,7 +21,8 @@ func _ready():
 	#._ready()
 	if is_in_group("race_AI"):
 		print("Race AI pathing")
-		map = get_node("/root/Navigation").get_node("map")
+		# we don't need to look up map itself, so let's make it a shortcut to nav
+		map = get_node("/root/Navigation").get_node("map").get_node("nav")
 		var lookup_path = map.path_look[[race_int_path[0], race_int_path[1]]]
 		#print("[AI] Lookup path: " + str(lookup_path))
 		var nav_path = map.nav.get_point_path(lookup_path[0], lookup_path[1])

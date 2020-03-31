@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://dynamic_env.tres" type="Environment" id=1]
 [ext_resource path="res://scripts/WorldEnvironment.gd" type="Script" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://car/car_base.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scripts/ground_gen.gd" type="Script" id=11]
 [ext_resource path="res://assets/ground_material.tres" type="Material" id=12]
+[ext_resource path="res://scripts/map_nav.gd" type="Script" id=13]
 
 [sub_resource type="SpatialMaterial" id=1]
 flags_unshaded = true
@@ -53,6 +54,9 @@ script = ExtResource( 6 )
 
 [node name="poisson" type="Spatial" parent="map/triangulate"]
 script = ExtResource( 7 )
+
+[node name="nav" type="Spatial" parent="map"]
+script = ExtResource( 13 )
 
 [node name="draw" type="ImmediateGeometry" parent="map"]
 visible = false
