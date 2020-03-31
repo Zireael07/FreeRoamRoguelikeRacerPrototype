@@ -1,10 +1,11 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/sky_texture.shader" type="Shader" id=1]
-[ext_resource path="res://scripts/sky_rect.gd" type="Script" id=2]
+[ext_resource path="res://dynamic_sky/sky_rect.gd" type="Script" id=2]
 [ext_resource path="res://dynamic_sky/Sprite.tscn" type="PackedScene" id=3]
 [ext_resource path="res://dynamic_sky/shaders/Sky.shader" type="Shader" id=4]
 [ext_resource path="res://dynamic_sky/textures/noise.png" type="Texture" id=5]
+
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 1 )
