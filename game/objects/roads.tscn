@@ -4,10 +4,11 @@
 [ext_resource path="res://assets/ground_material.tres" type="Material" id=2]
 [ext_resource path="res://scripts/road_gen.gd" type="Script" id=3]
 [ext_resource path="res://assets/road_material.tres" type="Material" id=4]
-[ext_resource path="res://scripts/curved_road_segment.gd" type="Script" id=5]
+[ext_resource path="res://roads/curved_road_segment.gd" type="Script" id=5]
 [ext_resource path="res://assets/cement.tres" type="Material" id=6]
 [ext_resource path="res://assets/barrier_material.tres" type="Material" id=7]
 [ext_resource path="res://scripts/draw_line.gd" type="Script" id=8]
+
 
 [sub_resource type="PlaneShape" id=1]
 

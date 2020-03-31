@@ -1,6 +1,5 @@
 tool
-
-extends "helpers.gd"
+extends "../scripts/helpers.gd"
 
 # class member variables go here, for example:
 var m = SpatialMaterial.new()
