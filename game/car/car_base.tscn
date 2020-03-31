@@ -23,9 +23,10 @@
 [ext_resource path="res://assets/rain_material.tres" type="Material" id=21]
 [ext_resource path="res://assets/rain_particles.tres" type="Material" id=22]
 [ext_resource path="res://assets/neon_under_material.tres" type="Material" id=23]
-[ext_resource path="res://scripts/RayCast.gd" type="Script" id=24]
+[ext_resource path="res://car/RayCast.gd" type="Script" id=24]
 [ext_resource path="res://car/replay_system.gd" type="Script" id=25]
 [ext_resource path="res://save_test.tres" type="ArrayMesh" id=26]
+
 
 [sub_resource type="SpatialMaterial" id=1]
 params_diffuse_mode = 1

@@ -324,11 +324,11 @@ func offset_dist(start, end, point):
 		var dx = x - point.x
 		var dy = y - point.z
 	
-	    # Note: If the actual distance does not matter,
-	    # if you only want to compare what this function
-	    # returns to other results of this function, you
-	    # can just return the squared distance instead
-	    # (i.e. remove the sqrt) to gain a little performance
+		# Note: If the actual distance does not matter,
+		# if you only want to compare what this function
+		# returns to other results of this function, you
+		# can just return the squared distance instead
+		# (i.e. remove the sqrt) to gain a little performance
 	
 		var dist = sqrt(dx*dx + dy*dy)
 	
