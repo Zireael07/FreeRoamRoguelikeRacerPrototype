@@ -1,6 +1,7 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://scripts/voronoi2D.gd" type="Script" id=1]
+[ext_resource path="res://voronoi/voronoi2D.gd" type="Script" id=1]
+
 
 [node name="Node2D" type="Node2D" index="0"]
 
