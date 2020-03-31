@@ -304,9 +304,16 @@ func fix_road_naming():
 	# update naming
 	var added = get_child(get_child_count()-1)
 	#print("Last child: " + added.get_name())
+	
 	# extract numbers (ids)
 	var nrs = added.get_name().split("-")
-	nrs[0] = nrs[0].lstrip("Road ")
+	#print("Nrs: " + str(nrs))
+	#nrs[0] = nrs[0].lstrip("Road ")
+	#print("Nr" + str(nrs[0]))
+	
+	# in case of any @ in the latter part, strip them (and what follows)
+	var nm = nrs[1].split("@")
+	nrs[1] = nm[0]  
 
 	var real = []
 	# -3 because of the helper nodes ahead of intersections
