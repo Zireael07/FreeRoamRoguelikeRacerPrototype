@@ -1,12 +1,13 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://scripts/procedural_building.gd" type="Script" id=1]
+[ext_resource path="res://scripts/meshes/procedural_building.gd" type="Script" id=1]
 [ext_resource path="res://assets/procedural_building_metal_mat.tres" type="Material" id=2]
 [ext_resource path="res://assets/windows_material2.tres" type="Material" id=3]
 [ext_resource path="res://assets/chinasign_1.obj" type="ArrayMesh" id=4]
 [ext_resource path="res://assets/neon_sign1.tres" type="Material" id=5]
 [ext_resource path="res://assets/china_cable.obj" type="ArrayMesh" id=6]
 [ext_resource path="res://assets/metal_mat.tres" type="Material" id=7]
+
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 10, 20, 10 )

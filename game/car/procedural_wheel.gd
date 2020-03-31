@@ -1,5 +1,5 @@
 tool
-extends "res://scripts/mesh_gen.gd"
+extends "res://scripts/meshes/mesh_gen.gd"
 
 export var wheel_thick = 0.2
 export var wheel_radius = 0.25

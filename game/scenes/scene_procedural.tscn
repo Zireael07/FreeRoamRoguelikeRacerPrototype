@@ -10,9 +10,10 @@
 [ext_resource path="res://scripts/draw_line.gd" type="Script" id=8]
 [ext_resource path="res://car/car_AI_traffic.tscn" type="PackedScene" id=9]
 [ext_resource path="res://car/car_base.tscn" type="PackedScene" id=10]
-[ext_resource path="res://scripts/ground_gen.gd" type="Script" id=11]
+[ext_resource path="res://scripts/meshes/ground_gen.gd" type="Script" id=11]
 [ext_resource path="res://assets/ground_material.tres" type="Material" id=12]
 [ext_resource path="res://map/map_nav.gd" type="Script" id=13]
+
 
 [sub_resource type="SpatialMaterial" id=1]
 flags_unshaded = true

@@ -1,5 +1,5 @@
 tool
-extends "../scripts/mesh_gen.gd"
+extends "../scripts/meshes/mesh_gen.gd"
 
 export(Material)    var material    = preload("res://assets/road_material.tres")
 var m = SpatialMaterial.new()

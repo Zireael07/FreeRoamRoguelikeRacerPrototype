@@ -1,4 +1,4 @@
-extends "../scripts/mesh_gen.gd"
+extends "../scripts/meshes/mesh_gen.gd"
 
 # class member variables go here, for example:
 

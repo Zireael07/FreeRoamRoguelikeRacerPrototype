@@ -1,5 +1,5 @@
 tool
-extends "res://scripts/mesh_gen.gd"
+extends "res://scripts/meshes/mesh_gen.gd"
 
 # class member variables go here, for example:
 export var door_h = 0.55
