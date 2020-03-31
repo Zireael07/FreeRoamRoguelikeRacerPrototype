@@ -1,6 +1,6 @@
 tool
 #extends Node
-extends "connect_intersections.gd"
+extends "../map/connect_intersections.gd"
 
 # class member variables go here, for example:
 # var a = 2

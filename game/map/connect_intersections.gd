@@ -13,6 +13,8 @@ var points_arc = []
 var first_turn
 var last_turn
 
+var extend_turns = false
+
 func _ready():
 	draw = get_node("draw")
 	road_straight = preload("res://roads/road_segment_straight.tscn")
@@ -56,8 +58,12 @@ func connect_intersections(one, two, verbose=false):
 	draw.draw_line(positions)
 
 	#print("Line length: " + str(loc_dest_exit.distance_to(loc_src_exit)))
-	# 2.5 is enough for every road on our map except for 10-7
-	var extendeds = extend_lines(one,two, loc_src_exit, loc_dest_exit, 3) #2.5) #2)
+	# a sensible default
+	var extend_factor = 3
+#	if extend_turns:
+#		extend_factor = extend_factor*1.5
+		
+	var extendeds = extend_lines(one,two, loc_src_exit, loc_dest_exit, extend_factor) #2.5) #2)
 
 	var corner_points = get_corner_points(one,two, extendeds[0], extendeds[1], extendeds[0].distance_to(loc_src_exit))
 
