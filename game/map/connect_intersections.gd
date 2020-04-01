@@ -336,9 +336,21 @@ func set_straight(loc, loc2, node):
 	#debug_cube(Vector3(loc.x, 1, loc.z))
 	#debug_cube(Vector3(loc2.x, 1, loc2.z))
 	
+	
 	# decorate
-	if dist > 51.0:
-		road_node.tunnel = true
+	randomize()
+	
+	if dist > 51.0 and dist < 300:
+		var r = randf()
+		if r < 0.4:
+			road_node.tunnel = true
+	
+	if dist < 51.0:
+		var r = randf()
+		if r < 0.2:
+			road_node.bamboo = true
+		elif r < 0.6:
+			road_node.trees = true
 	
 	
 	var spatial = Spatial.new()
