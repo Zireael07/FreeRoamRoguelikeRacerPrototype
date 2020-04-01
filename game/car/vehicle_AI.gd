@@ -558,7 +558,8 @@ func stopping():
 		# only traffic AI looks for new intersection target
 		if get_parent().is_in_group("AI") and not emitted:
 			print("[AI] Traffic looks for new path...")
-			get_parent().look_for_path(get_parent().end_ind+2, get_parent().left, get_parent().last_ind-2)
+			# +3 because of helper nodes in map
+			get_parent().look_for_path(get_parent().end_ind+3, get_parent().left, get_parent().last_ind-3)
 			emitted = true
 			#debug
 			#debug = true
