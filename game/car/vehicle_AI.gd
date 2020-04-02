@@ -110,31 +110,27 @@ func debug_draw_path(pt_locs):
 	if pt_locs.size() > 0:
 		get_parent().draw.draw_line_color(pt_locs, 6, Color(1,0,0,1))
 
-func _process(delta):
-	# delay getting the path until everything is set up
-	elapsed_secs += delta
-	
-	if (elapsed_secs > start_secs):
-
-		# debug
-		if (get_parent().draw != null):
-			debug_draw_lines()
-			#debug_draw_path(pt_locs_rel)
-			
-		if (get_parent().draw_arc != null):
+# draw debugging
+func draw_debugging():
+	# debug
+	if (get_parent().draw != null):
+		debug_draw_lines()
+		#debug_draw_path(pt_locs_rel)
+		
+	if (get_parent().draw_arc != null):
 #			if angle > 0:
 #				# the minus is there solely for display purposes
 #				get_parent().draw_arc.draw_arc_poly(get_translation(), 90-get_rotation_degrees().y, -rad2deg(angle), Color(1,0,0))
 #			else:
 #				get_parent().draw_arc.draw_arc_poly(get_translation(), 90-get_rotation_degrees().y, -rad2deg(angle), Color(0,1,0))
 
-			# draw desired steer
-			#points
-			var pos = get_transform().origin #get_translation()
-			var points = PoolVector3Array()
-			points.push_back(get_translation())
+		# draw desired steer
+		#points
+		var pos = get_transform().origin #get_translation()
+		var points = PoolVector3Array()
+		points.push_back(get_translation())
 #
-			# draw velocity
+		# draw velocity
 #			# from relative location
 #			var loc_to_dr = Vector3(brain.velocity.x, 1, brain.velocity.y)
 #			var gl_tg = get_global_transform().xform(loc_to_dr)
@@ -144,14 +140,21 @@ func _process(delta):
 #			#points.push_back(Vector3(brain.steer.x, 1, brain.steer.y))
 #			get_parent().draw_arc.draw_line_color(points, 3, Color(1,0,1))
 
-			# draw forward vector
-			# from relative location
-			var loc_dr = Vector3(0, 0, 4)
-			var gl_tg = get_global_transform().xform(loc_dr)
-			var par_rel = get_parent().get_global_transform().xform_inv(gl_tg)
-			points.push_back(Vector3(par_rel.x, 1, par_rel.z))
-			get_parent().draw_arc.draw_line_color(points, 3, Color(1,0,1))
+		# draw forward vector
+		# from relative location
+		var loc_dr = Vector3(0, 0, 4)
+		var gl_tg = get_global_transform().xform(loc_dr)
+		var par_rel = get_parent().get_global_transform().xform_inv(gl_tg)
+		points.push_back(Vector3(par_rel.x, 1, par_rel.z))
+		get_parent().draw_arc.draw_line_color(points, 3, Color(1,0,1))
 
+# mostly draws debugging
+func _process(delta):
+	# delay until everything is set up
+	elapsed_secs += delta
+	
+	if (elapsed_secs > start_secs):
+		draw_debugging()
 
 func setup_path(path):
 	target_array.resize(0) #= []
