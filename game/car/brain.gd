@@ -9,6 +9,7 @@ var prev_state
 
 #const STATE_PATHING = 0
 const STATE_DRIVING  = 1
+const STATE_CHASE = 2
 
 signal state_changed
 
@@ -29,12 +30,16 @@ func set_state(new_state):
 #	el
 	if new_state == STATE_DRIVING:
 		state = DrivingState.new(self)
+	if new_state == STATE_CHASE:
+		state = ChaseState.new(self)
 	
 	emit_signal("state_changed", self)
 
 func get_state():
 	if state is DrivingState:
 		return STATE_DRIVING
+	if state is ChaseState:
+		return STATE_CHASE
 
 # just call the state
 func _physics_process(delta):
@@ -119,3 +124,33 @@ class DrivingState:
 		#print("Vel: " + str(car.velocity))
 
 	
+class ChaseState:
+	var car
+	
+	func _init(car):
+		self.car = car
+
+	func update(delta):
+		#print("Chase state on!")
+		# behavior
+		# steering behaviors operate in local space
+		# the target passed is already local unless something went very wrong
+		# keeps enough speed to move while staying on track
+		var spd_steer = car.match_velocity_length(car.max_speed) #10
+		#print("Spd steer" + str(spd_steer))
+		
+		# we're a 3D node, so unfortunately we can only convert Vec3
+		var to_loc = car.get_global_transform().xform_inv(car.target)
+		
+		var seek = car.seek(Vector2(to_loc.x, to_loc.z))
+		
+		car.steer = Vector2(seek.x, seek.y);
+		#car.steer = Vector2(seek.x, min(seek.y, spd_steer.y));
+		
+		# our actual velocity
+		# forward vector scaled by our speed
+		var gl_tg = car.get_parent().get_global_transform().xform(Vector3(0, 0, 4))
+		var rel = car.get_parent().get_global_transform().xform_inv(gl_tg)
+		var vel = rel * car.get_parent().get_linear_velocity().length()
+		
+		car.velocity = Vector2(car.get_parent().get_angular_velocity().y, vel.z)

@@ -155,6 +155,23 @@ func _process(delta):
 	
 	if (elapsed_secs > start_secs):
 		draw_debugging()
+		
+		# cop spots player -> starts chase
+		if get_parent().is_in_group("cop"):
+			# if player close enough
+			var playr = get_tree().get_nodes_in_group("player")[0]
+			var playr_loc = playr.get_node("BODY").get_global_transform().origin
+			#print("Player loc: " + str(playr_loc))
+			if playr_loc.distance_to(get_node("BODY").get_global_transform().origin) < 10:
+				#print("Player within 10 m of cop")
+				if brain.get_state() != brain.STATE_CHASE:
+					# bugfix
+					if stop:
+						stop = false
+					brain.set_state(brain.STATE_CHASE)
+				brain.target = playr_loc
+				#print(str(brain.target))
+
 
 func setup_path(path):
 	target_array.resize(0) #= []
@@ -317,26 +334,28 @@ func _physics_process(delta):
 		
 		process_car_physics(delta, gas, braking, left, right, joy)
 		
-		# select the next target if close enough (roughly half car length)
-		if is_close_to_target() and not stop:
-			#if debug:
-			#	print("[AI] We're close to target" + str(brain.target) + " rel loc: " + str(rel_loc))
-
-			##do we have a next point?
-			if (target_array.size() > current+1):
-				#if not debug: #dummy out for now
-				prev = current
-				current = current + 1
-				#else:
-				#	stop = true
-				#	print("Stopping")
-				# send to brain
-				brain.target = target_array[current]
+		# don't do the next if we're a cop chasing
+		if brain.get_state() != brain.STATE_CHASE:
+			# select the next target if close enough (roughly half car length)
+			if is_close_to_target() and not stop:
 				#if debug:
-				#	print("New target" + str(brain.target))
-			else:
-				#print("We're at the end")
-				stop = true
+				#	print("[AI] We're close to target" + str(brain.target) + " rel loc: " + str(rel_loc))
+	
+				##do we have a next point?
+				if (target_array.size() > current+1):
+					#if not debug: #dummy out for now
+					prev = current
+					current = current + 1
+					#else:
+					#	stop = true
+					#	print("Stopping")
+					# send to brain
+					brain.target = target_array[current]
+					#if debug:
+					#	print("New target" + str(brain.target))
+				else:
+					#print("We're at the end")
+					stop = true
 				
 		#if we passed the point, don't backtrack
 		if get_parent().is_in_group("race_AI"):
