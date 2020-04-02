@@ -3,6 +3,7 @@ extends Node2D
 # class member variables go here, for example:
 #var AIs = PoolStringArray()
 var AIs = []
+
 #var player_pos = Vector2(110, 110)
 var minimap_bg
 var cam2d
@@ -61,11 +62,16 @@ func setupMinimap(arrow, player_arrow):
 	AIs = get_tree().get_nodes_in_group("AI")
 	
 	for index in range(AIs.size()):
+		var AI = AIs[index]
 		var tex = TextureRect.new()
 		tex.set_texture(arrow)
 		tex.set_name("traffic-AI")
 		#tex.set_name(AIs[index].get_name())
 		tex.set_scale(Vector2(0.5, 0.5))
+		# police
+		if AI.is_in_group("cop"):
+			tex.set_modulate(Color(0,0,1))
+			tex.set_name("cop-AI")
 		
 		attach.add_child(tex)
 		arrows.append(tex)
