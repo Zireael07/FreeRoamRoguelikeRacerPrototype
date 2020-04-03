@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://car/AI_pathing.gd" type="Script" id=1]
 [ext_resource path="res://car/brain.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://car/detect_obstacles_ray.gd" type="Script" id=7]
 [ext_resource path="res://assets/truenohoudini.obj" type="ArrayMesh" id=8]
 [ext_resource path="res://assets/car_black.tres" type="Material" id=9]
+[ext_resource path="res://assets/police_light.tres" type="Material" id=10]
 
 [sub_resource type="SpatialMaterial" id=1]
 params_diffuse_mode = 1
@@ -98,7 +99,11 @@ surfaces/0 = {
 "vertex_count": 48
 }
 
-[sub_resource type="SpatialMaterial" id=9]
+[sub_resource type="CubeMesh" id=9]
+material = ExtResource( 10 )
+size = Vector3( 0.75, 0.25, 0.25 )
+
+[sub_resource type="SpatialMaterial" id=10]
 flags_unshaded = true
 flags_use_point_size = true
 params_line_width = 3.0
@@ -229,17 +234,35 @@ script = ExtResource( 7 )
 process_mode = 0
 one_shot = true
 
+[node name="coplight" type="MeshInstance" parent="BODY"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0225899, 0.954311, 0 )
+cast_shadow = 0
+mesh = SubResource( 9 )
+material/0 = null
+
+[node name="SpotLight2" type="SpotLight" parent="BODY"]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0.00889575, 0.965638, 0 )
+light_color = Color( 1, 0, 0, 1 )
+light_energy = 5.0
+spot_angle = 70.2
+
+[node name="SpotLight3" type="SpotLight" parent="BODY"]
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, -0.0176925, 0.965638, 0 )
+light_color = Color( 1, 0, 0, 1 )
+light_energy = 5.0
+spot_angle = 70.2
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 _import_path = NodePath("AnimationPlayer")
 
 [node name="draw" type="ImmediateGeometry" parent="."]
-material_override = SubResource( 9 )
+material_override = SubResource( 10 )
 cast_shadow = 0
 script = ExtResource( 3 )
 color = Color( 1, 1, 1, 1 )
 
 [node name="draw2" type="ImmediateGeometry" parent="."]
-material_override = SubResource( 9 )
+material_override = SubResource( 10 )
 cast_shadow = 0
 script = ExtResource( 3 )
 color = Color( 1, 1, 1, 1 )

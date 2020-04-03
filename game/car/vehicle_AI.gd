@@ -169,8 +169,23 @@ func _process(delta):
 					if stop:
 						stop = false
 					brain.set_state(brain.STATE_CHASE)
+				
+				# turn lights on
+				var material = get_node("coplight").get_mesh().surface_get_material(0)
+				#material.set_feature(SpatialMaterial.FEATURE_EMISSION, true)
+				material.set_albedo(Color(1,0,0))
+				get_node("SpotLight2").set_visible(true)
+				get_node("SpotLight3").set_visible(true)
+				
 				brain.target = playr_loc
 				#print(str(brain.target))
+			else:
+				# lights off
+				var material = get_node("coplight").get_mesh().surface_get_material(0)
+				#material.set_feature(SpatialMaterial.FEATURE_EMISSION, false)
+				material.set_albedo(Color(0.5, 0, 0))
+				get_node("SpotLight2").set_visible(false)
+				get_node("SpotLight3").set_visible(false)
 
 
 func setup_path(path):
