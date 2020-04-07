@@ -182,15 +182,14 @@ func _process(delta):
 		
 		# cop spots player -> starts chase
 		if get_parent().is_in_group("cop"):
-			
-			var playr = get_tree().get_nodes_in_group("player")[0]
-			var playr_loc = playr.get_node("BODY").get_global_transform().origin
-			#print("Player loc: " + str(playr_loc))
-			# if player close enough
-			if playr_loc.distance_to(get_node("BODY").get_global_transform().origin) < 10:
-				#print("Player within 10 m of cop")
-				# start chase if not chasing already
-				if brain.get_state() != brain.STATE_CHASE and not self.bribed:
+			# if not chasing already
+			if brain.get_state() != brain.STATE_CHASE and not self.bribed:
+				var playr = get_tree().get_nodes_in_group("player")[0]
+				var playr_loc = playr.get_node("BODY").get_global_transform().origin
+				#print("Player loc: " + str(playr_loc))
+				# if player close enough
+				if playr_loc.distance_to(get_node("BODY").get_global_transform().origin) < 10:
+					#print("Player within 10 m of cop")
 					# bugfix
 					if stop:
 						stop = false
@@ -213,18 +212,19 @@ func _process(delta):
 							#print(d["target"])
 							msg.get_node("OK_button").disconnect("pressed", d["target"], "_on_ok_click")
 						msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
-				else:
-					if self.bribed:
-						# lights off
-						coplights_off()
-					else:
-						brain.target = playr_loc
-						#print(str(brain.target))
-						if not get_node("SpotLight2").is_visible():
-							coplights_on()
+						
+			# we're already chasing
 			else:
-				# lights off
-				coplights_off()
+				if self.bribed:
+					# lights off
+					coplights_off()
+				else:
+					var playr = get_tree().get_nodes_in_group("player")[0]
+					var playr_loc = playr.get_node("BODY").get_global_transform().origin
+					brain.target = playr_loc
+					#print(str(brain.target))
+					if not get_node("SpotLight2").is_visible():
+						coplights_on()
 
 
 func setup_path(path):
