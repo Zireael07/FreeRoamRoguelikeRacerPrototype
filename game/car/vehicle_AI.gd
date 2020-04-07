@@ -226,10 +226,24 @@ func _process(delta):
 				else:
 					var playr = get_tree().get_nodes_in_group("player")[0]
 					var playr_loc = playr.get_node("BODY").get_global_transform().origin
-					brain.target = playr_loc
-					#print(str(brain.target))
-					if not get_node("SpotLight2").is_visible():
-						coplights_on()
+					# if player hasn't outran us
+					if playr_loc.distance_to(get_node("BODY").get_global_transform().origin) < 60:
+						brain.target = playr_loc
+						#print(str(brain.target))
+						if not get_node("SpotLight2").is_visible():
+							coplights_on()
+					else:
+						# stop chase
+						brain.set_state(brain.STATE_DRIVING)
+						
+						print("[Cop] player escaped!")
+						# notify player
+						var msg = playr.get_node("BODY").get_node("Messages")
+						msg.set_text("CHASE ENDED!" + "\n" + "You escaped the cops!")
+						msg.enable_ok(false)
+						msg.show()
+						
+						coplights_off()
 
 
 func setup_path(path):
