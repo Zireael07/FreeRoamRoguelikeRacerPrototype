@@ -150,6 +150,8 @@ func draw_debugging():
 		points.push_back(Vector3(par_rel.x, 1, par_rel.z))
 		get_parent().draw_arc.draw_line_color(points, 3, Color(1,0,1))
 
+# ---------
+# cop stuff
 # player clicked ok on bribe prompt
 func _on_ok_click():
 	print("Clicked ok to bribe")
@@ -172,6 +174,37 @@ func coplights_off():
 	get_node("SpotLight2").set_visible(false)
 	get_node("SpotLight3").set_visible(false)
 
+func start_chase():
+	var playr = get_tree().get_nodes_in_group("player")[0]
+	var playr_loc = playr.get_node("BODY").get_global_transform().origin
+	#print("Player loc: " + str(playr_loc))
+	# if player close enough
+	if playr_loc.distance_to(get_node("BODY").get_global_transform().origin) < 10:
+		#print("Player within 10 m of cop")
+		# bugfix
+		if stop:
+			stop = false
+		brain.set_state(brain.STATE_CHASE)
+		brain.target = playr_loc
+		
+		# turn lights on
+		coplights_on()
+		
+		# notify player
+		var msg = playr.get_node("BODY").get_node("Messages")
+		msg.set_text("CHASE STARTED!" + "\n" + "Bribe the cops with Y100?")
+		msg.enable_ok(true)
+		msg.show()
+		# set up the OK button
+		if not msg.get_node("OK_button").is_connected("pressed", self, "_on_ok_click"):
+			print("Not connected")
+			# disconnect all others just in case
+			for d in msg.get_node("OK_button").get_signal_connection_list("pressed"):
+				#print(d["target"])
+				msg.get_node("OK_button").disconnect("pressed", d["target"], "_on_ok_click")
+			msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
+
+# -------------------------------
 # mostly draws debugging
 func _process(delta):
 	# delay until everything is set up
@@ -184,35 +217,7 @@ func _process(delta):
 		if get_parent().is_in_group("cop"):
 			# if not chasing already
 			if brain.get_state() != brain.STATE_CHASE and not self.bribed:
-				var playr = get_tree().get_nodes_in_group("player")[0]
-				var playr_loc = playr.get_node("BODY").get_global_transform().origin
-				#print("Player loc: " + str(playr_loc))
-				# if player close enough
-				if playr_loc.distance_to(get_node("BODY").get_global_transform().origin) < 10:
-					#print("Player within 10 m of cop")
-					# bugfix
-					if stop:
-						stop = false
-					brain.set_state(brain.STATE_CHASE)
-					brain.target = playr_loc
-					
-					# turn lights on
-					coplights_on()
-					
-					# notify player
-					var msg = playr.get_node("BODY").get_node("Messages")
-					msg.set_text("CHASE STARTED!" + "\n" + "Bribe the cops with Y100?")
-					msg.enable_ok(true)
-					msg.show()
-					# set up the OK button
-					if not msg.get_node("OK_button").is_connected("pressed", self, "_on_ok_click"):
-						print("Not connected")
-						# disconnect all others just in case
-						for d in msg.get_node("OK_button").get_signal_connection_list("pressed"):
-							#print(d["target"])
-							msg.get_node("OK_button").disconnect("pressed", d["target"], "_on_ok_click")
-						msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
-						
+				start_chase()
 			# we're already chasing
 			else:
 				if self.bribed:
