@@ -18,13 +18,18 @@ func _physics_process(delta):
 	
 	#print(player_coord)
 
-	var player_rot = get_tree().get_nodes_in_group("player")[0].get_child(0).get_rotation()
+	#var player_rot = get_tree().get_nodes_in_group("player")[0].get_child(0).get_rotation()
 	#var player_rot = get_parent().get_parent().get_parent().get_parent().get_rotation()
-	map_rot = player_rot.y
+	var player = get_tree().get_nodes_in_group("player")[0].get_child(0)
+	# https://godotengine.org/qa/11335/getting-the-y-axis-rotation-of-an-object-in-3d
+	var player_rot = player.get_global_transform().basis.z.angle_to(Vector3(0,0,1))
+	
+	map_rot = player_rot #.y
+	print("Map rot: " + str(map_rot))
 	
 	#this resolves the gimbal lock issues
-	if (player_rot.x < -deg2rad(150) or player_rot.x > deg2rad(150)) and (player_rot.z < - deg2rad(150) or player_rot.z > deg2rad(150)):
-		map_rot = deg2rad(180)+player_rot.y #1.02
+	#if (player_rot.x < -deg2rad(150) or player_rot.x > deg2rad(150)) and (player_rot.z < - deg2rad(150) or player_rot.z > deg2rad(150)):
+	#	map_rot = deg2rad(180)+player_rot.y #1.02
 	
 	# For rotation to work, there must be NO Controls as it's parent/grandparent, in other words up the node tree
 	# siblings are fine
@@ -32,13 +37,13 @@ func _physics_process(delta):
 	set_rotation(map_rot)
 	
 	# rotate the player arrow
-	arr_rot = -map_rot
-	if player_rot.y > deg2rad(30) and player_rot.y < deg2rad(120) or player_rot.y > deg2rad(-120) and player_rot.y < deg2rad(-30):
-		arr_rot = arr_rot+deg2rad(90)
-	if abs(player_rot.y) < deg2rad(48):
-		arr_rot = arr_rot+deg2rad(180)
+	arr_rot = map_rot
+#	if player_rot.y > deg2rad(30) and player_rot.y < deg2rad(120) or player_rot.y > deg2rad(-120) and player_rot.y < deg2rad(-30):
+#		arr_rot = arr_rot+deg2rad(90)
+#	if abs(player_rot.y) < deg2rad(48):
+#		arr_rot = arr_rot+deg2rad(180)
 	
-	get_node("player").set_rotation(arr_rot)
+	#get_node("player").set_rotation(arr_rot)
 
 func calc_panning():
 	#print("Minimap offset is " + String(minimap_bg.uv_offset))
