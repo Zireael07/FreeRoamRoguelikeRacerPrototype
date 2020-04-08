@@ -43,7 +43,12 @@ void fragment()
 		col += textureLod(SCREEN_TEXTURE, SCREEN_UV + offset, 0.0).rgb;
 		counter++;
 	}
+	//if (UV.y < 0.66) {
 	ALBEDO = col / counter;
+	//}
+//	else {
+//		ALPHA = 0.0;
+//	}
 	//added to workaround capture being after opaque pass
 	//ALPHA = 0.3;
 }

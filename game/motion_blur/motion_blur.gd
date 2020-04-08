@@ -34,6 +34,19 @@ func _process(delta):
 		
 	# Linear velocity is just difference in positions between two frames.
 	var velocity = cam.global_transform.origin - cam_pos_prev
+	var s = velocity.length()
+	#print(str(velocity))
+	
+	velocity = velocity.normalized()*s*0.5
+	#print(str(velocity))
+	
+	# prevent excessive blur (artifacting on effect edge)
+	if abs(velocity.z) > 2:
+		velocity.z = sign(velocity.z) *2
+	if abs(velocity.y) > 0.5:
+		velocity.y = sign(velocity.y)*0.5
+	
+	#print(str(velocity))
 	
 	# Angular velocity is a little more complicated, as you can see.
 	# See https://math.stackexchange.com/questions/160908/how-to-get-angular-velocity-from-difference-orientation-quaternion-and-time

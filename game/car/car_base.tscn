@@ -27,7 +27,6 @@
 [ext_resource path="res://car/replay_system.gd" type="Script" id=25]
 [ext_resource path="res://save_test.tres" type="ArrayMesh" id=26]
 
-
 [sub_resource type="SpatialMaterial" id=1]
 params_diffuse_mode = 1
 roughness = 0.0
@@ -247,6 +246,7 @@ wheel_radius = 0.25
 [node name="proc_mesh" parent="BODY" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.5, 0.298204, 0.591264 )
 visible = false
+width = 1.0
 
 [node name="car_mesh" type="MeshInstance" parent="BODY"]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.5, 0.298204, 0.591264 )
@@ -287,10 +287,9 @@ script = ExtResource( 10 )
 min_distance = 1.0
 
 [node name="motion_blur" parent="BODY/cambase/Camera" instance=ExtResource( 11 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, -1 )
+transform = Transform( 1, 6.6815e-22, 0, 6.6815e-22, 1, 0, 0, 0, 1, 0, -0.3, -1 )
 visible = false
 skeleton = NodePath("")
-motion_blur = false
 
 [node name="CameraDebug" type="Camera" parent="BODY/cambase"]
 transform = Transform( -1, 8.74228e-08, 3.82137e-15, 0, -4.37114e-08, 1, 8.74228e-08, 1, 4.37114e-08, 0, 50, 0.732 )
