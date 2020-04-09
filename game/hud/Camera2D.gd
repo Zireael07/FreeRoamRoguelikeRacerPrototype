@@ -25,7 +25,7 @@ func _physics_process(delta):
 	var player_rot = player.get_global_transform().basis.z.angle_to(Vector3(0,0,1))
 	
 	map_rot = player_rot #.y
-	print("Map rot: " + str(map_rot))
+	#print("Map rot: " + str(map_rot))
 	
 	#this resolves the gimbal lock issues
 	#if (player_rot.x < -deg2rad(150) or player_rot.x > deg2rad(150)) and (player_rot.z < - deg2rad(150) or player_rot.z > deg2rad(150)):
@@ -37,7 +37,7 @@ func _physics_process(delta):
 	set_rotation(map_rot)
 	
 	# rotate the player arrow
-	arr_rot = map_rot
+	#arr_rot = map_rot
 #	if player_rot.y > deg2rad(30) and player_rot.y < deg2rad(120) or player_rot.y > deg2rad(-120) and player_rot.y < deg2rad(-30):
 #		arr_rot = arr_rot+deg2rad(90)
 #	if abs(player_rot.y) < deg2rad(48):

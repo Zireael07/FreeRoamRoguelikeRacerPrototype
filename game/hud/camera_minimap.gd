@@ -34,8 +34,10 @@ func _ready():
 	# Initialization here
 	positions.resize(0)
 	
-	arrow = preload("res://hud/minimap_arrow_big_64 - bordered grayscale.png")
-	var player_arrow = preload("res://hud/minimap_arrow_big_64 - cyan.png")
+	#arrow = preload("res://hud/minimap_arrow_big_64 - bordered grayscale.png")
+	arrow = preload("res://hud/grey_circle.png")
+	#var player_arrow = preload("res://hud/minimap_arrow_big_64 - cyan.png")
+	var player_arrow = arrow
 	blue_flag = preload("res://hud/flag.png")
 	red_flag = preload("res://hud/flag_red.png")
 	poi_marker = preload("res://hud/big marker.png")
@@ -73,6 +75,9 @@ func setupMinimap(arrow, player_arrow):
 			tex.set_modulate(Color(0,0,1))
 			tex.set_name("cop-AI")
 		
+		# so that the arrow is always centered on the road
+		tex.set_position(Vector2(-9,-9))
+		tex.set_pivot_offset(Vector2(9,9))
 		attach.add_child(tex)
 		arrows.append(tex)
 		#add the arrows beneath the camera
@@ -98,10 +103,11 @@ func setupMinimap(arrow, player_arrow):
 	player_tex.set_texture(player_arrow)
 	player_tex.set_name("player")
 	player_tex.set_scale(Vector2(0.5, 0.5))
+	player_tex.set_modulate(Color(0,1,1)) # cyan
 	cam2d.add_child(player_tex)
 	# so that the player is always centered
-	player_tex.set_position(Vector2(-16,-16))
-	player_tex.set_pivot_offset(Vector2(16,16))
+	player_tex.set_position(Vector2(-9,-9)) # used to be 16 for the arrows
+	player_tex.set_pivot_offset(Vector2(9,9))
 	
 	#player_tex.set_position(player_pos)
 	#get_child(0).add_child(player_tex)
