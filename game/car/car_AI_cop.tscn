@@ -242,12 +242,14 @@ material/0 = null
 
 [node name="SpotLight2" type="SpotLight" parent="BODY"]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0.00889575, 0.965638, 0 )
+visible = false
 light_color = Color( 1, 0, 0, 1 )
 light_energy = 5.0
 spot_angle = 70.2
 
 [node name="SpotLight3" type="SpotLight" parent="BODY"]
 transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, -0.0176925, 0.965638, 0 )
+visible = false
 light_color = Color( 1, 0, 0, 1 )
 light_energy = 5.0
 spot_angle = 70.2

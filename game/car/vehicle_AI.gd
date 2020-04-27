@@ -181,6 +181,11 @@ func start_chase():
 	# if player close enough
 	if playr_loc.distance_to(get_node("BODY").get_global_transform().origin) < 10:
 		#print("Player within 10 m of cop")
+		# ignore player that is keeping to speed limit
+		var playr_speed = playr.get_node("BODY").get_linear_velocity().length()
+		if playr_speed < 15:
+			return
+			
 		# bugfix
 		if stop:
 			stop = false
