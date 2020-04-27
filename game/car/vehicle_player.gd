@@ -417,9 +417,16 @@ func _process(delta):
 
 	# motion blur
 	if speed > 28: #100 kphs
-		get_node("cambase/Camera/motion_blur").switch_motion_blur(true)
+		enable_motion_blur(true)
 	else:
-		get_node("cambase/Camera/motion_blur").switch_motion_blur(false)
+		enable_motion_blur(false)
+
+func enable_motion_blur(on):
+	get_node("cambase/Camera/motion_blur").switch_motion_blur(on)
+	# blur trick
+	#World_node.env.set_dof_blur_far_enabled(on)
+	#World_node.env.set_dof_blur_near_enabled(on)
+
 
 #doesn't interact with physics
 func _input(event):

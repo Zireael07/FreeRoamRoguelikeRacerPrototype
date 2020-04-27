@@ -18,8 +18,9 @@ func _ready():
 	set_visible(motion_blur)
 
 func switch_motion_blur(boo):
-	motion_blur = boo
 	set_visible(boo)
+	motion_blur = boo
+	
 
 func _process(delta):
 	# don't waste time if not on

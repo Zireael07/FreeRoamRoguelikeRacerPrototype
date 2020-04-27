@@ -50,5 +50,6 @@ void fragment()
 //		ALPHA = 0.0;
 //	}
 	//added to workaround capture being after opaque pass
-	//ALPHA = 0.3;
+	
+	ALPHA = 0.8;
 }
