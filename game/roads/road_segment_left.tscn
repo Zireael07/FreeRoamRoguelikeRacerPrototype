@@ -1,11 +1,22 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://roads/segment_placer_left.gd" type="Script" id=1]
 [ext_resource path="res://roads/curved_road_segment.gd" type="Script" id=2]
 [ext_resource path="res://scripts/draw_line.gd" type="Script" id=3]
+[ext_resource path="res://assets/racing_line.png" type="Texture" id=4]
+[ext_resource path="res://assets/dither_opacity.shader" type="Shader" id=5]
 
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 5 )
+shader_param/albedo = Color( 1, 1, 1, 1 )
+shader_param/specular = 0.5
+shader_param/metallic = 0.0
+shader_param/roughness = 0.5
+shader_param/normal_strength = 1.0
+shader_param/alpha_clip = 0.868
+shader_param/texture_albedo = ExtResource( 4 )
 
-[sub_resource type="SpatialMaterial" id=1]
+[sub_resource type="SpatialMaterial" id=2]
 flags_unshaded = true
 flags_use_point_size = true
 params_line_width = 3.0
@@ -24,9 +35,10 @@ script = ExtResource( 2 )
 sidewalks = true
 radius = 25
 left_turn = true
+barrier_material = SubResource( 1 )
 
 [node name="draw" type="ImmediateGeometry" parent="Placer/Road"]
-material_override = SubResource( 1 )
+material_override = SubResource( 2 )
 cast_shadow = 0
 script = ExtResource( 3 )
 color = Color( 1, 1, 1, 1 )

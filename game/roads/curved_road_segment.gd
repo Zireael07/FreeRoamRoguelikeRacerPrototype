@@ -70,7 +70,7 @@ var end_ref
 #mesh material
 export(SpatialMaterial)    var material    = preload("res://assets/road_material.tres")
 export(SpatialMaterial) var sidewalk_material = preload("res://assets/cement.tres")
-export(SpatialMaterial) var barrier_material = preload("res://assets/barrier_material.tres")
+export(Material) var barrier_material = preload("res://assets/barrier_material.tres")
 
 #props
 var streetlight

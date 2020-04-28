@@ -5,7 +5,7 @@
 [ext_resource path="res://hud/map_texture.gd" type="Script" id=3]
 [ext_resource path="res://hud/Node2D.gd" type="Script" id=4]
 [ext_resource path="res://hud/Camera2D.gd" type="Script" id=5]
-[ext_resource path="res://hud/minimap_arrow_big_64 - cyan.png" type="Texture" id=6]
+[ext_resource path="res://hud/flag.png" type="Texture" id=6]
 [ext_resource path="res://hud/border.png" type="Texture" id=7]
 
 [sub_resource type="CanvasItemMaterial" id=1]
@@ -44,6 +44,9 @@ position = Vector2( 75, 90 )
 script = ExtResource( 4 )
 
 [node name="attach" type="Control" parent="Container/Node2D2/Control_pos"]
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Camera2D" type="Camera2D" parent="Container/Node2D2/Control_pos"]
 material = SubResource( 1 )

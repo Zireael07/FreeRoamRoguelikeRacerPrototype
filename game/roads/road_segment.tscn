@@ -1,10 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://roads/segment_placer.gd" type="Script" id=1]
 [ext_resource path="res://roads/curved_road_segment.gd" type="Script" id=2]
 [ext_resource path="res://assets/road_shadermat.tres" type="Material" id=3]
 [ext_resource path="res://scripts/draw_line.gd" type="Script" id=4]
-
+[ext_resource path="res://assets/barrier_material_dither.tres" type="Material" id=5]
 
 [sub_resource type="SpatialMaterial" id=1]
 flags_unshaded = true
@@ -24,6 +24,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 0 )
 script = ExtResource( 2 )
 sidewalks = true
 material = ExtResource( 3 )
+barrier_material = ExtResource( 5 )
 
 [node name="draw" type="ImmediateGeometry" parent="Placer/Road"]
 visible = false
