@@ -92,7 +92,7 @@ material = ExtResource( 9 )
 size = Vector3( 1, 0.5, 0.5 )
 
 [sub_resource type="BoxShape" id=7]
-extents = Vector3( 0.477039, 0.3341, 0.376742 )
+extents = Vector3( 0.477039, 0.271425, 0.837432 )
 
 [sub_resource type="QuadMesh" id=8]
 resource_local_to_scene = true
@@ -167,7 +167,7 @@ use_as_traction = true
 use_as_steering = true
 wheel_radius = 0.25
 suspension_travel = 1.0
-suspension_stiffness = 40.0
+suspension_stiffness = 100.0
 
 [node name="wheel1" type="MeshInstance" parent="BODY/wheel1"]
 _import_path = NodePath("BODY-vehicle/wheel1-wheel")
@@ -186,7 +186,7 @@ engine_force = 1.4013e-45
 use_as_traction = true
 wheel_radius = 0.25
 suspension_travel = 1.0
-suspension_stiffness = 40.0
+suspension_stiffness = 100.0
 
 [node name="wheel2" type="MeshInstance" parent="BODY/wheel2"]
 _import_path = NodePath("BODY-vehicle/wheel2-wheel")
@@ -206,7 +206,7 @@ use_as_traction = true
 use_as_steering = true
 wheel_radius = 0.25
 suspension_travel = 1.0
-suspension_stiffness = 40.0
+suspension_stiffness = 100.0
 
 [node name="wheel3" type="MeshInstance" parent="BODY/wheel3"]
 _import_path = NodePath("BODY-vehicle/wheel3-wheel")
@@ -224,7 +224,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.359, -0.4 )
 use_as_traction = true
 wheel_radius = 0.25
 suspension_travel = 1.0
-suspension_stiffness = 40.0
+suspension_stiffness = 100.0
 
 [node name="wheel4" type="MeshInstance" parent="BODY/wheel4"]
 _import_path = NodePath("BODY-vehicle/wheel4-wheel")
@@ -251,7 +251,7 @@ __meta__ = {
 }
 
 [node name="CollisionShape" type="CollisionShape" parent="BODY"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.656713, 0.131551 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.538277, 0.131551 )
 shape = SubResource( 7 )
 
 [node name="Viewport" type="Viewport" parent="BODY"]

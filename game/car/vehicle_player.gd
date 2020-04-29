@@ -135,6 +135,12 @@ func _ready():
 	set_physics_process(true)
 	set_process(true)
 	set_process_input(true)
+	
+	# make the bike more controllable
+	if get_parent().is_in_group("bike"):
+		STEER_LIMIT = 0.3
+		STEER_SENS = 0.5
+		SPEED_SENS = 0.9
 
 func random_date():
 	# seed the rng
