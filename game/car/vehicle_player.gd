@@ -515,13 +515,15 @@ func _on_BODY_body_entered(body):
 	#print("Collided with " + str(obj.get_name()))
 	#print("Collided with body at " + str(obj.get_global_transform().origin))
 
-	if speed > 5:
-		print("Speed at collision: " + str(round(speed*3.6)) + "km/h, deducting: " + str(round(speed)))
-		# deduct health
-		health -= round(speed)
-		# deform
-		var local = get_global_transform().xform_inv((obj.get_global_transform().origin))
-		$"car_mesh".hit_deform(local)
+	if not get_parent().is_in_group("bike"):
+		if speed > 5:
+			print("Speed at collision: " + str(round(speed*3.6)) + "km/h, deducting: " + str(round(speed)))
+			# deduct health
+			health -= round(speed)
+			# deform
+			if not get_parent().is_in_group("bike"):
+				var local = get_global_transform().xform_inv((obj.get_global_transform().origin))
+				$"car_mesh".hit_deform(local)
 
 	if health <= 0:
 		# game over!
