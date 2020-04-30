@@ -17,9 +17,11 @@ uniform float roughness : hint_range(0,1) = 0.5;
 uniform float normal_strength : hint_range(0,2) = 1.0;
 uniform float alpha_clip: hint_range(0,1) = 0.0;
 uniform float emission_energy;
+uniform vec4 emission : hint_color;
 
 void fragment() {
-	vec4 albedo_tex = texture(texture_albedo, UV);
+	vec2 coord = vec2(UV.x, UV.y+TIME);
+	vec4 albedo_tex = texture(texture_albedo, coord);
 	//vec4 masks_tex = texture(texture_masks, UV);
 	float alpha = albedo_tex.a;
 		
