@@ -34,7 +34,7 @@ func set_finish(val):
 
 func _on_Area_body_enter( body ):
 	if body is VehicleBody:
-		if body is player_script:
+		if body is player_script and not body.get_parent().is_in_group("bike"):
 			print("Area entered by the player")
 			player = body
 			
