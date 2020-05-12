@@ -387,4 +387,3 @@ func rotate_to_fit(loc, start_loc, check_loc):
 	#var angle = angle_prev
 	
 	return angle_prev
-	

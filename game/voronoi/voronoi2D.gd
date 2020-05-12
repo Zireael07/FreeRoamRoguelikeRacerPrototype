@@ -239,5 +239,4 @@ func polygon_children():
 		node.set_polygon(p)
 		node.set_color(color)
 		node.set_script(script)
-		add_child(node)			
-			
+		add_child(node)

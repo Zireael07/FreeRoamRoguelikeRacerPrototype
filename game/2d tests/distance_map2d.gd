@@ -98,6 +98,3 @@ func bfs_distances(start):
 #					queue.append(neighbour)
    
 #	return explored
-
-	
-	
