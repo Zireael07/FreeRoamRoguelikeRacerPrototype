@@ -178,4 +178,3 @@ func navMesh():
 	var curved = get_node("Road_instance1").get_child(0).get_child(0)
 	if curved != null:
 		fitNavMesh(straight, 2, 3, curved, curved.nav_vertices.size()-2, curved.nav_vertices.size()-1, true)
-	

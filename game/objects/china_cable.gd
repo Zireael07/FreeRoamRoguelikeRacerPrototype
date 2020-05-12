@@ -78,5 +78,3 @@ func combine(list):
 	add_child(tg)
 	# test
 	#tg.set_owner(get_tree().get_edited_scene_root())
-		
-	

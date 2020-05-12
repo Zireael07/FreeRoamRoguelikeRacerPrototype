@@ -96,4 +96,3 @@ func _notification(what):
 		MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
 			if recording:
 				save()
-				

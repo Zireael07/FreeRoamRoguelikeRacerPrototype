@@ -98,6 +98,4 @@ void fragment() {
 	//COLOR = mix(skyc.rgba, mix(skyc.rgba, hc.rgba, horizon_color.a), clamp(1.0-y, 0, 1));
 
 	//COLOR = mix(COLOR,mix(COLOR, ground_color.rgba, ground_color.a), clamp(0.0-y, 0, 1));
-}	
-	
-	
+}
