@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/car_red.tres" type="Material" id=1]
+[ext_resource path="res://csg_dealer.tres" type="ArrayMesh" id=2]
+[ext_resource path="res://objects/CSGCombiner.gd" type="Script" id=3]
+
+[node name="Spatial" type="Spatial"]
+
+[node name="CSGCombiner" type="CSGCombiner" parent="."]
+operation = 1
+script = ExtResource( 3 )
+
+[node name="CSGBox" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.96936, 0.390962, 0 )
+width = 1.01225
+height = 0.80202
+depth = 4.67643
+material = ExtResource( 1 )
+
+[node name="CSGBox3" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.96936, 1.19754, 0 )
+width = 1.01225
+height = 0.88051
+depth = 4.68913
+material = ExtResource( 1 )
+
+[node name="CSGBox2" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0495, 0.819235, 0 )
+width = 0.518604
+height = 1.92283
+depth = 4.91191
+material = ExtResource( 1 )
+
+[node name="CSGMesh" type="CSGMesh" parent="CSGCombiner"]
+mesh = ExtResource( 2 )
