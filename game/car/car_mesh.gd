@@ -104,11 +104,11 @@ func defineCar():
 		
 	# windows
 	# because the final point is the midpoint
-	var i = car_rear.size()-1
+	var id = car_rear.size()-1
 	# top right, bottom right
 	# inverted because the second insertion pushes the first forward
-	car_rear.insert(i, window_poly[3])
-	car_rear.insert(i, window_poly[2])
+	car_rear.insert(id, window_poly[3])
+	car_rear.insert(id, window_poly[2])
 
 	var car = []
 	
@@ -232,7 +232,7 @@ func hit_deform(pos):
 	
 	# we need to do it even if not done, for some reason...
 	# Calculate vertex normals, face-by-face.
-		for i in range(mdt.get_face_count()):
+		for j in range(mdt.get_face_count()):
 			# Get the index in the vertex array.
 			var a = mdt.get_face_vertex(i, 0)
 			var b = mdt.get_face_vertex(i, 1)

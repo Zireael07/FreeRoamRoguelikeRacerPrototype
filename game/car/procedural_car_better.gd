@@ -174,11 +174,11 @@ func defineCar():
 		
 	# windows
 	# because the final point is the midpoint
-	var i = car_rear.size()-1
+	var id = car_rear.size()-1
 	# top right, bottom right
 	# inverted because the second insertion pushes the first forward
-	car_rear.insert(i, window_poly[3])
-	car_rear.insert(i, window_poly[2])
+	car_rear.insert(id, window_poly[3])
+	car_rear.insert(id, window_poly[2])
 
 	var car = []
 	

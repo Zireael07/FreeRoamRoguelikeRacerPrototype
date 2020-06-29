@@ -103,11 +103,11 @@ func convex_pos_to_edge_indices(conv):
 		#print("pt list: " + str([pt.x, pt.y]))
 		#var id = samples.find([pt.x, pt.y])
 		var id = -1
-		for i in range(0, samples.size()-1):
-			var s = samples[i]
+		for j in range(0, samples.size()-1):
+			var s = samples[j]
 			# fudge needed for some reason
 			if s[0]-pt.x < 0.001 and s[1]-pt.y < 0.001:
-				id = i
+				id = j
 				break # break the loop
 		
 		#print(id)
@@ -115,12 +115,12 @@ func convex_pos_to_edge_indices(conv):
 		var pt2 = conv[i+1]
 		#var id2 = samples.find([pt2.x, pt2.y])
 		var id2 = -1
-		for i in range(0, samples.size()-1):
-			var s = samples[i]
+		for j in range(0, samples.size()-1):
+			var s = samples[j]
 			#if s[0] == pt.x and s[1] == pt.y:
 			# fudge needed for some reason
 			if s[0]-pt2.x < 0.001 and s[1]-pt2.y < 0.001:
-				id2 = i
+				id2 = j
 				break # break the loop
 		
 		#print(id2)
