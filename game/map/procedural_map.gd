@@ -95,12 +95,12 @@ func _ready():
 		
 	print("Outer edges post filter: " + str(out_edges))
 
-	for e in out_edges:
-		# +3 because of helper nodes which come first
-		var ret = connect_intersections(e[0]+3, e[1]+3, false)
-		if ret != false:
-			# update naming
-			fix_road_naming()
+#	for e in out_edges:
+#		# +3 because of helper nodes which come first
+#		var ret = connect_intersections(e[0]+3, e[1]+3, false)
+#		if ret != false:
+#			# update naming
+#			fix_road_naming()
 
 	# map navigation, markers...
 	get_node("nav").setup(mult, samples, real_edges)
