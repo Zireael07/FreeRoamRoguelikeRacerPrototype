@@ -1,3 +1,4 @@
+# this is the 2d demo
 tool
 extends CanvasItem
 
@@ -96,6 +97,7 @@ func set_seed(value):
 	#print("Seed " + str(seede))
 
 func convex_pos_to_edge_indices(conv):
+	#print("Convex: " + str(conv))
 	#print("Samples: " + str(samples))
 	for i in range(0, conv.size()-1):
 		var pt = conv[i]
@@ -127,6 +129,9 @@ func convex_pos_to_edge_indices(conv):
 		var ed = [id, id2]
 		out_edges.append(ed)
 
+	# consistency check
+	if out_edges[0][0] != out_edges[out_edges.size()-1][1]:
+		print("Something was wrong in the edges calc!")
 
 func sort_distance(tg = Vector2(0,0)):
 	var dists = []
