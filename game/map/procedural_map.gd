@@ -73,35 +73,41 @@ func _ready():
 	# road around
 	var out_edges = get_node("triangulate/poisson").out_edges
 	print("Outer edges: " + str(out_edges))
+	
+	# paranoia
+	if out_edges[0][0] != out_edges[out_edges.size()-1][1]:
+		print("Start and end edge are different!")
+	else:
 
-	# remove any edges that we already connected
-	var to_remove = []
-	for e in real_edges:
-		#print("Check real edge: " + str(e))
-		#out_edges.remove(out_edges.find(e))
-		for i in range(0, out_edges.size()):
-			var e_o = out_edges[i]
-			#print("Outer edge: " + str(e_o))
-			if e[0] == e_o[0] and e[1] == e_o[1]:
-				to_remove.append(e_o)
-			# check the other way round, too
-			if e[1] == e_o[0] and e[0] == e_o[1]:
-				to_remove.append(e_o)
-				
-	for e in to_remove:
-		#print("To remove: " + str(e))
-		# works because e is taken directly from out_edges (see line 87)
-		out_edges.remove(out_edges.find(e))
-		
-	print("Outer edges post filter: " + str(out_edges))
+		# remove any edges that we already connected
+		var to_remove = []
+		for e in real_edges:
+			#print("Check real edge: " + str(e))
+			#out_edges.remove(out_edges.find(e))
+			for i in range(0, out_edges.size()):
+				var e_o = out_edges[i]
+				#print("Outer edge: " + str(e_o))
+				if e[0] == e_o[0] and e[1] == e_o[1]:
+					to_remove.append(e_o)
+				# check the other way round, too
+				if e[1] == e_o[0] and e[0] == e_o[1]:
+					to_remove.append(e_o)
+					
+		for e in to_remove:
+			#print("To remove: " + str(e))
+			# works because e is taken directly from out_edges (see line 87)
+			out_edges.remove(out_edges.find(e))
+			
+		print("Outer edges post filter: " + str(out_edges))
 
-#	for e in out_edges:
-#		# +3 because of helper nodes which come first
-#		var ret = connect_intersections(e[0]+3, e[1]+3, false)
-#		if ret != false:
-#			# update naming
-#			fix_road_naming()
+		for e in out_edges:
+			# +3 because of helper nodes which come first
+			var ret = connect_intersections(e[0]+3, e[1]+3, false)
+			if ret != false:
+				# update naming
+				fix_road_naming()
 
+	# map setup is done, let's continue....
 	# map navigation, markers...
 	get_node("nav").setup(mult, samples, real_edges)
 
