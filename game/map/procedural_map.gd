@@ -11,6 +11,7 @@ var samples = []
 
 var garage
 var recharge
+var dealership
 
 func _ready():
 	# Called when the node is added to the scene for the first time.
@@ -21,6 +22,7 @@ func _ready():
 	intersects = preload("res://roads/intersection4way.tscn")
 	garage = preload("res://objects/garage_road.tscn")
 	recharge = preload("res://objects/recharge_station.tscn")
+	dealership = preload("res://objects/dealer_city.tscn")
 
 	samples = get_node("triangulate/poisson").samples
 	print("Number of intersections: " + str(samples.size()-1))
@@ -179,7 +181,23 @@ func _ready():
 		if rots.has(sel.open_exits[1]): 
 			station.set_rotation_degrees(rots[sel.open_exits[1]])
 	
+		station.set_name("station")
 		add_child(station)
+
+	# place vehicle dealership
+	sel = get_child(8) # intersection 5
+	if sel.open_exits.size() > 1:
+		print(sel.get_name() + str(sel.open_exits[0]))
+		var dealer = dealership.instance()
+		# place
+		dealer.set_translation(sel.get_translation() + sel.open_exits[0])
+		
+		# assign correct rotation
+		if rots.has(sel.open_exits[0]): 
+			dealer.set_rotation_degrees(rots[sel.open_exits[0]])
+		
+		dealer.set_name("dealership")
+		add_child(dealer)
 
 # -----------------
 # returns a list of [dist, index] lists, operates on child ids
