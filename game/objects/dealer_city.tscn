@@ -6,7 +6,9 @@
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 3, 1, 3 )
 
-[node name="Spatial" type="Spatial"]
+[node name="Spatial" type="Spatial" groups=[
+"poi",
+]]
 script = ExtResource( 2 )
 
 [node name="Spatial" parent="." instance=ExtResource( 1 )]
