@@ -8,6 +8,7 @@
 
 [node name="CSGCombiner" type="CSGCombiner" parent="."]
 operation = 1
+use_collision = true
 script = ExtResource( 3 )
 
 [node name="CSGBox" type="CSGBox" parent="CSGCombiner"]
