@@ -19,4 +19,7 @@ angular_damp = 1.0
 
 [node name="CollisionShape" type="CollisionShape" parent="Area"]
 shape = SubResource( 1 )
+
+[node name="Position3D" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.93426 )
 [connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
