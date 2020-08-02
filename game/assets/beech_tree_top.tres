@@ -1,0 +1,22 @@
+[gd_resource type="SpatialMaterial" load_steps=2 format=2]
+
+[ext_resource path="res://assets/beech leaf.dds" type="Texture" id=1]
+
+[resource]
+flags_unshaded = true
+flags_do_not_receive_shadows = true
+params_cull_mode = 2
+params_use_alpha_scissor = true
+params_alpha_scissor_threshold = 0.3
+albedo_texture = ExtResource( 1 )
+detail_enabled = true
+detail_blend_mode = 0
+detail_uv_layer = 1
+detail_albedo = ExtResource( 1 )
+uv1_scale = Vector3( 1, 2, 1 )
+uv1_triplanar = true
+uv1_triplanar_sharpness = 1.0
+uv2_scale = Vector3( 0.25, 0.25, 1 )
+uv2_offset = Vector3( -0.4, -0.3, 0 )
+uv2_triplanar = true
+uv2_triplanar_sharpness = 3.13833
