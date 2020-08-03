@@ -234,9 +234,9 @@ func hit_deform(pos):
 	# Calculate vertex normals, face-by-face.
 		for j in range(mdt.get_face_count()):
 			# Get the index in the vertex array.
-			var a = mdt.get_face_vertex(i, 0)
-			var b = mdt.get_face_vertex(i, 1)
-			var c = mdt.get_face_vertex(i, 2)
+			var a = mdt.get_face_vertex(j, 0)
+			var b = mdt.get_face_vertex(j, 1)
+			var c = mdt.get_face_vertex(j, 2)
 			# Get vertex position using vertex index.
 			var ap = mdt.get_vertex(a)
 			var bp = mdt.get_vertex(b)
