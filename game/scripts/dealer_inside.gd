@@ -23,6 +23,11 @@ func go_back():
 		# remove ourselves
 		queue_free()
 		
+		# change vehicle if needed
+		if garage_hud.changed:
+			player = player.swap_to_bike()
+		
+		
 		player.hud.update_money(player.money)
 		
 		

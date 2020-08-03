@@ -65,6 +65,21 @@ margin_left = -20.0
 margin_top = -50.0
 margin_bottom = 50.0
 text = ">"
+
+[node name="ButtonBuy" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -5.99997
+margin_top = -60.0
+margin_right = 32.0
+margin_bottom = -40.0
+text = "BUY"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
 [connection signal="pressed" from="ButtonLeft" to="." method="_on_ButtonLeft_pressed"]
 [connection signal="pressed" from="ButtonRight" to="." method="_on_ButtonRight_pressed"]
+[connection signal="pressed" from="ButtonBuy" to="." method="_on_ButtonBuy_pressed"]

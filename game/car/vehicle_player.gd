@@ -550,6 +550,27 @@ func create_race_path(path):
 	race.done = true
 	print("Race set up is done")
 
+func swap_to_bike():
+	# get positions
+	var p_pos = get_parent().get_translation() #.get_global_transform().origin
+	#print("Parent position before swap: " + str(p_pos))
+	var pos = get_translation()
+	#print("Body pos before swap: " + str(pos))
+	
+	get_parent().queue_free()
+	var bike_scene = load("res://car/bike_base.tscn")
+	var bike = bike_scene.instance()
+	bike.set_name("bike")
+	# place the bike where the car was
+	#bike.get_parent().global_transform.origin = p_pos
+	bike.set_translation(p_pos)
+	bike.get_node("BODY").set_translation(pos)
+	
+	get_parent().get_parent().add_child(bike)
+	#print("Dummy")
+	return bike.get_node("BODY")
+
+
 # performance
 # a = 2s/t^2
 func accel_from_data(t,dist):
