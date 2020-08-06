@@ -4,8 +4,6 @@
 [ext_resource path="res://assets/road_shadermat.tres" type="Material" id=2]
 [ext_resource path="res://roads/Area.gd" type="Script" id=3]
 
-
-
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 2.80853, 1, 2.61663 )
 

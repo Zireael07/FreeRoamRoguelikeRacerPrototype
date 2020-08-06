@@ -8,7 +8,6 @@
 [ext_resource path="res://assets/china_cable.obj" type="ArrayMesh" id=6]
 [ext_resource path="res://assets/metal_mat.tres" type="Material" id=7]
 
-
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 10, 20, 10 )
 

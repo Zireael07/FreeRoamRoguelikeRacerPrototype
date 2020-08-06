@@ -18,4 +18,13 @@ func _on_Area_body_entered(body):
 		if body is player_script:
 			pass
 			#print("Intersection: " + get_parent().get_name())
-
+	
+	if body is StaticBody:
+		# exclude planes
+		if body.get_name() == "plane_col":
+			return
+		
+		# if a prop overlaps intersection...
+		print("Static body " + body.get_parent().get_parent().get_name() + " overlaps intersection!!!")
+		# yeet it
+		body.get_parent().get_parent().queue_free()
