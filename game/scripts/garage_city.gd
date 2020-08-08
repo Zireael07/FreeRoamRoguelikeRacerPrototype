@@ -22,7 +22,7 @@ func _on_Area_body_entered( body ):
 			
 			# hide normal gui
 			var hud = player.get_node("root")
-			var map = player.get_node("Viewport_root/Viewport/minimap")
+			var map = player.get_node("Viewport_root") #/Viewport/minimap")
 			hud.hide()
 			map.hide()
 			
