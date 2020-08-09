@@ -160,19 +160,27 @@ func _on_ok_click():
 	brain.set_state(brain.STATE_DRIVING)
 	bribed = true
 	
-func coplights_on():
+func coplights_on(player):
 	var material = get_node("coplight").get_mesh().surface_get_material(0)
 	#material.set_feature(SpatialMaterial.FEATURE_EMISSION, true)
 	material.set_albedo(Color(1,0,0))
 	get_node("SpotLight2").set_visible(true)
 	get_node("SpotLight3").set_visible(true)
 	
-func coplights_off():
+	# minimap icon flashes
+	var map = player.get_node("BODY/Viewport_root/Viewport/minimap")
+	map.flash_cop_arrow()
+	
+func coplights_off(player):
 	var material = get_node("coplight").get_mesh().surface_get_material(0)
 	#material.set_feature(SpatialMaterial.FEATURE_EMISSION, false)
 	material.set_albedo(Color(0.5, 0, 0))
 	get_node("SpotLight2").set_visible(false)
 	get_node("SpotLight3").set_visible(false)
+	
+	# stop minimap flashing
+	var map = player.get_node("BODY/Viewport_root/Viewport/minimap")
+	map.stop_cop_arrow()
 
 func start_chase():
 	var playr = get_tree().get_nodes_in_group("player")[0]
@@ -193,7 +201,7 @@ func start_chase():
 		brain.target = playr_loc
 		
 		# turn lights on
-		coplights_on()
+		coplights_on(playr)
 		
 		# notify player
 		var msg = playr.get_node("BODY").get_node("Messages")
@@ -227,7 +235,8 @@ func _process(delta):
 			else:
 				if self.bribed:
 					# lights off
-					coplights_off()
+					var playr = get_tree().get_nodes_in_group("player")[0]
+					coplights_off(playr)
 				else:
 					var playr = get_tree().get_nodes_in_group("player")[0]
 					var playr_loc = playr.get_node("BODY").get_global_transform().origin
@@ -236,7 +245,7 @@ func _process(delta):
 						brain.target = playr_loc
 						#print(str(brain.target))
 						if not get_node("SpotLight2").is_visible():
-							coplights_on()
+							coplights_on(playr)
 					else:
 						# stop chase
 						brain.set_state(brain.STATE_DRIVING)
@@ -248,7 +257,7 @@ func _process(delta):
 						msg.enable_ok(false)
 						msg.show()
 						
-						coplights_off()
+						coplights_off(playr)
 
 
 func setup_path(path):

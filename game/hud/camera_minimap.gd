@@ -28,6 +28,9 @@ var blue_flag
 var red_flag
 var poi_marker
 var arrow
+# a scene
+var cop_arrow_sc
+var cop_arrow
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -41,6 +44,8 @@ func _ready():
 	blue_flag = preload("res://hud/flag.png")
 	red_flag = preload("res://hud/flag_red.png")
 	poi_marker = preload("res://hud/big marker.png")
+	
+	cop_arrow_sc = preload("res://hud/cop_arrow.tscn")
 	
 	cam2d = get_node("Container/Node2D2/Control_pos/Camera2D")
 	#print(cam2d.get_name())
@@ -65,23 +70,31 @@ func setupMinimap(arrow, player_arrow):
 	
 	for index in range(AIs.size()):
 		var AI = AIs[index]
+		
 		var tex = TextureRect.new()
 		tex.set_texture(arrow)
 		tex.set_name("traffic-AI")
 		#tex.set_name(AIs[index].get_name())
-		tex.set_scale(Vector2(0.5, 0.5))
+
 		# police
 		if AI.is_in_group("cop"):
-			tex.set_modulate(Color(0,0,1))
+			tex = cop_arrow_sc.instance()
+#			tex.set_modulate(Color(0,0,1))
 			tex.set_name("cop-AI")
+			cop_arrow = tex
 		
 		# so that the arrow is always centered on the road
+		tex.set_scale(Vector2(0.5, 0.5))
 		tex.set_position(Vector2(-9,-9))
 		tex.set_pivot_offset(Vector2(9,9))
 		attach.add_child(tex)
 		arrows.append(tex)
 		#add the arrows beneath the camera
 		#cam2d.add_child(tex)
+	
+#		if AI.is_in_group("cop"):
+#			# test, make it flash!
+#			tex.get_child(0).play("cop_flash")
 	
 	# markers
 	var markers = get_tree().get_nodes_in_group("marker")
@@ -202,3 +215,9 @@ func _process(delta):
 		arr.set_position(Vector2(-16-AI_pos.x, -AI_pos.z))
 		#attach.get_child(index).set_position(Vector2(-16-AI_pos.x, -AI_pos.z))
 		
+func flash_cop_arrow():
+	cop_arrow.get_child(0).play("cop_flash")
+	
+func stop_cop_arrow():
+	cop_arrow.get_child(0).stop()
+	cop_arrow.set_modulate(Color(0,0,1))
