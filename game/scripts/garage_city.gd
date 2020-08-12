@@ -53,7 +53,8 @@ func _on_Area_body_entered( body ):
 			
 			#spawn garage interior scene
 			var garage_interior = garage_scene.instance()
-			garage_interior.translate(get_translation())
+			var pos = get_global_transform().origin # get_translation()
+			garage_interior.translate(pos)
 			garage_interior.rotate_y(get_rotation().y)
 			
 			garage_interior.set_name("garage_interior")
@@ -66,7 +67,3 @@ func _on_Area_body_entered( body ):
 			
 			root.add_child(garage_interior)
 			
-			
-	
-	
-	#pass # replace with function body
