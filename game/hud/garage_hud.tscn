@@ -7,519 +7,201 @@
 [ext_resource path="res://assets/851H-kktt.ttf" type="DynamicFontData" id=5]
 
 [sub_resource type="DynamicFont" id=1]
-
 size = 20
-use_mipmaps = false
-use_filter = false
 font_data = ExtResource( 5 )
-_sections_unfolded = [ "Font", "Settings" ]
 
-[node name="Control" type="Control" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
+[node name="Control" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Button" type="Button" parent="." index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Button" type="Button" parent="."]
 margin_left = 3.0
 margin_top = 57.0
 margin_right = 105.0
 margin_bottom = 77.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
 text = "Return to city!"
-flat = false
-align = 1
 
-[node name="StatsContainer" type="Control" parent="." index="1"]
-
-anchor_left = 0.0
+[node name="StatsContainer" type="Control" parent="."]
 anchor_top = 0.5
-anchor_right = 0.0
 anchor_bottom = 0.5
 margin_top = -200.0
 margin_right = 200.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-_sections_unfolded = [ "Rect" ]
 
-[node name="Control" type="Control" parent="." index="2"]
-
+[node name="Control" type="Control" parent="."]
 anchor_left = 1.0
-anchor_top = 0.0
 anchor_right = 1.0
-anchor_bottom = 0.0
 margin_left = -200.0
 margin_bottom = 200.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-_sections_unfolded = [ "Rect" ]
 
-[node name="EngineBlock" type="Control" parent="Control" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="EngineBlock" type="Control" parent="Control"]
 margin_right = 200.0
 margin_bottom = 200.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-_sections_unfolded = [ "Rect" ]
 
-[node name="EngineButton" type="TextureButton" parent="Control/EngineBlock" index="0"]
-
+[node name="EngineButton" type="TextureButton" parent="Control/EngineBlock"]
 modulate = Color( 0, 0, 0, 1 )
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
 margin_right = 200.0
 margin_bottom = 199.0
 rect_scale = Vector2( 0.25, 0.25 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
 texture_normal = ExtResource( 2 )
 texture_disabled = ExtResource( 2 )
-_sections_unfolded = [ "Material", "Textures", "Visibility" ]
 
-[node name="Label" type="Label" parent="Control/EngineBlock" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label" type="Label" parent="Control/EngineBlock"]
 margin_left = 80.0
 margin_top = 20.0
 margin_right = 133.0
 margin_bottom = 34.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
 text = "Mult 1.5"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
 
-[node name="Label3" type="Label" parent="Control/EngineBlock" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label3" type="Label" parent="Control/EngineBlock"]
 margin_left = 140.0
 margin_top = 20.0
 margin_right = 180.0
 margin_bottom = 34.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
 text = "¥40"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
 
-[node name="EngineButton2" type="TextureButton" parent="Control/EngineBlock" index="3"]
-
+[node name="EngineButton2" type="TextureButton" parent="Control/EngineBlock"]
 modulate = Color( 0, 0, 0, 1 )
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
 margin_left = 2.0
 margin_top = 55.0
 margin_right = 202.0
 margin_bottom = 254.0
 rect_scale = Vector2( 0.25, 0.25 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
 texture_normal = ExtResource( 2 )
-_sections_unfolded = [ "Material", "Rect", "Textures", "Visibility" ]
 
-[node name="Label2" type="Label" parent="Control/EngineBlock" index="4"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label2" type="Label" parent="Control/EngineBlock"]
 margin_left = 82.0
 margin_top = 75.0
 margin_right = 135.0
 margin_bottom = 89.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
 text = "Mult 2"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
 
-[node name="Label4" type="Label" parent="Control/EngineBlock" index="5"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label4" type="Label" parent="Control/EngineBlock"]
 margin_left = 140.0
 margin_top = 75.0
 margin_right = 180.0
 margin_bottom = 89.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
 text = "¥60"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
 
-[node name="BrakesBlock" type="Control" parent="Control" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="BrakesBlock" type="Control" parent="Control"]
 margin_top = 204.0
 margin_right = 200.0
 margin_bottom = 404.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
 
-[node name="BrakeButton" type="TextureButton" parent="Control/BrakesBlock" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="BrakeButton" type="TextureButton" parent="Control/BrakesBlock"]
 margin_right = 40.0
 margin_bottom = 40.0
 rect_scale = Vector2( 0.125, 0.125 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
 disabled = true
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
 texture_normal = ExtResource( 3 )
 texture_disabled = ExtResource( 3 )
-_sections_unfolded = [ "Textures", "Visibility" ]
 
-[node name="Label2" type="Label" parent="Control/BrakesBlock" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label2" type="Label" parent="Control/BrakesBlock"]
 margin_left = 80.0
 margin_top = 20.0
 margin_right = 120.0
 margin_bottom = 34.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
 text = "Mult 6"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
 
-[node name="Label" type="Label" parent="Control/BrakesBlock" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label" type="Label" parent="Control/BrakesBlock"]
 margin_left = 140.0
 margin_top = 20.0
 margin_right = 180.0
 margin_bottom = 34.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
 text = "¥10"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
 
-[node name="BrakeButton2" type="TextureButton" parent="Control/BrakesBlock" index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="BrakeButton2" type="TextureButton" parent="Control/BrakesBlock"]
 margin_top = 100.0
 margin_right = 512.0
 margin_bottom = 612.0
 rect_scale = Vector2( 0.125, 0.125 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
 texture_normal = ExtResource( 3 )
-_sections_unfolded = [ "Rect", "Textures" ]
 
-[node name="Label3" type="Label" parent="Control/BrakesBlock" index="4"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label3" type="Label" parent="Control/BrakesBlock"]
 margin_left = 80.0
 margin_top = 120.0
 margin_right = 120.0
 margin_bottom = 134.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
 text = "Mult 8"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
 
-[node name="Label4" type="Label" parent="Control/BrakesBlock" index="5"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label4" type="Label" parent="Control/BrakesBlock"]
 margin_left = 140.0
 margin_top = 120.0
 margin_right = 180.0
 margin_bottom = 134.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
 text = "¥20"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
 
-[node name="TiresBlock" type="Control" parent="Control" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="TiresBlock" type="Control" parent="Control"]
 margin_top = 400.0
 margin_right = 200.0
 margin_bottom = 400.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-_sections_unfolded = [ "Rect" ]
 
-[node name="TireButton" type="TextureButton" parent="Control/TiresBlock" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="TireButton" type="TextureButton" parent="Control/TiresBlock"]
 margin_right = 40.0
 margin_bottom = 40.0
 rect_scale = Vector2( 0.25, 0.25 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
 texture_normal = ExtResource( 4 )
-_sections_unfolded = [ "Rect", "Textures" ]
 
-[node name="Label3" type="Label" parent="Control/TiresBlock" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label3" type="Label" parent="Control/TiresBlock"]
 margin_left = 80.0
 margin_top = 20.0
 margin_right = 120.0
 margin_bottom = 34.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
 text = "1.5"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
 
-[node name="MoneyLabel" type="Label" parent="." index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="MoneyLabel" type="Label" parent="."]
 margin_top = 30.0
 margin_right = 93.0
 margin_bottom = 51.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.0117647, 0.988235, 0.988235, 1 )
 text = "Money:   0"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect", "custom_colors", "custom_fonts" ]
 
-[node name="Label" type="Label" parent="." index="4"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label" type="Label" parent="."]
 margin_left = 62.0
 margin_top = 32.0
 margin_right = 72.0
 margin_bottom = 46.0
 rect_scale = Vector2( 1.5, 1.5 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
 custom_colors/font_color = Color( 0.0117647, 0.988235, 0.988235, 1 )
 text = "¥"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect", "custom_colors" ]
 
+[node name="ButtonLeft" type="Button" parent="."]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -50.0
+margin_right = 20.0
+margin_bottom = 50.0
+text = "<"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonRight" type="Button" parent="."]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -270.0
+margin_top = -50.0
+margin_right = -250.0
+margin_bottom = 50.0
+text = ">"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
-
 [connection signal="draw" from="Control/EngineBlock/EngineButton" to="." method="_on_EngineButton_draw"]
-
 [connection signal="pressed" from="Control/EngineBlock/EngineButton" to="." method="_on_EngineButton_pressed"]
-
 [connection signal="draw" from="Control/EngineBlock/EngineButton2" to="." method="_on_EngineButton2_draw"]
-
 [connection signal="pressed" from="Control/EngineBlock/EngineButton2" to="." method="_on_EngineButton2_pressed"]
-
 [connection signal="draw" from="Control/BrakesBlock/BrakeButton" to="." method="_on_BrakeButton_draw"]
-
 [connection signal="pressed" from="Control/BrakesBlock/BrakeButton" to="." method="_on_BrakeButton_pressed"]
-
 [connection signal="draw" from="Control/BrakesBlock/BrakeButton2" to="." method="_on_BrakeButton2_draw"]
-
 [connection signal="pressed" from="Control/BrakesBlock/BrakeButton2" to="." method="_on_BrakeButton2_pressed"]
-
 [connection signal="pressed" from="Control/TiresBlock/TireButton" to="." method="_on_TireButton_pressed"]
-
-
+[connection signal="pressed" from="ButtonLeft" to="." method="_on_ButtonLeft_pressed"]
+[connection signal="pressed" from="ButtonRight" to="." method="_on_ButtonRight_pressed"]

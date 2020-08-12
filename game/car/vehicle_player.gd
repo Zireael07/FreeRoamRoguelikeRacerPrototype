@@ -1,3 +1,4 @@
+# this is used by both car & bike
 extends "vehicle.gd"
 
 # class member variables go here, for example:
@@ -54,9 +55,16 @@ var perf_distance
 
 var money = 0
 
+# vehicle switching
+var car_scene = null
+var bike_scene = null
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
+	# preload doesn't work since we're loading from a script that both scenes use
+	car_scene = load("res://car/car_base.tscn")
+	bike_scene = load("res://car/bike_base.tscn")
 
 	# contacts
 	set_max_contacts_reported(1)
@@ -558,7 +566,7 @@ func swap_to_bike():
 	#print("Body pos before swap: " + str(pos))
 	
 	get_parent().queue_free()
-	var bike_scene = load("res://car/bike_base.tscn")
+	#var bike_scene = load("res://car/bike_base.tscn")
 	var bike = bike_scene.instance()
 	bike.set_name("bike")
 	# place the bike where the car was
@@ -570,7 +578,27 @@ func swap_to_bike():
 	#print("Dummy")
 	return bike.get_node("BODY")
 
+func swap_to_car():
+	# get positions
+	var p_pos = get_parent().get_translation() #.get_global_transform().origin
+	#print("Parent position before swap: " + str(p_pos))
+	var pos = get_translation()
+	#print("Body pos before swap: " + str(pos))
+	
+	get_parent().queue_free()
+	#var car_scene = load("res://car/car_base.tscn")
+	var car = car_scene.instance()
+	car.set_name("car")
+	# place the car where the bike was
+	#car.get_parent().global_transform.origin = p_pos
+	car.set_translation(p_pos)
+	car.get_node("BODY").set_translation(pos)
+	
+	get_parent().get_parent().add_child(car)
+	#print("Dummy")
+	return car.get_node("BODY")
 
+# -------------------------------------------
 # performance
 # a = 2s/t^2
 func accel_from_data(t,dist):

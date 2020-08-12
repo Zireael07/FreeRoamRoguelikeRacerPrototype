@@ -23,10 +23,14 @@ func go_back():
 		# remove ourselves
 		queue_free()
 		
+		var root = entrance.get_parent().get_parent() #.get_parent().get_parent()
+		
 		# change vehicle if needed
 		if garage_hud.changed:
 			player = player.swap_to_bike()
-		
+			# note that we have a bike and that we are not in car
+			root.vehicles["bike"] = true
+			root.vehicles["car"] = false
 		
 		player.hud.update_money(player.money)
 		
@@ -60,8 +64,10 @@ func go_back():
 		player.set_physics_process(true)
 			
 		# restore time passage
-		var root = entrance.get_parent().get_parent() #.get_parent().get_parent()
 		var world = root.get_node("World")
 		world.set_physics_process(true)
 		# show the sun
 		root.get_node("DirectionalLight").set_visible(true)
+		
+
+		

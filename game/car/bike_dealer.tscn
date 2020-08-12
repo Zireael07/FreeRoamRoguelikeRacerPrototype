@@ -85,13 +85,11 @@ __meta__ = {
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.095518 )
 collision_mask = 3
 mass = 1500.0
-can_sleep = false
+sleeping = true
 
 [node name="wheel1" type="VehicleWheel" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.359, 0.865 )
 engine_force = 1.41531e-43
-use_as_traction = true
-use_as_steering = true
 wheel_radius = 0.25
 suspension_travel = 1.0
 suspension_stiffness = 100.0
@@ -110,7 +108,6 @@ wheel_radius = 0.25
 [node name="wheel2" type="VehicleWheel" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.359, -0.4 )
 engine_force = 1.4013e-45
-use_as_traction = true
 wheel_radius = 0.25
 suspension_travel = 1.0
 suspension_stiffness = 100.0
@@ -129,8 +126,6 @@ wheel_radius = 0.25
 [node name="wheel3" type="VehicleWheel" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.359, 0.865 )
 engine_force = -0.228035
-use_as_traction = true
-use_as_steering = true
 wheel_radius = 0.25
 suspension_travel = 1.0
 suspension_stiffness = 100.0
@@ -148,7 +143,6 @@ wheel_radius = 0.25
 
 [node name="wheel4" type="VehicleWheel" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.359, -0.4 )
-use_as_traction = true
 wheel_radius = 0.25
 suspension_travel = 1.0
 suspension_stiffness = 100.0

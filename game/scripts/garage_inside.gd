@@ -7,28 +7,48 @@ var garage_hud
 var env
 
 func _ready():
-	
+	# Called every time the node is added to the scene.
+	# Initialization here
 	# fix issues with fog
 	get_node("Camera").set_current(true)
 	get_node("Camera").set_environment(env)
+	
+	var root = entrance.get_parent().get_parent().get_parent().get_parent()
+	print(root.vehicles)
+	
+	# fix displayed vehicles moving
+	get_node("Spatial2/BODY").engine_force = 0
+	get_node("Spatial3/BODY").engine_force = 0
 	
 	##GUI
 	var h = preload("res://hud/garage_hud.tscn")
 	garage_hud = h.instance()
 	garage_hud.player = player
+	garage_hud.root = root
+	garage_hud.vehicles = root.vehicles
 	add_child(garage_hud)
 	
-	# Called every time the node is added to the scene.
-	# Initialization here
-	pass
+	
 
 func go_back():
 	if (player != null and entrance != null):
 		# remove ourselves
 		queue_free()
 		
+		var root = entrance.get_parent().get_parent().get_parent().get_parent()
 		player.hud.update_money(player.money)
 		
+		# did we change vehicles?
+		if root.vehicles != garage_hud.vehicles:
+			# record new vehicles
+			root.vehicles = garage_hud.vehicles
+			# swap
+			if root.vehicles["car"] == true:
+				player.swap_to_car()
+			elif root.vehicles["bike"] == true:
+				player.swap_to_bike()
+			
+			print("Swap done")
 		
 		# set player cam as current
 		player.get_node("cambase").get_node("Camera").make_current()
@@ -48,7 +68,7 @@ func go_back():
 		player.show()
 		# unhide gui
 		var hud = player.get_node("root")
-		var map = player.get_node("Viewport_root/Viewport/minimap")
+		var map = player.get_node("Viewport_root") #/Viewport/minimap")
 		hud.show()
 		map.show()
 		
@@ -59,7 +79,6 @@ func go_back():
 		player.set_physics_process(true)
 			
 		# restore time passage
-		var root = entrance.get_parent().get_parent().get_parent().get_parent()
 		var world = root.get_node("World")
 		world.set_physics_process(true)
 		# show the sun
