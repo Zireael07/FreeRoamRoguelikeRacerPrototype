@@ -16,9 +16,6 @@ func _ready():
 	var root = entrance.get_parent().get_parent().get_parent().get_parent()
 	print(root.vehicles)
 	
-	# fix displayed vehicles moving
-	get_node("Spatial2/BODY").engine_force = 0
-	get_node("Spatial3/BODY").engine_force = 0
 	
 	##GUI
 	var h = preload("res://hud/garage_hud.tscn")
