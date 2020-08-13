@@ -41,9 +41,9 @@ func go_back():
 			root.vehicles = garage_hud.vehicles
 			# swap
 			if root.vehicles["car"] == true:
-				player.swap_to_car()
+				player = player.swap_to_car()
 			elif root.vehicles["bike"] == true:
-				player.swap_to_bike()
+				player = player.swap_to_bike()
 			
 			print("Swap done")
 		
