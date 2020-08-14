@@ -1,4 +1,6 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://hud/MapView.gd" type="Script" id=1]
 
 [node name="MapView" type="ViewportContainer"]
 anchor_left = 0.5
@@ -9,6 +11,10 @@ margin_left = -400.0
 margin_top = -200.0
 margin_right = 400.0
 margin_bottom = 200.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Viewport" type="Viewport" parent="."]
 size = Vector2( 800, 400 )
@@ -18,3 +24,21 @@ render_target_update_mode = 3
 
 [node name="Camera2D" type="Camera2D" parent="Viewport"]
 current = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_right = 41.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="ButtonPlus" type="Button" parent="HBoxContainer"]
+margin_right = 20.0
+margin_bottom = 20.0
+text = "+"
+
+[node name="ButtonMinus" type="Button" parent="HBoxContainer"]
+margin_left = 24.0
+margin_right = 41.0
+margin_bottom = 20.0
+text = "-"
+[connection signal="pressed" from="HBoxContainer/ButtonPlus" to="." method="_on_ButtonPlus_pressed"]
+[connection signal="pressed" from="HBoxContainer/ButtonMinus" to="." method="_on_ButtonMinus_pressed"]
