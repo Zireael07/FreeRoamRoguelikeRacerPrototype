@@ -5,6 +5,9 @@ extends ViewportContainer
 var cam = null
 var mouse = Vector2()
 var mmap_offset 
+var player
+var map
+var nav_result
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -13,6 +16,8 @@ func _ready():
 	# experimentally determined
 	mmap_offset = Vector2(70,85)
 
+	player = get_parent()
+	map = get_node("/root/Navigation").get_node("map")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -69,19 +74,35 @@ func find_closest_intersection(pos):
 			
 			return t[1]
 
+func player_nav(target):
+	# look up the closest intersection
+	var map_loc = map.to_local(player.get_global_transform().origin)
+	#print("global: " + str(get_global_transform().origin) + ", map_loc: " + str(map_loc))
+		
+	# this operates on child ids
+	var sorted = map.sort_intersections_distance(map_loc, true)
+	var closest_ind = sorted[0][1]
+	var closest = map.get_child(closest_ind)
+	#print("Closest: " + str(closest.get_name()))
+	
+	# this operates on ids, therefore we subtract 3 from child id
+	var int_path = map.get_node("nav").ast.get_id_path(closest_ind-3, target)
+	print("Intersections path: " + str(int_path))
 func _on_MapView_gui_input(event):
 	if event is InputEventMouseButton:
 		mouse = event.position
 		print("Clicked mouse in map viewport @ ", event.position)
 		# camera position is half viewport width and half viewport height
 		var rel_pos = get_node("center").get_transform().xform_inv(event.position)
-		print("Relative to camera: ", rel_pos)
+		#print("Relative to camera: ", rel_pos)
 		# somehow, this fits the intersection positions sent to minimap (just flipped signs)
 		# before transforming to 2d
 		var rel_mmap = rel_pos-mmap_offset
-		print("Relative to mmap centre: ", rel_mmap)
+		#print("Relative to mmap centre: ", rel_mmap)
 		#print("Converted to 3d", point2d_to3d(rel_pos-mmap_offset))
-		print("Closest inter: ", find_closest_intersection(rel_mmap))
+		var clicked_inter = find_closest_intersection(rel_mmap)
+		print("Clicked inter: ", clicked_inter)
+		player_nav(clicked_inter)
 
 		
 		# draw
