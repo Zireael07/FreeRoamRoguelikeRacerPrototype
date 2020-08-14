@@ -258,6 +258,7 @@ func setup_markers(marker_data):
 		int_path = ast.get_id_path(marker_data[2], marker_data[3])
 		print("Intersections path: " + str(int_path))
 
+		# TODO: factor out into a function
 		#paranoia
 		nav_path = PoolVector3Array()
 		if [int_path[0], int_path[1]] in path_look:

@@ -10,7 +10,7 @@ var image
 var bg = Color(0, 0.16, 0.99, 0.55) # Color(0,1,0,1) pure green
 var road = Color(1,1,1, 1) # white #Color(0,0,0,1) # pure black
 var linecolor = Color(1,0,0,1)
-var testcolor = Color(0,0,1,1)
+var testcolor = bg #Color(0,0,0,1)
 var dot_size = 4
 
 # positioning
@@ -58,7 +58,10 @@ func make_map():
 	image.lock()
 	
 	#draw center point (=0,0)
-	image.set_pixel(image.get_width()/2, image.get_height()/2, testcolor)
+	var pos_c = Vector2(image.get_width()/2, image.get_height()/2)
+	for i in range (pos_c.x-(dot_size+1), pos_c.x+(dot_size+1)):
+		for j in range (pos_c.y-(dot_size+1), pos_c.y+(dot_size+1)):
+			image.set_pixel(i,j, testcolor)
 	
 	intersections = player.get_node("Viewport_root/Viewport/minimap").intersections
 	
