@@ -14,10 +14,11 @@ func _ready():
 	cam = get_node("Viewport/Camera2D")
 	#the camera seems to be offset by this value from minimap center
 	# experimentally determined
-	mmap_offset = Vector2(70,85)
+	mmap_offset = Vector2(74,89)
 
 	player = get_parent()
 	map = get_node("/root/Navigation").get_node("map")
+	get_node("track").set_position(get_node("center").get_position() + mmap_offset)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -74,6 +75,35 @@ func find_closest_intersection(pos):
 			
 			return t[1]
 
+func get_drawn_path(int_path):
+	var nav_path = PoolVector3Array()
+	var path_look = map.get_node("nav").path_look # shortcut
+	if [int_path[0], int_path[1]] in path_look:
+		#print("First pair: " + str(int_path[0]) + "," + str(int_path[1]))			
+		var lookup_path = path_look[[int_path[0], int_path[1]]]
+		#print("Lookup path pt1: " + str(lookup_path))
+		nav_path = map.get_node("nav").nav.get_point_path(lookup_path[0], lookup_path[1])
+		#print("Nav path: " + str(nav_path))
+		# so that the player can see
+		#marker.raceline = nav_path
+	var nav_path2 = PoolVector3Array()
+	var nav_path3 = PoolVector3Array()
+	if int_path.size() > 2 and [int_path[1], int_path[2]] in path_look:
+		#print("Second pair: " + str(int_path[1]) + "," + str(int_path[2]))
+		var lookup_path = path_look[[int_path[1], int_path[2]]]
+		#print("Lookup path pt2: " + str(lookup_path))
+		nav_path2 = map.get_node("nav").nav.get_point_path(lookup_path[0], lookup_path[1])
+		#print("Nav path pt2 : " + str(nav_path2))
+
+	nav_result = nav_path + nav_path2
+	
+	if nav_result.size() > 0:
+		# show line on map
+		var track_map = get_node("track")
+		track_map.points = track_map.vec3s_convert(nav_result)
+		# force redraw
+		track_map.update()
+
 func player_nav(target):
 	# look up the closest intersection
 	var map_loc = map.to_local(player.get_global_transform().origin)
@@ -88,6 +118,8 @@ func player_nav(target):
 	# this operates on ids, therefore we subtract 3 from child id
 	var int_path = map.get_node("nav").ast.get_id_path(closest_ind-3, target)
 	print("Intersections path: " + str(int_path))
+	get_drawn_path(int_path)
+
 func _on_MapView_gui_input(event):
 	if event is InputEventMouseButton:
 		mouse = event.position

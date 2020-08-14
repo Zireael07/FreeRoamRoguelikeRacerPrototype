@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://hud/MapView.gd" type="Script" id=1]
+[ext_resource path="res://hud/Node2D.gd" type="Script" id=2]
 
 [node name="MapView" type="ViewportContainer"]
 anchor_left = 0.5
@@ -46,6 +47,9 @@ margin_left = 24.0
 margin_right = 41.0
 margin_bottom = 20.0
 text = "-"
+[node name="track" type="Node2D" parent="."]
+position = Vector2( 400, 200 )
+script = ExtResource( 2 )
 [connection signal="gui_input" from="." to="." method="_on_MapView_gui_input"]
 [connection signal="pressed" from="HBoxContainer/ButtonPlus" to="." method="_on_ButtonPlus_pressed"]
 [connection signal="pressed" from="HBoxContainer/ButtonMinus" to="." method="_on_ButtonMinus_pressed"]
