@@ -520,6 +520,8 @@ func _input(event):
 		else:
 			#print("Show map!")
 			get_node("Map").show()
+			# force redraw minimap track if any
+			get_node("Map").redraw_nav()
 
 func _on_BODY_body_entered(body):
 	var obj = body.get_parent().get_parent()

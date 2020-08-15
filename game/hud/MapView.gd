@@ -7,7 +7,7 @@ var mouse = Vector2()
 var mmap_offset 
 var player
 var map
-var nav_result
+var nav_result = PoolVector3Array()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -103,6 +103,11 @@ func get_drawn_path(int_path):
 		track_map.points = track_map.vec3s_convert(nav_result)
 		# force redraw
 		track_map.update()
+		# show on minimap, too
+		var minimap_track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+		minimap_track_map.points = minimap_track_map.vec3s_convert(nav_result)
+		# force redraw
+		minimap_track_map.update()
 
 func player_nav(target):
 	# look up the closest intersection
@@ -129,6 +134,7 @@ func _on_MapView_gui_input(event):
 		#print("Relative to camera: ", rel_pos)
 		# somehow, this fits the intersection positions sent to minimap (just flipped signs)
 		# before transforming to 2d
+		#TODO: take zoom into account
 		var rel_mmap = rel_pos-mmap_offset
 		#print("Relative to mmap centre: ", rel_mmap)
 		#print("Converted to 3d", point2d_to3d(rel_pos-mmap_offset))
@@ -140,3 +146,10 @@ func _on_MapView_gui_input(event):
 		# draw
 		update()
 
+func redraw_nav():
+	if nav_result.size() > 0:
+		# show on minimap, too
+		var minimap_track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+		minimap_track_map.points = minimap_track_map.vec3s_convert(nav_result)
+		# force redraw
+		minimap_track_map.update()
