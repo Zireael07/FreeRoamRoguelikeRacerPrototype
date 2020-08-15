@@ -65,7 +65,7 @@ margin_right = 822.0
 margin_bottom = 595.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
-custom_colors/font_color = Color( 0.0154419, 0.988281, 0.988281, 1 )
+custom_colors/font_color = Color( 0.0156863, 0.988235, 0.988235, 1 )
 text = "dist"
 align = 1
 valign = 2
@@ -226,3 +226,18 @@ margin_bottom = 73.0
 custom_colors/font_color = Color( 0.988235, 0, 0, 1 )
 text = "Seed:
 "
+
+[node name="NavLabel" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -20.0
+margin_top = -14.0
+margin_right = 20.0
+rect_scale = Vector2( 1.5, 1.5 )
+custom_colors/font_color = Color( 0.0156863, 0.988235, 0.988235, 1 )
+uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}

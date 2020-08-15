@@ -59,6 +59,10 @@ var money = 0
 var car_scene = null
 var bike_scene = null
 
+# player navigation
+var reached_inter
+var reached_changed = false
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
@@ -176,6 +180,8 @@ func on_load_ended():
 	# optimize label/nameplate rendering
 	get_node("..").freeze_viewports()
 
+#-------------------------------------------------
+# interacting with physics
 func _physics_process(delta):
 	# were we peeking last tick?
 	var old_peek = peek
@@ -407,10 +413,44 @@ func _process(delta):
 		# straight
 		if road_ != -1:
 			disp_name = hit.get_parent().get_parent().get_parent().get_parent().get_name()
+			reached_changed = false
 		elif road != -1:
 			disp_name = hit.get_parent().get_parent().get_parent().get_parent().get_parent().get_name()
+			reached_changed = false
+		# intersection
 		else:
 			disp_name = hit.get_parent().get_parent().get_name()
+			# if we have a player navigation path
+			if map_big.int_path.size() > 0:
+				# if we haven't reached a new intersection
+				if reached_changed == false:
+					# ignore #0 in said path
+					for i in range(1, map_big.int_path.size()-1):
+						var inter = map_big.int_path[i]
+						var id = disp_name.lstrip("intersection")
+						# if we reached a new intersection on our path, mark it as such
+						if int(id) == inter:
+							#print("We hit intersection present in path...", inter)
+							reached_inter = [inter, i]
+							reached_changed = true
+							break
+				# if we reached a new intersection, tell us where to go
+				if reached_changed:
+					# angle to next intersection in int_path
+					var angle_inter = angle_to_intersection(map_big.int_path[reached_inter[1]+1])
+					print("Angle to next intersection: ", angle_inter)
+					# pop up navigation helper on HUD	
+					if angle_inter < 0:
+						hud.update_nav_label("Turn right")
+					else:
+						hud.update_nav_label("Turn left")
+					# hide text if angle very small
+					if abs(angle_inter) < 40:
+						hud.update_nav_label("")
+						
+	# clear text if we passed the newly reached intersection				
+	if not reached_changed:
+		hud.update_nav_label("")
 
 	hud.update_debug(str(disp_name) if hit != null else "")
 
@@ -420,6 +460,8 @@ func _process(delta):
 	hud.update_health(health)
 
 	hud.update_battery(battery)
+	
+		
 
 	# shaders stuff
 #	#print("Light color" + str(World_node.light_color))
@@ -523,6 +565,8 @@ func _input(event):
 			# force redraw minimap track if any
 			get_node("Map").redraw_nav()
 
+
+# -------------------------------------
 func _on_BODY_body_entered(body):
 	var obj = body.get_parent().get_parent()
 	if body.get_parent().get_name() == "Ground":
@@ -560,6 +604,19 @@ func create_race_path(path):
 	race.done = true
 	print("Race set up is done")
 
+func angle_to_intersection(id):
+	# contains intersections global positions
+	var intersections = get_node("Viewport_root/Viewport/minimap").intersections
+	var pos_gl = intersections[id]
+	#print("Global position ", pos_gl)
+	var rel_pos = get_global_transform().xform_inv(pos_gl)
+	# dummy out the y value
+	rel_pos = Vector3(rel_pos.x, 0, rel_pos.z)
+	#print("Relative loc of intersection", id, " is ", rel_pos)
+	# we don't care about z, only about x
+	return rel_pos.x
+
+# -----------------------------------
 func swap_to_bike():
 	# get positions
 	var p_pos = get_parent().get_translation() #.get_global_transform().origin

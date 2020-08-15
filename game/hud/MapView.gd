@@ -7,6 +7,7 @@ var mouse = Vector2()
 var mmap_offset 
 var player
 var map
+var int_path = []
 var nav_result = PoolVector3Array()
 
 # Called when the node enters the scene tree for the first time.
@@ -121,9 +122,11 @@ func player_nav(target):
 	#print("Closest: " + str(closest.get_name()))
 	
 	# this operates on ids, therefore we subtract 3 from child id
-	var int_path = map.get_node("nav").ast.get_id_path(closest_ind-3, target)
+	int_path = map.get_node("nav").ast.get_id_path(closest_ind-3, target)
 	print("Intersections path: " + str(int_path))
 	get_drawn_path(int_path)
+	# mark #0 as reached because in 99% of cases we're already past it
+	player.reached_inter = [int_path[0], 0]
 
 func _on_MapView_gui_input(event):
 	if event is InputEventMouseButton:

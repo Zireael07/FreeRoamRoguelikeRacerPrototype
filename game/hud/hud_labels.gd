@@ -23,6 +23,8 @@ onready var battery_bar = get_node("Battery")
 onready var cam_control = get_node("CAM blink")
 onready var seed_label = get_node("SeedLabel")
 
+onready var nav_label = get_node("NavLabel")
+
 var fps
 var draws
 var vertices
@@ -88,3 +90,7 @@ func speed_chase():
 	
 func speed_cockpit():
 	label.set_position(Vector2(425, 392))	
+
+func update_nav_label(val):
+	nav_label.set_text(val)
+	
