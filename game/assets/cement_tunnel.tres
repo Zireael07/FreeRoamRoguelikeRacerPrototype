@@ -4,5 +4,6 @@
 
 [resource]
 params_diffuse_mode = 1
+albedo_color = Color( 1, 1, 1, 0.745098 )
 albedo_texture = ExtResource( 1 )
 uv1_scale = Vector3( 5, 5, 1 )

@@ -294,6 +294,7 @@ func makeRoad():
 			var tun = tunnel_obj.instance()
 			var sc = round(floor(relative_end.z/50))
 			tun.set_scale(Vector3(1.2, 1.0, sc))
+			tun.set_name("tunnel")
 			add_child(tun)
 		
 		
@@ -510,3 +511,16 @@ func no_rain():
 	material.set_shader_param("metallic", 0.0)
 	#material.set_roughness(1.0)
 	#material.set_metallic(0.0)
+
+func debug_tunnel():
+	# works but makes buildings transparent, too
+	var tun = get_node("tunnel").get_mesh().surface_get_material(0)
+	tun.set_feature(SpatialMaterial.FEATURE_TRANSPARENT, true)
+	#var tun = get_node("tunnel")
+	#tun.hide()
+	
+func show_tunnel():
+	var tun = get_node("tunnel").get_mesh().surface_get_material(0)
+	tun.set_feature(SpatialMaterial.FEATURE_TRANSPARENT, false)
+	#var tun = get_node("tunnel")
+	#tun.show()

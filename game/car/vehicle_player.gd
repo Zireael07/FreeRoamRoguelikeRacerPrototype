@@ -528,8 +528,18 @@ func _input(event):
 			# hud changes
 			hud.toggle_cam(true)
 			hud.speed_chase()
+			# show tunnels
+			var roads = get_tree().get_nodes_in_group("roads")
+			for r in roads:
+				if 'tunnel' in r and r.tunnel:
+					r.show_tunnel()
 		else:
 			debug_cam.make_current()
+			# make tunnels transparent
+			var roads = get_tree().get_nodes_in_group("roads")
+			for r in roads:
+				if 'tunnel' in r and r.tunnel:
+					r.debug_tunnel()
 
 #		var cam = get_node("cambase/Camera")
 #		if (cam !=null):
