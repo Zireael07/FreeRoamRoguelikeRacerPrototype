@@ -219,19 +219,19 @@ class ObstacleState:
 		if not car.obstacle_detected(car.get_parent()):
 			car.set_state(car.STATE_DRIVING)
 		
-# -----------------------------		
+# -----------------------------	
+# this checks the three long front-facing rays that are supposed to detect big obstacles (roadblock, other cars)
 func obstacle_detected(body):
 	var ret = false
 	if body.has_node("RayFront") and body.get_node("RayFront").is_colliding() and body.get_node("RayFront").get_collider_hit() != null:
 		if body.get_node("RayFront").get_collider_hit().get_parent().is_in_group("obstacle"):
-			ret = body.get_node("RayFront").get_collider_hit()
-		
-	if body.has_node("RayRightFront") and body.get_node("RayRightFront").is_colliding() and (body.get_node("RayRightFront").get_collider() != null):
-		if body.get_node("RayRightFront").get_collider_hit().get_parent().is_in_group("obstacle"):
-			ret = body.get_node("RayRightFront").get_collider_hit()
-	if body.has_node("RayLeftFront") and body.get_node("RayLeftFront").is_colliding() and (body.get_node("RayLeftFront").get_collider() != null):
-		if body.get_node("RayLeftFront").get_collider_hit().get_parent().is_in_group("obstacle"):
-			ret = body.get_node("RayLeftFront").get_collider_hit() # true
+			ret = body.get_node("RayFront").get_collider_hit()		
+	if body.has_node("RayFrontRight") and body.get_node("RayFrontRight").is_colliding() and (body.get_node("RayFrontRight").get_collider() != null):
+		if body.get_node("RayFrontRight").get_collider_hit().get_parent().is_in_group("obstacle"):
+			ret = body.get_node("RayFrontRight").get_collider_hit()
+	if body.has_node("RayFrontLeft") and body.get_node("RayFrontLeft").is_colliding() and (body.get_node("RayFrontLeft").get_collider() != null):
+		if body.get_node("RayFrontLeft").get_collider_hit().get_parent().is_in_group("obstacle"):
+			ret = body.get_node("RayFrontLeft").get_collider_hit() # true
 		
 	return ret
 	
