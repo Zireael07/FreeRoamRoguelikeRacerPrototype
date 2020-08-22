@@ -11,6 +11,7 @@ var prev_state
 const STATE_DRIVING  = 1
 const STATE_CHASE = 2
 const STATE_OBSTACLE = 3
+const STATE_CAR_AHEAD = 4
 
 signal state_changed
 
@@ -35,6 +36,8 @@ func set_state(new_state, param=null):
 		state = ChaseState.new(self)
 	if new_state == STATE_OBSTACLE:
 		state = ObstacleState.new(self, param)
+	if new_state == STATE_CAR_AHEAD:
+		state = CarAheadState.new(self)
 	
 	emit_signal("state_changed", self)
 
@@ -45,6 +48,8 @@ func get_state():
 		return STATE_CHASE
 	if state is ObstacleState:
 		return STATE_OBSTACLE
+	if state is CarAheadState:
+		return STATE_CAR_AHEAD
 
 # just call the state
 func _physics_process(delta):
@@ -132,6 +137,11 @@ class DrivingState:
 		var obstacle = car.obstacle_detected(car.get_parent())
 		if obstacle:
 			car.set_state(car.STATE_OBSTACLE, obstacle)
+			
+		# if there's a car ahead, switch
+		var car_a = car.car_ahead_detected(car.get_parent())
+		if car_a:
+			car.set_state(car.STATE_CAR_AHEAD)
 
 	
 class ChaseState:
@@ -234,6 +244,20 @@ func obstacle_detected(body):
 			ret = body.get_node("RayFrontLeft").get_collider_hit() # true
 		
 	return ret
+
+func car_ahead_detected(body):
+	var ret = false
+	if body.has_node("RayFront") and body.get_node("RayFront").is_colliding() and body.get_node("RayFront").get_collider_hit() != null:
+		if body.get_node("RayFront").get_collider_hit().get_parent().is_in_group("AI"):
+			ret = body.get_node("RayFront").get_collider_hit()		
+	if body.has_node("RayFrontRight") and body.get_node("RayFrontRight").is_colliding() and (body.get_node("RayFrontRight").get_collider() != null):
+		if body.get_node("RayFrontRight").get_collider_hit().get_parent().is_in_group("AI"):
+			ret = body.get_node("RayFrontRight").get_collider_hit()
+	if body.has_node("RayFrontLeft") and body.get_node("RayFrontLeft").is_colliding() and (body.get_node("RayFrontLeft").get_collider() != null):
+		if body.get_node("RayFrontLeft").get_collider_hit().get_parent().is_in_group("AI"):
+			ret = body.get_node("RayFrontLeft").get_collider_hit() # true
+		
+	return ret
 	
 #func collision_avoidance():
 #	if has_node("RayFront") and get_node("RayFront").get_collider_hit() != null:
@@ -294,3 +318,25 @@ func obstacle_detected(body):
 #				braking = true
 #			else:
 #				gas = true
+
+class CarAheadState:
+	var car
+	
+	func _init(car):
+		self.car = car
+
+	func update(delta):
+		# behavior
+		print(car.get_parent().get_parent().get_name() + " braking because of car ahead...")
+		car.steer = Vector2(0, -1)
+		# our actual velocity
+		# forward vector scaled by our speed
+		var gl_tg = car.get_parent().get_global_transform().xform(Vector3(0, 0, 4))
+		var rel = car.get_parent().get_global_transform().xform_inv(gl_tg)
+		var vel = rel * car.get_parent().get_linear_velocity().length()
+		
+		car.velocity = Vector2(car.get_parent().get_angular_velocity().y, vel.z)
+		
+		# go back to normal driving
+		if not car.car_ahead_detected(car.get_parent()):
+			car.set_state(car.STATE_DRIVING)
