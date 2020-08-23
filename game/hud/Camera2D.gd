@@ -1,3 +1,4 @@
+# this one is actually used by the complex minimap
 extends Camera2D
 
 # class member variables go here, for example:
@@ -21,8 +22,12 @@ func _physics_process(delta):
 	#var player_rot = get_tree().get_nodes_in_group("player")[0].get_child(0).get_rotation()
 	#var player_rot = get_parent().get_parent().get_parent().get_parent().get_rotation()
 	var player = get_tree().get_nodes_in_group("player")[0].get_child(0)
+	var player_rot = player.get_heading()
 	# https://godotengine.org/qa/11335/getting-the-y-axis-rotation-of-an-object-in-3d
-	var player_rot = player.get_global_transform().basis.z.angle_to(Vector3(0,0,1))
+#	var forward_global = player.get_global_transform().xform(Vector3(0, 0, 2))
+#	var forward_vec = forward_global-player.get_global_transform().origin
+#	var basis_vec = player.get_global_transform().basis.z
+#	var player_rot = forward_vec.angle_to(Vector3(0,0,1))
 	
 	map_rot = player_rot #.y
 	#print("Map rot: " + str(map_rot))
