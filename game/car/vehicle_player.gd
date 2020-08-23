@@ -389,16 +389,7 @@ func _process(delta):
 	#update distance HUD
 	hud.update_distance("Distance: " + String(distance_int) + " m")
 
-	# because E and W were easiest to identify (the sun @ longitude 0)
-	var ang_to_dir = {180: "E", -180: "E", 0: "W", 90: "N", -90: "S"}
-
-	# -180 -90 0 90 180 are the possible angles
-	var num_to_dir = {0: "E", 1:"S", 2:"W", 3:"N", 4:"E"}
-	# map from -180-180 to 0-4
-	var num_mapping = range_lerp(get_rotation_degrees().y, -180, 180, 0, 4)
-
-	#hud.update_compass(str(get_rotation_degrees().y))
-	var disp = num_to_dir[int(round(num_mapping))]
+	var disp = get_compass_heading()
 	hud.update_compass(str(disp))
 
 	#var cam_minimap = minimap.get_node("Viewport/minimap").cam2d
@@ -483,6 +474,40 @@ func enable_motion_blur(on):
 	#World_node.env.set_dof_blur_far_enabled(on)
 	#World_node.env.set_dof_blur_near_enabled(on)
 
+func get_compass_heading():
+	# because E and W were easiest to identify (the sun)
+	# this relied on Y rotation
+	#var ang_to_dir = {180: "E", -180: "E", 0: "W", 90: "N", -90: "S"}
+	# this relies on angle to marker
+	var ang_to_dir = {180: "N", -180: "N", 0: "S", 90: "E", -90: "W"}
+
+	# -180 -90 0 90 180 are the possible angles
+	# this matches Y rot ang_to_dir above
+	#var num_to_dir = {0: "E", 1:"S", 2:"W", 3:"N", 4:"E"}
+	var num_to_dir = {0:"N", 1:"W", 2:"S", 3:"E", 4:"N"}
+	# map from -180-180 to 0-4
+	#var rot = get_rotation_degrees().y
+	var rot = rad2deg(get_heading())
+	var num_mapping = range_lerp(rot, -180, 180, 0, 4)
+	var disp = num_to_dir[int(round(num_mapping))]
+	
+	return disp
+
+func get_heading():
+	var forward_global = get_global_transform().xform(Vector3(0, 0, 2))
+	var forward_vec = forward_global-get_global_transform().origin
+	#var basis_vec = player.get_global_transform().basis.z
+	
+	# looks like this is always positive?!
+	#var player_rot = forward_vec.angle_to(Vector3(0,0,1))
+	# returns radians
+	#return player_rot
+	var North = get_node("/root/Navigation/marker_North")
+	var rel_loc = get_global_transform().xform_inv(North.get_global_transform().origin)
+	#2D angle to target (local coords)
+	var angle = atan2(rel_loc.x, rel_loc.z)
+	#print("Heading: ", rad2deg(angle))
+	return angle
 
 #doesn't interact with physics
 func _input(event):

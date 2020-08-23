@@ -105,3 +105,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 26.2849, 0, 154.204 )
 
 [node name="Spatial3" parent="." instance=ExtResource( 16 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12.2038, 0, 210.359 )
+
+[node name="marker_North" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 900, 0, 0 )
