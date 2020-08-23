@@ -175,6 +175,13 @@ class ChaseState:
 		
 		car.velocity = Vector2(car.get_parent().get_angular_velocity().y, vel.z)
 
+#helper
+func readable_dir(dir):
+	if dir > 0:
+		return "left"
+	else:
+		return "right"
+
 class ObstacleState:
 	var car
 	var obstacle
@@ -190,17 +197,24 @@ class ObstacleState:
 		var gl = obstacle.get_global_transform().origin
 		var loc = car.get_parent().get_global_transform().xform_inv(gl)
 		var rel_pos = Vector2(loc.x, loc.z)
-		print(car.get_parent().get_parent().get_name() + " rel to obstacle: ", rel_pos)
+		#print(car.get_parent().get_parent().get_name() + " rel to obstacle: ", rel_pos)
 		# loc.z is always positive
 		var x = abs(loc.x)+1
 		var ster = (max_range-loc.z)+(max_range-abs(loc.x))
-		var sig = 1
+		# turn right by default
+		var sig = -1
 		# loc.x needs a buffer related to the size of the obstacle?
-		if rel_pos.x+1 < 0:
-			sig = -1
-		# steer < 0 is left, > 0 is right
-		car.steer = Vector2(sig*ster, 0.1)
-		print("Str:", car.steer)
+		# rel_pos.x < 0 means the obstacle is to our right
+		if rel_pos.x+0.75 < 0:
+			sig = 1
+		# for very small offsets, it means we're head-on - force a direction
+		if abs(rel_pos.x) < 0.4:
+			sig = 1
+		# steer > 0 is left, < 0 is right
+		var spd_steer = car.match_velocity_length(5)
+		car.steer = Vector2(sig*ster, spd_steer.y)
+				#print("Str:", car.steer, " direction: " , car.readable_dir(sig))
+		print(car.get_parent().get_parent().get_name() + " rel ", rel_pos, " str: ", car.steer, " dir: ", car.readable_dir(sig))
 		
 #		if car.get_parent().has_node("RayRightFront") and car.get_parent().get_node("RayRightFront").is_colliding() and (car.get_parent().get_node("RayRightFront").get_collider() != null):
 #			var gl = car.get_parent().get_node("RayRightFront").get_collider().get_global_transform().origin
@@ -225,8 +239,8 @@ class ObstacleState:
 		
 		car.velocity = Vector2(car.get_parent().get_angular_velocity().y, vel.z)
 		
-		# go back to normal driving
-		if not car.obstacle_detected(car.get_parent()):
+		# go back to normal driving if no longer detecting the obstacle 		# and cleared it
+		if not car.obstacle_detected(car.get_parent()): #and ((abs(rel_pos.x) > 3 and rel_pos.y < 1) or rel_pos.y < 0):
 			car.set_state(car.STATE_DRIVING)
 		
 # -----------------------------	
@@ -327,7 +341,7 @@ class CarAheadState:
 
 	func update(delta):
 		# behavior
-		print(car.get_parent().get_parent().get_name() + " braking because of car ahead...")
+		#print(car.get_parent().get_parent().get_name() + " braking because of car ahead...")
 		car.steer = Vector2(0, -1)
 		# our actual velocity
 		# forward vector scaled by our speed
