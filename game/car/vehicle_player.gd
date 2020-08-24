@@ -484,11 +484,11 @@ func get_compass_heading():
 	# -180 -90 0 90 180 are the possible angles
 	# this matches Y rot ang_to_dir above
 	#var num_to_dir = {0: "E", 1:"S", 2:"W", 3:"N", 4:"E"}
-	var num_to_dir = {0:"N", 1:"W", 2:"S", 3:"E", 4:"N"}
+	var num_to_dir = {0:"N", 1: "NW", 2:"W", 3: "SW", 4:"S", 5: "SE", 6:"E", 7: "NE", 8:"N"}
 	# map from -180-180 to 0-4
 	#var rot = get_rotation_degrees().y
 	var rot = rad2deg(get_heading())
-	var num_mapping = range_lerp(rot, -180, 180, 0, 4)
+	var num_mapping = range_lerp(rot, -180, 180, 0, 8)
 	var disp = num_to_dir[int(round(num_mapping))]
 	
 	return disp
