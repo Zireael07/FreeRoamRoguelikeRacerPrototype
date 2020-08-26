@@ -426,10 +426,10 @@ func get_lane(road, flip, left_side):
 	return pts
 
 # called from the outside, eg. by AI when pathing
-func get_path_look(id, exclude=-1):
+func get_paths(id, exclude=-1):
 	print("Get path for id: " + str(id) + ", exclude: " + str(exclude))
 	#print("Path_look: " + str(self.path_look))
-	var int_path = null
+
 	var paths = []
 	for p in self.path_look:
 	#for i in range(self.path_look.size()):
@@ -449,8 +449,12 @@ func get_path_look(id, exclude=-1):
 		for p in paths:
 			if p[1] == exclude:
 				paths.remove(paths.find(p))
-	
 	print("Possible paths for id : " + str(id) + " " + str(paths))
+	return paths
+
+func get_path_look(id, exclude=-1):
+	var int_path = null
+	var paths = get_paths(id, exclude)
 	
 	# if only one path after we removed exclusions, just pick it
 	if paths.size() == 1:
@@ -462,4 +466,3 @@ func get_path_look(id, exclude=-1):
 	int_path = paths[id]
 				
 	return int_path
-

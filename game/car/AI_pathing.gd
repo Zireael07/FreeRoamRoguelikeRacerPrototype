@@ -32,13 +32,77 @@ func _ready():
 		var sorted = map.sort_intersections_distance(map_loc, true)
 		var closest_ind = sorted[0][1]
 		
-		look_for_path(closest_ind, left)
-	
+		#look_for_path(closest_ind, left)
+		look_for_path_initial(closest_ind, left)
+		
 	# Initialization here
 	if has_node("draw"):
 		draw = get_node("draw")
 	if has_node("draw2"):
 		draw_arc = get_node("draw2")
+
+func look_for_path_initial(start_ind, left):
+	var closest = map.get_child(start_ind)
+	#print("Closest int: " + closest.get_name() + " " + str(closest.get_translation()))
+
+	# this operates on ids, therefore we subtract 3 from child id
+	var int_paths = map.get_node("nav").get_paths(start_ind-3, -1)
+	
+	print("Paths: ", int_paths)
+	
+	var int_path = null
+	# if only one path after we removed exclusions, just pick it
+	if int_paths.size() == 1:
+		int_path = int_paths[0]
+	else:
+		# get relative positions/angles
+		var angles = []
+		var tmp = []
+		for p in int_paths:
+			#TODO: a simpler way to do it?
+			var rd_name = "Road "+str(p[0])+"-"+str(p[1])
+			if not map.has_node(rd_name):
+				# try the other way?
+				rd_name = "Road " + str(p[1])+"-"+str(p[0])
+			
+			var road = map.get_node(rd_name)
+			# main part of the road
+			var gl = road.get_node("Spatial0").get_global_transform().origin
+			var rel_pos = get_node("BODY").get_global_transform().xform_inv(gl)
+			#print(get_name() + ", rel pos for : ", rd_name, " - ", rel_pos)
+			var angle = atan2(rel_pos.x, rel_pos.z)
+			angles.append(abs(angle))
+			tmp.append([abs(angle), p])
+		# get the one with smallest relative angle
+		angles.sort()
+		#print("Angles: ", angles)
+		# return the path
+		for t in tmp:
+			#print("Check t " + str(t))
+			if t[0] == angles[0]:
+				int_path = t[1]
+			
+			
+	print("[AI] our intersection path: " + str(int_path))
+	
+	# get road and direction
+	var rd_name = "Road "+str(int_path[0])+"-"+str(int_path[1])
+	var flip = false
+	
+	if not map.has_node(rd_name):
+		# try the other way?
+		rd_name = "Road " + str(int_path[1])+"-"+str(int_path[0])
+		flip = true
+	#print("Road name: " + rd_name)
+	var road = map.get_node(rd_name)
+	#print("Road: " + str(road))
+	
+	var nav_path = map.get_node("nav").get_lane(road, flip, left)
+
+	path = traffic_reduce_path(nav_path)
+	last_ind = start_ind
+	end_ind = int_path[1]
+	emit_signal("found_path", path)
 
 # start_ind operates on child ids but exclude operates on intersection id
 func look_for_path(start_ind, left_side, exclude=-1):
