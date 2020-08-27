@@ -382,7 +382,8 @@ func setup_nav_astar(pts, i, begin_id):
 	# road's end, list end, intersection numbers
 	return [endpoint_id, last_id, ret]
 
-func get_lane(road, flip, left_side):
+# this is governed by map not AI (so that lanes are picked consistently depending on direction of travel)
+func get_lane(road, int_path, flip, left_side):
 	var pts = []
 	# paranoia
 	if not road.has_node("Road_instance0"):
@@ -390,6 +391,37 @@ func get_lane(road, flip, left_side):
 	if not road.has_node("Road_instance1"):
 		return
 
+	# which direction are we going?
+	# shortcut (we know map has 3 nodes before intersections)
+	var src = get_parent().get_child(int_path[0]+3)
+	var dst = get_parent().get_child(int_path[1]+3)
+	var rel_pos = src.get_global_transform().xform_inv(dst.get_global_transform().origin)
+	print("Relative positions of road start and end: ", rel_pos)
+	
+	# pick lane depending on relative direction (quadrant)
+	# "flip" (set by AI earlier) means we are going the other way to the way the map was designed
+	if rel_pos.x > 0 and rel_pos.z < 0:
+		if flip:
+			left_side = true
+		else:
+			left_side = false
+	if rel_pos.x < 0 and rel_pos.z > 0:
+		if flip:
+			left_side = false
+		else:
+			left_side = true
+	if rel_pos.x > 0 and rel_pos.z > 0:
+		if not flip:
+			left_side = true
+		else:
+			left_side = false
+	if rel_pos.x < 0 and rel_pos.z < 0:
+		if flip: 
+			left_side = true
+		else:
+			left_side = false
+
+	# this part actually gets A* points
 	var turn1 = road.get_node("Road_instance0").get_child(0).get_child(0)
 	var turn2 = road.get_node("Road_instance1").get_child(0).get_child(0)
 	
@@ -442,7 +474,7 @@ func get_paths(id, exclude=-1):
 
 	# if only one path, just pick it
 	if paths.size() == 1:
-		return paths[0]
+		return paths
 
 	# remove excluded paths
 	if exclude != -1:

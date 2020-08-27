@@ -73,7 +73,7 @@ color = Color( 1, 0.961243, 0.0078125, 1 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 47.594, 0, 192.855 )
 
 [node name="Spatial" parent="AI" instance=ExtResource( 9 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.64328, 0, 1.32462 )
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.64328, 0, -1.24017 )
 left = false
 
 [node name="Spatial3" parent="AI" instance=ExtResource( 9 )]

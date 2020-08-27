@@ -97,7 +97,7 @@ func look_for_path_initial(start_ind, left):
 	var road = map.get_node(rd_name)
 	#print("Road: " + str(road))
 	
-	var nav_path = map.get_node("nav").get_lane(road, flip, left)
+	var nav_path = map.get_node("nav").get_lane(road, int_path, flip, left)
 
 	path = traffic_reduce_path(nav_path)
 	last_ind = start_ind
@@ -139,7 +139,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	var road = map.get_node(rd_name)
 	#print("Road: " + str(road))
 	
-	nav_path = map.get_node("nav").get_lane(road, flip, left)
+	nav_path = map.get_node("nav").get_lane(road, int_path, flip, left)
 	
 	if exclude != -1:
 		# append intersection position
