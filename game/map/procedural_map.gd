@@ -113,6 +113,10 @@ func _ready():
 	# map navigation, markers...
 	get_node("nav").setup(mult, samples, real_edges)
 
+	# debug
+	get_node("nav").debug_lanes()
+
+
 	# place cars on intersection
 	place_player(1)
 	place_AI(1)

@@ -498,3 +498,39 @@ func get_path_look(id, exclude=-1):
 	int_path = paths[id]
 				
 	return int_path
+
+func debug_lanes():
+	var map = get_parent()
+	for p in path_look:
+		#print(str(p))
+		
+		# get road from ids
+		var rd_name = "Road "+str(p[0])+"-"+str(p[1])
+		var flip = false
+	
+		if not map.has_node(rd_name):
+			# skip
+			continue
+#			# try the other way?
+#			rd_name = "Road " + str(p[1])+"-"+str(p[0])
+#			flip = true
+		#print("Road name: " + rd_name)
+		var road = map.get_node(rd_name)
+		var nav_path = map.get_node("nav").get_lane(road, p, flip, true)
+		# those points are global (see line 442)
+		for pt in nav_path:
+			debug_cube(to_local(pt))
+
+func debug_cube(loc):
+	var mesh = CubeMesh.new()
+	mesh.set_size(Vector3(0.5,0.5,0.5))
+	var node = MeshInstance.new()
+	node.set_mesh(mesh)
+	node.add_to_group("debug")
+	add_child(node)
+	node.set_translation(loc)
+	
+func clear_cubes():
+	for c in get_children():
+		if c.is_in_group("debug") and c.is_class("MeshInstance"):
+			c.queue_free()
