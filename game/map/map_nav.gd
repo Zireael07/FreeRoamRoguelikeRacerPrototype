@@ -423,7 +423,7 @@ func get_lane(road, int_path, flip, left_side):
 			left_side = false
 	
 			
-	print(road.get_name(), " relative positions of road start and end: ", rel_pos, "angle: ", angle, " flip: ", flip, " left: ", left_side)
+	print(road.get_name(), " relative positions of road start and end: ", rel_pos, " angle: ", angle, " flip: ", flip, " left: ", left_side)
 
 	# this part actually gets A* points
 	var turn1 = road.get_node("Road_instance0").get_child(0).get_child(0)
@@ -439,7 +439,11 @@ func get_lane(road, int_path, flip, left_side):
 			else:
 				lane_lists = [turn1.points_inner_nav, turn2.points_outer_nav]
 		else:
-			lane_lists = [turn1.points_outer_nav, turn2.points_inner_nav]
+			# acccount for roads going almost straight
+			if angle < -PI+0.4:
+				lane_lists = [turn1.points_outer_nav, turn2.points_outer_nav]	
+			else:
+				lane_lists = [turn1.points_outer_nav, turn2.points_inner_nav]
 	else:
 		if not flip:
 			lane_lists = [turn1.points_outer_nav, turn2.points_inner_nav]
