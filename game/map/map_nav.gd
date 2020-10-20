@@ -5,6 +5,8 @@ var ast # for BFS
 var nav # for actual navigation
 var path_look = {} # calculated paths
 
+var flip_mat = preload("res://assets/car_red.tres")
+
 # used all over the code
 var mult
 
@@ -522,10 +524,10 @@ func debug_lanes():
 	
 		if not map.has_node(rd_name):
 			# skip
-			continue
+			#continue
 #			# try the other way?
-#			rd_name = "Road " + str(p[1])+"-"+str(p[0])
-#			flip = true
+			rd_name = "Road " + str(p[1])+"-"+str(p[0])
+			flip = true
 		#print("Road name: " + rd_name)
 		var road = map.get_node(rd_name)
 		
@@ -536,16 +538,19 @@ func debug_lanes():
 #		var dst = map.get_child(p[1]+3)
 #		var rel_pos = src.get_global_transform().xform_inv(dst.get_global_transform().origin)
 #		if rel_pos.x > 0 and rel_pos.z > 0:
+		#if flip:
 		var nav_path = map.get_node("nav").get_lane(road, p, flip, true)
 		# those points are global (see line 442)
 		for pt in nav_path:
-			debug_cube(to_local(pt))
+			debug_cube(to_local(pt), flip)
 
-func debug_cube(loc):
+func debug_cube(loc, flip):
 	var mesh = CubeMesh.new()
 	mesh.set_size(Vector3(0.5,0.5,0.5))
 	var node = MeshInstance.new()
 	node.set_mesh(mesh)
+	if flip:
+		node.get_mesh().surface_set_material(0, flip_mat)
 	node.add_to_group("debug")
 	add_child(node)
 	node.set_translation(loc)
