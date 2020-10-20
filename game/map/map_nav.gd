@@ -396,7 +396,8 @@ func get_lane(road, int_path, flip, left_side):
 	var src = get_parent().get_child(int_path[0]+3)
 	var dst = get_parent().get_child(int_path[1]+3)
 	var rel_pos = src.get_global_transform().xform_inv(dst.get_global_transform().origin)
-	print("Relative positions of road start and end: ", rel_pos)
+	# same as in connect_intersections.gd
+	var angle = atan2(rel_pos.z, rel_pos.x)
 	
 	# pick lane depending on relative direction (quadrant)
 	# "flip" (set by AI earlier) means we are going the other way to the way the map was designed
@@ -420,6 +421,9 @@ func get_lane(road, int_path, flip, left_side):
 			left_side = true
 		else:
 			left_side = false
+	
+			
+	print(road.get_name(), " relative positions of road start and end: ", rel_pos, "angle: ", angle, " flip: ", flip, " left: ", left_side)
 
 	# this part actually gets A* points
 	var turn1 = road.get_node("Road_instance0").get_child(0).get_child(0)
@@ -429,7 +433,11 @@ func get_lane(road, int_path, flip, left_side):
 	# side
 	if left_side:
 		if not flip:
-			lane_lists = [turn1.points_inner_nav, turn2.points_outer_nav]
+			# acccount for roads going almost straight
+			if angle < 0.4:
+				lane_lists = [turn1.points_inner_nav, turn2.points_inner_nav]
+			else:
+				lane_lists = [turn1.points_inner_nav, turn2.points_outer_nav]
 		else:
 			lane_lists = [turn1.points_outer_nav, turn2.points_inner_nav]
 	else:
@@ -516,6 +524,14 @@ func debug_lanes():
 #			flip = true
 		#print("Road name: " + rd_name)
 		var road = map.get_node(rd_name)
+		
+		# only interested in some lanes
+		# which direction are we going?
+		# shortcut (we know map has 3 nodes before intersections)
+#		var src = map.get_child(p[0]+3)
+#		var dst = map.get_child(p[1]+3)
+#		var rel_pos = src.get_global_transform().xform_inv(dst.get_global_transform().origin)
+#		if rel_pos.x > 0 and rel_pos.z > 0:
 		var nav_path = map.get_node("nav").get_lane(road, p, flip, true)
 		# those points are global (see line 442)
 		for pt in nav_path:
