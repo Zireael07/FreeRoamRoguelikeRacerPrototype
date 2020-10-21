@@ -551,6 +551,7 @@ func debug_cube(loc, flip):
 	node.set_mesh(mesh)
 	if flip:
 		node.get_mesh().surface_set_material(0, flip_mat)
+	node.set_cast_shadows_setting(0)
 	node.add_to_group("debug")
 	add_child(node)
 	node.set_translation(loc)

@@ -223,6 +223,7 @@ func debug_cube(loc):
 	mesh.set_size(Vector3(0.5,0.5,0.5))
 	var node = MeshInstance.new()
 	node.set_mesh(mesh)
+	node.set_cast_shadows_setting(0)
 	node.add_to_group("debug")
 	add_child(node)
 	node.set_translation(loc)
