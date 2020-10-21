@@ -145,6 +145,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	if exclude != -1:
 		# append intersection position
 		var pos = closest.get_global_transform().origin
+		# AI has no way ahead, has to go back the way it came
 		# append at an offset if we're going back
 		if back:
 			if left:
@@ -152,6 +153,18 @@ func look_for_path(start_ind, left_side, exclude=-1):
 				pos = pos + Vector3(-4.0, 0.0, 0.0)
 			else:
 				pos = pos + Vector3(4.0, 0.0, 0.0)
+		
+		# if not going back, offset target point slightly in direction of next road
+		else:
+			var angle = get_node("BODY").to_local(nav_path[0]).x
+			print("Angle to #1 of new road: ", angle)
+			if abs(angle) < 5:
+				pass # do nothing
+			else:
+				if angle < 0: # right
+					pos = intersection_turn_offset(closest, pos, true)
+				else: # left
+					pos = intersection_turn_offset(closest, pos, false)
 				
 		nav_path.insert(0, pos)
 	
@@ -160,6 +173,28 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	last_ind = start_ind
 	end_ind = int_path[1]
 	emit_signal("found_path", path)
+
+func intersection_turn_offset(closest, pos, right):
+	# distance to intersection
+	var rel_int = get_node("BODY").to_local(pos)
+	var dist = rel_int.length()
+	
+	var sig = 1.0
+	if right:
+		sig = -1.0
+	
+	# this is relative to AI car
+	var rel_loc = Vector3(sig*2.0, 0.0, dist-2.0)
+	var off = get_node("BODY").get_global_transform().xform(rel_loc) 
+	#print("off gl: ", off)
+	debug_cube(to_local(off), true)
+	# now in closest intersection's space
+	var int_loc_off = closest.to_local(off)
+	#print("off loc: ", int_loc_off)
+	# offset by local offset
+	var mod_pos = pos + int_loc_off
+	
+	return mod_pos
 
 func traffic_reduce_path(path):
 	var new_path = []
