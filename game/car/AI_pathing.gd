@@ -15,6 +15,7 @@ var map
 # debugging
 var draw
 var draw_arc
+var flip_mat = preload("res://assets/car_red.tres")
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -218,13 +219,17 @@ func reduce_path(path):
 		
 	return new_path
 			
-func debug_cube(loc):
+
+func debug_cube(loc, red=false):
 	var mesh = CubeMesh.new()
 	mesh.set_size(Vector3(0.5,0.5,0.5))
 	var node = MeshInstance.new()
 	node.set_mesh(mesh)
+	if red:
+		node.get_mesh().surface_set_material(0, flip_mat)
 	node.set_cast_shadows_setting(0)
-	node.add_to_group("debug")
+	if not red:
+		node.add_to_group("debug")
 	add_child(node)
 	node.set_translation(loc)
 	
