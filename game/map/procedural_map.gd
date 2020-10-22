@@ -107,7 +107,7 @@ func _ready():
 			var ret = connect_intersections(e[0]+3, e[1]+3, false)
 			if ret != false:
 				# update naming
-				fix_road_naming()
+				#fix_road_naming()
 
 	# map setup is done, let's continue....
 	# map navigation, markers...
@@ -325,7 +325,7 @@ func auto_connect(initial_int, real_edges, verbose=false):
 			real_edges.append(Vector2(initial_int, p[0]))
 			
 			# update naming
-			fix_road_naming()
+			#fix_road_naming()
 
 
 func fix_road_naming():

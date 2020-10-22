@@ -71,8 +71,10 @@ func connect_intersections(one, two, verbose=false):
 	
 	# make top node (which holds road name)
 	var top_node = Spatial.new()
-	# this uses child id
-	top_node.set_name("Road " +str(one) + "-" + str(two))
+	#print(str(one) + " to " + str(two))
+	# this used to be child (node) id, but this way it's more intuitive
+	# subtract 3 to get actual intersection number from child id
+	top_node.set_name("Road " +str(one-3) + "-" + str(two-3))
 	add_child(top_node)
 
 	initial_road_test(one, two, data, corner_points[0], top_node, verbose)
