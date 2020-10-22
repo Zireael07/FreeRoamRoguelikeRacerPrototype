@@ -260,11 +260,15 @@ func _process(delta):
 						coplights_off(playr)
 
 
-func setup_path(path):
+func setup_path(data_path):
 	target_array.resize(0) #= []
 	pt_locs_rel.resize(0) #= []
 	# clear debug cubes
 	get_parent().clear_cubes()
+	
+	path = data_path[0]
+	var left_lane = data_path[1]
+	var flip = data_path[2]
 	
 	# fix
 	if get_parent().is_in_group("race_AI"):

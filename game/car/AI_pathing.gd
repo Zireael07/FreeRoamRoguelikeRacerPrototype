@@ -98,12 +98,13 @@ func look_for_path_initial(start_ind, left):
 	var road = map.get_node(rd_name)
 	#print("Road: " + str(road))
 	
-	var nav_path = map.get_node("nav").get_lane(road, int_path, flip, left)
+	var nav_data = map.get_node("nav").get_lane(road, int_path, flip, left)
+	var nav_path = nav_data[0]
 
 	path = traffic_reduce_path(nav_path)
 	last_ind = start_ind
 	end_ind = int_path[1]
-	emit_signal("found_path", path)
+	emit_signal("found_path", [path, nav_data[1], nav_data[2]])
 
 # start_ind operates on child ids but exclude operates on intersection id
 func look_for_path(start_ind, left_side, exclude=-1):
@@ -123,7 +124,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	
 	var lookup_path = map.get_node("nav").path_look[[int_path[0], int_path[1]]]
 	#print("[AI] Lookup path: " + str(lookup_path))
-	var nav_path = map.get_node("nav").nav.get_point_path(lookup_path[0], lookup_path[1])
+	#var nav_path = map.get_node("nav").nav.get_point_path(lookup_path[0], lookup_path[1])
 	#print("[AI] Nav path: " + str(nav_path))
 	#print("Nav path length: " + str(nav_path.size()-1))
 	
@@ -140,7 +141,8 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	var road = map.get_node(rd_name)
 	#print("Road: " + str(road))
 	
-	nav_path = map.get_node("nav").get_lane(road, int_path, flip, left)
+	var nav_data = map.get_node("nav").get_lane(road, int_path, flip, left_side)
+	var nav_path = nav_data[0]
 	
 	if exclude != -1:
 		# append intersection position
@@ -148,7 +150,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 		# AI has no way ahead, has to go back the way it came
 		# append at an offset if we're going back
 		if back:
-			if left:
+			if left_side:
 				# make use of the fact the intersections are never rotated
 				pos = pos + Vector3(-4.0, 0.0, 0.0)
 			else:
@@ -172,7 +174,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	path = traffic_reduce_path(nav_path)
 	last_ind = start_ind
 	end_ind = int_path[1]
-	emit_signal("found_path", path)
+	emit_signal("found_path", [path, nav_data[1], nav_data[2]])
 
 func intersection_turn_offset(closest, pos, right):
 	# distance to intersection
