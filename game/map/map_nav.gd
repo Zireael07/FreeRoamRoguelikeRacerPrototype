@@ -6,6 +6,8 @@ var nav # for actual navigation
 var path_look = {} # calculated paths
 
 var flip_mat = preload("res://assets/car_red.tres")
+var test_mat = preload("res://assets/car_blue.tres")
+var test2_mat = preload("res://assets/car_black.tres")
 
 # used all over the code
 var mult
@@ -454,22 +456,28 @@ func get_lane(road, int_path, flip, left_side):
 
 	# keeping 'em global for consistency with the A* centerline
 	# from local to global
+	#print("Turn size: ", lane_lists[0].size())
+	
 	for i in range(0,lane_lists[0].size()):
 		var c = lane_lists[0][i]
 		var p = Vector3(c.x, turn1.road_height, c.y)
 		pts.append(turn1.to_global(p))
 
 	#print(pts)
+	#print("Points: ", pts.size())
+	
 	# because turn 2 is inverted
 	for i in range(lane_lists[1].size()-1, 0, -1):
 		var c = lane_lists[1][i]
 		var p = Vector3(c.x, turn1.road_height, c.y)
 		pts.append(turn2.to_global(p))
+	#print("Points with turn 2: ", pts.size())
 
 	if flip:
 		pts.invert()
 
-	return pts
+	# left and flip are used mostly for debugging
+	return [pts, left_side, flip]
 
 # called from the outside, eg. by AI when pathing
 func get_paths(id, exclude=-1):
@@ -539,22 +547,59 @@ func debug_lanes():
 #		var rel_pos = src.get_global_transform().xform_inv(dst.get_global_transform().origin)
 #		if rel_pos.x > 0 and rel_pos.z > 0:
 		#if flip:
-		var nav_path = map.get_node("nav").get_lane(road, p, flip, true)
+		var nav_data = map.get_node("nav").get_lane(road, p, flip, true)
+		var nav_path = nav_data[0]
+		
+		# set flags
+		var flag = ""
+		if flip:
+			if not nav_data[1]:
+				flag = "flip"
+			else:
+				flag = "left_flip"
+		
+		else:
+			if nav_data[1]:
+				flag = "left"
+				
 		# those points are global (see line 442)
 		for pt in nav_path:
-			debug_cube(to_local(pt), flip)
+			debug_cube(to_local(pt), flag)
+			
+		# additional debug points
+#		if not flip:
+#			debug_cube(to_local(nav_path[32]), "flip")
+#			debug_cube(to_local(nav_path[33]), "flip")
+#		else:
+#			debug_cube(to_local(nav_path[31]), "left")
+#			debug_cube(to_local(nav_path[32]), "left")
+		
+		# B-A - vector from A to B
+		var midpoint = nav_path[32]+(nav_path[33]-nav_path[32])/2
+		if flip:
+			# why the difference by 1?
+			midpoint = nav_path[31]+(nav_path[32]-nav_path[31])/2
+		debug_cube(to_local(midpoint), flag)
 
-func debug_cube(loc, flip):
+
+func debug_cube(loc, flag=""):
 	var mesh = CubeMesh.new()
 	mesh.set_size(Vector3(0.5,0.5,0.5))
 	var node = MeshInstance.new()
 	node.set_mesh(mesh)
-	if flip:
-		node.get_mesh().surface_set_material(0, flip_mat)
+	if flag == "flip":
+		node.get_mesh().surface_set_material(0, flip_mat) #red
+	if flag == "left_flip":
+		node.get_mesh().surface_set_material(0, test_mat) # blue
+	if flag == "left":
+		node.get_mesh().surface_set_material(0, test2_mat) # black (because it's the counterpart to white, i.e. right)
 	node.set_cast_shadows_setting(0)
 	node.add_to_group("debug")
 	add_child(node)
 	node.set_translation(loc)
+	# offset flipped a bit
+	if flag == "flip" or flag == "left_flip":
+		node.translate(Vector3(0.0, 0.2, 0.0))
 	
 func clear_cubes():
 	for c in get_children():
