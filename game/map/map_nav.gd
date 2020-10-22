@@ -437,21 +437,21 @@ func get_lane(road, int_path, flip, left_side):
 	# side
 	if left_side:
 		if not flip:
-			# acccount for roads going almost straight
-			if angle < 0.4:
+			# account for roads going almost straight (the checks here are ad hoc)
+			if angle < 0.4 or (turn1.start_angle > 250 and turn2.start_angle > 300):
 				lane_lists = [turn1.points_inner_nav, turn2.points_inner_nav]
 			else:
 				lane_lists = [turn1.points_inner_nav, turn2.points_outer_nav]
 		else:
 			# account for roads going almost straight
-			if angle < -PI+0.4:
+			if angle < -PI+0.4 or (turn1.start_angle > 250 and turn2.start_angle > 300):
 				lane_lists = [turn1.points_outer_nav, turn2.points_outer_nav]	
 			else:
 				lane_lists = [turn1.points_outer_nav, turn2.points_inner_nav]
 	# right side
 	else:
 		if not flip:
-			# account for roads going almost straight
+			# account for roads going almost straight (the checks here are ad hoc)
 			if angle > -0.79 and angle < -0.1:
 				lane_lists = [turn1.points_outer_nav, turn2.points_outer_nav]
 			else:
