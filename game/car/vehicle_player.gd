@@ -447,7 +447,7 @@ func _process(delta):
 	if not reached_changed:
 		hud.update_nav_label("")
 
-	hud.update_debug(str(disp_name) if hit != null else "")
+	hud.update_road(str(disp_name) if hit != null else "")
 
 	#hud.update_debug("Player vel: x: " + str(get_linear_velocity().x) + "y: " + str(get_linear_velocity().z))
 	#hud.update_debug("Player: " + str(get_rotation_degrees()) + '\n' + " Arrow : " + str(cam_rot))

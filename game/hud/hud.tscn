@@ -87,11 +87,18 @@ align = 1
 valign = 2
 max_lines_visible = 1
 
-[node name="Label 2" type="Label" parent="."]
-margin_left = 9.0
-margin_top = 147.0
+[node name="Label road" type="Label" parent="."]
+margin_left = 10.0
+margin_top = 130.0
 margin_right = 218.0
-margin_bottom = 240.0
+margin_bottom = 150.0
+size_flags_horizontal = 2
+size_flags_vertical = 0
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 size_flags_horizontal = 2
 size_flags_vertical = 0
 align = 1

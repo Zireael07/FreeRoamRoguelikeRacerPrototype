@@ -6,6 +6,7 @@ onready var label = get_node("Label")
 onready var debug_label = get_node("Label 2")
 onready var fps_label = get_node("Label FPS")
 onready var dist_label = get_node("Label dist")
+onready var road_label = get_node("Label road")
 onready var label_timer = get_node("Label timer")
 onready var label_clock = get_node("Label clock")
 onready var compass_label = get_node("CompassLabel")
@@ -51,6 +52,9 @@ func update_fps():
 
 func update_distance(text):
 	dist_label.set_text(text)
+	
+func update_road(text):
+	road_label.set_text(text)	
 	
 func update_timer(text):
 	label_timer.set_text("Timer: " + text)
