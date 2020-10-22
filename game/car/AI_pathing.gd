@@ -187,7 +187,7 @@ func intersection_turn_offset(closest, pos, right):
 	var rel_loc = Vector3(sig*2.0, 0.0, dist-2.0)
 	var off = get_node("BODY").get_global_transform().xform(rel_loc) 
 	#print("off gl: ", off)
-	debug_cube(to_local(off), true)
+	#debug_cube(to_local(off), true)
 	# now in closest intersection's space
 	var int_loc_off = closest.to_local(off)
 	#print("off loc: ", int_loc_off)
@@ -263,8 +263,8 @@ func debug_cube(loc, red=false):
 	if red:
 		node.get_mesh().surface_set_material(0, flip_mat)
 	node.set_cast_shadows_setting(0)
-	if not red:
-		node.add_to_group("debug")
+	#if not red:
+	node.add_to_group("debug")
 	add_child(node)
 	node.set_translation(loc)
 	
