@@ -443,16 +443,25 @@ func get_lane(road, int_path, flip, left_side):
 			else:
 				lane_lists = [turn1.points_inner_nav, turn2.points_outer_nav]
 		else:
-			# acccount for roads going almost straight
+			# account for roads going almost straight
 			if angle < -PI+0.4:
 				lane_lists = [turn1.points_outer_nav, turn2.points_outer_nav]	
 			else:
 				lane_lists = [turn1.points_outer_nav, turn2.points_inner_nav]
+	# right side
 	else:
 		if not flip:
-			lane_lists = [turn1.points_outer_nav, turn2.points_inner_nav]
+			# account for roads going almost straight
+			if angle > -0.79 and angle < -0.1:
+				lane_lists = [turn1.points_outer_nav, turn2.points_outer_nav]
+			else:
+				lane_lists = [turn1.points_outer_nav, turn2.points_inner_nav]
 		else:
-			lane_lists = [turn1.points_inner_nav, turn2.points_outer_nav]
+			# account for roads going almost straight
+			if angle > 2.35 and angle < 3.04:
+				lane_lists = [turn1.points_inner_nav, turn2.points_inner_nav]
+			else:
+				lane_lists = [turn1.points_inner_nav, turn2.points_outer_nav]
 
 	# keeping 'em global for consistency with the A* centerline
 	# from local to global
