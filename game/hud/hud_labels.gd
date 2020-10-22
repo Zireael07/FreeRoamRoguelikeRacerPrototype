@@ -36,8 +36,9 @@ func _ready():
 	
 	pass
 
-func update_speed(text):
+func update_speed(text, clr):
 	label.set_text(text)
+	label.set_modulate(clr)
 
 func update_debug(text):
 	debug_label.set_text(text)

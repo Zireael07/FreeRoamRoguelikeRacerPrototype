@@ -365,7 +365,11 @@ func _process(delta):
 	speed_int = round(speed)
 	speed_kph = round(speed*3.6)
 	speed_text = String(speed_int) + " m/s " + String(speed_kph) + " kph"
-	hud.update_speed(speed_text)
+	# make speed reading red if above speed limit
+	if speed > 15:
+		hud.update_speed(speed_text, Color(1,0,0))
+	else:
+		hud.update_speed(speed_text, Color(0,1,1)) #cyan
 
 
 	hud.update_wheel_angle(get_steering(), 1) #absolute maximum steer limit

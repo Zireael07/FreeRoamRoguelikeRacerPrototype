@@ -25,15 +25,18 @@ bg_color = Color( 0.367188, 0.061676, 0.061676, 1 )
 border_color = Color( 0.460938, 0, 0, 1 )
 
 [node name="root" type="Control"]
-editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_bottom = -462.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="."]
+modulate = Color( 0.0156863, 0.988235, 0.988235, 1 )
 margin_left = 25.0
 margin_top = -22.0
 margin_right = 227.0
@@ -41,7 +44,6 @@ margin_bottom = 77.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 1 )
-custom_colors/font_color = Color( 0.0154419, 0.988281, 0.988281, 1 )
 text = "spd"
 align = 1
 valign = 1
@@ -100,9 +102,12 @@ margin_right = 80.0
 margin_bottom = 72.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
-custom_colors/font_color = Color( 0.996094, 0.00389099, 0.0736552, 1 )
+custom_colors/font_color = Color( 0.333333, 0.00392157, 0.0745098, 1 )
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="CAM blink" type="Control" parent="."]
 margin_right = 40.0
@@ -184,7 +189,6 @@ margin_right = 20.0
 margin_bottom = 14.0
 
 [node name="DriverInfo" type="Control" parent="."]
-editor/display_folded = true
 margin_top = 457.0
 margin_right = 40.0
 margin_bottom = 497.0
