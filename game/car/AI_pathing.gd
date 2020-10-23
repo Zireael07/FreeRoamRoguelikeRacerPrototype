@@ -8,6 +8,7 @@ var path
 var end_ind
 var last_ind
 signal found_path
+var road
 
 #var navigation_node
 var map
@@ -66,7 +67,7 @@ func look_for_path_initial(start_ind, left):
 				# try the other way?
 				rd_name = "Road " + str(p[1])+"-"+str(p[0])
 			
-			var road = map.get_node(rd_name)
+			road = map.get_node(rd_name)
 			# main part of the road
 			var gl = road.get_node("Spatial0").get_global_transform().origin
 			var rel_pos = get_node("BODY").get_global_transform().xform_inv(gl)
@@ -138,7 +139,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 		rd_name = "Road " + str(int_path[1])+"-"+str(int_path[0])
 		flip = true
 	#print("Road name: " + rd_name)
-	var road = map.get_node(rd_name)
+	road = map.get_node(rd_name)
 	#print("Road: " + str(road))
 	
 	var nav_data = map.get_node("nav").get_lane(road, int_path, flip, left_side)
@@ -210,6 +211,17 @@ func traffic_reduce_path(path):
 	for i in range(path.size()):
 		if i in to_keep:
 			new_path.append(path[i])
+	
+	# if tunnel, add midpoint 
+	# IRL tunnels often have lower speed limits, and it also prevents the AI rubbing the wall
+	if road.get_node("Spatial0/Road_instance 0").tunnel:
+		var id = 3
+		print("Road is tunnel")
+		if path.size() > 65:
+			id = 2
+		# B-A - vector from A to B
+		var midpoint = new_path[id]+(new_path[id+1]-new_path[id])/2
+		new_path.insert(id+1, midpoint)
 			
 	return new_path
 
