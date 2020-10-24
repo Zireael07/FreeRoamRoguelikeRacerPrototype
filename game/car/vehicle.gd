@@ -44,6 +44,8 @@ var taillights
 var tail_mat
 
 var sparks
+
+var flip_mat = preload("res://assets/car_red.tres")
 	
 func _ready():
 	sparks = load("res://objects/Particles_sparks.tscn")
@@ -375,11 +377,14 @@ func setHeadlights(on):
 		
 		
 # debug
-func debug_cube(loc):
+func debug_cube(loc, red=false):
 	var mesh = CubeMesh.new()
 	mesh.set_size(Vector3(0.5,0.5,0.5))
 	var node = MeshInstance.new()
 	node.set_mesh(mesh)
+	if red:
+		node.get_mesh().surface_set_material(0, flip_mat)
+	node.set_cast_shadows_setting(0)
 	node.set_name("Debug")
 	add_child(node)
 	node.set_translation(loc)
