@@ -15,6 +15,7 @@ export var top_speed = 15 #50 kph?
 var rel_loc
 var dot
 var predict
+var cte # cross track error
 
 #var target
 #var rel_target # for setting a set heading
@@ -131,8 +132,9 @@ func draw_debugging():
 		#points
 		var pos = get_transform().origin #get_translation()
 		var points = PoolVector3Array()
-		points.push_back(get_translation())
-#
+		# this is the start point of most drawing
+		#points.push_back(get_translation())
+
 		# draw velocity
 #			# from relative location
 #			var loc_to_dr = Vector3(brain.velocity.x, 1, brain.velocity.y)
@@ -145,11 +147,35 @@ func draw_debugging():
 
 		# draw forward vector
 		# from relative location
-		var loc_dr = Vector3(0, 0, 4)
-		var gl_tg = get_global_transform().xform(loc_dr)
-		var par_rel = get_parent().get_global_transform().xform_inv(gl_tg)
-		points.push_back(Vector3(par_rel.x, 1, par_rel.z))
-		get_parent().draw_arc.draw_line_color(points, 3, Color(1,0,1))
+#		var loc_dr = Vector3(0, 0, 4)
+#		var gl_tg = get_global_transform().xform(loc_dr)
+#		var par_rel = get_parent().get_global_transform().xform_inv(gl_tg)
+#		points.push_back(Vector3(par_rel.x, 1, par_rel.z))
+#		get_parent().draw_arc.draw_line_color(points, 3, Color(1,0,1))
+
+		# draw lane line
+#		if pt_locs_rel.size() > 0 and current < pt_locs_rel.size():
+#			var par_rel = pt_locs_rel[prev]
+#			points.push_back(Vector3(par_rel.x, 1, par_rel.z))
+#
+#			par_rel = pt_locs_rel[current]
+#			points.push_back(Vector3(par_rel.x, 1, par_rel.z))
+#			get_parent().draw_arc.draw_line_color(points, 3, Color(0,1,0))
+
+		# draw line from prev to us
+#		if pt_locs_rel.size() > 0:
+#			var par_rel = pt_locs_rel[prev]
+#			points.push_back(Vector3(par_rel.x, 1, par_rel.z))
+#			points.push_back(get_translation())
+#			get_parent().draw_arc.draw_line_color(points, 3, Color(0,1,0))
+			
+		# draw line from us to normal point
+		if pt_locs_rel.size() > 0:
+			points.push_back(get_translation())
+			var gl_norm = get_normal_point()
+			var par_rel = get_parent().get_global_transform().xform_inv(gl_norm)
+			points.push_back(Vector3(par_rel.x, 1, par_rel.z))
+			get_parent().draw_arc.draw_line_color(points, 3, Color(0,1,0))
 
 # ---------
 # cop stuff
@@ -358,6 +384,11 @@ func _physics_process(delta):
 	
 		# predict position
 		predict = predict_loc(1)
+		# cross track error = distance to normal on line
+		var gl_norm = get_normal_point()
+		#B-A = from A to B
+		cte = (get_normal_point()-predict).length()
+	
 		# steering from boid
 		steer = brain.steer
 		#if brain.steer != Vector2(0,0):
@@ -483,6 +514,21 @@ func predict_loc(s):
 		debug_cube(pos, true)
 	
 	return gl_tg
+
+func get_normal_point():
+	# dummy
+	if current >= target_array.size():
+		return get_global_transform().origin # i.e. offset from normal point is 0
+	
+	# lane line
+	# B-A = vector from A->B
+	var line = target_array[current]-target_array[prev]
+	line = line.normalized()
+	var pred_line = predict-target_array[prev]
+	# A cos theta = scalar projection, where theta is the angle between A & B aka dot product
+	var norm_point = target_array[prev] + pred_line.project(line)
+	return norm_point # global
+
 
 #	func update(delta):
 #		car.flag = ""
