@@ -6,7 +6,7 @@ extends "vehicle.gd"
 onready var brain = get_node("brain")
 
 
-var target_array = PoolVector3Array()
+var target_array = PoolVector3Array() # those are global
 var current = 0
 var prev = 0
 #export var target_angle = 0.2
@@ -14,6 +14,7 @@ export var top_speed = 15 #50 kph?
 
 var rel_loc
 var dot
+var predict
 
 #var target
 #var rel_target # for setting a set heading
@@ -40,7 +41,7 @@ var debug = false
 # pathing
 #var navigation_node
 var path
-var pt_locs_rel = []
+var pt_locs_rel = [] # those are relative to parent, for debugging
 
 var elapsed_secs = 0
 var start_secs = 1
@@ -259,7 +260,7 @@ func _process(delta):
 						
 						coplights_off(playr)
 
-
+# ------------------------------------
 func setup_path(data_path):
 	target_array.resize(0) #= []
 	pt_locs_rel.resize(0) #= []
@@ -355,6 +356,8 @@ func _physics_process(delta):
 		angle = atan2(rel_loc.x, rel_loc.z)
 		#if debug: print(str(angle))
 	
+		# predict position
+		predict = predict_loc(1)
 		# steering from boid
 		steer = brain.steer
 		#if brain.steer != Vector2(0,0):
@@ -461,7 +464,26 @@ func _physics_process(delta):
 				else:
 					#print("We're at the end")
 					stop = true
-		
+
+# -----------------------
+# based on https://natureofcode.com/book/chapter-6-autonomous-agents/
+func predict_loc(s):
+	var loc_dr = Vector3(0, 0, speed)
+	var gl_tg = get_global_transform().xform(loc_dr)
+	var pos = get_global_transform().xform_inv(gl_tg)
+	
+	# debug (this one paints the whole track)
+	#var par_rel = get_parent().get_global_transform().xform_inv(gl_tg)
+	#get_parent().debug_cube(par_rel, true)
+	
+	# is any existing? (see vehicle.gd line 370)
+	if has_node("Debug"):
+		get_node("Debug").set_translation(pos)
+	else:
+		debug_cube(pos, true)
+	
+	return gl_tg
+
 #	func update(delta):
 #		car.flag = ""
 #
