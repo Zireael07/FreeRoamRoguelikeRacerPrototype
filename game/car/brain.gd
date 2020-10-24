@@ -93,8 +93,14 @@ class DrivingState:
 				# the value here should probably be speed dependent
 				arr = car.arrive(Vector2(to_loc.x, to_loc.z), 10)
 				#var seek = car.seek(Vector2(to_loc.x, to_loc.z))
+				
+				# avoid getting too far off lane
+				if car.get_parent().cte > 1 and car.get_parent().cte < 20:
+					# steer > 0 is left, < 0 is right
+					var sig = sign(arr.x)
+					arr.x = arr.x + sig*car.get_parent().cte
 	
-			car.get_parent().debug = false
+			#car.get_parent().debug = false
 	
 			#print("Arr" + str(arr))
 			#car.steer = arr;
@@ -175,7 +181,7 @@ class ChaseState:
 		
 		car.velocity = Vector2(car.get_parent().get_angular_velocity().y, vel.z)
 
-#helper
+#helper (steer > 0 is left, < 0 is right)
 func readable_dir(dir):
 	if dir > 0:
 		return "left"
