@@ -37,7 +37,7 @@ func set_state(new_state, param=null):
 	if new_state == STATE_OBSTACLE:
 		state = ObstacleState.new(self, param)
 	if new_state == STATE_CAR_AHEAD:
-		state = CarAheadState.new(self)
+		state = CarAheadState.new(self, param)
 	
 	emit_signal("state_changed", self)
 
@@ -147,7 +147,7 @@ class DrivingState:
 		# if there's a car ahead, switch
 		var car_a = car.car_ahead_detected(car.get_parent())
 		if car_a:
-			car.set_state(car.STATE_CAR_AHEAD)
+			car.set_state(car.STATE_CAR_AHEAD, car_a)
 
 	
 class ChaseState:
@@ -341,13 +341,19 @@ func car_ahead_detected(body):
 
 class CarAheadState:
 	var car
+	var obstacle
 	
-	func _init(car):
+	func _init(car, obst):
 		self.car = car
+		self.obstacle = obst
 
 	func update(delta):
 		# behavior
-		#print(car.get_parent().get_parent().get_name() + " braking because of car ahead...")
+		print(car.get_parent().get_parent().get_name() + " braking because of car ", obstacle.get_parent().get_name()," ahead...")
+		
+		var obst_dir = obstacle.forward_vec
+		print("Direction of other car: ", car.get_parent().forward_vec.dot(obst_dir))
+		
 		car.steer = Vector2(0, -1)
 		# our actual velocity
 		# forward vector scaled by our speed
