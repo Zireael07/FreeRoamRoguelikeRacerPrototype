@@ -72,6 +72,8 @@ func _ready():
 #	auto_connect(sorted[6][1], real_edges)
 #	auto_connect(sorted[7][1], real_edges)
 
+	#print("Real edges: ", real_edges)
+
 	# road around
 	var out_edges = get_node("triangulate/poisson").out_edges
 	print("Outer edges: " + str(out_edges))
@@ -106,8 +108,9 @@ func _ready():
 			# +3 because of helper nodes which come first
 			var ret = connect_intersections(e[0]+3, e[1]+3, false)
 			if ret != false:
-				# update naming
-				#fix_road_naming()
+				#if verbose:
+				#	Logger.mapgen_print("We did create a connection... " + str(initial_int) + " to " + str(p[0]))
+				real_edges.append(Vector2(e[0], e[1]))
 
 	# map setup is done, let's continue....
 	# map navigation, markers...
@@ -323,35 +326,8 @@ func auto_connect(initial_int, real_edges, verbose=false):
 			if verbose:
 				Logger.mapgen_print("We did create a connection... " + str(initial_int) + " to " + str(p[0]))
 			real_edges.append(Vector2(initial_int, p[0]))
-			
-			# update naming
-			#fix_road_naming()
 
-
-func fix_road_naming():
-	# update naming
-	var added = get_child(get_child_count()-1)
-	#print("Last child: " + added.get_name())
-	
-	# extract numbers (ids)
-	var nrs = added.get_name().split("-")
-	#print("Nrs: " + str(nrs))
-	#nrs[0] = nrs[0].lstrip("Road ")
-	#print("Nr" + str(nrs[0]))
-	
-	# in case of any @ in the latter part, strip them (and what follows)
-	var nm = nrs[1].split("@")
-	nrs[1] = nm[0]  
-
-	var real = []
-	# -3 because of the helper nodes ahead of intersections
-	for i in nrs:
-		real.append(int(i)-3)
-
-	#Logger.mapgen_print(added.get_name() + " real numbers: " + str(real))
-	added.set_name("Road " + str(real[0]) + "-" + str(real[1]))
-
-
+# ---------------------------------------
 func place_player_random():
 	var player = get_tree().get_nodes_in_group("player")[0]
 

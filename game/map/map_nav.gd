@@ -183,6 +183,10 @@ func setup_map_nav(samples, real_edges):
 	#var path_data = []
 	path_look = {}
 
+	#print("Setting up nav for: ", real_edges)
+	#print("Size: ", real_edges.size())
+
+	# FIXME: potential problems if too many roads are not created (not in real_edges)
 	for i in range(roads_start_id, roads_start_id+ real_edges.size()): #4):
 		#print("Index: " + str(i))
 		#print("Begin: " + str(begin_id))
