@@ -122,7 +122,7 @@ func _ready():
 
 	# place cars on intersection
 	place_player(1)
-	place_AI(1)
+	place_AI(4)
 
 	# place garage road
 	var garage_opts = []
@@ -347,13 +347,21 @@ func place_player(id):
 	# because player is child of root which is at 0,0,0
 	player.set_translation(to_global(pos))
 
-func place_AI(id):
-	var car = get_tree().get_nodes_in_group("AI")[0].get_parent()
+func place_AI(id, exit=1):
+	var AI_g = get_parent().get_node("AI")
+	var car = get_tree().get_nodes_in_group("AI")[3] #.get_parent()
 	var p = samples[id]
 	var pos = Vector3(p[0]*mult, 0, p[1]*mult)
+	
+	if exit == 1:
+		pos = pos + Vector3(0,0,10)
+	elif exit == 2:
+		pos = pos + Vector3(10,0,0)
+	elif exit == 3:
+		pos = pos + Vector3(0,0,-10)
 
-	# because player is child of root which is at 0,0,0
-	car.set_translation(to_global(pos))
+	# because car is child of AI group node which is not at 0,0,0
+	car.set_translation(AI_g.to_local(to_global(pos)))
 
 
 func get_marker(_name):
