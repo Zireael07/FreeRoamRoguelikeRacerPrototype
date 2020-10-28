@@ -13,6 +13,8 @@ var garage
 var recharge
 var dealership
 
+var AI = preload("res://car/car_AI_traffic.tscn")
+
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
@@ -117,7 +119,7 @@ func _ready():
 	get_node("nav").setup(mult, samples, real_edges)
 
 	# debug
-	get_node("nav").debug_lanes()
+	#get_node("nav").debug_lanes()
 
 
 	# place cars on intersection
@@ -153,6 +155,7 @@ func _ready():
 
 	var rots = { Vector3(10,0,0): Vector3(0,-90,0), Vector3(0,0,10): Vector3(0, 180, 0), Vector3(-10,0,0) : Vector3(0, 90, 0) }
 
+	#TODO: procedural choice for garage road (pointing away from center to make sure we have space for the road)
 	# force for testing
 	var wanted = get_child(3) # intersection 0
 	sel = wanted
@@ -175,6 +178,7 @@ func _ready():
 		
 		add_child(garage_rd)
 	
+	# TODO: procedural POI placement system
 	# place recharging station
 	wanted = get_child(6) # intersection 3
 	sel = wanted
@@ -349,7 +353,11 @@ func place_player(id):
 
 func place_AI(id, exit=1):
 	var AI_g = get_parent().get_node("AI")
-	var car = get_tree().get_nodes_in_group("AI")[3] #.get_parent()
+	#var car = get_tree().get_nodes_in_group("AI")[3] #.get_parent()
+	
+	var car = AI.instance()
+	AI_g.add_child(car)
+	
 	var p = samples[id]
 	var pos = Vector3(p[0]*mult, 0, p[1]*mult)
 	

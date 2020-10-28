@@ -84,10 +84,6 @@ left = false
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, -1.00129, 0, -3.64391 )
 left = false
 
-[node name="Spatial5" parent="AI" instance=ExtResource( 9 )]
-transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 6.86445, 0, -10.6774 )
-left = false
-
 [node name="Spatial2" parent="AI" instance=ExtResource( 14 )]
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 5.02812 )
 left = false
