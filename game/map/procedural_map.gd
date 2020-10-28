@@ -122,9 +122,11 @@ func _ready():
 	#get_node("nav").debug_lanes()
 
 
-	# place cars on intersection
+	# place cars on intersections
 	place_player(1)
-	place_AI(4)
+	
+	for i in range(2, samples.size()-1):
+		place_AI(i)
 
 	# place garage road
 	var garage_opts = []
@@ -361,12 +363,13 @@ func place_AI(id, exit=1):
 	var p = samples[id]
 	var pos = Vector3(p[0]*mult, 0, p[1]*mult)
 	
+	# to place on intersection exit (related to point_one/two/three in intersection.gd)
 	if exit == 1:
-		pos = pos + Vector3(0,0,10)
+		pos = pos + Vector3(0,0,5)
 	elif exit == 2:
-		pos = pos + Vector3(10,0,0)
+		pos = pos + Vector3(5,0,0)
 	elif exit == 3:
-		pos = pos + Vector3(0,0,-10)
+		pos = pos + Vector3(0,0,-5)
 
 	# because car is child of AI group node which is not at 0,0,0
 	car.set_translation(AI_g.to_local(to_global(pos)))
