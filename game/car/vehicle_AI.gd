@@ -413,6 +413,7 @@ func _physics_process(delta):
 		if (stop):
 			stopping()
 		else:	
+			# handle gas/brake
 			if brain.steer.y > 0: # and speed <= 200:
 				# if very high angle and slow speed, brake (assume we're turning in an intersection)
 				if abs(angle) > 1 and speed > 2 and speed < 40:

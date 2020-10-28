@@ -352,9 +352,27 @@ class CarAheadState:
 		print(car.get_parent().get_parent().get_name() + " braking because of car ", obstacle.get_parent().get_name()," ahead...")
 		
 		var obst_dir = obstacle.forward_vec
-		print("Direction of other car: ", car.get_parent().forward_vec.dot(obst_dir))
+		var dot = car.get_parent().forward_vec.dot(obst_dir)
+		print("Direction of other car: ", dot)
 		
-		car.steer = Vector2(0, -1)
+		var ster = Vector2()
+		# if it's facing the other way, avoid head-on collision
+		if dot < 0:
+			# drive towards the edge of the road
+			# we're a 3D node, so unfortunately we can only convert Vec3
+			var to_loc = car.get_global_transform().xform_inv(car.target)
+			# steer > 0 is left, < 0 is right
+			var sig = sign(to_loc.x)
+			ster.x = ster.x - sig*car.get_parent().cte
+			
+			# the other one needs to do the same thing!
+			# we're a 3D node, so unfortunately we can only convert Vec3
+			var to_obst_loc = obstacle.get_global_transform().xform_inv(obstacle.brain.target)
+			# steer > 0 is left, < 0 is right
+			var sig_obst = sign(to_obst_loc.x)
+			obstacle.steer.x = ster.x - sig_obst*obstacle.cte
+		
+		car.steer = Vector2(ster.x, -1)
 		# our actual velocity
 		# forward vector scaled by our speed
 		var gl_tg = car.get_parent().get_global_transform().xform(Vector3(0, 0, 4))
