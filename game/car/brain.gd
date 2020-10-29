@@ -17,6 +17,8 @@ signal state_changed
 
 signal lane_change_done
 
+var detect_range = 10
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -90,7 +92,7 @@ class DrivingState:
 				# hack
 				arr.y = car.match_velocity_length(2).y
 			else:
-				# the value here should probably be speed dependent
+				# TODO: the value here should probably be speed dependent
 				arr = car.arrive(Vector2(to_loc.x, to_loc.z), 10)
 				#var seek = car.seek(Vector2(to_loc.x, to_loc.z))
 				
@@ -138,6 +140,18 @@ class DrivingState:
 		#if 'race' in car.get_parent().get_parent():
 		#	print(str(car.velocity.y))
 		#print("Vel: " + str(car.velocity))
+		
+		# update front cast rays length
+		if car.get_parent().speed > 10:
+			car.detect_range = car.get_parent().speed
+		else:
+			car.detect_range = 10
+			
+		car.get_parent().get_node("RayFront").set_cast_to(Vector3(0,0, car.detect_range))
+		car.get_parent().get_node("RayFrontRight").set_cast_to(Vector3(0,0, car.detect_range))
+		car.get_parent().get_node("RayFrontLeft").set_cast_to(Vector3(0,0,car.detect_range))
+		
+					
 		
 		# if we detected an obstacle, switch to obstacle state
 		var obstacle = car.obstacle_detected(car.get_parent())
@@ -198,7 +212,7 @@ class ObstacleState:
 
 	func update(delta):
 		# behavior
-		var max_range = 10 # same as cast_to of the rays
+		var max_range = car.detect_range # same as cast_to of the rays
 		
 		var gl = obstacle.get_global_transform().origin
 		var loc = car.get_parent().get_global_transform().xform_inv(gl)
@@ -353,7 +367,7 @@ class CarAheadState:
 		var obst_dir = obstacle.forward_vec
 		var dot = car.get_parent().forward_vec.dot(obst_dir)
 		if dot < 0:
-			print(car.get_parent().get_parent().get_name() + " avoiding because of car ", obstacle.get_parent().get_name()," ahead... dir: ", dot)
+			print(car.get_parent().get_parent().get_name() + " avoiding because of car ", obstacle.get_parent().get_name()," ahead... dot: ", dot)
 		#print("Direction of other car: ", dot)
 		
 		var ster = Vector2()
