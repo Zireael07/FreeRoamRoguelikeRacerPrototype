@@ -202,33 +202,34 @@ func intersection_turn_offset(closest, pos, right):
 func traffic_reduce_path(path, flip):
 	var new_path = []
 	# lots of magic numbers here, taken from setup_nav_astar() in map_nav.gd
-	# curve midpoint, curve endpoint
-	var to_keep = [0, 16, 31] 
+
+	var to_keep
 	# if we added an intersection, we need to keep point #1 too
 	if path.size() > 66:
 		to_keep = [0, 1, 17, 32]
+	else:
+		# curve midpoint, curve endpoint
+		to_keep = [0, 16, 31] 
 
 	# if tunnel, add midpoint 
 	# IRL tunnels often have lower speed limits, and it also prevents the AI rubbing the wall
 	if road.get_node("Spatial0/Road_instance 0").tunnel:
-		print("Road is tunnel") #, f:", flip, " insert @id: ", id+1)
-		# B-A - vector from A to B
-		#var midpoint = new_path[id]+(new_path[id+1]-new_path[id])/2
-		#var midpoint = path[path.size()-1]
-		#new_path.insert(id+1, midpoint)
+		print("Road is tunnel")
 		to_keep.append(path.size()-1)
 		
 	# other curve endpoint, some more...
-	var to_keep_add = [33, 48, 49, 50, path.size()-4, path.size()-2] #33+15
+	var to_keep_add
 	# if we added an intersection, we need to keep point #1 too
 	if path.size() > 66:
 		to_keep_add = [34, 49, 50, 51, path.size()-2] #34+15
+	else:
+		to_keep_add = [33, 48, 49, 50, path.size()-4, path.size()-2] #33+15
 		
 	to_keep = to_keep + to_keep_add
 	
 	# to_keep is not necessarily in order because of midpoint above
 	for id in range(to_keep.size()):
-		if to_keep[id] in range(path.size()):
+		if to_keep[id] in range(path.size()): # paranoia
 			new_path.append(path[to_keep[id]])
 		
 
@@ -238,7 +239,7 @@ func traffic_reduce_path(path, flip):
 func racer_reduce_path(path):
 	var new_path = []
 	# because we know how the path is set up, we can clean up spurious points w/o having to compare angles
-	var to_keep = [0, 32, 48, path.size()-1]
+	var to_keep = [0, 32, 48, path.size()-2]
 	
 	for i in range(path.size()):
 		if i in to_keep:
