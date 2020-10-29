@@ -477,20 +477,31 @@ func get_lane(road, int_path, flip, left_side):
 		pts.append(turn1.to_global(p))
 
 	#print(pts)
-	#print("Points: ", pts.size())
+	#print("Points: ", pts.size()) # 33
 	
 	# because turn 2 is inverted
 	for i in range(lane_lists[1].size()-1, 0, -1):
 		var c = lane_lists[1][i]
 		var p = Vector3(c.x, turn1.road_height, c.y)
 		pts.append(turn2.to_global(p))
-	#print("Points with turn 2: ", pts.size())
+	#print("Points with turn 2: ", pts.size()) # 65 = 33+32
 
 	if flip:
 		pts.invert()
+		
+	var midpoint = get_lane_midpoint(pts, flip)
+	pts.append(midpoint)
 
 	# left and flip are used mostly for debugging
 	return [pts, left_side, flip]
+
+func get_lane_midpoint(nav_path, flip):
+	# B-A - vector from A to B
+	var midpoint = nav_path[32]+(nav_path[33]-nav_path[32])/2
+	if flip:
+		# why the difference by 1?
+		midpoint = nav_path[31]+(nav_path[32]-nav_path[31])/2
+	return midpoint
 
 # called from the outside, eg. by AI when pathing
 func get_paths(id, exclude=-1):
@@ -579,20 +590,7 @@ func debug_lanes():
 		for pt in nav_path:
 			debug_cube(to_local(pt), flag)
 			
-		# additional debug points
-#		if not flip:
-#			debug_cube(to_local(nav_path[32]), "flip")
-#			debug_cube(to_local(nav_path[33]), "flip")
-#		else:
-#			debug_cube(to_local(nav_path[31]), "left")
-#			debug_cube(to_local(nav_path[32]), "left")
 		
-		# B-A - vector from A to B
-		var midpoint = nav_path[32]+(nav_path[33]-nav_path[32])/2
-		if flip:
-			# why the difference by 1?
-			midpoint = nav_path[31]+(nav_path[32]-nav_path[31])/2
-		debug_cube(to_local(midpoint), flag)
 
 
 func debug_cube(loc, flag=""):
