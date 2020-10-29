@@ -102,7 +102,7 @@ func look_for_path_initial(start_ind, left):
 	var nav_data = map.get_node("nav").get_lane(road, int_path, flip, left)
 	var nav_path = nav_data[0]
 
-	path = traffic_reduce_path(nav_path)
+	path = traffic_reduce_path(nav_path, nav_data[1])
 	last_ind = start_ind
 	end_ind = int_path[1]
 	emit_signal("found_path", [path, nav_data[1], nav_data[2]])
@@ -172,7 +172,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 		nav_path.insert(0, pos)
 	
 	#path = reduce_path(nav_path)
-	path = traffic_reduce_path(nav_path)
+	path = traffic_reduce_path(nav_path, nav_data[1])
 	last_ind = start_ind
 	end_ind = int_path[1]
 	emit_signal("found_path", [path, nav_data[1], nav_data[2]])
@@ -199,29 +199,39 @@ func intersection_turn_offset(closest, pos, right):
 	
 	return mod_pos
 
-func traffic_reduce_path(path):
+func traffic_reduce_path(path, flip):
 	var new_path = []
-	# lots of magic numbers here, taken from setup_nav_astar() in procedural_map.gd
-	# curve midpoint, curve endpoint, 2nd curve endpoint, some more...
-	var to_keep = [0, 16, 32, 33, 48, 49, 50, path.size()-3, path.size()-1] #33+15
+	# lots of magic numbers here, taken from setup_nav_astar() in map_nav.gd
+	# curve midpoint, curve endpoint
+	var to_keep = [0, 16, 31] 
 	# if we added an intersection, we need to keep point #1 too
-	if path.size() > 65:
-		to_keep = [0, 1, 17, 33, 34, 49, 50, 51, path.size()-1] #34+15
-		
-	for i in range(path.size()):
-		if i in to_keep:
-			new_path.append(path[i])
-	
+	if path.size() > 66:
+		to_keep = [0, 1, 17, 32]
+
 	# if tunnel, add midpoint 
 	# IRL tunnels often have lower speed limits, and it also prevents the AI rubbing the wall
 	if road.get_node("Spatial0/Road_instance 0").tunnel:
-		var id = 3
-		print("Road is tunnel")
-		if path.size() > 65:
-			id = 2
+		print("Road is tunnel") #, f:", flip, " insert @id: ", id+1)
 		# B-A - vector from A to B
-		var midpoint = new_path[id]+(new_path[id+1]-new_path[id])/2
-		new_path.insert(id+1, midpoint)
+		#var midpoint = new_path[id]+(new_path[id+1]-new_path[id])/2
+		#var midpoint = path[path.size()-1]
+		#new_path.insert(id+1, midpoint)
+		to_keep.append(path.size()-1)
+		
+	# other curve endpoint, some more...
+	var to_keep_add = [33, 48, 49, 50, path.size()-4, path.size()-2] #33+15
+	# if we added an intersection, we need to keep point #1 too
+	if path.size() > 66:
+		to_keep_add = [34, 49, 50, 51, path.size()-2] #34+15
+		
+	to_keep = to_keep + to_keep_add
+	
+	# to_keep is not necessarily in order because of midpoint above
+	for id in range(to_keep.size()):
+		if to_keep[id] in range(path.size()):
+			new_path.append(path[to_keep[id]])
+		
+
 			
 	return new_path
 
