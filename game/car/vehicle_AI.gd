@@ -133,7 +133,13 @@ func draw_debugging():
 		var pos = get_transform().origin #get_translation()
 		var points = PoolVector3Array()
 		# this is the start point of most drawing
-		#points.push_back(get_translation())
+		points.push_back(get_translation())
+		# 25 is a magic number (see line 412)
+		# (steer > 0 is left, < 0 is right)
+		var st = Vector3(brain.steer.x/25, 1, 4*clamp(brain.steer.y, -1, 1))
+		#print("Disp steer: ", st)
+		points.push_back(get_translation() + st)
+		get_parent().draw_arc.draw_line_color(points, 3, Color(1,0,1))
 
 		# draw velocity
 #			# from relative location
@@ -141,8 +147,7 @@ func draw_debugging():
 #			var gl_tg = get_global_transform().xform(loc_to_dr)
 #			var par_rel = get_parent().get_global_transform().xform_inv(gl_tg)
 #			points.push_back(Vector3(par_rel.x, 1, par_rel.z))
-#
-#			#points.push_back(Vector3(brain.steer.x, 1, brain.steer.y))
+
 #			get_parent().draw_arc.draw_line_color(points, 3, Color(1,0,1))
 
 		# draw forward vector
@@ -170,12 +175,12 @@ func draw_debugging():
 #			get_parent().draw_arc.draw_line_color(points, 3, Color(0,1,0))
 			
 		# draw line from us to normal point
-		if pt_locs_rel.size() > 0:
-			points.push_back(get_translation())
-			var gl_norm = get_normal_point()
-			var par_rel = get_parent().get_global_transform().xform_inv(gl_norm)
-			points.push_back(Vector3(par_rel.x, 1, par_rel.z))
-			get_parent().draw_arc.draw_line_color(points, 3, Color(0,1,0))
+#		if pt_locs_rel.size() > 0:
+#			points.push_back(get_translation())
+#			var gl_norm = get_normal_point()
+#			var par_rel = get_parent().get_global_transform().xform_inv(gl_norm)
+#			points.push_back(Vector3(par_rel.x, 1, par_rel.z))
+#			get_parent().draw_arc.draw_line_color(points, 3, Color(0,1,0))
 
 # ---------
 # cop stuff
