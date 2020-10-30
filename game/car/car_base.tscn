@@ -184,7 +184,6 @@ material/0 = null
 [node name="Spatial" parent="BODY/wheel1" instance=ExtResource( 3 )]
 transform = Transform( -4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, 0, 0, 0 )
 wheel_thick = 0.1
-wheel_radius = 0.25
 
 [node name="wheel2" type="VehicleWheel" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.359334, -0.783403 )
@@ -203,7 +202,6 @@ material/0 = null
 [node name="Spatial" parent="BODY/wheel2" instance=ExtResource( 3 )]
 transform = Transform( -4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, 0, 0, 0 )
 wheel_thick = 0.1
-wheel_radius = 0.25
 
 [node name="wheel3" type="VehicleWheel" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.359334, 0.864664 )
@@ -223,7 +221,6 @@ material/0 = null
 [node name="Spatial" parent="BODY/wheel3" instance=ExtResource( 3 )]
 transform = Transform( -4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, 0, 0, 0 )
 wheel_thick = 0.1
-wheel_radius = 0.25
 
 [node name="wheel4" type="VehicleWheel" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.359334, -0.783403 )
@@ -241,12 +238,10 @@ material/0 = null
 [node name="Spatial" parent="BODY/wheel4" instance=ExtResource( 3 )]
 transform = Transform( -4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, 0, 0, 0 )
 wheel_thick = 0.1
-wheel_radius = 0.25
 
 [node name="proc_mesh" parent="BODY" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.5, 0.298204, 0.591264 )
 visible = false
-width = 1.0
 
 [node name="car_mesh" type="MeshInstance" parent="BODY"]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.5, 0.298204, 0.591264 )
@@ -291,6 +286,7 @@ min_distance = 1.0
 transform = Transform( 1, 6.6815e-22, 0, 6.6815e-22, 1, 0, 0, 0, 1, 0, -0.3, -1 )
 visible = false
 skeleton = NodePath("")
+motion_blur = false
 
 [node name="CameraDebug" type="Camera" parent="BODY/cambase"]
 transform = Transform( -1, 8.74228e-08, 3.82137e-15, 0, -4.37114e-08, 1, 8.74228e-08, 1, 4.37114e-08, 0, 50, 0.732 )
@@ -411,7 +407,15 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.251327, 0 )
 enabled = true
 script = ExtResource( 24 )
 
+[node name="StuckTimer" type="Timer" parent="BODY"]
+one_shot = true
+
+[node name="ReverseTimer" type="Timer" parent="BODY"]
+one_shot = true
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 _import_path = NodePath("AnimationPlayer")
 script = ExtResource( 25 )
 [connection signal="body_entered" from="BODY" to="BODY" method="_on_BODY_body_entered"]
+[connection signal="timeout" from="BODY/StuckTimer" to="BODY" method="_on_StuckTimer_timeout"]
+[connection signal="timeout" from="BODY/ReverseTimer" to="BODY" method="_on_ReverseTimer_timeout"]

@@ -63,6 +63,8 @@ var bike_scene = null
 var reached_inter
 var reached_changed = false
 
+var stuck = false
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
@@ -322,8 +324,25 @@ func _physics_process(delta):
 	cockpit_cam.set_rotation_degrees(Vector3(180,cockpit_cam_angle, 180))
 
 
+	if stuck:
+		gas = false
+		braking = true
+
 	#make physics happen!
 	process_car_physics(delta, gas, braking, left, right, joy)
+	
+	# test stuck detection
+	if gas and not reverse and speed < 2:
+		print("STUCK!!!")
+		if get_node("StuckTimer").get_time_left() == 0:
+			get_node("StuckTimer").start()
+			print("Started timer ", get_node("StuckTimer").get_time_left())
+		#else:
+		#	print("Timer already running")
+	elif gas and speed > 2:
+		#print("No longer stuck")
+		# abort stuck timer
+		get_node("StuckTimer").stop()
 
 	get_node("driver_new/Armature/Spatial").set_rotation(Vector3(get_steering()*2,0,0))
 	#get_node("proc_mesh/Spatial/steering").set_rotation(Vector3(get_steering()*2, 0, 0))
@@ -719,3 +738,15 @@ func time_from_accel(a):
 	# comes out to 10 for 2.79
 
 	return vel_change / a
+
+
+func _on_StuckTimer_timeout():
+	print("We're stuck, start reverse timer")
+	stuck = true
+	get_node("ReverseTimer").start()
+
+
+func _on_ReverseTimer_timeout():
+	print("Done reversing!")
+	stuck = false
+	#pass # Replace with function body.
