@@ -376,22 +376,46 @@ class CarAheadState:
 			# drive towards the edge of the road
 			# we're a 3D node, so unfortunately we can only convert Vec3
 			var to_loc = car.get_global_transform().xform_inv(car.target)
+			var max_range = car.detect_range # same as cast_to of the rays
+			var to_obstacle_loc = car.get_global_transform().xform_inv(obstacle.get_global_transform().origin)
+			var mag = (max_range-to_obstacle_loc.z)
 			# steer > 0 is left, < 0 is right
 			var sig = sign(to_loc.x)
-			ster.x = (2 - sig*car.get_parent().cte)
-			# don't come to a dead stop
-			var spd_steer = car.match_velocity_length(5)
-			ster.y = spd_steer.y
+			var off = 2-car.get_parent().cte
+			# catch nan cte
+			if is_nan(car.get_parent().cte):
+				off = 2
+			ster.x = sig*mag*off
+			# if obstacle is not too close
+			if to_obstacle_loc.z > 5:
+				# don't come to a dead stop
+				var spd_steer = car.match_velocity_length(5)
+				ster.y = spd_steer.y
+			else:
+				ster.y = -1 # brake
+			print("Avoiding... ", ster)
+			
 			
 			# the other one needs to do the same thing!
 			# we're a 3D node, so unfortunately we can only convert Vec3
-			var to_obst_loc = obstacle.get_global_transform().xform_inv(obstacle.brain.target)
+			var obst_to_loc = obstacle.get_global_transform().xform_inv(obstacle.brain.target)
 			# steer > 0 is left, < 0 is right
-			var sig_obst = sign(to_obst_loc.x)
-			obstacle.steer.x = (2 - sig_obst*obstacle.cte)
-			# don't come to a dead stop
-			var spd_steer_obst = obstacle.brain.match_velocity_length(5)
-			ster.y = spd_steer.y
+			var sig_obst = sign(obst_to_loc.x)
+			
+			off = 2-obstacle.cte
+			# catch nan cte
+			if is_nan(obstacle.cte):
+				off = 2
+			
+			obstacle.steer.x = sig_obst*mag*off
+			# if obstacle is not too close
+			if to_obstacle_loc.z > 5:
+				# don't come to a dead stop
+				var spd_steer_obst = obstacle.brain.match_velocity_length(5)
+				obstacle.steer.y = spd_steer_obst.y
+			else:
+				obstacle.steer.y = -1 # brake
+			print("Other avoiding... ", obstacle.steer)
 		else:
 			ster.y = -1
 		car.steer = Vector2(ster.x, ster.y)
