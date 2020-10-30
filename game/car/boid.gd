@@ -169,7 +169,7 @@ func match_velocity_length(target, reverse=false):
 	
 	# get it moving if velocity is 0
 	var vel_for_des
-	if target > 0 and velocity.length() == 0:
+	if target > 0 and velocity.length() == 0: #< 0.01:
 		#print("Pretend")
 		# pretend it's bigger
 		vel_for_des = Vector2(0,1)

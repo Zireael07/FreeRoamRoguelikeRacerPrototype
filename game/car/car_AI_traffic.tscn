@@ -240,6 +240,14 @@ script = ExtResource( 8 )
 process_mode = 0
 one_shot = true
 
+[node name="StuckTimer" type="Timer" parent="BODY"]
+wait_time = 2.0
+one_shot = true
+
+[node name="ReverseTimer" type="Timer" parent="BODY"]
+wait_time = 0.5
+one_shot = true
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 _import_path = NodePath("AnimationPlayer")
 
@@ -255,3 +263,5 @@ cast_shadow = 0
 script = ExtResource( 9 )
 color = Color( 1, 1, 1, 1 )
 [connection signal="timeout" from="BODY/Timer" to="BODY" method="_on_Timer_timeout"]
+[connection signal="timeout" from="BODY/StuckTimer" to="BODY" method="_on_StuckTimer_timeout"]
+[connection signal="timeout" from="BODY/ReverseTimer" to="BODY" method="_on_ReverseTimer_timeout"]

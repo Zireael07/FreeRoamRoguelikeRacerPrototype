@@ -266,6 +266,12 @@ light_color = Color( 1, 0, 0, 1 )
 light_energy = 5.0
 spot_angle = 70.2
 
+[node name="StuckTimer" type="Timer" parent="BODY"]
+one_shot = true
+
+[node name="ReverseTimer" type="Timer" parent="BODY"]
+one_shot = true
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 _import_path = NodePath("AnimationPlayer")
 

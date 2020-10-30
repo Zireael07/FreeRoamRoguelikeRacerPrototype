@@ -77,8 +77,8 @@ class DrivingState:
 		
 		var arr = null
 		# special case for target behind us
-		if car.get_parent().dot < 0:
-			spd_steer = car.match_velocity_length(2) # keep going forward but very slowly...
+		if car.get_parent().dot < 0 and not car.get_parent().reverse:
+			spd_steer = car.match_velocity_length(3) # keep going forward but very slowly...
 			# hack
 			car.get_parent().STEER_LIMIT = 0.5
 			arr = car.align(Vector2(to_loc.x, to_loc.z))
@@ -90,7 +90,7 @@ class DrivingState:
 			if abs(car.get_parent().angle) > 1.1 and car.get_parent().speed < 10:
 				arr = car.align(Vector2(to_loc.x, to_loc.z))
 				# hack
-				arr.y = car.match_velocity_length(2).y
+				arr.y = car.match_velocity_length(3).y
 			else:
 				# TODO: the value here should probably be speed dependent
 				arr = car.arrive(Vector2(to_loc.x, to_loc.z), 10)

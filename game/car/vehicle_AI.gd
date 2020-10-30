@@ -33,6 +33,7 @@ var joy = Vector2(0,0)
 
 #flag telling us to come to a halt
 var stop = false
+var stuck = false
 var flag
 
 var compare_pos = Vector3(0,0,0)
@@ -463,7 +464,26 @@ func _physics_process(delta):
 		# we don't use the joy for gas/brake, so far
 		joy = Vector2(clx, 0)
 		
+		# unstick
+		if stuck:
+			gas = false
+			braking = true
+		
 		process_car_physics(delta, gas, braking, left, right, joy)
+		
+		# test stuck detection
+		if gas and not reverse and speed < 1:
+			#print("AI ", get_parent().get_name(), " STUCK!!!")
+			if get_node("StuckTimer").get_time_left() == 0:
+				get_node("StuckTimer").start()
+				print("AI ",  get_parent().get_name(), " started timer ", get_node("StuckTimer").get_time_left())
+			#else:
+			#	print("Timer already running")
+		elif gas and speed >= 1:
+			#print("No longer stuck")
+			# abort stuck timer
+			get_node("StuckTimer").stop()
+		
 		
 		# don't do the next if we're a cop chasing
 		if brain.get_state() != brain.STATE_CHASE:
@@ -535,6 +555,19 @@ func get_normal_point():
 	var norm_point = target_array[prev] + pred_line.project(line)
 	return norm_point # global
 
+# --------------------------
+func _on_StuckTimer_timeout():
+	print("AI ", get_parent().get_name(), " stuck, start reverse timer")
+	stuck = true
+	get_node("ReverseTimer").start()
+
+
+func _on_ReverseTimer_timeout():
+	print("AI ", get_parent().get_name(), " done reversing!")
+	stuck = false
+
+
+# ------------------------
 
 #	func update(delta):
 #		car.flag = ""
