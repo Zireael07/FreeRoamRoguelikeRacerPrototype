@@ -96,7 +96,7 @@ func look_for_path_initial(start_ind, left):
 		rd_name = "Road " + str(int_path[1])+"-"+str(int_path[0])
 		flip = true
 	#print("Road name: " + rd_name)
-	var road = map.get_node(rd_name)
+	road = map.get_node(rd_name)
 	#print("Road: " + str(road))
 	
 	var nav_data = map.get_node("nav").get_lane(road, int_path, flip, left)
@@ -106,6 +106,10 @@ func look_for_path_initial(start_ind, left):
 	last_ind = start_ind
 	end_ind = int_path[1]
 	emit_signal("found_path", [path, nav_data[1], nav_data[2]])
+	
+	# register with road
+	road.AI_cars.append(self)
+	print(road.AI_cars)
 
 # start_ind operates on child ids but exclude operates on intersection id
 func look_for_path(start_ind, left_side, exclude=-1):
@@ -176,6 +180,11 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	last_ind = start_ind
 	end_ind = int_path[1]
 	emit_signal("found_path", [path, nav_data[1], nav_data[2]])
+	
+	# register with road
+	road.AI_cars.append(self)
+	print(road.AI_cars)
+	
 
 func intersection_turn_offset(closest, pos, right):
 	# distance to intersection

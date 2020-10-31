@@ -71,6 +71,8 @@ func connect_intersections(one, two, verbose=false):
 	
 	# make top node (which holds road name)
 	var top_node = Spatial.new()
+	top_node.set_script(load("res://roads/road_top.gd"))
+	
 	#print(str(one) + " to " + str(two))
 	# this used to be child (node) id, but this way it's more intuitive
 	# subtract 3 to get actual intersection number from child id
