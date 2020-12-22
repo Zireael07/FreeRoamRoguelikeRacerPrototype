@@ -1,0 +1,26 @@
+[gd_resource type="SpatialMaterial" load_steps=6 format=2]
+
+[ext_resource path="res://assets/Snow005_1K_Normal.png" type="Texture" id=1]
+[ext_resource path="res://assets/Snow005_1K_Color.png" type="Texture" id=2]
+[ext_resource path="res://assets/Snow005_1K_Roughness.png" type="Texture" id=3]
+[ext_resource path="res://assets/Seamless Gravel.jpg" type="Texture" id=4]
+[ext_resource path="res://assets/1K-dirt_5.png" type="Texture" id=5]
+
+[resource]
+params_diffuse_mode = 1
+albedo_color = Color( 1.5, 1.5, 1.5, 1 )
+albedo_texture = ExtResource( 2 )
+roughness = 0.0
+roughness_texture = ExtResource( 3 )
+roughness_texture_channel = 4
+normal_enabled = true
+normal_scale = 16.0
+normal_texture = ExtResource( 1 )
+detail_enabled = true
+detail_mask = ExtResource( 5 )
+detail_blend_mode = 0
+detail_uv_layer = 0
+detail_albedo = ExtResource( 4 )
+detail_normal = ExtResource( 1 )
+uv1_scale = Vector3( 80, 80, 1 )
+uv2_scale = Vector3( 10, 10, 1 )
