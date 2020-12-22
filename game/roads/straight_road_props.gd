@@ -23,6 +23,10 @@ var sign_tex2 = null
 var sign_tex3 = null
 var win_mat = null
 var win_mat2 = null
+var win_mat3 = null
+var win_mat4 = null
+var win_dark = null
+var win_white = null
 var cables = null
 var cherry_tree = null
 var bamboo_clump = null
@@ -36,6 +40,13 @@ func _ready():
 	building = preload("res://objects/procedural_building.tscn")
 	building_tex1 = preload("res://assets/cement.tres")
 	building_tex2 = preload("res://assets/brick_wall.tres")
+	# windows
+	win_mat = preload("res://assets/windows_material.tres")
+	win_mat2 = preload("res://assets/windows_material2.tres")
+	win_mat3 = preload("res://assets/windows_material3.tres")
+	win_mat4 = preload("res://assets/windows_material4.tres")
+	win_dark = preload("res://assets/windows_material_dark.tres")
+	win_white = preload("res://assets/windows_material_white.tres")
 	
 	#building_test = preload("res://objects/test_shader_building.tscn")
 	
@@ -44,8 +55,6 @@ func _ready():
 	sign_tex2 = preload("res://assets/neon_sign2.tres")
 	sign_tex3 = preload("res://assets/neon_sign3.tres")
 	# props
-	win_mat = preload("res://assets/windows_material.tres")
-	win_mat2 = preload("res://assets/windows_material2.tres")
 	cables = preload("res://objects/china_cable.tscn")
 	cherry_tree = preload("res://objects/cherry_tree.tscn")
 	bamboo_clump = preload("res://objects/bamboo_clump.tscn")
@@ -92,12 +101,21 @@ func setupBuilding(index):
 #	var ran_color_g = randf()
 #	var ran_color_b = randf()
 	
-	if ran < 0.5:
-		var win_color = win_mat
-		build.windows_mat = win_color
+	var win_color = win_mat
+	if ran < 0.1:
+		win_color = win_dark
+	elif ran < 0.3:
+		win_color = win_white
+	elif ran < 0.4:
+		win_color = win_mat2
+	elif ran < 0.6:
+		win_color = win_mat3
+	elif ran < 0.8:
+		win_color = win_mat4
 	else:
-		var win_color = win_mat2
-		build.windows_mat = win_color
+		win_color = win_mat
+		
+	build.windows_mat = win_color
 	
 	# windows
 	build.wind_width = 0.5

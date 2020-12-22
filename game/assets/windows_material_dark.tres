@@ -4,6 +4,6 @@
 
 [resource]
 flags_unshaded = true
-albedo_color = Color( 0.212646, 0.798441, 0.8125, 1 )
+albedo_color = Color( 0.0705882, 0.00392157, 0.12549, 1 )
 albedo_texture = ExtResource( 1 )
 uv1_scale = Vector3( 0.5, 0.5, 1 )
