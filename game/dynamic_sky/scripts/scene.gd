@@ -52,6 +52,7 @@ var prev_state
 const WEATHER_SUNNY = 0
 const WEATHER_OVERCAST = 1
 const WEATHER_RAIN = 2
+const WEATHER_SNOW = 3
 
 signal state_changed
 
@@ -343,6 +344,20 @@ func no_rain():
 
 	# car glass
 	player.get_node("BODY/proc_mesh").rain_clear()
+	
+func snow():
+	var snow = load("res://assets/snow_material.tres")
+	player.get_node("BODY/RainParticles").set_material_override(snow)
+	player.get_node("BODY/RainParticles2").set_material_override(snow)
+	
+	
+	player.get_node("BODY/RainParticles").set_emitting(true)
+	player.get_node("BODY/RainParticles2").set_emitting(true)
+	
+#	if get_tree().get_nodes_in_group("roads").size() > 0:
+#		get_tree().get_nodes_in_group("roads")[0].rain_shine()
+		
+#	player.get_node("BODY/proc_mesh").rain_glass()
 
 func overcast():
 	# in percent
@@ -364,6 +379,8 @@ func set_state(new_state):
 		state = WeatherOvercast.new(self)
 	elif new_state == WEATHER_RAIN:
 		state = WeatherRain.new(self)
+	elif new_state == WEATHER_SNOW:
+		state = WeatherSnow.new(self)
 	
 	emit_signal("state_changed", self)
 
@@ -374,6 +391,8 @@ func get_state():
 		return WEATHER_OVERCAST
 	elif state is WeatherRain:
 		return WEATHER_RAIN
+	elif state is WeatherSnow:
+		return WEATHER_SNOW
 		
 # states ----------------------------------------------------
 
@@ -404,7 +423,16 @@ class WeatherRain:
 		world.rain()
 		world.overcast()
 
+class WeatherSnow:
+	var world
+	
+	func _init(wd):
+		world = wd
+		# weather init
+		world.snow()
+		world.overcast()
 
+# ------------------------------
 # from danilw
 func steep_scb(value):
 	pass # Replace with function body.
