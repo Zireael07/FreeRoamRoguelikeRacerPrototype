@@ -12,8 +12,11 @@ var wind_width = 1.0 #0.95
 var wind_height = 0.95
 var wind_thick = 0.1
 
+export var storefront = false
+
 export(SpatialMaterial) var material = SpatialMaterial.new()
 export(SpatialMaterial) var windows_mat = SpatialMaterial.new()
+export(SpatialMaterial) var storefront_mat = SpatialMaterial.new()
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -25,6 +28,11 @@ func _ready():
 	var surface_wind = SurfaceTool.new()
 	surface_wind.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
+	var surface_store = null #dummy
+	if storefront:
+		surface_store = SurfaceTool.new()
+		surface_store.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
 	#Create a node building that will hold the mesh
 	var node = MeshInstance.new()
 	node.set_name("scraper")
@@ -34,19 +42,25 @@ func _ready():
 	addCubeTexture(0,0,0, surface, material, width, 1, thick)
 	
 	#cube_building(surface, material, surface_wind, windows_mat, Vector3(0, 2, 0))
-	cube_building_storeys(surface, material, surface_wind, windows_mat, Vector3(0,2,0), storeys)
+	cube_building_storeys(surface, material, surface_wind, windows_mat, surface_store, storefront_mat, Vector3(0,2,0), storeys)
 	
 	
 	surface.generate_normals()
 	surface_wind.generate_normals()
+	if storefront:
+		surface_store.generate_normals()
 	
 	# fix index
 	surface.index()
 	surface_wind.index()
+	if storefront:
+		surface_store.index()
 	
 	#Set the created mesh to the node
 	node.set_mesh(surface.commit())
 	node.set_mesh(surface_wind.commit(node.get_mesh()))
+	if storefront:
+		node.set_mesh(surface_store.commit(node.get_mesh()))
 	
 	# yay GD 3
 	node.create_convex_collision()
@@ -57,11 +71,9 @@ func _ready():
 	# test
 	#node.set_visible(false)
 
-func cube_building_storeys(surface, material, surface_wind, windows_mat, pos, storeys):
+func cube_building_storeys(surface, material, surface_wind, windows_mat, surface_store, storefront_mat, pos, storeys):
 	# building
 	addCubeTexture(pos.x, pos.y, pos.z, surface, material, width, storeys+1, thick)
-	
-	
 	
 	for j in range(0, storeys):
 		## windows
@@ -70,14 +82,21 @@ func cube_building_storeys(surface, material, surface_wind, windows_mat, pos, st
 		for i in range(-width+1, width+1, 3):
 			# first storey
 			if j == 0:
-				addQuadFromCube(i, pos.y+1, thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
-				# other wall
-				addQuadFromCube(i, pos.y+1, -thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
+#				# storefront
+#				if storefront:
+#					pass
+#					#addQuadFromCube(0, pos.y/2, thick, surface_store, storefront_mat, width, wind_height*2, wind_thick)
+#					# other wall
+#					#addQuadFromCube(0, pos.y/2, -thick, surface_store, storefront_mat, width, wind_height*2, wind_thick)
+#				else:
+					addQuadFromCube(i, pos.y+1, thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
+					# other wall
+					addQuadFromCube(i, pos.y+1, -thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
+					
+					#addCubeTexture(i, pos.y+1, thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
+					# other wall
+					#addCubeTexture(i, pos.y+1, -thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
 				
-				#addCubeTexture(i, pos.y+1, thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
-				# other wall
-				#addCubeTexture(i, pos.y+1, -thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
-			
 			else:
 				# one wall
 				addQuadFromCube(i, pos.y+1+j*2, thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
@@ -87,16 +106,24 @@ func cube_building_storeys(surface, material, surface_wind, windows_mat, pos, st
 				#addCubeTexture(i, pos.y+1+j*2, -thick, surface_wind, windows_mat, wind_width, wind_height, wind_thick)
 				
 		# other axis (X)
+		# this axis faces the road
 		for i in range(-thick+1, thick+1, 3):
 			# first storey
 			if j == 0:
-				# one wall
-				# swap thick and height to rotate 90 deg
-				addQuadFromCube(width, pos.y+1, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
-				#addCubeTexture(width, pos.y+1, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
-				# other wall
-				addQuadFromCube(-width, pos.y+1, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
-				#addCubeTexture(-width, pos.y+1, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
+				#storefront
+				if storefront:
+					# swap thick and height to rotate 90 deg
+					addQuadFromCube(width, 0.5, 0, surface_store, storefront_mat, wind_thick, wind_height*3, width)
+					# other wall
+					addQuadFromCube(-width, 0.5, 0, surface_store, storefront_mat, wind_thick, wind_height*3, width)
+				else:
+					# one wall
+					# swap thick and height to rotate 90 deg
+					addQuadFromCube(width, pos.y+1, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
+					#addCubeTexture(width, pos.y+1, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
+					# other wall
+					addQuadFromCube(-width, pos.y+1, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
+					#addCubeTexture(-width, pos.y+1, i, surface_wind, windows_mat, wind_thick, wind_height, wind_width)
 			else:
 				# one wall
 				# swap thick and height to rotate 90 deg
