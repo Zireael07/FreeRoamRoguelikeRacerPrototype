@@ -6,6 +6,7 @@ var cam_rot_prev = Quat()
 
 var cam = null
 var mat = null
+var timer = null
 
 export var motion_blur = false
 
@@ -13,6 +14,8 @@ func _ready():
 	mat = get_surface_material(0)
 	cam = get_parent()
 	#assert cam is Camera
+	timer = cam.get_node("LerpTimer")
+	
 	
 	#set_process(motion_blur)
 	set_visible(motion_blur)
@@ -20,6 +23,7 @@ func _ready():
 func switch_motion_blur(boo):
 	set_visible(boo)
 	motion_blur = boo
+	timer.start()
 	
 
 func _process(delta):
@@ -32,6 +36,11 @@ func _process(delta):
 		return
 	if not cam is Camera:
 		return
+	
+	if timer.time_left > 0:
+		var intens = lerp(0.05, 0.2, timer.time_left)
+		mat.set_shader_param("intensity", intens)
+	
 		
 	# Linear velocity is just difference in positions between two frames.
 	var velocity = cam.global_transform.origin - cam_pos_prev
