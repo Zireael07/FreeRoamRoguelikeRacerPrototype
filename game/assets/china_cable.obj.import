@@ -15,4 +15,5 @@ dest_files=[ "res://.import/china_cable.obj-408a05b9e54cdf338e2f6aef10167d61.mes
 
 generate_tangents=true
 scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
 optimize_mesh=true

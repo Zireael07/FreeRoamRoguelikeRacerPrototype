@@ -89,4 +89,3 @@ shader_param/cloud_cover = 30.0
 shader_param/move = true
 shader_param/light = Vector3( 1, 1, 1 )
 shader_param/ha_divider = 758.0
-

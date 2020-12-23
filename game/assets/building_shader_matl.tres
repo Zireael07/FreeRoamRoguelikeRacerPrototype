@@ -57,4 +57,3 @@ shader = SubResource( 1 )
 shader_param/w = 4.0
 shader_param/hx = 2.0
 shader_param/hz = 2.0
-
