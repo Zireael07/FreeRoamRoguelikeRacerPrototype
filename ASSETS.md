@@ -9,3 +9,4 @@ Assets:
 * bamboo texture - from textures.com
 * snow texture - CC0Textures.com
 * snow mask texture - sharetextures.com (CC0 licensed)
+* storefronts - Free-urban-textures-buildings-apartments-shop-fronts on OGA (public domain)

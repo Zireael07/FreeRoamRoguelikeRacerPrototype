@@ -27,6 +27,11 @@ var win_mat3 = null
 var win_mat4 = null
 var win_dark = null
 var win_white = null
+
+var store_tex1 = null
+var store_tex2 = null
+var store_tex3 = null
+
 var cables = null
 var cherry_tree = null
 var bamboo_clump = null
@@ -47,6 +52,10 @@ func _ready():
 	win_mat4 = preload("res://assets/windows_material4.tres")
 	win_dark = preload("res://assets/windows_material_dark.tres")
 	win_white = preload("res://assets/windows_material_white.tres")
+	# storefronts
+	store_tex1 = preload("res://assets/storefront/storefront_material.tres")
+	store_tex2 = preload("res://assets/storefront/storefront_material2.tres")
+	store_tex3 = preload("res://assets/storefront/storefront_material3.tres")
 	
 	#building_test = preload("res://objects/test_shader_building.tscn")
 	
@@ -97,10 +106,6 @@ func setupBuilding(index):
 	build.storeys = 16 + rani
 	
 	# windows color
-#	var ran_color_r = randf()
-#	var ran_color_g = randf()
-#	var ran_color_b = randf()
-	
 	var win_color = win_mat
 	if ran < 0.1:
 		win_color = win_dark
@@ -120,8 +125,26 @@ func setupBuilding(index):
 	# windows
 	build.wind_width = 0.5
 	build.wind_height = 0.5
-	
-	#build.windows_mat.set_albedo(Color(ran_color_r, ran_color_g, ran_color_b))
+
+	# storefronts
+	ran = randf()
+	if ran > 0.25:
+		build.storefront = true
+		
+		# select storefront texture
+		var rand = randf()
+		var store_tex = store_tex1
+		if rand < 0.2:
+			store_tex = store_tex3 # derelict
+		elif rand < 0.6:
+			store_tex = store_tex2
+		else:
+			store_tex = store_tex1
+			
+		build.storefront_mat = store_tex
+		
+	else:
+		build.storefront = false
 	
 		
 	# sign material
