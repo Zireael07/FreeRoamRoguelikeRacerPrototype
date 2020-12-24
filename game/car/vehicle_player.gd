@@ -62,6 +62,7 @@ var bike_scene = null
 # player navigation
 var reached_inter
 var reached_changed = false
+var was_tunnel = false # for particles
 
 var stuck = false
 
@@ -490,6 +491,17 @@ func _process(delta):
 		enable_motion_blur(true)
 	else:
 		enable_motion_blur(false)
+		
+	# stop weather particles when in tunnel
+	if hit != null and 'tunnel' in hit.get_parent().get_parent() and hit.get_parent().get_parent().tunnel:
+		was_tunnel = true
+		get_node("RainParticles").set_emitting(false)
+		get_node("RainParticles2").set_emitting(false)
+	else:
+		if was_tunnel and World_node.weather > 1: # rain or snow
+			was_tunnel = false
+			get_node("RainParticles").set_emitting(true)
+			get_node("RainParticles2").set_emitting(true)
 
 func enable_motion_blur(on):
 	get_node("cambase/Camera/motion_blur").switch_motion_blur(on)
