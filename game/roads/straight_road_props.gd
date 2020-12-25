@@ -33,6 +33,8 @@ var store_tex2 = null
 var store_tex3 = null
 var store_tex4 = null
 var store_tex5 = null
+var store_tex6 = null
+var store_tex7 = null
 
 var cables = null
 var cherry_tree = null
@@ -60,6 +62,8 @@ func _ready():
 	store_tex3 = preload("res://assets/storefront/storefront_material3.tres")
 	store_tex4 = preload("res://assets/storefront/storefront_material4.tres")
 	store_tex5 = preload("res://assets/storefront/storefront_material5.tres")
+	store_tex6 = preload("res://assets/storefront/storefront_material6.tres")
+	store_tex7 = preload("res://assets/storefront/storefront_material7.tres")
 	
 	#building_test = preload("res://objects/test_shader_building.tscn")
 	
@@ -140,12 +144,16 @@ func setupBuilding(index):
 		var store_tex = store_tex1
 		if rand < 0.1:
 			store_tex = store_tex3 # derelict
-		elif rand < 0.3:
+		elif rand < 0.25:
 			store_tex = store_tex4
-		elif rand < 0.5:
+		elif rand < 0.4:
+			store_tex = store_tex6
+		elif rand < 0.6:
 			store_tex = store_tex5
 		elif rand < 0.7:
 			store_tex = store_tex2
+		elif rand < 0.9:
+			store_tex = store_tex7
 		else:
 			store_tex = store_tex1
 			
