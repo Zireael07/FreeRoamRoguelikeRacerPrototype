@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scripts/meshes/procedural_building.gd" type="Script" id=1]
 [ext_resource path="res://assets/procedural_building_metal_mat.tres" type="Material" id=2]
@@ -7,10 +7,26 @@
 [ext_resource path="res://assets/neon_sign1.tres" type="Material" id=5]
 [ext_resource path="res://assets/china_cable.obj" type="ArrayMesh" id=6]
 [ext_resource path="res://assets/metal_mat.tres" type="Material" id=7]
-[ext_resource path="res://assets/storefront/storefront_material.tres" type="Material" id=8]
+[ext_resource path="res://assets/storefront/storefront_tinted.shader" type="Shader" id=8]
+[ext_resource path="res://assets/storefront/shop_front16_ed.png" type="Texture" id=9]
 
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 8 )
+shader_param/albedo = Color( 0.968627, 0.921569, 0.921569, 1 )
+shader_param/specular = 0.5
+shader_param/metallic = 0.0
+shader_param/roughness = 1.0
+shader_param/point_size = 1.0
+shader_param/uv1_scale = Vector3( -1, 1, 1 )
+shader_param/uv1_offset = Vector3( 0, 0, 0 )
+shader_param/uv2_scale = Vector3( 1, 1, 1 )
+shader_param/uv2_offset = Vector3( 0, 0, 0 )
+shader_param/mask_color = Color( 1, 1, 1, 1 )
+shader_param/modulate = Color( 1, 0.905882, 0.0196078, 1 )
+shader_param/mask_range = 0.2
+shader_param/texture_albedo = ExtResource( 9 )
 
-[sub_resource type="CubeMesh" id=1]
+[sub_resource type="CubeMesh" id=2]
 size = Vector3( 10, 20, 10 )
 
 [node name="Spatial" type="Spatial"]
@@ -18,7 +34,7 @@ script = ExtResource( 1 )
 storefront = true
 material = ExtResource( 2 )
 windows_mat = ExtResource( 3 )
-storefront_mat = ExtResource( 8 )
+storefront_mat = SubResource( 1 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 1, 7.63328, 8.47983, 0 )
@@ -59,5 +75,5 @@ material/0 = ExtResource( 7 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.0377, 0 )
 visible = false
 cast_shadow = 3
-mesh = SubResource( 1 )
+mesh = SubResource( 2 )
 material/0 = null

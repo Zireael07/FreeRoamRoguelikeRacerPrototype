@@ -37,6 +37,7 @@ var store_tex2 = null
 var store_tex3 = null
 var store_tex4 = null
 var store_tex5 = null
+var store_tex5_d = null
 var store_tex6 = null
 var store_tex7 = null
 
@@ -65,9 +66,12 @@ func _ready():
 	store_tex2 = preload("res://assets/storefront/storefront_material2.tres")
 	store_tex3 = preload("res://assets/storefront/storefront_material3.tres")
 	store_tex4 = preload("res://assets/storefront/storefront_material4.tres")
-	store_tex5 = preload("res://assets/storefront/storefront_material5.tres")
+	#store_tex5 = preload("res://assets/storefront/storefront_material5.tres")
+	store_tex5 = preload("res://assets/storefront/storefront_shader3.tres")
 	store_tex6 = preload("res://assets/storefront/storefront_material6.tres")
 	store_tex7 = preload("res://assets/storefront/storefront_material7.tres")
+	
+	store_tex5_d = store_tex5.duplicate() #color variants
 	
 	#building_test = preload("res://objects/test_shader_building.tscn")
 	
@@ -150,10 +154,12 @@ func setupBuilding(index):
 		var store_tex = store_tex1
 		if rand < 0.1:
 			store_tex = store_tex3 # derelict
-		elif rand < 0.25:
-			store_tex = store_tex4
-		elif rand < 0.4:
+		elif rand < 0.2:
+			store_tex = store_tex4 # derelict
+		elif rand < 0.3:
 			store_tex = store_tex6
+		elif rand < 0.5:
+			store_tex = store_tex5_d
 		elif rand < 0.6:
 			store_tex = store_tex5
 		elif rand < 0.7:
@@ -165,6 +171,15 @@ func setupBuilding(index):
 			
 		build.storefront_mat = store_tex
 		
+		# procedural color
+		if store_tex == store_tex5 or store_tex == store_tex5_d:
+			var hue = randf()
+			var saturation = randf()
+			var lightness = rand_range(0.25, 0.75)
+			
+			var color = Color.from_hsv(hue, saturation, lightness)
+			
+			build.storefront_mat.set_shader_param("modulate", color)
 	else:
 		build.storefront = false
 	

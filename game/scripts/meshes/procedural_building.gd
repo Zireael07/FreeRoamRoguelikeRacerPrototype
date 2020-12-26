@@ -16,7 +16,7 @@ export var storefront = false
 
 export(SpatialMaterial) var material = SpatialMaterial.new()
 export(SpatialMaterial) var windows_mat = SpatialMaterial.new()
-export(SpatialMaterial) var storefront_mat = SpatialMaterial.new()
+export(Material) var storefront_mat = SpatialMaterial.new()
 
 func _ready():
 	# Called every time the node is added to the scene.
