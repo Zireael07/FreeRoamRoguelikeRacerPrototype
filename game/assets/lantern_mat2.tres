@@ -1,0 +1,8 @@
+[gd_resource type="SpatialMaterial" format=2]
+
+[resource]
+emission_enabled = true
+emission = Color( 0.929412, 0.894118, 0.752941, 1 )
+emission_energy = 2.0
+emission_operator = 0
+emission_on_uv2 = false

@@ -42,6 +42,7 @@ var store_tex6 = null
 var store_tex7 = null
 
 var cables = null
+var cables2 = null
 var cherry_tree = null
 var bamboo_clump = null
 
@@ -83,6 +84,7 @@ func _ready():
 	sign_tex1_dd = sign_tex1.duplicate()
 	# props
 	cables = preload("res://objects/china_cable.tscn")
+	cables2 = preload("res://objects/lantern_cable.tscn")
 	cherry_tree = preload("res://objects/cherry_tree.tscn")
 	bamboo_clump = preload("res://objects/bamboo_clump.tscn")
 
@@ -269,6 +271,14 @@ func placeBuilding(index):
 func placeCable(index):
 	if (index % 2 > 0):
 		var cable = cables.instance()
+		
+		# random selection
+		randomize()
+		var rand = randf()
+		
+		if rand > 0.2:
+			cable = cables2.instance()
+		
 		cable.set_name("Cable"+String(index))
 		add_child(cable)
 	
