@@ -19,8 +19,12 @@ var buildOffset = 6
 var building_tex1 = null
 var building_tex2 = null
 var sign_tex1 = null
+var sign_tex1_d = null
+var sign_tex1_dd = null
 var sign_tex2 = null
 var sign_tex3 = null
+
+
 var win_mat = null
 var win_mat2 = null
 var win_mat3 = null
@@ -71,6 +75,8 @@ func _ready():
 	sign_tex1 = preload("res://assets/neon_sign1.tres")
 	sign_tex2 = preload("res://assets/neon_sign2.tres")
 	sign_tex3 = preload("res://assets/neon_sign3.tres")
+	sign_tex1_d = sign_tex1.duplicate() # color variants
+	sign_tex1_dd = sign_tex1.duplicate()
 	# props
 	cables = preload("res://objects/china_cable.tscn")
 	cherry_tree = preload("res://objects/cherry_tree.tscn")
@@ -166,9 +172,14 @@ func setupBuilding(index):
 	# sign material
 	var rand = randf()
 	
-	
-	if rand < 0.33:
+	if rand < 0.15:
 		var sign_mat = sign_tex1
+		build.get_node("MeshInstance").set_surface_material(0, sign_mat)
+	elif rand < 0.33:
+		var sign_mat = sign_tex1_d
+		build.get_node("MeshInstance").set_surface_material(0, sign_mat)
+	elif rand < 0.5:
+		var sign_mat = sign_tex1_dd
 		build.get_node("MeshInstance").set_surface_material(0, sign_mat)
 	elif rand < 0.66:
 		var sign_mat = sign_tex2
@@ -176,6 +187,21 @@ func setupBuilding(index):
 	else:
 		var sign_mat = sign_tex3
 		build.get_node("MeshInstance").set_surface_material(0, sign_mat)
+		
+	# sign color
+	#var rand_color_r = randf()
+	#var rand_color_g = randf()
+	#var rand_color_b = randf()
+	
+	var hue = randf()
+	var saturation = randf()
+	var lightness = rand_range(0.25, 0.75)
+	
+	var color = Color.from_hsv(hue, saturation, lightness)
+	
+	#print("Sign color: ", color)
+	
+	build.get_node("MeshInstance").get_surface_material(0).set_shader_param("modulate", color)
 	
 	# vary sign placement height
 	var rand_i = randi() % 5
