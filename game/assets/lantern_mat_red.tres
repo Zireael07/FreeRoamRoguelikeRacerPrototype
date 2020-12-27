@@ -1,0 +1,16 @@
+[gd_resource type="SpatialMaterial" load_steps=3 format=2]
+
+[ext_resource path="res://assets/Lantern_red.png" type="Texture" id=1]
+[ext_resource path="res://assets/Lantern.png" type="Texture" id=2]
+
+[resource]
+params_diffuse_mode = 1
+albedo_texture = ExtResource( 2 )
+metallic = 0.5
+roughness = 0.0
+emission_enabled = true
+emission = Color( 0.980392, 0.0823529, 0.0823529, 1 )
+emission_energy = 2.0
+emission_operator = 1
+emission_on_uv2 = false
+emission_texture = ExtResource( 1 )

@@ -277,6 +277,15 @@ func placeCable(index):
 		var rand = randf()
 		
 		if rand > 0.2:
+			var red = load("res://assets/lantern_mat_red.tres")
+			# make all of them red
+			cable.get_child(1).set_surface_material(0, red)
+			cable.get_child(2).set_surface_material(0, red)
+			cable.get_child(3).set_surface_material(0, red)
+			cable.get_child(4).set_surface_material(0, red)
+			cable.get_child(5).set_surface_material(0, red)
+		
+		elif rand > 0.4:
 			cable = cables2.instance()
 		
 		cable.set_name("Cable"+String(index))
