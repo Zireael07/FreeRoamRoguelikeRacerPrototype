@@ -1,0 +1,52 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/driver/scene.gltf" type="PackedScene" id=1]
+
+[node name="scene" instance=ExtResource( 1 )]
+transform = Transform( 0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0 )
+
+[node name="Mesh" parent="RootNode gltf orientation matrix/RootNode model correction matrix/69d31c5134e845149df09acc9cb204a4fbx/RootNode/Armature/Node/Skeleton" index="0"]
+visible = false
+
+[node name="Mesh 2" parent="RootNode gltf orientation matrix/RootNode model correction matrix/69d31c5134e845149df09acc9cb204a4fbx/RootNode/Armature/Node/Skeleton" index="1"]
+visible = false
+
+[node name="Mesh 3" parent="RootNode gltf orientation matrix/RootNode model correction matrix/69d31c5134e845149df09acc9cb204a4fbx/RootNode/Armature/Node/Skeleton" index="2"]
+visible = false
+
+[node name="Mesh 4" parent="RootNode gltf orientation matrix/RootNode model correction matrix/69d31c5134e845149df09acc9cb204a4fbx/RootNode/Armature/Node/Skeleton" index="3"]
+visible = false
+
+[node name="Mesh 5" parent="RootNode gltf orientation matrix/RootNode model correction matrix/69d31c5134e845149df09acc9cb204a4fbx/RootNode/Armature/Node/Skeleton" index="4"]
+visible = false
+
+[node name="Mesh 10" parent="RootNode gltf orientation matrix/RootNode model correction matrix/69d31c5134e845149df09acc9cb204a4fbx/RootNode/Armature/Node/Skeleton" index="9"]
+visible = false
+
+[node name="Mesh 11" parent="RootNode gltf orientation matrix/RootNode model correction matrix/69d31c5134e845149df09acc9cb204a4fbx/RootNode/Armature/Node/Skeleton" index="10"]
+visible = false
+
+[node name="Spatial" type="Spatial" parent="RootNode gltf orientation matrix/RootNode model correction matrix/69d31c5134e845149df09acc9cb204a4fbx/RootNode/Armature/Node/Skeleton" index="15"]
+transform = Transform( 0.5, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14663.1, 2324.8 )
+
+[node name="Position3D_left" type="Position3D" parent="RootNode gltf orientation matrix/RootNode model correction matrix/69d31c5134e845149df09acc9cb204a4fbx/RootNode/Armature/Node/Skeleton/Spatial" index="0"]
+transform = Transform( 2.65431e-14, -1.62921e-07, -1, -1, -1.62921e-07, 0, -1.62921e-07, 1, -1.62921e-07, 4500, 0, 0 )
+
+[node name="Position3D_right" type="Position3D" parent="RootNode gltf orientation matrix/RootNode model correction matrix/69d31c5134e845149df09acc9cb204a4fbx/RootNode/Armature/Node/Skeleton/Spatial" index="1"]
+transform = Transform( 2.65431e-14, 1.62921e-07, 1, 1, -1.62921e-07, 0, 1.62921e-07, 1, -1.62921e-07, -4500, 0, 0 )
+
+[node name="SkeletonIK_left" type="SkeletonIK" parent="RootNode gltf orientation matrix/RootNode model correction matrix/69d31c5134e845149df09acc9cb204a4fbx/RootNode/Armature/Node/Skeleton" index="16"]
+process_priority = 1
+root_bone = "mixamorig_left_shoulder_7"
+tip_bone = "mixamorig_left_hand_10"
+target = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1 )
+target_node = NodePath("../Spatial/Position3D_left")
+min_distance = 1.0
+
+[node name="SkeletonIK_right" type="SkeletonIK" parent="RootNode gltf orientation matrix/RootNode model correction matrix/69d31c5134e845149df09acc9cb204a4fbx/RootNode/Armature/Node/Skeleton" index="17"]
+process_priority = 1
+root_bone = "mixamorig_right_shoulder_19"
+tip_bone = "mixamorig_right_hand_22"
+target = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1 )
+target_node = NodePath("../Spatial/Position3D_right")
+min_distance = 1.0
