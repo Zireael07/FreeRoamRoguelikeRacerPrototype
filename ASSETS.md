@@ -10,3 +10,4 @@ Assets:
 * snow texture - CC0Textures.com
 * snow mask texture - sharetextures.com (CC0 licensed)
 * storefronts - Free-urban-textures-buildings-apartments-shop-fronts on OGA (public domain)
+* driver - "Retro-Futuristic Racing Driver" (https://sketchfab.com/3d-models/retro-futuristic-racing-driver-b6b267b4fb1b46ae83661b36e147b145) by kuorma (https://sketchfab.com/kuorma) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
