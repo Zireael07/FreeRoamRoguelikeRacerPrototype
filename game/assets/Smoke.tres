@@ -1,0 +1,11 @@
+[gd_resource type="ParticlesMaterial" format=2]
+
+[resource]
+direction = Vector3( -1, 0, -1 )
+spread = 20.0
+gravity = Vector3( 0, 0, -9.8 )
+initial_velocity = 1.0
+radial_accel = 2.0
+radial_accel_random = 1.0
+scale = 3.0
+scale_random = 0.2

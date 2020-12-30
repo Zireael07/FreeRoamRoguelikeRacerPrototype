@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=2]
+[gd_scene load_steps=46 format=2]
 
 [ext_resource path="res://car/car_player.gd" type="Script" id=1]
 [ext_resource path="res://car/vehicle_player.gd" type="Script" id=2]
@@ -26,6 +26,8 @@
 [ext_resource path="res://car/RayCast.gd" type="Script" id=24]
 [ext_resource path="res://car/replay_system.gd" type="Script" id=25]
 [ext_resource path="res://save_test.tres" type="ArrayMesh" id=26]
+[ext_resource path="res://assets/snow_smoke_mat.tres" type="Material" id=27]
+[ext_resource path="res://assets/Smoke.tres" type="Material" id=28]
 
 [sub_resource type="SpatialMaterial" id=1]
 params_diffuse_mode = 1
@@ -149,6 +151,13 @@ bottom_radius = 0.55
 height = 0.01
 radial_segments = 32
 rings = 2
+
+[sub_resource type="SphereMesh" id=17]
+material = ExtResource( 27 )
+radius = 0.05
+height = 0.1
+radial_segments = 6
+rings = 3
 
 [node name="Spatial" type="Spatial" groups=[
 "player",
@@ -415,6 +424,24 @@ one_shot = true
 
 [node name="ReverseTimer" type="Timer" parent="BODY"]
 one_shot = true
+
+[node name="Smoke" type="Particles" parent="BODY"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.520701, 0.181243, -1.02684 )
+emitting = false
+amount = 32
+lifetime = 0.5
+visibility_aabb = AABB( -4, -4, -4.68213, 8, 8, 8 )
+process_material = ExtResource( 28 )
+draw_pass_1 = SubResource( 17 )
+
+[node name="Smoke2" type="Particles" parent="BODY"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.489926, 0.248742, -1.14425 )
+emitting = false
+amount = 32
+lifetime = 0.5
+visibility_aabb = AABB( -4, -4, -4.68213, 8, 8, 8 )
+process_material = ExtResource( 28 )
+draw_pass_1 = SubResource( 17 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 _import_path = NodePath("AnimationPlayer")

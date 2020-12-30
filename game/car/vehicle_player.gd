@@ -62,7 +62,9 @@ var bike_scene = null
 # player navigation
 var reached_inter
 var reached_changed = false
+
 var was_tunnel = false # for particles
+var was_dirt = false
 
 var stuck = false
 
@@ -423,6 +425,11 @@ func _process(delta):
 	var hit = get_node("RayCast").get_collider_hit()
 	var disp_name = ""
 	if hit != null:
+		# particles
+		was_dirt = false
+		get_node("Smoke").set_emitting(false)
+		get_node("Smoke2").set_emitting(false)
+		
 		var road_ = hit.get_parent().get_parent().get_name().find("Road_")
 		var road = hit.get_parent().get_parent().get_name().find("Road")
 		# straight
@@ -462,6 +469,12 @@ func _process(delta):
 					# hide text if angle very small
 					if abs(angle_inter) < 40:
 						hud.update_nav_label("")
+	# else we're on a dirt ground
+	else:
+		if not was_dirt:
+			was_dirt = true
+			get_node("Smoke").set_emitting(true)
+			get_node("Smoke2").set_emitting(true)
 						
 	# clear text if we passed the newly reached intersection				
 	if not reached_changed:
