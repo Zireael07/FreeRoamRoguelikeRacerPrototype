@@ -68,6 +68,8 @@ var was_dirt = false
 
 var stuck = false
 
+var skidmark = null
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
@@ -145,9 +147,10 @@ func _ready():
 
 	game_over = preload("res://hud/game_over.tscn")
 
-
+	# distance
 	last_pos = get_translation()
 
+	skidmark = preload("res://objects/skid_mark.tscn")
 
 	set_physics_process(true)
 	set_process(true)
@@ -515,6 +518,28 @@ func _process(delta):
 			was_tunnel = false
 			get_node("RainParticles").set_emitting(true)
 			get_node("RainParticles2").set_emitting(true)
+			
+	# skid marks
+	if speed < 5:
+		var pos = get_node("cambase/Camera").get_global_transform().origin
+		var mark = skidmark.instance()
+		var wh_pos = get_node("wheel2")
+		var mark_pos = wh_pos.get_global_transform().origin - Vector3(0,0.3, 0) # tiny offset to make marks show on roads
+		var lpos = map.to_local(mark_pos)
+		mark.set_translation(lpos)
+		map.add_child(mark)
+		mark.look_at(pos, Vector3(0,1,0))
+		# flip around because... +Z vs -Z...
+		#mark.rotate_y(deg2rad(180))
+		#mark.rotate_x(deg2rad(-90))
+
+		mark = skidmark.instance()
+		wh_pos = get_node("wheel4")
+		mark_pos = wh_pos.get_global_transform().origin - Vector3(0,0.3, 0) # tiny offset to make marks show on roads
+		lpos = map.to_local(mark_pos)
+		mark.set_translation(lpos)
+		map.add_child(mark)
+		mark.look_at(pos, Vector3(0,1,0))
 
 func enable_motion_blur(on):
 	get_node("cambase/Camera/motion_blur").switch_motion_blur(on)
