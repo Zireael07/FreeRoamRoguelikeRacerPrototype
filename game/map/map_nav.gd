@@ -152,11 +152,14 @@ func spawn_markers(samples, real_edges):
 	var sel = randi() % num_inters
 	var id = spots[sel]
 	#print(str(id))
+	# id equals intersection number
 	var p = samples[id]
 
 	var sp_marker = sp_mark.instance()
 	sp_marker.set_translation(Vector3(p[0]*mult, 0, p[1]*mult))
-	add_child(sp_marker)
+	sp_marker.set_name("speed_marker"+">" + str(id))
+	# add marker to the map itself
+	get_parent().add_child(sp_marker)
 
 	# remove from list of possible spots
 	spots.remove(sel) # this works by id not value, unlike Python!
@@ -302,8 +305,8 @@ func setup_markers(marker_data):
 
 # this is being used by racelines, therefore it can't be simplified further
 func setup_nav_astar(pts, i, begin_id):
-	#print("Index: " + str(i) + " " + get_child(i).get_name())
-	#print(get_child(i).get_name())
+	#print("Index: " + str(i) + " " + get_parent().get_child(i).get_name())
+	#print(get_parent().get_child(i).get_name())
 	# catch any errors
 	if i >= get_parent().get_child_count():
 		Logger.error_print("No child at index : " + str(i))
