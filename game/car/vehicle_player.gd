@@ -527,7 +527,16 @@ func _process(delta):
 		var mark_pos = wh_pos.get_global_transform().origin - Vector3(0,0.3, 0) # tiny offset to make marks show on roads
 		var lpos = map.to_local(mark_pos)
 		mark.set_translation(lpos)
-		map.add_child(mark)
+		# place all the skidmarks under a common parent
+		var gfx = null
+		if !map.has_node("gfx"):
+			gfx = Spatial.new()
+			gfx.set_name("gfx")
+			map.add_child(gfx)
+		else:
+			gfx = map.get_node("gfx")
+			
+		gfx.add_child(mark)
 		mark.look_at(pos, Vector3(0,1,0))
 		# flip around because... +Z vs -Z...
 		#mark.rotate_y(deg2rad(180))
@@ -538,7 +547,8 @@ func _process(delta):
 		mark_pos = wh_pos.get_global_transform().origin - Vector3(0,0.3, 0) # tiny offset to make marks show on roads
 		lpos = map.to_local(mark_pos)
 		mark.set_translation(lpos)
-		map.add_child(mark)
+		# we should already have the common parent, see above
+		gfx.add_child(mark)
 		mark.look_at(pos, Vector3(0,1,0))
 
 func enable_motion_blur(on):
