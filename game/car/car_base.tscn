@@ -29,10 +29,6 @@
 [ext_resource path="res://assets/snow_smoke_mat.tres" type="Material" id=27]
 [ext_resource path="res://assets/Smoke.tres" type="Material" id=28]
 
-
-
-
-
 [sub_resource type="SpatialMaterial" id=1]
 params_diffuse_mode = 1
 roughness = 0.0

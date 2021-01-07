@@ -1,8 +1,7 @@
 [gd_resource type="ArrayMesh" load_steps=3 format=2]
 
-[ext_resource path="res://assets/car/car_blue.tres" type="Material" id=1]
+[ext_resource path="res://assets/car/car_side_gradient.tres" type="Material" id=1]
 [ext_resource path="res://assets/shadermaterial_glass.tres" type="Material" id=2]
-
 
 [resource]
 surfaces/0 = {
