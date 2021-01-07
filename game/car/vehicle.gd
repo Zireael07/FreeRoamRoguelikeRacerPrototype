@@ -45,7 +45,7 @@ var tail_mat
 
 var sparks
 
-var flip_mat = preload("res://assets/car_red.tres")
+var flip_mat = preload("res://assets/car/car_red.tres")
 	
 func _ready():
 	sparks = load("res://objects/Particles_sparks.tscn")

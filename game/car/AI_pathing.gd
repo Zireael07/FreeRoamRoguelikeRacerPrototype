@@ -16,7 +16,7 @@ var map
 # debugging
 var draw
 var draw_arc
-var flip_mat = preload("res://assets/car_red.tres")
+var flip_mat = preload("res://assets/car/car_red.tres")
 
 func _ready():
 	# Called every time the node is added to the scene.

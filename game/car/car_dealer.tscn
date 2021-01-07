@@ -1,12 +1,16 @@
 [gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://save_test.tres" type="ArrayMesh" id=1]
-[ext_resource path="res://assets/car_blue.tres" type="Material" id=4]
+[ext_resource path="res://assets/car/car_blue.tres" type="Material" id=4]
 [ext_resource path="res://car/car_mesh.gd" type="Script" id=5]
-[ext_resource path="res://assets/modular car glass.tres" type="Material" id=10]
-[ext_resource path="res://assets/LED taillights stock.jpg" type="Texture" id=11]
-[ext_resource path="res://assets/neon_under_material.tres" type="Material" id=21]
+[ext_resource path="res://assets/car/modular car glass.tres" type="Material" id=10]
+[ext_resource path="res://assets/car/LED taillights stock.jpg" type="Texture" id=11]
+[ext_resource path="res://assets/car/neon_under_material.tres" type="Material" id=21]
 [ext_resource path="res://car/car_wheel.tscn" type="PackedScene" id=23]
+
+
+
+
 
 [sub_resource type="SpatialMaterial" id=10]
 params_diffuse_mode = 1

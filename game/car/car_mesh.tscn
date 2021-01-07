@@ -1,8 +1,9 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://car/procedural_car_better.gd" type="Script" id=1]
-[ext_resource path="res://assets/car_blue.tres" type="Material" id=2]
+[ext_resource path="res://assets/car/car_blue.tres" type="Material" id=2]
 [ext_resource path="res://assets/shadermaterial_glass.tres" type="Material" id=3]
+
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.988281, 0.675432, 0.0115814, 1 )

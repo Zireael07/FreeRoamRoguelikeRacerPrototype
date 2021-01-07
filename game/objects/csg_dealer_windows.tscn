@@ -1,8 +1,9 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/car_red.tres" type="Material" id=1]
+[ext_resource path="res://assets/car/car_red.tres" type="Material" id=1]
 [ext_resource path="res://csg_dealer.tres" type="ArrayMesh" id=2]
 [ext_resource path="res://objects/CSGCombiner.gd" type="Script" id=3]
+
 
 [sub_resource type="PlaneMesh" id=1]
 size = Vector2( 6, 5 )

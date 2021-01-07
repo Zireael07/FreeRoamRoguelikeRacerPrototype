@@ -4,15 +4,15 @@
 [ext_resource path="res://car/vehicle_player.gd" type="Script" id=2]
 [ext_resource path="res://car/car_wheel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://car/car_mesh.tscn" type="PackedScene" id=4]
-[ext_resource path="res://assets/car_blue.tres" type="Material" id=5]
+[ext_resource path="res://assets/car/car_blue.tres" type="Material" id=5]
 [ext_resource path="res://car/car_mesh.gd" type="Script" id=6]
-[ext_resource path="res://assets/modular car glass.tres" type="Material" id=7]
-[ext_resource path="res://assets/LED taillights stock.jpg" type="Texture" id=8]
+[ext_resource path="res://assets/car/modular car glass.tres" type="Material" id=7]
+[ext_resource path="res://assets/car/LED taillights stock.jpg" type="Texture" id=8]
 [ext_resource path="res://hud/test_car_label.tscn" type="PackedScene" id=9]
 [ext_resource path="res://car/follow_camera.gd" type="Script" id=10]
 [ext_resource path="res://motion_blur/motion_blur.tscn" type="PackedScene" id=11]
 [ext_resource path="res://default_env_copy.tres" type="Environment" id=12]
-[ext_resource path="res://assets/car_mirror.tres" type="Material" id=13]
+[ext_resource path="res://assets/car/car_mirror.tres" type="Material" id=13]
 [ext_resource path="res://car/MeshInstance.gd" type="Script" id=14]
 [ext_resource path="res://hud/label_3d.gd" type="Script" id=15]
 [ext_resource path="res://hud/test_car_nameplate.tscn" type="PackedScene" id=16]
@@ -28,6 +28,10 @@
 [ext_resource path="res://save_test.tres" type="ArrayMesh" id=26]
 [ext_resource path="res://assets/snow_smoke_mat.tres" type="Material" id=27]
 [ext_resource path="res://assets/Smoke.tres" type="Material" id=28]
+
+
+
+
 
 [sub_resource type="SpatialMaterial" id=1]
 params_diffuse_mode = 1
@@ -145,7 +149,7 @@ roughness = 0.0
 [sub_resource type="QuadMesh" id=15]
 size = Vector2( 0.5, 0.5 )
 
-[sub_resource type="Shader" id=19]
+[sub_resource type="Shader" id=16]
 code = "shader_type spatial;
 render_mode unshaded,blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx;
 uniform vec4 albedo : hint_color;
@@ -185,8 +189,8 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id=20]
-shader = SubResource( 19 )
+[sub_resource type="ShaderMaterial" id=17]
+shader = SubResource( 16 )
 shader_param/albedo = Color( 0.956863, 0.956863, 0.945098, 1 )
 shader_param/specular = 0.5
 shader_param/metallic = 0.0
@@ -201,10 +205,10 @@ shader_param/fresnel_power = 0.1
 shader_param/edge_intensity = 30.0
 shader_param/texture_albedo = ExtResource( 23 )
 
-[sub_resource type="PlaneMesh" id=17]
+[sub_resource type="PlaneMesh" id=18]
 size = Vector2( 1, 1.5 )
 
-[sub_resource type="SphereMesh" id=18]
+[sub_resource type="SphereMesh" id=19]
 material = ExtResource( 27 )
 radius = 0.05
 height = 0.1
@@ -462,9 +466,9 @@ script = ExtResource( 20 )
 
 [node name="neon_under" type="MeshInstance" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.002, 0.1, 0.023 )
-material_override = SubResource( 20 )
+material_override = SubResource( 17 )
 cast_shadow = 0
-mesh = SubResource( 17 )
+mesh = SubResource( 18 )
 material/0 = null
 
 [node name="RayCast" type="RayCast" parent="BODY"]
@@ -485,7 +489,7 @@ amount = 32
 lifetime = 0.5
 visibility_aabb = AABB( -4, -4, -4.68213, 8, 8, 8 )
 process_material = ExtResource( 28 )
-draw_pass_1 = SubResource( 18 )
+draw_pass_1 = SubResource( 19 )
 
 [node name="Smoke2" type="Particles" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.489926, 0.248742, -1.14425 )
@@ -494,7 +498,7 @@ amount = 32
 lifetime = 0.5
 visibility_aabb = AABB( -4, -4, -4.68213, 8, 8, 8 )
 process_material = ExtResource( 28 )
-draw_pass_1 = SubResource( 18 )
+draw_pass_1 = SubResource( 19 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 _import_path = NodePath("AnimationPlayer")

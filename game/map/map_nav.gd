@@ -5,9 +5,9 @@ var ast # for BFS
 var nav # for actual navigation
 var path_look = {} # calculated paths
 
-var flip_mat = preload("res://assets/car_red.tres")
-var test_mat = preload("res://assets/car_blue.tres")
-var test2_mat = preload("res://assets/car_black.tres")
+var flip_mat = preload("res://assets/car/car_red.tres")
+var test_mat = preload("res://assets/car/car_blue.tres")
+var test2_mat = preload("res://assets/car/car_black.tres")
 
 # used all over the code
 var mult

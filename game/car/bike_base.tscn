@@ -1,15 +1,15 @@
 [gd_scene load_steps=39 format=2]
 
-[ext_resource path="res://assets/car_mirror.tres" type="Material" id=1]
+[ext_resource path="res://assets/car/car_mirror.tres" type="Material" id=1]
 [ext_resource path="res://car/car_player.gd" type="Script" id=3]
 [ext_resource path="res://hud/test_car_label.tscn" type="PackedScene" id=4]
 [ext_resource path="res://hud/test_car_nameplate.tscn" type="PackedScene" id=5]
 [ext_resource path="res://car/car_mesh.tscn" type="PackedScene" id=6]
 [ext_resource path="res://car/follow_camera.gd" type="Script" id=7]
 [ext_resource path="res://hud/nameplate_3d.gd" type="Script" id=8]
-[ext_resource path="res://assets/car_blue.tres" type="Material" id=9]
+[ext_resource path="res://assets/car/car_blue.tres" type="Material" id=9]
 [ext_resource path="res://hud/label_3d.gd" type="Script" id=11]
-[ext_resource path="res://assets/LED taillights stock.jpg" type="Texture" id=12]
+[ext_resource path="res://assets/car/LED taillights stock.jpg" type="Texture" id=12]
 [ext_resource path="res://car/vehicle_player.gd" type="Script" id=13]
 [ext_resource path="res://assets/rain_particles.tres" type="Material" id=14]
 [ext_resource path="res://car/untitled.tscn" type="PackedScene" id=15]
@@ -22,6 +22,9 @@
 [ext_resource path="res://assets/rain_material.tres" type="Material" id=24]
 [ext_resource path="res://car/replay_system.gd" type="Script" id=25]
 [ext_resource path="res://objects/skysphere.tscn" type="PackedScene" id=26]
+
+
+
 
 [sub_resource type="SpatialMaterial" id=1]
 params_diffuse_mode = 1

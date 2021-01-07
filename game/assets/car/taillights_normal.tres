@@ -1,6 +1,7 @@
 [gd_resource type="SpatialMaterial" load_steps=1 format=2]
 
-[ext_resource path="res://assets/LED taillights stock.tex" type="Texture" id=1]
+[ext_resource path="res://assets/car/LED taillights stock.tex" type="Texture" id=1]
+
 
 [resource]
 

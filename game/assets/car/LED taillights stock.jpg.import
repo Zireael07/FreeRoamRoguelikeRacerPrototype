@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/LED taillights stock.jpg-dbbfa1d3a1861505878322762e481412.s3tc.stex"
-path.etc2="res://.import/LED taillights stock.jpg-dbbfa1d3a1861505878322762e481412.etc2.stex"
+path.s3tc="res://.import/LED taillights stock.jpg-114a48db5d12c0246f3e6318e543cef2.s3tc.stex"
+path.etc2="res://.import/LED taillights stock.jpg-114a48db5d12c0246f3e6318e543cef2.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/LED taillights stock.jpg"
-dest_files=[ "res://.import/LED taillights stock.jpg-dbbfa1d3a1861505878322762e481412.s3tc.stex", "res://.import/LED taillights stock.jpg-dbbfa1d3a1861505878322762e481412.etc2.stex" ]
+source_file="res://assets/car/LED taillights stock.jpg"
+dest_files=[ "res://.import/LED taillights stock.jpg-114a48db5d12c0246f3e6318e543cef2.s3tc.stex", "res://.import/LED taillights stock.jpg-114a48db5d12c0246f3e6318e543cef2.etc2.stex" ]
 
 [params]
 
