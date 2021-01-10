@@ -1,13 +1,17 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://hud/hud_labels.gd" type="Script" id=1]
 [ext_resource path="res://assets/851H-kktt.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://hud/cam_icon.png" type="Texture" id=3]
 [ext_resource path="res://hud/battery_icon_full.png" type="Texture" id=4]
+[ext_resource path="res://hud/thin lcd font.tres" type="DynamicFont" id=5]
 
-[sub_resource type="DynamicFont" id=1]
-size = 20
-font_data = ExtResource( 2 )
+[sub_resource type="DynamicFontData" id=6]
+font_path = "res://assets/DSEG7ClassicMini-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=7]
+outline_size = 1
+font_data = SubResource( 6 )
 
 [sub_resource type="DynamicFont" id=2]
 size = 18
@@ -43,11 +47,31 @@ margin_right = 227.0
 margin_bottom = 77.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
-custom_fonts/font = SubResource( 1 )
-text = "spd"
+custom_fonts/font = SubResource( 7 )
+text = "0"
 align = 1
 valign = 1
 max_lines_visible = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="."]
+modulate = Color( 0.0156863, 0.988235, 0.988235, 1 )
+margin_left = 60.0
+margin_top = -22.0
+margin_right = 262.0
+margin_bottom = 77.0
+size_flags_horizontal = 2
+size_flags_vertical = 0
+custom_fonts/font = ExtResource( 5 )
+text = "kph"
+align = 1
+valign = 1
+max_lines_visible = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label timer" type="Label" parent="."]
 margin_top = 229.0
@@ -208,7 +232,7 @@ color = Color( 0, 0.155029, 0.992188, 0.552471 )
 [node name="NameLabel" type="Label" parent="DriverInfo"]
 margin_right = 40.0
 margin_bottom = 14.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0.0117647, 0.988235, 0.988235, 1 )
 text = "Ichiro"
 
@@ -216,7 +240,7 @@ text = "Ichiro"
 margin_top = 30.0
 margin_right = 93.0
 margin_bottom = 51.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0.0117647, 0.988235, 0.988235, 1 )
 text = "Money:   0"
 

@@ -12,3 +12,4 @@ Assets:
 * storefronts - Free-urban-textures-buildings-apartments-shop-fronts on OGA (public domain)
 * driver - "Retro-Futuristic Racing Driver" (https://sketchfab.com/3d-models/retro-futuristic-racing-driver-b6b267b4fb1b46ae83661b36e147b145) by kuorma (https://sketchfab.com/kuorma) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
 * skid mark - <a href="https://www.vecteezy.com/free-vector/motorcycle">Motorcycle Vectors by Vecteezy</a>
+* big LCD font - https://github.com/keshikan/DSEG

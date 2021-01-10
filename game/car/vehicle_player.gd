@@ -389,7 +389,8 @@ func _process(delta):
 	#speedometer
 	speed_int = round(speed)
 	speed_kph = round(speed*3.6)
-	speed_text = String(speed_int) + " m/s " + String(speed_kph) + " kph"
+	#speed_text = String(speed_int) + " m/s " + String(speed_kph) + " kph"
+	speed_text = String(speed_kph)
 	# make speed reading red if above speed limit
 	if speed > 15:
 		hud.update_speed(speed_text, Color(1,0,0))
