@@ -607,10 +607,16 @@ func get_dest_exit(src, dest, verbose=false):
 			dest_exits.remove(dest_exits.find(dest.point_three))
 			dest.used_exits[dest.point_three] = 3 # quadrant
 			return dest.point_three
-		elif dest_exits.has(dest.point_two):
+		elif dest_exits.has(dest.point_two) \
+		and dest.used_exits.has(src.point_three) and dest.used_exits[src.point_three] != 3:
 			dest_exits.remove(dest_exits.find(dest.point_two))
 			dest.used_exits[dest.point_two] = 3 # quadrant
 			return dest.point_two
+		elif dest_exits.has(dest.point_four) \
+		and dest.used_exits.has(src.point_three) and dest.used_exits[src.point_three] == 3:
+			dest_exits.remove(dest_exits.find(dest.point_four))
+			dest.used_exits[dest.point_four] = 3 # quadrant
+			return dest.point_four
 	# quadrant 2
 	elif rel_pos.x < 0 and rel_pos.z > 0:
 		if verbose:
