@@ -31,7 +31,7 @@ func _ready():
 		# append target point
 		path.append(race_target)
 		#print("AI has path: " + str(path))
-		emit_signal("found_path", path)
+		emit_signal("found_path", [path, false, false])
 		
 	random_name()
 	

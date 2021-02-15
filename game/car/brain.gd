@@ -141,6 +141,9 @@ class DrivingState:
 		#	print(str(car.velocity.y))
 		#print("Vel: " + str(car.velocity))
 		
+		if 'race' in car.get_parent().get_parent():
+			return 
+			
 		# update front cast rays length
 		if car.get_parent().speed > 10:
 			car.detect_range = car.get_parent().speed

@@ -472,17 +472,18 @@ func _physics_process(delta):
 		process_car_physics(delta, gas, braking, left, right, joy)
 		
 		# test stuck detection
-		if gas and not reverse and speed < 1:
-			#print("AI ", get_parent().get_name(), " STUCK!!!")
-			if get_node("StuckTimer").get_time_left() == 0:
-				get_node("StuckTimer").start()
-				print("AI ",  get_parent().get_name(), " started timer ", get_node("StuckTimer").get_time_left())
-			#else:
-			#	print("Timer already running")
-		elif gas and speed >= 1:
-			#print("No longer stuck")
-			# abort stuck timer
-			get_node("StuckTimer").stop()
+		if not get_parent().is_in_group("race_AI"):
+			if gas and not reverse and speed < 1:
+				#print("AI ", get_parent().get_name(), " STUCK!!!")
+				if get_node("StuckTimer").get_time_left() == 0:
+					get_node("StuckTimer").start()
+					print("AI ",  get_parent().get_name(), " started timer ", get_node("StuckTimer").get_time_left())
+				#else:
+				#	print("Timer already running")
+			elif gas and speed >= 1:
+				#print("No longer stuck")
+				# abort stuck timer
+				get_node("StuckTimer").stop()
 		
 		
 		# don't do the next if we're a cop chasing
