@@ -1,8 +1,9 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://objects/marker.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scripts/race_marker.gd" type="Script" id=2]
+[ext_resource path="res://scripts/h2h_marker.gd" type="Script" id=2]
 [ext_resource path="res://assets/race_marker_mat.tres" type="Material" id=3]
+
 
 [node name="marker" groups=[
 "race_marker",
