@@ -62,6 +62,7 @@ var bike_scene = null
 # player navigation
 var reached_inter
 var reached_changed = false
+var show_nav_tip = false
 
 var was_tunnel = false # for particles
 var was_dirt = false
@@ -481,7 +482,7 @@ func _process(delta):
 			get_node("Smoke2").set_emitting(true)
 						
 	# clear text if we passed the newly reached intersection				
-	if not reached_changed:
+	if not reached_changed and not show_nav_tip:
 		hud.update_nav_label("")
 
 	hud.update_road(str(disp_name) if hit != null else "")
@@ -719,7 +720,7 @@ func create_race_path(path):
 		for index in range(path.size()):
 			race_path.push_back(path[index])
 
-	#emit_signal("race_path_gotten")
+	# tell the race setup is done
 	race.done = true
 	print("Race set up is done")
 

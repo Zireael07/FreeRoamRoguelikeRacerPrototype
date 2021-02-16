@@ -92,6 +92,18 @@ func _on_Area_body_enter( body ):
 					# force redraw
 					track_map.update()
 					
+					# prompt to turn around if needed
+					var rel_pos = player.get_global_transform().xform_inv(raceline[1])
+					print("Race rel pos: ", rel_pos)
+					player.show_nav_tip = true
+					#if rel_pos.z > 0 and rel_pos.z > 3:
+					#	player.hud.update_nav_label("TURN AROUND FOR RACE")
+					#el
+					if rel_pos.x > 3:
+						player.hud.update_nav_label("TURN LEFT FOR RACE")
+					elif rel_pos.x < 3:
+						player.hud.update_nav_label("TURN RIGHT FOR RACE")
+					
 				else:
 					print("No raceline, abort")
 					msg.enable_ok(false)
@@ -110,6 +122,8 @@ func _on_Area_body_enter( body ):
 
 
 func _on_ok_click():
+	# clear turn tip
+	player.show_nav_tip = false
 	count = true
 	time = 0.0
 	spawn_finish(self)
@@ -286,6 +300,8 @@ func _on_Area_body_exit( body ):
 					track_map.points = []
 					# force redraw
 					track_map.update()
+					# hide turn tip
+					player.show_nav_tip = false
 				
 func spawn_finish(start):
 	if raceline.size() > 0:
