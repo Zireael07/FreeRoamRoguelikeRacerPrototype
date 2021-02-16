@@ -218,41 +218,44 @@ func get_positions():
 		
 	return positions
 
-
-func get_positions_compare(positions, car, ai, player, dist):
+# --------------------------
+# sorting
+# helper
+func pos_on_raceline(car):
+	var car_pos = null
+	if "position_on_line" in car:
+		if car.position_on_line != null:
+			car_pos = car.position_on_line
+	return car_pos
+	
+func positions_compare(a, b):
 	# check for crossing the finish line first
-	if ai.finished and not player.finished:
-		positions.push_back(car.romaji)
-		positions.push_back(player.get_parent().romaji + ' +' + str(int(dist)) + 'm')
-	elif player.finished and not ai.finished:
-		positions.push_back(player.get_parent().romaji + ' -' + str(int(dist)) + 'm')
-		positions.push_back(car.romaji)
+	if a.finished and not b.finished:
+		return true
+	elif b.finished and not a.finished:
+		return false
 	# check points on raceline
 	else:
-		if ai.current > player.current:
+		if a.current > b.current:
 			#print("AI's current higher")
-			positions.push_back(car.romaji)
-			positions.push_back(player.get_parent().romaji + ' +' + str(int(dist)) + 'm')
-		elif ai.current == player.current:
+			return true
+		elif a.current == b.current:
 			#print("Same current, comparing distances")
-			var AI_dist = get_distance_from_prev(get_AI_position_on_raceline(), raceline)
+			var a_dist = get_distance_from_prev(pos_on_raceline(a), raceline)
 			#print("AI dist: " + str(AI_dist))
-			var player_dist = get_distance_from_prev(get_player_position_on_raceline(), raceline)
+			var b_dist = get_distance_from_prev(pos_on_raceline(b), raceline)
 			#print("Player dist: " + str(player_dist))
 
-			if AI_dist != null and player_dist != null:
-				if AI_dist > player_dist:
+			if a_dist != null and b_dist != null:
+				if a_dist > b_dist:
 					#print("AI dist higher")
-					positions.push_back(car.romaji)
-					positions.push_back(player.get_parent().romaji + ' +' + str(int(dist)) + 'm')
+					return true
 				else:
 					#print("player dist higher")
-					positions.push_back(player.get_parent().romaji + ' -' + str(int(dist)) + 'm')
-					positions.push_back(car.romaji)
+					return false
 		else:
 			#print("player current higher")
-			positions.push_back(player.get_parent().romaji + ' -' + str(int(dist)) + 'm')
-			positions.push_back(car.romaji)
+			return false
 
 	
 func get_positions_simple():
@@ -260,14 +263,26 @@ func get_positions_simple():
 	else:
 		var positions = []
 		
+		# to compare needs the physics body, not ai above it
+		var to_compare = [] #cars.duplicate()
 		for car in cars:
 			var ai = car.get_node("BODY")
-		
-			var raceline = ai.path
-			#print("Raceline: " + str(ai.path))
-			var dist = player.get_global_transform().origin.distance_to(car.get_node("BODY").get_global_transform().origin)
+			to_compare.append(ai)
 			
-			get_positions_compare(positions, car, ai, player, dist)
+		to_compare.append(player)
+
+		# sort (NOTE: the "Object" can be self!)
+		to_compare.sort_custom(self, "positions_compare")
+		
+		#print(to_compare)
+		
+		for body in to_compare:
+			positions.append(body.get_parent().romaji)
+		
+#			var dist = player.get_global_transform().origin.distance_to(car.get_node("BODY").get_global_transform().origin)
+			
+#			positions.push_back(car.romaji)
+#			positions.push_back(player.get_parent().romaji + ' +' + str(int(dist)) + 'm')
 		
 		#print(str(positions))
 		
