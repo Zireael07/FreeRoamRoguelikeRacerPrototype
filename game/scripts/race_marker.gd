@@ -217,6 +217,43 @@ func get_positions():
 				positions.push_back(get_distance_along_raceline(pt, raceline))
 		
 	return positions
+
+
+func get_positions_compare(positions, car, ai, player, dist):
+	# check for crossing the finish line first
+	if ai.finished and not player.finished:
+		positions.push_back(car.romaji)
+		positions.push_back(player.get_parent().romaji + ' +' + str(int(dist)) + 'm')
+	elif player.finished and not ai.finished:
+		positions.push_back(player.get_parent().romaji + ' -' + str(int(dist)) + 'm')
+		positions.push_back(car.romaji)
+	# check points on raceline
+	else:
+		if ai.current > player.current:
+			#print("AI's current higher")
+			positions.push_back(car.romaji)
+			positions.push_back(player.get_parent().romaji + ' +' + str(int(dist)) + 'm')
+		elif ai.current == player.current:
+			#print("Same current, comparing distances")
+			var AI_dist = get_distance_from_prev(get_AI_position_on_raceline(), raceline)
+			#print("AI dist: " + str(AI_dist))
+			var player_dist = get_distance_from_prev(get_player_position_on_raceline(), raceline)
+			#print("Player dist: " + str(player_dist))
+
+			if AI_dist != null and player_dist != null:
+				if AI_dist > player_dist:
+					#print("AI dist higher")
+					positions.push_back(car.romaji)
+					positions.push_back(player.get_parent().romaji + ' +' + str(int(dist)) + 'm')
+				else:
+					#print("player dist higher")
+					positions.push_back(player.get_parent().romaji + ' -' + str(int(dist)) + 'm')
+					positions.push_back(car.romaji)
+		else:
+			#print("player current higher")
+			positions.push_back(player.get_parent().romaji + ' -' + str(int(dist)) + 'm')
+			positions.push_back(car.romaji)
+
 	
 func get_positions_simple():
 	if not done: return []
@@ -230,40 +267,7 @@ func get_positions_simple():
 			#print("Raceline: " + str(ai.path))
 			var dist = player.get_global_transform().origin.distance_to(car.get_node("BODY").get_global_transform().origin)
 			
-			# check for crossing the finish line first
-			if ai.finished and not player.finished:
-				positions.push_back(car.romaji)
-				# FIXME: should only push player AFTER all AI are checked
-				positions.push_back(player.get_parent().romaji + ' +' + str(int(dist)) + 'm')
-			elif player.finished and not ai.finished:
-				positions.push_back(player.get_parent().romaji + ' -' + str(int(dist)) + 'm')
-				positions.push_back(car.romaji)
-			# check points on raceline
-			else:
-				if ai.current > player.current:
-					#print("AI's current higher")
-					positions.push_back(car.romaji)
-					positions.push_back(player.get_parent().romaji + ' +' + str(int(dist)) + 'm')
-				elif ai.current == player.current:
-					#print("Same current, comparing distances")
-					var AI_dist = get_distance_from_prev(get_AI_position_on_raceline(), raceline)
-					#print("AI dist: " + str(AI_dist))
-					var player_dist = get_distance_from_prev(get_player_position_on_raceline(), raceline)
-					#print("Player dist: " + str(player_dist))
-
-					if AI_dist != null and player_dist != null:
-						if AI_dist > player_dist:
-							#print("AI dist higher")
-							positions.push_back(car.romaji)
-							positions.push_back(player.get_parent().romaji + ' +' + str(int(dist)) + 'm')
-						else:
-							#print("player dist higher")
-							positions.push_back(player.get_parent().romaji + ' -' + str(int(dist)) + 'm')
-							positions.push_back(car.romaji)
-				else:
-					#print("player current higher")
-					positions.push_back(player.get_parent().romaji + ' -' + str(int(dist)) + 'm')
-					positions.push_back(car.romaji)
+			get_positions_compare(positions, car, ai, player, dist)
 		
 		#print(str(positions))
 		
