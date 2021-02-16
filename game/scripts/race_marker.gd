@@ -15,7 +15,7 @@ var ai_data = []
 
 # race
 var racer
-var car
+var cars = []
 
 var done = false
 
@@ -74,7 +74,7 @@ func _on_Area_body_enter( body ):
 			else:
 				var msg = body.get_node("Messages")
 				#msg.set_initial(false)
-				msg.set_text("TEST RACE! " + "\n" + "Race one guy to the finish marker")
+				msg.set_text("TEST RACE! " + "\n" + "Race others to the finish marker")
 
 				# disconnect all others to prevent bugs
 				for d in msg.get_node("OK_button").get_signal_connection_list("pressed"):
@@ -136,9 +136,9 @@ func _on_ok_click():
 	
 # race positioning system
 # the AI sends us a signal when it has the path
-func _on_path_gotten():
+func _on_path_gotten(ai):
 	print("[RACE] On path gotten")
-	var ai = car.get_node("BODY")
+	#var ai = car.get_node("BODY")
 	var raceline = ai.path
 	#print("Race line is " + str(raceline))
 	player.race = self
@@ -154,11 +154,12 @@ func _on_path_gotten():
 func get_AI_position_on_raceline():
 	if not done: return null
 	else:
-		var ai = car.get_node("BODY")
-		#var raceline = ai.path
-		var AI_pos = ai.position_on_line
-		#print("AI position on racelone " + str(AI_pos) )
-		return AI_pos
+		for car in cars:
+			var ai = car.get_node("BODY")
+			#var raceline = ai.path
+			var AI_pos = ai.position_on_line
+			#print("AI position on racelone " + str(AI_pos) )
+			return AI_pos
 
 func get_player_position_on_raceline():
 	if not done: return null
@@ -204,9 +205,9 @@ func get_distance_from_prev(line_pos, path):
 		
 func get_positions():
 	if not done: return null
-	var ai = car.get_node("BODY")
-	var raceline = ai.path
-	
+	for car in cars:
+		var ai = car.get_node("BODY")
+		var raceline = ai.path
 	
 	var positions = []
 	var points = get_positions_on_raceline()
@@ -221,46 +222,48 @@ func get_positions_simple():
 	if not done: return []
 	else:
 		var positions = []
-		var ai = car.get_node("BODY")
-	
-		var raceline = ai.path
-		#print("Raceline: " + str(ai.path))
 		
-		var dist = player.get_global_transform().origin.distance_to(car.get_node("BODY").get_global_transform().origin)
+		for car in cars:
+			var ai = car.get_node("BODY")
 		
-		# check for crossing the finish line first
-		if ai.finished and not player.finished:
-			positions.push_back(car.romaji)
-			positions.push_back(player.get_parent().romaji + ' +' + str(int(dist)) + 'm')
-		elif player.finished and not ai.finished:
-			positions.push_back(player.get_parent().romaji + ' -' + str(int(dist)) + 'm')
-			positions.push_back(car.romaji)
-		# check points on raceline
-		else:
-			if ai.current > player.current:
-				#print("AI's current higher")
+			var raceline = ai.path
+			#print("Raceline: " + str(ai.path))
+			var dist = player.get_global_transform().origin.distance_to(car.get_node("BODY").get_global_transform().origin)
+			
+			# check for crossing the finish line first
+			if ai.finished and not player.finished:
 				positions.push_back(car.romaji)
+				# FIXME: should only push player AFTER all AI are checked
 				positions.push_back(player.get_parent().romaji + ' +' + str(int(dist)) + 'm')
-			elif ai.current == player.current:
-				#print("Same current, comparing distances")
-				var AI_dist = get_distance_from_prev(get_AI_position_on_raceline(), raceline)
-				#print("AI dist: " + str(AI_dist))
-				var player_dist = get_distance_from_prev(get_player_position_on_raceline(), raceline)
-				#print("Player dist: " + str(player_dist))
-
-				if AI_dist != null and player_dist != null:
-					if AI_dist > player_dist:
-						#print("AI dist higher")
-						positions.push_back(car.romaji)
-						positions.push_back(player.get_parent().romaji + ' +' + str(int(dist)) + 'm')
-					else:
-						#print("player dist higher")
-						positions.push_back(player.get_parent().romaji + ' -' + str(int(dist)) + 'm')
-						positions.push_back(car.romaji)
-			else:
-				#print("player current higher")
+			elif player.finished and not ai.finished:
 				positions.push_back(player.get_parent().romaji + ' -' + str(int(dist)) + 'm')
 				positions.push_back(car.romaji)
+			# check points on raceline
+			else:
+				if ai.current > player.current:
+					#print("AI's current higher")
+					positions.push_back(car.romaji)
+					positions.push_back(player.get_parent().romaji + ' +' + str(int(dist)) + 'm')
+				elif ai.current == player.current:
+					#print("Same current, comparing distances")
+					var AI_dist = get_distance_from_prev(get_AI_position_on_raceline(), raceline)
+					#print("AI dist: " + str(AI_dist))
+					var player_dist = get_distance_from_prev(get_player_position_on_raceline(), raceline)
+					#print("Player dist: " + str(player_dist))
+
+					if AI_dist != null and player_dist != null:
+						if AI_dist > player_dist:
+							#print("AI dist higher")
+							positions.push_back(car.romaji)
+							positions.push_back(player.get_parent().romaji + ' +' + str(int(dist)) + 'm')
+						else:
+							#print("player dist higher")
+							positions.push_back(player.get_parent().romaji + ' -' + str(int(dist)) + 'm')
+							positions.push_back(car.romaji)
+				else:
+					#print("player current higher")
+					positions.push_back(player.get_parent().romaji + ' -' + str(int(dist)) + 'm')
+					positions.push_back(car.romaji)
 		
 		#print(str(positions))
 		
@@ -334,12 +337,16 @@ func spawn_finish(start):
 # differences to normal marker start here
 func spawn_racer(loc):
 	print("Offset: " + str(loc))
-	car = racer.instance()
+
+	var car = racer.instance()
 	car.set_name("Racer")
 	
+	# add to list of cars
+	cars.append(car)
+	
 	# find the root of the scene
-	var cars = player.get_parent().get_parent()
-	var local = cars.to_local(get_global_transform().origin)
+	var cars_root = player.get_parent().get_parent()
+	var local = cars_root.to_local(get_global_transform().origin)
 	
 	car.look_at(loc, Vector3(0,1,0))
 	car.rotate_y(deg2rad(180))
@@ -354,7 +361,7 @@ func spawn_racer(loc):
 	
 	car.left = false
 	
-	cars.add_child(car)
+	cars_root.add_child(car)
 	print("Added the car")
 	
 	# add a minimap arrow
