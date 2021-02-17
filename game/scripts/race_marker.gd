@@ -132,6 +132,10 @@ func _on_ok_click():
 	var pos = to_local(raceline[0])
 	#print("Pos: " + str(pos))
 	spawn_racer(pos)
+	pos = pos + Vector3(0,0,8)
+	spawn_racer(pos)
+	
+	
 	print("[RACE] Clicked ok!")
 	
 # race positioning system
