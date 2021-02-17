@@ -12,9 +12,6 @@
 [ext_resource path="res://car/detect_obstacles_ray.gd" type="Script" id=10]
 [ext_resource path="res://scripts/draw_line.gd" type="Script" id=11]
 
-
-
-
 [sub_resource type="SpatialMaterial" id=1]
 params_diffuse_mode = 1
 roughness = 0.0
@@ -83,6 +80,7 @@ surfaces/0 = {
 extents = Vector3( 0.477039, 0.413218, 1.32118 )
 
 [sub_resource type="SpatialMaterial" id=7]
+resource_local_to_scene = true
 flags_transparent = true
 flags_unshaded = true
 params_diffuse_mode = 1
