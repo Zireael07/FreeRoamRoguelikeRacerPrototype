@@ -15,7 +15,6 @@ detail_uv_layer = 1
 detail_albedo = ExtResource( 1 )
 uv1_scale = Vector3( 1, 2, 1 )
 uv1_triplanar = true
-uv1_triplanar_sharpness = 1.0
 uv2_scale = Vector3( 0.25, 0.25, 1 )
 uv2_offset = Vector3( -0.4, -0.3, 0 )
 uv2_triplanar = true
