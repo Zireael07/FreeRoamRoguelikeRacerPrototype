@@ -11,7 +11,8 @@ Features
 * main menu
 * loading screen
 * procedural map
-* procedural placement of race markers and finish markers
+* procedural placement of time trial, speed trap and race markers (and finish markers if applicable)
+* race multiple opponents at a time
 * procedural generation of road segments (straight/curved)
 * procedural placement of said segments
 * procedural T and 4-way intersections
@@ -27,7 +28,7 @@ Features
 
 Keys
 
-* Arrows to drive
+* Arrows to drive (or an on-screen joystick for mouse steering as an option)
 * R to reset car on the wheels
 * C to switch between cockpit and chase cameras
 * A/D to peek left/right in cockpit camera
