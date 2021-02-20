@@ -33,7 +33,8 @@ func _ready():
 		#print("AI has path: " + str(path))
 		emit_signal("found_path", [path, false, false])
 		
-	random_name()
+	#random_name()
+	pick_from_base()
 	
 	# Initialization here
 	if has_node("draw"):
@@ -58,6 +59,11 @@ func random_name():
 	
 	select_name(s_name, s_romaji)
 
+
+func pick_from_base():
+	var data = RacerDatabase.random_pick()
+	RacerDatabase.on_picked_name(data[1])
+	select_name(data[0], data[1])
 
 func select_name(s_name, s_romaji):
 	print("Selected name " + s_name + " " + s_romaji)
