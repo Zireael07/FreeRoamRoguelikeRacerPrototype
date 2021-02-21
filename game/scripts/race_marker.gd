@@ -94,14 +94,21 @@ func _on_Area_body_enter( body ):
 					
 					# prompt to turn around if needed
 					var rel_pos = player.get_global_transform().xform_inv(raceline[1])
-					print("Race rel pos: ", rel_pos)
+					#print("Race rel pos: ", rel_pos)
+					#2D angle to target (local coords)
+					var angle = atan2(rel_pos.x, rel_pos.z)
+					var forward_global = player.get_global_transform().xform(Vector3(0, 0, 2))
+					var forward_vec = forward_global-player.get_global_transform().origin
+					var tg_dir = raceline[1] - player.get_global_transform().origin
+					var dot = forward_vec.dot(tg_dir)
+					
 					player.show_nav_tip = true
-					#if rel_pos.z > 0 and rel_pos.z > 3:
-					#	player.hud.update_nav_label("TURN AROUND FOR RACE")
-					#el
-					if rel_pos.x > 3:
+
+					if dot < 0:
+						player.hud.update_nav_label("TURN AROUND FOR RACE")
+					elif abs(angle) > 0.75 and rel_pos.x > 3:
 						player.hud.update_nav_label("TURN LEFT FOR RACE")
-					elif rel_pos.x < 3:
+					elif abs(angle) > 0.75 and rel_pos.x < 3:
 						player.hud.update_nav_label("TURN RIGHT FOR RACE")
 					
 				else:
