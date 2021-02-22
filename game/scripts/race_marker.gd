@@ -51,7 +51,9 @@ func _on_Area_body_enter( body ):
 				
 				var results = player.get_node("root").get_node("Label timer").get_text()
 				msg.set_text("FINISH TEST RACE!" + "\n" + results)
-				#msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
+				#msg.get_node("OK_button").connect("pressed", self, "_on_results_close")
+				msg.get_node("Button").connect("pressed", self, "_on_results_close")
+				print("Connected: ", msg.get_node("Button").is_connected("pressed", self, "_on_results_close"))
 				msg.enable_ok(false)
 				msg.show()
 				
@@ -70,7 +72,7 @@ func _on_Area_body_enter( body ):
 				minimap.remove_marker(self.get_global_transform().origin)
 				
 				#remove finish
-				queue_free()
+				#queue_free()
 			else:
 				var msg = body.get_node("Messages")
 				#msg.set_initial(false)
@@ -78,8 +80,8 @@ func _on_Area_body_enter( body ):
 
 				# disconnect all others to prevent bugs
 				for d in msg.get_node("OK_button").get_signal_connection_list("pressed"):
-						print(d["target"])
-						msg.get_node("OK_button").disconnect("pressed", d["target"], "_on_ok_click")
+					print(d["target"])
+					msg.get_node("OK_button").disconnect("pressed", d["target"], "_on_ok_click")
 								
 				msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
 				if raceline.size() > 0:
@@ -127,6 +129,12 @@ func _on_Area_body_enter( body ):
 	#else:
 	#	print("Area entered by something else")
 
+func _on_results_close():
+	#remove finish
+	queue_free()
+	# flag race as over
+	player.race = null
+	print("[RACE] RESULTS CLOSED")
 
 func _on_ok_click():
 	# clear turn tip

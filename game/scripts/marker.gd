@@ -42,6 +42,9 @@ func _on_Area_body_enter( body ):
 			print("Area entered by the player")
 			player = body
 			
+			if player.race != null:
+				return # ignore if player is in a race
+			
 			if finish:
 				print("Reached finish marker")
 				start.count = false

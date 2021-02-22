@@ -29,6 +29,9 @@ func _on_Area_body_enter( body ):
 			print("Area entered by the player - speed")
 			player = body
 			
+			if player.race != null:
+				return # ignore if player is in a race
+			
 			var speed = player.get_linear_velocity().length()
 			var speed_kph = round(speed*3.6)
 
