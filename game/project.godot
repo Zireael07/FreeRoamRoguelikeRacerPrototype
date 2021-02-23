@@ -24,6 +24,7 @@ name="FreeRoamRacerPrototype"
 [autoload]
 
 Logger="*res://scripts/logger.gd"
+RacerDatabase="*res://racer_database.tscn"
 
 [debug]
 
@@ -104,8 +105,13 @@ pointing/emulate_touch_from_mouse=true
 3d_render/layer_2="sky"
 3d_render/layer_3="not-in-mirror"
 
+[memory]
+
+limits/message_queue/max_size_kb=2048
+
 [network]
 
+limits/debugger_stdout/max_messages_per_frame=20
 limits/websocket_client/max_in_buffer_kb=128
 limits/websocket_client/max_in_packets=2048
 limits/websocket_client/max_out_buffer_kb=128

@@ -5,6 +5,7 @@ extends ViewportContainer
 var cam = null
 var mouse = Vector2()
 var mmap_offset 
+var pan = Vector2()
 var player
 var map
 var int_path = []
@@ -36,6 +37,31 @@ func _on_ButtonPlus_pressed():
 func _on_ButtonMinus_pressed():
 	cam.zoom.x += 0.25
 	cam.zoom.y += 0.25
+
+# panning
+func _on_ButtonUp_pressed():
+	pan.y -= 10 
+	cam.offset = pan
+	get_node("center")._set_position(get_node("center").get_position() + pan)
+
+
+func _on_ButtonDown_pressed():
+	pan.y += 10 
+	cam.offset = pan
+	get_node("center")._set_position(get_node("center").get_position() + pan)
+
+
+func _on_ButtonLeft_pressed():
+	pan.x -= 10 
+	cam.offset = pan
+	get_node("center")._set_position(get_node("center").get_position() + pan)
+
+
+func _on_ButtonRight_pressed():
+	pan.x += 10 
+	cam.offset = pan
+	get_node("center")._set_position(get_node("center").get_position() + pan)
+
 
 
 # detect clicks
