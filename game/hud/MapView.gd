@@ -162,9 +162,9 @@ func player_nav(target):
 func _on_MapView_gui_input(event):
 	if event is InputEventMouseButton:
 		mouse = event.position
-		print("Clicked mouse in map viewport @ ", event.position)
+		print("Clicked mouse in map viewport @ ", event.position+pan)
 		# camera position is half viewport width and half viewport height
-		var rel_pos = get_node("center").get_transform().xform_inv(event.position)
+		var rel_pos = get_node("center").get_transform().xform_inv(event.position+pan)
 		#print("Relative to camera: ", rel_pos)
 		# somehow, this fits the intersection positions sent to minimap (just flipped signs)
 		# before transforming to 2d
