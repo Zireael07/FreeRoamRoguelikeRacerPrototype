@@ -42,32 +42,37 @@ func _on_ButtonMinus_pressed():
 func _on_ButtonUp_pressed():
 	pan.y -= 10 
 	cam.offset = pan
-	get_node("center")._set_position(get_node("center").get_position() + pan)
+	get_node("track").set_position(get_node("center").get_position() + mmap_offset - pan)
+	update()
+	get_node("track").update()
 
 
 func _on_ButtonDown_pressed():
 	pan.y += 10 
 	cam.offset = pan
-	get_node("center")._set_position(get_node("center").get_position() + pan)
-
+	get_node("track").set_position(get_node("center").get_position() + mmap_offset - pan)
+	update()
+	get_node("track").update()
 
 func _on_ButtonLeft_pressed():
 	pan.x -= 10 
 	cam.offset = pan
-	get_node("center")._set_position(get_node("center").get_position() + pan)
-
+	get_node("track").set_position(get_node("center").get_position() + mmap_offset - pan)
+	update()
+	get_node("track").update()
 
 func _on_ButtonRight_pressed():
 	pan.x += 10 
 	cam.offset = pan
-	get_node("center")._set_position(get_node("center").get_position() + pan)
-
+	get_node("track").set_position(get_node("center").get_position() + mmap_offset - pan)
+	update()
+	get_node("track").update()
 
 
 # detect clicks
 func _draw():
 	if mouse != null:
-		draw_rect(Rect2(mouse, Vector2(8,8)), Color(1,0,0))
+		draw_rect(Rect2(mouse-pan, Vector2(8,8)), Color(1,0,0))
 
 ## inverse of pos3dtominimap from map_texture.gd
 #func point2d_to3d(pos):
