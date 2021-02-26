@@ -134,6 +134,11 @@ func _on_results_close():
 	queue_free()
 	# flag race as over
 	player.race = null
+	
+	# restore particles
+	for n in get_tree().get_nodes_in_group("marker"):
+		n.get_node("Particles").emitting = true
+	
 	print("[RACE] RESULTS CLOSED")
 
 func _on_ok_click():
@@ -150,6 +155,11 @@ func _on_ok_click():
 	pos = pos + Vector3(0,0,8)
 	spawn_racer(pos)
 	
+	# remove the particles from all other markers
+	for n in get_tree().get_nodes_in_group("marker"):
+		if 'finish' in n and n.finish:
+			continue # skip our finish
+		n.get_node("Particles").emitting = false
 	
 	print("[RACE] Clicked ok!")
 	
