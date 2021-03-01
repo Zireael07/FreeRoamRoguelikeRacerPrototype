@@ -134,14 +134,19 @@ func _on_results_close():
 	queue_free()
 	# flag race as over
 	player.race = null
+	player.finished = true
 	
 	# restore particles
 	for n in get_tree().get_nodes_in_group("marker"):
 		n.get_node("Particles").emitting = true
 	
+	# reset car list to empty (in case we want to do this race again)
+	cars = []
+	
 	print("[RACE] RESULTS CLOSED")
 
 func _on_ok_click():
+	cars = []
 	# clear turn tip
 	player.show_nav_tip = false
 	count = true
