@@ -447,6 +447,22 @@ func _process(delta):
 		# intersection
 		else:
 			disp_name = hit.get_parent().get_parent().get_name()
+			
+			# despawn racers elsewhere
+			if race == null:
+				#print("Not in race")
+				var racers = get_tree().get_nodes_in_group("race_AI")
+				for r in racers:
+					#print(r.romaji + " race end intersection: " + str(r.race_int_path[1]))
+					if disp_name.find(str(r.race_int_path[1])) != -1:
+						pass
+						#print("At race end intersection")
+					else:
+						print("Not race end intersection")
+						r.queue_free()
+						# remove minimap marker
+						minimap.get_node("Viewport/minimap").remove_arrow(r)
+			
 			# if we have a player navigation path
 			if map_big.int_path.size() > 0:
 				# if we haven't reached a new intersection

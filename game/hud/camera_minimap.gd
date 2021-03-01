@@ -22,6 +22,7 @@ var mapping_marker = {}
 
 # AI car arrows
 var arrows = []
+var mapping_arrows = {}
 
 # gfx
 var blue_flag
@@ -161,6 +162,9 @@ func add_arrow(AI, racer=true):
 	tex.set_scale(Vector2(0.5, 0.5))
 	if racer:
 		tex.set_modulate(Color(1,0,0))
+		tex.set_name("racer-AI")
+		# add to mapping
+		mapping_arrows[AI] = tex
 	
 	attach.add_child(tex)
 	arrows.append(tex)
@@ -221,3 +225,15 @@ func flash_cop_arrow():
 func stop_cop_arrow():
 	cop_arrow.get_child(0).stop()
 	cop_arrow.set_modulate(Color(0,0,1))
+
+func remove_arrow(AI):
+	if mapping_arrows.has(AI):
+		print("Found an arrow")
+		
+		# remove AI
+		AIs.remove(AIs.find(AI))
+		
+		attach.remove_child(mapping_arrows[AI])
+		arrows.remove(arrows.find(mapping_arrows[AI]))
+		# remove the mapping
+		mapping_arrows[AI] = null
