@@ -47,7 +47,14 @@ func _on_Area_body_enter( body ):
 				start.count = false
 				
 				# has to be here because doing it in _on_results_close reports wrong positions
-				print("Player finished: ", start.get_player_position())
+				var player_result = start.get_player_position()
+				print("Player finished: ", player_result)
+				# prize
+				if player_result == 1:
+					player.money += 200
+				if player_result == 2:
+					player.money += 150
+				player.hud.update_money(player.money)
 				
 				
 				var msg = body.get_node("Messages")
