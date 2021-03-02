@@ -46,6 +46,10 @@ func _on_Area_body_enter( body ):
 				
 				start.count = false
 				
+				# has to be here because doing it in _on_results_close reports wrong positions
+				print("Player finished: ", start.get_player_position())
+				
+				
 				var msg = body.get_node("Messages")
 				#msg.set_initial(false)
 				
@@ -121,7 +125,7 @@ func _on_Area_body_enter( body ):
 		else:
 			#print("Area entered by AI car")
 			if finish:
-				print("Finish area entered by AI")
+				#print("Finish area entered by AI")
 				if body.get_parent().is_in_group("race_AI"):
 					# flag AI as finished
 					body.finished = true
@@ -185,42 +189,7 @@ func _on_path_gotten(ai):
 	# force redraw
 	track_map.update()
 
-func get_AI_position_on_raceline():
-	if not done: return null
-	else:
-		for car in cars:
-			var ai = car.get_node("BODY")
-			#var raceline = ai.path
-			var AI_pos = ai.position_on_line
-			#print("AI position on racelone " + str(AI_pos) )
-			return AI_pos
-
-func get_player_position_on_raceline():
-	if not done: return null
-	else:
-		var player_pos = null
-		if "position_on_line" in player:
-			if player.position_on_line != null:
-				player_pos = player.position_on_line
-		
-		return player_pos
-
-func get_positions_on_raceline():
-	var AI_pos = get_AI_position_on_raceline()
-	var player_pos = get_player_position_on_raceline()
-#	if not done: return null
-#	else:
-#		var ai = car.get_node("BODY")
-#		var raceline = ai.path
-#		var AI_pos = ai.position_on_line
-#		
-#		var player_pos = null
-#		if "position_on_line" in player:
-#			if player.position_on_line != null:
-#				player_pos = player.position_on_line
-		
-	return [AI_pos, player_pos]
-
+# ---------------------------------------
 func get_distance_along_raceline(line_pos, path):
 	#print("Position along raceline: " + str(line_pos[0]))
 	var distance = line_pos[0].distance_to(path[line_pos[1]])
@@ -236,21 +205,6 @@ func get_distance_from_prev(line_pos, path):
 		return distance
 	else:
 		return null
-		
-func get_positions():
-	if not done: return null
-	for car in cars:
-		var ai = car.get_node("BODY")
-		var raceline = ai.path
-	
-	var positions = []
-	var points = get_positions_on_raceline()
-	if points != null:
-		for pt in points:
-			if pt != null:
-				positions.push_back(get_distance_along_raceline(pt, raceline))
-		
-	return positions
 
 # --------------------------
 # sorting
@@ -324,12 +278,17 @@ func get_positions_simple():
 
 func displayed_positions():
 	var string = ""
-	var positions = get_positions_simple() #wtf was I thinking naming it?
+	var positions = get_positions_simple()
 	
 	for i in range(positions.size()):
 		string = string + "\n" + str(i+1) + " " + str(positions[i])
 
 	return string
+
+func get_player_position():
+	var positions = get_positions_simple()
+	return positions.find("Ichiro")+1 # Note: will need to be changed when the player can change their name
+
 
 func _process(delta):
 	if count:
@@ -345,7 +304,7 @@ func _process(delta):
 func _on_Area_body_exit( body ):
 	if body is VehicleBody:
 		if body is player_script:
-			print("Area exited by the player")
+			#print("Area exited by the player")
 			player = body
 			if not finish:
 				var msg = body.get_node("Messages")
@@ -361,7 +320,7 @@ func _on_Area_body_exit( body ):
 				
 func spawn_finish(start):
 	if raceline.size() > 0:
-		print("Got raceline")
+		pass #print("Got raceline")
 	else:
 		print("No raceline, abort")
 		return
@@ -415,7 +374,7 @@ func spawn_racer(loc):
 	car.left = false
 	
 	cars_root.add_child(car)
-	print("Added the car")
+	#print("Added the car")
 	
 	# add a minimap arrow
 	var minimap = player.get_node("Viewport_root/Viewport/minimap")
