@@ -134,8 +134,12 @@ func _process(delta):
 func _on_Area_body_exit( body ):
 	if body is VehicleBody:
 		if body is player_script:
-			print("Area exited by the player")
+			#print(" TT Area exited by the player")
 			player = body
+			
+			if player.race != null:
+				return # ignore if player is in a race
+			
 			if not finish:
 				var msg = body.get_node("Messages")
 				msg.hide()

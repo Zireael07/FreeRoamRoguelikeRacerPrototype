@@ -39,7 +39,10 @@ func _on_Area_body_enter( body ):
 			player = body
 			
 			if finish:
-				print("Reached finish marker")
+				if player.finished:
+					return # ignore re-crossing if finished
+				
+				#print("Reached finish marker")
 				
 				# flag player as finished
 				player.finished = true
