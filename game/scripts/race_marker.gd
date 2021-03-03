@@ -165,7 +165,18 @@ func _on_ok_click():
 	spawn_finish(self)
 	#print("Our pos: " + str(get_global_transform().origin))
 	#print("Raceline end: " + str(raceline[0]))
-	var pos = to_local(raceline[0])
+	
+	# find someplace we can attach cars to
+	var cars_root = player.get_parent().get_parent().get_node("Racers")
+	# should place the root on top of us
+	cars_root.set_global_transform(get_global_transform())
+	var local = cars_root.to_local(get_global_transform().origin)
+	
+	# fixes local placement relative to race track
+	cars_root.look_at(raceline[0], Vector3(0,1,0))
+	#cars_root.rotate_y(deg2rad(180))
+	
+	var pos = cars_root.to_local(raceline[0])
 	#print("Pos: " + str(pos))
 	spawn_racer(pos)
 	pos = pos + Vector3(0,0,8)
@@ -352,6 +363,8 @@ func spawn_finish(start):
 	var minimap = player.get_node("Viewport_root/Viewport/minimap")
 	minimap.add_marker(finish.get_global_transform().origin, minimap.red_flag)
 	
+	# rotate
+	finish.look_at(raceline[raceline.size()-1], Vector3(0,1,0))
 
 # differences to normal marker start here
 func spawn_racer(loc):
@@ -363,14 +376,9 @@ func spawn_racer(loc):
 	# add to list of cars
 	cars.append(car)
 	
-	# find the root of the scene
-	var cars_root = player.get_parent().get_parent()
-	var local = cars_root.to_local(get_global_transform().origin)
+	# find someplace we can attach cars to
+	var cars_root = player.get_parent().get_parent().get_node("Racers")
 	
-	car.look_at(loc, Vector3(0,1,0))
-	car.rotate_y(deg2rad(180))
-	# needs to come AFTER rotations
-	car.set_translation(local+loc)
 	#print("Translation:" + str((local+loc)))
 	car.target = target
 	# pass intersection data to AI
@@ -381,6 +389,12 @@ func spawn_racer(loc):
 	car.left = false
 	
 	cars_root.add_child(car)
+	# look at wants global position
+	car.look_at(cars_root.to_global(loc), Vector3(0,1,0))
+	car.rotate_y(deg2rad(180))
+	# needs to come AFTER rotations
+	car.set_translation(loc)
+	
 	#print("Added the car")
 	
 	# add a minimap arrow

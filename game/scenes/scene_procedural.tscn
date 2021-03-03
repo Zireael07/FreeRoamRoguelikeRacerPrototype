@@ -70,6 +70,9 @@ cast_shadow = 0
 script = ExtResource( 8 )
 color = Color( 1, 0.961243, 0.0078125, 1 )
 
+[node name="Racers" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 47.594, 0, 192.855 )
+
 [node name="AI" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 47.594, 0, 192.855 )
 
