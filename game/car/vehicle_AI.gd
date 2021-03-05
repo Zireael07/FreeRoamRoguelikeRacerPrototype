@@ -311,7 +311,7 @@ func setup_path(data_path):
 #		print("Emitted path_gotten signal")
 		# call directly because the signal seems to have gone MIA somehow
 		if get_parent().race:
-			get_parent().race._on_path_gotten()
+			get_parent().race._on_path_gotten(self)
 	
 	# stuff to do after getting path
 	#print("[AI] We have a path to follow")

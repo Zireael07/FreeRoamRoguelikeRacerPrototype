@@ -301,6 +301,8 @@ func debug_cube(loc, red=false):
 	node.add_to_group("debug")
 	add_child(node)
 	node.set_translation(loc)
+	# offset to be visible above lane cubes
+	node.translate(Vector3(0.0, 1.0, 0.0))
 	
 func clear_cubes():
 	for c in get_children():
