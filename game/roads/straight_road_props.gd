@@ -255,6 +255,8 @@ func placeBuilding(index):
 	build.set_translation(loc)
 	build.set_rotation_degrees(Vector3(0, 180, 0))
 	
+	build.get_node("Spatial").set_translation(Vector3(-8, 0,0))
+	
 	build = setupBuilding(index)
 	
 	#build = setupBuildingSimple(index)
@@ -267,6 +269,9 @@ func placeBuilding(index):
 		loc = Vector3(-(roadwidth+buildDistance), 0, index+buildOffset)
 	
 	build.set_translation(loc)
+	
+	# move detect area
+	build.get_node("Spatial").set_translation(Vector3(-8, 0,0))
 	
 func placeCable(index):
 	if (index % 2 > 0):

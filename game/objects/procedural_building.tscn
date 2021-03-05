@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scripts/meshes/procedural_building.gd" type="Script" id=1]
 [ext_resource path="res://assets/procedural_building_metal_mat.tres" type="Material" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://assets/metal_mat.tres" type="Material" id=7]
 [ext_resource path="res://assets/storefront/storefront_tinted.shader" type="Shader" id=8]
 [ext_resource path="res://assets/storefront/shop_front16_ed.png" type="Texture" id=9]
+[ext_resource path="res://avoid_area.gd" type="Script" id=10]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 8 )
@@ -28,6 +29,12 @@ shader_param/texture_albedo = ExtResource( 9 )
 
 [sub_resource type="CubeMesh" id=2]
 size = Vector3( 10, 20, 10 )
+
+[sub_resource type="BoxShape" id=3]
+extents = Vector3( 2, 1, 8 )
+
+[sub_resource type="CubeMesh" id=4]
+size = Vector3( 4, 1, 16 )
 
 [node name="Spatial" type="Spatial"]
 script = ExtResource( 1 )
@@ -77,3 +84,17 @@ visible = false
 cast_shadow = 3
 mesh = SubResource( 2 )
 material/0 = null
+
+[node name="Spatial" type="Area" parent="."]
+input_ray_pickable = false
+script = ExtResource( 10 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Spatial"]
+shape = SubResource( 3 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+visible = false
+mesh = SubResource( 4 )
+material/0 = null
+[connection signal="body_entered" from="Spatial" to="Spatial" method="_on_Spatial_body_entered"]
