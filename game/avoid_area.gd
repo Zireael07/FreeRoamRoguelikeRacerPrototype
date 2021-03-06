@@ -2,8 +2,7 @@ extends Area
 
 
 # Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var mat = preload("res://assets/car/car_blue.tres")
 
 
 # Called when the node enters the scene tree for the first time.
@@ -40,13 +39,18 @@ func _on_Spatial_body_entered(body):
 			var props_par = get_node("../..")
 			
 			# tg is local to props_par (the same space we're placed in)
-			var tg = props_par.get_global_transform().origin + props_par.to_local(int0)
+			#var tg = props_par.to_local(int0)
+			# offset to ensure we have space to maneuver around the building's corner
+			var offset = 8
+			var tg = Vector3(0,0,-offset) # props_par starts where the road starts
 			if tg_end == 1:
-				tg = props_par.get_global_transform().origin + props_par.to_local(int0)
+				#tg = props_par.to_local(int1)
+				tg = props_par.get_parent().relative_end
+				tg.z = tg.z + offset
+				
+			var loc_self = props_par.to_local(get_global_transform().origin)
 			
-			var loc = props_par.to_local(get_global_transform().origin)
-			
-			tg.x = loc.x # should set target straight ahead of us
+			tg.x = loc_self.x # should set target straight ahead of us
 			
 			print("Player entered avoid area for ", road.get_name() + " @ ", body.get_global_transform().origin)
 		
@@ -57,10 +61,11 @@ func _on_Spatial_body_entered(body):
 			mesh.set_size(Vector3(0.5,0.5,0.5))
 			var node = MeshInstance.new()
 			node.set_mesh(mesh)
+			node.get_mesh().surface_set_material(0, mat)
 			node.set_cast_shadows_setting(0)
 			node.set_name("Debug")
 			props_par.add_child(node)
-			node.set_translation(loc+Vector3(0,1,0))
+			node.set_translation(tg+Vector3(0,1,0))
 		
 		if body.get_parent().is_in_group("cop"):
 			var road = get_node("../../../../..")
