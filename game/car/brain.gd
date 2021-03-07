@@ -10,8 +10,10 @@ var prev_state
 #const STATE_PATHING = 0
 const STATE_DRIVING  = 1
 const STATE_CHASE = 2
-const STATE_OBSTACLE = 3
-const STATE_CAR_AHEAD = 4
+const STATE_BUILDING = 3
+const STATE_OBSTACLE = 4
+const STATE_CAR_AHEAD = 5
+
 
 signal state_changed
 
@@ -36,6 +38,8 @@ func set_state(new_state, param=null):
 		state = DrivingState.new(self)
 	if new_state == STATE_CHASE:
 		state = ChaseState.new(self)
+	if new_state == STATE_BUILDING:
+		state = BuildingAvoidState.new(self, param)
 	if new_state == STATE_OBSTACLE:
 		state = ObstacleState.new(self, param)
 	if new_state == STATE_CAR_AHEAD:
@@ -48,6 +52,8 @@ func get_state():
 		return STATE_DRIVING
 	if state is ChaseState:
 		return STATE_CHASE
+	if state is BuildingAvoidState:
+		return STATE_BUILDING
 	if state is ObstacleState:
 		return STATE_OBSTACLE
 	if state is CarAheadState:
@@ -198,6 +204,42 @@ class ChaseState:
 		
 		car.velocity = Vector2(car.get_parent().get_angular_velocity().y, vel.z)
 
+class BuildingAvoidState:
+	var car
+	var target
+	
+	func _init(car, tg):
+		self.car = car
+		self.target = tg
+
+	func update(delta):
+
+		# behavior
+		# steering behaviors operate in local space
+		# keeps enough speed to move while staying on track
+		var spd_steer = car.match_velocity_length(car.max_speed) #10
+		#print("Spd steer" + str(spd_steer))
+		
+		# we're a 3D node, so unfortunately we can only convert Vec3
+		var to_loc = car.get_global_transform().xform_inv(target)
+		
+		var arr = car.arrive(Vector2(to_loc.x, to_loc.z), 10)
+		#var seek = car.seek(Vector2(to_loc.x, to_loc.z))
+		
+		car.steer = Vector2(arr.x, arr.y);
+		
+		# debug drawing
+		car.target = target
+		
+		# our actual velocity
+		# forward vector scaled by our speed
+		var gl_tg = car.get_parent().get_global_transform().xform(Vector3(0, 0, 4))
+		var rel = car.get_parent().get_global_transform().xform_inv(gl_tg)
+		var vel = rel * car.get_parent().get_linear_velocity().length()
+		
+		car.velocity = Vector2(car.get_parent().get_angular_velocity().y, vel.z)
+
+# ------------------------------------------------------------------
 #helper (steer > 0 is left, < 0 is right)
 func readable_dir(dir):
 	if dir > 0:

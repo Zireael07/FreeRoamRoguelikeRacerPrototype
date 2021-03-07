@@ -36,7 +36,7 @@ func get_target(body):
 	var props_par = get_node("../..")
 	
 	# tg is local to props_par (the same space we're placed in)
-	#var tg = props_par.to_local(int0)
+
 	# offset to ensure we have space to maneuver around the building's corner
 	var offset = 8
 	var tg = Vector3(0,0,-offset) # props_par starts where the road starts
@@ -68,14 +68,20 @@ func _on_Spatial_body_entered(body):
 	if body is VehicleBody:
 		if body.get_parent().is_in_group("player"):
 			var road = get_node("../../../../..")
-			print("Player entered avoid area for ", road.get_name() + " @ ", body.get_global_transform().origin)
+			#print("Player entered avoid area for ", road.get_name() + " @ ", body.get_global_transform().origin)
 		
 			var tg = get_target(body)
-			debug_draw(tg)
+			#debug_draw(tg)
 		
 		if body.get_parent().is_in_group("cop"):
 			var road = get_node("../../../../..")
 			print("AI cop entered avoid area for ", road.get_name() + "@ ", body.get_global_transform().origin)
 	
-			get_target(body)
+			var brain = body.get_node("brain")
+			if brain.get_state() != brain.STATE_BUILDING:
+				var tg = get_target(body)
+				debug_draw(tg)
+				# convert to global space for AI target
+				var props_par = get_node("../..")
+				brain.set_state(brain.STATE_BUILDING, props_par.get_global_transform().origin + tg)
 	
