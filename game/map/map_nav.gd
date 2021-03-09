@@ -548,7 +548,7 @@ func get_path_look(id, exclude=-1):
 				
 	return int_path
 
-func debug_lanes():
+func debug_lanes(type=1):
 	var map = get_parent()
 	for p in path_look:
 		#print(str(p))
@@ -574,24 +574,52 @@ func debug_lanes():
 #		var rel_pos = src.get_global_transform().xform_inv(dst.get_global_transform().origin)
 #		if rel_pos.x > 0 and rel_pos.z > 0:
 		#if flip:
-		var nav_data = map.get_node("nav").get_lane(road, p, flip, true)
-		var nav_path = nav_data[0]
-		
-		# set flags
-		var flag = ""
-		if flip:
-			if not nav_data[1]:
-				flag = "flip"
+		var nav_data = []
+		var nav_path
+		if type == 0 or type == 2: # normal or both
+			# normal direction
+			nav_data = map.get_node("nav").get_lane(road, p, flip, true)
+			nav_path = nav_data[0]
+			
+			# set flags
+			var flag = ""
+			if flip:
+				if not nav_data[1]:
+					flag = "flip"
+				else:
+					flag = "left_flip"
+			
 			else:
 				flag = "left_flip"
-		
-		else:
-			if nav_data[1]:
-				flag = "left"
+				if nav_data[1]:
+					flag = "left"
+					
+			# those points are global (see line 442)
+			for pt in nav_path:
+				debug_cube(to_local(pt), flag)
 				
-		# those points are global (see line 442)
-		for pt in nav_path:
-			debug_cube(to_local(pt), flag)
+		if type == 1 or type == 2: # other or both
+			# test other case	
+			nav_data = map.get_node("nav").get_lane(road, p, not flip, true)
+			nav_path = nav_data[0]
+			
+		
+
+			# set flags
+			var flag = ""
+			if flip:
+				if not nav_data[1]:
+					flag = "flip"
+				else:
+					flag = "left_flip"
+			
+			else:
+				if nav_data[1]:
+					flag = "left"
+					
+			# those points are global (see line 442)
+			for pt in nav_path:
+				debug_cube(to_local(pt), flag)
 			
 		
 
