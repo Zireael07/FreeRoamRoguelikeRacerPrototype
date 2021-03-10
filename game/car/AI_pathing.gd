@@ -17,6 +17,7 @@ var map
 var draw
 var draw_arc
 var flip_mat = preload("res://assets/car/car_red.tres")
+var debug = false
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -109,7 +110,7 @@ func look_for_path_initial(start_ind, left):
 	
 	# register with road
 	road.AI_cars.append(self)
-	print(road.AI_cars)
+	#print(road.AI_cars)
 
 # start_ind operates on child ids but exclude operates on intersection id
 func look_for_path(start_ind, left_side, exclude=-1):
@@ -120,7 +121,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	# this operates on ids, therefore we subtract 3 from child id
 	var int_path = map.get_node("nav").get_path_look(start_ind-3, exclude)
 			
-	print("[AI] our intersection path: " + str(int_path))
+	#print("[AI] our intersection path: " + str(int_path))
 	
 	# are we going back?
 	var back = false
@@ -164,7 +165,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 		# if not going back, offset target point slightly in direction of next road
 		else:
 			var angle = get_node("BODY").to_local(nav_path[0]).x
-			print("Angle to #1 of new road: ", angle)
+			#print("Angle to #1 of new road: ", angle)
 			if abs(angle) < 5:
 				pass # do nothing
 			else:
@@ -183,7 +184,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	
 	# register with road
 	road.AI_cars.append(self)
-	print(road.AI_cars)
+	#print(road.AI_cars)
 	
 
 func intersection_turn_offset(closest, pos, right):
@@ -223,7 +224,7 @@ func traffic_reduce_path(path, flip):
 	# if tunnel, add midpoint 
 	# IRL tunnels often have lower speed limits, and it also prevents the AI rubbing the wall
 	if road.get_node("Spatial0/Road_instance 0").tunnel:
-		print("Road is tunnel")
+		#print("Road is tunnel")
 		to_keep.append(path.size()-1)
 		
 	# other curve endpoint, some more...

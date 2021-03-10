@@ -340,10 +340,10 @@ func _physics_process(delta):
 	
 	# test stuck detection
 	if gas and not reverse and speed < 2:
-		print("STUCK!!!")
+		#print("STUCK!!!")
 		if get_node("StuckTimer").get_time_left() == 0:
 			get_node("StuckTimer").start()
-			print("Started timer ", get_node("StuckTimer").get_time_left())
+			#print("Started timer ", get_node("StuckTimer").get_time_left())
 		#else:
 		#	print("Timer already running")
 	elif gas and speed > 2:
@@ -819,12 +819,11 @@ func time_from_accel(a):
 
 
 func _on_StuckTimer_timeout():
-	print("We're stuck, start reverse timer")
+	#print("We're stuck, start reverse timer")
 	stuck = true
 	get_node("ReverseTimer").start()
 
 
 func _on_ReverseTimer_timeout():
-	print("Done reversing!")
+	#print("Done reversing!")
 	stuck = false
-	#pass # Replace with function body.

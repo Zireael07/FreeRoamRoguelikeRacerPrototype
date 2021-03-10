@@ -270,6 +270,8 @@ func _process(delta):
 					# lights off
 					var playr = get_tree().get_nodes_in_group("player")[0]
 					coplights_off(playr)
+					# stop chase
+					brain.set_state(brain.STATE_DRIVING)
 				else:
 					var playr = get_tree().get_nodes_in_group("player")[0]
 					var playr_loc = playr.get_node("BODY").get_global_transform().origin
@@ -542,7 +544,7 @@ func predict_loc(s):
 	
 	return gl_tg
 
-func get_normal_point():
+func get_normal_point(tg_point=predict):
 	# dummy
 	if current >= target_array.size():
 		return get_global_transform().origin # i.e. offset from normal point is 0
@@ -551,25 +553,24 @@ func get_normal_point():
 	# B-A = vector from A->B
 	var line = target_array[current]-target_array[prev]
 	line = line.normalized()
-	var pred_line = predict-target_array[prev]
+	var pred_line = tg_point-target_array[prev]
 	# A cos theta = scalar projection, where theta is the angle between A & B aka dot product
 	var norm_point = target_array[prev] + pred_line.project(line)
 	return norm_point # global
 
 # --------------------------
 func _on_StuckTimer_timeout():
-	print("AI ", get_parent().get_name(), " stuck, start reverse timer")
+	#print("AI ", get_parent().get_name(), " stuck, start reverse timer")
 	stuck = true
 	get_node("ReverseTimer").start()
 
 
 func _on_ReverseTimer_timeout():
-	print("AI ", get_parent().get_name(), " done reversing!")
+	#print("AI ", get_parent().get_name(), " done reversing!")
 	stuck = false
 
 
 # ------------------------
-
 #	func update(delta):
 #		car.flag = ""
 #
@@ -940,3 +941,4 @@ func car_movement_lanes(mx_speed):
 		else:
 			#normal stuff
 			fixed_angling()
+

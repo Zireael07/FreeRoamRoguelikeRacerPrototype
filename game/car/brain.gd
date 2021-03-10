@@ -83,6 +83,7 @@ class DrivingState:
 		
 		var arr = null
 		# special case for target behind us
+		# NOTE: if don't exclude reverse, AI is able to slowly drive in reverse to assigned point... something to consider in the future?
 		if car.get_parent().dot < 0 and not car.get_parent().reverse:
 			spd_steer = car.match_velocity_length(3) # keep going forward but very slowly...
 			# hack
@@ -261,6 +262,12 @@ class ObstacleState:
 		
 		var gl = obstacle.get_global_transform().origin
 		var loc = car.get_parent().get_global_transform().xform_inv(gl)
+		
+		# obstacle's CTE
+		var norm_pt = car.get_parent().get_normal_point(gl)
+		# B-A - A->B
+		var obst_cte = (norm_pt-gl).length()
+		
 		var rel_pos = Vector2(loc.x, loc.z)
 		#print(car.get_parent().get_parent().get_name() + " rel to obstacle: ", rel_pos)
 		# loc.z is always positive
@@ -279,7 +286,7 @@ class ObstacleState:
 		var spd_steer = car.match_velocity_length(5)
 		car.steer = Vector2(sig*ster, spd_steer.y)
 				#print("Str:", car.steer, " direction: " , car.readable_dir(sig))
-		print(car.get_parent().get_parent().get_name() + " rel ", rel_pos, " str: ", car.steer, " dir: ", car.readable_dir(sig))
+		#print(car.get_parent().get_parent().get_name() + " rel ", rel_pos) #"cte: ", obst_cte, " car cte: ", car.get_parent().cte) #, " str: ", car.steer, " dir: ", car.readable_dir(sig))
 		
 #		if car.get_parent().has_node("RayRightFront") and car.get_parent().get_node("RayRightFront").is_colliding() and (car.get_parent().get_node("RayRightFront").get_collider() != null):
 #			var gl = car.get_parent().get_node("RayRightFront").get_collider().get_global_transform().origin
@@ -411,8 +418,8 @@ class CarAheadState:
 		
 		var obst_dir = obstacle.forward_vec
 		var dot = car.get_parent().forward_vec.dot(obst_dir)
-		if dot < 0:
-			print(car.get_parent().get_parent().get_name() + " avoiding because of car ", obstacle.get_parent().get_name()," ahead... dot: ", dot)
+		#if dot < 0:
+			#print(car.get_parent().get_parent().get_name() + " avoiding because of car ", obstacle.get_parent().get_name()," ahead... dot: ", dot)
 		#print("Direction of other car: ", dot)
 		
 		var ster = Vector2()
@@ -438,7 +445,7 @@ class CarAheadState:
 				ster.y = spd_steer.y
 			else:
 				ster.y = -1 # brake
-			print("Avoiding... ", ster)
+			#print("Avoiding... ", ster)
 			
 			
 			# the other one needs to do the same thing!
@@ -460,7 +467,7 @@ class CarAheadState:
 				obstacle.steer.y = spd_steer_obst.y
 			else:
 				obstacle.steer.y = -1 # brake
-			print("Other avoiding... ", obstacle.steer)
+			#print("Other avoiding... ", obstacle.steer)
 		else:
 			ster.y = -1
 		car.steer = Vector2(ster.x, ster.y)
