@@ -7,6 +7,8 @@ var mult
 
 var edges = []
 var samples = []
+
+var real_edges = []
 #var tris = []
 
 var garage
@@ -55,7 +57,7 @@ func _ready():
 
 	# create the map
 	# for storing roads that actually got created
-	var real_edges = []
+	real_edges = []
 	var sorted = sort_intersections_distance()
 
 #	var initial_int = sorted[0][1]

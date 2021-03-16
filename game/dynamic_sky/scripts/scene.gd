@@ -40,7 +40,9 @@ var gr_horizon_color
 var cloud_tint
 var cloud_tint_dist
 
+# flags
 var night_fired = false
+var midnight_fired = false
 
 # weather
 
@@ -316,7 +318,9 @@ func day_night_cycle(time):
 		night_fired = true
 		
 
-	
+	elif time >= 23.5 && not midnight_fired:
+		player.get_node("BODY").reset_events() # in player because it needs minimap
+		midnight_fired = true
 
 	
 	#env.set_background_param(Environment.BG_PARAM_COLOR, col);

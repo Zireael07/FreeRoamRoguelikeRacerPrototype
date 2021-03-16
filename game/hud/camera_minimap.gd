@@ -98,14 +98,7 @@ func setupMinimap(arrow, player_arrow):
 #			tex.get_child(0).play("cop_flash")
 	
 	# markers
-	var markers = get_tree().get_nodes_in_group("marker")
-	
-	for e in markers:
-		if not e.is_in_group("race_marker"):
-			#print("We have a marker " + e.get_name())
-			add_marker(e.get_global_transform().origin, blue_flag, Vector2(0, -16))
-		else:
-			add_marker(e.get_global_transform().origin, red_flag, Vector2(0,-16))
+	add_event_markers()
 	var pois = get_tree().get_nodes_in_group("poi")
 	for p in pois:
 		add_marker(p.get_global_transform().origin, poi_marker, Vector2(-16,-16))
@@ -148,11 +141,12 @@ func remove_marker(pos):
 	print("Removing marker for: " + str(pos))
 	if marker_pos.find(pos) != -1:
 		marker_pos.remove(marker_pos.find(pos))
-	var marker = mapping_marker[pos]
-	markers.remove(markers.find(marker))
-	attach.remove_child(marker)
-	# clear the mapping
-	mapping_marker[pos] = null	
+	if mapping_marker.has(pos) && mapping_marker[pos] != null:
+		var marker = mapping_marker[pos]
+		markers.remove(markers.find(marker))
+		attach.remove_child(marker)
+		# clear the mapping
+		mapping_marker[pos] = null	
 
 func add_arrow(AI, racer=true):
 	var tex = TextureRect.new()
@@ -237,3 +231,13 @@ func remove_arrow(AI):
 		arrows.remove(arrows.find(mapping_arrows[AI]))
 		# remove the mapping
 		mapping_arrows[AI] = null
+
+func add_event_markers():
+	var markers = get_tree().get_nodes_in_group("marker")
+	
+	for e in markers:
+		if not e.is_in_group("race_marker"):
+			#print("We have a marker " + e.get_name())
+			add_marker(e.get_global_transform().origin, blue_flag, Vector2(0, -16))
+		else:
+			add_marker(e.get_global_transform().origin, red_flag, Vector2(0,-16))

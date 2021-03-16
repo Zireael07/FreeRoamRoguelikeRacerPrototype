@@ -1,4 +1,4 @@
-# obsoleted by scene.gd which also deals with the sky
+# OBSOLETED by scene.gd which also deals with the sky
 
 # originally based on a script by Khairul Hidayat, https://www.youtube.com/watch?v=iTkLEP3Kwko
 extends Spatial

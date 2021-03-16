@@ -827,3 +827,37 @@ func _on_StuckTimer_timeout():
 func _on_ReverseTimer_timeout():
 	#print("Done reversing!")
 	stuck = false
+
+# -------------------------
+func delay_new_events():
+	var mmap = get_node("Viewport_root/Viewport/minimap")
+	mmap.add_event_markers()
+
+
+func reset_events():
+	var mmap = get_node("Viewport_root/Viewport/minimap")
+	var markers = get_tree().get_nodes_in_group("marker")
+	# remove previous day's events
+	for e in markers:
+		e.queue_free()
+		# remove minimap markers
+		mmap.remove_marker(e.get_global_transform().origin)
+
+	# new events
+	var marker_data = map.get_node("nav").spawn_markers(map.samples, map.real_edges)
+	map.get_node("nav").setup_markers(marker_data)
+	
+	# we have to wait here because otherwise it shows markers for old events too
+	# wait
+	var t = Timer.new()
+	t.set_wait_time(3)
+	t.set_one_shot(true)
+	self.add_child(t)
+	t.start()
+	yield(t, "timeout")
+	# stuff after delay
+	delay_new_events()
+	t.queue_free()
+	
+	#call_deferred("delay_new_events")
+	#mmap.add_event_markers()
