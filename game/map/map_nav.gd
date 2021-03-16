@@ -257,6 +257,7 @@ func setup_markers(marker_data):
 	
 		# display the whole path
 		marker.raceline = nav_path + nav_path2 + nav_path3
+		#print("TT raceline: ", marker.raceline)
 		
 		# the same for race marker	
 		marker = get_parent().get_marker("race_marker")

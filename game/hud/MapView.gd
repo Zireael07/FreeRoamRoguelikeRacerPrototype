@@ -116,8 +116,7 @@ func get_drawn_path(int_path):
 		#print("Lookup path pt1: " + str(lookup_path))
 		nav_path = map.get_node("nav").nav.get_point_path(lookup_path[0], lookup_path[1])
 		#print("Nav path: " + str(nav_path))
-		# so that the player can see
-		#marker.raceline = nav_path
+
 	var nav_path2 = PoolVector3Array()
 	var nav_path3 = PoolVector3Array()
 	if int_path.size() > 2 and [int_path[1], int_path[2]] in path_look:

@@ -845,7 +845,7 @@ func reset_events():
 
 	# new events
 	var marker_data = map.get_node("nav").spawn_markers(map.samples, map.real_edges)
-	map.get_node("nav").setup_markers(marker_data)
+	#map.get_node("nav").setup_markers(marker_data)
 	
 	# we have to wait here because otherwise it shows markers for old events too
 	# wait
@@ -856,6 +856,7 @@ func reset_events():
 	t.start()
 	yield(t, "timeout")
 	# stuff after delay
+	map.get_node("nav").setup_markers(marker_data)
 	delay_new_events()
 	t.queue_free()
 	
