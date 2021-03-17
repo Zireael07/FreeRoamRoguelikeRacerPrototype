@@ -1,8 +1,7 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://dynamic_env.tres" type="Environment" id=1]
 [ext_resource path="res://scripts/WorldEnvironment.gd" type="Script" id=2]
-[ext_resource path="res://scripts/daynight.gd" type="Script" id=3]
 [ext_resource path="res://dynamic_sky/scene.tscn" type="PackedScene" id=4]
 [ext_resource path="res://map/procedural_map.gd" type="Script" id=5]
 [ext_resource path="res://map/triangulate.gd" type="Script" id=6]
@@ -33,11 +32,8 @@ script = ExtResource( 15 )
 environment = ExtResource( 1 )
 script = ExtResource( 2 )
 
-[node name="World" type="Spatial" parent="."]
-script = ExtResource( 3 )
-day_night = false
-
 [node name="scene" parent="." instance=ExtResource( 4 )]
+start_time = 22.0
 weather = 3
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
