@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=2]
+[gd_scene load_steps=51 format=2]
 
 [ext_resource path="res://car/car_player.gd" type="Script" id=1]
 [ext_resource path="res://car/vehicle_player.gd" type="Script" id=2]
@@ -210,6 +210,21 @@ radius = 0.05
 height = 0.1
 radial_segments = 6
 rings = 3
+
+[sub_resource type="SpatialMaterial" id=20]
+flags_unshaded = true
+flags_vertex_lighting = true
+
+[sub_resource type="ParticlesMaterial" id=21]
+emission_shape = 1
+emission_sphere_radius = 5.0
+direction = Vector3( -1, 0, -1 )
+gravity = Vector3( 0, 0, -9.8 )
+linear_accel = 2.0
+radial_accel = 2.0
+
+[sub_resource type="CubeMesh" id=22]
+size = Vector3( 0.05, 0.05, 0.75 )
 
 [node name="Spatial" type="Spatial" groups=[
 "player",
@@ -498,9 +513,21 @@ visibility_aabb = AABB( -4, -4, -4.68213, 8, 8, 8 )
 process_material = ExtResource( 28 )
 draw_pass_1 = SubResource( 19 )
 
+[node name="SpeedParticles" type="Particles" parent="BODY"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+material_override = SubResource( 20 )
+cast_shadow = 0
+emitting = false
+amount = 64
+fract_delta = false
+local_coords = false
+process_material = SubResource( 21 )
+draw_pass_1 = SubResource( 22 )
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 _import_path = NodePath("AnimationPlayer")
 script = ExtResource( 25 )
+
 [connection signal="body_entered" from="BODY" to="BODY" method="_on_BODY_body_entered"]
 [connection signal="timeout" from="BODY/StuckTimer" to="BODY" method="_on_StuckTimer_timeout"]
 [connection signal="timeout" from="BODY/ReverseTimer" to="BODY" method="_on_ReverseTimer_timeout"]

@@ -520,6 +520,21 @@ func _process(delta):
 #		get_node("skysphere/Skysphere").get_material_override().set_shader_param("light", color) #Color(World_node.light_color.r, World_node.light_color.g, World_node.light_color.b))
 #	#print("Shader color: " + str(get_node("skysphere/Skysphere").get_material_override().get_shader_param("light")))
 
+	# speed effects
+	# less rain visible if going fast
+	if World_node.weather > 1:
+		if speed > 20:
+			get_node("RainParticles").amount = 128
+			get_node("RainParticles2").amount = 128
+		else:
+			get_node("RainParticles").amount = 256
+			get_node("RainParticles").amount = 256
+	
+	if speed > 35:
+		# TODO: FOV change
+		get_node("SpeedParticles").set_emitting(true)
+	else:
+		get_node("SpeedParticles").set_emitting(false)
 	# motion blur
 	if speed > 28: #100 kphs
 		enable_motion_blur(true)
