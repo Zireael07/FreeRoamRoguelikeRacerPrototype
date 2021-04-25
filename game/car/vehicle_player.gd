@@ -66,6 +66,7 @@ var show_nav_tip = false
 
 var was_tunnel = false # for particles
 var was_dirt = false
+var was_fast = false
 
 var stuck = false
 
@@ -530,11 +531,22 @@ func _process(delta):
 			get_node("RainParticles").amount = 256
 			get_node("RainParticles").amount = 256
 	
-	if speed > 25:
-		get_node("cambase/Camera").fov = 75
-	else:
-		get_node("cambase/Camera").fov = 60
 	
+	if speed > 25:
+		if not was_fast:
+			get_node("cambase/AnimationPlayer2").play("fov")
+		#get_node("cambase/Camera").fov = 75
+		was_fast = true
+
+	else:
+		if was_fast:
+			get_node("../AnimationPlayer").play_backwards("fov")
+		was_fast = false
+		
+		if speed < 20:
+			get_node("cambase/Camera").fov = 60
+
+
 	if speed > 35:
 		get_node("SpeedParticles").set_emitting(true)
 	else:
@@ -881,3 +893,8 @@ func reset_events():
 	
 	#call_deferred("delay_new_events")
 	#mmap.add_event_markers()
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	print("Animation finished " + str(anim_name))
+	pass # Replace with function body.
