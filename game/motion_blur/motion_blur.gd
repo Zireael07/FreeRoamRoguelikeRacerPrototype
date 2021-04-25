@@ -9,6 +9,7 @@ var mat = null
 var timer = null
 
 export var motion_blur = false
+var blur_prev = false
 
 func _ready():
 	mat = get_surface_material(0)
@@ -23,7 +24,17 @@ func _ready():
 func switch_motion_blur(boo):
 	set_visible(boo)
 	motion_blur = boo
-	timer.start()
+	
+	if boo and blur_prev == false:
+		#get_node("../../../../AnimationPlayer").play("blur")
+		timer.start()
+	
+	if not boo and blur_prev == true:
+		get_node("../../../../AnimationPlayer").play_backwards("blur")
+	
+	if boo:
+		blur_prev = true
+	#timer.start()
 	
 
 func _process(delta):
