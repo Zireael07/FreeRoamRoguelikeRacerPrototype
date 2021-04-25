@@ -530,8 +530,12 @@ func _process(delta):
 			get_node("RainParticles").amount = 256
 			get_node("RainParticles").amount = 256
 	
+	if speed > 25:
+		get_node("cambase/Camera").fov = 75
+	else:
+		get_node("cambase/Camera").fov = 60
+	
 	if speed > 35:
-		# TODO: FOV change
 		get_node("SpeedParticles").set_emitting(true)
 	else:
 		get_node("SpeedParticles").set_emitting(false)
