@@ -308,80 +308,94 @@ func reduce_path(path):
 	return new_path
 			
 # ------------------------------------
-# adapted from connect_intersections.gd
 func intersection_arc(closest, nav_path, right):
 	# transform them to intersection space for easier calc
 	var p1 = closest.to_local(get_node("BODY").get_global_transform().origin)
 	var p2 = closest.to_local(nav_path[0])
 
+	# dummy out y since we are not going to care
+	#midpoint
+	var p4 = (Vector2(p2.x, p2.z)+Vector2(p1.x, p1.z))/2
+	#debug_cube(to_local(closest.get_global_transform().origin+Vector3(p4.x, 0.01, p4.y)), true)
+	
+	var p4_loc = Vector2(0,0).distance_to(p4)
+	# sagitta (the height of the arc, or how much it "bulges")
+	var s_len = p4_loc 
+	#if s_len > 5:
+	#	s_len = s_len-3 # lane width of 3
+	print(get_name(), ": p1 (car) ", p1, " p2 ", p2, " p4 ", p4, " s len ", s_len)
+
+	# ref: https://www.afralisp.net/archive/lisp/Bulges1.htm
+	# sagitta is always perpendicular to p1-p2
 	#B-A: A->B 
-	# 3D has no tangent()
-	# tangent is just a vector perpendicular to input vector
-	var tang = Vector2(p1.x, p1.z).tangent()
-	var tang2 = Vector2(p2.x, p2.z).tangent()
+	var half = p4-Vector2(p1.x, p1.z)
+	var perp = p4 + half.tangent() # perpendicular vector
+	var n = (perp-p4).normalized() # unit vector
+	#print("unit vec: ", n)
 	
-	# extend them
-	var tang_factor = 150 # to cover absolutely everything
-	tang = tang*tang_factor
-	tang2 = tang2*tang_factor
-	var start = Vector2(p1.x, p1.z) + tang
+	var s_end = p4-n*s_len #P3
+	#debug_cube(to_local(closest.get_global_transform().origin+Vector3(s_end.x, 0.01, s_end.y)), true)
+	#print("Sagitta endpoint: ", s_end)
+
+	# sagitta (p3-p4) forms a right triangle with either of p1-p4 or p2-p4 (half of chord)
+	# so tan(angle at p1 or p2) = sagitta divided by either p1-p4 or p2-p4
+	# hence atan sagitta / p1-p4 is the angle epsilon 
+
+	# tangent of epsilon (epsilon is the arc angle divided by 4)
+	#var ta = s/(p4-p1)
+	var half_len = half.length()
+	#var eps = atan(s_len/half_len)
+	# half of chord^2+sagitta^2 divided by 2*sagitta
+	#var radius = (pow(half_len, 2)+pow(s_len,2))/2*s_len
 	
-	#debug_cube(Vector3(start.x, 1, start.y))
+	# radius = h + s_len AND C p4 p2 is a right triangle
+	#https://math.stackexchange.com/a/491816
+	# h=u, t is half_len, b is sagitta length
+	var h = (pow(half_len,2) - pow(s_len,2))/(2*s_len)
 	
-	#var start = Vector2(corner1.x, corner1.z)
-	var end = Vector2(p1.x, p1.z) - tang
+	#https://math.stackexchange.com/a/87374
+	#var h = sqrt(pow(radius,2) - pow(half_len*2, 2)/4)
 	
-	#debug_cube(Vector3(end.x, 1, end.y))
+	# radius from sagitta and chord
+	# https://math.stackexchange.com/a/2135602
+	# radius = s_len/2+chord^2/2*s_len
+	#var radius = s_len/2+pow(half_len*2,2)/(2*s_len)
+	#var h = radius - s_len
 	
-	#var start_b = Vector2(corner2.x, corner2.z)
-	var start_b = Vector2(p2.x, p2.z) + tang2
-	#debug_cube(Vector3(start_b.x, 1, start_b.y))
-	var end_b = Vector2(p2.x, p2.z)-tang2
-	#positions.append(Vector3(end_b.x, 0, end_b.y))
-	#debug_cube(Vector3(end_b.x, 1, end_b.y))
+	#if h < 0:
+	#	print("Error!")
 	
-	# start, end and start_b, end_b should be equally long
+	var radius = h + s_len	
+	#print("h: ", h, " radius ", radius, " s ", s_len)
+
+	# now we can finally find the center
+	var center = p4+h*n
+	var gloc_c = closest.get_global_transform().origin + Vector3(center.x, 0.01, center.y)
+	debug_cube(to_local(gloc_c), true)
 	
-	# check for intersection (2D only)
-	var inters = Geometry.segment_intersects_segment_2d(start, end, start_b, end_b)
+	print("Center: ", center)
+
+	# the point to which 0 degrees corresponds
+	var angle0 = center+Vector2(radius,0)
+	print("Angle0: ", angle0)
+	#debug_cube(to_local(closest.get_global_transform().origin + Vector3(angle0.x, 0.01, angle0.y)))
 	
-	if inters:
-		#print("Intersect: " + str(inters))
-		#debug_cube(Vector3(inters.x, 1, inters.y))
+	var angles = get_arc_angle(center, Vector2(p1.x, p1.z), Vector2(p2.x, p2.z), angle0)
+
+	var points_arc = get_circle_arc(center, radius, angles[0], angles[1], true)
 	
-		# for the algorithm to work, distance to center has to be equal for both points
-		var radius = inters.distance_to(Vector2(p2.x, p2.z))
+	# debug
+	#print("Intersection arc for inters: ", closest.get_global_transform().origin)
+	
+	var arcs = []
+	for i in range(points_arc.size()):
+		var gloc = Vector3(points_arc[i].x, 0.01, points_arc[i].y)+closest.get_global_transform().origin
+		arcs.append(gloc)
+	
+	var midpoint = Vector3(points_arc[16].x, 0.01, points_arc[16].x)
+	var pos = closest.get_global_transform().origin+midpoint
 		
-		# the point to which 0 degrees corresponds
-		var angle0 = inters+Vector2(radius,0)
-		
-		#debug_cube(Vector3(angle0.x, 1, angle0.y))
-		
-		var angles = get_arc_angle(inters, Vector2(p1.x, p1.z), Vector2(p2.x, p2.z), angle0)
-	
-		var points_arc = get_circle_arc(inters, radius, angles[0], angles[1], true)
-		
-		# back to 3D
-		#for i in range(points_arc.size()):
-		#	positions.append(Vector3(points_arc[i].x, 0.01, points_arc[i].y))
-	
-		#var fin = Vector3(points_arc[points_arc.size()-1].x, 0.01, points_arc[points_arc.size()-1].y)
-	
-		# debug
-		#print("Intersection arc for inters: ", closest.get_global_transform().origin)
-		
-		var arcs = []
-		for i in range(points_arc.size()):
-			var gloc = Vector3(points_arc[i].x, 0.01, points_arc[i].y)+closest.get_global_transform().origin
-			arcs.append(gloc)
-			# debug cube is local to us
-			#debug_cube(to_local(gloc))
-			#print("Arc points: ", points_arc[i])
-		
-		var midpoint = Vector3(points_arc[16].x, 0.01, points_arc[16].x)
-		var pos = closest.get_global_transform().origin+midpoint
-			
-		return arcs
+	return arcs
 	
 # calculated arc is in respect to X axis
 func get_arc_angle(center_point, start_point, end_point, angle0, verbose=false):
@@ -449,8 +463,8 @@ func debug_cube(loc, red=false):
 	if red:
 		node.get_mesh().surface_set_material(0, flip_mat)
 	node.set_cast_shadows_setting(0)
-	#if not red:
-	node.add_to_group("debug")
+	if not red:
+		node.add_to_group("debug")
 	add_child(node)
 	node.set_translation(loc)
 	# offset to be visible above lane cubes
