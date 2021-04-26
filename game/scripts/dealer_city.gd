@@ -38,7 +38,7 @@ func enter_dealer(body):
 	# stop time passage
 	var root = get_parent().get_parent() #.get_parent() #.get_parent()
 	print(root.get_name())
-	var world = root.get_node("World")
+	var world = root.get_node("scene")
 	world.set_process(false)
 	# hide the sun
 	root.get_node("DirectionalLight").set_visible(false)

@@ -76,7 +76,7 @@ func go_back():
 		player.set_physics_process(true)
 			
 		# restore time passage
-		var world = root.get_node("World")
+		var world = root.get_node("scene")
 		world.set_physics_process(true)
 		# show the sun
 		root.get_node("DirectionalLight").set_visible(true)
