@@ -732,6 +732,23 @@ func _input(event):
 			# force redraw minimap track if any
 			get_node("Map").redraw_nav()
 
+	if (Input.is_action_pressed("arc_test")):
+		var map = get_node("/root/Navigation").get_node("map")
+		# find closest intersection
+		# look up the closest intersection
+		var map_loc = map.to_local(get_global_transform().origin)
+		#print("global: " + str(get_global_transform().origin) + ", map_loc: " + str(map_loc))
+			
+		# this operates on child ids
+		var sorted = map.sort_intersections_distance(map_loc, true)
+		var closest_ind = sorted[0][1]
+		var closest = map.get_child(closest_ind)
+		#print("Closest: " + str(closest.get_name()))
+		
+		var nav_path = [ closest.get_global_transform().origin + Vector3(-5, 0, -5) ]
+		var right = true
+		
+		map.get_node("nav").intersection_arc(self, closest, nav_path, right)
 
 # -------------------------------------
 func _on_BODY_body_entered(body):
