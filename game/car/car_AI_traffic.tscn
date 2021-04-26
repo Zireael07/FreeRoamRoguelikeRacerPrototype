@@ -10,9 +10,6 @@
 [ext_resource path="res://car/detect_obstacles_ray.gd" type="Script" id=8]
 [ext_resource path="res://scripts/draw_line.gd" type="Script" id=9]
 
-
-
-
 [sub_resource type="SpatialMaterial" id=1]
 params_diffuse_mode = 1
 roughness = 0.0
@@ -118,6 +115,7 @@ __meta__ = {
 
 [node name="BODY" type="VehicleBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00169557, 0.222867, -0.0955184 )
+collision_mask = 3
 mass = 1500.0
 script = ExtResource( 2 )
 
@@ -258,13 +256,12 @@ _import_path = NodePath("AnimationPlayer")
 material_override = SubResource( 9 )
 cast_shadow = 0
 script = ExtResource( 9 )
-color = Color( 1, 1, 1, 1 )
 
 [node name="draw2" type="ImmediateGeometry" parent="."]
 material_override = SubResource( 9 )
 cast_shadow = 0
 script = ExtResource( 9 )
-color = Color( 1, 1, 1, 1 )
+
 [connection signal="timeout" from="BODY/Timer" to="BODY" method="_on_Timer_timeout"]
 [connection signal="timeout" from="BODY/StuckTimer" to="BODY" method="_on_StuckTimer_timeout"]
 [connection signal="timeout" from="BODY/ReverseTimer" to="BODY" method="_on_ReverseTimer_timeout"]
