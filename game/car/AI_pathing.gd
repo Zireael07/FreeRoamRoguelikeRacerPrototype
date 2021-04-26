@@ -150,6 +150,8 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	var nav_data = map.get_node("nav").get_lane(road, int_path, flip, left_side)
 	var nav_path = nav_data[0]
 	
+	var arc_pos = null
+	
 	if exclude != -1:
 		# append intersection position
 		var pos = closest.get_global_transform().origin
@@ -162,8 +164,9 @@ func look_for_path(start_ind, left_side, exclude=-1):
 			else:
 				pos = pos + Vector3(4.0, 0.0, 0.0)
 		
-		# if not going back, offset target point slightly in direction of next road
+		# if not going back --offset target point slightly in direction of next road
 		else:
+			#pos = null
 			var angle = get_node("BODY").to_local(nav_path[0]).x
 			#print("Angle to #1 of new road: ", angle)
 			if abs(angle) < 5:
@@ -171,13 +174,28 @@ func look_for_path(start_ind, left_side, exclude=-1):
 			else:
 				if angle < 0: # right
 					pos = intersection_turn_offset(closest, pos, true)
+					arc_pos = intersection_arc(closest, nav_path, true)
+					if arc_pos != null:
+						pos = null
+
 				else: # left
 					pos = intersection_turn_offset(closest, pos, false)
-				
-		nav_path.insert(0, pos)
+					arc_pos = intersection_arc(closest, nav_path, false)
+					if arc_pos != null:
+						pos = null
+		
+		if pos:			
+			nav_path.insert(0, pos)
+		
+	
 	
 	#path = reduce_path(nav_path)
 	path = traffic_reduce_path(nav_path, nav_data[1])
+	
+	# append arc_pos now if any
+	if arc_pos != null:
+		path = arc_pos + path
+	
 	last_ind = start_ind
 	end_ind = int_path[1]
 	emit_signal("found_path", [path, nav_data[1], nav_data[2]])
@@ -289,6 +307,139 @@ func reduce_path(path):
 		
 	return new_path
 			
+# ------------------------------------
+# adapted from connect_intersections.gd
+func intersection_arc(closest, nav_path, right):
+	# transform them to intersection space for easier calc
+	var p1 = closest.to_local(get_node("BODY").get_global_transform().origin)
+	var p2 = closest.to_local(nav_path[0])
+
+	#B-A: A->B 
+	# 3D has no tangent()
+	# tangent is just a vector perpendicular to input vector
+	var tang = Vector2(p1.x, p1.z).tangent()
+	var tang2 = Vector2(p2.x, p2.z).tangent()
+	
+	# extend them
+	var tang_factor = 150 # to cover absolutely everything
+	tang = tang*tang_factor
+	tang2 = tang2*tang_factor
+	var start = Vector2(p1.x, p1.z) + tang
+	
+	#debug_cube(Vector3(start.x, 1, start.y))
+	
+	#var start = Vector2(corner1.x, corner1.z)
+	var end = Vector2(p1.x, p1.z) - tang
+	
+	#debug_cube(Vector3(end.x, 1, end.y))
+	
+	#var start_b = Vector2(corner2.x, corner2.z)
+	var start_b = Vector2(p2.x, p2.z) + tang2
+	#debug_cube(Vector3(start_b.x, 1, start_b.y))
+	var end_b = Vector2(p2.x, p2.z)-tang2
+	#positions.append(Vector3(end_b.x, 0, end_b.y))
+	#debug_cube(Vector3(end_b.x, 1, end_b.y))
+	
+	# start, end and start_b, end_b should be equally long
+	
+	# check for intersection (2D only)
+	var inters = Geometry.segment_intersects_segment_2d(start, end, start_b, end_b)
+	
+	if inters:
+		#print("Intersect: " + str(inters))
+		#debug_cube(Vector3(inters.x, 1, inters.y))
+	
+		# for the algorithm to work, distance to center has to be equal for both points
+		var radius = inters.distance_to(Vector2(p2.x, p2.z))
+		
+		# the point to which 0 degrees corresponds
+		var angle0 = inters+Vector2(radius,0)
+		
+		#debug_cube(Vector3(angle0.x, 1, angle0.y))
+		
+		var angles = get_arc_angle(inters, Vector2(p1.x, p1.z), Vector2(p2.x, p2.z), angle0)
+	
+		var points_arc = get_circle_arc(inters, radius, angles[0], angles[1], true)
+		
+		# back to 3D
+		#for i in range(points_arc.size()):
+		#	positions.append(Vector3(points_arc[i].x, 0.01, points_arc[i].y))
+	
+		#var fin = Vector3(points_arc[points_arc.size()-1].x, 0.01, points_arc[points_arc.size()-1].y)
+	
+		# debug
+		#print("Intersection arc for inters: ", closest.get_global_transform().origin)
+		
+		var arcs = []
+		for i in range(points_arc.size()):
+			var gloc = Vector3(points_arc[i].x, 0.01, points_arc[i].y)+closest.get_global_transform().origin
+			arcs.append(gloc)
+			# debug cube is local to us
+			#debug_cube(to_local(gloc))
+			#print("Arc points: ", points_arc[i])
+		
+		var midpoint = Vector3(points_arc[16].x, 0.01, points_arc[16].x)
+		var pos = closest.get_global_transform().origin+midpoint
+			
+		return arcs
+	
+# calculated arc is in respect to X axis
+func get_arc_angle(center_point, start_point, end_point, angle0, verbose=false):
+	var angles = []
+	
+	# angle between line from center point to angle0 and from center point to start point
+	var angle1 = rad2deg((angle0-center_point).angle_to(start_point-center_point))
+	
+	if angle1 < 0:
+		angle1 = 360+angle1
+		#print("Angle 1 " + str(angle))
+	
+	#angles.append(angle)
+	#Logger.mapgen_print("Angle 1 " + str(angle1))
+	# equivalent angle for the end point
+	var angle2 = rad2deg((angle0-center_point).angle_to(end_point-center_point))
+	
+	if angle2 < 0:
+		angle2 = 360+angle2
+		#print("Angle 2 " + str(angle))
+	
+	#Logger.mapgen_print("Angle 1 " + str(angle1) + ", angle 2 " + str(angle2))
+	#angles.append(angle)
+	
+	var arc = angle1-angle2
+	
+	#if verbose:
+	print("Angle 1 " + str(angle1) + ", angle 2 " + str(angle2) + " = arc angle " + str(arc))
+		
+	if arc > 200:
+		#if verbose:
+		print("Too big arc " + str(angle1) + " , " + str(angle2))
+		angle2 = angle2+360
+	if arc < -200:
+		#if verbose:
+		print("Too big arc " + str(angle1) + " , " + str(angle2))
+		angle1 = angle1+360
+		
+	angles = [angle1, angle2]
+	
+	return angles
+
+# from maths
+func get_circle_arc( center, radius, angle_from, angle_to, right ):
+	var nb_points = 32
+	var points_arc = PoolVector2Array()
+
+	for i in range(nb_points+1):
+		if right:
+			var angle_point = angle_from + i*(angle_to-angle_from)/nb_points #- 90
+			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
+			points_arc.push_back( point )
+		else:
+			var angle_point = angle_from - i*(angle_to-angle_from)/nb_points #- 90
+			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
+			points_arc.push_back( point )
+	
+	return points_arc
 
 func debug_cube(loc, red=false):
 	var mesh = CubeMesh.new()

@@ -346,7 +346,7 @@ func _on_path_found(path):
 	setup_path(path)
 
 func _on_Timer_timeout():
-	print("Timed out timer")
+	#print("Timed out timer")
 	emitted = false
 	# reset points
 	current = 0
@@ -479,7 +479,7 @@ func _physics_process(delta):
 				#print("AI ", get_parent().get_name(), " STUCK!!!")
 				if get_node("StuckTimer").get_time_left() == 0:
 					get_node("StuckTimer").start()
-					print("AI ",  get_parent().get_name(), " started timer ", get_node("StuckTimer").get_time_left())
+					#print("AI ",  get_parent().get_name(), " started timer ", get_node("StuckTimer").get_time_left())
 				#else:
 				#	print("Timer already running")
 			elif gas and speed >= 1:
@@ -562,6 +562,10 @@ func get_normal_point(tg_point=predict):
 func _on_StuckTimer_timeout():
 	#print("AI ", get_parent().get_name(), " stuck, start reverse timer")
 	stuck = true
+	
+	# jerk us up just in case the wheels sank into something
+	#translate_object_local(Vector3(0, 0.5, 0))
+	
 	get_node("ReverseTimer").start()
 
 
