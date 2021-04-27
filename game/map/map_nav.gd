@@ -635,12 +635,12 @@ func intersection_arc(car, closest, nav_path):
 	var p4 = (p2+p1)/2
 	#debug_cube(to_local(closest.get_global_transform().origin+Vector3(p4.x, 0.01, p4.y)), "flip")
 	
-	var p3 = p4.clamped(2.5)
+	var p3 = p4.clamped(3)
 	debug_cube(to_local(closest.get_global_transform().origin+Vector3(p3.x, 0.01, p3.y)), "flip")
 	
 	# test
-	var ccw = is_arc_clockwise(p1, p3, p2)
-	print("Arc clockwise? - ", ccw)
+	#var ccw = is_arc_clockwise(p1, p3, p2)
+	#print("Arc clockwise? - ", ccw)
 	
 	# arc from 3 points
 	# https://stackoverflow.com/a/53318286
@@ -648,6 +648,12 @@ func intersection_arc(car, closest, nav_path):
 	var d1 = Vector2(p3.y-p1.y, p1.x-p3.x)
 	var d2 = Vector2(p2.y-p1.y, p1.x-p2.x)
 	var k = d2.x * d1.y - d2.y * d1.x
+	
+	# paranoia
+	if k == 0:
+		return []
+	
+	
 	# midpoints of two chords
 	var m1 = (p3+p1)/2
 	var m2 = (p2+p1)/2
@@ -746,7 +752,7 @@ func intersection_arc(car, closest, nav_path):
 	for i in range(points_arc.size()):
 		var gloc = Vector3(points_arc[i].x, 0.01, points_arc[i].y)+closest.get_global_transform().origin
 		arcs.append(gloc)
-		debug_cube(to_local(gloc), "left_flip")
+		#debug_cube(to_local(gloc), "left_flip")
 	
 	
 	#var midpoint = Vector3(points_arc[16].x, 0.01, points_arc[16].x)
@@ -787,16 +793,16 @@ func get_arc_angle(center_point, start_point, end_point, angle0, verbose=false):
 	
 	var arc = angle1-angle2
 	
-	#if verbose:
-	print("Angle 1 " + str(angle1) + ", angle 2 " + str(angle2) + " = arc angle " + str(arc))
+	if verbose:
+		print("Angle 1 " + str(angle1) + ", angle 2 " + str(angle2) + " = arc angle " + str(arc))
 		
 	if arc > 190:
-		#if verbose:
-		print("Too big arc " + str(angle1) + " , " + str(angle2))
+		if verbose:
+			print("Too big arc " + str(angle1) + " , " + str(angle2))
 		angle2 = angle2+360
 	if arc < -190:
-		#if verbose:
-		print("Too big arc " + str(angle1) + " , " + str(angle2))
+		if verbose:
+			print("Too big arc " + str(angle1) + " , " + str(angle2))
 		angle1 = angle1+360
 		
 	angles = [angle1, angle2]

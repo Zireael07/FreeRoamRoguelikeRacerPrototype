@@ -167,22 +167,24 @@ func look_for_path(start_ind, left_side, exclude=-1):
 		# if not going back --offset target point slightly in direction of next road
 		else:
 			#pos = null
-			var angle = get_node("BODY").to_local(nav_path[0]).x
-			#print("Angle to #1 of new road: ", angle)
-			if abs(angle) < 5:
+			var loc = get_node("BODY").to_local(nav_path[0])
+			# 2D angle to new target
+			var angle = atan2(loc.x, loc.z)
+			print("Angle to #1 of new road: ", angle)
+			if abs(angle) < 0.26:
 				pass # do nothing
 			else:
-				if angle < 0: # right
-					pos = intersection_turn_offset(closest, pos, true)
-					arc_pos = intersection_arc(closest, nav_path, true)
-					if arc_pos != null:
-						pos = null
+				arc_pos = map.get_node("nav").intersection_arc(get_node("BODY"), closest, nav_path)
+				if arc_pos != null:
+					pos = null
+				# just in case
+				else:
+					var x_off = loc.x
+					if x_off < 0: # right
+						pos = intersection_turn_offset(closest, pos, true)
 
-				else: # left
-					pos = intersection_turn_offset(closest, pos, false)
-					arc_pos = intersection_arc(closest, nav_path, false)
-					if arc_pos != null:
-						pos = null
+					else: # left
+						pos = intersection_turn_offset(closest, pos, false)
 		
 		if pos:			
 			nav_path.insert(0, pos)
@@ -306,154 +308,7 @@ func reduce_path(path):
 	print("New path: " + str(new_path.size()))
 		
 	return new_path
-			
-# ------------------------------------
-func intersection_arc(closest, nav_path, right):
-	# transform them to intersection space for easier calc
-	var p1 = closest.to_local(get_node("BODY").get_global_transform().origin)
-	var p2 = closest.to_local(nav_path[0])
 
-	# dummy out y since we are not going to care
-	#midpoint
-	var p4 = (Vector2(p2.x, p2.z)+Vector2(p1.x, p1.z))/2
-	#debug_cube(to_local(closest.get_global_transform().origin+Vector3(p4.x, 0.01, p4.y)), true)
-	
-	var p4_loc = Vector2(0,0).distance_to(p4)
-	# sagitta (the height of the arc, or how much it "bulges")
-	var s_len = p4_loc 
-	#if s_len > 5:
-	#	s_len = s_len-3 # lane width of 3
-	print(get_name(), ": p1 (car) ", p1, " p2 ", p2, " p4 ", p4, " s len ", s_len)
-
-	# ref: https://www.afralisp.net/archive/lisp/Bulges1.htm
-	# sagitta is always perpendicular to p1-p2
-	#B-A: A->B 
-	var half = p4-Vector2(p1.x, p1.z)
-	var perp = p4 + half.tangent() # perpendicular vector
-	var n = (perp-p4).normalized() # unit vector
-	#print("unit vec: ", n)
-	
-	var s_end = p4-n*s_len #P3
-	#debug_cube(to_local(closest.get_global_transform().origin+Vector3(s_end.x, 0.01, s_end.y)), true)
-	#print("Sagitta endpoint: ", s_end)
-
-	# sagitta (p3-p4) forms a right triangle with either of p1-p4 or p2-p4 (half of chord)
-	# so tan(angle at p1 or p2) = sagitta divided by either p1-p4 or p2-p4
-	# hence atan sagitta / p1-p4 is the angle epsilon 
-
-	# tangent of epsilon (epsilon is the arc angle divided by 4)
-	#var ta = s/(p4-p1)
-	var half_len = half.length()
-	#var eps = atan(s_len/half_len)
-	# half of chord^2+sagitta^2 divided by 2*sagitta
-	#var radius = (pow(half_len, 2)+pow(s_len,2))/2*s_len
-	
-	# radius = h + s_len AND C p4 p2 is a right triangle
-	#https://math.stackexchange.com/a/491816
-	# h=u, t is half_len, b is sagitta length
-	var h = (pow(half_len,2) - pow(s_len,2))/(2*s_len)
-	
-	#https://math.stackexchange.com/a/87374
-	#var h = sqrt(pow(radius,2) - pow(half_len*2, 2)/4)
-	
-	# radius from sagitta and chord
-	# https://math.stackexchange.com/a/2135602
-	# radius = s_len/2+chord^2/2*s_len
-	#var radius = s_len/2+pow(half_len*2,2)/(2*s_len)
-	#var h = radius - s_len
-	
-	#if h < 0:
-	#	print("Error!")
-	
-	var radius = h + s_len	
-	#print("h: ", h, " radius ", radius, " s ", s_len)
-
-	# now we can finally find the center
-	var center = p4+h*n
-	var gloc_c = closest.get_global_transform().origin + Vector3(center.x, 0.01, center.y)
-	debug_cube(to_local(gloc_c), true)
-	
-	print("Center: ", center)
-
-	# the point to which 0 degrees corresponds
-	var angle0 = center+Vector2(radius,0)
-	print("Angle0: ", angle0)
-	#debug_cube(to_local(closest.get_global_transform().origin + Vector3(angle0.x, 0.01, angle0.y)))
-	
-	var angles = get_arc_angle(center, Vector2(p1.x, p1.z), Vector2(p2.x, p2.z), angle0)
-
-	var points_arc = get_circle_arc(center, radius, angles[0], angles[1], true)
-	
-	# debug
-	#print("Intersection arc for inters: ", closest.get_global_transform().origin)
-	
-	var arcs = []
-	for i in range(points_arc.size()):
-		var gloc = Vector3(points_arc[i].x, 0.01, points_arc[i].y)+closest.get_global_transform().origin
-		arcs.append(gloc)
-	
-	var midpoint = Vector3(points_arc[16].x, 0.01, points_arc[16].x)
-	var pos = closest.get_global_transform().origin+midpoint
-		
-	return arcs
-	
-# calculated arc is in respect to X axis
-func get_arc_angle(center_point, start_point, end_point, angle0, verbose=false):
-	var angles = []
-	
-	# angle between line from center point to angle0 and from center point to start point
-	var angle1 = rad2deg((angle0-center_point).angle_to(start_point-center_point))
-	
-	if angle1 < 0:
-		angle1 = 360+angle1
-		#print("Angle 1 " + str(angle))
-	
-	#angles.append(angle)
-	#Logger.mapgen_print("Angle 1 " + str(angle1))
-	# equivalent angle for the end point
-	var angle2 = rad2deg((angle0-center_point).angle_to(end_point-center_point))
-	
-	if angle2 < 0:
-		angle2 = 360+angle2
-		#print("Angle 2 " + str(angle))
-	
-	#Logger.mapgen_print("Angle 1 " + str(angle1) + ", angle 2 " + str(angle2))
-	#angles.append(angle)
-	
-	var arc = angle1-angle2
-	
-	#if verbose:
-	print("Angle 1 " + str(angle1) + ", angle 2 " + str(angle2) + " = arc angle " + str(arc))
-		
-	if arc > 200:
-		#if verbose:
-		print("Too big arc " + str(angle1) + " , " + str(angle2))
-		angle2 = angle2+360
-	if arc < -200:
-		#if verbose:
-		print("Too big arc " + str(angle1) + " , " + str(angle2))
-		angle1 = angle1+360
-		
-	angles = [angle1, angle2]
-	
-	return angles
-
-# from maths
-func get_circle_arc( center, radius, angle_from, angle_to, right ):
-	var nb_points = 32
-	var points_arc = PoolVector2Array()
-
-	for i in range(nb_points+1):
-		if right:
-			var angle_point = angle_from + i*(angle_to-angle_from)/nb_points #- 90
-			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
-			points_arc.push_back( point )
-		else:
-			var angle_point = angle_from - i*(angle_to-angle_from)/nb_points #- 90
-			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
-			points_arc.push_back( point )
-	
-	return points_arc
 
 func debug_cube(loc, red=false):
 	var mesh = CubeMesh.new()
