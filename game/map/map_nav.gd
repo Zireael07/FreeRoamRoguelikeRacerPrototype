@@ -623,81 +623,121 @@ func debug_lanes(type=1):
 				debug_cube(to_local(pt), flag)
 			
 # ------------------------------------
-func intersection_arc(car, closest, nav_path, right):
+func intersection_arc(car, closest, nav_path):
 	# transform them to intersection space for easier calc
-	var p1 = closest.to_local(car.get_global_transform().origin)
-	var p2 = closest.to_local(nav_path[0])
+	var p1_ = closest.to_local(car.get_global_transform().origin)
+	var p2_ = closest.to_local(nav_path[0])
 
 	# dummy out y since we are not going to care
+	var p1 = Vector2(p1_.x, p1_.z)
+	var p2 = Vector2(p2_.x, p2_.z)
 	#midpoint
-	var p4 = (Vector2(p2.x, p2.z)+Vector2(p1.x, p1.z))/2
-	#debug_cube(to_local(closest.get_global_transform().origin+Vector3(p4.x, 0.01, p4.y)), true)
+	var p4 = (p2+p1)/2
+	#debug_cube(to_local(closest.get_global_transform().origin+Vector3(p4.x, 0.01, p4.y)), "flip")
 	
-	var p4_loc = Vector2(0,0).distance_to(p4)
+	var p3 = p4.clamped(2.5)
+	debug_cube(to_local(closest.get_global_transform().origin+Vector3(p3.x, 0.01, p3.y)), "flip")
+	
+	# test
+	var ccw = is_arc_clockwise(p1, p3, p2)
+	print("Arc clockwise? - ", ccw)
+	
+	# arc from 3 points
+	# https://stackoverflow.com/a/53318286
+	# a = p1, b = p3, c = p2; s1, s2 = m1, m2
+	var d1 = Vector2(p3.y-p1.y, p1.x-p3.x)
+	var d2 = Vector2(p2.y-p1.y, p1.x-p2.x)
+	var k = d2.x * d1.y - d2.y * d1.x
+	# midpoints of two chords
+	var m1 = (p3+p1)/2
+	var m2 = (p2+p1)/2
+	
+	var l = d1.x * (m2.y - m1.y) - d1.y * (m2.x - m1.x)
+	# slope of something?
+	var m = l / k
+	var center = Vector2(m2.x + m * d2.x, m2.y + m * d2.y)
+	
+	var radius = center.distance_to(p1)
+	#var dx = center.x - a.x
+	#var dy = center.y - a.y
+	#let radius = sqrt(dx * dx + dy * dy)
+	
+	print("rad: ", radius, "center: ", center)
+	
+	#var p4_loc = Vector2(0,0).distance_to(p4)
+	
 	# sagitta (the height of the arc, or how much it "bulges")
-	var s_len = p4_loc 
-	#if s_len > 5:
-	#	s_len = s_len-3 # lane width of 3
-	print(get_name(), ": p1 (car) ", p1, " p2 ", p2, " p4 ", p4, " s len ", s_len)
-
-	# ref: https://www.afralisp.net/archive/lisp/Bulges1.htm
-	# sagitta is always perpendicular to p1-p2
-	#B-A: A->B 
-	var half = p4-Vector2(p1.x, p1.z)
-	var perp = p4 + half.tangent() # perpendicular vector
-	var n = (perp-p4).normalized() # unit vector
-	#print("unit vec: ", n)
-	
-	var s_end = p4-n*s_len #P3
-	#debug_cube(to_local(closest.get_global_transform().origin+Vector3(s_end.x, 0.01, s_end.y)), true)
-	#print("Sagitta endpoint: ", s_end)
-
-	# sagitta (p3-p4) forms a right triangle with either of p1-p4 or p2-p4 (half of chord)
-	# so tan(angle at p1 or p2) = sagitta divided by either p1-p4 or p2-p4
-	# hence atan sagitta / p1-p4 is the angle epsilon 
-
-	# tangent of epsilon (epsilon is the arc angle divided by 4)
-	#var ta = s/(p4-p1)
-	var half_len = half.length()
-	#var eps = atan(s_len/half_len)
-	# half of chord^2+sagitta^2 divided by 2*sagitta
-	#var radius = (pow(half_len, 2)+pow(s_len,2))/2*s_len
-	
-	# radius = h + s_len AND C p4 p2 is a right triangle
-	#https://math.stackexchange.com/a/491816
-	# h=u, t is half_len, b is sagitta length
-	var h = (pow(half_len,2) - pow(s_len,2))/(2*s_len)
-	
-	#https://math.stackexchange.com/a/87374
-	#var h = sqrt(pow(radius,2) - pow(half_len*2, 2)/4)
-	
-	# radius from sagitta and chord
-	# https://math.stackexchange.com/a/2135602
-	# radius = s_len/2+chord^2/2*s_len
-	#var radius = s_len/2+pow(half_len*2,2)/(2*s_len)
-	#var h = radius - s_len
-	
-	#if h < 0:
-	#	print("Error!")
-	
-	var radius = h + s_len	
+#	var s_len = (p4-p3).length()
+#
+#	# paranoia!
+#	if s_len == 0:
+#		s_len = 0.01
+#
+#	print(" right: ", ccw, " : p1 (car) ", p1, " p2 ", p2, " p4 ", p4, " s len ", s_len)
+#
+#	# ref: https://www.afralisp.net/archive/lisp/Bulges1.htm
+#	# sagitta is always perpendicular to p1-p2
+#	#B-A: A->B 
+#	var half = p4-p1
+#	var perp = p4 + half.tangent() # perpendicular vector
+#	var n = (perp-p4).normalized() # unit vector
+#	#print("unit vec: ", n)
+#
+#	#var s_end = p4-n*s_len #P3
+#	#debug_cube(to_local(closest.get_global_transform().origin+Vector3(s_end.x, 0.01, s_end.y)), true)
+#	#print("Sagitta endpoint: ", s_end)
+#
+#	# sagitta (p3-p4) forms a right triangle with either of p1-p4 or p2-p4 (half of chord)
+#	# so tan(angle at p1 or p2) = sagitta divided by either p1-p4 or p2-p4
+#	# hence atan sagitta / p1-p4 is the angle epsilon 
+#
+#	# tangent of epsilon (epsilon is the arc angle divided by 4)
+#	#var ta = s/(p4-p1)
+#	var half_len = half.length()
+#	#var eps = atan(s_len/half_len)
+#	# half of chord^2+sagitta^2 divided by 2*sagitta
+#	#var radius = (pow(half_len, 2)+pow(s_len,2))/2*s_len
+#
+#	# radius = h + s_len AND C p4 p2 is a right triangle
+#	#https://math.stackexchange.com/a/491816
+#	# h=u, t is half_len, b is sagitta length
+#	var h = (pow(half_len,2) - pow(s_len,2))/(2*s_len)
+#
+#	#https://math.stackexchange.com/a/87374
+#	#var h = sqrt(pow(radius,2) - pow(half_len*2, 2)/4)
+#
+#	# radius from sagitta and chord
+#	# https://math.stackexchange.com/a/2135602
+#	# radius = s_len/2+chord^2/2*s_len
+#	#var radius = s_len/2+pow(half_len*2,2)/(2*s_len)
+#	#var h = radius - s_len
+#
+#	#if h < 0:
+#	#	print("Error!")
+#
+#	var radius = h + s_len	
 	#print("h: ", h, " radius ", radius, " s ", s_len)
 
 	# now we can finally find the center
-	var center = p4+h*n
+	#var center = p4+h*n
+	
 	var gloc_c = closest.get_global_transform().origin + Vector3(center.x, 0.01, center.y)
 	debug_cube(to_local(gloc_c), "flip")
-	
-	print("Center: ", center)
+	#print("Center: ", center)
 
 	# the point to which 0 degrees corresponds
 	var angle0 = center+Vector2(radius,0)
-	print("Angle0: ", angle0)
-	#debug_cube(to_local(closest.get_global_transform().origin + Vector3(angle0.x, 0.01, angle0.y)))
+	#print("Angle0: ", angle0)
+	#debug_cube(to_local(closest.get_global_transform().origin + Vector3(angle0.x, 0.01, angle0.y)), "flip")
 	
-	var angles = get_arc_angle(center, Vector2(p1.x, p1.z), Vector2(p2.x, p2.z), angle0)
-
-	var points_arc = get_circle_arc(center, radius, angles[0], angles[1], true)
+	# get two angles/arcs
+	var angles = get_arc_angle(center, p1, p3, angle0)
+	var points_arc1 = get_circle_arc(center, radius, angles[0], angles[1], true, 16)
+	
+	angles = get_arc_angle(center, p3, p2, angle0)
+	var points_arc2 = get_circle_arc(center, radius, angles[0], angles[1], true, 16)
+	
+	var points_arc = points_arc1 + points_arc2
 	
 	# debug
 	#print("Intersection arc for inters: ", closest.get_global_transform().origin)
@@ -706,13 +746,21 @@ func intersection_arc(car, closest, nav_path, right):
 	for i in range(points_arc.size()):
 		var gloc = Vector3(points_arc[i].x, 0.01, points_arc[i].y)+closest.get_global_transform().origin
 		arcs.append(gloc)
-		debug_cube(to_local(gloc), "")
+		debug_cube(to_local(gloc), "left_flip")
 	
 	
 	#var midpoint = Vector3(points_arc[16].x, 0.01, points_arc[16].x)
 	#var pos = closest.get_global_transform().origin+midpoint
 		
 	return arcs
+
+# https://stackoverflow.com/a/63566113
+func is_arc_clockwise(p1, p2, p3):
+	var se = p3-p2
+	var sm = p1-p2
+	var cp = se.cross(sm)
+	return cp > 0
+	
 	
 # calculated arc is in respect to X axis
 func get_arc_angle(center_point, start_point, end_point, angle0, verbose=false):
@@ -742,11 +790,11 @@ func get_arc_angle(center_point, start_point, end_point, angle0, verbose=false):
 	#if verbose:
 	print("Angle 1 " + str(angle1) + ", angle 2 " + str(angle2) + " = arc angle " + str(arc))
 		
-	if arc > 200:
+	if arc > 190:
 		#if verbose:
 		print("Too big arc " + str(angle1) + " , " + str(angle2))
 		angle2 = angle2+360
-	if arc < -200:
+	if arc < -190:
 		#if verbose:
 		print("Too big arc " + str(angle1) + " , " + str(angle2))
 		angle1 = angle1+360
@@ -756,8 +804,8 @@ func get_arc_angle(center_point, start_point, end_point, angle0, verbose=false):
 	return angles
 
 # from maths
-func get_circle_arc( center, radius, angle_from, angle_to, right ):
-	var nb_points = 32
+func get_circle_arc( center, radius, angle_from, angle_to, right, nb_points=32):
+	#var nb_points = 32
 	var points_arc = PoolVector2Array()
 
 	for i in range(nb_points+1):

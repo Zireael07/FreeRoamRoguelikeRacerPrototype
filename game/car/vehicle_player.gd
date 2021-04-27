@@ -734,21 +734,26 @@ func _input(event):
 
 	if (Input.is_action_pressed("arc_test")):
 		var map = get_node("/root/Navigation").get_node("map")
+		
+		map.get_node("nav").clear_cubes()
+		
 		# find closest intersection
 		# look up the closest intersection
 		var map_loc = map.to_local(get_global_transform().origin)
-		#print("global: " + str(get_global_transform().origin) + ", map_loc: " + str(map_loc))
-			
+		
 		# this operates on child ids
 		var sorted = map.sort_intersections_distance(map_loc, true)
 		var closest_ind = sorted[0][1]
 		var closest = map.get_child(closest_ind)
 		#print("Closest: " + str(closest.get_name()))
 		
-		var nav_path = [ closest.get_global_transform().origin + Vector3(-5, 0, -5) ]
-		var right = true
+		var test_locs = [closest.point_one, closest.point_two, closest.point_three]
 		
-		map.get_node("nav").intersection_arc(self, closest, nav_path, right)
+		var nav_path = [ closest.get_global_transform().origin + test_locs[2] ]
+		
+		#var right = true
+		
+		map.get_node("nav").intersection_arc(self, closest, nav_path)
 
 # -------------------------------------
 func _on_BODY_body_entered(body):
