@@ -40,6 +40,7 @@ var positions_left = []
 var positions_right = []
 
 var draw
+var flip_mat = preload("res://assets/car/car_blue.tres")
 
 func _ready():
 	#draw = get_node("draw")
@@ -156,14 +157,30 @@ func meshCreate(material, array):
 	node.create_convex_collision()
 	
 # debug
-func debug_cube(loc):
+func debug_cube(loc, red=false):
 	var mesh = CubeMesh.new()
 	mesh.set_size(Vector3(0.5,0.5,0.5))
 	var node = MeshInstance.new()
 	node.set_mesh(mesh)
+	if red:
+		node.get_mesh().surface_set_material(0, flip_mat)
 	node.set_name("Debug")
 	add_child(node)
 	node.set_translation(loc)
 	
 func send_position(map):
 	map.add_intersection(get_global_transform().xform(Vector3(0,0,0)))
+
+func snap_pos_to_points(pos):
+	if abs(pos.x) > abs(pos.z):
+		if pos.x > 0:
+			pos = point_two
+		#if pos.x < 0 and 'point_four' in self:
+		#	pos = point_four
+	else:
+		if pos.z > 0:
+			pos = point_one
+		if pos.z < 0:
+			pos = point_three
+			
+	return pos

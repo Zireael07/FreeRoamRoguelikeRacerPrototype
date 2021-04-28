@@ -164,14 +164,19 @@ func look_for_path(start_ind, left_side, exclude=-1):
 			else:
 				pos = pos + Vector3(4.0, 0.0, 0.0)
 		
-		# if not going back --offset target point slightly in direction of next road
+		# if not going back, we're driving through an intersection
 		else:
 			#pos = null
-			var loc = get_node("BODY").to_local(nav_path[0])
-			# 2D angle to new target
-			var angle = atan2(loc.x, loc.z)
-			print("Angle to #1 of new road: ", angle)
-			if abs(angle) < 0.26:
+			
+#			var loc = get_node("BODY").to_local(nav_path[0])
+#			# 2D angle to new target
+#			var angle = atan2(loc.x, loc.z)
+#			print("Angle to #1 of new road: ", angle)
+#			if abs(angle) < 0.26:
+#				pass # do nothing
+			
+			# are we going straight?
+			if is_going_straight_across(closest, nav_path[0]):
 				pass # do nothing
 			else:
 				arc_pos = map.get_node("nav").intersection_arc(get_node("BODY"), closest, nav_path)
@@ -179,12 +184,13 @@ func look_for_path(start_ind, left_side, exclude=-1):
 					pos = null
 				# just in case
 				else:
-					var x_off = loc.x
-					if x_off < 0: # right
-						pos = intersection_turn_offset(closest, pos, true)
-
-					else: # left
-						pos = intersection_turn_offset(closest, pos, false)
+					print(get_name(), " error, no arc!")
+#					var x_off = loc.x
+#					if x_off < 0: # right
+#						pos = intersection_turn_offset(closest, pos, true)
+#
+#					else: # left
+#						pos = intersection_turn_offset(closest, pos, false)
 		
 		if pos:			
 			nav_path.insert(0, pos)
@@ -205,7 +211,29 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	# register with road
 	road.AI_cars.append(self)
 	#print(road.AI_cars)
+
+func is_going_straight_across(closest, target):
+	var car = closest.to_local(get_node("BODY").get_global_transform().origin)
+	var tg = closest.to_local(target)
+
+	# debug
+	#debug_cube(to_local(car+closest.get_global_transform().origin), true)
+	#debug_cube(to_local(tg+closest.get_global_transform().origin), true)
 	
+	# snap car and loc to intersection points for simpler logic
+	car = closest.snap_pos_to_points(car)
+	target = closest.snap_pos_to_points(tg)
+	#print("car: ", car, "tg: ", tg)
+	
+	# don't care about y
+	car = Vector2(car.x, car.z)
+	var angle = car.angle_to(Vector2(tg.x, tg.z))
+	#print(get_name(), " angle to target: ", rad2deg(angle))
+	
+	var is_ahead = abs(angle) > deg2rad(120)	
+	#print("Exit is ahead: ", is_ahead)
+	
+	return is_ahead
 
 func intersection_turn_offset(closest, pos, right):
 	# distance to intersection

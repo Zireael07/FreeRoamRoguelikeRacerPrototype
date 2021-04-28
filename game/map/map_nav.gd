@@ -623,6 +623,7 @@ func debug_lanes(type=1):
 				debug_cube(to_local(pt), flag)
 			
 # ------------------------------------
+# it could probably be done at AI level, but this way it's more general, maybe for the player
 func intersection_arc(car, closest, nav_path):
 	# transform them to intersection space for easier calc
 	var p1_ = closest.to_local(car.get_global_transform().origin)
@@ -668,7 +669,7 @@ func intersection_arc(car, closest, nav_path):
 	#var dy = center.y - a.y
 	#let radius = sqrt(dx * dx + dy * dy)
 	
-	print("rad: ", radius, "center: ", center)
+	print("radius: ", radius, ", center: ", center)
 	
 	#var p4_loc = Vector2(0,0).distance_to(p4)
 	
@@ -728,7 +729,7 @@ func intersection_arc(car, closest, nav_path):
 	#var center = p4+h*n
 	
 	var gloc_c = closest.get_global_transform().origin + Vector3(center.x, 0.01, center.y)
-	debug_cube(to_local(gloc_c), "flip")
+	#debug_cube(to_local(gloc_c), "flip")
 	#print("Center: ", center)
 
 	# the point to which 0 degrees corresponds

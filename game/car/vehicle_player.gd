@@ -735,8 +735,6 @@ func _input(event):
 	if (Input.is_action_pressed("arc_test")):
 		var map = get_node("/root/Navigation").get_node("map")
 		
-		map.get_node("nav").clear_cubes()
-		
 		# find closest intersection
 		# look up the closest intersection
 		var map_loc = map.to_local(get_global_transform().origin)
@@ -747,13 +745,35 @@ func _input(event):
 		var closest = map.get_child(closest_ind)
 		#print("Closest: " + str(closest.get_name()))
 		
-		var test_locs = [closest.point_one, closest.point_two, closest.point_three]
+		var test_locs = [closest.point_one, closest.point_two+Vector3(2,0,-2), closest.point_three, closest.point_four]
 		
-		var nav_path = [ closest.get_global_transform().origin + test_locs[2] ]
+		# test detecting whether we're going straight
+		var lo = test_locs[1]
+		var car = closest.to_local(get_global_transform().origin)
 		
-		#var right = true
+		# debug
+		map.get_node("nav").debug_cube(map.get_node("nav").to_local(closest.get_global_transform().origin+lo))
 		
-		map.get_node("nav").intersection_arc(self, closest, nav_path)
+		
+		# snap car and loc to intersection points for simpler logic
+		car = closest.snap_pos_to_points(car)
+		lo = closest.snap_pos_to_points(lo)
+		
+		# debug
+		var g_loc = closest.get_global_transform().origin+lo
+		#var g_loc = closest.get_global_transform().origin+car
+		map.get_node("nav").debug_cube(map.get_node("nav").to_local(g_loc), "flip")
+		
+		# don't care about y
+		car = Vector2(car.x, car.z)
+		var angle = car.angle_to(Vector2(lo.x, lo.z))
+		#print("Angle to loc: ", rad2deg(angle))
+		
+		print("Exit is ahead: ", abs(angle)>deg2rad(120))
+		
+		#var nav_path = [ closest.get_global_transform().origin + test_locs[2] ]
+		#map.get_node("nav").clear_cubes()
+		#map.get_node("nav").intersection_arc(self, closest, nav_path)
 
 # -------------------------------------
 func _on_BODY_body_entered(body):
