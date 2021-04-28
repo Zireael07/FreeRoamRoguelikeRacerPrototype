@@ -958,3 +958,8 @@ func car_movement_lanes(mx_speed):
 			#normal stuff
 			fixed_angling()
 
+
+# debug helper
+func _on_BODY_input_event(camera, event, click_position, click_normal, shape_idx):
+	print("Mouse clicked on AI: ", get_parent().get_name())
+	#pass # Replace with function body.
