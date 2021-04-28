@@ -156,11 +156,12 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	var straight = null
 	
 	if exclude != -1:
-		# append intersection position
-		var pos = closest.get_global_transform().origin
+		var pos = null
 		# AI has no way ahead, has to go back the way it came
 		# append at an offset if we're going back
 		if back:
+			# append intersection position
+			pos = closest.get_global_transform().origin
 			if left_side:
 				# make use of the fact the intersections are never rotated
 				pos = pos + Vector3(-4.0, 0.0, 0.0)
@@ -213,7 +214,8 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	emit_signal("found_path", [path, nav_data[1], nav_data[2]])
 	
 	# we're on an intersection until we reach path_start
-	if not back:
+	# if the intersection only has two exits in use, assume we can navigate easily
+	if not back and closest.used_exits.size() > 2:
 		var loc = get_node("BODY").to_local(path_start)
 		var left_turn = false
 		if loc.x < 0: # right
@@ -221,7 +223,8 @@ func look_for_path(start_ind, left_side, exclude=-1):
 		else:
 			left_turn = true
 		intersection = closest
-		intersection.cars.append(self)
+		#intersection.cars.append(self)
+		intersection.cars[self] = [straight, left_turn]
 		print("Set " + get_name() + " as on intersection: ", closest.get_name())
 		#intersection.cars.append([self, straight, left_turn])
 	

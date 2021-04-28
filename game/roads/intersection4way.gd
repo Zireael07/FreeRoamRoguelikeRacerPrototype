@@ -46,7 +46,7 @@ var positions_right = []
 var draw
 var flip_mat = preload("res://assets/car/car_blue.tres")
 
-var cars = []
+var cars = {}
 
 func _ready():
 	#draw = get_node("draw")
