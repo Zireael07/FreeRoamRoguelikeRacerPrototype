@@ -9,6 +9,7 @@ var end_ind
 var last_ind
 signal found_path
 var road
+var intersection
 
 #var navigation_node
 var map
@@ -151,6 +152,8 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	var nav_path = nav_data[0]
 	
 	var arc_pos = null
+	var path_start = nav_path[0]
+	var straight = null
 	
 	if exclude != -1:
 		# append intersection position
@@ -176,7 +179,8 @@ func look_for_path(start_ind, left_side, exclude=-1):
 #				pass # do nothing
 			
 			# are we going straight?
-			if is_going_straight_across(closest, nav_path[0]):
+			straight = is_going_straight_across(closest, nav_path[0])
+			if straight:
 				pass # do nothing
 			else:
 				arc_pos = map.get_node("nav").intersection_arc(get_node("BODY"), closest, nav_path)
@@ -207,6 +211,20 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	last_ind = start_ind
 	end_ind = int_path[1]
 	emit_signal("found_path", [path, nav_data[1], nav_data[2]])
+	
+	# we're on an intersection until we reach path_start
+	if not back:
+		var loc = get_node("BODY").to_local(path_start)
+		var left_turn = false
+		if loc.x < 0: # right
+			left_turn = false
+		else:
+			left_turn = true
+		intersection = closest
+		intersection.cars.append(self)
+		print("Set " + get_name() + " as on intersection: ", closest.get_name())
+		#intersection.cars.append([self, straight, left_turn])
+	
 	
 	# register with road
 	road.AI_cars.append(self)

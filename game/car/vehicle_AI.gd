@@ -495,6 +495,18 @@ func _physics_process(delta):
 				#if debug:
 				#	print("[AI] We're close to target" + str(brain.target) + " rel loc: " + str(rel_loc))
 	
+				# no longer on intersection?
+				if 'intersection' in get_parent() and get_parent().intersection != null:
+					# 32 is the amount of points an arc adds (see AI_pathing.gd line 209)
+					if target_array.size() < 32 and current == 0:
+						print(get_parent().get_name(), " went straight, no longer on intersection")
+						get_parent().intersection.cars.remove(get_parent().intersection.cars.find(get_parent()))
+						get_parent().intersection = null
+					if target_array.size() > 33 and current == 32:
+						print(get_parent().get_name(), " no longer on intersection after arc")
+						get_parent().intersection.cars.remove(get_parent().intersection.cars.find(get_parent()))
+						get_parent().intersection = null
+		
 				##do we have a next point?
 				if (target_array.size() > current+1):
 					#if not debug: #dummy out for now
