@@ -2,7 +2,7 @@ tool
 extends Node2D
 
 # class member variables go here, for example:
-var as
+var ast
 var points
 var edges
 var distance_map
@@ -14,17 +14,17 @@ func _ready():
 	# Initialization here
 	
 	# we'll use AStar to have an easy map of neighbors
-	as = AStar.new()
+	ast = AStar.new()
 	points = get_node("Node2D").points
 	for i in range(0,points.size()):
-		as.add_point(i, Vector3(points[i].x, 0, points[i].y))
+		ast.add_point(i, Vector3(points[i].x, 0, points[i].y))
 
 	for t in get_node("Node2D").tris:
 		#print("Edges: " + str(t.get_edges()))
 		for e in t.get_edges():
 			# avoid duplicates
 			#if not as.get_point_connections(e[1]).has(e[0]) and not as.get_point_connections(e[0]).has(e[1]):
-			as.connect_points(e[0], e[1])
+			ast.connect_points(e[0], e[1])
 
 	var start = points[0]
 	#print("Connections for start: " + str(as.get_point_connections(0)))
@@ -70,7 +70,7 @@ func bfs_distances(start):
 		var node = queue.pop_front()
 		print("Visiting... " + str(node))
 		
-		var neighbours = as.get_point_connections(node)
+		var neighbours = ast.get_point_connections(node)
 		# add neighbours of node to queue
 		for neighbour in neighbours:
 			# if not visited
