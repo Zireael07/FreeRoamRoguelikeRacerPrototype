@@ -409,25 +409,31 @@ func get_lane(road, int_path, flip, left_side):
 	var dst = get_parent().get_child(int_path[1]+3)
 	var rel_pos = src.get_global_transform().xform_inv(dst.get_global_transform().origin)
 	# same as in connect_intersections.gd
+	# by convention, y comes first
 	var angle = atan2(rel_pos.z, rel_pos.x)
 	
 	# pick lane depending on relative direction (quadrant)
 	# "flip" (set by AI earlier) means we are going the other way to the way the map was designed
+	
+	# NE (quadrant 1)
 	if rel_pos.x > 0 and rel_pos.z < 0:
 		if flip:
 			left_side = true
 		else:
 			left_side = false
+	# NW (quadrant 2)
 	if rel_pos.x < 0 and rel_pos.z > 0:
 		if flip:
 			left_side = false
 		else:
 			left_side = true
+	# SE (quadrant 3)
 	if rel_pos.x > 0 and rel_pos.z > 0:
 		if not flip:
 			left_side = true
 		else:
 			left_side = false
+	# SW (quadrant 4)
 	if rel_pos.x < 0 and rel_pos.z < 0:
 		if flip: 
 			left_side = true
@@ -435,7 +441,7 @@ func get_lane(road, int_path, flip, left_side):
 			left_side = false
 	
 			
-	print(road.get_name(), " relative positions of road start and end: ", rel_pos, " angle: ", angle, " flip: ", flip, " left: ", left_side)
+	print(road.get_name(), " rel pos road start-end: ", rel_pos, " angle: ", angle, " ", rad2deg(angle), " deg quadrant ", get_quadrant(rel_pos), " flip: ", flip, " left: ", left_side)
 
 	# this part actually gets A* points
 	var turn1 = road.get_node("Road_instance0").get_child(0).get_child(0)
@@ -506,6 +512,20 @@ func get_lane_midpoint(nav_path, flip):
 		# why the difference by 1?
 		midpoint = nav_path[31]+(nav_path[32]-nav_path[31])/2
 	return midpoint
+
+func get_quadrant(rel_pos):
+	# NE (quadrant 1)
+	if rel_pos.x > 0 and rel_pos.z < 0:
+		return "NE"
+	# NW (quadrant 2)
+	if rel_pos.x < 0 and rel_pos.z > 0:
+		return "NW"
+	# SE (quadrant 3)
+	if rel_pos.x > 0 and rel_pos.z > 0:
+		return "SE"
+	# SW (quadrant 4)
+	if rel_pos.x < 0 and rel_pos.z < 0:
+		return "SW"
 
 # called from the outside, eg. by AI when pathing
 func get_paths(id, exclude=-1):
