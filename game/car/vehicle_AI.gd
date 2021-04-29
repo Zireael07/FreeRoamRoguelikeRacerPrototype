@@ -345,6 +345,7 @@ func _on_path_found(path):
 	#print("Path was found!")
 	setup_path(path)
 
+# see line 340 (above)
 func _on_Timer_timeout():
 	#print("Timed out timer")
 	emitted = false
@@ -360,6 +361,14 @@ func _on_Timer_timeout():
 	# bugfix
 	if stop:
 		stop = false
+		
+	# are we on an intersection?
+	if get_parent().intersection:
+		# if more than one car around, we wait
+		if get_parent().intersection.cars.size() > 1 and get_parent().intersection.cars.keys()[0] != get_parent():
+			# hack fix
+			emitted = true
+			stop = true
 
 # translates steering behaviors output 
 # into actual steering input (gas/brake/left/right)
@@ -502,11 +511,23 @@ func _physics_process(delta):
 						print(get_parent().get_name(), " went straight, no longer on intersection")
 						get_parent().intersection.cars.erase(get_parent())
 						#get_parent().intersection.cars.remove(get_parent().intersection.cars.find(get_parent()))
+						
+						# prompt next car in line to drive
+						if get_parent().intersection.cars.size() > 0:
+							get_parent().intersection.cars.keys()[0].get_node("BODY").stop = false
+							get_parent().intersection.cars.keys()[0].get_node("BODY").emitted = false
+						
 						get_parent().intersection = null
 					if target_array.size() > 33 and current == 32:
 						print(get_parent().get_name(), " no longer on intersection after arc")
 						get_parent().intersection.cars.erase(get_parent())
 						#get_parent().intersection.cars.remove(get_parent().intersection.cars.find(get_parent()))
+						
+						# prompt next car in line to drive
+						if get_parent().intersection.cars.size() > 0:
+							get_parent().intersection.cars.keys()[0].get_node("BODY").stop = false
+							get_parent().intersection.cars.keys()[0].get_node("BODY").emitted = false
+						
 						get_parent().intersection = null
 		
 				##do we have a next point?
