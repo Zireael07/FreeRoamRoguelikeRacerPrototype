@@ -209,6 +209,7 @@ func debug():
 	mid_point = Vector3(mid_loc.x, road_height, mid_loc.y)
 	
 #make the sidewalk
+#TODO: optimize to make two meshes instead of A LOT
 func make_quad(index_one, index_two, inner):
 	var right_side = null
 	var left_side = null

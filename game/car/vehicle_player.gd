@@ -540,7 +540,7 @@ func _process(delta):
 
 	else:
 		if was_fast:
-			get_node("../AnimationPlayer").play_backwards("fov")
+			get_node("cambase/AnimationPlayer2").play_backwards("fov")
 		was_fast = false
 		
 		if speed < 20:
