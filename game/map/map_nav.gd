@@ -396,7 +396,7 @@ func setup_nav_astar(pts, i, begin_id):
 
 # this is governed by map not AI (so that lanes are picked consistently depending on direction of travel)
 func get_lane(road, int_path, flip, left_side):
-	var pts = []
+	#var pts = []
 	# paranoia
 	if not road.has_node("Road_instance0"):
 		return
@@ -477,12 +477,20 @@ func get_lane(road, int_path, flip, left_side):
 			else:
 				lane_lists = [turn1.points_inner_nav, turn2.points_outer_nav]
 
+	var pts = get_pts_from_lanes(lane_lists, flip, turn1, turn2)
+
+	# left and flip are used mostly for debugging
+	return [pts, left_side, flip]
+
+
+func get_pts_from_lanes(lanes, flip, turn1, turn2):
+	var pts = []
 	# keeping 'em global for consistency with the A* centerline
 	# from local to global
 	#print("Turn size: ", lane_lists[0].size())
 	
-	for i in range(0,lane_lists[0].size()):
-		var c = lane_lists[0][i]
+	for i in range(0,lanes[0].size()):
+		var c = lanes[0][i]
 		var p = Vector3(c.x, turn1.road_height, c.y)
 		pts.append(turn1.to_global(p))
 
@@ -490,8 +498,8 @@ func get_lane(road, int_path, flip, left_side):
 	#print("Points: ", pts.size()) # 33
 	
 	# because turn 2 is inverted
-	for i in range(lane_lists[1].size()-1, 0, -1):
-		var c = lane_lists[1][i]
+	for i in range(lanes[1].size()-1, 0, -1):
+		var c = lanes[1][i]
 		var p = Vector3(c.x, turn1.road_height, c.y)
 		pts.append(turn2.to_global(p))
 	#print("Points with turn 2: ", pts.size()) # 65 = 33+32
@@ -501,9 +509,8 @@ func get_lane(road, int_path, flip, left_side):
 		
 	var midpoint = get_lane_midpoint(pts, flip)
 	pts.append(midpoint)
-
-	# left and flip are used mostly for debugging
-	return [pts, left_side, flip]
+	
+	return pts
 
 func get_lane_midpoint(nav_path, flip):
 	# B-A - vector from A to B
@@ -568,6 +575,57 @@ func get_path_look(id, exclude=-1):
 	int_path = paths[id]
 				
 	return int_path
+	
+# -----------------------------------------
+#TODO: optimize (path_look contains 2 entries for every road)
+# lower level than lanes
+func debug_lane_lists():
+	var map = get_parent()
+	for p in path_look:
+		#print(str(p))
+		
+		# get road from ids
+		var rd_name = "Road "+str(p[0])+"-"+str(p[1])
+		var flip = false
+	
+		if not map.has_node(rd_name):
+			# skip
+			#continue
+#			# try the other way?
+			rd_name = "Road " + str(p[1])+"-"+str(p[0])
+			flip = true
+		#print("Road name: " + rd_name)
+		var road = map.get_node(rd_name)
+		
+		# paranoia
+		if not road.has_node("Road_instance0"):
+			return
+		if not road.has_node("Road_instance1"):
+			return
+
+		# which direction are we going?
+		# shortcut (we know map has 3 nodes before intersections)
+		#var src = map.get_child(p[0]+3)
+		#var dst = map.get_child(p[1]+3)
+		
+		# this part actually gets A* points
+		var turn1 = road.get_node("Road_instance0").get_child(0).get_child(0)
+		var turn2 = road.get_node("Road_instance1").get_child(0).get_child(0)
+	
+		var lane_lists = [turn1.points_inner_nav, turn2.points_outer_nav]
+		
+		var pts = get_pts_from_lanes(lane_lists, flip, turn1, turn2)
+		
+		# detect bugs
+		# those two should line up relative to the straight part of the road
+		var midpoint_offset = road.get_node("Spatial0/Road_instance 0").to_local(pts[pts.size()-1]).x
+		var turn_offset = road.get_node("Spatial0/Road_instance 0").to_local(pts[33]).x
+		if abs(midpoint_offset-turn_offset) > 0.75:
+			print("Bug! Lanes crossing over for road ", road.get_name())
+		
+		# those points are global (see line 442)
+		for pt in pts:
+			debug_cube(to_local(pt), "flip")
 
 func debug_lanes(type=1):
 	var map = get_parent()
@@ -624,8 +682,6 @@ func debug_lanes(type=1):
 			nav_data = map.get_node("nav").get_lane(road, p, not flip, true)
 			nav_path = nav_data[0]
 			
-		
-
 			# set flags
 			var flag = ""
 			if flip:

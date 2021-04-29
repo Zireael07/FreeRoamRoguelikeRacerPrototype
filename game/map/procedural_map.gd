@@ -121,6 +121,7 @@ func _ready():
 	get_node("nav").setup(mult, samples, real_edges)
 
 	# debug
+	get_node("nav").debug_lane_lists()
 	#get_node("nav").debug_lanes()
 
 
