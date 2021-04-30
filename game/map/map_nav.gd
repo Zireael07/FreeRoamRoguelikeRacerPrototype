@@ -630,12 +630,12 @@ func reference_pos(road, src, dst, turn1, turn2, flip):
 	if (inner_offset.x < 0) == (outer_offset.x < 0):
 		print(road.get_name(), " predict lanes will cross!")
 	
+	debug_cube(to_local(turn1.to_global(Vector3(turn1.points_inner_nav[0].x, 0.5, turn1.points_inner_nav[0].y))), "left_flip") # blue
+	debug_cube(to_local(turn2.to_global(Vector3(turn2.points_outer_nav[0].x, 0.5, turn2.points_outer_nav[0].y))), "left") # black
 	
-	#debug_cube(to_local(turn1.to_global(Vector3(turn1.points_inner_nav[0].x, 0.5, turn1.points_inner_nav[0].y))), "left_flip") # blue
-	#debug_cube(to_local(turn2.to_global(Vector3(turn2.points_outer_nav[0].x, 0.5, turn2.points_outer_nav[0].y))), "left") # black
+	return [inner_offset, outer_offset]
 
 # -----------------------------------------
-#TODO: optimize (path_look contains 2 entries for every road)
 # lower level than lanes
 func debug_lane_lists():
 	var map = get_parent()
@@ -661,21 +661,41 @@ func debug_lane_lists():
 		if not road.has_node("Road_instance1"):
 			return
 
-		# which direction are we going?
 		# shortcut (we know map has 3 nodes before intersections)
 		var src = map.get_child(p[0]+3)
 		var dst = map.get_child(p[1]+3)
+		# which direction are we going?
+		var rel_pos = src.get_global_transform().xform_inv(dst.get_global_transform().origin)
+		# same as in connect_intersections.gd
+		# by convention, y comes first
+		var angle = atan2(rel_pos.z, rel_pos.x)
+		var quadrant = get_quadrant(rel_pos)
+		
+		print(road.get_name(), " rel pos road start-end: ", rel_pos, " angle: ", angle, " ", rad2deg(angle), " deg, quadrant ", quadrant)
+		
 		
 		# this part actually gets A* points
 		var turn1 = road.get_node("Road_instance0").get_child(0).get_child(0)
 		var turn2 = road.get_node("Road_instance1").get_child(0).get_child(0)
 	
-		# debugging
-		#print(road.get_name(), " inner 0: ", turn1.points_inner_nav[0], ", outer end", turn2.points_outer_nav[32])
-	
-		reference_pos(road, src, dst, turn1, turn2, flip)
-	
+		var offsets = reference_pos(road, src, dst, turn1, turn2, flip)
+		var cross = false
+		if (offsets[0].x < 0) == (offsets[1].x < 0):
+			#print(road.get_name(), " predict lanes will cross!")
+			cross = true
+			
+		# default
 		var lane_lists = [turn1.points_inner_nav, turn2.points_outer_nav]
+		
+		# SE - inner offset < 0 is correct (left lane)
+		if quadrant == "SE" and cross:
+			lane_lists = [turn1.points_inner_nav, turn2.points_inner_nav]
+		# NE - inner offset > 0 results in right lane
+		if quadrant == "NE" and cross:
+			lane_lists = [turn1.points_outer_nav, turn2.points_outer_nav]
+		# NW - inner offset > 0 results in right lane
+		if quadrant == "NW" and cross:
+			lane_lists = [turn1.points_outer_nav, turn2.points_outer_nav]
 		
 		var pts = get_pts_from_lanes(lane_lists, flip, turn1, turn2)
 		
@@ -686,14 +706,15 @@ func debug_lane_lists():
 		if abs(midpoint_offset-turn_offset) > 0.75:
 			print("Bug! Lanes crossing over for road ", road.get_name())
 			# debugging
-			debug_cube(to_local(turn1.to_global(turn1.start_point)))
-			debug_cube(to_local(turn2.to_global(turn2.start_point)))
+			#debug_cube(to_local(turn1.to_global(turn1.start_point)))
+			#debug_cube(to_local(turn2.to_global(turn2.start_point)))
 
 		
 		# those points are global (see line 442)
 		for pt in pts:
 			debug_cube(to_local(pt), "flip")
 
+#TODO: optimize (path_look contains 2 entries for every road)
 func debug_lanes(type=1):
 	var map = get_parent()
 	for p in path_look:
