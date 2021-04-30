@@ -101,7 +101,7 @@ func look_for_path_initial(start_ind, left):
 	road = map.get_node(rd_name)
 	#print("Road: " + str(road))
 	
-	var nav_data = map.get_node("nav").get_lane(road, int_path, flip, left)
+	var nav_data = map.get_node("nav").get_lane(road, flip, left)
 	var nav_path = nav_data[0]
 
 	path = traffic_reduce_path(nav_path, nav_data[1])
@@ -148,7 +148,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	road = map.get_node(rd_name)
 	#print("Road: " + str(road))
 	
-	var nav_data = map.get_node("nav").get_lane(road, int_path, flip, left_side)
+	var nav_data = map.get_node("nav").get_lane(road, flip, left_side)
 	var nav_path = nav_data[0]
 	
 	var arc_pos = null
@@ -225,8 +225,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 		intersection = closest
 		#intersection.cars.append(self)
 		intersection.cars[self] = [straight, left_turn]
-		print("Set " + get_name() + " as on intersection: ", closest.get_name())
-		#intersection.cars.append([self, straight, left_turn])
+		#print("Set " + get_name() + " as on intersection: ", closest.get_name())
 	
 	
 	# register with road

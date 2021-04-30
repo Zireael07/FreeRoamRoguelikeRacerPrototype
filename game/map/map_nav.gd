@@ -395,89 +395,84 @@ func setup_nav_astar(pts, i, begin_id):
 	return [endpoint_id, last_id, ret]
 
 # this is governed by map not AI (so that lanes are picked consistently depending on direction of travel)
-func get_lane(road, int_path, flip, left_side):
-	#var pts = []
+func get_lane(road, flip, left_side):
 	# paranoia
 	if not road.has_node("Road_instance0"):
 		return
 	if not road.has_node("Road_instance1"):
 		return
 
-	# which direction are we going?
+	# this led to a weird bug elsewhere?
+	# fix: int_path has to be flipped, too
+	#if flip:
+	#	int_path[0] = int_path[1]
+	#	int_path[1] = int_path[0]
+	
+	# extract intersection numbers
+	var ret = []
+	var strs = road.get_name().split("-")
+	# convert to int
+	ret.append(int(strs[0].lstrip("Road ")))
+	ret.append(int(strs[1]))
+
 	# shortcut (we know map has 3 nodes before intersections)
-	var src = get_parent().get_child(int_path[0]+3)
-	var dst = get_parent().get_child(int_path[1]+3)
+	var src = get_parent().get_child(ret[0]+3)
+	var dst = get_parent().get_child(ret[1]+3)
+	# which direction are we going?
 	var rel_pos = src.get_global_transform().xform_inv(dst.get_global_transform().origin)
 	# same as in connect_intersections.gd
 	# by convention, y comes first
 	var angle = atan2(rel_pos.z, rel_pos.x)
 	
-	# pick lane depending on relative direction (quadrant)
-	# "flip" (set by AI earlier) means we are going the other way to the way the map was designed
+	var quadrant = get_quadrant(rel_pos)
+		
+	print(road.get_name(), " rel pos road start-end: ", rel_pos, " angle: ", angle, " ", rad2deg(angle), " deg, quadrant ", quadrant)
 	
-	# NE (quadrant 1)
-	if rel_pos.x > 0 and rel_pos.z < 0:
-		if flip:
-			left_side = true
-		else:
-			left_side = false
-	# NW (quadrant 2)
-	if rel_pos.x < 0 and rel_pos.z > 0:
-		if flip:
-			left_side = false
-		else:
-			left_side = true
-	# SE (quadrant 3)
-	if rel_pos.x > 0 and rel_pos.z > 0:
-		if not flip:
-			left_side = true
-		else:
-			left_side = false
-	# SW (quadrant 4)
-	if rel_pos.x < 0 and rel_pos.z < 0:
-		if flip: 
-			left_side = true
-		else:
-			left_side = false
 	
-			
-	#print(road.get_name(), " rel pos road start-end: ", rel_pos, " angle: ", angle, " ", rad2deg(angle), " deg quadrant ", get_quadrant(rel_pos), " flip: ", flip, " left: ", left_side)
-
 	# this part actually gets A* points
 	var turn1 = road.get_node("Road_instance0").get_child(0).get_child(0)
 	var turn2 = road.get_node("Road_instance1").get_child(0).get_child(0)
-	
-	var lane_lists = []
-	# side
-	if left_side:
-		if not flip:
-			# account for roads going almost straight (the checks here are ad hoc)
-			if angle < 0.4 or (turn1.start_angle > 250 and turn2.start_angle > 300):
-				lane_lists = [turn1.points_inner_nav, turn2.points_inner_nav]
-			else:
-				lane_lists = [turn1.points_inner_nav, turn2.points_outer_nav]
-		else:
-			# account for roads going almost straight
-			if angle < -PI+0.4 or (turn1.start_angle > 250 and turn2.start_angle > 300):
-				lane_lists = [turn1.points_outer_nav, turn2.points_outer_nav]	
-			else:
-				lane_lists = [turn1.points_outer_nav, turn2.points_inner_nav]
-	# right side
-	else:
-		if not flip:
-			# account for roads going almost straight (the checks here are ad hoc)
-			if angle > -0.79 and angle < -0.1:
-				lane_lists = [turn1.points_outer_nav, turn2.points_outer_nav]
-			else:
-				lane_lists = [turn1.points_outer_nav, turn2.points_inner_nav]
-		else:
-			# account for roads going almost straight
-			if angle > 2.35 and angle < 3.04:
-				lane_lists = [turn1.points_inner_nav, turn2.points_inner_nav]
-			else:
-				lane_lists = [turn1.points_inner_nav, turn2.points_outer_nav]
 
-	var pts = get_pts_from_lanes(lane_lists, flip, turn1, turn2)
+	var offsets = reference_pos(road, src, dst, turn1, turn2, false)
+	var cross = false
+	if (offsets[0] < 0) == (offsets[1] < 0):
+		print(road.get_name(), " predict lanes will cross!")
+		cross = true
+		
+	# default
+	var lane_lists = [turn1.points_inner_nav, turn2.points_outer_nav]
+	
+	# fix crossing over
+	# SE - inner offset < 0 is correct (left lane)
+	if quadrant == "SE" and cross:
+		lane_lists = [turn1.points_inner_nav, turn2.points_inner_nav]
+	# NE - inner offset > 0 results in right lane
+	if quadrant == "NE" and cross:
+		lane_lists = [turn1.points_outer_nav, turn2.points_outer_nav]
+	# NW - inner offset > 0 results in right lane
+	if quadrant == "NW" and cross:
+		lane_lists = [turn1.points_outer_nav, turn2.points_outer_nav]
+	
+	# fix - crossing over was already handled
+	if not cross:
+		# fix more badness - 7-1, 4-3 and 3-2 have issues
+		# NE - inner offset > 0 results in right lane (7-1 and 4-3)
+		if quadrant == "NE" and offsets[0] > 0:
+			#print(road.get_name(), " needs a fix - NE")
+			lane_lists = [turn1.points_outer_nav, turn2.points_inner_nav]
+		# NW - inner_offset > 0 results in right lane
+		if quadrant == "NW" and offsets[0] > 0:
+			lane_lists = [turn1.points_outer_nav, turn2.points_inner_nav]
+		
+	
+	var pts = []
+	
+	if flip:
+		# generate the other lane
+		var o_lane_lists = other_lane(lane_lists, turn1, turn2)
+		pts = get_pts_from_lanes(o_lane_lists, true, turn1, turn2)
+	else:
+		pts = get_pts_from_lanes(lane_lists, false, turn1, turn2)
 
 	# left and flip are used mostly for debugging
 	return [pts, left_side, flip]
@@ -618,13 +613,13 @@ func reference_pos(road, src, dst, turn1, turn2, flip):
 	if not flip:
 		#inner_offset = test_src.to_local(turn1.to_global(inn))
 		inner_offset = src_tr.xform_inv(turn1.to_global(inn))
-		print(road.get_name(), " inner offset ", inner_offset.x, " right: ", inner_offset.x < 0)
+		#print(road.get_name(), " inner offset ", inner_offset.x, " right: ", inner_offset.x < 0)
 		#outer_offset = test_dst.to_local(turn2.to_global(out))
 		outer_offset = dst_tr.xform_inv(turn2.to_global(out))
 	else:
 		#outer_offset = test_src.to_local(turn2.to_global(out))
 		outer_offset = src_tr.xform_inv(turn2.to_global(out))
-		print(road.get_name(), " outer offset ", outer_offset.x, " right: ", outer_offset.x < 0)
+		#print(road.get_name(), " outer offset ", outer_offset.x, " right: ", outer_offset.x < 0)
 		#inner_offset = test_dst.to_local(turn1.to_global(inn))
 		inner_offset = dst_tr.xform_inv(turn1.to_global(inn))
 	
@@ -658,6 +653,7 @@ func debug_lane_lists():
 		
 		# get road from ids
 		var rd_name = "Road "+str(p[0])+"-"+str(p[1])
+		# IMPORTANT!!!
 		var flip = false
 	
 		if not map.has_node(rd_name):
