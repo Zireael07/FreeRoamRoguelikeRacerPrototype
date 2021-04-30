@@ -627,13 +627,27 @@ func reference_pos(road, src, dst, turn1, turn2, flip):
 		print(road.get_name(), " outer offset", outer_offset, " right: ", outer_offset.x < 0)
 		#inner_offset = test_dst.to_local(turn1.to_global(inn))
 		inner_offset = dst_tr.xform_inv(turn1.to_global(inn))
-	if (inner_offset.x < 0) == (outer_offset.x < 0):
-		print(road.get_name(), " predict lanes will cross!")
 	
-	debug_cube(to_local(turn1.to_global(Vector3(turn1.points_inner_nav[0].x, 0.5, turn1.points_inner_nav[0].y))), "left_flip") # blue
-	debug_cube(to_local(turn2.to_global(Vector3(turn2.points_outer_nav[0].x, 0.5, turn2.points_outer_nav[0].y))), "left") # black
+	#debug_cube(to_local(turn1.to_global(Vector3(turn1.points_inner_nav[0].x, 0.5, turn1.points_inner_nav[0].y))), "left_flip") # blue
+	#debug_cube(to_local(turn2.to_global(Vector3(turn2.points_outer_nav[0].x, 0.5, turn2.points_outer_nav[0].y))), "left") # black
 	
 	return [inner_offset, outer_offset]
+	
+func other_lane(lanes, turn1, turn2):
+	#print("Getting the other lane for lane: ", lanes)
+	var lane_lists = []
+	
+	if lanes == [turn1.points_inner_nav, turn2.points_inner_nav]:
+		#print("Lane 1 is inners only")
+		lane_lists = [turn1.points_outer_nav, turn2.points_outer_nav]
+	if lanes == [turn1.points_outer_nav, turn2.points_outer_nav]:
+		#print("Lane 1 is outers only")
+		lane_lists = [turn1.points_inner_nav, turn2.points_inner_nav]
+	if lanes == [turn1.points_inner_nav, turn2.points_outer_nav]:
+		lane_lists = [turn1.points_outer_nav, turn2.points_inner_nav]
+	if lanes == [turn1.points_outer_nav, turn2.points_inner_nav]:
+		lane_lists = [turn1.points_inner_nav, turn2.points_outer_nav]
+	return lane_lists
 
 # -----------------------------------------
 # lower level than lanes
@@ -681,7 +695,7 @@ func debug_lane_lists():
 		var offsets = reference_pos(road, src, dst, turn1, turn2, flip)
 		var cross = false
 		if (offsets[0].x < 0) == (offsets[1].x < 0):
-			#print(road.get_name(), " predict lanes will cross!")
+			print(road.get_name(), " predict lanes will cross!")
 			cross = true
 			
 		# default
@@ -709,10 +723,28 @@ func debug_lane_lists():
 			#debug_cube(to_local(turn1.to_global(turn1.start_point)))
 			#debug_cube(to_local(turn2.to_global(turn2.start_point)))
 
+		# black means it's the left lane when driving as the road was designed 
+		# A->B (eg. 7 to 0 for road 7-0)
+		# red means it's the left lane when driving flipped
+		
+		# debug which way the road was designed
+		# B-A - A->B
+		var src_debug = src.get_global_transform().origin+(turn1.to_global(turn1.start_point)-src.get_global_transform().origin).normalized()
+		var dst_debug = dst.get_global_transform().origin+(turn2.to_global(turn2.start_point)-dst.get_global_transform().origin).normalized()
+		debug_cube(to_local(src_debug), "left") # black
+		debug_cube(to_local(dst_debug), "flip") # red
 		
 		# those points are global (see line 442)
 		for pt in pts:
-			debug_cube(to_local(pt), "flip")
+			debug_cube(to_local(pt), "left") # black, counterpart to white
+			
+		# generate the other lane
+		var o_lane_lists = other_lane(lane_lists, turn1, turn2)
+		var o_pts = get_pts_from_lanes(o_lane_lists, flip, turn1, turn2)
+		
+		# those points are global (see line 442)
+		for pt in o_pts:
+			debug_cube(to_local(pt), "flip") # red
 
 #TODO: optimize (path_look contains 2 entries for every road)
 func debug_lanes(type=1):
