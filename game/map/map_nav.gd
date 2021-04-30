@@ -576,36 +576,34 @@ func get_path_look(id, exclude=-1):
 				
 	return int_path
 	
-# -----------------------------------------
+
 func reference_pos(road, src, dst, turn1, turn2, flip):
 	#print("Inner 0: ", turn1.points_inner_nav[0], "outer 0", turn2.points_outer_nav[0])
 	
 	# from intersection, looking at start point
-	#var tr = Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), src.get_global_transform().origin)
-	#var tg = src.to_local(turn1.to_global(turn1.start_point))
-	#var angle = atan2(tg.z, tg.x)
-	#print("Angle: ", rad2deg(angle))
-	#tr = tr.rotated(Vector3(0,1,0), angle)
-	#print(str(tr))
+	var src_tr = Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), src.get_global_transform().origin)
+	var dst_tr = Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), dst.get_global_transform().origin)
 
 	# TODO optimize - this creates two nodes per call
-	var test_src = Position3D.new()
-	add_child(test_src)
-	test_src.set_translation(to_local(src.get_global_transform().origin))
-	var test_dst = Position3D.new()
-	add_child(test_dst)
-	test_dst.set_translation(to_local(dst.get_global_transform().origin))
+#	var test_src = Position3D.new()
+#	add_child(test_src)
+#	test_src.set_translation(to_local(src.get_global_transform().origin))
+#	var test_dst = Position3D.new()
+#	add_child(test_dst)
+#	test_dst.set_translation(to_local(dst.get_global_transform().origin))
+# 	test_src.look_at(turn1.to_global(turn1.start_point), Vector3.UP)
+
 	if not flip:
-		test_src.look_at(turn1.to_global(turn1.start_point), Vector3.UP)
-		test_dst.look_at(turn2.to_global(turn2.start_point), Vector3.UP)
+		src_tr = src_tr.looking_at(turn1.to_global(turn1.start_point), Vector3.UP)
+		dst_tr = dst_tr.looking_at(turn2.to_global(turn2.start_point), Vector3.UP)
 	else:
-		test_src.look_at(turn2.to_global(turn2.start_point), Vector3.UP)
-		test_dst.look_at(turn1.to_global(turn1.start_point), Vector3.UP)
+		src_tr = src_tr.looking_at(turn2.to_global(turn2.start_point), Vector3.UP)
+		dst_tr = dst_tr.looking_at(turn1.to_global(turn1.start_point), Vector3.UP)
 	#test.look_at_from_position(src.get_global_transform().origin, turn1.to_global(turn1.start_point), Vector3(0,1,0))
 	# this was to make debug cube visible
 	#test_src.translate(Vector3(0,1,0))
 	
-	test_src.set_name("refpos_"+str(flip))
+	#test_src.set_name("refpos_"+str(flip))
 	#print("Ref pos: ", test.get_global_transform().origin, "src:", src.get_global_transform().origin)
 	#debug_cube(to_local(test_src.get_global_transform().origin), "left")
 	
@@ -618,13 +616,17 @@ func reference_pos(road, src, dst, turn1, turn2, flip):
 	var inner_offset = null
 	var outer_offset = null
 	if not flip:
-		inner_offset = test_src.to_local(turn1.to_global(inn))
+		#inner_offset = test_src.to_local(turn1.to_global(inn))
+		inner_offset = src_tr.xform_inv(turn1.to_global(inn))
 		print(road.get_name(), " inner offset", inner_offset, " right: ", inner_offset.x < 0)
-		outer_offset = test_dst.to_local(turn2.to_global(out))
+		#outer_offset = test_dst.to_local(turn2.to_global(out))
+		outer_offset = dst_tr.xform_inv(turn2.to_global(out))
 	else:
-		outer_offset = test_src.to_local(turn2.to_global(out))
+		#outer_offset = test_src.to_local(turn2.to_global(out))
+		outer_offset = src_tr.xform_inv(turn2.to_global(out))
 		print(road.get_name(), " outer offset", outer_offset, " right: ", outer_offset.x < 0)
-		inner_offset = test_dst.to_local(turn1.to_global(inn))
+		#inner_offset = test_dst.to_local(turn1.to_global(inn))
+		inner_offset = dst_tr.xform_inv(turn1.to_global(inn))
 	if (inner_offset.x < 0) == (outer_offset.x < 0):
 		print(road.get_name(), " predict lanes will cross!")
 	
@@ -632,7 +634,7 @@ func reference_pos(road, src, dst, turn1, turn2, flip):
 	#debug_cube(to_local(turn1.to_global(Vector3(turn1.points_inner_nav[0].x, 0.5, turn1.points_inner_nav[0].y))), "left_flip") # blue
 	#debug_cube(to_local(turn2.to_global(Vector3(turn2.points_outer_nav[0].x, 0.5, turn2.points_outer_nav[0].y))), "left") # black
 
-
+# -----------------------------------------
 #TODO: optimize (path_look contains 2 entries for every road)
 # lower level than lanes
 func debug_lane_lists():
@@ -645,11 +647,11 @@ func debug_lane_lists():
 		var flip = false
 	
 		if not map.has_node(rd_name):
-			# skip
-			#continue
+			# skip (since flip just reverses the order, no need to debug it)
+			continue
 #			# try the other way?
-			rd_name = "Road " + str(p[1])+"-"+str(p[0])
-			flip = true
+			#rd_name = "Road " + str(p[1])+"-"+str(p[0])
+			#flip = true
 		#print("Road name: " + rd_name)
 		var road = map.get_node(rd_name)
 		
