@@ -618,20 +618,20 @@ func reference_pos(road, src, dst, turn1, turn2, flip):
 	if not flip:
 		#inner_offset = test_src.to_local(turn1.to_global(inn))
 		inner_offset = src_tr.xform_inv(turn1.to_global(inn))
-		print(road.get_name(), " inner offset", inner_offset, " right: ", inner_offset.x < 0)
+		print(road.get_name(), " inner offset ", inner_offset.x, " right: ", inner_offset.x < 0)
 		#outer_offset = test_dst.to_local(turn2.to_global(out))
 		outer_offset = dst_tr.xform_inv(turn2.to_global(out))
 	else:
 		#outer_offset = test_src.to_local(turn2.to_global(out))
 		outer_offset = src_tr.xform_inv(turn2.to_global(out))
-		print(road.get_name(), " outer offset", outer_offset, " right: ", outer_offset.x < 0)
+		print(road.get_name(), " outer offset ", outer_offset.x, " right: ", outer_offset.x < 0)
 		#inner_offset = test_dst.to_local(turn1.to_global(inn))
 		inner_offset = dst_tr.xform_inv(turn1.to_global(inn))
 	
 	#debug_cube(to_local(turn1.to_global(Vector3(turn1.points_inner_nav[0].x, 0.5, turn1.points_inner_nav[0].y))), "left_flip") # blue
 	#debug_cube(to_local(turn2.to_global(Vector3(turn2.points_outer_nav[0].x, 0.5, turn2.points_outer_nav[0].y))), "left") # black
 	
-	return [inner_offset, outer_offset]
+	return [inner_offset.x, outer_offset.x]
 	
 func other_lane(lanes, turn1, turn2):
 	#print("Getting the other lane for lane: ", lanes)
@@ -694,13 +694,14 @@ func debug_lane_lists():
 	
 		var offsets = reference_pos(road, src, dst, turn1, turn2, flip)
 		var cross = false
-		if (offsets[0].x < 0) == (offsets[1].x < 0):
+		if (offsets[0] < 0) == (offsets[1] < 0):
 			print(road.get_name(), " predict lanes will cross!")
 			cross = true
 			
 		# default
 		var lane_lists = [turn1.points_inner_nav, turn2.points_outer_nav]
 		
+		# fix crossing over
 		# SE - inner offset < 0 is correct (left lane)
 		if quadrant == "SE" and cross:
 			lane_lists = [turn1.points_inner_nav, turn2.points_inner_nav]
@@ -710,6 +711,18 @@ func debug_lane_lists():
 		# NW - inner offset > 0 results in right lane
 		if quadrant == "NW" and cross:
 			lane_lists = [turn1.points_outer_nav, turn2.points_outer_nav]
+		
+		# fix - crossing over was already handled
+		if not cross:
+			# fix more badness - 7-1, 4-3 and 3-2 have issues
+			# NE - inner offset > 0 results in right lane (7-1 and 4-3)
+			if quadrant == "NE" and offsets[0] > 0:
+				#print(road.get_name(), " needs a fix - NE")
+				lane_lists = [turn1.points_outer_nav, turn2.points_inner_nav]
+			# NW - inner_offset > 0 results in right lane
+			if quadrant == "NW" and offsets[0] > 0:
+				lane_lists = [turn1.points_outer_nav, turn2.points_inner_nav]
+			
 		
 		var pts = get_pts_from_lanes(lane_lists, flip, turn1, turn2)
 		
@@ -726,6 +739,7 @@ func debug_lane_lists():
 		# black means it's the left lane when driving as the road was designed 
 		# A->B (eg. 7 to 0 for road 7-0)
 		# red means it's the left lane when driving flipped
+
 		
 		# debug which way the road was designed
 		# B-A - A->B
