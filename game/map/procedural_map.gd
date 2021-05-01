@@ -122,7 +122,7 @@ func _ready():
 
 	# debug
 	get_node("nav").debug_lane_lists()
-	#get_node("nav").debug_lanes()
+
 
 
 	# place cars on intersections

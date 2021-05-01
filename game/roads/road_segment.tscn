@@ -13,6 +13,9 @@ params_line_width = 3.0
 params_point_size = 3.0
 
 [node name="Spatial" type="Spatial"]
+__meta__ = {
+"_editor_description_": "This top node is necessary due to some relative/rotations things we do..."
+}
 
 [node name="Placer" type="Position3D" parent="."]
 script = ExtResource( 1 )
@@ -31,4 +34,3 @@ visible = false
 material_override = SubResource( 1 )
 cast_shadow = 0
 script = ExtResource( 4 )
-color = Color( 1, 1, 1, 1 )

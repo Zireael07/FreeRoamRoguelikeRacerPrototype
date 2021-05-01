@@ -10,7 +10,6 @@
 [ext_resource path="res://scripts/draw_line.gd" type="Script" id=8]
 [ext_resource path="res://car/car_base.tscn" type="PackedScene" id=9]
 
-
 [sub_resource type="PlaneShape" id=1]
 
 [sub_resource type="SpatialMaterial" id=2]
@@ -43,7 +42,6 @@ shadow_reverse_cull_face = true
 directional_shadow_blend_splits = true
 directional_shadow_normal_bias = 0.0
 directional_shadow_bias_split_scale = 0.0
-directional_shadow_max_distance = 100.0
 
 [node name="Ground" type="Spatial" parent="."]
 script = ExtResource( 3 )

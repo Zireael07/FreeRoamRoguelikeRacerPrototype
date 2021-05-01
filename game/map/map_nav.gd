@@ -395,6 +395,7 @@ func setup_nav_astar(pts, i, begin_id):
 	return [endpoint_id, last_id, ret]
 
 # this is governed by map not AI (so that lanes are picked consistently depending on direction of travel)
+# TODO: precalculate it, at least partially?
 func get_lane(road, flip, left_side):
 	# paranoia
 	if not road.has_node("Road_instance0"):
@@ -665,6 +666,8 @@ func debug_lane_lists():
 		#print("Road name: " + rd_name)
 		var road = map.get_node(rd_name)
 		
+		#TODO: call get_lane() here
+		
 		# paranoia
 		if not road.has_node("Road_instance0"):
 			return
@@ -756,77 +759,6 @@ func debug_lane_lists():
 		for pt in o_pts:
 			debug_cube(to_local(pt), "flip") # red
 
-#TODO: optimize (path_look contains 2 entries for every road)
-func debug_lanes(type=1):
-	var map = get_parent()
-	for p in path_look:
-		#print(str(p))
-		
-		# get road from ids
-		var rd_name = "Road "+str(p[0])+"-"+str(p[1])
-		var flip = false
-	
-		if not map.has_node(rd_name):
-			# skip
-			#continue
-#			# try the other way?
-			rd_name = "Road " + str(p[1])+"-"+str(p[0])
-			flip = true
-		#print("Road name: " + rd_name)
-		var road = map.get_node(rd_name)
-		
-		# only interested in some lanes
-		# which direction are we going?
-		# shortcut (we know map has 3 nodes before intersections)
-#		var src = map.get_child(p[0]+3)
-#		var dst = map.get_child(p[1]+3)
-#		var rel_pos = src.get_global_transform().xform_inv(dst.get_global_transform().origin)
-#		if rel_pos.x > 0 and rel_pos.z > 0:
-		#if flip:
-		var nav_data = []
-		var nav_path
-		if type == 0 or type == 2: # normal or both
-			# normal direction
-			nav_data = map.get_node("nav").get_lane(road, p, flip, true)
-			nav_path = nav_data[0]
-			
-			# set flags
-			var flag = ""
-			if flip:
-				if not nav_data[1]:
-					flag = "flip"
-				else:
-					flag = "left_flip"
-			
-			else:
-				flag = "left_flip"
-				if nav_data[1]:
-					flag = "left"
-					
-			# those points are global (see line 442)
-			for pt in nav_path:
-				debug_cube(to_local(pt), flag)
-				
-		if type == 1 or type == 2: # other or both
-			# test other case	
-			nav_data = map.get_node("nav").get_lane(road, p, not flip, true)
-			nav_path = nav_data[0]
-			
-			# set flags
-			var flag = ""
-			if flip:
-				if not nav_data[1]:
-					flag = "flip"
-				else:
-					flag = "left_flip"
-			
-			else:
-				if nav_data[1]:
-					flag = "left"
-					
-			# those points are global (see line 442)
-			for pt in nav_path:
-				debug_cube(to_local(pt), flag)
 			
 # ------------------------------------
 # it could probably be done at AI level, but this way it's more general, maybe for the player

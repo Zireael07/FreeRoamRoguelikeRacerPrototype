@@ -17,7 +17,7 @@ func _ready():
 		var s_name = name1_list[i] + name2_list[0]
 		var s_romaji = romaji1_list[i] + romaji2_list[0]
 	
-		print("Romaji: ", s_romaji)
+		#print("Romaji: ", s_romaji)
 		# we don't have Dictionary.append, so just create
 		racers_list[s_romaji] = [s_name, s_romaji]
 		#racers_list.append([s_name, s_romaji])

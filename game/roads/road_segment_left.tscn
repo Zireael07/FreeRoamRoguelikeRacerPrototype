@@ -14,6 +14,8 @@ shader_param/metallic = 0.0
 shader_param/roughness = 0.5
 shader_param/normal_strength = 1.0
 shader_param/alpha_clip = 0.868
+shader_param/emission_energy = null
+shader_param/emission = null
 shader_param/texture_albedo = ExtResource( 4 )
 
 [sub_resource type="SpatialMaterial" id=2]
@@ -23,6 +25,9 @@ params_line_width = 3.0
 params_point_size = 3.0
 
 [node name="Spatial" type="Spatial"]
+__meta__ = {
+"_editor_description_": "I think this scene is unused except for some testing stuff?"
+}
 
 [node name="Placer" type="Position3D" parent="."]
 script = ExtResource( 1 )
@@ -41,4 +46,3 @@ barrier_material = SubResource( 1 )
 material_override = SubResource( 2 )
 cast_shadow = 0
 script = ExtResource( 3 )
-color = Color( 1, 1, 1, 1 )
