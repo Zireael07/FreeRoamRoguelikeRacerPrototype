@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://roads/segment_placer_left.gd" type="Script" id=1]
+[ext_resource path="res://old/segment_placer_left.gd" type="Script" id=1]
 [ext_resource path="res://roads/curved_road_segment.gd" type="Script" id=2]
 [ext_resource path="res://scripts/draw_line.gd" type="Script" id=3]
 [ext_resource path="res://assets/racing_line.png" type="Texture" id=4]

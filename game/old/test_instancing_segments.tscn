@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://roads/segments_instanced.gd" type="Script" id=1]
+[ext_resource path="res://old/segments_instanced.gd" type="Script" id=1]
 [ext_resource path="res://roads/road_segment.tscn" type="PackedScene" id=2]
-[ext_resource path="res://roads/road_segment_left.tscn" type="PackedScene" id=3]
+[ext_resource path="res://old/road_segment_left.tscn" type="PackedScene" id=3]
 
 [node name="Spatial" type="Spatial"]
 
