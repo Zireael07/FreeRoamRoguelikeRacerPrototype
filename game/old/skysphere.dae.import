@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/skysphere.dae-8c125df4190bc8044249b9deccb31f58.scn"
+path="res://.import/skysphere.dae-b692060a84963ad27160eb126e41bf5c.scn"
 
 [deps]
 
-source_file="res://skysphere.dae"
-dest_files=[ "res://.import/skysphere.dae-8c125df4190bc8044249b9deccb31f58.scn" ]
+source_file="res://old/skysphere.dae"
+dest_files=[ "res://.import/skysphere.dae-b692060a84963ad27160eb126e41bf5c.scn" ]
 
 [params]
 
@@ -16,6 +16,7 @@ nodes/root_name="Scene Root"
 nodes/root_scale=1.0
 nodes/custom_script=""
 nodes/storage=0
+nodes/use_legacy_names=true
 materials/location=1
 materials/storage=1
 materials/keep_on_reimport=true
@@ -24,6 +25,7 @@ meshes/ensure_tangents=true
 meshes/storage=0
 meshes/light_baking=0
 meshes/lightmap_texel_size=0.1
+skins/use_named_skins=true
 external_files/store_in_subdir=false
 animation/import=true
 animation/fps=15
