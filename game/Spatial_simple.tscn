@@ -1,0 +1,53 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://roads/road_segment_straight.tscn" type="PackedScene" id=1]
+[ext_resource path="res://roads/road_segment.tscn" type="PackedScene" id=2]
+[ext_resource path="res://dynamic_env.tres" type="Environment" id=3]
+[ext_resource path="res://roads/intersection.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scripts/WorldEnvironment.gd" type="Script" id=7]
+[ext_resource path="res://car/kinematics/kinematic_car_base.tscn" type="PackedScene" id=9]
+[ext_resource path="res://dynamic_sky/scene.tscn" type="PackedScene" id=10]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 200, 0.05, 200 )
+
+[node name="root" type="Spatial"]
+
+[node name="Spatial" type="Spatial" parent="."]
+
+[node name="StaticBody" type="StaticBody" parent="Spatial"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Spatial/StaticBody"]
+shape = SubResource( 1 )
+
+[node name="car" parent="." instance=ExtResource( 9 )]
+
+[node name="city" type="Spatial" parent="."]
+
+[node name="scene" parent="city" instance=ExtResource( 10 )]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="city"]
+environment = ExtResource( 3 )
+script = ExtResource( 7 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="city"]
+transform = Transform( 1, 0, 0, 0, -0.766044, 0.642788, 0, -0.642788, -0.766044, 0, 18.629, 0 )
+shadow_enabled = true
+shadow_bias = 0.0
+shadow_reverse_cull_face = true
+directional_shadow_blend_splits = true
+directional_shadow_normal_bias = 0.0
+directional_shadow_bias_split_scale = 0.0
+directional_shadow_max_distance = 50.0
+
+[node name="marker_North" type="Spatial" parent="city"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 900, 0, 0 )
+
+[node name="Position3D" parent="city" instance=ExtResource( 1 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+
+[node name="Spatial" parent="city" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.82329 )
+
+[node name="Spatial2" parent="city" instance=ExtResource( 2 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -100 )

@@ -1,0 +1,99 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://car/kinematics/kinematic_car_base.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/draw_line.gd" type="Script" id=2]
+[ext_resource path="res://map/map_nav.gd" type="Script" id=3]
+[ext_resource path="res://dynamic_env.tres" type="Environment" id=4]
+[ext_resource path="res://map/procedural_map.gd" type="Script" id=5]
+[ext_resource path="res://scripts/poisson3d.gd" type="Script" id=7]
+[ext_resource path="res://scripts/WorldEnvironment.gd" type="Script" id=8]
+[ext_resource path="res://map/triangulate.gd" type="Script" id=9]
+[ext_resource path="res://dynamic_sky/scene.tscn" type="PackedScene" id=10]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 100, 0.05, 100 )
+
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 100, 0.05, 100 )
+
+[sub_resource type="BoxShape" id=3]
+extents = Vector3( 100, 0.05, 100 )
+
+[sub_resource type="SpatialMaterial" id=4]
+flags_unshaded = true
+flags_use_point_size = true
+params_line_width = 3.0
+params_point_size = 3.0
+albedo_color = Color( 1, 0.961243, 0.0078125, 1 )
+
+[node name="root" type="Spatial"]
+
+[node name="Spatial" type="Spatial" parent="."]
+
+[node name="StaticBody" type="StaticBody" parent="Spatial"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Spatial/StaticBody"]
+shape = SubResource( 1 )
+
+[node name="CollisionShape2" type="CollisionShape" parent="Spatial/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -200, 0, 0 )
+shape = SubResource( 2 )
+
+[node name="CollisionShape3" type="CollisionShape" parent="Spatial/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 200, 0, 0 )
+shape = SubResource( 3 )
+
+[node name="CollisionShape4" type="CollisionShape" parent="Spatial/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -200 )
+shape = SubResource( 3 )
+
+[node name="CollisionShape5" type="CollisionShape" parent="Spatial/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 200 )
+shape = SubResource( 3 )
+
+[node name="CollisionShape6" type="CollisionShape" parent="Spatial/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 200, 0, -200 )
+shape = SubResource( 3 )
+
+[node name="car" parent="." instance=ExtResource( 1 )]
+
+[node name="city" type="Spatial" parent="."]
+
+[node name="scene" parent="city" instance=ExtResource( 10 )]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="city"]
+environment = ExtResource( 4 )
+script = ExtResource( 8 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="city"]
+transform = Transform( 1, 0, 0, 0, -0.766044, 0.642788, 0, -0.642788, -0.766044, 0, 18.629, 0 )
+shadow_enabled = true
+shadow_bias = 0.0
+shadow_reverse_cull_face = true
+directional_shadow_blend_splits = true
+directional_shadow_normal_bias = 0.0
+directional_shadow_bias_split_scale = 0.0
+directional_shadow_max_distance = 50.0
+
+[node name="map" type="Spatial" parent="city"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -160, 0, -209.444 )
+script = ExtResource( 5 )
+
+[node name="triangulate" type="Spatial" parent="city/map"]
+script = ExtResource( 9 )
+
+[node name="poisson" type="Spatial" parent="city/map/triangulate"]
+script = ExtResource( 7 )
+
+[node name="nav" type="Spatial" parent="city/map"]
+script = ExtResource( 3 )
+
+[node name="draw" type="ImmediateGeometry" parent="city/map"]
+visible = false
+material_override = SubResource( 4 )
+cast_shadow = 0
+script = ExtResource( 2 )
+color = Color( 1, 0.961243, 0.0078125, 1 )
+
+[node name="marker_North" type="Spatial" parent="city"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 900, 0, 0 )
