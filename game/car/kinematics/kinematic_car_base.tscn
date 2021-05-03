@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=49 format=2]
 
 [ext_resource path="res://hud/test_car_label.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/car/LED taillights stock.jpg" type="Texture" id=2]
@@ -10,6 +10,13 @@
 [ext_resource path="res://car/follow_camera.gd" type="Script" id=8]
 [ext_resource path="res://car/kinematics/kinematic_vehicle_player.gd" type="Script" id=9]
 [ext_resource path="res://assets/car/car_blue.tres" type="Material" id=10]
+[ext_resource path="res://car/RayCast.gd" type="Script" id=11]
+[ext_resource path="res://assets/Smoke.tres" type="Material" id=12]
+[ext_resource path="res://assets/rain_particles.tres" type="Material" id=13]
+[ext_resource path="res://assets/snow_smoke_mat.tres" type="Material" id=14]
+[ext_resource path="res://assets/quad-neon.jpg" type="Texture" id=15]
+[ext_resource path="res://scripts/skysphere.gd" type="Script" id=16]
+[ext_resource path="res://assets/rain_material.tres" type="Material" id=17]
 [ext_resource path="res://car/MeshInstance.gd" type="Script" id=18]
 [ext_resource path="res://default_env_copy.tres" type="Environment" id=20]
 [ext_resource path="res://car/replay_system.gd" type="Script" id=24]
@@ -218,6 +225,118 @@ roughness = 0.0
 
 [sub_resource type="QuadMesh" id=17]
 
+[sub_resource type="QuadMesh" id=18]
+size = Vector2( 0.5, 0.5 )
+
+[sub_resource type="Shader" id=19]
+code = "shader_type spatial;
+render_mode unshaded,blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx;
+uniform vec4 albedo : hint_color;
+uniform sampler2D texture_albedo : hint_albedo;
+uniform float specular;
+uniform float metallic;
+uniform float roughness : hint_range(0,1);
+uniform float point_size : hint_range(0,128);
+uniform vec3 uv1_scale;
+uniform vec3 uv1_offset;
+uniform vec3 uv2_scale;
+uniform vec3 uv2_offset;
+
+uniform vec4 tint_color : hint_color;
+uniform float fresnel_power = 1.0;
+uniform float edge_intensity = 2.0;
+
+void vertex() {
+	UV=UV*uv1_scale.xy+uv1_offset.xy;
+}
+
+
+
+
+void fragment() {
+	vec2 base_uv = UV;
+	vec4 albedo_tex = texture(texture_albedo,base_uv);
+	vec3 alb = albedo.rgb * albedo_tex.rgb;
+	
+	//Create a fresnel effect from the NORMAL and VIEW vectors.
+	float fresnel = pow(1.0-dot(NORMAL, VIEW), fresnel_power) * edge_intensity;
+	
+	ALBEDO = mix(albedo_tex.rgb, tint_color.rgb, 1.0-albedo_tex.r)*fresnel;
+	METALLIC = metallic;
+	ROUGHNESS = roughness;
+	SPECULAR = specular;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=20]
+shader = SubResource( 19 )
+shader_param/albedo = Color( 0.956863, 0.956863, 0.945098, 1 )
+shader_param/specular = 0.5
+shader_param/metallic = 0.0
+shader_param/roughness = 1.0
+shader_param/point_size = 1.0
+shader_param/uv1_scale = Vector3( 1, 1, 1 )
+shader_param/uv1_offset = Vector3( 0, 0, 0 )
+shader_param/uv2_scale = Vector3( 1, 1, 1 )
+shader_param/uv2_offset = Vector3( 0, 0, 0 )
+shader_param/tint_color = Color( 1, 1, 0, 1 )
+shader_param/fresnel_power = 0.1
+shader_param/edge_intensity = 30.0
+shader_param/texture_albedo = ExtResource( 15 )
+
+[sub_resource type="PlaneMesh" id=21]
+size = Vector2( 1, 1.5 )
+
+[sub_resource type="SphereMesh" id=22]
+material = ExtResource( 14 )
+radius = 0.05
+height = 0.1
+radial_segments = 6
+rings = 3
+
+[sub_resource type="SpatialMaterial" id=23]
+flags_unshaded = true
+flags_vertex_lighting = true
+
+[sub_resource type="ParticlesMaterial" id=24]
+emission_shape = 1
+emission_sphere_radius = 5.0
+direction = Vector3( -1, 0, -1 )
+gravity = Vector3( 0, 0, -9.8 )
+linear_accel = 2.0
+radial_accel = 2.0
+
+[sub_resource type="CubeMesh" id=25]
+size = Vector3( 0.05, 0.05, 0.75 )
+
+[sub_resource type="Animation" id=26]
+tracks/0/type = "value"
+tracks/0/path = NodePath("BODY/cambase/Camera:fov")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 60.0, 75.0 ]
+}
+
+[sub_resource type="Animation" id=27]
+tracks/0/type = "value"
+tracks/0/path = NodePath("BODY/cambase/Camera/motion_blur:material/0:shader_param/intensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.05, 0.2 ]
+}
+
 [node name="Spatial" type="Spatial" groups=[
 "player",
 ]]
@@ -343,6 +462,7 @@ cast_to = Vector3( 0, -0.5, 0 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.659517 )
 enabled = true
 cast_to = Vector3( 0, -0.5, 0 )
+script = ExtResource( 11 )
 
 [node name="Viewport" type="Viewport" parent="BODY"]
 size = Vector2( 300, 200 )
@@ -458,3 +578,70 @@ material_override = SubResource( 16 )
 mesh = SubResource( 17 )
 material/0 = null
 script = ExtResource( 6 )
+
+[node name="RainParticles" type="Particles" parent="BODY"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 5, -6.0586 )
+material_override = ExtResource( 17 )
+cast_shadow = 0
+emitting = false
+amount = 256
+fract_delta = false
+visibility_aabb = AABB( -6, -6, -6, 12, 16, 12 )
+process_material = ExtResource( 13 )
+draw_pass_1 = SubResource( 18 )
+script = ExtResource( 16 )
+
+[node name="RainParticles2" type="Particles" parent="BODY"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 5, 8.69194 )
+material_override = ExtResource( 17 )
+cast_shadow = 0
+emitting = false
+amount = 256
+fract_delta = false
+visibility_aabb = AABB( -6, -6, -6, 12, 16, 12 )
+process_material = ExtResource( 13 )
+draw_pass_1 = SubResource( 18 )
+script = ExtResource( 16 )
+
+[node name="neon_under" type="MeshInstance" parent="BODY"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.002, 0.05, 0.023 )
+visible = false
+material_override = SubResource( 20 )
+cast_shadow = 0
+mesh = SubResource( 21 )
+material/0 = null
+
+[node name="Smoke" type="Particles" parent="BODY"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.520701, 0.181243, 0.658347 )
+emitting = false
+amount = 32
+lifetime = 0.5
+visibility_aabb = AABB( -4, -4, -4.68213, 8, 8, 8 )
+process_material = ExtResource( 12 )
+draw_pass_1 = SubResource( 22 )
+
+[node name="Smoke2" type="Particles" parent="BODY"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.489926, 0.248742, 0.540937 )
+emitting = false
+amount = 32
+lifetime = 0.5
+visibility_aabb = AABB( -4, -4, -4.68213, 8, 8, 8 )
+process_material = ExtResource( 12 )
+draw_pass_1 = SubResource( 22 )
+
+[node name="SpeedParticles" type="Particles" parent="BODY"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+material_override = SubResource( 23 )
+cast_shadow = 0
+emitting = false
+amount = 64
+fract_delta = false
+local_coords = false
+process_material = SubResource( 24 )
+draw_pass_1 = SubResource( 25 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="BODY"]
+_import_path = NodePath("AnimationPlayer")
+"anims/New Anim" = SubResource( 26 )
+anims/blur = SubResource( 27 )
+script = ExtResource( 24 )

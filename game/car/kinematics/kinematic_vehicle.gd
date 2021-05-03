@@ -13,7 +13,13 @@ var acceleration = Vector3.ZERO
 var velocity = Vector3.ZERO
 var steer_angle = 0.0
 
+#speed
+var speed = 0
+var speed_int = 0
+var speed_kph = 0
+
 func _physics_process(delta):
+	
 	# gives false negatives
 	#if is_on_floor():
 	get_input()
@@ -30,6 +36,8 @@ func _physics_process(delta):
 	
 	velocity = move_and_slide_with_snap(hvel, #velocity,
 				-transform.basis.y, Vector3.UP, true)
+				
+	speed = velocity.length()
 
 func apply_friction(delta):
 	if velocity.length() < 0.2 and acceleration.length() == 0:

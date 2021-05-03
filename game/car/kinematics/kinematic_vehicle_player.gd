@@ -31,11 +31,29 @@ var emitted = false
 signal load_ended
 
 var cockpit_cam
-var cam_speed = 1
-var cockpit_cam_target_angle = 0
-var cockpit_cam_angle = 0
-var cockpit_cam_max_angle = 5
-var peek
+#var cam_speed = 1
+#var cockpit_cam_target_angle = 0
+#var cockpit_cam_angle = 0
+#var cockpit_cam_max_angle = 5
+#var peek
+
+# racing
+var race
+var prev = 0
+var current = 0
+var dot = 0
+var rel_loc = Vector3()
+var race_path = PoolVector3Array()
+var finished = false
+
+# player navigation
+var reached_inter
+var reached_changed = false
+var show_nav_tip = false
+
+var was_tunnel = false # for particles
+var was_dirt = false
+var was_fast = false
 
 var skidmark = null
 
@@ -65,20 +83,19 @@ func _ready():
 	if map != null:
 		hud.update_seed(map.get_node("triangulate/poisson").seed3)
 
-	#var m = preload("res://hud/minimap.tscn")
-#	var m = preload("res://hud/Viewport.tscn")
-#	minimap = m.instance()
-#	minimap.set_name("Viewport_root")
-#	add_child(minimap)
-#	minimap.set_name("Viewport_root")
+	var m = preload("res://hud/Viewport.tscn")
+	minimap = m.instance()
+	minimap.set_name("Viewport_root")
+	add_child(minimap)
+	minimap.set_name("Viewport_root")
 
-#	m = preload("res://hud/MapView.tscn")
-#	map_big = m.instance()
-#	map_big.set_name("Map")
-#	# share the world with the minimap
-#	map_big.get_node("Viewport").world_2d = get_node("Viewport_root/Viewport").world_2d
-#	add_child(map_big)
-#	map_big.hide()
+	m = preload("res://hud/MapView.tscn")
+	map_big = m.instance()
+	map_big.set_name("Map")
+	# share the world with the minimap
+	map_big.get_node("Viewport").world_2d = get_node("Viewport_root/Viewport").world_2d
+	add_child(map_big)
+	map_big.hide()
 
 
 	var msg = preload("res://hud/message_panel.tscn")
@@ -151,6 +168,132 @@ func get_input():
 		acceleration = -transform.basis.z * braking
 
 # --------------------------------------------------
+
+# UI stuff doesn't have to be in physics_process
+func _process(delta):
+	#fps display
+	hud.update_fps()
+
+	#speedometer
+	speed_int = round(speed)
+	speed_kph = round(speed*3.6)
+	#speed_text = String(speed_int) + " m/s " + String(speed_kph) + " kph"
+	speed_text = String(speed_kph)
+	# make speed reading red if above speed limit
+	if speed > 15:
+		hud.update_speed(speed_text, Color(1,0,0))
+	else:
+		hud.update_speed(speed_text, Color(0,1,1)) #cyan
+
+
+	hud.update_wheel_angle(steer_angle, 1) #absolute maximum steer limit
+	hud.update_angle_limiter(0.4) # STEER_LIMIT from physics vehicle, 23 deg
+
+	# in-game time
+	var text = " "
+	if (World_node != null):
+		text = String(World_node.hour) + " : " + String(round(World_node.minute))
+
+	hud.update_clock(text)
+
+	#increment distance counter
+	distance = distance + get_translation().distance_to(last_pos)
+
+	last_pos = get_translation()
+
+	distance_int = round(distance)
+	#update distance HUD
+	hud.update_distance("Distance: " + String(distance_int) + " m")
+
+	var disp = get_compass_heading()
+	hud.update_compass(str(disp))
+
+	# detect what we're driving on
+	var hit = get_node("RearRay").get_collider_hit()
+	var disp_name = ""
+	if hit != null:
+		# particles
+		was_dirt = false
+		get_node("Smoke").set_emitting(false)
+		get_node("Smoke2").set_emitting(false)
+		
+		var road_ = hit.get_parent().get_parent().get_name().find("Road_")
+		var road = hit.get_parent().get_parent().get_name().find("Road")
+		# straight
+		if road_ != -1:
+			disp_name = hit.get_parent().get_parent().get_parent().get_parent().get_name()
+			reached_changed = false
+		elif road != -1:
+			disp_name = hit.get_parent().get_parent().get_parent().get_parent().get_parent().get_name()
+			reached_changed = false
+		# intersection
+		else:
+			disp_name = hit.get_parent().get_parent().get_name()
+			
+			# despawn racers elsewhere
+			if race == null:
+				#print("Not in race")
+				var racers = get_tree().get_nodes_in_group("race_AI")
+				for r in racers:
+					#print(r.romaji + " race end intersection: " + str(r.race_int_path[1]))
+					if disp_name.find(str(r.race_int_path[1])) != -1:
+						pass
+						#print("At race end intersection")
+					else:
+						print("Not race end intersection")
+						r.queue_free()
+						# remove minimap marker
+						minimap.get_node("Viewport/minimap").remove_arrow(r)
+			
+			# if we have a player navigation path
+			if map_big.int_path.size() > 0:
+				# if we haven't reached a new intersection
+				if reached_changed == false:
+					# ignore #0 in said path
+					for i in range(1, map_big.int_path.size()-1):
+						var inter = map_big.int_path[i]
+						var id = disp_name.lstrip("intersection")
+						# if we reached a new intersection on our path, mark it as such
+						if int(id) == inter:
+							#print("We hit intersection present in path...", inter)
+							reached_inter = [inter, i]
+							reached_changed = true
+							break
+				# if we reached a new intersection, tell us where to go
+				if reached_changed:
+					# angle to next intersection in int_path
+					var angle_inter = angle_to_intersection(map_big.int_path[reached_inter[1]+1])
+					print("Angle to next intersection: ", angle_inter)
+					# pop up navigation helper on HUD	
+					if angle_inter < 0:
+						hud.update_nav_label("Turn right")
+					else:
+						hud.update_nav_label("Turn left")
+					# hide text if angle very small
+					if abs(angle_inter) < 40:
+						hud.update_nav_label("")
+	# else we're on a dirt ground
+	else:
+		if not was_dirt:
+			was_dirt = true
+			get_node("Smoke").set_emitting(true)
+			get_node("Smoke2").set_emitting(true)
+						
+	# clear text if we passed the newly reached intersection				
+	if not reached_changed and not show_nav_tip:
+		hud.update_nav_label("")
+
+	hud.update_road(str(disp_name) if hit != null else "")
+
+	#hud.update_debug("Player vel: x: " + str(get_linear_velocity().x) + "y: " + str(get_linear_velocity().z))
+	#hud.update_debug("Player: " + str(get_rotation_degrees()) + '\n' + " Arrow : " + str(cam_rot))
+
+	hud.update_health(health)
+
+	hud.update_battery(battery)
+
+# -----------------------------------------
+
 func get_compass_heading():
 	# because E and W were easiest to identify (the sun)
 	# this relied on Y rotation
@@ -185,3 +328,27 @@ func get_heading():
 	var angle = atan2(rel_loc.x, rel_loc.z)
 	#print("Heading: ", rad2deg(angle))
 	return angle
+
+# -----------------------------------------------
+func create_race_path(path):
+	print("Creating race path")
+	if (path != null and path.size() > 0):
+		#print("We have a race path to follow")
+		for index in range(path.size()):
+			race_path.push_back(path[index])
+
+	# tell the race setup is done
+	race.done = true
+	print("Race set up is done")
+
+func angle_to_intersection(id):
+	# contains intersections global positions
+	var intersections = get_node("Viewport_root/Viewport/minimap").intersections
+	var pos_gl = intersections[id]
+	#print("Global position ", pos_gl)
+	var rel_pos = get_global_transform().xform_inv(pos_gl)
+	# dummy out the y value
+	rel_pos = Vector3(rel_pos.x, 0, rel_pos.z)
+	#print("Relative loc of intersection", id, " is ", rel_pos)
+	# we don't care about z, only about x
+	return rel_pos.x
