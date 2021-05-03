@@ -51,7 +51,9 @@ func calculate_steering(delta):
 		velocity = new_heading * velocity.length()
 	if d < 0:
 		velocity = -new_heading * min(velocity.length(), max_speed_reverse)
-	look_at(transform.origin + new_heading, transform.basis.y)
+	
+	# this uses global parameters	
+	look_at(global_transform.origin + new_heading, transform.basis.y)
 
 func get_input():
 	# Override this in inherited scripts for controls
