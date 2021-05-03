@@ -566,10 +566,10 @@ material/0 = null
 script = ExtResource( 3 )
 
 [node name="SpotLight" type="SpotLight" parent="BODY"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.466324, 0.426194, -1.34116 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.466324, 0.426194, -1.34116 )
 
 [node name="SpotLight1" type="SpotLight" parent="BODY"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.472078, 0.460857, -1.34116 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.472078, 0.460857, -1.34116 )
 
 [node name="taillights" type="MeshInstance" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.67614, 1.23029 )
