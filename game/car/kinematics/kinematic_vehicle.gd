@@ -13,6 +13,15 @@ var acceleration = Vector3.ZERO
 var velocity = Vector3.ZERO
 var steer_angle = 0.0
 
+var steer_target = 0.0
+
+# based on torcs
+var SPEED_SENS = 0.7 # speed sensitivity factor
+var STEER_SENS = 0.8
+var SPEED_FACT = 1.0 #10.0
+var FUDGE = 8 # account for TORCS timestep being 0.002 seconds (500Hz) and our physics tick is 60 hz
+
+
 #speed
 var speed = 0
 var speed_int = 0
@@ -60,7 +69,40 @@ func apply_friction(delta):
 	var drag_force = velocity * velocity.length() * drag * delta
 	acceleration += drag_force + friction_force
 
+func get_steering_angle(steer_target, delta):
+	#steering
+	if (steer_target < steer_angle):
+		# original
+		#var steer_change = STEER_SPEED*delta
+
+		# TORCS style
+		var press = 2 * 1 - 1
+		var steer_change = press * STEER_SENS * delta  / (1.0 + SPEED_SENS * velocity.length() / SPEED_FACT) * FUDGE
+#		var steer_change = press * STEER_SENS * delta / (1.0 + SPEED_SENS * get_linear_velocity().length() / SPEED_FACT)
+
+		steer_angle -= steer_change
+		if (steer_target > steer_angle):
+			steer_angle = steer_target
+	elif (steer_target > steer_angle):
+		# original
+		#var steer_change = STEER_SPEED*delta
+		
+		# TORCS style
+		var press = 2 * 1 - 1
+		var steer_change = press * STEER_SENS * delta  / (1.0 + SPEED_SENS * velocity.length() / SPEED_FACT) * FUDGE
+#		var steer_change = press * STEER_SENS * delta / (1.0 + SPEED_SENS * get_linear_velocity().length() / SPEED_FACT)
+
+
+		steer_angle += steer_change
+
+		if (steer_target < steer_angle):
+			steer_angle = steer_target
+
+	return steer_angle
+
 func calculate_steering(delta):
+	steer_angle = get_steering_angle(steer_target, delta)
+	
 	var rear_wheel = transform.origin + transform.basis.z * wheel_base / 2.0
 	var front_wheel = transform.origin - transform.basis.z * wheel_base / 2.0
 	rear_wheel += velocity * delta

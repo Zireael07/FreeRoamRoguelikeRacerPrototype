@@ -352,6 +352,8 @@ __meta__ = {
 [node name="BODY" type="KinematicBody" parent="."]
 collision_mask = 3
 script = ExtResource( 9 )
+friction = -0.5
+drag = -0.5
 
 [node name="tmpParent" type="Spatial" parent="BODY"]
 

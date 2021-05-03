@@ -158,7 +158,8 @@ func on_load_ended():
 func get_input():
 	var turn = Input.get_action_strength("steer_left")
 	turn -= Input.get_action_strength("steer_right")
-	steer_angle = turn * deg2rad(steering_limit)
+	steer_target = turn * deg2rad(steering_limit)
+	#var steer_angle = get_steering_angle(steer_target)
 	$tmpParent/Spatial_FL.rotation.y = steer_angle*2
 	$tmpParent/Spatial_FR.rotation.y = steer_angle*2
 	acceleration = Vector3.ZERO
