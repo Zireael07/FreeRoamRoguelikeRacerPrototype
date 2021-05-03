@@ -18,6 +18,18 @@ var speed = 0
 var speed_int = 0
 var speed_kph = 0
 
+#lights
+var headlight_one
+var headlight_two
+var taillights
+var tail_mat
+
+func _ready():
+	#get lights
+	headlight_one = get_node("SpotLight")
+	headlight_two = get_node("SpotLight1")
+	taillights = get_node("taillights")
+
 func _physics_process(delta):
 	
 	# gives false negatives
@@ -25,6 +37,7 @@ func _physics_process(delta):
 	get_input()
 	apply_friction(delta)
 	calculate_steering(delta)
+	
 	#acceleration.y = 0
 	acceleration.y = gravity
 	velocity += acceleration * delta

@@ -159,15 +159,30 @@ func get_input():
 	var turn = Input.get_action_strength("steer_left")
 	turn -= Input.get_action_strength("steer_right")
 	steer_angle = turn * deg2rad(steering_limit)
-	$tmpParent/sedanSports/Spatial_FL.rotation.y = steer_angle*2
-	$tmpParent/sedanSports/Spatial_FR.rotation.y = steer_angle*2
+	$tmpParent/Spatial_FL.rotation.y = steer_angle*2
+	$tmpParent/Spatial_FR.rotation.y = steer_angle*2
 	acceleration = Vector3.ZERO
 	if Input.is_action_pressed("accelerate"):
 		acceleration = -transform.basis.z * engine_power
+		#cancel braking visual
+		tail_mat = taillights.get_mesh().surface_get_material(0)
+		if tail_mat != null:
+			tail_mat.set_albedo(Color(0.62,0.62,0.62))
 	if Input.is_action_pressed("brake"):
 		acceleration = -transform.basis.z * braking
+		#visual effect
+		if tail_mat != null:	
+			tail_mat.set_albedo(Color(1,1,1))
+		
 
 # --------------------------------------------------
+
+func _physics_process(delta):
+	# emit a signal when we're all set up
+	elapsed_secs += delta
+	if (elapsed_secs > start_secs and not emitted):
+		emit_signal("load_ended")
+		emitted = true
 
 # UI stuff doesn't have to be in physics_process
 func _process(delta):
@@ -291,6 +306,38 @@ func _process(delta):
 	hud.update_health(health)
 
 	hud.update_battery(battery)
+
+	# skid marks
+	if speed < 5:
+		var pos = get_node("cambase/Camera").get_global_transform().origin
+		var mark = skidmark.instance()
+		var wh_pos = get_node("tmpParent/Spatial_RL")
+		var mark_pos = wh_pos.get_global_transform().origin - Vector3(0,0.3, 0) # tiny offset to make marks show on roads
+		var lpos = map.to_local(mark_pos)
+		mark.set_translation(lpos)
+		# place all the skidmarks under a common parent
+		var gfx = null
+		if !map.has_node("gfx"):
+			gfx = Spatial.new()
+			gfx.set_name("gfx")
+			map.add_child(gfx)
+		else:
+			gfx = map.get_node("gfx")
+			
+		gfx.add_child(mark)
+		mark.look_at(pos, Vector3(0,1,0))
+		# flip around because... +Z vs -Z...
+		#mark.rotate_y(deg2rad(180))
+		#mark.rotate_x(deg2rad(-90))
+
+		mark = skidmark.instance()
+		wh_pos = get_node("tmpParent/Spatial_RR")
+		mark_pos = wh_pos.get_global_transform().origin - Vector3(0,0.3, 0) # tiny offset to make marks show on roads
+		lpos = map.to_local(mark_pos)
+		mark.set_translation(lpos)
+		# we should already have the common parent, see above
+		gfx.add_child(mark)
+		mark.look_at(pos, Vector3(0,1,0))
 
 # -----------------------------------------
 

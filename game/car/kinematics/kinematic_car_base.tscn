@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=2]
+[gd_scene load_steps=52 format=2]
 
 [ext_resource path="res://hud/test_car_label.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/car/LED taillights stock.jpg" type="Texture" id=2]
@@ -18,7 +18,10 @@
 [ext_resource path="res://scripts/skysphere.gd" type="Script" id=16]
 [ext_resource path="res://assets/rain_material.tres" type="Material" id=17]
 [ext_resource path="res://car/MeshInstance.gd" type="Script" id=18]
+[ext_resource path="res://save_test.tres" type="ArrayMesh" id=19]
 [ext_resource path="res://default_env_copy.tres" type="Environment" id=20]
+[ext_resource path="res://car/car_mesh.gd" type="Script" id=21]
+[ext_resource path="res://assets/car/modular car glass.tres" type="Material" id=22]
 [ext_resource path="res://car/replay_system.gd" type="Script" id=24]
 [ext_resource path="res://motion_blur/motion_blur.tscn" type="PackedScene" id=27]
 
@@ -352,7 +355,48 @@ script = ExtResource( 9 )
 
 [node name="tmpParent" type="Spatial" parent="BODY"]
 
+[node name="car_mesh" type="MeshInstance" parent="BODY/tmpParent"]
+transform = Transform( 1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 0.493185, 0.307591, -0.7 )
+mesh = ExtResource( 19 )
+material/0 = null
+material/1 = null
+script = ExtResource( 21 )
+__meta__ = {
+"_editor_description_": ""
+}
+material = ExtResource( 10 )
+glass_material = ExtResource( 22 )
+
+[node name="Spatial_FL" type="Spatial" parent="BODY/tmpParent"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.58, 0.261, -0.66 )
+
+[node name="Spatial" parent="BODY/tmpParent/Spatial_FL" instance=ExtResource( 5 )]
+transform = Transform( -4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0 )
+wheel_thick = 0.1
+
+[node name="Spatial_RL" type="Spatial" parent="BODY/tmpParent"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.58, 0.261, 0.671 )
+
+[node name="Spatial" parent="BODY/tmpParent/Spatial_RL" instance=ExtResource( 5 )]
+transform = Transform( -4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0 )
+wheel_thick = 0.1
+
+[node name="Spatial_FR" type="Spatial" parent="BODY/tmpParent"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.592, 0.261, -0.66 )
+
+[node name="Spatial" parent="BODY/tmpParent/Spatial_FR" instance=ExtResource( 5 )]
+transform = Transform( -4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0 )
+wheel_thick = 0.1
+
+[node name="Spatial_RR" type="Spatial" parent="BODY/tmpParent"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.592, 0.261, 0.67 )
+
+[node name="Spatial" parent="BODY/tmpParent/Spatial_RR" instance=ExtResource( 5 )]
+transform = Transform( -4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0 )
+wheel_thick = 0.1
+
 [node name="sedanSports" type="Spatial" parent="BODY/tmpParent"]
+visible = false
 
 [node name="body" type="MeshInstance" parent="BODY/tmpParent/sedanSports"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4545e-14, 0.2, 0 )
@@ -367,6 +411,7 @@ material/5 = null
 
 [node name="spoiler" type="MeshInstance" parent="BODY/tmpParent/sedanSports/body"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.05338e-15, 0.4, 1.06869 )
+visible = false
 mesh = SubResource( 2 )
 material/0 = null
 material/1 = null
@@ -391,34 +436,6 @@ visible = false
 mesh = SubResource( 3 )
 material/0 = null
 material/1 = null
-
-[node name="Spatial_FL" type="Spatial" parent="BODY/tmpParent/sedanSports"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.58, 0.261, -0.66 )
-
-[node name="Spatial" parent="BODY/tmpParent/sedanSports/Spatial_FL" instance=ExtResource( 5 )]
-transform = Transform( -4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0 )
-wheel_thick = 0.1
-
-[node name="Spatial_RL" type="Spatial" parent="BODY/tmpParent/sedanSports"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.58, 0.261, 0.671 )
-
-[node name="Spatial" parent="BODY/tmpParent/sedanSports/Spatial_RL" instance=ExtResource( 5 )]
-transform = Transform( -4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0 )
-wheel_thick = 0.1
-
-[node name="Spatial_FR" type="Spatial" parent="BODY/tmpParent/sedanSports"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.592, 0.261, -0.66 )
-
-[node name="Spatial" parent="BODY/tmpParent/sedanSports/Spatial_FR" instance=ExtResource( 5 )]
-transform = Transform( -4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0 )
-wheel_thick = 0.1
-
-[node name="Spatial_RR" type="Spatial" parent="BODY/tmpParent/sedanSports"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.592, 0.261, 0.67 )
-
-[node name="Spatial" parent="BODY/tmpParent/sedanSports/Spatial_RR" instance=ExtResource( 5 )]
-transform = Transform( -4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0 )
-wheel_thick = 0.1
 
 [node name="wheel_frontRight" type="MeshInstance" parent="BODY/tmpParent/sedanSports"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.3, -0.66 )
@@ -605,7 +622,6 @@ script = ExtResource( 16 )
 
 [node name="neon_under" type="MeshInstance" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.002, 0.05, 0.023 )
-visible = false
 material_override = SubResource( 20 )
 cast_shadow = 0
 mesh = SubResource( 21 )
