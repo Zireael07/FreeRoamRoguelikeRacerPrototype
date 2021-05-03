@@ -1,7 +1,7 @@
-[gd_scene load_steps=52 format=2]
+[gd_scene load_steps=51 format=2]
 
 [ext_resource path="res://hud/test_car_label.tscn" type="PackedScene" id=1]
-[ext_resource path="res://assets/car/LED taillights stock.jpg" type="Texture" id=2]
+[ext_resource path="res://assets/car/taillights.tres" type="Material" id=2]
 [ext_resource path="res://hud/label_3d.gd" type="Script" id=3]
 [ext_resource path="res://car/car_player.gd" type="Script" id=4]
 [ext_resource path="res://car/car_wheel.tscn" type="PackedScene" id=5]
@@ -196,13 +196,7 @@ params_alpha_scissor_threshold = 0.98
 [sub_resource type="QuadMesh" id=12]
 resource_local_to_scene = true
 
-[sub_resource type="SpatialMaterial" id=13]
-params_diffuse_mode = 1
-albedo_texture = ExtResource( 2 )
-roughness = 0.0
-uv1_scale = Vector3( 0.2, 0.2, 1 )
-
-[sub_resource type="ArrayMesh" id=14]
+[sub_resource type="ArrayMesh" id=13]
 surfaces/0 = {
 "aabb": AABB( -0.4027, 0.0012, -0.0986, 0.8086, 0.02501, 0.0999 ),
 "array_data": PoolByteArray( 113, 182, 181, 38, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 60, 0, 60, 113, 182, 234, 20, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 0, 0, 60, 124, 178, 181, 38, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 60, 0, 0, 124, 178, 234, 20, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 0, 0, 0, 124, 178, 181, 38, 83, 21, 0, 60, 0, 0, 127, 0, 0, 127, 0, 127, 0, 60, 0, 60, 124, 178, 234, 20, 83, 21, 0, 60, 0, 0, 127, 0, 247, 126, 0, 127, 0, 0, 0, 60, 113, 182, 181, 38, 83, 21, 0, 60, 0, 0, 127, 0, 163, 85, 0, 127, 0, 60, 0, 0, 164, 181, 234, 20, 83, 21, 0, 60, 0, 0, 127, 0, 143, 56, 0, 127, 0, 0, 0, 0, 124, 178, 181, 38, 79, 174, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 60, 0, 60, 124, 178, 181, 38, 83, 21, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 0, 0, 60, 113, 182, 181, 38, 79, 174, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 60, 0, 0, 113, 182, 181, 38, 83, 21, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 0, 0, 0, 113, 182, 234, 20, 79, 174, 0, 60, 0, 129, 0, 0, 200, 0, 143, 127, 0, 60, 0, 60, 164, 181, 234, 20, 83, 21, 0, 60, 0, 129, 0, 0, 215, 0, 136, 127, 0, 0, 0, 60, 124, 178, 234, 20, 79, 174, 0, 60, 0, 129, 0, 0, 235, 0, 131, 127, 0, 60, 0, 0, 124, 178, 234, 20, 83, 21, 0, 60, 0, 129, 0, 0, 0, 0, 129, 127, 0, 0, 0, 0, 113, 182, 181, 38, 83, 21, 0, 60, 168, 168, 22, 0, 166, 88, 249, 127, 0, 60, 0, 60, 164, 181, 234, 20, 83, 21, 0, 60, 168, 168, 22, 0, 166, 89, 253, 127, 0, 0, 0, 60, 113, 182, 181, 38, 79, 174, 0, 60, 168, 168, 22, 0, 169, 91, 13, 127, 0, 60, 0, 0, 113, 182, 234, 20, 79, 174, 0, 60, 168, 168, 22, 0, 171, 91, 21, 127, 0, 0, 0, 0, 124, 178, 181, 38, 79, 174, 0, 60, 127, 0, 0, 0, 0, 127, 0, 127, 0, 60, 0, 60, 124, 178, 234, 20, 79, 174, 0, 60, 127, 0, 0, 0, 0, 127, 0, 127, 0, 0, 0, 60, 124, 178, 181, 38, 83, 21, 0, 60, 127, 0, 0, 0, 0, 127, 0, 127, 0, 60, 0, 0, 124, 178, 234, 20, 83, 21, 0, 60, 127, 0, 0, 0, 0, 127, 0, 127, 0, 0, 0, 0, 150, 50, 181, 38, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 60, 0, 60, 150, 50, 234, 20, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 0, 0, 60, 126, 54, 181, 38, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 60, 0, 0, 126, 54, 234, 20, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 0, 0, 0, 126, 54, 181, 38, 83, 21, 0, 60, 0, 0, 127, 0, 116, 49, 0, 127, 0, 60, 0, 60, 142, 53, 234, 20, 83, 21, 0, 60, 0, 0, 127, 0, 113, 56, 0, 127, 0, 0, 0, 60, 150, 50, 181, 38, 83, 21, 0, 60, 0, 0, 127, 0, 13, 126, 0, 127, 0, 60, 0, 0, 150, 50, 234, 20, 83, 21, 0, 60, 0, 0, 127, 0, 0, 127, 0, 127, 0, 0, 0, 0, 126, 54, 181, 38, 79, 174, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 60, 0, 60, 126, 54, 181, 38, 83, 21, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 0, 0, 60, 150, 50, 181, 38, 79, 174, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 60, 0, 0, 150, 50, 181, 38, 83, 21, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 0, 0, 0, 150, 50, 234, 20, 79, 174, 0, 60, 0, 129, 0, 0, 0, 0, 129, 127, 0, 60, 0, 60, 150, 50, 234, 20, 83, 21, 0, 60, 0, 129, 0, 0, 19, 0, 131, 127, 0, 0, 0, 60, 126, 54, 234, 20, 79, 174, 0, 60, 0, 129, 0, 0, 36, 0, 135, 127, 0, 60, 0, 0, 142, 53, 234, 20, 83, 21, 0, 60, 0, 129, 0, 0, 64, 0, 147, 127, 0, 0, 0, 0, 150, 50, 181, 38, 83, 21, 0, 60, 129, 0, 0, 0, 0, 127, 0, 127, 0, 60, 0, 60, 150, 50, 234, 20, 83, 21, 0, 60, 129, 0, 0, 0, 0, 127, 0, 127, 0, 0, 0, 60, 150, 50, 181, 38, 79, 174, 0, 60, 129, 0, 0, 0, 0, 127, 0, 127, 0, 60, 0, 0, 150, 50, 234, 20, 79, 174, 0, 60, 129, 0, 0, 0, 0, 127, 0, 127, 0, 0, 0, 0, 126, 54, 181, 38, 79, 174, 0, 60, 80, 162, 23, 0, 91, 84, 26, 127, 0, 60, 0, 60, 126, 54, 234, 20, 79, 174, 0, 60, 80, 162, 23, 0, 93, 83, 16, 127, 0, 0, 0, 60, 126, 54, 181, 38, 83, 21, 0, 60, 80, 162, 23, 0, 97, 81, 253, 127, 0, 60, 0, 0, 142, 53, 234, 20, 83, 21, 0, 60, 80, 162, 23, 0, 97, 81, 249, 127, 0, 0, 0, 0 ),
@@ -210,28 +204,28 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 98071,
 "index_count": 72,
-"material": SubResource( 13 ),
+"material": ExtResource( 2 ),
 "name": "taillights_simple",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 48
 }
 
-[sub_resource type="SpatialMaterial" id=15]
+[sub_resource type="SpatialMaterial" id=14]
 flags_vertex_lighting = true
 albedo_color = Color( 0.679688, 0.679688, 0.679688, 1 )
 roughness = 0.0
 
-[sub_resource type="SpatialMaterial" id=16]
+[sub_resource type="SpatialMaterial" id=15]
 params_diffuse_mode = 1
 roughness = 0.0
 
-[sub_resource type="QuadMesh" id=17]
+[sub_resource type="QuadMesh" id=16]
 
-[sub_resource type="QuadMesh" id=18]
+[sub_resource type="QuadMesh" id=17]
 size = Vector2( 0.5, 0.5 )
 
-[sub_resource type="Shader" id=19]
+[sub_resource type="Shader" id=18]
 code = "shader_type spatial;
 render_mode unshaded,blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx;
 uniform vec4 albedo : hint_color;
@@ -271,8 +265,8 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id=20]
-shader = SubResource( 19 )
+[sub_resource type="ShaderMaterial" id=19]
+shader = SubResource( 18 )
 shader_param/albedo = Color( 0.956863, 0.956863, 0.945098, 1 )
 shader_param/specular = 0.5
 shader_param/metallic = 0.0
@@ -284,24 +278,24 @@ shader_param/uv2_scale = Vector3( 1, 1, 1 )
 shader_param/uv2_offset = Vector3( 0, 0, 0 )
 shader_param/tint_color = Color( 1, 1, 0, 1 )
 shader_param/fresnel_power = 0.1
-shader_param/edge_intensity = 30.0
+shader_param/edge_intensity = 5.0
 shader_param/texture_albedo = ExtResource( 15 )
 
-[sub_resource type="PlaneMesh" id=21]
+[sub_resource type="PlaneMesh" id=20]
 size = Vector2( 1, 1.5 )
 
-[sub_resource type="SphereMesh" id=22]
+[sub_resource type="SphereMesh" id=21]
 material = ExtResource( 14 )
 radius = 0.05
 height = 0.1
 radial_segments = 6
 rings = 3
 
-[sub_resource type="SpatialMaterial" id=23]
+[sub_resource type="SpatialMaterial" id=22]
 flags_unshaded = true
 flags_vertex_lighting = true
 
-[sub_resource type="ParticlesMaterial" id=24]
+[sub_resource type="ParticlesMaterial" id=23]
 emission_shape = 1
 emission_sphere_radius = 5.0
 direction = Vector3( -1, 0, -1 )
@@ -309,10 +303,10 @@ gravity = Vector3( 0, 0, -9.8 )
 linear_accel = 2.0
 radial_accel = 2.0
 
-[sub_resource type="CubeMesh" id=25]
+[sub_resource type="CubeMesh" id=24]
 size = Vector3( 0.05, 0.05, 0.75 )
 
-[sub_resource type="Animation" id=26]
+[sub_resource type="Animation" id=25]
 tracks/0/type = "value"
 tracks/0/path = NodePath("BODY/cambase/Camera:fov")
 tracks/0/interp = 1
@@ -326,7 +320,7 @@ tracks/0/keys = {
 "values": [ 60.0, 75.0 ]
 }
 
-[sub_resource type="Animation" id=27]
+[sub_resource type="Animation" id=26]
 tracks/0/type = "value"
 tracks/0/path = NodePath("BODY/cambase/Camera/motion_blur:material/0:shader_param/intensity")
 tracks/0/interp = 1
@@ -575,13 +569,13 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.472078, 0.460857, -1.34116 )
 
 [node name="taillights" type="MeshInstance" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.67614, 1.23029 )
-mesh = SubResource( 14 )
+mesh = SubResource( 13 )
 material/0 = null
 
 [node name="frontlights" type="MeshInstance" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.575843, -1.31511 )
-mesh = SubResource( 14 )
-material/0 = SubResource( 15 )
+mesh = SubResource( 13 )
+material/0 = SubResource( 14 )
 
 [node name="Viewport 2" type="Viewport" parent="BODY"]
 size = Vector2( 400, 150 )
@@ -593,8 +587,8 @@ render_target_update_mode = 3
 
 [node name="MeshInstance2" type="MeshInstance" parent="BODY"]
 transform = Transform( -0.4, 0, 8.74228e-08, 0, 0.2, 0, -3.49691e-08, 0, -1, 0, 0.606774, 1.0748 )
-material_override = SubResource( 16 )
-mesh = SubResource( 17 )
+material_override = SubResource( 15 )
+mesh = SubResource( 16 )
 material/0 = null
 script = ExtResource( 6 )
 
@@ -607,7 +601,7 @@ amount = 256
 fract_delta = false
 visibility_aabb = AABB( -6, -6, -6, 12, 16, 12 )
 process_material = ExtResource( 13 )
-draw_pass_1 = SubResource( 18 )
+draw_pass_1 = SubResource( 17 )
 script = ExtResource( 16 )
 
 [node name="RainParticles2" type="Particles" parent="BODY"]
@@ -619,14 +613,14 @@ amount = 256
 fract_delta = false
 visibility_aabb = AABB( -6, -6, -6, 12, 16, 12 )
 process_material = ExtResource( 13 )
-draw_pass_1 = SubResource( 18 )
+draw_pass_1 = SubResource( 17 )
 script = ExtResource( 16 )
 
 [node name="neon_under" type="MeshInstance" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.002, 0.05, 0.023 )
-material_override = SubResource( 20 )
+material_override = SubResource( 19 )
 cast_shadow = 0
-mesh = SubResource( 21 )
+mesh = SubResource( 20 )
 material/0 = null
 
 [node name="Smoke" type="Particles" parent="BODY"]
@@ -636,7 +630,7 @@ amount = 32
 lifetime = 0.5
 visibility_aabb = AABB( -4, -4, -4.68213, 8, 8, 8 )
 process_material = ExtResource( 12 )
-draw_pass_1 = SubResource( 22 )
+draw_pass_1 = SubResource( 21 )
 
 [node name="Smoke2" type="Particles" parent="BODY"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.489926, 0.248742, 0.540937 )
@@ -645,21 +639,21 @@ amount = 32
 lifetime = 0.5
 visibility_aabb = AABB( -4, -4, -4.68213, 8, 8, 8 )
 process_material = ExtResource( 12 )
-draw_pass_1 = SubResource( 22 )
+draw_pass_1 = SubResource( 21 )
 
 [node name="SpeedParticles" type="Particles" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-material_override = SubResource( 23 )
+material_override = SubResource( 22 )
 cast_shadow = 0
 emitting = false
 amount = 64
 fract_delta = false
 local_coords = false
-process_material = SubResource( 24 )
-draw_pass_1 = SubResource( 25 )
+process_material = SubResource( 23 )
+draw_pass_1 = SubResource( 24 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="BODY"]
 _import_path = NodePath("AnimationPlayer")
-"anims/New Anim" = SubResource( 26 )
-anims/blur = SubResource( 27 )
+"anims/New Anim" = SubResource( 25 )
+anims/blur = SubResource( 26 )
 script = ExtResource( 24 )

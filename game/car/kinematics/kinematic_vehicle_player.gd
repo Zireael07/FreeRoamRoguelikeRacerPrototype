@@ -169,11 +169,13 @@ func get_input():
 		tail_mat = taillights.get_mesh().surface_get_material(0)
 		if tail_mat != null:
 			tail_mat.set_albedo(Color(0.62,0.62,0.62))
+			tail_mat.set_feature(SpatialMaterial.FEATURE_EMISSION, false)
 	if Input.is_action_pressed("brake"):
 		acceleration = -transform.basis.z * braking
 		#visual effect
-		if tail_mat != null:	
+		if tail_mat != null:
 			tail_mat.set_albedo(Color(1,1,1))
+			tail_mat.set_feature(SpatialMaterial.FEATURE_EMISSION, true)
 		
 
 # --------------------------------------------------

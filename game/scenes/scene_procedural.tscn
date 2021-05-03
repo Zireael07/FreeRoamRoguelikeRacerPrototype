@@ -31,6 +31,9 @@ script = ExtResource( 15 )
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 1 )
 script = ExtResource( 2 )
+__meta__ = {
+"_editor_description_": "HDR threshold needs to be roughly emission strength of emissive stuff-1"
+}
 
 [node name="scene" parent="." instance=ExtResource( 4 )]
 start_time = 22.0

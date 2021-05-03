@@ -34,6 +34,6 @@ shader_param/specular = 0.5
 shader_param/metallic = 0.0
 shader_param/roughness = 1.0
 shader_param/emission = Color( 0.00769043, 0.0916243, 0.984375, 1 )
-shader_param/emission_energy = 3.0
+shader_param/emission_energy = 4.0
 shader_param/texture_albedo = ExtResource( 1 )
 shader_param/texture_emission = ExtResource( 2 )
