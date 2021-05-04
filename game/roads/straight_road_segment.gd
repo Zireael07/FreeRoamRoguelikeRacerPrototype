@@ -231,7 +231,7 @@ func makeRoad():
 			node.set_cast_shadows_setting(0)
 			
 			# yay GD 3
-			node.create_convex_collision()
+			#node.create_convex_collision()
 			
 
 		
@@ -288,7 +288,7 @@ func makeRoad():
 			
 			# yay GD 3
 			#node.create_convex_collision()
-			node.create_trimesh_collision()
+			#node.create_trimesh_collision()
 				
 		if tunnel:
 			var tun = tunnel_obj.instance()
@@ -340,9 +340,38 @@ func makeRoad():
 				draw.draw_line(points_inner_rail)
 				draw.draw_line(points_outer_rail)
 	
+	
 	# kill debug draw in game
 	else:
 		draw.queue_free()
+
+	# workaround for https://github.com/godotengine/godot/issues/36729
+	var shape = BoxShape.new()
+	shape.set_extents(Vector3(6,0.1,mid_point.z))
+	get_node("Area/CollisionShape").set_translation(Vector3(0,0,mid_point.z))
+	get_node("Area/CollisionShape").set_shape(shape)
+	
+	
+#	if relative_end.z > 250:
+#		var shape = BoxShape.new()
+#		shape.set_extents(Vector3(6,0.05,125))
+#		get_node("StaticBody/CollisionShape").set_translation(Vector3(0,0,125))
+#		get_node("StaticBody/CollisionShape").set_shape(shape)
+#
+#
+#		#var sh = CollisionShape.new()
+#		#get_node("StaticBody").add_child(sh)
+#		#shape = BoxShape.new()
+#		#shape.set_extents(Vector3(6,0.02, (relative_end.z-250)/2))
+#		#get_node("StaticBody").get_child(1).set_translation(Vector3(0,0,relative_end.z-250))
+#		#get_node("StaticBody").get_child(1).set_shape(shape)
+#
+#	else:
+#		var shape = BoxShape.new()
+#		shape.set_extents(Vector3(6,0.05,mid_point.z))
+#		get_node("StaticBody/CollisionShape").set_translation(Vector3(0,0,mid_point.z))
+#		get_node("StaticBody/CollisionShape").set_shape(shape)
+
 
 func roadCap(diff, cap_quads, slope_diff):
 	temp_positions.resize(0)
@@ -457,7 +486,8 @@ func optimizedmeshCreate(quads, cap_quads, material):
 	node.set_cast_shadows_setting(0)
 	
 	# yay GD 3
-	node.create_convex_collision()
+	#node.create_convex_collision()
+
 
 func meshCreate(array, material):
 	var surface = SurfaceTool.new()
@@ -486,7 +516,8 @@ func send_positions(map):
 	#print(get_name() + " sending position to map")
 	global_positions = get_global_positions()
 	map.add_positions(global_positions)
-	
+
+# ---------------------------------------------------------------	
 func lite_up():
 	#print("Lit up road")
 	var material = get_node("plane").get_mesh().surface_get_material(0)
@@ -524,3 +555,17 @@ func show_tunnel():
 	tun.set_feature(SpatialMaterial.FEATURE_TRANSPARENT, false)
 	#var tun = get_node("tunnel")
 	#tun.show()
+
+
+func _on_Area_body_entered(body):
+	if body is KinematicBody:
+		body.hit = self
+		print("Entered area: ", get_parent().get_parent().get_name())
+	pass # Replace with function body.
+
+
+func _on_Area_body_exited(body):
+	if body is KinematicBody:
+		body.hit = null
+		print("Exited area: ", get_parent().get_parent().get_name(), " ,", body.hit)
+	pass # Replace with function body.

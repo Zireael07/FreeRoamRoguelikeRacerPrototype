@@ -24,12 +24,21 @@ params_point_size = 3.0
 albedo_color = Color( 1, 0.961243, 0.0078125, 1 )
 
 [sub_resource type="BoxShape" id=2]
-extents = Vector3( 100, 0.05, 100 )
+extents = Vector3( 500, 0.05, 500 )
 
 [sub_resource type="BoxShape" id=3]
 extents = Vector3( 100, 0.05, 100 )
 
 [sub_resource type="BoxShape" id=4]
+extents = Vector3( 100, 0.05, 100 )
+
+[sub_resource type="BoxShape" id=5]
+extents = Vector3( 100, 0.05, 100 )
+
+[sub_resource type="BoxShape" id=6]
+extents = Vector3( 100, 0.05, 100 )
+
+[sub_resource type="BoxShape" id=7]
 extents = Vector3( 100, 0.05, 100 )
 
 [node name="Navigation" type="Navigation"]
@@ -114,22 +123,27 @@ shape = SubResource( 2 )
 [node name="CollisionShape2" type="CollisionShape" parent="Ground/StaticBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -200, 0, 0 )
 shape = SubResource( 3 )
+disabled = true
 
 [node name="CollisionShape3" type="CollisionShape" parent="Ground/StaticBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 200, 0, 0 )
 shape = SubResource( 4 )
+disabled = true
 
 [node name="CollisionShape4" type="CollisionShape" parent="Ground/StaticBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -200 )
-shape = SubResource( 4 )
+shape = SubResource( 5 )
+disabled = true
 
 [node name="CollisionShape5" type="CollisionShape" parent="Ground/StaticBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 200 )
-shape = SubResource( 4 )
+shape = SubResource( 6 )
+disabled = true
 
 [node name="CollisionShape6" type="CollisionShape" parent="Ground/StaticBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 200, 0, -200 )
-shape = SubResource( 4 )
+shape = SubResource( 7 )
+disabled = true
 
 [node name="Spatial" parent="." instance=ExtResource( 16 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 72.419, 0, 186.771 )

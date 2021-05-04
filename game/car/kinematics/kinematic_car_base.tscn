@@ -175,12 +175,12 @@ void fragment() {
 	ALBEDO = texture(refl_tx, UV).rgb;
 }"
 
-[sub_resource type="ViewportTexture" id=8]
+[sub_resource type="ViewportTexture" id=27]
 
 [sub_resource type="ShaderMaterial" id=9]
 resource_local_to_scene = true
 shader = SubResource( 7 )
-shader_param/refl_tx = SubResource( 8 )
+shader_param/refl_tx = SubResource( 27 )
 
 [sub_resource type="QuadMesh" id=10]
 resource_local_to_scene = true
@@ -586,7 +586,7 @@ render_target_update_mode = 3
 [node name="nameplate" parent="BODY/Viewport 2" instance=ExtResource( 7 )]
 
 [node name="MeshInstance2" type="MeshInstance" parent="BODY"]
-transform = Transform( -0.4, 0, 8.74228e-08, 0, 0.2, 0, -3.49691e-08, 0, -1, 0, 0.606774, 1.0748 )
+transform = Transform( 0.4, 0, 0, 0, 0.2, 0, 0, 0, 1, 0, 0.607, 1.18764 )
 material_override = SubResource( 15 )
 mesh = SubResource( 16 )
 material/0 = null
@@ -657,3 +657,8 @@ _import_path = NodePath("AnimationPlayer")
 "anims/New Anim" = SubResource( 25 )
 anims/blur = SubResource( 26 )
 script = ExtResource( 24 )
+
+[node name="RayCast" type="RayCast" parent="BODY"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.251, 0.66 )
+enabled = true
+script = ExtResource( 11 )

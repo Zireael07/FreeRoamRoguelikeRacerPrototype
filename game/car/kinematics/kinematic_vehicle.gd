@@ -1,3 +1,4 @@
+# http://kidscancode.org/godot_recipes/3d/kinematic_car/car_base/
 extends KinematicBody
 
 export var gravity = -20.0
@@ -106,10 +107,12 @@ func calculate_steering(delta):
 	var rear_wheel = transform.origin + transform.basis.z * wheel_base / 2.0
 	var front_wheel = transform.origin - transform.basis.z * wheel_base / 2.0
 	rear_wheel += velocity * delta
+	#order of operation: forward by velocity and then rotate
 	front_wheel += velocity.rotated(transform.basis.y, steer_angle) * delta
 	var new_heading = rear_wheel.direction_to(front_wheel)
 
 	var d = new_heading.dot(velocity.normalized())
+	# going forward or reverse?
 	if d > 0:
 		velocity = new_heading * velocity.length()
 	if d < 0:

@@ -51,6 +51,8 @@ var reached_inter
 var reached_changed = false
 var show_nav_tip = false
 
+var hit = null
+var count = 0
 var was_tunnel = false # for particles
 var was_dirt = false
 var was_fast = false
@@ -226,92 +228,20 @@ func _process(delta):
 	var disp = get_compass_heading()
 	hud.update_compass(str(disp))
 
-	# detect what we're driving on
-	var hit = get_node("RearRay").get_collider_hit()
-	var disp_name = ""
-	if hit != null:
-		# particles
-		was_dirt = false
-		get_node("Smoke").set_emitting(false)
-		get_node("Smoke2").set_emitting(false)
-		
-		var road_ = hit.get_parent().get_parent().get_name().find("Road_")
-		var road = hit.get_parent().get_parent().get_name().find("Road")
-		# straight
-		if road_ != -1:
-			disp_name = hit.get_parent().get_parent().get_parent().get_parent().get_name()
-			reached_changed = false
-		elif road != -1:
-			disp_name = hit.get_parent().get_parent().get_parent().get_parent().get_parent().get_name()
-			reached_changed = false
-		# intersection
-		else:
-			disp_name = hit.get_parent().get_parent().get_name()
-			
-			# despawn racers elsewhere
-			if race == null:
-				#print("Not in race")
-				var racers = get_tree().get_nodes_in_group("race_AI")
-				for r in racers:
-					#print(r.romaji + " race end intersection: " + str(r.race_int_path[1]))
-					if disp_name.find(str(r.race_int_path[1])) != -1:
-						pass
-						#print("At race end intersection")
-					else:
-						print("Not race end intersection")
-						r.queue_free()
-						# remove minimap marker
-						minimap.get_node("Viewport/minimap").remove_arrow(r)
-			
-			# if we have a player navigation path
-			if map_big.int_path.size() > 0:
-				# if we haven't reached a new intersection
-				if reached_changed == false:
-					# ignore #0 in said path
-					for i in range(1, map_big.int_path.size()-1):
-						var inter = map_big.int_path[i]
-						var id = disp_name.lstrip("intersection")
-						# if we reached a new intersection on our path, mark it as such
-						if int(id) == inter:
-							#print("We hit intersection present in path...", inter)
-							reached_inter = [inter, i]
-							reached_changed = true
-							break
-				# if we reached a new intersection, tell us where to go
-				if reached_changed:
-					# angle to next intersection in int_path
-					var angle_inter = angle_to_intersection(map_big.int_path[reached_inter[1]+1])
-					print("Angle to next intersection: ", angle_inter)
-					# pop up navigation helper on HUD	
-					if angle_inter < 0:
-						hud.update_nav_label("Turn right")
-					else:
-						hud.update_nav_label("Turn left")
-					# hide text if angle very small
-					if abs(angle_inter) < 40:
-						hud.update_nav_label("")
-	# else we're on a dirt ground
-	else:
-		if not was_dirt:
-			was_dirt = true
-			get_node("Smoke").set_emitting(true)
-			get_node("Smoke2").set_emitting(true)
+	var data = driving_on_road()
 						
 	# clear text if we passed the newly reached intersection				
 	if not reached_changed and not show_nav_tip:
 		hud.update_nav_label("")
 
-	hud.update_road(str(disp_name) if hit != null else "")
-
-	#hud.update_debug("Player vel: x: " + str(get_linear_velocity().x) + "y: " + str(get_linear_velocity().z))
-	#hud.update_debug("Player: " + str(get_rotation_degrees()) + '\n' + " Arrow : " + str(cam_rot))
+	hud.update_road(str(data[1]) if data[0] != null else "")
 
 	hud.update_health(health)
 
 	hud.update_battery(battery)
 
 	# skid marks
-	if speed < 5:
+	if speed < 5 and map != null:
 		var pos = get_node("cambase/Camera").get_global_transform().origin
 		var mark = skidmark.instance()
 		var wh_pos = get_node("tmpParent/Spatial_RL")
@@ -344,6 +274,92 @@ func _process(delta):
 
 # -----------------------------------------
 
+func driving_on_road():
+	# detect what we're driving on
+	var ray_hit = get_node("RayCast").get_collider_hit()
+	var disp_name = ""
+
+	# don't lose track of area assigned hits
+	if hit and 'length' in hit:
+		pass
+	else:
+		hit = ray_hit
+
+	if hit != null:
+		# particles
+		count = 0
+		was_dirt = false
+		get_node("Smoke").set_emitting(false)
+		get_node("Smoke2").set_emitting(false)
+		
+		#var road_ = hit.get_parent().get_name().find("Road_")
+		var road = hit.get_node("../..").get_name().find("Road")
+		#var road = hit.get_node("../../../../").get_name().find("Road")
+		# straight
+		if 'length' in hit:
+		#if road_ != -1:
+			disp_name = hit.get_node("../../").get_name()
+			reached_changed = false
+		elif road != -1:
+			disp_name = hit.get_node("../../../../..").get_name()
+			reached_changed = false
+		# intersection
+		else:
+			disp_name = hit.get_parent().get_parent().get_name()
+			
+			# despawn racers elsewhere
+			if race == null:
+				#print("Not in race")
+				var racers = get_tree().get_nodes_in_group("race_AI")
+				for r in racers:
+					#print(r.romaji + " race end intersection: " + str(r.race_int_path[1]))
+					if disp_name.find(str(r.race_int_path[1])) != -1:
+						pass
+						#print("At race end intersection")
+					else:
+						print("Not race end intersection")
+						r.queue_free()
+						# remove minimap marker
+						minimap.get_node("Viewport/minimap").remove_arrow(r)
+			
+			# if we have a player navigation path
+			if map_big and map_big.int_path.size() > 0:
+				# if we haven't reached a new intersection
+				if reached_changed == false:
+					# ignore #0 in said path
+					for i in range(1, map_big.int_path.size()-1):
+						var inter = map_big.int_path[i]
+						var id = disp_name.lstrip("intersection")
+						# if we reached a new intersection on our path, mark it as such
+						if int(id) == inter:
+							#print("We hit intersection present in path...", inter)
+							reached_inter = [inter, i]
+							reached_changed = true
+							break
+				# if we reached a new intersection, tell us where to go
+				if reached_changed:
+					# angle to next intersection in int_path
+					var angle_inter = angle_to_intersection(map_big.int_path[reached_inter[1]+1])
+					print("Angle to next intersection: ", angle_inter)
+					# pop up navigation helper on HUD	
+					if angle_inter < 0:
+						hud.update_nav_label("Turn right")
+					else:
+						hud.update_nav_label("Turn left")
+					# hide text if angle very small
+					if abs(angle_inter) < 40:
+						hud.update_nav_label("")
+	# else we're on a dirt ground
+	else:
+		if not was_dirt:
+			count += 1
+			if count > 2:
+				was_dirt = true
+				get_node("Smoke").set_emitting(true)
+				get_node("Smoke2").set_emitting(true)
+
+	return [hit, disp_name]
+
 func get_compass_heading():
 	# because E and W were easiest to identify (the sun)
 	# this relied on Y rotation
@@ -373,6 +389,8 @@ func get_heading():
 	# returns radians
 	#return player_rot
 	var North = get_node("/root/Navigation/marker_North")
+	if North == null:
+		return 0
 	var rel_loc = get_global_transform().xform_inv(North.get_global_transform().origin)
 	#2D angle to target (local coords)
 	var angle = atan2(rel_loc.x, rel_loc.z)
