@@ -14,14 +14,16 @@ func _ready():
 
 
 func _on_Area_body_entered(body):
-	if body is VehicleBody:
-		if body is player_script:
-			pass
+#	if body is VehicleBody:
+#		if body is player_script:
+#			pass
 			#print("Intersection: " + get_parent().get_name())
 	
 	if body is StaticBody:
 		# exclude planes
 		if body.get_name() == "plane_col":
+			return
+		if body.get_parent().get_parent().get_name() == "Navigation":
 			return
 		
 		# if a prop overlaps intersection...

@@ -128,21 +128,25 @@ class DrivingState:
 		# -z means we're moving forward
 		# doesn't work if the AI is going the other way
 		#car.velocity = Vector2(car.get_parent().get_angular_velocity().y, -car.get_parent().get_linear_velocity().z)
+		if car.get_parent() is VehicleBody:		
+			# forward vector scaled by our speed
+			var gl_tg = car.get_parent().get_global_transform().xform(Vector3(0, 0, 4))
+			var rel = car.get_parent().get_global_transform().xform_inv(gl_tg)
+			var vel = rel * car.get_parent().speed
+			
+			#var vel = car.get_parent().forward_vec * car.get_parent().get_linear_velocity().length()
+			#car.velocity = Vector2(vel.x, vel.z)
+			car.velocity = Vector2(car.get_parent().get_angular_velocity().y, vel.z)
 		
-		
-		# forward vector scaled by our speed
-		var gl_tg = car.get_parent().get_global_transform().xform(Vector3(0, 0, 4))
-		var rel = car.get_parent().get_global_transform().xform_inv(gl_tg)
-		var vel = rel * car.get_parent().get_linear_velocity().length()
-		
-		#var vel = car.get_parent().forward_vec * car.get_parent().get_linear_velocity().length()
-		#car.velocity = Vector2(vel.x, vel.z)
-		car.velocity = Vector2(car.get_parent().get_angular_velocity().y, vel.z)
-		
-		# debug speed difference between old & new approach
-		#var old = -car.get_parent().get_linear_velocity().z
-		#if old != 0:
-		#	print("old: " + str(old) + " new: " + str(vel.z) + " factor: " + str(vel.z/old))
+			# debug speed difference between old & new approach
+			#var old = -car.get_parent().get_linear_velocity().z
+			#if old != 0:
+			#	print("old: " + str(old) + " new: " + str(vel.z) + " factor: " + str(vel.z/old))
+		else:
+			var vel = -car.get_parent().transform.basis.z * car.get_parent().speed
+			# x is turning and y is forward/backwards
+			car.velocity = Vector2(0, vel.z)
+			#car.velocity = Vector2(car.get_parent().velocity.x, car.get_parent().velocity.z)
 		
 		#if 'race' in car.get_parent().get_parent():
 		#	print(str(car.velocity.y))
@@ -156,10 +160,11 @@ class DrivingState:
 			car.detect_range = car.get_parent().speed
 		else:
 			car.detect_range = 10
-			
-		car.get_parent().get_node("RayFront").set_cast_to(Vector3(0,0, car.detect_range))
-		car.get_parent().get_node("RayFrontRight").set_cast_to(Vector3(0,0, car.detect_range))
-		car.get_parent().get_node("RayFrontLeft").set_cast_to(Vector3(0,0,car.detect_range))
+		
+		if car.get_parent() is VehicleBody:
+			car.get_parent().get_node("RayFront").set_cast_to(Vector3(0,0, car.detect_range))
+			car.get_parent().get_node("RayFrontRight").set_cast_to(Vector3(0,0, car.detect_range))
+			car.get_parent().get_node("RayFrontLeft").set_cast_to(Vector3(0,0,car.detect_range))
 		
 					
 		
@@ -170,8 +175,8 @@ class DrivingState:
 			
 		# if there's a car ahead, switch
 		var car_a = car.car_ahead_detected(car.get_parent())
-		if car_a:
-			car.set_state(car.STATE_CAR_AHEAD, car_a)
+		#if car_a:
+		#	car.set_state(car.STATE_CAR_AHEAD, car_a)
 
 	
 class ChaseState:

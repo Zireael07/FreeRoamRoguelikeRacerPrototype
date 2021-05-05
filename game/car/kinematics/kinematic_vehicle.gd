@@ -1,11 +1,11 @@
-# http://kidscancode.org/godot_recipes/3d/kinematic_car/car_base/
+# based on http://kidscancode.org/godot_recipes/3d/kinematic_car/car_base/
 extends KinematicBody
 
 export var gravity = -20.0
 export var wheel_base = 0.6
 export var steering_limit = 10.0
 export var engine_power = 6.0
-export var braking = -9.0
+export var braking_power = -9.0
 export var friction = -2.0
 export var drag = -2.0
 export var max_speed_reverse = 3.0
@@ -13,7 +13,10 @@ export var max_speed_reverse = 3.0
 var acceleration = Vector3.ZERO
 var velocity = Vector3.ZERO
 var steer_angle = 0.0
+var forward_vec
 
+# my stuff starts here
+var STEER_LIMIT = 0.4 #23 degrees # usually up to 30 deg
 var steer_target = 0.0
 
 # based on torcs
@@ -27,12 +30,15 @@ var FUDGE = 8 # account for TORCS timestep being 0.002 seconds (500Hz) and our p
 var speed = 0
 var speed_int = 0
 var speed_kph = 0
+var reverse = false
 
 #lights
 var headlight_one
 var headlight_two
 var taillights
 var tail_mat
+
+var flip_mat = preload("res://assets/car/car_red.tres")
 
 func _ready():
 	#get lights
@@ -61,6 +67,11 @@ func _physics_process(delta):
 				-transform.basis.y, Vector3.UP, true)
 				
 	speed = velocity.length()
+	#reverse
+	if (velocity.dot(-transform.basis.z) > 0):
+		reverse = false
+	#else:
+	#	reverse = true
 
 func apply_friction(delta):
 	if velocity.length() < 0.2 and acceleration.length() == 0:
@@ -124,3 +135,20 @@ func calculate_steering(delta):
 func get_input():
 	# Override this in inherited scripts for controls
 	pass
+
+func after_move():
+	# Override in inherited scripts
+	pass
+
+# debug
+func debug_cube(loc, red=false):
+	var mesh = CubeMesh.new()
+	mesh.set_size(Vector3(0.5,0.5,0.5))
+	var node = MeshInstance.new()
+	node.set_mesh(mesh)
+	if red:
+		node.get_mesh().surface_set_material(0, flip_mat)
+	node.set_cast_shadows_setting(0)
+	node.set_name("Debug")
+	add_child(node)
+	node.set_translation(loc)

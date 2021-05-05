@@ -1,4 +1,6 @@
 # steering behaviors implementation
+# for VEHICLE BODY cars
+# relies on local (2D) input and output
 extends Spatial
 
 # class member variables go here, for example:

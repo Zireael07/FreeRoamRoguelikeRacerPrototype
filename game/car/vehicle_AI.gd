@@ -223,7 +223,7 @@ func start_chase():
 	if playr_loc.distance_to(get_node("BODY").get_global_transform().origin) < 10:
 		#print("Player within 10 m of cop")
 		# ignore player that is keeping to speed limit
-		var playr_speed = playr.get_node("BODY").get_linear_velocity().length()
+		var playr_speed = playr.get_node("BODY").speed
 		if playr_speed < 15:
 			return
 			
@@ -454,23 +454,6 @@ func _physics_process(delta):
 						braking = true
 					else:
 						gas = true
-		
-
-#		if brain.steer.x < 0:
-#			left = true
-#		else:
-#			right = true
-
-		
-
-		
-		#if we're over the limit, relax steering
-#		limit = get_steering_limit()
-#		if (get_steering() > limit):
-#			left = true
-#		if (get_steering() < -limit):
-#			right = true
-		
 		
 		# we don't use the joy for gas/brake, so far
 		joy = Vector2(clx, 0)
