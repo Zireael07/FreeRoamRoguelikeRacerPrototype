@@ -1,33 +1,14 @@
-[gd_scene load_steps=54 format=2]
+[gd_scene load_steps=19 format=2]
 
-[ext_resource path="res://car/car_player.gd" type="Script" id=1]
-[ext_resource path="res://car/vehicle_player.gd" type="Script" id=2]
-[ext_resource path="res://car/car_wheel.tscn" type="PackedScene" id=3]
-[ext_resource path="res://car/car_mesh.tscn" type="PackedScene" id=4]
-[ext_resource path="res://assets/car/car_blue.tres" type="Material" id=5]
-[ext_resource path="res://car/car_mesh.gd" type="Script" id=6]
-[ext_resource path="res://assets/car/modular car glass.tres" type="Material" id=7]
-[ext_resource path="res://assets/car/LED taillights stock.jpg" type="Texture" id=8]
-[ext_resource path="res://hud/test_car_label.tscn" type="PackedScene" id=9]
-[ext_resource path="res://car/follow_camera.gd" type="Script" id=10]
-[ext_resource path="res://motion_blur/motion_blur.tscn" type="PackedScene" id=11]
-[ext_resource path="res://default_env_copy.tres" type="Environment" id=12]
-[ext_resource path="res://assets/car/car_mirror.tres" type="Material" id=13]
-[ext_resource path="res://car/MeshInstance.gd" type="Script" id=14]
-[ext_resource path="res://hud/label_3d.gd" type="Script" id=15]
-[ext_resource path="res://hud/test_car_nameplate.tscn" type="PackedScene" id=16]
-[ext_resource path="res://hud/nameplate_3d.gd" type="Script" id=17]
-[ext_resource path="res://car/untitled.tscn" type="PackedScene" id=18]
-[ext_resource path="res://objects/skysphere.tscn" type="PackedScene" id=19]
-[ext_resource path="res://scripts/skysphere.gd" type="Script" id=20]
-[ext_resource path="res://assets/rain_material.tres" type="Material" id=21]
-[ext_resource path="res://assets/rain_particles.tres" type="Material" id=22]
-[ext_resource path="res://assets/quad-neon.jpg" type="Texture" id=23]
-[ext_resource path="res://car/RayCast.gd" type="Script" id=24]
-[ext_resource path="res://car/replay_system.gd" type="Script" id=25]
-[ext_resource path="res://save_test.tres" type="ArrayMesh" id=26]
-[ext_resource path="res://assets/snow_smoke_mat.tres" type="Material" id=27]
-[ext_resource path="res://assets/Smoke.tres" type="Material" id=28]
+[ext_resource path="res://car/AI_pathing.gd" type="Script" id=1]
+[ext_resource path="res://car/vehiclebody/vehicle_AI.gd" type="Script" id=2]
+[ext_resource path="res://assets/car/truenohoudini.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://assets/car/car_gray.tres" type="Material" id=4]
+[ext_resource path="res://car/vehiclebody/brain.gd" type="Script" id=5]
+[ext_resource path="res://car/follow_camera.gd" type="Script" id=6]
+[ext_resource path="res://assets/car/LED taillights stock.jpg" type="Texture" id=7]
+[ext_resource path="res://car/detect_obstacles_ray.gd" type="Script" id=8]
+[ext_resource path="res://scripts/draw_line.gd" type="Script" id=9]
 
 [sub_resource type="SpatialMaterial" id=1]
 params_diffuse_mode = 1
@@ -96,42 +77,13 @@ surfaces/0 = {
 [sub_resource type="BoxShape" id=6]
 extents = Vector3( 0.477039, 0.413218, 1.32118 )
 
-[sub_resource type="Animation" id=7]
-resource_name = "fov"
-tracks/0/type = "value"
-tracks/0/path = NodePath("Camera:fov")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ 60.0, 75.0 ]
-}
-
-[sub_resource type="QuadMesh" id=8]
-resource_local_to_scene = true
-size = Vector2( 0.5, 0.5 )
-
-[sub_resource type="SpatialMaterial" id=9]
-flags_transparent = true
-flags_unshaded = true
+[sub_resource type="SpatialMaterial" id=7]
 params_diffuse_mode = 1
-params_use_alpha_scissor = true
-params_alpha_scissor_threshold = 0.98
-
-[sub_resource type="QuadMesh" id=10]
-resource_local_to_scene = true
-
-[sub_resource type="SpatialMaterial" id=11]
-params_diffuse_mode = 1
-albedo_texture = ExtResource( 8 )
+albedo_texture = ExtResource( 7 )
 roughness = 0.0
 uv1_scale = Vector3( 0.2, 0.2, 1 )
 
-[sub_resource type="ArrayMesh" id=12]
+[sub_resource type="ArrayMesh" id=8]
 surfaces/0 = {
 "aabb": AABB( -0.4027, 0.0012, -0.0986, 0.8086, 0.02501, 0.0999 ),
 "array_data": PoolByteArray( 113, 182, 181, 38, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 60, 0, 60, 113, 182, 234, 20, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 0, 0, 60, 124, 178, 181, 38, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 60, 0, 0, 124, 178, 234, 20, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 0, 0, 0, 124, 178, 181, 38, 83, 21, 0, 60, 0, 0, 127, 0, 0, 127, 0, 127, 0, 60, 0, 60, 124, 178, 234, 20, 83, 21, 0, 60, 0, 0, 127, 0, 247, 126, 0, 127, 0, 0, 0, 60, 113, 182, 181, 38, 83, 21, 0, 60, 0, 0, 127, 0, 163, 85, 0, 127, 0, 60, 0, 0, 164, 181, 234, 20, 83, 21, 0, 60, 0, 0, 127, 0, 143, 56, 0, 127, 0, 0, 0, 0, 124, 178, 181, 38, 79, 174, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 60, 0, 60, 124, 178, 181, 38, 83, 21, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 0, 0, 60, 113, 182, 181, 38, 79, 174, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 60, 0, 0, 113, 182, 181, 38, 83, 21, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 0, 0, 0, 113, 182, 234, 20, 79, 174, 0, 60, 0, 129, 0, 0, 200, 0, 143, 127, 0, 60, 0, 60, 164, 181, 234, 20, 83, 21, 0, 60, 0, 129, 0, 0, 215, 0, 136, 127, 0, 0, 0, 60, 124, 178, 234, 20, 79, 174, 0, 60, 0, 129, 0, 0, 235, 0, 131, 127, 0, 60, 0, 0, 124, 178, 234, 20, 83, 21, 0, 60, 0, 129, 0, 0, 0, 0, 129, 127, 0, 0, 0, 0, 113, 182, 181, 38, 83, 21, 0, 60, 168, 168, 22, 0, 166, 88, 249, 127, 0, 60, 0, 60, 164, 181, 234, 20, 83, 21, 0, 60, 168, 168, 22, 0, 166, 89, 253, 127, 0, 0, 0, 60, 113, 182, 181, 38, 79, 174, 0, 60, 168, 168, 22, 0, 169, 91, 13, 127, 0, 60, 0, 0, 113, 182, 234, 20, 79, 174, 0, 60, 168, 168, 22, 0, 171, 91, 21, 127, 0, 0, 0, 0, 124, 178, 181, 38, 79, 174, 0, 60, 127, 0, 0, 0, 0, 127, 0, 127, 0, 60, 0, 60, 124, 178, 234, 20, 79, 174, 0, 60, 127, 0, 0, 0, 0, 127, 0, 127, 0, 0, 0, 60, 124, 178, 181, 38, 83, 21, 0, 60, 127, 0, 0, 0, 0, 127, 0, 127, 0, 60, 0, 0, 124, 178, 234, 20, 83, 21, 0, 60, 127, 0, 0, 0, 0, 127, 0, 127, 0, 0, 0, 0, 150, 50, 181, 38, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 60, 0, 60, 150, 50, 234, 20, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 0, 0, 60, 126, 54, 181, 38, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 60, 0, 0, 126, 54, 234, 20, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 0, 0, 0, 126, 54, 181, 38, 83, 21, 0, 60, 0, 0, 127, 0, 116, 49, 0, 127, 0, 60, 0, 60, 142, 53, 234, 20, 83, 21, 0, 60, 0, 0, 127, 0, 113, 56, 0, 127, 0, 0, 0, 60, 150, 50, 181, 38, 83, 21, 0, 60, 0, 0, 127, 0, 13, 126, 0, 127, 0, 60, 0, 0, 150, 50, 234, 20, 83, 21, 0, 60, 0, 0, 127, 0, 0, 127, 0, 127, 0, 0, 0, 0, 126, 54, 181, 38, 79, 174, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 60, 0, 60, 126, 54, 181, 38, 83, 21, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 0, 0, 60, 150, 50, 181, 38, 79, 174, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 60, 0, 0, 150, 50, 181, 38, 83, 21, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 0, 0, 0, 150, 50, 234, 20, 79, 174, 0, 60, 0, 129, 0, 0, 0, 0, 129, 127, 0, 60, 0, 60, 150, 50, 234, 20, 83, 21, 0, 60, 0, 129, 0, 0, 19, 0, 131, 127, 0, 0, 0, 60, 126, 54, 234, 20, 79, 174, 0, 60, 0, 129, 0, 0, 36, 0, 135, 127, 0, 60, 0, 0, 142, 53, 234, 20, 83, 21, 0, 60, 0, 129, 0, 0, 64, 0, 147, 127, 0, 0, 0, 0, 150, 50, 181, 38, 83, 21, 0, 60, 129, 0, 0, 0, 0, 127, 0, 127, 0, 60, 0, 60, 150, 50, 234, 20, 83, 21, 0, 60, 129, 0, 0, 0, 0, 127, 0, 127, 0, 0, 0, 60, 150, 50, 181, 38, 79, 174, 0, 60, 129, 0, 0, 0, 0, 127, 0, 127, 0, 60, 0, 0, 150, 50, 234, 20, 79, 174, 0, 60, 129, 0, 0, 0, 0, 127, 0, 127, 0, 0, 0, 0, 126, 54, 181, 38, 79, 174, 0, 60, 80, 162, 23, 0, 91, 84, 26, 127, 0, 60, 0, 60, 126, 54, 234, 20, 79, 174, 0, 60, 80, 162, 23, 0, 93, 83, 16, 127, 0, 0, 0, 60, 126, 54, 181, 38, 83, 21, 0, 60, 80, 162, 23, 0, 97, 81, 253, 127, 0, 60, 0, 0, 142, 53, 234, 20, 83, 21, 0, 60, 80, 162, 23, 0, 97, 81, 249, 127, 0, 0, 0, 0 ),
@@ -139,138 +91,21 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 98071,
 "index_count": 72,
-"material": SubResource( 11 ),
+"material": SubResource( 7 ),
 "name": "taillights_simple",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 48
 }
 
-[sub_resource type="SpatialMaterial" id=13]
-flags_vertex_lighting = true
-albedo_color = Color( 0.679688, 0.679688, 0.679688, 1 )
-roughness = 0.0
-
-[sub_resource type="SpatialMaterial" id=14]
-params_diffuse_mode = 1
-roughness = 0.0
-
-[sub_resource type="QuadMesh" id=15]
-
-[sub_resource type="QuadMesh" id=16]
-size = Vector2( 0.5, 0.5 )
-
-[sub_resource type="Shader" id=17]
-code = "shader_type spatial;
-render_mode unshaded,blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx;
-uniform vec4 albedo : hint_color;
-uniform sampler2D texture_albedo : hint_albedo;
-uniform float specular;
-uniform float metallic;
-uniform float roughness : hint_range(0,1);
-uniform float point_size : hint_range(0,128);
-uniform vec3 uv1_scale;
-uniform vec3 uv1_offset;
-uniform vec3 uv2_scale;
-uniform vec3 uv2_offset;
-
-uniform vec4 tint_color : hint_color;
-uniform float fresnel_power = 1.0;
-uniform float edge_intensity = 2.0;
-
-void vertex() {
-	UV=UV*uv1_scale.xy+uv1_offset.xy;
-}
-
-
-
-
-void fragment() {
-	vec2 base_uv = UV;
-	vec4 albedo_tex = texture(texture_albedo,base_uv);
-	vec3 alb = albedo.rgb * albedo_tex.rgb;
-	
-	//Create a fresnel effect from the NORMAL and VIEW vectors.
-	float fresnel = pow(1.0-dot(NORMAL, VIEW), fresnel_power) * edge_intensity;
-	
-	ALBEDO = mix(albedo_tex.rgb, tint_color.rgb, 1.0-albedo_tex.r)*fresnel;
-	METALLIC = metallic;
-	ROUGHNESS = roughness;
-	SPECULAR = specular;
-}
-"
-
-[sub_resource type="ShaderMaterial" id=18]
-shader = SubResource( 17 )
-shader_param/albedo = Color( 0.956863, 0.956863, 0.945098, 1 )
-shader_param/specular = 0.5
-shader_param/metallic = 0.0
-shader_param/roughness = 1.0
-shader_param/point_size = 1.0
-shader_param/uv1_scale = Vector3( 1, 1, 1 )
-shader_param/uv1_offset = Vector3( 0, 0, 0 )
-shader_param/uv2_scale = Vector3( 1, 1, 1 )
-shader_param/uv2_offset = Vector3( 0, 0, 0 )
-shader_param/tint_color = Color( 1, 1, 0, 1 )
-shader_param/fresnel_power = 0.1
-shader_param/edge_intensity = 30.0
-shader_param/texture_albedo = ExtResource( 23 )
-
-[sub_resource type="PlaneMesh" id=19]
-size = Vector2( 1, 1.5 )
-
-[sub_resource type="SphereMesh" id=20]
-material = ExtResource( 27 )
-radius = 0.05
-height = 0.1
-radial_segments = 6
-rings = 3
-
-[sub_resource type="SpatialMaterial" id=21]
+[sub_resource type="SpatialMaterial" id=9]
 flags_unshaded = true
-flags_vertex_lighting = true
-
-[sub_resource type="ParticlesMaterial" id=22]
-emission_shape = 1
-emission_sphere_radius = 5.0
-direction = Vector3( -1, 0, -1 )
-gravity = Vector3( 0, 0, -9.8 )
-linear_accel = 2.0
-radial_accel = 2.0
-
-[sub_resource type="CubeMesh" id=23]
-size = Vector3( 0.05, 0.05, 0.75 )
-
-[sub_resource type="Animation" id=24]
-tracks/0/type = "value"
-tracks/0/path = NodePath("BODY/cambase/Camera:fov")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ 60.0, 75.0 ]
-}
-
-[sub_resource type="Animation" id=25]
-tracks/0/type = "value"
-tracks/0/path = NodePath("BODY/cambase/Camera/motion_blur:material/0:shader_param/intensity")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ 0.05, 0.2 ]
-}
+flags_use_point_size = true
+params_line_width = 3.0
+params_point_size = 3.0
 
 [node name="Spatial" type="Spatial" groups=[
-"player",
+"AI",
 ]]
 _import_path = NodePath(".")
 script = ExtResource( 1 )
@@ -279,307 +114,155 @@ __meta__ = {
 }
 
 [node name="BODY" type="VehicleBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.095518 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00169557, 0.222867, -0.0955184 )
 collision_mask = 3
 mass = 1500.0
-can_sleep = false
 script = ExtResource( 2 )
 
 [node name="wheel1" type="VehicleWheel" parent="BODY"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.359334, 0.864664 )
-engine_force = 1.41531e-43
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573678, 0.115169, 0.864664 )
 use_as_traction = true
 use_as_steering = true
 wheel_radius = 0.25
-suspension_travel = 1.0
+suspension_travel = 2.0
 suspension_stiffness = 40.0
+damping_compression = 0.88
 
 [node name="wheel1" type="MeshInstance" parent="BODY/wheel1"]
 _import_path = NodePath("BODY-vehicle/wheel1-wheel")
-visible = false
 mesh = SubResource( 2 )
 material/0 = null
 
-[node name="Spatial" parent="BODY/wheel1" instance=ExtResource( 3 )]
-transform = Transform( -4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, 0, 0, 0 )
-wheel_thick = 0.1
-
 [node name="wheel2" type="VehicleWheel" parent="BODY"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.359334, -0.783403 )
-engine_force = 1.4013e-45
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.573678, 0.115169, -0.783403 )
 use_as_traction = true
 wheel_radius = 0.25
-suspension_travel = 1.0
+suspension_travel = 2.0
 suspension_stiffness = 40.0
+damping_compression = 0.88
 
 [node name="wheel2" type="MeshInstance" parent="BODY/wheel2"]
 _import_path = NodePath("BODY-vehicle/wheel2-wheel")
-visible = false
 mesh = SubResource( 3 )
 material/0 = null
 
-[node name="Spatial" parent="BODY/wheel2" instance=ExtResource( 3 )]
-transform = Transform( -4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, 0, 0, 0 )
-wheel_thick = 0.1
-
 [node name="wheel3" type="VehicleWheel" parent="BODY"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.359334, 0.864664 )
-engine_force = -0.228035
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.115169, 0.864664 )
 use_as_traction = true
 use_as_steering = true
 wheel_radius = 0.25
-suspension_travel = 1.0
+suspension_travel = 2.0
 suspension_stiffness = 40.0
+damping_compression = 0.88
 
 [node name="wheel3" type="MeshInstance" parent="BODY/wheel3"]
 _import_path = NodePath("BODY-vehicle/wheel3-wheel")
-visible = false
 mesh = SubResource( 4 )
 material/0 = null
 
-[node name="Spatial" parent="BODY/wheel3" instance=ExtResource( 3 )]
-transform = Transform( -4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, 0, 0, 0 )
-wheel_thick = 0.1
-
 [node name="wheel4" type="VehicleWheel" parent="BODY"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.359334, -0.783403 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.573678, 0.115169, -0.783403 )
 use_as_traction = true
 wheel_radius = 0.25
-suspension_travel = 1.0
+suspension_travel = 2.0
 suspension_stiffness = 40.0
+damping_compression = 0.88
 
 [node name="wheel4" type="MeshInstance" parent="BODY/wheel4"]
 _import_path = NodePath("BODY-vehicle/wheel4-wheel")
-visible = false
 mesh = SubResource( 5 )
 material/0 = null
 
-[node name="Spatial" parent="BODY/wheel4" instance=ExtResource( 3 )]
-transform = Transform( -4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, 0, 0, 0 )
-wheel_thick = 0.1
+[node name="BODY" type="MeshInstance" parent="BODY"]
+_import_path = NodePath("BODY-vehicle")
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.149868, 0 )
+mesh = ExtResource( 3 )
+material/0 = ExtResource( 4 )
 
-[node name="proc_mesh" parent="BODY" instance=ExtResource( 4 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.5, 0.298204, 0.591264 )
-visible = false
-
-[node name="car_mesh" type="MeshInstance" parent="BODY"]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.5, 0.298204, 0.591264 )
-mesh = ExtResource( 26 )
-material/0 = null
-material/1 = null
-script = ExtResource( 6 )
-__meta__ = {
-"_editor_description_": ""
-}
-material = ExtResource( 5 )
-glass_material = ExtResource( 7 )
+[node name="brain" type="Spatial" parent="BODY"]
+script = ExtResource( 5 )
 
 [node name="CollisionShape" type="CollisionShape" parent="BODY"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.684021, 0.063079 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.439856, 0.0630786 )
 shape = SubResource( 6 )
 
-[node name="Viewport" type="Viewport" parent="BODY"]
-size = Vector2( 300, 200 )
-transparent_bg = true
-handle_input_locally = false
-hdr = false
-usage = 0
-render_target_v_flip = true
-render_target_update_mode = 3
-
-[node name="Nametag" parent="BODY/Viewport" instance=ExtResource( 9 )]
-
 [node name="cambase" type="Spatial" parent="BODY"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.24017, -1.06042 )
-
-[node name="AnimationPlayer2" type="AnimationPlayer" parent="BODY/cambase"]
-_import_path = NodePath("AnimationPlayer")
-anims/fov = SubResource( 7 )
-script = ExtResource( 25 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58203, -1.06042 )
 
 [node name="Camera" type="Camera" parent="BODY/cambase"]
-process_priority = -10
-transform = Transform( -1, 8.74228e-08, 0, 8.74228e-08, 1, 8.74228e-08, 7.64274e-15, 8.74228e-08, -1, 0, 1, -4.39379 )
-current = true
+transform = Transform( 1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 1, -4.39379 )
 fov = 60.0
 near = 0.1
 far = 200.0
-script = ExtResource( 10 )
-min_distance = 1.0
-
-[node name="motion_blur" parent="BODY/cambase/Camera" instance=ExtResource( 11 )]
-process_priority = -8
-transform = Transform( 1, 6.6815e-22, 0, 6.6815e-22, 1, 0, 0, 0, 1, 0, -0.3, -1 )
-visible = false
-skeleton = NodePath("")
-
-[node name="LerpTimer" type="Timer" parent="BODY/cambase/Camera"]
-process_mode = 0
-wait_time = 2.0
-
-[node name="CameraDebug" type="Camera" parent="BODY/cambase"]
-transform = Transform( -1, 8.74228e-08, 3.82137e-15, 0, -4.37114e-08, 1, 8.74228e-08, 1, 4.37114e-08, 0, 50, 0.732 )
-fov = 60.0
-near = 0.1
-far = 200.0
-
-[node name="CameraCockpit" type="Camera" parent="BODY/cambase"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.2, -0.318065, 1.09905 )
-near = 0.1
-far = 200.0
-
-[node name="CameraDummy" type="Spatial" parent="BODY/cambase"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2355, -0.920672 )
-
-[node name="Viewport" type="Viewport" parent="BODY/cambase"]
-size = Vector2( 256, 150 )
-handle_input_locally = false
-hdr = false
-render_target_v_flip = true
-render_target_clear_mode = 2
-render_target_update_mode = 0
-
-[node name="CameraCockpitBack" type="Camera" parent="BODY/cambase/Viewport"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.46854, -2.02346 )
-cull_mask = 1048449
-environment = ExtResource( 12 )
-current = true
-fov = 60.0
-
-[node name="MirrorMesh" type="MeshInstance" parent="BODY/cambase"]
-transform = Transform( -0.25, 0, -1.50996e-07, 0, 0.125, 0, 3.7749e-08, 0, -1, 0.075, -0.25, 1.281 )
-material_override = ExtResource( 13 )
-cast_shadow = 0
-mesh = SubResource( 8 )
-material/0 = null
-script = ExtResource( 14 )
-
-[node name="MeshInstance" type="MeshInstance" parent="BODY"]
-transform = Transform( -1, 0, 8.74228e-08, 0, 0.5, 0, -8.74228e-08, 0, -1, 0, 1.36496, 0 )
-material_override = SubResource( 9 )
-cast_shadow = 0
-mesh = SubResource( 10 )
-material/0 = null
-script = ExtResource( 15 )
+script = ExtResource( 6 )
 
 [node name="SpotLight" type="SpotLight" parent="BODY"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.466324, 0.426194, 1.3591 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.466324, 0.182029, 1.3591 )
 
 [node name="SpotLight1" type="SpotLight" parent="BODY"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.472078, 0.460857, 1.3591 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.472078, 0.216692, 1.3591 )
 
 [node name="taillights" type="MeshInstance" parent="BODY"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.67614, -1.32023 )
-mesh = SubResource( 12 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.498855, -1.31179 )
+mesh = SubResource( 8 )
 material/0 = null
 
-[node name="frontlights" type="MeshInstance" parent="BODY"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.575843, 1.38515 )
-mesh = SubResource( 12 )
-material/0 = SubResource( 13 )
-
-[node name="Viewport 2" type="Viewport" parent="BODY"]
-size = Vector2( 400, 150 )
-hdr = false
-render_target_v_flip = true
-render_target_update_mode = 3
-
-[node name="nameplate" parent="BODY/Viewport 2" instance=ExtResource( 16 )]
-
-[node name="MeshInstance2" type="MeshInstance" parent="BODY"]
-transform = Transform( -0.4, 0, 8.74228e-08, 0, 0.2, 0, -3.49691e-08, 0, -1, 0, 0.606774, -1.41142 )
-material_override = SubResource( 14 )
-mesh = SubResource( 15 )
-material/0 = null
-script = ExtResource( 17 )
-
-[node name="driver_new" parent="BODY" instance=ExtResource( 18 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.158, -0.04, 0.06 )
-
-[node name="skysphere" parent="BODY" instance=ExtResource( 19 )]
-transform = Transform( -1.04907e-07, 0, -2.4, 0, 2.4, 0, 2.4, 0, -1.04907e-07, 0, 3, 0 )
-visible = false
-script = ExtResource( 20 )
-
-[node name="RainParticles" type="Particles" parent="BODY"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 5, -6.0586 )
-material_override = ExtResource( 21 )
-cast_shadow = 0
-emitting = false
-amount = 256
-fract_delta = false
-visibility_aabb = AABB( -6, -6, -6, 12, 16, 12 )
-process_material = ExtResource( 22 )
-draw_pass_1 = SubResource( 16 )
-script = ExtResource( 20 )
-
-[node name="RainParticles2" type="Particles" parent="BODY"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 5, 8.69194 )
-material_override = ExtResource( 21 )
-cast_shadow = 0
-emitting = false
-amount = 256
-fract_delta = false
-visibility_aabb = AABB( -6, -6, -6, 12, 16, 12 )
-process_material = ExtResource( 22 )
-draw_pass_1 = SubResource( 16 )
-script = ExtResource( 20 )
-
-[node name="neon_under" type="MeshInstance" parent="BODY"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.002, 0.1, 0.023 )
-material_override = SubResource( 18 )
-cast_shadow = 0
-mesh = SubResource( 19 )
-material/0 = null
-
-[node name="RayCast" type="RayCast" parent="BODY"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.251327, 0 )
+[node name="RayFront" type="RayCast" parent="BODY"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.44403 )
 enabled = true
-script = ExtResource( 24 )
+cast_to = Vector3( 0, 0, 10 )
+script = ExtResource( 8 )
+
+[node name="RayFrontRight" type="RayCast" parent="BODY"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.499137, 0, 1.44403 )
+enabled = true
+cast_to = Vector3( 0, 0, 10 )
+script = ExtResource( 8 )
+
+[node name="RayFrontLeft" type="RayCast" parent="BODY"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.508999, 0, 1.44403 )
+enabled = true
+cast_to = Vector3( 0, 0, 10 )
+script = ExtResource( 8 )
+
+[node name="RayLeftFront" type="RayCast" parent="BODY"]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 1.44403 )
+enabled = true
+cast_to = Vector3( 0, 0, 5 )
+script = ExtResource( 8 )
+
+[node name="RayRightFront" type="RayCast" parent="BODY"]
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, 1.44403 )
+enabled = true
+cast_to = Vector3( 0, 0, 5 )
+script = ExtResource( 8 )
+
+[node name="Timer" type="Timer" parent="BODY"]
+process_mode = 0
+one_shot = true
 
 [node name="StuckTimer" type="Timer" parent="BODY"]
+wait_time = 2.0
 one_shot = true
 
 [node name="ReverseTimer" type="Timer" parent="BODY"]
+wait_time = 0.5
 one_shot = true
-
-[node name="Smoke" type="Particles" parent="BODY"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.520701, 0.181243, -1.02684 )
-emitting = false
-amount = 32
-lifetime = 0.5
-visibility_aabb = AABB( -4, -4, -4.68213, 8, 8, 8 )
-process_material = ExtResource( 28 )
-draw_pass_1 = SubResource( 20 )
-
-[node name="Smoke2" type="Particles" parent="BODY"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.489926, 0.248742, -1.14425 )
-emitting = false
-amount = 32
-lifetime = 0.5
-visibility_aabb = AABB( -4, -4, -4.68213, 8, 8, 8 )
-process_material = ExtResource( 28 )
-draw_pass_1 = SubResource( 20 )
-
-[node name="SpeedParticles" type="Particles" parent="BODY"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-material_override = SubResource( 21 )
-cast_shadow = 0
-emitting = false
-amount = 64
-fract_delta = false
-local_coords = false
-process_material = SubResource( 22 )
-draw_pass_1 = SubResource( 23 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 _import_path = NodePath("AnimationPlayer")
-"anims/New Anim" = SubResource( 24 )
-anims/blur = SubResource( 25 )
-script = ExtResource( 25 )
 
-[connection signal="body_entered" from="BODY" to="BODY" method="_on_BODY_body_entered"]
-[connection signal="animation_finished" from="BODY/cambase/AnimationPlayer2" to="BODY" method="_on_AnimationPlayer_animation_finished"]
+[node name="draw" type="ImmediateGeometry" parent="."]
+material_override = SubResource( 9 )
+cast_shadow = 0
+script = ExtResource( 9 )
+
+[node name="draw2" type="ImmediateGeometry" parent="."]
+material_override = SubResource( 9 )
+cast_shadow = 0
+script = ExtResource( 9 )
+
+[connection signal="input_event" from="BODY" to="BODY" method="_on_BODY_input_event"]
+[connection signal="timeout" from="BODY/Timer" to="BODY" method="_on_Timer_timeout"]
 [connection signal="timeout" from="BODY/StuckTimer" to="BODY" method="_on_StuckTimer_timeout"]
 [connection signal="timeout" from="BODY/ReverseTimer" to="BODY" method="_on_ReverseTimer_timeout"]
-[connection signal="animation_finished" from="AnimationPlayer" to="BODY" method="_on_AnimationPlayer_animation_finished"]

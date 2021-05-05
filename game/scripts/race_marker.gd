@@ -20,10 +20,10 @@ var cars = []
 var done = false
 
 func _ready():
-	player_script = load("res://car/vehicle_player.gd")
+	player_script = load("res://car/vehiclebody/vehicle_player.gd")
 	count = false
 	
-	racer = preload("res://car/car_AI_racer.tscn")
+	racer = preload("res://car/vehiclebody/car_AI_racer.tscn")
 	
 	set_process(true)
 	# Called every time the node is added to the scene.

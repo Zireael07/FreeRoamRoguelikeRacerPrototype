@@ -1,6 +1,6 @@
 [gd_scene load_steps=24 format=2]
 
-[ext_resource path="res://car/brain.gd" type="Script" id=1]
+[ext_resource path="res://car/vehiclebody/brain.gd" type="Script" id=1]
 [ext_resource path="res://assets/car/car_blue.tres" type="Material" id=2]
 [ext_resource path="res://car/AI_pathing.gd" type="Script" id=3]
 [ext_resource path="res://scripts/draw_line.gd" type="Script" id=4]

@@ -15,7 +15,7 @@ var garage
 var recharge
 var dealership
 
-var AI = preload("res://car/car_AI_traffic.tscn")
+var AI = preload("res://car/vehiclebody/car_AI_traffic.tscn")
 
 func _ready():
 	# Called when the node is added to the scene for the first time.
@@ -121,12 +121,12 @@ func _ready():
 	get_node("nav").setup(mult, samples, real_edges)
 
 	# debug
-	get_node("nav").debug_lane_lists()
+#	get_node("nav").debug_lane_lists()
 
 
 
 	# place cars on intersections
-	place_player(1)
+	#place_player(1)
 	
 	for i in range(2, samples.size()-1):
 		place_AI(i)
@@ -361,6 +361,9 @@ func place_AI(id, exit=1):
 	#var car = get_tree().get_nodes_in_group("AI")[3] #.get_parent()
 	
 	var car = AI.instance()
+	if AI_g == null:
+		return
+		
 	AI_g.add_child(car)
 	
 	var p = samples[id]

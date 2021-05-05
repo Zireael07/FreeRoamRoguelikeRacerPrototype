@@ -12,7 +12,7 @@ var count
 #export var target = Vector3()
 
 func _ready():
-	player_script = load("res://car/vehicle_player.gd")
+	player_script = load("res://car/vehiclebody/vehicle_player.gd")
 	count = false
 
 	# set color (doesn't work because materials are shared)
