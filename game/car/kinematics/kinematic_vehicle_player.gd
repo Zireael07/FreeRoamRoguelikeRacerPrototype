@@ -31,6 +31,7 @@ var emitted = false
 signal load_ended
 
 var cockpit_cam
+var debug_cam
 #var cam_speed = 1
 #var cockpit_cam_target_angle = 0
 #var cockpit_cam_angle = 0
@@ -271,6 +272,35 @@ func _process(delta):
 		# we should already have the common parent, see above
 		gfx.add_child(mark)
 		mark.look_at(pos, Vector3(0,1,0))
+
+#doesn't interact with physics
+func _input(event):
+	if (Input.is_action_pressed("headlights_toggle")):
+		if (get_node("SpotLight").is_visible()):
+			setHeadlights(false)
+		else:
+			setHeadlights(true)
+			
+	if (Input.is_action_pressed("camera_debug")):
+		var chase_cam = get_node("cambase/Camera")
+		if debug_cam.is_current():
+			chase_cam.make_current()
+			# hud changes
+			hud.toggle_cam(true)
+			hud.speed_chase()
+			# show tunnels
+			var roads = get_tree().get_nodes_in_group("roads")
+			for r in roads:
+				if 'tunnel' in r and r.tunnel:
+					r.show_tunnel()
+		else:
+			debug_cam.make_current()
+			# make tunnels transparent
+			var roads = get_tree().get_nodes_in_group("roads")
+			for r in roads:
+				if 'tunnel' in r and r.tunnel:
+					r.debug_tunnel()
+
 
 # -----------------------------------------
 

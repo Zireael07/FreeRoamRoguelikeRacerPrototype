@@ -72,6 +72,8 @@ func _physics_process(delta):
 		reverse = false
 	#else:
 	#	reverse = true
+	
+	after_move()
 
 func apply_friction(delta):
 	if velocity.length() < 0.2 and acceleration.length() == 0:
@@ -139,6 +141,14 @@ func get_input():
 func after_move():
 	# Override in inherited scripts
 	pass
+
+func setHeadlights(on):
+	if (on):
+		headlight_one.set_visible(true)
+		headlight_two.set_visible(true)
+	else:
+		headlight_one.set_visible(false)
+		headlight_two.set_visible(false)
 
 # debug
 func debug_cube(loc, red=false):

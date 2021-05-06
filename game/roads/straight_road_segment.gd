@@ -558,14 +558,14 @@ func show_tunnel():
 
 
 func _on_Area_body_entered(body):
-	if body is KinematicBody:
+	if body is KinematicBody and 'hit' in body:
 		body.hit = self
 		print("Entered area: ", get_parent().get_parent().get_name())
 	pass # Replace with function body.
 
 
 func _on_Area_body_exited(body):
-	if body is KinematicBody:
+	if body is KinematicBody and 'hit' in body:
 		body.hit = null
 		print("Exited area: ", get_parent().get_parent().get_name(), " ,", body.hit)
 	pass # Replace with function body.

@@ -5,7 +5,7 @@ var player_script
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	player_script = load("res://car/vehicle_player.gd")
+	#player_script = load("res://car/vehiclebody/vehicle_player.gd")
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
