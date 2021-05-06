@@ -7,7 +7,7 @@ var garage_scene
 
 func _ready():
 	garage_scene = preload("res://objects/garage_inside.tscn")
-	player_script = load("res://car/vehicle_player.gd")
+	player_script = load("res://car/vehiclebody/vehicle_player.gd")
 	# Called every time the node is added to the scene.
 	# Initialization here
 	pass
