@@ -70,8 +70,8 @@ func _physics_process(delta):
 	#reverse
 	if (velocity.dot(-transform.basis.z) > 0):
 		reverse = false
-	#else:
-	#	reverse = true
+	else:
+		reverse = true
 	
 	after_move()
 

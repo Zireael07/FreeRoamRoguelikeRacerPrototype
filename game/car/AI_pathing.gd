@@ -80,11 +80,18 @@ func look_for_path_initial(start_ind, left):
 		# get the one with smallest relative angle
 		angles.sort()
 		#print("Angles: ", angles)
-		# return the path
-		for t in tmp:
-			#print("Check t " + str(t))
-			if t[0] == angles[0]:
-				int_path = t[1]
+		
+		if get_node("BODY") is VehicleBody:		
+			# return the path
+			for t in tmp:
+				#print("Check t " + str(t))
+				if t[0] == angles[0]:
+					int_path = t[1]
+		else:
+			var id = angles.size()-1
+			for t in tmp:
+				if t[0] == angles[id]:
+					int_path = t[1]
 			
 			
 	print("[AI] our intersection path: " + str(int_path))

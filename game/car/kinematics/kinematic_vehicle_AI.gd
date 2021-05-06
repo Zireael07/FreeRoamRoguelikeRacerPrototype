@@ -43,6 +43,7 @@ var pt_locs_rel = [] # those are relative to parent, for debugging
 
 var elapsed_secs = 0
 var start_secs = 1
+var done = false
 var emitted = false
 signal path_gotten
 
@@ -60,12 +61,49 @@ func _ready():
 	var forw_global = get_global_transform().xform(Vector3(0, 0, -4))
 	var target = forw_global
 	
-	# the brain is a 3D node, so it converts Vec3
-	# it takes care of converting to local coords
+	# the brain is a 3D node, so it takes Vec3
 	brain.target = target
+	
+	#register_debugging_lines()
 	
 	set_process(true)
 	set_physics_process(true)
+
+#- ----------------------------
+# debugging
+func register_debugging_lines():
+	var player = get_tree().get_nodes_in_group("player")[0]
+	var draw = player.get_node("BODY/root/DebugDraw3D")
+	
+	if draw != null:
+		var pos = get_global_transform().origin
+		var end = brain.target
+		draw.add_line(self, pos, end, 3, Color(0,0,1))
+		
+		draw.add_vector(self, velocity, 1, 3, Color(1,1,0))
+		draw.add_vector(self, steer, 1, 3, Color(1,0,0))
+		draw.add_vector(self, brain.desired, 1, 3, Color(1,0,1))
+		
+		
+		#print("Registered target line")
+
+# mostly draws debugging
+func _process(delta):
+	# delay until everything is set up
+	elapsed_secs += delta
+	
+	if (elapsed_secs > start_secs):
+		if not done:
+			register_debugging_lines()
+		done = true
+
+
+		var player = get_tree().get_nodes_in_group("player")[0]
+		var draw = player.get_node("BODY/root/DebugDraw3D")
+		draw.update_line(self, 0, get_global_transform().origin, brain.target)
+		draw.update_vector(0, velocity)
+		draw.update_vector(1, steer)
+		draw.update_vector(2, brain.desired)
 
 # ------------------------------------
 func setup_path(data_path):
@@ -164,6 +202,9 @@ func make_steering():
 	var tg_dir = brain.target - get_global_transform().origin
 	dot = forward_vec.dot(tg_dir)
 	
+	
+	#debug_cube(to_local(brain.target))
+	
 	#dot = -transform.basis.z.dot(tg_dir)
 	
 	#2D angle to target (local coords)
@@ -178,12 +219,11 @@ func make_steering():
 	cte = (get_normal_point()-predict).length()
 
 	# steering from boid
-	steer = brain.steer
-	#if brain.steer != Vector2(0,0):
-	#	print("Brain steer: " + str(brain.steer) + " div: " + str(brain.steer.x/25))
+	steer = brain.steer[0] # 0 is steering, 1 is desired vel
+	
 	
 	# magic number to make inputs smaller
-	var clx = clamp(brain.steer.x/25, -1, 1)
+	var clx = clamp(brain.steer[0].x/25, -1, 1)
 	#if debug: print("Clamped x: " + str(clx))
 
 	# needed for race position
@@ -202,23 +242,37 @@ func make_steering():
 		stopping()
 	else:	
 		# handle gas/brake
-		if brain.steer.y > 0: # and speed <= 200:
+		# https://gamedev.stackexchange.com/questions/149875/how-can-i-apply-steering-behaviors-to-a-car-controlled-with-turning-and-accelera?rq=1
+		# if desired velocity (speed) is higher than current
+		if brain.steer[1].length() > velocity.length():
+			if (velocity.length() > 0 and brain.steer[1].dot(velocity) > 0) or velocity.length() == 0:
+			#print("Should be stepping on gas")
+		#if brain.steer[0].z > 0: # and speed <= 200:
 			# if very high angle and slow speed, brake (assume we're turning in an intersection)
-			if abs(angle) > 1 and speed > 2 and speed < 40:
-				if not reverse:
-					braking = true
-				else:
-					gas = true
-			# brake for sharp turns if going at speed
-			if abs(clx) > 0.45 and speed > 30:
-				if debug: print("Braking")
-				if not reverse:
-					braking = true
-				else:
-					gas = true
-			else:
+#			if abs(angle) > 1 and speed > 2 and speed < 40:
+#				if not reverse:
+#					braking = true
+#				else:
+#					gas = true
+#			else:
 				gas = true
-				#print(get_name() + " gas")
+			
+				# brake for sharp turns if going at speed
+				if abs(clx) > 0.45 and speed > 30:
+					if debug: print("Braking")
+					if not reverse:
+						braking = true
+					else:
+						gas = true
+				else:
+					gas = true
+	#				#print(get_name() + " gas")
+			else:
+				if speed > 0 and speed < 10:
+					if not reverse:
+						braking = true
+					else:
+						gas = true
 		else:
 			if speed > 0 and speed < 10:
 				if not reverse:
@@ -227,7 +281,7 @@ func make_steering():
 					gas = true
 
 	# we don't use the joy for gas/brake, so far
-	joy = Vector2(clx, 0)
+	#joy = Vector2(clx, 0)
 		
 	# unstick
 	if stuck:
@@ -242,12 +296,13 @@ func get_input():
 	#joy = steer_data[0]
 	
 	# joystick
-	if joy != Vector2(0,0) and abs(joy.x) > 0.1: # deadzone
-		steer_target = joy.x*0.2 # 4 #23 degrees limit
-	
-	# chosen_dir is normalized before use here!
-	#var a = angle_dir(-transform.basis.z, chosen_dir, transform.basis.y)
-	#steer_angle = a * deg2rad(steering_limit)
+	#if joy != Vector2(0,0) and abs(joy.x) > 0.1: # deadzone
+	#	steer_target = joy.x*0.2 # 4 #23 degrees limit
+	if not stop:
+		var a = angle_dir(-transform.basis.z, steer.normalized(), transform.basis.y)
+		steer_target = a * deg2rad(steering_limit)
+	else:
+		steer_target = 0
 	$tmpParent/Spatial_FL.rotation.y = steer_angle
 	$tmpParent/Spatial_FR.rotation.y = steer_angle
 	if gas:
@@ -348,10 +403,10 @@ func predict_loc(s):
 	#get_parent().debug_cube(par_rel, true)
 	
 	# is any existing? (see vehicle.gd line 370)
-	if has_node("Debug"):
-		get_node("Debug").set_translation(pos)
-	else:
-		debug_cube(pos, true)
+#	if has_node("Debug"):
+#		get_node("Debug").set_translation(pos)
+#	else:
+#		debug_cube(pos, true)
 	
 	return gl_tg
 
@@ -432,6 +487,6 @@ func stopping():
 			# axe the debug cubes
 			get_parent().clear_cubes()
 			emitted = true
-			var forw_global = get_global_transform().xform(Vector3(0, 0, 4))
+			var forw_global = get_global_transform().xform(Vector3(0, 0, -4))
 			target_array.append(forw_global)
 			stop = false
