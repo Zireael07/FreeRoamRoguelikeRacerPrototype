@@ -302,6 +302,12 @@ enabled = true
 cast_to = Vector3( 0, -0.5, 0 )
 script = ExtResource( 17 )
 
+[node name="ContextRays" type="Spatial" parent="BODY"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.336, 0 )
+__meta__ = {
+"_editor_description_": "What it says on the tin"
+}
+
 [node name="cambase" type="Spatial" parent="BODY"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.24017, -1.06042 )
 
@@ -323,31 +329,26 @@ material/0 = SubResource( 7 )
 
 [node name="RayFront" type="RayCast" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.444 )
-enabled = true
 cast_to = Vector3( 0, 0, -10 )
 script = ExtResource( 6 )
 
 [node name="RayFrontRight" type="RayCast" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.499137, 0, -1.444 )
-enabled = true
 cast_to = Vector3( 0, 0, -10 )
 script = ExtResource( 6 )
 
 [node name="RayFrontLeft" type="RayCast" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.508999, 0, -1.444 )
-enabled = true
 cast_to = Vector3( 0, 0, -10 )
 script = ExtResource( 6 )
 
 [node name="RayLeftFront" type="RayCast" parent="BODY"]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, -1.444 )
-enabled = true
 cast_to = Vector3( 0, 0, -5 )
 script = ExtResource( 6 )
 
 [node name="RayRightFront" type="RayCast" parent="BODY"]
 transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, -1.444 )
-enabled = true
 cast_to = Vector3( 0, 0, -5 )
 script = ExtResource( 6 )
 

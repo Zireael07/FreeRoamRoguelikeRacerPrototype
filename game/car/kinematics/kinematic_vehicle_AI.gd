@@ -26,7 +26,7 @@ var steer # just to make it easier to watch in remote tree
 # to avoid creating new variables every tick
 var gas = false
 var braking = false
-var joy = Vector2(0,0)
+#var joy = Vector2(0,0)
 
 #flag telling us to come to a halt
 var stop = false
@@ -47,6 +47,17 @@ var done = false
 var emitted = false
 signal path_gotten
 
+# context steering
+export var num_rays = 16
+export var look_side = 3.0
+var look_ahead = 10.0
+export var brake_distance = 5.0
+
+var interest = []
+var danger = []
+var rays = [] # debugging
+var chosen_dir = Vector3.ZERO
+var forward_ray = null
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -54,6 +65,12 @@ func _ready():
 	get_parent().connect("found_path", self, "_on_path_found")
 	
 	target_array.resize(0)
+	
+	# context steering
+	rays.resize(num_rays)
+	interest.resize(num_rays)
+	danger.resize(num_rays)
+	add_rays()
 	
 	var source = get_global_transform().origin
 	
@@ -69,6 +86,23 @@ func _ready():
 	set_process(true)
 	set_physics_process(true)
 
+func add_rays():
+	var angle = 2 * PI / num_rays
+	for i in num_rays:
+		var r = RayCast.new()
+		$ContextRays.add_child(r)
+		if i == 0 or i == 1 or i == num_rays-1:
+			r.cast_to = Vector3.FORWARD * look_ahead
+		else:
+			r.cast_to = Vector3.FORWARD * look_side
+		r.rotation.y = -angle * i
+		r.add_exception(self)
+		r.enabled = true
+		# debug
+		rays[i] = (r.cast_to.normalized()*4).rotated(Vector3(0,1,0), r.rotation.y)
+	forward_ray = $ContextRays.get_child(0)
+
+
 #- ----------------------------
 # debugging
 func register_debugging_lines():
@@ -78,12 +112,12 @@ func register_debugging_lines():
 	if draw != null:
 		var pos = get_global_transform().origin
 		var end = brain.target
-		draw.add_line(self, pos, end, 3, Color(0,0,1))
+		draw.add_line(self, pos, end, 3, Color(0,0,1)) # blue
 		
-		draw.add_vector(self, velocity, 1, 3, Color(1,1,0))
-		draw.add_vector(self, steer, 1, 3, Color(1,0,0))
-		draw.add_vector(self, brain.desired, 1, 3, Color(1,0,1))
-		
+		draw.add_vector(self, velocity, 1, 3, Color(1,1,0)) # yellow
+		draw.add_vector(self, steer, 1, 3, Color(1,0,0)) # red
+		draw.add_vector(self, brain.desired, 1, 3, Color(1,0,1)) # purple
+		draw.add_vector(self, chosen_dir, 1, 3, Color(0,1,0)) # green
 		
 		#print("Registered target line")
 
@@ -189,7 +223,7 @@ func make_steering():
 	# reset input
 	gas = false
 	braking = false
-	joy = Vector2(0,0)
+	#joy = Vector2(0,0)
 	
 	rel_loc = get_global_transform().xform_inv(brain.target)
 	# dummy out the y value
@@ -293,31 +327,37 @@ func make_steering():
 # kinematic input
 func get_input():
 	make_steering()
-	#joy = steer_data[0]
+	# context steering
+	set_interest()
+	set_danger()
+	choose_direction()
 	
+	#joy = steer_data[0]
 	# joystick
 	#if joy != Vector2(0,0) and abs(joy.x) > 0.1: # deadzone
 	#	steer_target = joy.x*0.2 # 4 #23 degrees limit
+	
 	if not stop:
-		var a = angle_dir(-transform.basis.z, steer.normalized(), transform.basis.y)
+		# chosen_dir is normalized before use here
+		var a = angle_dir(-transform.basis.z, chosen_dir, transform.basis.y)
 		steer_target = a * deg2rad(steering_limit)
 	else:
 		steer_target = 0
 	$tmpParent/Spatial_FL.rotation.y = steer_angle
 	$tmpParent/Spatial_FR.rotation.y = steer_angle
+	
+	# Hit brakes if obstacle dead ahead
+	if forward_ray.is_colliding():
+		var d = transform.origin.distance_to(forward_ray.get_collider().transform.origin)
+		if d < brake_distance:
+			braking = true
+	
+	
 	if gas:
 		acceleration = -transform.basis.z * engine_power
 	if braking:
 		# brakes
 		acceleration += -transform.basis.z * braking_power
-	
-	# Hit brakes if obstacle dead ahead
-#	tail_lights.emission_enabled = false
-#	if forward_ray.is_colliding():
-#		var d = transform.origin.distance_to(forward_ray.get_collider().transform.origin)
-#		if d < brake_distance:
-#			acceleration += -transform.basis.z * braking# * (1 - d/brake_distance)
-#			tail_lights.emission_enabled = true
 
 
 func angle_dir(fwd, target, up):
@@ -392,6 +432,40 @@ func after_move():
 				stop = true
 
 # -----------------------
+# based on Kidscancode's https://kidscancode.org/godot_recipes/ai/context_map/
+func set_interest():
+	# Go forward unless we have somewhere to steer
+	var path_direction = -transform.basis.z
+	
+	# see line 313
+	if steer != Vector3.ZERO:
+		path_direction = brain.steer[1].normalized()
+		#path_direction = steer.normalized()
+		
+	for i in num_rays:
+		var d = -$ContextRays.get_child(i).global_transform.basis.z
+		d = d.dot(path_direction)
+		interest[i] = max(0, d)
+
+
+func set_danger():
+	for i in num_rays:
+		var ray = $ContextRays.get_child(i)
+		danger[i] = 1.0 if ray.is_colliding() else 0.0
+
+
+func choose_direction():
+	for i in num_rays:
+		if danger[i] > 0.0:
+			interest[i] = 0.0
+	chosen_dir = Vector3.ZERO
+	for i in num_rays:
+		# this is GLOBAL!!!!
+		chosen_dir += -$ContextRays.get_child(i).global_transform.basis.z * interest[i]
+	chosen_dir = chosen_dir.normalized()
+
+
+# -------------------------------------
 # based on https://natureofcode.com/book/chapter-6-autonomous-agents/
 func predict_loc(s):
 	var loc_dr = Vector3(0, 0, -speed)
@@ -452,7 +526,8 @@ func is_close_to_target():
 func stopping():
 	#relax steering
 	if (abs(steer_angle) > 0.00):
-		joy.x = 0
+		pass
+		#joy.x = 0
 		#left = false
 		#right = false
 		
