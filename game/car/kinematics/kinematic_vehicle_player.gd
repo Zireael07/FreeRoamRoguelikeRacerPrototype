@@ -129,6 +129,16 @@ func _ready():
 	last_pos = get_translation()
 
 	skidmark = preload("res://objects/skid_mark.tscn")
+	
+	# smoke color
+	var snow_mat = load("res://assets/snow_smoke_mat.tres")
+	var smoke_mat = load("res://assets/Smoke_mat.tres")
+	if get_parent().get_parent().get_node("Ground").snow:
+		get_node("Smoke").material_override = snow_mat
+		get_node("Smoke2").material_override = snow_mat
+	else:
+		get_node("Smoke").material_override = smoke_mat
+		get_node("Smoke2").material_override = smoke_mat
 
 func random_date():
 	# seed the rng
@@ -450,3 +460,35 @@ func angle_to_intersection(id):
 	#print("Relative loc of intersection", id, " is ", rel_pos)
 	# we don't care about z, only about x
 	return rel_pos.x
+
+# -------------------------
+func delay_new_events():
+	var mmap = get_node("Viewport_root/Viewport/minimap")
+	mmap.add_event_markers()
+
+
+func reset_events():
+	var mmap = get_node("Viewport_root/Viewport/minimap")
+	var markers = get_tree().get_nodes_in_group("marker")
+	# remove previous day's events
+	for e in markers:
+		e.queue_free()
+		# remove minimap markers
+		mmap.remove_marker(e.get_global_transform().origin)
+
+	# new events
+	var marker_data = map.get_node("nav").spawn_markers(map.samples, map.real_edges)
+	#map.get_node("nav").setup_markers(marker_data)
+	
+	# we have to wait here because otherwise it shows markers for old events too
+	# wait
+	var t = Timer.new()
+	t.set_wait_time(3)
+	t.set_one_shot(true)
+	self.add_child(t)
+	t.start()
+	yield(t, "timeout")
+	# stuff after delay
+	map.get_node("nav").setup_markers(marker_data)
+	delay_new_events()
+	t.queue_free()
