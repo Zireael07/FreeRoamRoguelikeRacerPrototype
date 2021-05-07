@@ -545,6 +545,7 @@ one_shot = true
 
 [node name="Smoke" type="Particles" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.520701, 0.181243, -1.02684 )
+cast_shadow = 0
 emitting = false
 amount = 32
 lifetime = 0.5
@@ -554,6 +555,7 @@ draw_pass_1 = SubResource( 20 )
 
 [node name="Smoke2" type="Particles" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.489926, 0.248742, -1.14425 )
+cast_shadow = 0
 emitting = false
 amount = 32
 lifetime = 0.5

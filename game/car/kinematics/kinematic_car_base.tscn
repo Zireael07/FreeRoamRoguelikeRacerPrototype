@@ -625,6 +625,8 @@ material/0 = null
 
 [node name="Smoke" type="Particles" parent="BODY"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.520701, 0.181243, 0.658347 )
+material_override = ExtResource( 14 )
+cast_shadow = 0
 emitting = false
 amount = 32
 lifetime = 0.5
@@ -634,6 +636,8 @@ draw_pass_1 = SubResource( 21 )
 
 [node name="Smoke2" type="Particles" parent="BODY"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.489926, 0.248742, 0.540937 )
+material_override = ExtResource( 14 )
+cast_shadow = 0
 emitting = false
 amount = 32
 lifetime = 0.5
