@@ -332,14 +332,18 @@ func rain():
 	
 	# enable SSR
 	env.set_ssr_enabled(true) 
+	env.adjustment_enabled = true
+	env.fog_color = Color(0.62, 0.66, 0.70) # desaturate the usual blue
 	
 	if get_tree().get_nodes_in_group("roads").size() > 0:
 		get_tree().get_nodes_in_group("roads")[0].rain_shine()
 		
-	player.get_node("BODY/proc_mesh").rain_glass()
+	#player.get_node("BODY/proc_mesh").rain_glass()
 
 func no_rain():
 	env.set_ssr_enabled(false)
+	env.adjustment_enabled = false
+	env.fog_color = Color(0.5, 0.6, 0.7)
 		
 	player.get_node("BODY/RainParticles").set_emitting(false)
 	player.get_node("BODY/RainParticles2").set_emitting(false)
@@ -347,7 +351,7 @@ func no_rain():
 		get_tree().get_nodes_in_group("roads")[0].no_rain()
 
 	# car glass
-	player.get_node("BODY/proc_mesh").rain_clear()
+	#player.get_node("BODY/proc_mesh").rain_clear()
 	
 func snow():
 	var snow = load("res://assets/snow_material.tres")

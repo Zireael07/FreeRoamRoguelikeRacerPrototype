@@ -18,4 +18,5 @@ script = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Area"]
 shape = SubResource( 1 )
+
 [connection signal="body_entered" from="Area" to="Area" method="_on_Area_body_entered"]

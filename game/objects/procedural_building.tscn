@@ -97,4 +97,5 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
 visible = false
 mesh = SubResource( 4 )
 material/0 = null
+
 [connection signal="body_entered" from="Spatial" to="Spatial" method="_on_Spatial_body_entered"]

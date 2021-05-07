@@ -25,3 +25,4 @@ glow_intensity = 6.0
 glow_blend_mode = 1
 glow_hdr_threshold = 3.2
 glow_bicubic_upscale = true
+adjustment_saturation = 0.65
