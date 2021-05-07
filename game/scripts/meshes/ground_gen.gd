@@ -3,9 +3,19 @@ tool
 extends "mesh_gen.gd"
 
 # class member variables go here, for example:
-export(SpatialMaterial) var terrainmaterial = null
+export var snow = false
+export(SpatialMaterial) var snowmaterial = null
+export(SpatialMaterial) var groundmaterial = null
+
+var terrainmaterial = null
 
 func _ready():
+	if snow:
+		terrainmaterial = snowmaterial
+	else:
+		terrainmaterial = groundmaterial
+	
+	
 	if (terrainmaterial):
 		addTerrain(terrainmaterial, 500, -0.05, 500)
 	else:
