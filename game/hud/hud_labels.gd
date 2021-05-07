@@ -30,10 +30,16 @@ var fps
 var draws
 var vertices
 
+var regex
 
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
+	
+	regex = RegEx.new()
+	regex.compile("\\d{1,3}(?=(\\d{3})*$)")
+	
+	print("Found: ", regex.search("123456"))
 	
 	pass
 
@@ -43,12 +49,31 @@ func update_speed(text, clr):
 
 func update_debug(text):
 	debug_label.set_text(text)
+
+func format_verts(text):
+	# for strings, this is length() not size()!
+	if text.length() > 3:
+		# add space separator
+		var n_txt = ""
+		
+		var matches = regex.search_all(text)
+		for i in matches:
+			n_txt += i.get_string() + " "
+		#	print(i.get_string())
+		
+		# we don't have an array
+		#var joined_string = PoolStringArray(matches).join(" ")
+		#print(n_txt)
+		
+		text = n_txt
+		
+	return text
 	
 func update_fps():
 	fps = str(Engine.get_frames_per_second()) + " ms: %.3f" % (1000.0/Engine.get_frames_per_second())
 	draws = str(Performance.get_monitor(Performance.RENDER_DRAW_CALLS_IN_FRAME)) 
 	vertices = str(Performance.get_monitor(Performance.RENDER_VERTICES_IN_FRAME))
-	fps_label.set_text(fps+ " draw calls" + draws + " verts: " + vertices)
+	fps_label.set_text(fps+ " draw calls" + draws + " verts: " + format_verts(vertices))
 
 func update_distance(text):
 	dist_label.set_text(text)
