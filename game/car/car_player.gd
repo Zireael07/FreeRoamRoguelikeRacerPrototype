@@ -11,6 +11,12 @@ onready	var nameplate = get_node("BODY").get_node("Viewport 2").get_node("namepl
 
 func _ready():
 	set_name_custom()
+	
+	# hack fix
+	if rotation.y != 0:
+		get_node("BODY").rotate_y(rotation.y)
+		rotation.y = 0
+	
 	#pass
 	
 func select_name(s_name, s_romaji):
