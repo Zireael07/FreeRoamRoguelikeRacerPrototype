@@ -59,6 +59,8 @@ var rays = [] # debugging
 var chosen_dir = Vector3.ZERO
 var forward_ray = null
 
+# for race AI only
+var finished = false
 # cops only
 var bribed = false
 
@@ -367,15 +369,15 @@ func make_steering():
 	#if debug: print("Clamped x: " + str(clx))
 
 	# needed for race position
-#	if get_parent().is_in_group("race_AI"):
-#		#print("Race AI")
-#		#print("Path: " + str(self.path))
-#		if self.path != null and self.path.size() > 0 and not self.finished:
-#			# paranoia
-#			if current < path.size()-1: 
-#				var pos = get_global_transform().origin
-#				position_on_line = position_line(prev, current, pos, self.path)
-#				#print("Position on line: " + str(position_on_line))
+	if get_parent().is_in_group("race_AI"):
+		#print("Race AI")
+		#print("Path: " + str(self.path))
+		if self.path != null and self.path.size() > 0 and not self.finished:
+			# paranoia
+			if current < path.size()-1: 
+				var pos = get_global_transform().origin
+				position_on_line = position_line(prev, current, pos, self.path)
+				#print("Position on line: " + str(position_on_line))
 	
 	#stop if we're supposed to
 	if (stop):
@@ -434,18 +436,22 @@ func make_steering():
 func get_input():
 	make_steering()
 	# context steering
-	set_interest()
-	set_danger()
-	choose_direction()
+	if not get_parent().is_in_group("race_AI"):
+		set_interest()
+		set_danger()
+		choose_direction()
 	
 	#joy = steer_data[0]
 	# joystick
 	#if joy != Vector2(0,0) and abs(joy.x) > 0.1: # deadzone
 	#	steer_target = joy.x*0.2 # 4 #23 degrees limit
 	
+	if get_parent().is_in_group("race_AI"):
+		chosen_dir = steer.normalized()
+	
 	if not stop:
 		# chosen_dir is normalized before use here
-		var a = angle_dir(-transform.basis.z, chosen_dir, transform.basis.y)
+		var a = angle_dir(-transform.basis.z, chosen_dir, Vector3.UP)
 		steer_target = a * deg2rad(steering_limit)
 	else:
 		steer_target = 0
@@ -453,17 +459,21 @@ func get_input():
 	$tmpParent/Spatial_FR.rotation.y = steer_angle
 	
 	# Hit brakes if obstacle dead ahead
-	if forward_ray.is_colliding():
-		var d = transform.origin.distance_to(forward_ray.get_collider().transform.origin)
-		if d < brake_distance:
-			braking = true
+#	if forward_ray.is_colliding():
+#		var d = transform.origin.distance_to(forward_ray.get_collider().transform.origin)
+#		if d < brake_distance:
+#			braking = true
 	
 	
 	if gas:
-		acceleration = -transform.basis.z * engine_power
+		# make it easier to get going
+		if velocity.length() < 1:
+			acceleration = -transform.basis.z * engine_power*2	
+		else:
+			acceleration = -global_transform.basis.z * engine_power
 	if braking:
 		# brakes
-		acceleration += -transform.basis.z * braking_power
+		acceleration += -global_transform.basis.z * braking_power
 
 
 func angle_dir(fwd, target, up):
@@ -524,18 +534,18 @@ func after_move():
 				stop = true
 			
 	#if we passed the point, don't backtrack
-	if get_parent().is_in_group("race_AI"):
-		if (dot < 0 and not stop):
-			#print("Passed the point")
-			##do we have a next point?
-			if (target_array.size() > current+1):
-				prev = current
-				current = current + 1
-				# send to brain
-				brain.target = target_array[current]
-			else:
-				#print("We're at the end")
-				stop = true
+#	if get_parent().is_in_group("race_AI"):
+#		if (dot < 0 and not stop):
+#			print("Passed the point")
+#			##do we have a next point?
+#			if (target_array.size() > current+1):
+#				prev = current
+#				current = current + 1
+#				# send to brain
+#				brain.target = target_array[current]
+#			else:
+#				#print("We're at the end")
+#				stop = true
 
 # -----------------------
 # based on Kidscancode's https://kidscancode.org/godot_recipes/ai/context_map/

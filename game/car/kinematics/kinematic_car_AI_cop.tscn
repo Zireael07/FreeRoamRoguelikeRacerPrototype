@@ -157,11 +157,11 @@ flags_vertex_lighting = true
 albedo_color = Color( 0.679688, 0.679688, 0.679688, 1 )
 roughness = 0.0
 
-[sub_resource type="CubeMesh" id=9]
+[sub_resource type="CubeMesh" id=8]
 material = ExtResource( 12 )
 size = Vector3( 0.75, 0.25, 0.25 )
 
-[sub_resource type="SpatialMaterial" id=8]
+[sub_resource type="SpatialMaterial" id=9]
 flags_unshaded = true
 flags_use_point_size = true
 params_line_width = 3.0
@@ -303,11 +303,13 @@ transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, -4.1145
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.670132 )
 enabled = true
 cast_to = Vector3( 0, -0.5, 0 )
+collision_mask = 3
 
 [node name="RearRay" type="RayCast" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.659517 )
 enabled = true
 cast_to = Vector3( 0, -0.5, 0 )
+collision_mask = 3
 script = ExtResource( 10 )
 
 [node name="ContextRays" type="Spatial" parent="BODY"]
@@ -375,7 +377,7 @@ one_shot = true
 [node name="coplight" type="MeshInstance" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0225899, 1.09289, 0.175077 )
 cast_shadow = 0
-mesh = SubResource( 9 )
+mesh = SubResource( 8 )
 material/0 = null
 
 [node name="SpotLight2" type="SpotLight" parent="BODY"]
@@ -393,12 +395,12 @@ light_energy = 5.0
 spot_angle = 70.2
 
 [node name="draw" type="ImmediateGeometry" parent="."]
-material_override = SubResource( 8 )
+material_override = SubResource( 9 )
 cast_shadow = 0
 script = ExtResource( 3 )
 
 [node name="draw2" type="ImmediateGeometry" parent="."]
-material_override = SubResource( 8 )
+material_override = SubResource( 9 )
 cast_shadow = 0
 script = ExtResource( 3 )
 

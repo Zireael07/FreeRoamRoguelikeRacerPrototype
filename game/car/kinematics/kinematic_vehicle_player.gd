@@ -47,6 +47,8 @@ var rel_loc = Vector3()
 var race_path = PoolVector3Array()
 var finished = false
 
+var money = 0
+
 # player navigation
 var reached_inter
 var reached_changed = false
@@ -199,6 +201,49 @@ func _physics_process(delta):
 	if (elapsed_secs > start_secs and not emitted):
 		emit_signal("load_ended")
 		emitted = true
+		
+		
+	# racing
+	if race and race_path.size() > 0:
+		var forward_global = get_global_transform().xform(Vector3(0, 0, 2))
+		var forward_vec = forward_global-get_global_transform().origin
+
+		var pos = get_global_transform().origin
+		#B-A = from A to B
+		var target_vec = race_path[current] - pos
+		# forward vec goes from origin to forward
+		dot = forward_vec.dot(target_vec)
+
+		rel_loc = get_global_transform().xform_inv(race_path[current])
+
+		#offset = offset_dist(race_path[prev], race_path[current], pos)
+
+		position_on_line = position_line(prev, current, pos, race_path)
+
+func after_move():
+	# racing ctd
+	# track the path points
+	if race and race_path.size() > 0:
+		#if we passed the point, don't backtrack
+		if (dot < 0 and rel_loc.distance_to(Vector3(0,0,0)) > 3 and rel_loc.distance_to(Vector3(0,0,0)) < 30):
+			#print(get_parent().get_name() + " getting next point after " + str(current) + " because passed over " + str(dot))
+
+			##do we have a next point?
+			if (race_path.size() > current+1):
+				prev = current
+				current = current + 1
+			#else:
+				#print("We're at the end")
+			#	stop = true
+
+		if (rel_loc.distance_to(Vector3(0,0,0)) < 2):
+
+			##do we have a next point?
+			if (race_path.size() > current+1):
+				#print("AI " + get_parent().get_name() + " gets a next point")
+				prev = current
+				current = current + 1
+
 
 # UI stuff doesn't have to be in physics_process
 func _process(delta):
@@ -250,6 +295,18 @@ func _process(delta):
 	hud.update_health(health)
 
 	hud.update_battery(battery)
+
+
+	# stop weather particles when in tunnel
+	if hit != null and 'tunnel' in hit.get_parent().get_parent() and hit.get_parent().get_parent().tunnel:
+		was_tunnel = true
+		get_node("RainParticles").set_emitting(false)
+		get_node("RainParticles2").set_emitting(false)
+	else:
+		if was_tunnel and World_node.weather > 1: # rain or snow
+			was_tunnel = false
+			get_node("RainParticles").set_emitting(true)
+			get_node("RainParticles2").set_emitting(true)
 
 	# skid marks
 	if speed < 5 and map != null:
@@ -311,6 +368,14 @@ func _input(event):
 				if 'tunnel' in r and r.tunnel:
 					r.debug_tunnel()
 
+	if (Input.is_action_pressed("map")):
+		if get_node("Map").is_visible():
+			get_node("Map").hide()
+		else:
+			#print("Show map!")
+			get_node("Map").show()
+			# force redraw minimap track if any
+			get_node("Map").redraw_nav()
 
 # -----------------------------------------
 

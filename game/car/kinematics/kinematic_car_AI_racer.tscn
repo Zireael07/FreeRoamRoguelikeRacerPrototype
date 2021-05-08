@@ -1,8 +1,8 @@
 [gd_scene load_steps=24 format=2]
 
-[ext_resource path="res://car/vehiclebody/brain.gd" type="Script" id=1]
+[ext_resource path="res://car/kinematics/kinematic_brain.gd" type="Script" id=1]
 [ext_resource path="res://assets/car/car_blue.tres" type="Material" id=2]
-[ext_resource path="res://car/AI_pathing.gd" type="Script" id=3]
+[ext_resource path="res://car/AI_pathing_racer.gd" type="Script" id=3]
 [ext_resource path="res://scripts/draw_line.gd" type="Script" id=4]
 [ext_resource path="res://car/car_wheel.tscn" type="PackedScene" id=5]
 [ext_resource path="res://car/detect_obstacles_ray.gd" type="Script" id=6]
@@ -10,7 +10,7 @@
 [ext_resource path="res://hud/label_3d.gd" type="Script" id=8]
 [ext_resource path="res://assets/car/truenohoudini.obj" type="ArrayMesh" id=9]
 [ext_resource path="res://car/kinematics/kinematic_vehicle_AI.gd" type="Script" id=10]
-[ext_resource path="res://assets/car/car_gray.tres" type="Material" id=11]
+[ext_resource path="res://assets/car/car_red.tres" type="Material" id=11]
 [ext_resource path="res://car/RayCast.gd" type="Script" id=12]
 [ext_resource path="res://assets/car/taillights.tres" type="Material" id=13]
 
@@ -175,7 +175,7 @@ params_line_width = 3.0
 params_point_size = 3.0
 
 [node name="Spatial" type="Spatial" groups=[
-"player",
+"race_AI",
 ]]
 _import_path = NodePath(".")
 script = ExtResource( 3 )
@@ -303,15 +303,23 @@ transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 17.5
 [node name="Position3D4" type="Position3D" parent="BODY/CameraPositions"]
 transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, -4.11453, 0.430022, 3.54601e-07 )
 
+[node name="ContextRays" type="Spatial" parent="BODY"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.336, 0 )
+__meta__ = {
+"_editor_description_": "What it says on the tin"
+}
+
 [node name="FrontRay" type="RayCast" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.670132 )
 enabled = true
 cast_to = Vector3( 0, -0.5, 0 )
+collision_mask = 3
 
 [node name="RearRay" type="RayCast" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.659517 )
 enabled = true
 cast_to = Vector3( 0, -0.5, 0 )
+collision_mask = 3
 script = ExtResource( 12 )
 
 [node name="Viewport" type="Viewport" parent="BODY"]
@@ -403,3 +411,5 @@ script = ExtResource( 4 )
 material_override = SubResource( 10 )
 cast_shadow = 0
 script = ExtResource( 4 )
+
+[connection signal="timeout" from="BODY/Timer" to="BODY" method="_on_Timer_timeout"]

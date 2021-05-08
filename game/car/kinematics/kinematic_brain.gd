@@ -97,8 +97,11 @@ class DrivingState:
 		# TODO: the value here should probably be speed dependent
 		arr = car.arrive(car.target, 10)
 		#var seek = car.seek(Vector2(to_loc.x, to_loc.z))
-				
-		car.steer = arr
+		
+		if 'race' in car.get_parent().get_parent():		
+			car.steer = car.seek(car.target)
+		else:
+			car.steer = arr
 				
 				# avoid getting too far off lane
 #				if car.get_parent().cte > 1 and car.get_parent().cte < 20:
@@ -126,7 +129,7 @@ class ChaseState:
 		self.car = car
 
 	func update(delta):
-		print("Chase state on!")
+		#print("Chase state on!")
 		
 		var seek = car.seek(car.target)
 		car.steer = seek

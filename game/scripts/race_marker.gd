@@ -323,7 +323,7 @@ func _process(delta):
 	#	print("Count is off")
 
 func _on_Area_body_exit( body ):
-	if body is VehicleBody:
+	if body is KinematicBody:
 		if body is player_script:
 			#print("Area exited by the player")
 			player = body
@@ -393,8 +393,8 @@ func spawn_racer(loc):
 	
 	cars_root.add_child(car)
 	# look at wants global position
-	car.look_at(cars_root.to_global(loc), Vector3(0,1,0))
-	car.rotate_y(deg2rad(180))
+	car.get_node("BODY").look_at(cars_root.to_global(loc), Vector3(0,1,0))
+	#car.rotate_y(deg2rad(180))
 	# needs to come AFTER rotations
 	car.set_translation(loc)
 	
