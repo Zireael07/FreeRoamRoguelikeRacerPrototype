@@ -67,6 +67,7 @@ func _ready():
 	World_node = get_parent().get_parent().get_node("scene")
 	cockpit_cam = $"cambase/CameraCockpit"
 	#debug_cam = $"cambase/CameraDebug"
+	tail_mat = taillights.get_mesh().surface_get_material(0)
 
 	##GUI
 	var h = preload("res://hud/hud.tscn")
@@ -179,7 +180,6 @@ func get_input():
 	if Input.is_action_pressed("accelerate"):
 		acceleration = -transform.basis.z * engine_power
 		#cancel braking visual
-		tail_mat = taillights.get_mesh().surface_get_material(0)
 		if tail_mat != null:
 			tail_mat.set_albedo(Color(0.62,0.62,0.62))
 			tail_mat.set_feature(SpatialMaterial.FEATURE_EMISSION, false)
@@ -428,9 +428,12 @@ func get_heading():
 	#var player_rot = forward_vec.angle_to(Vector3(0,0,1))
 	# returns radians
 	#return player_rot
-	var North = get_node("/root/Navigation/marker_North")
-	if North == null:
+	if !has_node("/root/Navigation/marker_North"):
 		return 0
+	
+	var North = get_node("/root/Navigation/marker_North")
+	#if North == null:
+	#	return 0
 	var rel_loc = get_global_transform().xform_inv(North.get_global_transform().origin)
 	#2D angle to target (local coords)
 	var angle = atan2(rel_loc.x, rel_loc.z)
