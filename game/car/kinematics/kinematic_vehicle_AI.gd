@@ -59,6 +59,9 @@ var rays = [] # debugging
 var chosen_dir = Vector3.ZERO
 var forward_ray = null
 
+# cops only
+var bribed = false
+
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
@@ -86,6 +89,7 @@ func _ready():
 	set_process(true)
 	set_physics_process(true)
 
+# TODO: add more rays in front (32 look ok in front), less in rear where 16 is enough
 func add_rays():
 	var angle = 2 * PI / num_rays
 	for i in num_rays:
@@ -101,6 +105,73 @@ func add_rays():
 		# debug
 		rays[i] = (r.cast_to.normalized()*4).rotated(Vector3(0,1,0), r.rotation.y)
 	forward_ray = $ContextRays.get_child(0)
+
+# ---------------------------------------
+# cop stuff
+# player clicked ok on bribe prompt
+func _on_ok_click():
+	print("Clicked ok to bribe")
+	# TODO: deduct money
+	# stop chase
+	brain.set_state(brain.STATE_DRIVING)
+	bribed = true
+	
+func coplights_on(player):
+	var material = get_node("coplight").get_mesh().surface_get_material(0)
+	#material.set_feature(SpatialMaterial.FEATURE_EMISSION, true)
+	material.set_albedo(Color(1,0,0))
+	get_node("SpotLight2").set_visible(true)
+	get_node("SpotLight3").set_visible(true)
+	
+	# minimap icon flashes
+	var map = player.get_node("BODY/Viewport_root/Viewport/minimap")
+	map.flash_cop_arrow()
+	
+func coplights_off(player):
+	var material = get_node("coplight").get_mesh().surface_get_material(0)
+	#material.set_feature(SpatialMaterial.FEATURE_EMISSION, false)
+	material.set_albedo(Color(0.5, 0, 0))
+	get_node("SpotLight2").set_visible(false)
+	get_node("SpotLight3").set_visible(false)
+	
+	# stop minimap flashing
+	var map = player.get_node("BODY/Viewport_root/Viewport/minimap")
+	map.stop_cop_arrow()
+
+func start_chase():
+	var playr = get_tree().get_nodes_in_group("player")[0]
+	var playr_loc = playr.get_node("BODY").get_global_transform().origin
+	#print("Player loc: " + str(playr_loc))
+	# if player close enough
+	if playr_loc.distance_to(get_global_transform().origin) < 10:
+		#print("Player within 10 m of cop")
+		# ignore player that is keeping to speed limit
+		var playr_speed = playr.get_node("BODY").speed
+		if playr_speed < 15:
+			return
+			
+		# bugfix
+		if stop:
+			stop = false
+		brain.set_state(brain.STATE_CHASE)
+		brain.target = playr_loc
+		
+		# turn lights on
+		coplights_on(playr)
+		
+		# notify player
+		var msg = playr.get_node("BODY").get_node("Messages")
+		msg.set_text("CHASE STARTED!" + "\n" + "Bribe the cops with Y100?")
+		msg.enable_ok(true)
+		msg.show()
+		# set up the OK button
+		if not msg.get_node("OK_button").is_connected("pressed", self, "_on_ok_click"):
+			print("Not connected")
+			# disconnect all others just in case
+			for d in msg.get_node("OK_button").get_signal_connection_list("pressed"):
+				#print(d["target"])
+				msg.get_node("OK_button").disconnect("pressed", d["target"], "_on_ok_click")
+			msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
 
 
 #- ----------------------------
@@ -138,6 +209,41 @@ func _process(delta):
 		draw.update_vector(0, velocity)
 		draw.update_vector(1, steer)
 		draw.update_vector(2, brain.desired)
+
+		# cop spots player -> starts chase
+		if get_parent().is_in_group("cop"):
+			# if not chasing already
+			if brain.get_state() != brain.STATE_CHASE and not self.bribed:
+				start_chase()
+			# we're already chasing
+			else:
+				if self.bribed:
+					# lights off
+					var playr = get_tree().get_nodes_in_group("player")[0]
+					coplights_off(playr)
+					# stop chase
+					brain.set_state(brain.STATE_DRIVING)
+				else:
+					var playr = get_tree().get_nodes_in_group("player")[0]
+					var playr_loc = playr.get_node("BODY").get_global_transform().origin
+					# if player hasn't outran us
+					if playr_loc.distance_to(get_global_transform().origin) < 60:
+						brain.target = playr_loc
+						#print(str(brain.target))
+						if not get_node("SpotLight2").is_visible():
+							coplights_on(playr)
+					else:
+						# stop chase
+						brain.set_state(brain.STATE_DRIVING)
+						
+						print("[Cop] player escaped!")
+						# notify player
+						var msg = playr.get_node("BODY").get_node("Messages")
+						msg.set_text("CHASE ENDED!" + "\n" + "You escaped the cops!")
+						msg.enable_ok(false)
+						msg.show()
+						
+						coplights_off(playr)
 
 # ------------------------------------
 func setup_path(data_path):

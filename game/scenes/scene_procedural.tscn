@@ -13,7 +13,7 @@
 [ext_resource path="res://scripts/meshes/ground_gen.gd" type="Script" id=11]
 [ext_resource path="res://assets/ground_material_snow.tres" type="Material" id=12]
 [ext_resource path="res://map/map_nav.gd" type="Script" id=13]
-[ext_resource path="res://car/vehiclebody/car_AI_cop.tscn" type="PackedScene" id=14]
+[ext_resource path="res://car/kinematics/kinematic_car_AI_cop.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scripts/scene_top.gd" type="Script" id=15]
 [ext_resource path="res://objects/roadblock.tscn" type="PackedScene" id=16]
 [ext_resource path="res://assets/ground_material.tres" type="Material" id=17]
@@ -83,12 +83,11 @@ left = false
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4.52054, 0, -1.45042 )
 left = false
 
-[node name="cop" parent="AI" instance=ExtResource( 14 )]
-transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 5.02812 )
-left = false
-
 [node name="Spatial10" parent="AI" instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.01203, 0, 0.0882263 )
+
+[node name="cop" parent="AI" instance=ExtResource( 14 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.1935 )
 
 [node name="car" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 47.594, 0, 192.855 )

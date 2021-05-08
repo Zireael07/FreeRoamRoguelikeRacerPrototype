@@ -66,7 +66,7 @@ func _ready():
 
 	World_node = get_parent().get_parent().get_node("scene")
 	cockpit_cam = $"cambase/CameraCockpit"
-	#debug_cam = $"cambase/CameraDebug"
+	debug_cam = $"cambase/CameraDebug"
 	tail_mat = taillights.get_mesh().surface_get_material(0)
 
 	##GUI

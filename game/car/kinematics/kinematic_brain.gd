@@ -127,6 +127,10 @@ class ChaseState:
 
 	func update(delta):
 		print("Chase state on!")
+		
+		var seek = car.seek(car.target)
+		car.steer = seek
+		car.velocity = car.get_parent().velocity
 
 class BuildingAvoidState:
 	var car
