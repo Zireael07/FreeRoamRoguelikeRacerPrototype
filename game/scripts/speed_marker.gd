@@ -12,7 +12,7 @@ var count
 #export var target = Vector3()
 
 func _ready():
-	player_script = load("res://car/vehiclebody/vehicle_player.gd")
+	player_script = load("res://car/kinematics/kinematic_vehicle_player.gd")
 	count = false
 
 	# set color (doesn't work because materials are shared)
@@ -24,7 +24,7 @@ func _ready():
 	# Initialization here
 
 func _on_Area_body_enter( body ):
-	if body is VehicleBody:
+	if body is KinematicBody:
 		if body is player_script:
 			print("Area entered by the player - speed")
 			player = body
@@ -32,7 +32,7 @@ func _on_Area_body_enter( body ):
 			if player.race != null:
 				return # ignore if player is in a race
 			
-			var speed = player.get_linear_velocity().length()
+			var speed = player.speed
 			var speed_kph = round(speed*3.6)
 
 			var msg = body.get_node("Messages")

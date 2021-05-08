@@ -20,10 +20,10 @@ var car
 var done = false
 
 func _ready():
-	player_script = load("res://car/vehicle_player.gd")
+	player_script = load("res://car/kinematics/kinematic_vehicle_player.gd")
 	count = false
 	
-	racer = preload("res://car/vehiclebody/car_AI_racer.tscn")
+	racer = preload("res://car/kinematics/kinematic_car_AI_racer.tscn")
 	
 	set_process(true)
 	# Called every time the node is added to the scene.
@@ -33,7 +33,7 @@ func set_finish(val):
 	finish = val
 
 func _on_Area_body_enter( body ):
-	if body is VehicleBody:
+	if body is KinematicBody:
 		if body is player_script and not body.get_parent().is_in_group("bike"):
 			print("Area entered by the player")
 			player = body

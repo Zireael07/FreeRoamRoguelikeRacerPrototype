@@ -17,7 +17,7 @@ var target_time = 0
 export var target = Vector3()
 
 func _ready():
-	player_script = load("res://car/vehiclebody/vehicle_player.gd")
+	player_script = load("res://car/kinematics/kinematic_vehicle_player.gd")
 	count = false
 	
 	set_process(true)
@@ -37,7 +37,7 @@ func set_finish(val):
 	finish = val
 
 func _on_Area_body_enter( body ):
-	if body is VehicleBody:
+	if body is KinematicBody:
 		if body is player_script and not body.get_parent().is_in_group("bike"):
 			print("Area entered by the player")
 			player = body
