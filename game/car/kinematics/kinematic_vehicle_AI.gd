@@ -36,6 +36,7 @@ var flag
 var compare_pos = Vector3(0,0,0)
 
 var debug = false
+var draw = null
 
 # pathing
 var path
@@ -77,8 +78,6 @@ func _ready():
 	danger.resize(num_rays)
 	add_rays()
 	
-	var source = get_global_transform().origin
-	
 	# need a dummy target for before we get path
 	var forw_global = get_global_transform().xform(Vector3(0, 0, -4))
 	var target = forw_global
@@ -87,6 +86,7 @@ func _ready():
 	brain.target = target
 	
 	#register_debugging_lines()
+	
 	
 	set_process(true)
 	set_physics_process(true)
@@ -179,9 +179,9 @@ func start_chase():
 #- ----------------------------
 # debugging
 func register_debugging_lines():
+	#TODO: shuffle this somewhere else so that it only happens on ready(
 	var player = get_tree().get_nodes_in_group("player")[0]
-	var draw = player.get_node("BODY/root/DebugDraw3D")
-	
+	draw = player.get_node("BODY/root/DebugDraw3D")
 	if draw != null:
 		var pos = get_global_transform().origin
 		var end = brain.target
@@ -204,13 +204,11 @@ func _process(delta):
 			register_debugging_lines()
 		done = true
 
-
-		var player = get_tree().get_nodes_in_group("player")[0]
-		var draw = player.get_node("BODY/root/DebugDraw3D")
-		draw.update_line(self, 0, get_global_transform().origin, brain.target)
-		draw.update_vector(0, velocity)
-		draw.update_vector(1, steer)
-		draw.update_vector(2, brain.desired)
+		if get_viewport().get_camera().get_name() == "CameraDebug":
+			draw.update_line(self, 0, get_global_transform().origin, brain.target)
+			draw.update_vector(0, velocity)
+			draw.update_vector(1, steer)
+			draw.update_vector(2, brain.desired)
 
 		# cop spots player -> starts chase
 		if get_parent().is_in_group("cop"):
@@ -421,34 +419,25 @@ func make_steering():
 					braking = true
 				else:
 					gas = true
-
-	# we don't use the joy for gas/brake, so far
-	#joy = Vector2(clx, 0)
 		
 	# unstick
 	if stuck:
 		gas = false
 		braking = true
-		
-	#return [gas. braking, joy]
 
 # kinematic input
 func get_input():
 	make_steering()
 	# context steering
-	if not get_parent().is_in_group("race_AI"):
+	if not stop:
 		set_interest()
 		set_danger()
 		choose_direction()
 	
-	#joy = steer_data[0]
-	# joystick
-	#if joy != Vector2(0,0) and abs(joy.x) > 0.1: # deadzone
-	#	steer_target = joy.x*0.2 # 4 #23 degrees limit
+	#if get_parent().is_in_group("race_AI"):
+	#	chosen_dir = steer.normalized()
 	
-	if get_parent().is_in_group("race_AI"):
-		chosen_dir = steer.normalized()
-	
+	# quick and easy, no need to compare relative positions/use joy input
 	if not stop:
 		# chosen_dir is normalized before use here
 		var a = angle_dir(-transform.basis.z, chosen_dir, Vector3.UP)
@@ -459,10 +448,11 @@ func get_input():
 	$tmpParent/Spatial_FR.rotation.y = steer_angle
 	
 	# Hit brakes if obstacle dead ahead
-#	if forward_ray.is_colliding():
-#		var d = transform.origin.distance_to(forward_ray.get_collider().transform.origin)
-#		if d < brake_distance:
-#			braking = true
+	#if not get_parent().is_in_group("race_AI"):
+	if forward_ray.is_colliding():
+		var d = transform.origin.distance_to(forward_ray.get_collider().transform.origin)
+		if d < brake_distance:
+			braking = true
 	
 	
 	if gas:
@@ -470,10 +460,10 @@ func get_input():
 		if velocity.length() < 1:
 			acceleration = -transform.basis.z * engine_power*2	
 		else:
-			acceleration = -global_transform.basis.z * engine_power
+			acceleration = -transform.basis.z * engine_power
 	if braking:
 		# brakes
-		acceleration += -global_transform.basis.z * braking_power
+		acceleration += -transform.basis.z * braking_power
 
 
 func angle_dir(fwd, target, up):
@@ -534,18 +524,18 @@ func after_move():
 				stop = true
 			
 	#if we passed the point, don't backtrack
-#	if get_parent().is_in_group("race_AI"):
-#		if (dot < 0 and not stop):
-#			print("Passed the point")
-#			##do we have a next point?
-#			if (target_array.size() > current+1):
-#				prev = current
-#				current = current + 1
-#				# send to brain
-#				brain.target = target_array[current]
-#			else:
-#				#print("We're at the end")
-#				stop = true
+	if get_parent().is_in_group("race_AI"):
+		if (dot < 0 and not stop):
+			print("Passed the point")
+			##do we have a next point?
+			if (target_array.size() > current+1):
+				prev = current
+				current = current + 1
+				# send to brain
+				brain.target = target_array[current]
+			else:
+				#print("We're at the end")
+				stop = true
 
 # -----------------------
 # based on Kidscancode's https://kidscancode.org/godot_recipes/ai/context_map/

@@ -144,17 +144,18 @@ func get_steering_angle(steer_target, delta):
 
 	return steer_angle
 
+# this is the local version (all except racers)
 func calculate_steering(delta):
 	steer_angle = get_steering_angle(steer_target, delta)
 	
 	# Using bicycle model (one front/rear wheel)
-	var rear_wheel = global_transform.origin + global_transform.basis.z * wheel_base / 2.0
-	var front_wheel = global_transform.origin - global_transform.basis.z * wheel_base / 2.0
+	var rear_wheel = transform.origin + transform.basis.z * wheel_base / 2.0
+	var front_wheel = transform.origin - transform.basis.z * wheel_base / 2.0
+
 	rear_wheel += velocity * delta
 
 	#order of operation: forward by velocity and then rotate
-	# for some reason global basis is not necessarily normalized
-	front_wheel += velocity.rotated(global_transform.basis.y.normalized(), steer_angle) * delta
+	front_wheel += velocity.rotated(transform.basis.y, steer_angle) * delta
 	var new_heading = rear_wheel.direction_to(front_wheel)
 
 	var d = new_heading.dot(velocity.normalized())
