@@ -47,6 +47,7 @@ var midnight_fired = false
 # weather
 
 export(int) var weather = 0
+export(float) var rain_amount = 0.3
 # we can't init it on ready because it relies on our own setup
 var state = null #WeatherSunny.new(self)
 var prev_state
@@ -330,13 +331,14 @@ func rain():
 	player.get_node("BODY/RainParticles").set_emitting(true)
 	player.get_node("BODY/RainParticles2").set_emitting(true)
 	
+	#if rain_amount> 0.1:
 	# enable SSR
 	env.set_ssr_enabled(true) 
 	env.adjustment_enabled = true
 	env.fog_color = Color(0.62, 0.66, 0.70) # desaturate the usual blue
 	
 	if get_tree().get_nodes_in_group("roads").size() > 0:
-		get_tree().get_nodes_in_group("roads")[0].rain_shine()
+		get_tree().get_nodes_in_group("roads")[0].rain_shine(rain_amount)
 		
 	#player.get_node("BODY/proc_mesh").rain_glass()
 

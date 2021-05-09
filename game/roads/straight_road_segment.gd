@@ -531,15 +531,17 @@ func reset_lite():
 	material.set_shader_param("emission_energy", 0)
 	#material.set_feature(SpatialMaterial.FEATURE_EMISSION, false)
 	
-func rain_shine():
+func rain_shine(rain_amount):
 	var material = get_node("plane").get_mesh().surface_get_material(0)
 	material.set_roughness(0.2)
 	material.set_metallic(0.85)
+	material.set_shader_param("puddle_size", rain_amount)
 	
 func no_rain():
 	var material = get_node("plane").get_mesh().surface_get_material(0)
 	material.set_shader_param("roughness", 1.0)
 	material.set_shader_param("metallic", 0.0)
+	material.set_shader_param("puddle_size", 0.0)
 	#material.set_roughness(1.0)
 	#material.set_metallic(0.0)
 
