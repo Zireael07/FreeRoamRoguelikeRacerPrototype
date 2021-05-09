@@ -21,12 +21,11 @@ func _ready():
 	else:
 		print("No materials")
 	
-	setup_collision(0,0)
-	setup_collision(400,0)
-	setup_collision(0,400)
-	setup_collision(400,0)
-	
-	pass
+	# having several collision shapes seems to have a problem where randomly one of them won't register
+	#setup_collision(0,0)
+	#setup_collision(400,0)
+	#setup_collision(0,400)
+	#setup_collision(400,0)
 
 func setup_collision(x,z):
 	var shape = BoxShape.new()

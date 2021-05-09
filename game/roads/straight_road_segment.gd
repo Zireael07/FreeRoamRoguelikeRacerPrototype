@@ -347,7 +347,7 @@ func makeRoad():
 
 	# workaround for https://github.com/godotengine/godot/issues/36729
 	var shape = BoxShape.new()
-	shape.set_extents(Vector3(6,0.1,mid_point.z))
+	shape.set_extents(Vector3(6,1,mid_point.z))
 	get_node("Area/CollisionShape").set_translation(Vector3(0,0,mid_point.z))
 	get_node("Area/CollisionShape").set_shape(shape)
 	

@@ -68,9 +68,9 @@ func _physics_process(delta):
 	var hvel = velocity
 	hvel.y = 0
 	
-	
+	# velocity, up, snap, slope, slides
 	velocity = move_and_slide_with_snap(hvel, #velocity,
-				-transform.basis.y, Vector3.UP, true)
+				-transform.basis.y, Vector3.UP, true, 1)
 	
 	# Align with slopes
 	# If either wheel is in the air, align to slope

@@ -132,7 +132,7 @@ surfaces/1 = {
 }
 
 [sub_resource type="BoxShape" id=4]
-extents = Vector3( 0.652935, 0.464557, 1.2485 )
+extents = Vector3( 0.653, 0.65, 1.248 )
 
 [sub_resource type="CylinderShape" id=5]
 radius = 0.29888
@@ -281,10 +281,12 @@ shape = SubResource( 4 )
 [node name="CollisionWheelsFront" type="CollisionShape" parent="BODY"]
 transform = Transform( -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, 0, 0.299966, -0.66126 )
 shape = SubResource( 5 )
+disabled = true
 
 [node name="CollisionWheelsRear" type="CollisionShape" parent="BODY"]
 transform = Transform( -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, 0, 0.299966, 0.662488 )
 shape = SubResource( 5 )
+disabled = true
 
 [node name="brain" type="Spatial" parent="BODY"]
 script = ExtResource( 1 )
