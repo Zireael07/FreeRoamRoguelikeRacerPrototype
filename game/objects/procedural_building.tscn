@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scripts/meshes/procedural_building.gd" type="Script" id=1]
 [ext_resource path="res://assets/procedural_building_metal_mat.tres" type="Material" id=2]
@@ -35,6 +35,9 @@ extents = Vector3( 2, 1, 8 )
 
 [sub_resource type="CubeMesh" id=4]
 size = Vector3( 4, 1, 16 )
+
+[sub_resource type="BoxShape" id=5]
+extents = Vector3( 6, 20, 6 )
 
 [node name="Spatial" type="Spatial"]
 script = ExtResource( 1 )
@@ -91,11 +94,18 @@ script = ExtResource( 10 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Spatial"]
 shape = SubResource( 3 )
+disabled = true
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
 visible = false
 mesh = SubResource( 4 )
 material/0 = null
+
+[node name="StaticBody" type="StaticBody" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0 )
+shape = SubResource( 5 )
 
 [connection signal="body_entered" from="Spatial" to="Spatial" method="_on_Spatial_body_entered"]

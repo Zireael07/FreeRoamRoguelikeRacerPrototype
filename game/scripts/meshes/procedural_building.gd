@@ -63,7 +63,15 @@ func _ready():
 		node.set_mesh(surface_store.commit(node.get_mesh()))
 	
 	# yay GD 3
-	node.create_convex_collision()
+	# wtf it creates 7000+ vertices...
+	#node.create_convex_collision()
+	
+
+	var shape = BoxShape.new()
+	shape.set_extents(Vector3(thick,storeys+1,width))
+	get_node("StaticBody/CollisionShape").set_translation(Vector3(0,storeys+1,0))
+	get_node("StaticBody/CollisionShape").set_shape(shape)
+	
 	
 	#Turn off shadows
 	#node.set_cast_shadows_setting(0)

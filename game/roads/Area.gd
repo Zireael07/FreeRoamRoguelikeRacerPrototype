@@ -29,4 +29,5 @@ func _on_Area_body_entered(body):
 		# if a prop overlaps intersection...
 		print("Static body " + body.get_parent().get_parent().get_name() + " overlaps intersection!!!")
 		# yeet it
-		body.get_parent().get_parent().queue_free()
+		body.get_parent().queue_free()
+		#body.get_parent().get_parent().queue_free()
