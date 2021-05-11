@@ -174,7 +174,8 @@ __meta__ = {
 [node name="BODY" type="KinematicBody" parent="."]
 collision_mask = 3
 script = ExtResource( 9 )
-brake_distance = 8.0
+num_rays = 32
+brake_distance = 10.0
 
 [node name="tmpParent" type="Spatial" parent="BODY"]
 

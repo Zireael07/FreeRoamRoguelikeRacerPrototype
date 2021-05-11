@@ -132,7 +132,7 @@ func _process(delta):
 	#	print("Count is off")
 
 func _on_Area_body_exit( body ):
-	if body is VehicleBody:
+	if body is KinematicBody:
 		if body is player_script:
 			#print(" TT Area exited by the player")
 			player = body

@@ -19,6 +19,9 @@ class Vector:
 		width = w
 		color = c
 	func draw(node, cam):
+		# paranoia
+		if object == null:
+			return
 		if cam.is_position_behind(object.global_transform.origin):
 			return
 		var start = cam.unproject_position(object.global_transform.origin)
@@ -89,9 +92,11 @@ func add_vector(object, vector, size, width, color):
 	vectors.append(Vector.new(object, vector, size, width, color))
 	
 # see above
-func update_vector(id, vector):
+func update_vector(id, vector, color=false):
 	var vec = vectors[id]
 	vec.vector = vector
+	if color:
+		vec.color = color
 
 func draw_triangle(pos, dir, size, color):
 	var a = pos + dir * size

@@ -51,13 +51,14 @@ signal path_gotten
 # context steering
 export var num_rays = 16
 export var look_side = 3.0
-var look_ahead = 10.0
+var look_ahead = 15.0
 export var brake_distance = 5.0
 
 var interest = []
 var danger = []
 var rays = [] # debugging
 var chosen_dir = Vector3.ZERO
+var a = 0.0
 var forward_ray = null
 
 # for race AI only
@@ -97,6 +98,7 @@ func add_rays():
 	for i in num_rays:
 		var r = RayCast.new()
 		$ContextRays.add_child(r)
+		# TODO: base on polar angle?
 		if i == 0 or i == 1 or i == num_rays-1:
 			r.cast_to = Vector3.FORWARD * look_ahead
 		else:
@@ -187,10 +189,12 @@ func register_debugging_lines():
 		var end = brain.target
 		draw.add_line(self, pos, end, 3, Color(0,0,1)) # blue
 		
+		# TODO: those should point down car's axis, but currently point in global dir
 		draw.add_vector(self, velocity, 1, 3, Color(1,1,0)) # yellow
-		draw.add_vector(self, steer, 1, 3, Color(1,0,0)) # red
+		draw.add_vector(self, steer, 1, 3, Color(0,1,1)) # cyan
 		draw.add_vector(self, brain.desired, 1, 3, Color(1,0,1)) # purple
-		draw.add_vector(self, chosen_dir, 1, 3, Color(0,1,0)) # green
+		draw.add_vector(self, chosen_dir*2, 1, 3, Color(0,1,0)) # green
+		draw.add_vector(self, -transform.basis.z, 1,3, Color(0.5,1,0))
 		
 		#print("Registered target line")
 
@@ -209,6 +213,11 @@ func _process(delta):
 			draw.update_vector(0, velocity)
 			draw.update_vector(1, steer)
 			draw.update_vector(2, brain.desired)
+			if abs(a) > 0.05:
+				draw.update_vector(3, chosen_dir*2, Color(1,0,0))
+			else:
+				draw.update_vector(3, chosen_dir*2)
+			draw.update_vector(4, -transform.basis.z)
 
 		# cop spots player -> starts chase
 		if get_parent().is_in_group("cop"):
@@ -440,7 +449,7 @@ func get_input():
 	# quick and easy, no need to compare relative positions/use joy input
 	if not stop:
 		# chosen_dir is normalized before use here
-		var a = angle_dir(-transform.basis.z, chosen_dir, Vector3.UP)
+		a = angle_dir(-transform.basis.z, chosen_dir, transform.basis.y)
 		steer_target = a * deg2rad(steering_limit)
 	else:
 		steer_target = 0
@@ -450,9 +459,13 @@ func get_input():
 	# Hit brakes if obstacle dead ahead
 	#if not get_parent().is_in_group("race_AI"):
 	if forward_ray.is_colliding():
-		var d = transform.origin.distance_to(forward_ray.get_collider().transform.origin)
+		var d = global_transform.origin.distance_to(forward_ray.get_collider().global_transform.origin)
 		if d < brake_distance:
-			braking = true
+			if speed > 5 or d < 5:
+				gas = false
+				braking = true
+			else:
+				gas = true
 	
 	
 	if gas:
@@ -558,12 +571,27 @@ func set_danger():
 	for i in num_rays:
 		var ray = $ContextRays.get_child(i)
 		danger[i] = 1.0 if ray.is_colliding() else 0.0
+#		if ray.is_colliding():
+#			# spread danger to neighboring rays
+#			if i-1 > 0:
+#				danger[i-1] = 1.0
+#			if i+1 < num_rays:
+#				danger[i+1] = 1.0
 
 
 func choose_direction():
 	for i in num_rays:
 		if danger[i] > 0.0:
 			interest[i] = 0.0
+			# TODO: add interest in opposing direction?
+			# add interest to the side
+			if i == 0 or i == 1 or i == 2:
+				interest[num_rays-(num_rays/4)] = 2.0
+			if i == num_rays-1 or i == num_rays-2:
+				interest[num_rays/4] = 2.0
+				
+			
+			
 	chosen_dir = Vector3.ZERO
 	for i in num_rays:
 		# this is GLOBAL!!!!
