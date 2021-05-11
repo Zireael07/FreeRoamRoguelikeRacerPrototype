@@ -1,7 +1,9 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=2]
 
 [sub_resource type="Shader" id=1]
-code = "shader_type spatial;
+code = "//https://www.youtube.com/watch?v=OH4D3CXHHLY&list=PLg1TFdNWC4y_pDV4PQcGWZ8UWYe8gOz_f&index=41
+
+shader_type spatial;
 
 /*void vertex() {
 	VAR1.xyz = SRC_NORMAL;
