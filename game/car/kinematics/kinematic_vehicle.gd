@@ -84,7 +84,7 @@ func _physics_process(delta):
 				
 	speed = velocity.length()
 	#reverse
-	if (velocity.dot(-transform.basis.z) > 0):
+	if (velocity.dot(-transform.basis.z) > 0) or velocity.length() < 0.05:
 		reverse = false
 	else:
 		reverse = true

@@ -101,6 +101,8 @@ func add_rays():
 		# TODO: base on polar angle?
 		if i == 0 or i == 1 or i == num_rays-1:
 			r.cast_to = Vector3.FORWARD * look_ahead
+		elif i == 2 or i == num_rays-2:
+			r.cast_to = Vector3.FORWARD * (look_ahead-2)
 		else:
 			r.cast_to = Vector3.FORWARD * look_side
 		r.rotation.y = -angle * i
@@ -193,8 +195,8 @@ func register_debugging_lines():
 		draw.add_vector(self, velocity, 1, 3, Color(1,1,0)) # yellow
 		draw.add_vector(self, steer, 1, 3, Color(0,1,1)) # cyan
 		draw.add_vector(self, brain.desired, 1, 3, Color(1,0,1)) # purple
-		draw.add_vector(self, chosen_dir*2, 1, 3, Color(0,1,0)) # green
-		draw.add_vector(self, -transform.basis.z, 1,3, Color(0.5,1,0))
+		draw.add_vector(self, chosen_dir*5, 1, 3, Color(0,1,0)) # green
+		draw.add_vector(self, -transform.basis.z, 1,3, Color(0.33,0.33,0.33)) # gray
 		
 		#print("Registered target line")
 
@@ -213,10 +215,14 @@ func _process(delta):
 			draw.update_vector(0, velocity)
 			draw.update_vector(1, steer)
 			draw.update_vector(2, brain.desired)
-			if abs(a) > 0.05:
-				draw.update_vector(3, chosen_dir*2, Color(1,0,0))
+			# see get_angle_dir() below
+			if abs(a) > 0.02:
+				if a > 0: # right
+					draw.update_vector(3, chosen_dir*5, Color(1,0,0)) # red
+				else: # left
+					draw.update_vector(3, chosen_dir*5, Color(0.75,0.5,0)) # orange
 			else:
-				draw.update_vector(3, chosen_dir*2)
+				draw.update_vector(3, chosen_dir*5)
 			draw.update_vector(4, -transform.basis.z)
 
 		# cop spots player -> starts chase
@@ -450,6 +456,8 @@ func get_input():
 	if not stop:
 		# chosen_dir is normalized before use here
 		a = angle_dir(-transform.basis.z, chosen_dir, transform.basis.y)
+		if reverse:
+			a = -a # flip the sign
 		steer_target = a * deg2rad(steering_limit)
 	else:
 		steer_target = 0
@@ -571,6 +579,14 @@ func set_danger():
 	for i in num_rays:
 		var ray = $ContextRays.get_child(i)
 		danger[i] = 1.0 if ray.is_colliding() else 0.0
+		
+		# increase by a factor depending on distance to obstacle
+		if i == 0 or i == 1 or i == num_rays-1:
+			if ray.is_colliding():
+				var d = global_transform.origin.distance_to(ray.get_collider().global_transform.origin)
+				if d < brake_distance*0.75:
+					danger[i] += brake_distance-d
+					
 #		if ray.is_colliding():
 #			# spread danger to neighboring rays
 #			if i-1 > 0:
@@ -586,9 +602,9 @@ func choose_direction():
 			# TODO: add interest in opposing direction?
 			# add interest to the side
 			if i == 0 or i == 1 or i == 2:
-				interest[num_rays-(num_rays/4)] = 2.0
+				interest[num_rays-(num_rays/4)] = 2.0*danger[i]
 			if i == num_rays-1 or i == num_rays-2:
-				interest[num_rays/4] = 2.0
+				interest[num_rays/4] = 2.0*danger[i]
 				
 			
 			
@@ -699,3 +715,8 @@ func stopping():
 			var forw_global = get_global_transform().xform(Vector3(0, 0, -4))
 			target_array.append(forw_global)
 			stop = false
+
+
+func _on_BODY_input_event(camera, event, click_position, click_normal, shape_idx):
+	#if event == InputEventMouseButton:
+	print("AI clicked is: ", get_parent().get_name())

@@ -8,6 +8,7 @@ transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 0
 
 [node name="CSGPolygon" type="CSGPolygon" parent="."]
 use_collision = true
+collision_layer = 2
 polygon = PoolVector2Array( -3.327, 0, -3.37403, 7.17744, 3.93685, 6.82534, 3.683, 0, 2.93057, 3.31116, 0.179563, 4.75498, -2.27071, 3.21303 )
 depth = 50.0
 smooth_faces = true
