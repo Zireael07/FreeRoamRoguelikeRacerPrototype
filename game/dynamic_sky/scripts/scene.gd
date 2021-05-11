@@ -305,8 +305,10 @@ func day_night_cycle(time):
 		
 		env.background_energy = 1
 	if time >= 18.4 && time < 18.5:
-		get_node("Sky")._trigger_update_sky()
-		
+		pass
+		# no idea what it was needed for, removing it fixes the stutter
+		#get_node("Sky")._trigger_update_sky()
+		#print("Update sky")
 	elif time >= 18.5 && not night_fired:
 
 		

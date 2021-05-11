@@ -28,6 +28,10 @@ func copy_to_environment(environment):
 	
 	
 func _trigger_update_sky():
+	var debug_cam = get_tree().get_nodes_in_group("player")[0].get_node("BODY").debug_cam
+	if debug_cam and debug_cam.is_current():
+		return 
+		
 	# trigger an update
 	render_target_update_mode = Viewport.UPDATE_ONCE
 	
