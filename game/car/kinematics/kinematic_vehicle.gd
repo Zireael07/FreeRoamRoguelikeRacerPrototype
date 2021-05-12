@@ -55,10 +55,13 @@ func _physics_process(delta):
 	
 	# gives false negatives
 	#if is_on_floor():
-	#if front_ray.is_colliding() or rear_ray.is_colliding():
-	get_input()
-	apply_friction(delta)
-	calculate_steering(delta)
+	if front_ray.is_colliding() or rear_ray.is_colliding():
+		get_input()
+		apply_friction(delta)
+		calculate_steering(delta)
+	# fix accumulating acceleration while not on ground
+	else:
+		acceleration = Vector3.ZERO
 	
 	#acceleration.y = 0
 	acceleration.y = gravity
@@ -85,6 +88,7 @@ func _physics_process(delta):
 	speed = velocity.length()
 	#reverse
 	if (velocity.dot(-transform.basis.z) > 0) or velocity.length() < 0.05:
+	if (velocity.dot(-global_transform.basis.z) > 0) or velocity.length() < 0.05:
 		reverse = false
 	else:
 		reverse = true
