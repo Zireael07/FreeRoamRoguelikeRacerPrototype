@@ -229,7 +229,7 @@ func _process(delta):
 					draw.update_vector(3, chosen_dir*5, Color(0.75,0.5,0)) # orange
 			else:
 				draw.update_vector(3, chosen_dir*5)
-			draw.update_vector(4, -transform.basis.z)
+			#draw.update_vector(4, -transform.basis.z)
 
 		# cop spots player -> starts chase
 		if get_parent().is_in_group("cop"):
@@ -429,13 +429,13 @@ func make_steering():
 					gas = true
 	#				#print(get_name() + " gas")
 			else:
-				if speed > 0 and speed < 10:
+				if speed > 0 and speed < 5:
 					if not reverse:
 						braking = true
 					else:
 						gas = true
 		else:
-			if speed > 0 and speed < 10:
+			if speed > 0 and speed < 5:
 				if not reverse:
 					braking = true
 				else:
@@ -473,13 +473,21 @@ func get_input():
 	# Hit brakes if obstacle dead ahead
 	#if not get_parent().is_in_group("race_AI"):
 	if forward_ray.is_colliding():
-		var d = global_transform.origin.distance_to(forward_ray.get_collider().global_transform.origin)
-		if d < brake_distance:
-			if speed > 5 or d < 5:
+		var collider = forward_ray.get_collider()
+		var d = global_transform.origin.distance_to(collider.global_transform.origin)
+		if get_parent().is_in_group("race_AI"):
+			print(get_parent().get_name(), " forward ray collided with: ", collider.get_parent().get_name())
+		if collider.get_parent().is_in_group("AI") or collider.get_parent().is_in_group("race_AI"):
+			if d < brake_distance and speed > 5:
 				gas = false
 				braking = true
-			else:
-				gas = true
+		else:
+			if d < brake_distance:
+				if speed > 5 or d < 5:
+					gas = false
+					braking = true
+				else:
+					gas = true
 	
 	
 	if gas:
@@ -551,18 +559,18 @@ func after_move():
 				stop = true
 			
 	#if we passed the point, don't backtrack
-	if get_parent().is_in_group("race_AI"):
-		if (dot < 0 and not stop):
-			print("Passed the point")
-			##do we have a next point?
-			if (target_array.size() > current+1):
-				prev = current
-				current = current + 1
-				# send to brain
-				brain.target = target_array[current]
-			else:
-				#print("We're at the end")
-				stop = true
+#	if get_parent().is_in_group("race_AI"):
+#		if (current > 1 and dot < 0 and not stop):
+#			print(get_parent().get_name(), " passed the point")
+#			##do we have a next point?
+#			if (target_array.size() > current+1):
+#				prev = current
+#				current = current + 1
+#				# send to brain
+#				brain.target = target_array[current]
+#			else:
+#				#print("We're at the end")
+#				stop = true
 
 # -----------------------
 # based on Kidscancode's https://kidscancode.org/godot_recipes/ai/context_map/
@@ -687,9 +695,9 @@ func stopping():
 		#left = false
 		#right = false
 		
-	if (speed > 0.1 and not reverse):
+	if (speed > 0.2 and not reverse):
 		braking = true
-	if (speed > 0.1 and reverse):
+	if (speed > 0.2 and reverse):
 		gas = true
 	
 	# TODO: put into own function	
@@ -714,13 +722,15 @@ func stopping():
 			
 			return
 		# race AI just wants to drive off the intersection
-		if get_parent().is_in_group("race_AI") and not emitted:
-			# axe the debug cubes
-			get_parent().clear_cubes()
-			emitted = true
-			var forw_global = get_global_transform().xform(Vector3(0, 0, -4))
-			target_array.append(forw_global)
-			stop = false
+#		if get_parent().is_in_group("race_AI") and not emitted:
+#			print(get_parent().get_name(), " wants to drive off the finish line")
+#			# axe the debug cubes
+#			get_parent().clear_cubes()
+#			emitted = true
+#			var forw_global = get_global_transform().xform(Vector3(0, 0, -8))
+#			target_array.append(forw_global)
+#			stop = false
+#			get_parent().debug_cube(get_parent().to_local(forw_global), true)
 
 
 func _on_BODY_input_event(camera, event, click_position, click_normal, shape_idx):

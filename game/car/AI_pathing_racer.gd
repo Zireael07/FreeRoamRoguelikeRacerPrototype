@@ -30,6 +30,12 @@ func _ready():
 		path = racer_reduce_path(nav_path)
 		# append target point
 		path.append(race_target)
+		
+		# append final point
+		# B-A = A->B
+		var dir = (race_target-path[path.size()-2]).normalized()*6
+		path.append(race_target+dir)
+		
 		#print("AI has path: " + str(path))
 		emit_signal("found_path", [path, false, false])
 		

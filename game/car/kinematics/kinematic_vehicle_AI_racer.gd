@@ -46,7 +46,9 @@ func get_input():
 	# quick and easy, no need to compare relative positions/use joy input
 	if not stop:
 		# chosen_dir is normalized before use here
-		var a = angle_dir(-global_transform.basis.z, chosen_dir, Vector3.UP)
+		var a = angle_dir(-global_transform.basis.z, chosen_dir, transform.basis.y)
+		if reverse:
+			a = -a # flip the sign
 		steer_target = a * deg2rad(steering_limit)
 	else:
 		steer_target = 0
