@@ -206,8 +206,8 @@ func calculate_sun_height(time):
 	
 func get_light_color(time):
 	if time >= 18.4 && time < 18.5:
-		# sunset
-		light_color = Color(1,0.75,0)
+		# sunset (a soft yellow)
+		light_color = Color(1,0.88,0.52)
 	elif time >= 18.5 && time < 18.7:
 		var d = (time-18.5)/0.5;
 		# 0.303474,0.375416,0.627212
