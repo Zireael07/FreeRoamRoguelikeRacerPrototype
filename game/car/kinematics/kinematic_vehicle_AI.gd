@@ -99,6 +99,7 @@ func add_rays():
 		var r = RayCast.new()
 		$ContextRays.add_child(r)
 		# TODO: base on polar angle?
+		# TODO: make speed dependent
 		if i == 0 or i == 1 or i == num_rays-1:
 			r.cast_to = Vector3.FORWARD * look_ahead
 		elif i == 2 or i == num_rays-2:
@@ -194,9 +195,9 @@ func register_debugging_lines():
 		# TODO: those should point down car's axis, but currently point in global dir
 		draw.add_vector(self, velocity, 1, 3, Color(1,1,0)) # yellow
 		draw.add_vector(self, steer, 1, 3, Color(0,1,1)) # cyan
-		draw.add_vector(self, brain.desired, 1, 3, Color(1,0,1)) # purple
+		draw.add_vector(self, brain.desired, 1, 3, Color(0.33,0.33,0.33)) # gray
 		draw.add_vector(self, chosen_dir*5, 1, 3, Color(0,1,0)) # green
-		draw.add_vector(self, -transform.basis.z, 1,3, Color(0.33,0.33,0.33)) # gray
+		#draw.add_vector(self, -transform.basis.z, 1,3, Color(0.33,0.33,0.33)) # gray
 		
 		#print("Registered target line")
 
@@ -213,7 +214,12 @@ func _process(delta):
 		if get_viewport().get_camera().get_name() == "CameraDebug":
 			draw.update_line(self, 0, get_global_transform().origin, brain.target)
 			draw.update_vector(0, velocity)
-			draw.update_vector(1, steer)
+			if gas:
+				draw.update_vector(1, steer, Color(0, 0.75,0))
+			elif braking:
+				draw.update_vector(1, steer, Color(0.75, 0,0))
+			else:
+				draw.update_vector(1, steer)
 			draw.update_vector(2, brain.desired)
 			# see get_angle_dir() below
 			if abs(a) > 0.02:
@@ -600,7 +606,7 @@ func choose_direction():
 		if danger[i] > 0.0:
 			interest[i] = 0.0
 			# TODO: add interest in opposing direction?
-			# add interest to the side
+			# front rays add interest to the side
 			if i == 0 or i == 1 or i == 2:
 				interest[num_rays-(num_rays/4)] = 2.0*danger[i]
 			if i == num_rays-1 or i == num_rays-2:
