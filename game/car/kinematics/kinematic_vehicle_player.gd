@@ -398,15 +398,16 @@ func driving_on_road():
 		get_node("Smoke2").set_emitting(false)
 		
 		#var road_ = hit.get_parent().get_name().find("Road_")
-		var road = hit.get_node("../..").get_name().find("Road")
+		var road = hit.get_node("../../..").get_name().find("Road")
 		#var road = hit.get_node("../../../../").get_name().find("Road")
 		# straight
 		if 'length' in hit:
 		#if road_ != -1:
 			disp_name = hit.get_node("../../").get_name()
 			reached_changed = false
+		# curve
 		elif road != -1:
-			disp_name = hit.get_node("../../../../..").get_name()
+			disp_name = hit.get_node("../../../../").get_name()
 			reached_changed = false
 		# intersection
 		else:

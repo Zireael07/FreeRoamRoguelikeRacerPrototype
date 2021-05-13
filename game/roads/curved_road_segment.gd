@@ -46,11 +46,6 @@ var left_positions = PoolVector3Array()
 var right_positions = PoolVector3Array()
 var draw = null
 
-#navmesh
-var nav_vertices
-var nav_vertices2
-var global_vertices
-var global_vertices2
 # margin
 var margin = 1.0
 var left_nav_positions = PoolVector3Array()
@@ -330,7 +325,7 @@ func optimizedmeshCreate(quads, material):
 	node.set_cast_shadows_setting(0)
 	
 	# yay GD 3
-	node.create_convex_collision()
+	#node.create_convex_collision()
 
 
 #make the mesh
@@ -494,9 +489,18 @@ func create_road():
 				m.hide()
 
 			splerger.merge_meshinstances(mergelist, self, true)
-				
-						
+								
 		placeStreetlight()
+		
+		# assign a more optimized collision shape :)
+		var outline = Geometry.convex_hull_2d(points_inner+points_outer)
+		#print("curve outline: ", outline)
+		# the existence of collision polygon is really good news for us
+		var poly = get_node("StaticBody/CollisionPolygon").polygon
+		poly = outline
+		get_node("StaticBody/CollisionPolygon").set_polygon(poly)
+		
+		
 	if not Engine.is_editor_hint():	
 		# disable the emissiveness
 		reset_lite()

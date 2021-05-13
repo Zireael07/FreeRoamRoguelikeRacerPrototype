@@ -34,3 +34,9 @@ visible = false
 material_override = SubResource( 1 )
 cast_shadow = 0
 script = ExtResource( 4 )
+
+[node name="StaticBody" type="StaticBody" parent="Placer/Road"]
+
+[node name="CollisionPolygon" type="CollisionPolygon" parent="Placer/Road/StaticBody"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.5, 0 )
+depth = 2.0
