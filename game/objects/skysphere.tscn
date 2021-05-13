@@ -2,7 +2,7 @@
 
 [ext_resource path="res://old/skysphere.dae" type="PackedScene" id=1]
 [ext_resource path="res://old/clouds_shader_mat2.tres" type="Material" id=2]
-[ext_resource path="res://assets/new_skysphere.tres" type="ArrayMesh" id=3]
+[ext_resource path="res://old/new_skysphere.tres" type="ArrayMesh" id=3]
 
 [node name="Scene Root" index="0" instance=ExtResource( 1 )]
 

@@ -3,6 +3,8 @@
 [resource]
 emission_shape = 2
 emission_box_extents = Vector3( 50, 4, 5 )
-initial_velocity = 1.0
+direction = Vector3( 0, -5, 0 )
+spread = 1.0
+initial_velocity = 100.0
 angular_velocity = 1.57618e-13
 scale_random = 0.7
