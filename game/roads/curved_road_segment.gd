@@ -122,15 +122,8 @@ func _ready():
 		points_outer_barrier = get_circle_arc(loc, radius+(lane_width*1.5)+0.5, start_angle, end_angle, not left_turn)
 	
 	
-	fix_stuff()
 	create_road()
-	
-	# debug
-#	for p in points_inner_nav:
-#		debug_cube(Vector3(p.x, 0, p.y))
-#
-#	for p in points_outer_nav:
-#		debug_cube(Vector3(p.x, 0, p.y))
+	fix_stuff()
 
 #----------------------------------
 
@@ -469,20 +462,11 @@ func create_road():
 				barrier_quads.append(got[1])
 				#	make_barrier(index, barrier_material, node)
 			
-			#nav
-			#left_nav_positions.push_back(Vector3(points_outer_nav[index].x, road_height, points_outer_nav[index].y))
-			#left_nav_positions.push_back(Vector3(points_outer_nav[index+1].x, road_height, points_outer_nav[index+1].y))
-			#right_nav_positions.push_back(Vector3(points_inner_nav[index].x, road_height, points_inner_nav[index].y))
-			#right_nav_positions.push_back(Vector3(points_inner_nav[index+1].x, road_height, points_inner_nav[index+1].y))
-			
 			#B-A = from a to b
 			#start_vector = Vector3(positions[1]-positions[0])
 			#end_vector = Vector3(positions[positions.size()-1] - positions[positions.size()-2])
 		
-		# add the final position that we're missing
-		#left_nav_positions.push_back(Vector3(points_outer_nav[points_outer_nav.size()-1].x, road_height, points_outer_nav[points_outer_nav.size()-1].y))
-		#right_nav_positions.push_back(Vector3(points_inner_nav[points_inner_nav.size()-1].x, road_height, points_inner_nav[points_inner_nav.size()-1].y))
-		
+
 		# add the final quad
 		var array = make_point_array(points_center.size()-2, points_center.size()-1)
 		quads.append(getQuads(array)[0])
@@ -494,10 +478,23 @@ func create_road():
 		if barriers:
 			# optimized barriers
 			make_barrier(barrier_quads, barrier_material)
-			
-		#generate navi vertices
-		#nav_vertices = get_navi_vertices()
-		#nav_vertices2 = get_navi_vertices_alt()		
+		
+		# test merging
+		# TODO: this is an easy way out, we need the mesh generated better
+		if sidewalks:
+			var splerger = Splerger.new()
+			var mergelist = []
+
+			for c in get_children():
+				if c.name.find("road_curved") != -1:
+					mergelist.append(c)
+
+			# hide originals
+			for m in mergelist:
+				m.hide()
+
+			splerger.merge_meshinstances(mergelist, self, true)
+				
 						
 		placeStreetlight()
 	if not Engine.is_editor_hint():	
