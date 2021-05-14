@@ -69,6 +69,8 @@ var bribed = false
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
+	tail_mat = taillights.get_mesh().surface_get_material(0)
+	
 	get_parent().connect("found_path", self, "_on_path_found")
 	
 	target_array.resize(0)
@@ -496,9 +498,18 @@ func get_input():
 			acceleration = -transform.basis.z * engine_power*2	
 		else:
 			acceleration = -transform.basis.z * engine_power
+			
+			#cancel braking visual
+		if tail_mat != null:
+			tail_mat.set_albedo(Color(0.62,0.62,0.62))
+			tail_mat.set_feature(SpatialMaterial.FEATURE_EMISSION, false)
 	if braking:
 		# brakes
 		acceleration += -transform.basis.z * braking_power
+		#visual effect
+		if tail_mat != null:
+			tail_mat.set_albedo(Color(1,1,1))
+			tail_mat.set_feature(SpatialMaterial.FEATURE_EMISSION, true)
 
 
 func angle_dir(fwd, target, up):
@@ -721,18 +732,8 @@ func stopping():
 			#debug = true
 			
 			return
-		# race AI just wants to drive off the intersection
-#		if get_parent().is_in_group("race_AI") and not emitted:
-#			print(get_parent().get_name(), " wants to drive off the finish line")
-#			# axe the debug cubes
-#			get_parent().clear_cubes()
-#			emitted = true
-#			var forw_global = get_global_transform().xform(Vector3(0, 0, -8))
-#			target_array.append(forw_global)
-#			stop = false
-#			get_parent().debug_cube(get_parent().to_local(forw_global), true)
 
 
 func _on_BODY_input_event(camera, event, click_position, click_normal, shape_idx):
-	#if event == InputEventMouseButton:
-	print("AI clicked is: ", get_parent().get_name())
+	if (event is InputEventMouseButton) and (event.button_index == BUTTON_LEFT):
+		print("AI clicked is: ", get_parent().get_name())

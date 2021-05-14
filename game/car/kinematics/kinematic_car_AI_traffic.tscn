@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://assets/car/truenohoudini.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://assets/car/car_gray.tres" type="Material" id=2]
@@ -9,8 +9,8 @@
 [ext_resource path="res://car/kinematics/kinematic_brain.gd" type="Script" id=7]
 [ext_resource path="res://car/car_wheel.tscn" type="PackedScene" id=8]
 [ext_resource path="res://car/kinematics/kinematic_vehicle_AI.gd" type="Script" id=9]
+[ext_resource path="res://assets/car/LED taillights stock.jpg" type="Texture" id=10]
 [ext_resource path="res://car/RayCast.gd" type="Script" id=17]
-[ext_resource path="res://assets/car/taillights.tres" type="Material" id=24]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "body"
@@ -136,7 +136,20 @@ extents = Vector3( 0.653, 0.65, 1.248 )
 radius = 0.29888
 height = 1.30062
 
-[sub_resource type="ArrayMesh" id=6]
+[sub_resource type="SpatialMaterial" id=6]
+resource_local_to_scene = true
+params_diffuse_mode = 1
+albedo_texture = ExtResource( 10 )
+roughness = 0.0
+emission_enabled = true
+emission = Color( 0.63, 0.13, 0.13, 1 )
+emission_energy = 4.0
+emission_operator = 1
+emission_on_uv2 = true
+emission_texture = ExtResource( 10 )
+uv1_scale = Vector3( 0.2, 0.2, 1 )
+
+[sub_resource type="ArrayMesh" id=7]
 surfaces/0 = {
 "aabb": AABB( -0.4027, 0.0012, -0.0986, 0.8086, 0.02501, 0.0999 ),
 "array_data": PoolByteArray( 113, 182, 181, 38, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 60, 0, 60, 113, 182, 234, 20, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 0, 0, 60, 124, 178, 181, 38, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 60, 0, 0, 124, 178, 234, 20, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 0, 0, 0, 124, 178, 181, 38, 83, 21, 0, 60, 0, 0, 127, 0, 0, 127, 0, 127, 0, 60, 0, 60, 124, 178, 234, 20, 83, 21, 0, 60, 0, 0, 127, 0, 247, 126, 0, 127, 0, 0, 0, 60, 113, 182, 181, 38, 83, 21, 0, 60, 0, 0, 127, 0, 163, 85, 0, 127, 0, 60, 0, 0, 164, 181, 234, 20, 83, 21, 0, 60, 0, 0, 127, 0, 143, 56, 0, 127, 0, 0, 0, 0, 124, 178, 181, 38, 79, 174, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 60, 0, 60, 124, 178, 181, 38, 83, 21, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 0, 0, 60, 113, 182, 181, 38, 79, 174, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 60, 0, 0, 113, 182, 181, 38, 83, 21, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 0, 0, 0, 113, 182, 234, 20, 79, 174, 0, 60, 0, 129, 0, 0, 200, 0, 143, 127, 0, 60, 0, 60, 164, 181, 234, 20, 83, 21, 0, 60, 0, 129, 0, 0, 215, 0, 136, 127, 0, 0, 0, 60, 124, 178, 234, 20, 79, 174, 0, 60, 0, 129, 0, 0, 235, 0, 131, 127, 0, 60, 0, 0, 124, 178, 234, 20, 83, 21, 0, 60, 0, 129, 0, 0, 0, 0, 129, 127, 0, 0, 0, 0, 113, 182, 181, 38, 83, 21, 0, 60, 168, 168, 22, 0, 166, 88, 249, 127, 0, 60, 0, 60, 164, 181, 234, 20, 83, 21, 0, 60, 168, 168, 22, 0, 166, 89, 253, 127, 0, 0, 0, 60, 113, 182, 181, 38, 79, 174, 0, 60, 168, 168, 22, 0, 169, 91, 13, 127, 0, 60, 0, 0, 113, 182, 234, 20, 79, 174, 0, 60, 168, 168, 22, 0, 171, 91, 21, 127, 0, 0, 0, 0, 124, 178, 181, 38, 79, 174, 0, 60, 127, 0, 0, 0, 0, 127, 0, 127, 0, 60, 0, 60, 124, 178, 234, 20, 79, 174, 0, 60, 127, 0, 0, 0, 0, 127, 0, 127, 0, 0, 0, 60, 124, 178, 181, 38, 83, 21, 0, 60, 127, 0, 0, 0, 0, 127, 0, 127, 0, 60, 0, 0, 124, 178, 234, 20, 83, 21, 0, 60, 127, 0, 0, 0, 0, 127, 0, 127, 0, 0, 0, 0, 150, 50, 181, 38, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 60, 0, 60, 150, 50, 234, 20, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 0, 0, 60, 126, 54, 181, 38, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 60, 0, 0, 126, 54, 234, 20, 79, 174, 0, 60, 0, 0, 129, 0, 0, 127, 0, 127, 0, 0, 0, 0, 126, 54, 181, 38, 83, 21, 0, 60, 0, 0, 127, 0, 116, 49, 0, 127, 0, 60, 0, 60, 142, 53, 234, 20, 83, 21, 0, 60, 0, 0, 127, 0, 113, 56, 0, 127, 0, 0, 0, 60, 150, 50, 181, 38, 83, 21, 0, 60, 0, 0, 127, 0, 13, 126, 0, 127, 0, 60, 0, 0, 150, 50, 234, 20, 83, 21, 0, 60, 0, 0, 127, 0, 0, 127, 0, 127, 0, 0, 0, 0, 126, 54, 181, 38, 79, 174, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 60, 0, 60, 126, 54, 181, 38, 83, 21, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 0, 0, 60, 150, 50, 181, 38, 79, 174, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 60, 0, 0, 150, 50, 181, 38, 83, 21, 0, 60, 0, 127, 0, 0, 0, 0, 129, 127, 0, 0, 0, 0, 150, 50, 234, 20, 79, 174, 0, 60, 0, 129, 0, 0, 0, 0, 129, 127, 0, 60, 0, 60, 150, 50, 234, 20, 83, 21, 0, 60, 0, 129, 0, 0, 19, 0, 131, 127, 0, 0, 0, 60, 126, 54, 234, 20, 79, 174, 0, 60, 0, 129, 0, 0, 36, 0, 135, 127, 0, 60, 0, 0, 142, 53, 234, 20, 83, 21, 0, 60, 0, 129, 0, 0, 64, 0, 147, 127, 0, 0, 0, 0, 150, 50, 181, 38, 83, 21, 0, 60, 129, 0, 0, 0, 0, 127, 0, 127, 0, 60, 0, 60, 150, 50, 234, 20, 83, 21, 0, 60, 129, 0, 0, 0, 0, 127, 0, 127, 0, 0, 0, 60, 150, 50, 181, 38, 79, 174, 0, 60, 129, 0, 0, 0, 0, 127, 0, 127, 0, 60, 0, 0, 150, 50, 234, 20, 79, 174, 0, 60, 129, 0, 0, 0, 0, 127, 0, 127, 0, 0, 0, 0, 126, 54, 181, 38, 79, 174, 0, 60, 80, 162, 23, 0, 91, 84, 26, 127, 0, 60, 0, 60, 126, 54, 234, 20, 79, 174, 0, 60, 80, 162, 23, 0, 93, 83, 16, 127, 0, 0, 0, 60, 126, 54, 181, 38, 83, 21, 0, 60, 80, 162, 23, 0, 97, 81, 253, 127, 0, 60, 0, 0, 142, 53, 234, 20, 83, 21, 0, 60, 80, 162, 23, 0, 97, 81, 249, 127, 0, 0, 0, 0 ),
@@ -144,19 +157,19 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 98071,
 "index_count": 72,
-"material": ExtResource( 24 ),
+"material": SubResource( 6 ),
 "name": "taillights_simple",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 48
 }
 
-[sub_resource type="SpatialMaterial" id=7]
+[sub_resource type="SpatialMaterial" id=8]
 flags_vertex_lighting = true
 albedo_color = Color( 0.679688, 0.679688, 0.679688, 1 )
 roughness = 0.0
 
-[sub_resource type="SpatialMaterial" id=8]
+[sub_resource type="SpatialMaterial" id=9]
 flags_unshaded = true
 flags_use_point_size = true
 params_line_width = 3.0
@@ -325,13 +338,13 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.472078, 0.460857, -1.34116 )
 
 [node name="taillights" type="MeshInstance" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.67614, 1.40965 )
-mesh = SubResource( 6 )
+mesh = SubResource( 7 )
 material/0 = null
 
 [node name="frontlights" type="MeshInstance" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.575843, -1.31511 )
-mesh = SubResource( 6 )
-material/0 = SubResource( 7 )
+mesh = SubResource( 7 )
+material/0 = SubResource( 8 )
 
 [node name="RayFront" type="RayCast" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.444 )
@@ -371,12 +384,12 @@ wait_time = 0.5
 one_shot = true
 
 [node name="draw" type="ImmediateGeometry" parent="."]
-material_override = SubResource( 8 )
+material_override = SubResource( 9 )
 cast_shadow = 0
 script = ExtResource( 5 )
 
 [node name="draw2" type="ImmediateGeometry" parent="."]
-material_override = SubResource( 8 )
+material_override = SubResource( 9 )
 cast_shadow = 0
 script = ExtResource( 5 )
 
