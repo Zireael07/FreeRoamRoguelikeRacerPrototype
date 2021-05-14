@@ -16,6 +16,8 @@ var steer_angle = 0.0
 var forward_vec
 
 # my stuff starts here
+var debug = false
+
 var STEER_LIMIT = 0.4 #23 degrees # usually up to 30 deg
 var steer_target = 0.0
 
@@ -52,6 +54,11 @@ func _ready():
 	taillights = get_node("taillights")
 
 func _physics_process(delta):
+	# fix stuck in ground
+	if get_translation().y < 0:
+		set_translation(Vector3(get_translation().x, 0, get_translation().z))
+	#	translate_object_local(Vector3(0,0.5,0))
+	
 	
 	# gives false negatives
 	#if is_on_floor():
@@ -62,10 +69,13 @@ func _physics_process(delta):
 	# fix accumulating acceleration while not on ground
 	else:
 		acceleration = Vector3.ZERO
+		apply_friction(delta)
 	
 	#acceleration.y = 0
 	acceleration.y = gravity
-	velocity += acceleration * delta
+	velocity += acceleration * delta # delta is unnecessary for move and collide?
+	
+	#if debug: print("acc*delta" + str(acceleration*delta) + " len: ", str((acceleration*delta).length()))
 	
 	# Set our velocity to a new variable (hvel) and remove the Y velocity.
 	var hvel = velocity

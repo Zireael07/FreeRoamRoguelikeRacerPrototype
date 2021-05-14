@@ -3,7 +3,7 @@ extends Control
 
 # class member variables go here, for example:
 onready var label = get_node("Label")
-onready var debug_label = get_node("Label2")
+onready var debug_label = get_node("Label3")
 onready var fps_label = get_node("Label FPS")
 onready var dist_label = get_node("Label dist")
 onready var road_label = get_node("Label road")

@@ -35,7 +35,7 @@ var flag
 
 var compare_pos = Vector3(0,0,0)
 
-var debug = false
+var hud = null
 var draw = null
 
 # pathing
@@ -211,6 +211,7 @@ func _process(delta):
 	if (elapsed_secs > start_secs):
 		if not done:
 			register_debugging_lines()
+			hud = get_tree().get_nodes_in_group("player")[0].get_node("BODY").hud
 		done = true
 
 		if get_viewport().get_camera().get_name() == "CameraDebug":
@@ -409,7 +410,7 @@ func make_steering():
 		# if desired velocity (speed) is higher than current
 		if brain.steer[1].length() > velocity.length():
 			if (velocity.length() > 0 and brain.steer[1].dot(velocity) > 0) or velocity.length() == 0:
-			#print("Should be stepping on gas")
+				if debug: print("Should be stepping on gas")
 		#if brain.steer[0].z > 0: # and speed <= 200:
 			# if very high angle and slow speed, brake (assume we're turning in an intersection)
 #			if abs(angle) > 1 and speed > 2 and speed < 40:
@@ -431,12 +432,16 @@ func make_steering():
 					gas = true
 	#				#print(get_name() + " gas")
 			else:
-				if speed > 0 and speed < 5:
+				if debug: print(get_parent().get_name(), " desired vel is the other way, spd: ", speed)
+				if speed > 0.4 and speed < 5:
 					if not reverse:
 						braking = true
 					else:
 						gas = true
+				else:
+					gas = true
 		else:
+			if debug: print("Want to slow down")
 			if speed > 0 and speed < 5:
 				if not reverse:
 					braking = true
@@ -503,6 +508,10 @@ func get_input():
 		if tail_mat != null:
 			tail_mat.set_albedo(Color(0.62,0.62,0.62))
 			tail_mat.set_feature(SpatialMaterial.FEATURE_EMISSION, false)
+		
+		if hud:
+			hud.update_debug("Gas: " + str(gas) + "Accel:" + str(acceleration)) #+ " acc/d :" + str(acceleration/delta))	
+		
 	if braking:
 		# brakes
 		acceleration += -transform.basis.z * braking_power
@@ -510,7 +519,9 @@ func get_input():
 		if tail_mat != null:
 			tail_mat.set_albedo(Color(1,1,1))
 			tail_mat.set_feature(SpatialMaterial.FEATURE_EMISSION, true)
-
+		
+		if hud:
+			hud.update_debug("Brakes: " + str(braking) + " accel: " + str(acceleration))
 
 func angle_dir(fwd, target, up):
 	# Returns how far "target" vector is to the left (negative)
@@ -541,6 +552,8 @@ func after_move():
 						get_parent().intersection.cars.keys()[0].get_node("BODY").emitted = false
 					
 					get_parent().intersection = null
+					
+					return
 				if target_array.size() > 33 and current == 32:
 					#print(get_parent().get_name(), " no longer on intersection after arc")
 					get_parent().intersection.cars.erase(get_parent())
@@ -553,6 +566,8 @@ func after_move():
 					
 					get_parent().intersection = null
 	
+					return
+					
 			##do we have a next point?
 			if (target_array.size() > current+1):
 				#if not debug: #dummy out for now
@@ -619,7 +634,7 @@ func set_danger():
 #			if i+1 < num_rays:
 #				danger[i+1] = 1.0
 
-
+# TODO: optimize - if no danger at all, no need to do all those calculations
 func choose_direction():
 	for i in num_rays:
 		if danger[i] > 0.0:
@@ -737,3 +752,5 @@ func stopping():
 func _on_BODY_input_event(camera, event, click_position, click_normal, shape_idx):
 	if (event is InputEventMouseButton) and (event.button_index == BUTTON_LEFT):
 		print("AI clicked is: ", get_parent().get_name())
+		debug = true
+		hud.show()

@@ -391,4 +391,5 @@ material_override = SubResource( 10 )
 cast_shadow = 0
 script = ExtResource( 3 )
 
+[connection signal="input_event" from="BODY" to="BODY" method="_on_BODY_input_event"]
 [connection signal="timeout" from="BODY/Timer" to="BODY" method="_on_Timer_timeout"]

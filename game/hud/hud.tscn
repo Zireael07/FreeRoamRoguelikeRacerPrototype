@@ -75,6 +75,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Label3" type="Label" parent="."]
+modulate = Color( 0.0156863, 0.988235, 0.988235, 1 )
+margin_left = 60.0
+margin_top = 100.0
+margin_right = 262.0
+margin_bottom = 199.0
+size_flags_horizontal = 2
+size_flags_vertical = 0
+text = "kph"
+align = 1
+valign = 1
+max_lines_visible = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Label timer" type="Label" parent="."]
 margin_top = 229.0
 margin_right = 202.0
