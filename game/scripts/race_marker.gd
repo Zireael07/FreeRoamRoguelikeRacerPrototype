@@ -113,7 +113,7 @@ func _on_Area_body_enter( body ):
 					#print("Race rel pos: ", rel_pos)
 					#2D angle to target (local coords)
 					var angle = atan2(rel_pos.x, rel_pos.z)
-					var forward_global = player.get_global_transform().xform(Vector3(0, 0, 2))
+					var forward_global = player.get_global_transform().xform(Vector3(0, 0, -2))
 					var forward_vec = forward_global-player.get_global_transform().origin
 					var tg_dir = raceline[1] - player.get_global_transform().origin
 					var dot = forward_vec.dot(tg_dir)

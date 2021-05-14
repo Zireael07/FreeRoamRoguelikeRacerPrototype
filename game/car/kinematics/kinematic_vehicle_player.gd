@@ -201,7 +201,10 @@ func _physics_process(delta):
 	if (elapsed_secs > start_secs and not emitted):
 		emit_signal("load_ended")
 		emitted = true
-		
+	
+	#reset
+	if (Input.is_action_pressed("steer_reset")):
+		reset_car()	
 		
 	# racing
 	if race and race_path.size() > 0:
@@ -244,6 +247,8 @@ func after_move():
 				prev = current
 				current = current + 1
 
+func reset_car():
+	translate_object_local(Vector3(0,0.5,0))
 
 # UI stuff doesn't have to be in physics_process
 func _process(delta):
@@ -486,7 +491,7 @@ func get_compass_heading():
 	return disp
 
 func get_heading():
-	var forward_global = get_global_transform().xform(Vector3(0, 0, 2))
+	var forward_global = get_global_transform().xform(Vector3(0, 0, -2))
 	var forward_vec = forward_global-get_global_transform().origin
 	#var basis_vec = player.get_global_transform().basis.z
 	

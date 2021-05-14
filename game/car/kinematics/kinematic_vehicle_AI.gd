@@ -345,6 +345,12 @@ func _on_Timer_timeout():
 			emitted = true
 			stop = true
 
+# need to recalculate every tick for is_close_to_target to work
+func _physics_process(delta):
+	rel_loc = get_global_transform().xform_inv(brain.target)
+	# dummy out the y value
+	rel_loc = Vector3(rel_loc.x, 0, rel_loc.z)
+
 
 # ------------------------------------
 # translates steering behaviors output 
@@ -355,9 +361,9 @@ func make_steering():
 	braking = false
 	#joy = Vector2(0,0)
 	
-	rel_loc = get_global_transform().xform_inv(brain.target)
+	#rel_loc = get_global_transform().xform_inv(brain.target)
 	# dummy out the y value
-	rel_loc = Vector3(rel_loc.x, 0, rel_loc.z)
+	#rel_loc = Vector3(rel_loc.x, 0, rel_loc.z)
 	
 	#this one actually reacts to rotations unlike the one using basis.z or linear velocity.z
 	var forward_global = get_global_transform().xform(Vector3(0, 0, -4))
@@ -433,6 +439,7 @@ func make_steering():
 	#				#print(get_name() + " gas")
 			else:
 				if debug: print(get_parent().get_name(), " desired vel is the other way, spd: ", speed)
+				# engine power: 6; brake -9; seems to give accel for a single tick (0.17 delta) as less than 0.4
 				if speed > 0.4 and speed < 5:
 					if not reverse:
 						braking = true
@@ -567,7 +574,7 @@ func after_move():
 					get_parent().intersection = null
 	
 					return
-					
+				
 			##do we have a next point?
 			if (target_array.size() > current+1):
 				#if not debug: #dummy out for now
@@ -580,6 +587,7 @@ func after_move():
 				brain.target = target_array[current]
 				#if debug:
 				#	print("New target" + str(brain.target))
+				return
 			else:
 				#print("We're at the end")
 				stop = true
