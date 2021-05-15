@@ -32,6 +32,7 @@ var braking = false
 var stop = false
 var stuck = false
 var flag
+var unstick_count = 0
 
 var compare_pos = Vector3(0,0,0)
 
@@ -350,7 +351,15 @@ func _physics_process(delta):
 	rel_loc = get_global_transform().xform_inv(brain.target)
 	# dummy out the y value
 	rel_loc = Vector3(rel_loc.x, 0, rel_loc.z)
-
+	
+	# unstick if not on ground
+	if not on_ground:
+		unstick_count += 1
+		if unstick_count > 2:
+			translate_object_local(Vector3(0,0.1,0))
+			# solution from https://godotengine.org/qa/56193/how-to-manually-set-the-position-of-a-kinematicbody2d
+			move_and_slide(Vector3(0,gravity/10,0))
+			unstick_count = 0
 
 # ------------------------------------
 # translates steering behaviors output 
