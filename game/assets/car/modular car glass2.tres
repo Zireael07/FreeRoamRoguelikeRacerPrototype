@@ -1,0 +1,7 @@
+[gd_resource type="SpatialMaterial" format=2]
+
+[resource]
+resource_name = "Glass"
+params_cull_mode = 2
+albedo_color = Color( 0.0431373, 0.470588, 0.886275, 0.45098 )
+roughness = 0.0

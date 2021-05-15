@@ -30,6 +30,7 @@ var emitted = false
 
 signal load_ended
 
+var chase_cam
 var cockpit_cam
 var debug_cam
 #var cam_speed = 1
@@ -69,6 +70,7 @@ func _ready():
 	World_node = get_parent().get_parent().get_node("scene")
 	cockpit_cam = $"cambase/CameraCockpit"
 	debug_cam = $"cambase/CameraDebug"
+	chase_cam = get_node("cambase/Camera")
 	tail_mat = taillights.get_mesh().surface_get_material(0)
 
 	##GUI
@@ -156,7 +158,6 @@ func random_date():
 func on_load_ended():
 	print("Loaded all pertinent stuff")
 	# enable our cam
-	var chase_cam = get_node("cambase/Camera")
 	chase_cam.make_current()
 	# disable rear view mirror
 	$"cambase/MirrorMesh".set_visible(false)
