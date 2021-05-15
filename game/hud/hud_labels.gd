@@ -49,6 +49,10 @@ func update_speed(text, clr):
 
 func update_debug(text):
 	debug_label.set_text(text)
+	
+func append_debug(text):
+	var txt = debug_label.get_text()
+	debug_label.set_text(txt + text)	
 
 func format_verts(text):
 	# for strings, this is length() not size()!

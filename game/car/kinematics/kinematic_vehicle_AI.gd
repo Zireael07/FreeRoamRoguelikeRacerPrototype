@@ -234,6 +234,10 @@ func _process(delta):
 			else:
 				draw.update_vector(3, chosen_dir*5)
 			#draw.update_vector(4, -transform.basis.z)
+			
+		# label debugging
+		if hud and debug:
+			hud.update_debug("D: " + str(danger) + "\n I: " + str(interest))
 
 		# cop spots player -> starts chase
 		if get_parent().is_in_group("cop"):
@@ -425,7 +429,7 @@ func make_steering():
 		# if desired velocity (speed) is higher than current
 		if brain.steer[1].length() > velocity.length():
 			if (velocity.length() > 0 and brain.steer[1].dot(velocity) > 0) or velocity.length() == 0:
-				if debug: print("Should be stepping on gas")
+				#if debug: print("Should be stepping on gas")
 		#if brain.steer[0].z > 0: # and speed <= 200:
 			# if very high angle and slow speed, brake (assume we're turning in an intersection)
 #			if abs(angle) > 1 and speed > 2 and speed < 40:
@@ -520,13 +524,14 @@ func get_input():
 		else:
 			acceleration = -transform.basis.z * engine_power
 			
-			#cancel braking visual
+		#cancel braking visual
 		if tail_mat != null:
 			tail_mat.set_albedo(Color(0.62,0.62,0.62))
 			tail_mat.set_feature(SpatialMaterial.FEATURE_EMISSION, false)
 		
-		if hud:
-			hud.update_debug("Gas: " + str(gas) + "\n Accel:" + str(acceleration) + " ground: " + str(on_ground)) #+ " acc/d :" + str(acceleration/delta))	
+		#if hud:
+		#	if debug:
+		#		hud.append_debug("Gas: " + str(gas) + "\n Accel:" + str(acceleration)) # + " ground: " + str(on_ground)) #+ " acc/d :" + str(acceleration/delta))	
 		
 	if braking:
 		# brakes
@@ -536,8 +541,9 @@ func get_input():
 			tail_mat.set_albedo(Color(1,1,1))
 			tail_mat.set_feature(SpatialMaterial.FEATURE_EMISSION, true)
 		
-		if hud:
-			hud.update_debug("Brakes: " + str(braking) + "\n accel: " + str(acceleration) + " ground: " + str(on_ground))
+		#if hud:
+		#	if debug:
+		#		hud.append_debug("Brakes: " + str(braking) + "\n accel: " + str(acceleration)) # + " ground: " + str(on_ground))
 
 func angle_dir(fwd, target, up):
 	# Returns how far "target" vector is to the left (negative)
@@ -651,6 +657,10 @@ func set_danger():
 #			if i+1 < num_rays:
 #				danger[i+1] = 1.0
 
+#	if hud:
+#		if debug:
+#			hud.update_debug("D: " + str(danger)+"\n")
+
 # TODO: optimize - if no danger at all, no need to do all those calculations
 func choose_direction():
 	for i in num_rays:
@@ -663,7 +673,9 @@ func choose_direction():
 			if i == num_rays-1 or i == num_rays-2:
 				interest[num_rays/4] = 2.0*danger[i]
 				
-			
+#	if hud: 
+#		if debug: 
+#			hud.append_debug("I: " + str(interest) + "\n")		
 			
 	chosen_dir = Vector3.ZERO
 	for i in num_rays:
@@ -770,4 +782,4 @@ func _on_BODY_input_event(camera, event, click_position, click_normal, shape_idx
 	if (event is InputEventMouseButton) and (event.button_index == BUTTON_LEFT):
 		print("AI clicked is: ", get_parent().get_name())
 		debug = true
-		hud.show()
+		hud.debug_label.show()
