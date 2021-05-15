@@ -202,10 +202,6 @@ func _physics_process(delta):
 	if (elapsed_secs > start_secs and not emitted):
 		emit_signal("load_ended")
 		emitted = true
-	
-	#reset
-	if (Input.is_action_pressed("steer_reset")):
-		reset_car()	
 		
 	# racing
 	if race and race_path.size() > 0:
@@ -249,7 +245,15 @@ func after_move():
 				current = current + 1
 
 func reset_car():
+	print("Reset!")
+	#var tr = get_parent().get_translation()
+	#get_parent().set_translation(Vector3(tr.x, 0.5, tr.z))
+	#global_translate(Vector3(0, 0.5,0))
 	translate_object_local(Vector3(0,0.5,0))
+	# solution from https://godotengine.org/qa/56193/how-to-manually-set-the-position-of-a-kinematicbody2d
+	move_and_slide(Vector3(0,0.1,0))
+
+	#gravity = 20
 
 # UI stuff doesn't have to be in physics_process
 func _process(delta):
@@ -382,6 +386,11 @@ func _input(event):
 			get_node("Map").show()
 			# force redraw minimap track if any
 			get_node("Map").redraw_nav()
+			
+		
+	#reset
+	if (Input.is_action_pressed("steer_reset")):
+		reset_car()	
 
 # -----------------------------------------
 

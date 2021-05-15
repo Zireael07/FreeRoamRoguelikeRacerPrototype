@@ -86,7 +86,6 @@ size_flags_vertical = 0
 text = "kph"
 align = 1
 valign = 1
-max_lines_visible = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }

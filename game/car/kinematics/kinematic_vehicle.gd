@@ -32,6 +32,7 @@ var speed = 0
 var speed_int = 0
 var speed_kph = 0
 var reverse = false
+var on_ground = true
 
 var offset
 var position_on_line
@@ -53,16 +54,16 @@ func _ready():
 	headlight_two = get_node("SpotLight1")
 	taillights = get_node("taillights")
 
-func _physics_process(delta):
-	# fix stuck in ground
-	if get_translation().y < 0:
-		set_translation(Vector3(get_translation().x, 0, get_translation().z))
-	#	translate_object_local(Vector3(0,0.5,0))
+func _physics_process(delta):	
 	
+	#if is_on_floor(): 	# gives false negatives
 	
-	# gives false negatives
-	#if is_on_floor():
 	if front_ray.is_colliding() or rear_ray.is_colliding():
+		on_ground = true
+	else:
+		on_ground = false
+	
+	if on_ground:
 		get_input()
 		apply_friction(delta)
 		calculate_steering(delta)
@@ -79,7 +80,8 @@ func _physics_process(delta):
 	
 	# Set our velocity to a new variable (hvel) and remove the Y velocity.
 	var hvel = velocity
-	hvel.y = 0
+	if on_ground:
+		hvel.y = 0
 	
 	# velocity, up, snap, slope, slides
 	velocity = move_and_slide_with_snap(hvel, #velocity,

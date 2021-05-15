@@ -517,7 +517,7 @@ func get_input():
 			tail_mat.set_feature(SpatialMaterial.FEATURE_EMISSION, false)
 		
 		if hud:
-			hud.update_debug("Gas: " + str(gas) + "Accel:" + str(acceleration)) #+ " acc/d :" + str(acceleration/delta))	
+			hud.update_debug("Gas: " + str(gas) + "\n Accel:" + str(acceleration) + " ground: " + str(on_ground)) #+ " acc/d :" + str(acceleration/delta))	
 		
 	if braking:
 		# brakes
@@ -528,7 +528,7 @@ func get_input():
 			tail_mat.set_feature(SpatialMaterial.FEATURE_EMISSION, true)
 		
 		if hud:
-			hud.update_debug("Brakes: " + str(braking) + " accel: " + str(acceleration))
+			hud.update_debug("Brakes: " + str(braking) + "\n accel: " + str(acceleration) + " ground: " + str(on_ground))
 
 func angle_dir(fwd, target, up):
 	# Returns how far "target" vector is to the left (negative)
