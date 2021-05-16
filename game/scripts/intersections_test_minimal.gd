@@ -11,7 +11,7 @@ func _ready():
 	# Initialization here
 
 	# just the intersection selection
-	connect_intersections(0,1)
+	connect_intersections(0,1, true)
 
 #func _process(delta):
 #	# Called every frame. Delta is time since last frame.

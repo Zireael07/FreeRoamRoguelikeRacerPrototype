@@ -1,9 +1,8 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://scripts/daynight.gd" type="Script" id=2]
 [ext_resource path="res://scripts/meshes/ground_gen.gd" type="Script" id=3]
-[ext_resource path="res://assets/ground_material.tres" type="Material" id=4]
 [ext_resource path="res://objects/garage_road.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scripts/intersections_test_minimal.gd" type="Script" id=6]
 [ext_resource path="res://roads/intersection.tscn" type="PackedScene" id=7]
@@ -45,7 +44,6 @@ directional_shadow_bias_split_scale = 0.0
 
 [node name="Ground" type="Spatial" parent="."]
 script = ExtResource( 3 )
-terrainmaterial = ExtResource( 4 )
 
 [node name="StaticBody" type="StaticBody" parent="Ground"]
 
@@ -57,8 +55,12 @@ shape = SubResource( 1 )
 [node name="Spatial" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2052, 0, 91.8753 )
 script = ExtResource( 6 )
+__meta__ = {
+"_editor_description_": "Intersections cannot be too close together as the algorithm breaks"
+}
 
 [node name="Spatial" parent="Spatial" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 47.9559 )
 
 [node name="Spatial2" parent="Spatial" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16.3338, 0, -64.3236 )
