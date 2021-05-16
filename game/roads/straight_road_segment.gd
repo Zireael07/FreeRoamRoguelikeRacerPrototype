@@ -360,6 +360,7 @@ func makeRoad():
 		var shape = BoxShape.new()
 		shape.set_extents(Vector3(6,3, mid_point.z))
 		var body = StaticBody.new()
+		body.set_collision_layer(2) # AI raycasts ignore layer 2
 		add_child(body)
 		var coll = CollisionShape.new()
 		body.add_child(coll)
@@ -370,9 +371,28 @@ func makeRoad():
 			var rot = -atan2(end_ref.y-mid_point.y, end_ref.z-mid_point.z)
 			coll.set_rotation(Vector3(rot, 0,0))
 			coll.set_translation(Vector3(0, -0.4, mid_point.z))
+			
+			# prevent falling off (especially AI)
+			coll = CollisionShape.new()
+			shape = BoxShape.new()
+			shape.set_extents(Vector3(2,3, mid_point.z-1))
+			body.add_child(coll)
+			coll.set_shape(shape)
+			coll.set_rotation(Vector3(rot, 0,0))
+			coll.set_translation(Vector3(6,0,mid_point.z))
+			# other side
+			coll = CollisionShape.new()
+			shape = BoxShape.new()
+			shape.set_extents(Vector3(2,3, mid_point.z-1))
+			body.add_child(coll)
+			coll.set_shape(shape)
+			coll.set_rotation(Vector3(rot, 0,0))
+			coll.set_translation(Vector3(-6,0,mid_point.z))
+			
 		else:
 			coll.set_translation(Vector3(0,-2.9, mid_point.z))
 	
+
 	
 #	if relative_end.z > 250:
 #		var shape = BoxShape.new()
