@@ -123,6 +123,26 @@ func _ready():
 	# debug
 #	get_node("nav").debug_lane_lists()
 
+	# test: replace longest road with a bridge
+	# done after nav setup to avoid having to mess with navigation
+	var straight = get_node("Road 6-5/Spatial0/Road_instance 0")
+	var str_tr = get_node("Road 6-5/Spatial0/Road_instance 0").get_translation()
+	var str_len = straight.relative_end
+	var slope = set_straight_slope(str_tr, get_node("Road 6-5/Spatial0/Road_instance 0").get_rotation(), get_node("Road 6-5/Spatial0"), 1)
+	# position the other end correctly
+	var end_p_gl = straight.global_transform.xform(str_len)
+	var end_p = get_node("Road 6-5/Spatial0").to_local(end_p_gl)
+	var slope2 = set_straight_slope(end_p, get_node("Road 6-5/Spatial0/Road_instance 0").get_rotation()+Vector3(0,deg2rad(180),0), get_node("Road 6-5/Spatial0"), 2)
+	# regenerate the straight
+	straight.translate_object_local(Vector3(0, 5, 40))
+	straight.relative_end = Vector3(0,0,str_len.z-80) # because both slopes are 40 m long
+	straight.get_node("plane").queue_free()
+	straight.get_node("sidewalk").queue_free()
+	# regenerate all the decor
+	for c in straight.get_node("Spatial").get_children():
+		c.queue_free()
+	#straight.get_node("Spatial").queue_free()
+	straight.generateRoad()
 
 
 	# place cars on intersections

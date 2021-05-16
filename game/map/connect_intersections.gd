@@ -373,9 +373,6 @@ func set_straight(loc, loc2, node):
 	# because we're pointing at +Z, sigh...
 	spatial.rotate_y(deg2rad(180))
 	
-	
-		
-	
 	return road_node	
 	
 func set_curved_road(radius, start_angle, end_angle, index, node, verbose):
@@ -410,6 +407,52 @@ func set_curved_road(radius, start_angle, end_angle, index, node, verbose):
 	
 	node.add_child(road_node_right)
 	return road_node_right
+	
+func set_straight_slope(loc, rot, node, i):
+	var road_node = road_straight.instance()
+	road_node.set_name("Road_instance "+str(i))
+	# values here are experimental
+	# set length
+	var dist = 40 #loc.distance_to(loc2)
+	road_node.relative_end = Vector3(0,0, dist)
+	road_node.road_slope = 5.0
+	
+	
+	# decorate
+	randomize()
+	
+	if dist > 51.0 and dist < 300:
+		var r = randf()
+		if r < 0.4:
+			road_node.tunnel = true
+	
+	if dist < 51.0:
+		var r = randf()
+		if r < 0.2:
+			road_node.bamboo = true
+		elif r < 0.6:
+			road_node.trees = true
+	
+	
+	#var spatial = Spatial.new()
+	#spatial.set_name("Spatial0")
+	node.add_child(road_node)
+	#spatial.add_child(road_node)
+	
+	# place
+	road_node.set_translation(loc)
+	
+	# looking down -Z
+	#var tg = to_global(loc2)
+	#print("Look at target: " + str(tg))
+	
+	#road_node.look_at(tg, Vector3(0,1,0))
+	# because we're pointing at +Z, sigh...
+	#road_node.rotate_y(deg2rad(180))
+	
+	road_node.rotate_y(rot.y)
+	
+	return road_node
 
 # -------------------------------------
 # this is the meat of this whole script (selects the intersection exits so that we don't overlap/cross)

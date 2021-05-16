@@ -72,6 +72,9 @@ func _ready():
 	cement_tex = preload("res://assets/cement.tres")	
 	tunnel_obj = preload("res://objects/tunnel_mesh.tscn")
 	
+	generateRoad()
+
+func generateRoad():
 	positions.resize(0) # = []
 	left_positions.resize(0) # = []
 	right_positions.resize(0) #= []
@@ -91,7 +94,7 @@ func _ready():
 	#overdraw fix
 	#if (get_parent().get_name().find("Spatial") != -1):
 	makeRoad()
-		
+	
 	#place props
 	get_node("Spatial").place_props(trees, bamboo, sectionlength*length)
 
@@ -346,10 +349,29 @@ func makeRoad():
 		draw.queue_free()
 
 	# workaround for https://github.com/godotengine/godot/issues/36729
-	var shape = BoxShape.new()
-	shape.set_extents(Vector3(6,1,mid_point.z))
-	get_node("Area/CollisionShape").set_translation(Vector3(0,0,mid_point.z))
-	get_node("Area/CollisionShape").set_shape(shape)
+	# if we're on the ground and not sloped, we don't need a collision shape
+	if global_transform.origin.y < 1 and road_slope < 0.1:
+		var shape = BoxShape.new()
+		shape.set_extents(Vector3(6,1,mid_point.z))
+		get_node("Area/CollisionShape").set_translation(Vector3(0,0,mid_point.z))
+		get_node("Area/CollisionShape").set_shape(shape)
+	# otherwise make a simple collision shape
+	else:
+		var shape = BoxShape.new()
+		shape.set_extents(Vector3(6,3, mid_point.z))
+		var body = StaticBody.new()
+		add_child(body)
+		var coll = CollisionShape.new()
+		body.add_child(coll)
+		coll.set_shape(shape)
+		# if sloped, just rotate the box shape
+		if road_slope > 0.1:
+			# Godot's atan is y,x
+			var rot = -atan2(end_ref.y-mid_point.y, end_ref.z-mid_point.z)
+			coll.set_rotation(Vector3(rot, 0,0))
+			coll.set_translation(Vector3(0, -0.4, mid_point.z))
+		else:
+			coll.set_translation(Vector3(0,-2.9, mid_point.z))
 	
 	
 #	if relative_end.z > 250:
