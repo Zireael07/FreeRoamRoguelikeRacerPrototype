@@ -15,7 +15,7 @@ var garage
 var recharge
 var dealership
 
-var AI = preload("res://car/vehiclebody/car_AI_traffic.tscn")
+var AI = preload("res://car/kinematics/kinematic_car_AI_traffic.tscn")
 
 func _ready():
 	# Called when the node is added to the scene for the first time.

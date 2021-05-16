@@ -543,13 +543,16 @@ func _merge_meshinstance(st : SurfaceTool, mi : MeshInstance, var use_local_spac
 		printerr("_merge_meshinstance - not a mesh instance, ignoring")
 		return vertex_count
 
-	print("merging meshinstance : " + mi.get_name())		
+	#print("merging meshinstance : " + mi.get_name())		
 	var mesh = mi.mesh
 		
 	var mdt = MeshDataTool.new()
 	
 	# only surface 0 for now
 	mdt.create_from_surface(mesh, 0)
+	
+	#print("Mesh format: ", mdt.get_format())
+	var fmt = mdt.get_format()
 
 	var nVerts = mdt.get_vertex_count()
 	var nFaces = mdt.get_face_count()
@@ -574,7 +577,7 @@ func _merge_meshinstance(st : SurfaceTool, mi : MeshInstance, var use_local_spac
 			st.add_normal(norm)
 		if col:
 			st.add_color(col)
-		if uv:
+		if uv and fmt != 97299: #no uvs, uv2 bones or weights
 			st.add_uv(uv)
 		if uv2:
 			st.add_uv2(uv2)
