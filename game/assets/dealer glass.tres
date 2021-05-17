@@ -1,0 +1,9 @@
+[gd_resource type="SpatialMaterial" format=2]
+
+[resource]
+resource_name = "Glass"
+flags_transparent = true
+flags_vertex_lighting = true
+params_cull_mode = 2
+albedo_color = Color( 0.0509804, 0.729412, 0.933333, 0.396078 )
+roughness = 0.0
