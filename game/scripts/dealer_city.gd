@@ -7,7 +7,7 @@ var dealer_scene
 
 func _ready():
 	dealer_scene = preload("res://objects/dealer_inside.tscn")
-	player_script = load("res://car/vehiclebody/vehicle_player.gd")
+	player_script = load("res://car/kinematics/kinematic_vehicle_player.gd")
 	# Called every time the node is added to the scene.
 	# Initialization here
 
@@ -28,8 +28,10 @@ func enter_dealer(body):
 	player.hide()
 	
 	# brake
-	#player.set_engine_force(-player.get_engine_force())
 	player.set_translation(player.get_translation())
+	player.velocity = Vector3.ZERO
+	player.acceleration = Vector3.ZERO
+	#player.set_engine_force(-player.get_engine_force())
 	#player.set_engine_force(-400)
 	
 	# stop car input
@@ -65,7 +67,7 @@ func enter_dealer(body):
 
 func _on_Area_body_entered( body ):
 	print("Area triggered")
-	if body is VehicleBody:
+	if body is KinematicBody:
 		if body is player_script:
 			if body.speed < 10:
 				enter_dealer(body)

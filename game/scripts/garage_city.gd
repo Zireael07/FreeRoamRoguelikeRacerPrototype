@@ -7,7 +7,7 @@ var garage_scene
 
 func _ready():
 	garage_scene = preload("res://objects/garage_inside.tscn")
-	player_script = load("res://car/vehiclebody/vehicle_player.gd")
+	player_script = load("res://car/kinematics/kinematic_vehicle_player.gd")
 	# Called every time the node is added to the scene.
 	# Initialization here
 	pass
@@ -15,7 +15,7 @@ func _ready():
 
 func _on_Area_body_entered( body ):
 	print("Area triggered")
-	if body is VehicleBody:
+	if body is KinematicBody:
 		if body is player_script:
 			print("Garage entrance area entered by the player")
 			player = body
@@ -33,8 +33,10 @@ func _on_Area_body_entered( body ):
 			player.hide()
 			
 			# brake
+			player.velocity = Vector3.ZERO
+			player.acceleration = Vector3.ZERO
+			player.set_translation(player.get_translation())			
 			#player.set_engine_force(-player.get_engine_force())
-			player.set_translation(player.get_translation())
 			#player.set_engine_force(-400)
 			
 			# stop car input
