@@ -90,22 +90,26 @@ func _ready():
 
 
 func place_props(trees, bamboo, long):
+	var height = 0
+	if get_parent().global_transform.origin.y > 1:
+		height = -get_parent().global_transform.origin.y
+		
 	# buildings and lanterns
 	if not trees and not bamboo:
 		var numBuildings = int(long/buildingSpacing)
 		for index in range(numBuildings+1):
-			placeBuilding(index)
-			placeCable(index)
+			placeBuilding(index, height)
+			placeCable(index, height)
 	elif not bamboo:
 		var numTrees = int(long/treeSpacing)
 		for index in range(numTrees+1):
-			placeTree(index)
+			placeTree(index, height)
 	else:
 		var numTrees = int(long/(treeSpacing/2))
 		for index in range(numTrees+1):
-			placeBamboo(index)
+			placeBamboo(index, height)
 
-func setupBuilding(index):
+func setupBuilding(index, base_height):
 	# seed the rng
 	randomize()
 	
@@ -223,7 +227,8 @@ func setupBuilding(index):
 	# vary sign placement height
 	var rand_i = randi() % 5
 	
-	build.get_node("MeshInstance").translate(Vector3(0, rand_i, 0))
+	# if base_height < 0, we're building for a bridge/elevated road so let's flip the sign
+	build.get_node("MeshInstance").translate(Vector3(0, -base_height+rand_i, 0))
 	
 	
 	#build.set_scale(Vector3(2, 2, 2))
@@ -232,48 +237,48 @@ func setupBuilding(index):
 	
 	return build
 
-#func setupBuildingSimple(index):
-#	#var build = building.instance()
-#	var build = building_test.instance()
-#
-#	build.set_name("Skyscraper"+String(index))
-#	add_child(build)
-#
-#	return build
+func setupBuildingSimple(index):
+	#var build = building.instance()
+	var build = building_test.instance()
 
-func placeBuilding(index):
-	var build = setupBuilding(index)
+	build.set_name("Skyscraper"+String(index))
+	add_child(build)
+
+	return build
+
+func placeBuilding(index, base_height):
+	var build = setupBuilding(index, base_height)
 	#var build = setupBuildingSimple(index)
 	
 	#left side of the road
-	var loc = Vector3(roadwidth+buildDistance, 0, index+buildOffset)
+	var loc = Vector3(roadwidth+buildDistance, base_height, index+buildOffset)
 	if (index > 0):
-		loc = Vector3(roadwidth+buildDistance, 0, buildOffset + index*15)
+		loc = Vector3(roadwidth+buildDistance, base_height, buildOffset + index*15)
 	else:
-		loc = Vector3(roadwidth+buildDistance, 0, index+buildOffset)
+		loc = Vector3(roadwidth+buildDistance, base_height, index+buildOffset)
 	
 	build.set_translation(loc)
 	build.set_rotation_degrees(Vector3(0, 180, 0))
 	
 	build.get_node("Spatial").set_translation(Vector3(-8, 0,0))
 	
-	build = setupBuilding(index)
+	build = setupBuilding(index, base_height)
 	
 	#build = setupBuildingSimple(index)
 	
 	#right side of the road
-	loc = Vector3(-(roadwidth+buildDistance), 0, index+buildOffset)
+	loc = Vector3(-(roadwidth+buildDistance), base_height, index+buildOffset)
 	if (index > 0):
-		loc = Vector3(-(roadwidth+buildDistance), 0, buildOffset + index*15)
+		loc = Vector3(-(roadwidth+buildDistance), base_height, buildOffset + index*15)
 	else:
-		loc = Vector3(-(roadwidth+buildDistance), 0, index+buildOffset)
+		loc = Vector3(-(roadwidth+buildDistance), base_height, index+buildOffset)
 	
 	build.set_translation(loc)
 	
 	# move detect area
 	build.get_node("Spatial").set_translation(Vector3(-8, 0,0))
 	
-func placeCable(index):
+func placeCable(index, base_height):
 	if (index % 2 > 0):
 		var cable = cables.instance()
 		
@@ -296,20 +301,21 @@ func placeCable(index):
 		cable.set_name("Cable"+String(index))
 		add_child(cable)
 	
-		var loc = Vector3(0,3,index*15)
+		# if base_height < 0, we're building for a bridge/elevated road so let's flip the sign
+		var loc = Vector3(0,-base_height+3,index*15)
 		cable.set_translation(loc)
 
-func placeTree(index):
+func placeTree(index, base_height):
 	var tree = cherry_tree.instance()
 	tree.set_name("Tree"+String(index))
 	add_child(tree)
 
 	#left side of the road
-	var loc = Vector3(roadwidth+(buildDistance/2), 0, index)
+	var loc = Vector3(roadwidth+(buildDistance/2), base_height, index)
 	if (index > 0):
-		loc = Vector3(roadwidth+(buildDistance/2), 0, index*10)
+		loc = Vector3(roadwidth+(buildDistance/2), base_height, index*10)
 	else:
-		loc = Vector3(roadwidth+(buildDistance/2), 0, index)
+		loc = Vector3(roadwidth+(buildDistance/2), base_height, index)
 	
 	tree.set_translation(loc)
 	
@@ -318,15 +324,15 @@ func placeTree(index):
 	add_child(tree)
 	
 	#right side of the road
-	loc = Vector3(-(roadwidth+(buildDistance/2)), 0, index)
+	loc = Vector3(-(roadwidth+(buildDistance/2)), base_height, index)
 	if (index > 0):
-		loc = Vector3(-(roadwidth+(buildDistance/2)), 0, index*10)
+		loc = Vector3(-(roadwidth+(buildDistance/2)), base_height, index*10)
 	else:
-		loc = Vector3(-(roadwidth+(buildDistance/2)), 0, index)
+		loc = Vector3(-(roadwidth+(buildDistance/2)), base_height, index)
 	
 	tree.set_translation(loc)
 
-func placeBamboo(index):
+func placeBamboo(index, base_height):
 	# vary position a bit
 	var rand_i = randi() % 4
 	var rand = randf()
@@ -337,14 +343,14 @@ func placeBamboo(index):
 	add_child(clump)
 
 	#left side of the road
-	var loc = Vector3(roadwidth+(buildDistance/2), 0, index)
+	var loc = Vector3(roadwidth+(buildDistance/2), base_height, index)
 	if (index > 0):
 		if rand > 0.5:
-			loc = Vector3(roadwidth+(buildDistance/2)+rand_i, 0, index*5)
+			loc = Vector3(roadwidth+(buildDistance/2)+rand_i, base_height, index*5)
 		else:
-			loc = Vector3(roadwidth+(buildDistance/2)-rand_i, 0, index*5)
+			loc = Vector3(roadwidth+(buildDistance/2)-rand_i, base_height, index*5)
 	else:
-		loc = Vector3(roadwidth+(buildDistance/2), 0, index)
+		loc = Vector3(roadwidth+(buildDistance/2), base_height, index)
 	
 	clump.set_translation(loc)
 	
@@ -356,14 +362,14 @@ func placeBamboo(index):
 	rand_i = randi() % 5
 	
 	#right side of the road
-	loc = Vector3(-(roadwidth+(buildDistance/2)), 0, index)
+	loc = Vector3(-(roadwidth+(buildDistance/2)), base_height, index)
 	if (index > 0):
 		if rand > 0.5:
-			loc = Vector3(-(roadwidth+(buildDistance/2)+rand_i), 0, index*5)
+			loc = Vector3(-(roadwidth+(buildDistance/2)+rand_i), base_height, index*5)
 		else:
-			loc = Vector3(-(roadwidth+(buildDistance/2)-rand_i), 0, index*5)
+			loc = Vector3(-(roadwidth+(buildDistance/2)-rand_i), base_height, index*5)
 	else:
-		loc = Vector3(-(roadwidth+(buildDistance/2)), 0, index)
+		loc = Vector3(-(roadwidth+(buildDistance/2)), base_height, index)
 	
 	clump.set_translation(loc)
 
