@@ -104,7 +104,10 @@ margin_left = 80.0
 margin_top = 20.0
 margin_right = 120.0
 margin_bottom = 34.0
-text = "Mult 6"
+text = "15.0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="Control/BrakesBlock"]
 margin_left = 140.0
@@ -125,7 +128,7 @@ margin_left = 80.0
 margin_top = 120.0
 margin_right = 120.0
 margin_bottom = 134.0
-text = "Mult 8"
+text = "25.0"
 
 [node name="Label4" type="Label" parent="Control/BrakesBlock"]
 margin_left = 140.0
@@ -135,6 +138,7 @@ margin_bottom = 134.0
 text = "¥20"
 
 [node name="TiresBlock" type="Control" parent="Control"]
+visible = false
 margin_top = 400.0
 margin_right = 200.0
 margin_bottom = 400.0
@@ -193,6 +197,7 @@ text = ">"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
 [connection signal="draw" from="Control/EngineBlock/EngineButton" to="." method="_on_EngineButton_draw"]
 [connection signal="pressed" from="Control/EngineBlock/EngineButton" to="." method="_on_EngineButton_pressed"]

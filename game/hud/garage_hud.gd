@@ -51,36 +51,36 @@ func _on_Button_pressed():
 
 # ----------------------------
 func _on_BrakeButton_pressed():
-	player.braking_force_mult = 6
+	player.braking_power = -15.0
 	player.money = player.money - 10
 	get_node("MoneyLabel").set_text(str(player.money))
 	disable_buttons_money()
 
 
 func _on_BrakeButton2_pressed():
-	player.braking_force_mult = 8
+	player.braking_power = -25.0
 	player.money = player.money - 20
 	get_node("MoneyLabel").set_text(str(player.money))
 	disable_buttons_money()
 
 
-func _on_TireButton_pressed():
-	print("Pressed tire")
-	player.get_node("wheel1").set_friction_slip(1.5)
-	player.get_node("wheel2").set_friction_slip(1.5)
-	player.get_node("wheel3").set_friction_slip(1.5)
-	player.get_node("wheel4").set_friction_slip(1.5)
+#func _on_TireButton_pressed():
+#	print("Pressed tire")
+#	player.get_node("wheel1").set_friction_slip(1.5)
+#	player.get_node("wheel2").set_friction_slip(1.5)
+#	player.get_node("wheel3").set_friction_slip(1.5)
+#	player.get_node("wheel4").set_friction_slip(1.5)
 
 
 func _on_EngineButton_pressed():
-	player.engine_force_mult = 1.5
+	player.engine_power = 9.0
 	player.money = player.money - 40
 	get_node("MoneyLabel").set_text(str(player.money))
 	disable_buttons_money()
 
 
 func _on_EngineButton2_pressed():
-	player.engine_force_mult = 2
+	player.engine_power = 12.0
 	player.money = player.money - 60
 	get_node("MoneyLabel").set_text(str(player.money))
 	disable_buttons_money()
