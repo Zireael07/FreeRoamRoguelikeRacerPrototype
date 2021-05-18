@@ -63,7 +63,15 @@ var was_fast = false
 
 var skidmark = null
 
+# vehicle switching
+var car_scene = null
+var bike_scene = null
+
 func _ready():
+	# preload doesn't work since we're loading from a script that both scenes use
+	car_scene = load("res://car/kinematics/kinematic_car_base.tscn")
+	bike_scene = load("res://car/kinematics/kinematic_bike.tscn")
+	
 	# our custom signal
 	connect("load_ended", self, "on_load_ended")
 
@@ -544,6 +552,48 @@ func angle_to_intersection(id):
 	#print("Relative loc of intersection", id, " is ", rel_pos)
 	# we don't care about z, only about x
 	return rel_pos.x
+
+# -----------------------------------
+func swap_to_bike():
+	# get positions
+	var p_pos = get_parent().get_translation() #.get_global_transform().origin
+	#print("Parent position before swap: " + str(p_pos))
+	var pos = get_translation()
+	#print("Body pos before swap: " + str(pos))
+	
+	get_parent().queue_free()
+	#var bike_scene = load("res://car/bike_base.tscn")
+	var bike = bike_scene.instance()
+	bike.set_name("bike")
+	# place the bike where the car was
+	#bike.get_parent().global_transform.origin = p_pos
+	bike.set_translation(p_pos)
+	bike.get_node("BODY").set_translation(pos)
+	
+	get_parent().get_parent().add_child(bike)
+	#print("Dummy")
+	return bike.get_node("BODY")
+
+func swap_to_car():
+	# get positions
+	var p_pos = get_parent().get_translation() #.get_global_transform().origin
+	#print("Parent position before swap: " + str(p_pos))
+	var pos = get_translation()
+	#print("Body pos before swap: " + str(pos))
+	
+	get_parent().queue_free()
+	#var car_scene = load("res://car/car_base.tscn")
+	var car = car_scene.instance()
+	car.set_name("car")
+	# place the car where the bike was
+	#car.get_parent().global_transform.origin = p_pos
+	car.set_translation(p_pos)
+	car.get_node("BODY").set_translation(pos)
+	
+	get_parent().get_parent().add_child(car)
+	#print("Dummy")
+	return car.get_node("BODY")
+
 
 # -------------------------
 func delay_new_events():

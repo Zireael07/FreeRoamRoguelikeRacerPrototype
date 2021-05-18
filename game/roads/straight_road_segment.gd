@@ -358,7 +358,7 @@ func makeRoad():
 	# otherwise make a simple collision shape
 	else:
 		var shape = BoxShape.new()
-		shape.set_extents(Vector3(6,3, mid_point.z))
+		shape.set_extents(Vector3(6,3, mid_point.z+0.2)) #fudge necessary for bike not to fall through a crack
 		var body = StaticBody.new()
 		body.set_collision_layer(2) # AI raycasts ignore layer 2
 		add_child(body)
