@@ -1,9 +1,11 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/driver/scene.gltf" type="PackedScene" id=1]
+[ext_resource path="res://addons/bone_editor/BoneHandle.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/bone_editor/BoneEditor.gd" type="Script" id=3]
+[ext_resource path="res://addons/bone_editor/BoneHandle.gd" type="Script" id=4]
 
 [node name="scene" instance=ExtResource( 1 )]
-transform = Transform( 0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, 0 )
 
 [node name="Mesh" parent="RootNode gltf orientation matrix/RootNode model correction matrix/69d31c5134e845149df09acc9cb204a4fbx/RootNode/Armature/Node/Skeleton" index="0"]
 visible = false
@@ -50,3 +52,202 @@ tip_bone = "mixamorig_right_hand_22"
 target = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1 )
 target_node = NodePath("../Spatial/Position3D_right")
 min_distance = 1.0
+
+[node name="BoneEditor" type="Spatial" parent="." index="1"]
+script = ExtResource( 3 )
+control_skeleton = NodePath("../RootNode gltf orientation matrix/RootNode model correction matrix/69d31c5134e845149df09acc9cb204a4fbx/RootNode/Armature/Node/Skeleton")
+
+[node name="_root_joint" type="Spatial" parent="BoneEditor" index="0" instance=ExtResource( 2 )]
+script = ExtResource( 4 )
+
+[node name="mixamorig_hips_0" type="Spatial" parent="BoneEditor/_root_joint" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000478074, 95.9989, -0.454002 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_spine_1" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000841952, 10.7578, -0.697119 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_spine_1_2" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.10197e-11, 12.5507, -0.81332 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_spine_2_3" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.83044e-10, 14.3437, -0.929509 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_neck_4" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.747e-11, 16.1366, -1.04569 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_head_5" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_neck_4" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.27021e-11, 3.4773, 1.10503 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_head_top_end_6" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_neck_4/mixamorig_head_5" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.79654e-10, 27.7255, 8.81071 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_head_top_end_end_41" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_neck_4/mixamorig_head_5/mixamorig_head_top_end_6" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.50826e-10, 29.0918, -2.31016e-21 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_shoulder_7" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3" index="1" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.50808, 14.2459, -1.00815 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_arm_8" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_left_shoulder_7" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.0838, -3.0919, 0.0750755 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_fore_arm_9" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_left_shoulder_7/mixamorig_left_arm_8" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23.3162, -9.80089, 1.15927e-05 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_hand_10" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_left_shoulder_7/mixamorig_left_arm_8/mixamorig_left_fore_arm_9" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24.5287, -10.3105, -2.19593e-07 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_hand_thumb_1_11" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_left_shoulder_7/mixamorig_left_arm_8/mixamorig_left_fore_arm_9/mixamorig_left_hand_10" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.09292, -2.34362, 1.4196 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_hand_thumb_2_12" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_left_shoulder_7/mixamorig_left_arm_8/mixamorig_left_fore_arm_9/mixamorig_left_hand_10/mixamorig_left_hand_thumb_1_11" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.49167, -1.96513, 1.23353 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_hand_thumb_3_13" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_left_shoulder_7/mixamorig_left_arm_8/mixamorig_left_fore_arm_9/mixamorig_left_hand_10/mixamorig_left_hand_thumb_1_11/mixamorig_left_hand_thumb_2_12" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.54083, -2.02996, 1.27422 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_hand_thumb_4_14" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_left_shoulder_7/mixamorig_left_arm_8/mixamorig_left_fore_arm_9/mixamorig_left_hand_10/mixamorig_left_hand_thumb_1_11/mixamorig_left_hand_thumb_2_12/mixamorig_left_hand_thumb_3_13" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.42236, -1.87378, 1.17616 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_hand_thumb_4_end_42" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_left_shoulder_7/mixamorig_left_arm_8/mixamorig_left_fore_arm_9/mixamorig_left_hand_10/mixamorig_left_hand_thumb_1_11/mixamorig_left_hand_thumb_2_12/mixamorig_left_hand_thumb_3_13/mixamorig_left_hand_thumb_4_14" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.658449, -1.98987, 1.58886 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_hand_index_1_15" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_left_shoulder_7/mixamorig_left_arm_8/mixamorig_left_fore_arm_9/mixamorig_left_hand_10" index="1" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.86577, -2.04532, -0.000119406 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_hand_index_2_16" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_left_shoulder_7/mixamorig_left_arm_8/mixamorig_left_fore_arm_9/mixamorig_left_hand_10/mixamorig_left_hand_index_1_15" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.07289, -1.712, -0.000116536 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_hand_index_3_17" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_left_shoulder_7/mixamorig_left_arm_8/mixamorig_left_fore_arm_9/mixamorig_left_hand_10/mixamorig_left_hand_index_1_15/mixamorig_left_hand_index_2_16" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.35381, -1.40974, -0.000112168 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_hand_index_4_18" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_left_shoulder_7/mixamorig_left_arm_8/mixamorig_left_fore_arm_9/mixamorig_left_hand_10/mixamorig_left_hand_index_1_15/mixamorig_left_hand_index_2_16/mixamorig_left_hand_index_3_17" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0493, -1.28173, -9.7795e-05 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_hand_index_4_end_43" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_left_shoulder_7/mixamorig_left_arm_8/mixamorig_left_fore_arm_9/mixamorig_left_hand_10/mixamorig_left_hand_index_1_15/mixamorig_left_hand_index_2_16/mixamorig_left_hand_index_3_17/mixamorig_left_hand_index_4_18" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.07822, -1.20773, -0.0832119 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_shoulder_19" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3" index="2" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.50808, 14.2459, -1.08324 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_arm_20" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_right_shoulder_19" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.0838, -3.09208, -0.0750763 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_fore_arm_21" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_right_shoulder_19/mixamorig_right_arm_20" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23.2944, -9.79237, -1.78042e-07 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_hand_22" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_right_shoulder_19/mixamorig_right_arm_20/mixamorig_right_fore_arm_21" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24.5492, -10.3199, -1.07201e-06 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_hand_thumb_1_23" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_right_shoulder_19/mixamorig_right_arm_20/mixamorig_right_fore_arm_21/mixamorig_right_hand_22" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.02211, -2.429, 1.54742 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_hand_thumb_2_24" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_right_shoulder_19/mixamorig_right_arm_20/mixamorig_right_fore_arm_21/mixamorig_right_hand_22/mixamorig_right_hand_thumb_1_23" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.52242, -2.00567, 1.25894 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_hand_thumb_3_25" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_right_shoulder_19/mixamorig_right_arm_20/mixamorig_right_fore_arm_21/mixamorig_right_hand_22/mixamorig_right_hand_thumb_1_23/mixamorig_right_hand_thumb_2_24" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.52111, -2.00406, 1.25796 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_hand_thumb_4_26" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_right_shoulder_19/mixamorig_right_arm_20/mixamorig_right_fore_arm_21/mixamorig_right_hand_22/mixamorig_right_hand_thumb_1_23/mixamorig_right_hand_thumb_2_24/mixamorig_right_hand_thumb_3_25" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.32458, -1.7451, 1.0954 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_hand_thumb_4_end_44" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_right_shoulder_19/mixamorig_right_arm_20/mixamorig_right_fore_arm_21/mixamorig_right_hand_22/mixamorig_right_hand_thumb_1_23/mixamorig_right_hand_thumb_2_24/mixamorig_right_hand_thumb_3_25/mixamorig_right_hand_thumb_4_26" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.669097, -1.82767, 1.48718 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_hand_index_1_27" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_right_shoulder_19/mixamorig_right_arm_20/mixamorig_right_fore_arm_21/mixamorig_right_hand_22" index="1" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35742, -2.25211, -0.000145953 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_hand_index_2_28" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_right_shoulder_19/mixamorig_right_arm_20/mixamorig_right_fore_arm_21/mixamorig_right_hand_22/mixamorig_right_hand_index_1_27" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.92443, -1.6497, -0.000120522 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_hand_index_3_29" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_right_shoulder_19/mixamorig_right_arm_20/mixamorig_right_fore_arm_21/mixamorig_right_hand_22/mixamorig_right_hand_index_1_27/mixamorig_right_hand_index_2_28" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.319, -1.39522, -6.76353e-05 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_hand_index_4_30" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_right_shoulder_19/mixamorig_right_arm_20/mixamorig_right_fore_arm_21/mixamorig_right_hand_22/mixamorig_right_hand_index_1_27/mixamorig_right_hand_index_2_28/mixamorig_right_hand_index_3_29" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.72072, -1.14374, -4.25667e-05 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_hand_index_4_end_45" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_spine_1/mixamorig_spine_1_2/mixamorig_spine_2_3/mixamorig_right_shoulder_19/mixamorig_right_arm_20/mixamorig_right_fore_arm_21/mixamorig_right_hand_22/mixamorig_right_hand_index_1_27/mixamorig_right_hand_index_2_28/mixamorig_right_hand_index_3_29/mixamorig_right_hand_index_4_30" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.69574, -1.19972, 0.0643113 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_up_leg_31" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0" index="1" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 9.86169, -5.98692, 0.456658 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_leg_32" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_left_up_leg_31" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.532553, -39.3751, 1.27609 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_foot_33" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_left_up_leg_31/mixamorig_left_leg_32" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.531408, -41.3809, -3.89793 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_toe_base_34" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_left_up_leg_31/mixamorig_left_leg_32/mixamorig_left_foot_33" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.105127, -9.15315, 14.0434 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_toe_end_35" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_left_up_leg_31/mixamorig_left_leg_32/mixamorig_left_foot_33/mixamorig_left_toe_base_34" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.286382, -0.0405982, 7.08355 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_left_toe_end_end_46" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_left_up_leg_31/mixamorig_left_leg_32/mixamorig_left_foot_33/mixamorig_left_toe_base_34/mixamorig_left_toe_end_35" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.286358, -0.0405949, 7.0829 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_up_leg_36" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0" index="2" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -9.86263, -5.98538, 0.169954 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_leg_37" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_right_up_leg_36" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.532502, -39.3261, 1.97463 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_foot_38" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_right_up_leg_36/mixamorig_right_leg_37" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.531358, -41.4326, -4.31008 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_toe_base_39" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_right_up_leg_36/mixamorig_right_leg_37/mixamorig_right_foot_38" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.104681, -9.15319, 14.4222 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_toe_end_40" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_right_up_leg_36/mixamorig_right_leg_37/mixamorig_right_foot_38/mixamorig_right_toe_base_39" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.286607, -0.0406059, 7.10878 )
+script = ExtResource( 4 )
+
+[node name="mixamorig_right_toe_end_end_47" type="Spatial" parent="BoneEditor/_root_joint/mixamorig_hips_0/mixamorig_right_up_leg_36/mixamorig_right_leg_37/mixamorig_right_foot_38/mixamorig_right_toe_base_39/mixamorig_right_toe_end_40" index="0" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2866, -0.0406049, 7.10858 )
+script = ExtResource( 4 )

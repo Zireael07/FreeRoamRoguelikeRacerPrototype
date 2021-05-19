@@ -9,12 +9,18 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Spatial",
+"class": "BoneHandle",
+"language": "GDScript",
+"path": "res://addons/bone_editor/BoneHandle.gd"
+}, {
 "base": "Reference",
 "class": "Splerger",
 "language": "GDScript",
 "path": "res://splerger.gd"
 } ]
 _global_script_class_icons={
+"BoneHandle": "",
 "Splerger": ""
 }
 
@@ -40,6 +46,10 @@ gdscript/warnings/function_used_as_property=false
 
 window/height=760
 window/width=1024
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/bone_editor/plugin.cfg" )
 
 [gdnative]
 
