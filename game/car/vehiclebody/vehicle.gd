@@ -229,6 +229,7 @@ func _integrate_forces(state):
 			local = get_global_transform().xform_inv(l_pos)
 			#print("Local" + str(local))
 			
+			# probably because the vehicle body car is looking down +Z
 			# the above somehow results in inverted location, so we do some transformations
 			var tr = Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), local)
 			var axis = Vector3(0,1,0)

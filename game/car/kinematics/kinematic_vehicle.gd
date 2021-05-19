@@ -43,12 +43,16 @@ var headlight_two
 var taillights
 var tail_mat
 
+var sparks
+
 var flip_mat = preload("res://assets/car/car_red.tres")
 
 onready var front_ray = $FrontRay
 onready var rear_ray = $RearRay
 
 func _ready():
+	sparks = load("res://objects/Particles_sparks.tscn")
+	
 	#get lights
 	headlight_one = get_node("SpotLight")
 	headlight_two = get_node("SpotLight1")
@@ -103,6 +107,11 @@ func _physics_process(delta):
 		reverse = false
 	else:
 		reverse = true
+	
+	# sparks
+	var slide_count = get_slide_count()
+	if slide_count:
+		trigger_sparks()
 	
 	after_move()
 
@@ -227,6 +236,82 @@ func position_line(start_i, end_i, point, path):
 		var dist = 0
 		return [Vector3(0, start.y, 0), start_i, end_i]
 
+# -------------------------
+func trigger_sparks():
+	#for index in get_slide_count():
+	# because we only attempt 1 slide
+	var collision = get_slide_collision(0)
+	
+	#print(collision.collider.get_parent().get_name())
+	var nam = collision.collider.get_parent().get_name()
+	#print(nam)
+	# ignore ground or road "collisions"
+	if "Ground" in nam or "Road" in nam:
+		#print("Ignoring because ground or road")
+		pass
+	else:
+	
+		var c_pos = collision.position
+		
+		var normal = collision.normal
+		#print("Local pos of contact: " + str(l_pos) + " collider " + str(c_pos))
+		
+		
+		var local
+		
+		# bug! sometimes there are weird "collisions" far away, ignore them
+		#if l_pos != c_pos:
+		#	pass
+			#var g_pos = tr.xform(l_pos)
+			#print("Global pos of collision" + str(g_pos))
+		
+			#local = get_global_transform().xform_inv(g_pos)
+		#else:
+			#pass
+		local = get_global_transform().xform_inv(c_pos)
+		#print("Local" + str(local))
+
+		if local != null:
+			var x_gr
+			if local.x < 0:
+				x_gr = -9.8
+				#normal = Vector3(-9.8, 0, -4.5)
+			else:
+				x_gr = 9.8
+				#normal = Vector3(9.8, 0, -4.5)
+			
+			var y_gr
+			if local.z > 0:
+				y_gr = -9.8
+			else:
+				y_gr = -4.5
+			
+			normal = Vector3(x_gr, 0, y_gr)
+			
+			
+			#var normal = Vector3(-9.8, 0,0)
+			#print(str(local))
+			#debug_cube(local)
+			spawn_sparks(local, normal)
+
+func kill_sparks():	
+	# kill old cubes
+	for c in get_children():
+		if c.get_name().find("Spark") != -1:
+	#if get_node("Debug") != null:
+			c.queue_free()
+			
+func spawn_sparks(loc, normal):
+	var spark = sparks.instance()
+	
+	add_child(spark)
+	spark.set_name("Spark")
+	spark.set_translation(loc)
+	spark.set_emitting(true)
+	#print("Normal " + str(normal))
+	spark.get_process_material().set_gravity(normal)
+	# set timer
+	spark.get_node("Timer").start()
 
 # debug
 func debug_cube(loc, red=false):
