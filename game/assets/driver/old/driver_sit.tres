@@ -1,6 +1,6 @@
 [gd_resource type="ArrayMesh" load_steps=2 format=2]
 
-[ext_resource path="res://assets/driver/driverbody__Driver_D_tga.material" type="Material" id=1]
+[ext_resource path="res://assets/driver/old/driverbody__Driver_D_tga.material" type="Material" id=1]
 
 [resource]
 resource_name = "driverbody"

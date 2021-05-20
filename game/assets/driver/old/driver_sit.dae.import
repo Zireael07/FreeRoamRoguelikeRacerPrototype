@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/driver_sit.dae-4ad96e5e7b49ab448bbe5893e1a8c1f0.scn"
+path="res://.import/driver_sit.dae-a2e43f2c790ef7b0e1cc93057a592795.scn"
 
 [deps]
 
-source_file="res://assets/driver/driver_sit.dae"
-dest_files=[ "res://.import/driver_sit.dae-4ad96e5e7b49ab448bbe5893e1a8c1f0.scn" ]
+source_file="res://assets/driver/old/driver_sit.dae"
+dest_files=[ "res://.import/driver_sit.dae-a2e43f2c790ef7b0e1cc93057a592795.scn" ]
 
 [params]
 
@@ -16,6 +16,7 @@ nodes/root_name="Scene Root"
 nodes/root_scale=1.0
 nodes/custom_script=""
 nodes/storage=0
+nodes/use_legacy_names=true
 materials/location=1
 materials/storage=1
 materials/keep_on_reimport=true
