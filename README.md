@@ -1,6 +1,6 @@
 # FreeRoamRoguelikeRacerPrototype
 
-This is a Godot 3.2. project.
+This is a Godot 3.3. project.
 
 For a 2.1.4 version (missing many features), see the 2.1.4 branch.
 
@@ -28,9 +28,9 @@ Features
 
 Keys
 
-* Arrows to drive (or an on-screen joystick for mouse steering as an option)
+* Arrows or WASD to drive (or an on-screen joystick for mouse steering as an option)
 * R to reset car on the wheels
 * C to switch between cockpit and chase cameras
-* A/D to peek left/right in cockpit camera
-* E for the camera to look back
+* Q/E to peek left/right in cockpit camera
+* Z for the camera to look back
 * T to switch to a top-down debug camera

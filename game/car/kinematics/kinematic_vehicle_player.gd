@@ -18,6 +18,7 @@ var game_over
 var vjoy
 
 var mouse_steer = false
+var turn
 
 var last_pos
 var distance = 0
@@ -33,11 +34,12 @@ signal load_ended
 var chase_cam
 var cockpit_cam
 var debug_cam
-#var cam_speed = 1
-#var cockpit_cam_target_angle = 0
-#var cockpit_cam_angle = 0
-#var cockpit_cam_max_angle = 5
-#var peek
+# these are for cockpit cam
+var cam_speed = 1
+var cockpit_cam_target_angle = 0
+var cockpit_cam_angle = 0
+var cockpit_cam_max_angle = 5
+var peek
 
 # racing
 var race
@@ -181,7 +183,7 @@ func on_load_ended():
 # ----------------------------------------------------------------
 # kinematic driving
 func get_input():
-	var turn = Input.get_action_strength("steer_left")
+	turn = Input.get_action_strength("steer_left")
 	turn -= Input.get_action_strength("steer_right")
 	steer_target = turn * deg2rad(steering_limit)
 	#var steer_angle = get_steering_angle(steer_target)
@@ -200,11 +202,26 @@ func get_input():
 		if tail_mat != null:
 			tail_mat.set_albedo(Color(1,1,1))
 			tail_mat.set_feature(SpatialMaterial.FEATURE_EMISSION, true)
+
+	# tilt cockpit cam
+	if !cockpit_cam.is_current():
+		return
+	# left
+	if turn > 0 and cockpit_cam_target_angle > -11 and cockpit_cam_target_angle < 30:
+		print("Turning left, peeking left, ", cockpit_cam_target_angle)
+		cockpit_cam_target_angle += 1
+	# right
+	if turn < 0 and cockpit_cam_target_angle < 11 and cockpit_cam_target_angle > -40:
+		print("Turning right, peeking right, ", cockpit_cam_target_angle)
+		cockpit_cam_target_angle -= 1
 		
 
 # --------------------------------------------------
 
 func _physics_process(delta):
+	# were we peeking last tick?
+	var old_peek = peek
+	
 	# emit a signal when we're all set up
 	elapsed_secs += delta
 	if (elapsed_secs > start_secs and not emitted):
@@ -227,6 +244,62 @@ func _physics_process(delta):
 		#offset = offset_dist(race_path[prev], race_path[current], pos)
 
 		position_on_line = position_line(prev, current, pos, race_path)
+		
+	# cockpit camera
+	if Input.is_action_pressed("peek_left"):
+		peek = true
+		#print("Peek left")
+		if cockpit_cam.is_current():
+			cockpit_cam_target_angle = 30
+
+	if Input.is_action_pressed("peek_right"):
+		peek = true
+		#print("Peek right")
+		if cockpit_cam.is_current():
+			cockpit_cam_target_angle = -40
+
+	# reset cam
+	if turn == 0 and not peek:
+		# if we were peeking last frame but are not now
+		if old_peek and cockpit_cam.is_current():
+			cockpit_cam_angle = 0
+			#print("Old peek is: " + str(old_peek))
+
+		# reset cam
+		if cockpit_cam.is_current():
+			cockpit_cam_target_angle = 0
+
+	# vary cam speed
+
+	cam_speed = 1
+	if speed > 25:
+		cam_speed = 4
+	if speed > 15:
+		cam_speed = 3
+	else:
+		cam_speed = 2
+
+	if peek:
+		cam_speed = 30
+
+	#rotate cam
+	# left
+	if (cockpit_cam_target_angle < cockpit_cam_angle):
+		cockpit_cam_angle -= cam_speed*delta
+		if (cockpit_cam_target_angle > cockpit_cam_max_angle):
+			print("Setting to target angle: " + str(cockpit_cam_target_angle))
+			cockpit_cam_angle = cockpit_cam_target_angle
+	# right
+	if (cockpit_cam_target_angle > cockpit_cam_angle):
+		cockpit_cam_angle += cam_speed*delta
+		print("Cockpit cam angle: ", cockpit_cam_angle)
+		# bugs
+		#if (cockpit_cam.target_angle < cockpit_cam.max_angle):
+		#	print("Setting to target angle: " + str(cockpit_cam.target_angle))
+		#	cockpit_cam.angle = cockpit_cam.target_angle
+
+	cockpit_cam.set_rotation_degrees(Vector3(180,cockpit_cam_angle, 180))
+
 
 func after_move():
 	# racing ctd
@@ -365,6 +438,34 @@ func _input(event):
 			setHeadlights(false)
 		else:
 			setHeadlights(true)
+	
+	# switch cameras
+	if (Input.is_action_pressed("camera")):
+		var chase_cam = get_node("cambase/Camera")
+		var cockpit_cam = get_node("cambase/CameraCockpit")
+		if chase_cam.is_current():
+			cockpit_cam.make_current()
+
+			# hud changes
+			hud.toggle_cam(false)
+			hud.speed_cockpit()
+
+			# enable rear view mirror
+			$"cambase/Viewport/CameraCockpitBack".make_current()
+			$"cambase/Viewport".set_update_mode(Viewport.UPDATE_ALWAYS)
+			$"cambase/MirrorMesh".set_visible(true)
+		else:
+			chase_cam.make_current()
+
+			# hud changes
+			hud.toggle_cam(true)
+			hud.speed_chase()
+
+			# disable rear view mirror
+			$"cambase/MirrorMesh".set_visible(false)
+			$"cambase/Viewport/CameraCockpitBack".clear_current()
+			$"cambase/Viewport".set_update_mode(Viewport.UPDATE_DISABLED)
+	
 			
 	if (Input.is_action_pressed("camera_debug")):
 		var chase_cam = get_node("cambase/Camera")
