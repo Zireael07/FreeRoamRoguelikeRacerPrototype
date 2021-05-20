@@ -208,11 +208,11 @@ func get_input():
 		return
 	# left
 	if turn > 0 and cockpit_cam_target_angle > -11 and cockpit_cam_target_angle < 30:
-		print("Turning left, peeking left, ", cockpit_cam_target_angle)
+		#print("Turning left, peeking left, ", cockpit_cam_target_angle)
 		cockpit_cam_target_angle += 1
 	# right
 	if turn < 0 and cockpit_cam_target_angle < 11 and cockpit_cam_target_angle > -40:
-		print("Turning right, peeking right, ", cockpit_cam_target_angle)
+		#print("Turning right, peeking right, ", cockpit_cam_target_angle)
 		cockpit_cam_target_angle -= 1
 		
 
@@ -247,16 +247,35 @@ func _physics_process(delta):
 		
 	# cockpit camera
 	if Input.is_action_pressed("peek_left"):
-		peek = true
+		if not peek: 
+			peek = true
+		else:
+			peek = false
 		#print("Peek left")
 		if cockpit_cam.is_current():
-			cockpit_cam_target_angle = 30
+			# cancel the opposing peek
+			if cockpit_cam_target_angle < -35:
+				print("Should cancel peek right")
+				peek = false
+				cockpit_cam_angle = 0
+			else:
+				cockpit_cam_target_angle = 30
 
 	if Input.is_action_pressed("peek_right"):
-		peek = true
+		if not peek:
+			peek = true
+		else:
+			peek = false
 		#print("Peek right")
 		if cockpit_cam.is_current():
-			cockpit_cam_target_angle = -40
+			# cancel the opposing peek
+			if cockpit_cam_target_angle > 25:
+				print("Should cancel peek left")
+				peek = false
+				cockpit_cam_angle = 0
+			else:
+				cockpit_cam_target_angle = -40
+			
 
 	# reset cam
 	if turn == 0 and not peek:
@@ -287,12 +306,12 @@ func _physics_process(delta):
 	if (cockpit_cam_target_angle < cockpit_cam_angle):
 		cockpit_cam_angle -= cam_speed*delta
 		if (cockpit_cam_target_angle > cockpit_cam_max_angle):
-			print("Setting to target angle: " + str(cockpit_cam_target_angle))
+			#print("Setting to target angle: " + str(cockpit_cam_target_angle))
 			cockpit_cam_angle = cockpit_cam_target_angle
 	# right
 	if (cockpit_cam_target_angle > cockpit_cam_angle):
 		cockpit_cam_angle += cam_speed*delta
-		print("Cockpit cam angle: ", cockpit_cam_angle)
+		#print("Cockpit cam angle: ", cockpit_cam_angle)
 		# bugs
 		#if (cockpit_cam.target_angle < cockpit_cam.max_angle):
 		#	print("Setting to target angle: " + str(cockpit_cam.target_angle))
