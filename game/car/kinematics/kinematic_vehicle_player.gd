@@ -562,7 +562,6 @@ func swap_to_bike():
 	#print("Body pos before swap: " + str(pos))
 	
 	get_parent().queue_free()
-	#var bike_scene = load("res://car/bike_base.tscn")
 	var bike = bike_scene.instance()
 	bike.set_name("bike")
 	# place the bike where the car was
@@ -582,7 +581,7 @@ func swap_to_car():
 	#print("Body pos before swap: " + str(pos))
 	
 	get_parent().queue_free()
-	#var car_scene = load("res://car/car_base.tscn")
+
 	var car = car_scene.instance()
 	car.set_name("car")
 	# place the car where the bike was

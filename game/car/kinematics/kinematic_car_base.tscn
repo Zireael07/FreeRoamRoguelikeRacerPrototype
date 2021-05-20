@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=2]
+[gd_scene load_steps=53 format=2]
 
 [ext_resource path="res://hud/test_car_label.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/car/taillights.tres" type="Material" id=2]
@@ -22,6 +22,7 @@
 [ext_resource path="res://default_env_copy.tres" type="Environment" id=20]
 [ext_resource path="res://car/car_mesh.gd" type="Script" id=21]
 [ext_resource path="res://assets/car/modular car glass2.tres" type="Material" id=22]
+[ext_resource path="res://assets/driver/racedriver.tscn" type="PackedScene" id=23]
 [ext_resource path="res://car/replay_system.gd" type="Script" id=24]
 [ext_resource path="res://motion_blur/motion_blur.tscn" type="PackedScene" id=27]
 
@@ -175,12 +176,12 @@ void fragment() {
 	ALBEDO = texture(refl_tx, UV).rgb;
 }"
 
-[sub_resource type="ViewportTexture" id=27]
+[sub_resource type="ViewportTexture" id=8]
 
 [sub_resource type="ShaderMaterial" id=9]
 resource_local_to_scene = true
 shader = SubResource( 7 )
-shader_param/refl_tx = SubResource( 27 )
+shader_param/refl_tx = SubResource( 8 )
 
 [sub_resource type="QuadMesh" id=10]
 resource_local_to_scene = true
@@ -306,6 +307,21 @@ size = Vector3( 0.05, 0.05, 0.75 )
 
 [sub_resource type="Animation" id=25]
 tracks/0/type = "value"
+tracks/0/path = NodePath("BODY/cambase/Camera/motion_blur:material/0:shader_param/intensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.05, 0.2 ]
+}
+
+[sub_resource type="Animation" id=26]
+resource_name = "fov"
+tracks/0/type = "value"
 tracks/0/path = NodePath("BODY/cambase/Camera:fov")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
@@ -318,9 +334,10 @@ tracks/0/keys = {
 "values": [ 60.0, 75.0 ]
 }
 
-[sub_resource type="Animation" id=26]
+[sub_resource type="Animation" id=27]
+loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("BODY/cambase/Camera/motion_blur:material/0:shader_param/intensity")
+tracks/0/path = NodePath("BODY/tmpParent/Spatial_FL:rotation_degrees:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -329,7 +346,43 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 1 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ 0.05, 0.2 ]
+"values": [ 0.0, 360.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("BODY/tmpParent/Spatial_FR:rotation_degrees:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 360.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("BODY/tmpParent/Spatial_RR:rotation_degrees:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 360.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("BODY/tmpParent/Spatial_RL:rotation_degrees:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 360.0 ]
 }
 
 [node name="Spatial" type="Spatial" groups=[
@@ -362,28 +415,28 @@ material = ExtResource( 10 )
 glass_material = ExtResource( 22 )
 
 [node name="Spatial_FL" type="Spatial" parent="BODY/tmpParent"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.58, 0.261, -0.66 )
+transform = Transform( 1, 0, 0, 0, 0.787895, -0.61581, 0, 0.61581, 0.787895, -0.58, 0.261, -0.66 )
 
 [node name="Spatial" parent="BODY/tmpParent/Spatial_FL" instance=ExtResource( 5 )]
 transform = Transform( -4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0 )
 wheel_thick = 0.1
 
 [node name="Spatial_RL" type="Spatial" parent="BODY/tmpParent"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.58, 0.261, 0.671 )
+transform = Transform( 1, 0, 0, 0, 0.787895, -0.61581, 0, 0.61581, 0.787895, -0.58, 0.261, 0.671 )
 
 [node name="Spatial" parent="BODY/tmpParent/Spatial_RL" instance=ExtResource( 5 )]
 transform = Transform( -4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0 )
 wheel_thick = 0.1
 
 [node name="Spatial_FR" type="Spatial" parent="BODY/tmpParent"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.592, 0.261, -0.66 )
+transform = Transform( 1, 0, 0, 0, 0.787895, -0.61581, 0, 0.61581, 0.787895, 0.592, 0.261, -0.66 )
 
 [node name="Spatial" parent="BODY/tmpParent/Spatial_FR" instance=ExtResource( 5 )]
 transform = Transform( -4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0 )
 wheel_thick = 0.1
 
 [node name="Spatial_RR" type="Spatial" parent="BODY/tmpParent"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.592, 0.261, 0.67 )
+transform = Transform( 1, 0, 0, 0, 0.787895, -0.61581, 0, 0.61581, 0.787895, 0.592, 0.261, 0.67 )
 
 [node name="Spatial" parent="BODY/tmpParent/Spatial_RR" instance=ExtResource( 5 )]
 transform = Transform( -4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0 )
@@ -525,7 +578,7 @@ near = 0.1
 far = 200.0
 
 [node name="CameraCockpit" type="Camera" parent="BODY/cambase"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.2, -0.318065, -1.00597 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.227414, -0.376636, -0.970635 )
 near = 0.1
 far = 200.0
 
@@ -620,6 +673,7 @@ script = ExtResource( 16 )
 
 [node name="neon_under" type="MeshInstance" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.002, 0.05, 0.023 )
+visible = false
 material_override = SubResource( 19 )
 cast_shadow = 0
 mesh = SubResource( 20 )
@@ -658,13 +712,19 @@ local_coords = false
 process_material = SubResource( 23 )
 draw_pass_1 = SubResource( 24 )
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="BODY"]
-_import_path = NodePath("AnimationPlayer")
-"anims/New Anim" = SubResource( 25 )
-anims/blur = SubResource( 26 )
-script = ExtResource( 24 )
-
 [node name="RayCast" type="RayCast" parent="BODY"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.251, 0.66 )
 enabled = true
 script = ExtResource( 11 )
+
+[node name="racedriver2" type="Spatial" parent="BODY" instance=ExtResource( 23 )]
+transform = Transform( -0.005, 0, -4.37114e-10, 0, 0.005, 0, 4.37114e-10, 0, -0.005, 0.248568, 0, -0.0977824 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+_import_path = NodePath("AnimationPlayer")
+autoplay = "wheels"
+playback_speed = 0.5
+anims/blur = SubResource( 25 )
+anims/fov = SubResource( 26 )
+anims/wheels = SubResource( 27 )
+script = ExtResource( 24 )
