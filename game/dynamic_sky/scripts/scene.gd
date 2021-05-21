@@ -231,7 +231,7 @@ func get_fog_color(time):
 		# sunset
 		horizon_color = Color(1, 0.88, 0.52)
 	elif time >= 18.7 or time < 5.5:
-		horizon_color = Color()
+		horizon_color = Color(42/255.0*light, 64/255.0*light, 141/255.0*light);
 	else:
 		# default horizon color is 142, 210, 232
 		horizon_color = Color(142/255.0*light, 210/255.0*light, 232/255.0*light)

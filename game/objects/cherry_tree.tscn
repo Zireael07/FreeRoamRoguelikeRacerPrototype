@@ -20,6 +20,9 @@ cast_shadow = 0
 mesh = ExtResource( 1 )
 material/0 = SubResource( 1 )
 material/1 = ExtResource( 4 )
+__meta__ = {
+"_editor_description_": "The blossom material needs Lambert_Wrap to avoid weird self-shadowing. Unshaded turns off fog, so doesn't work"
+}
 
 [node name="StaticBody" type="StaticBody" parent="."]
 
