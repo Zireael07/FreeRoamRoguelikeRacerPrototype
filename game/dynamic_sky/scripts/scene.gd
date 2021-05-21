@@ -225,6 +225,18 @@ func get_light_color(time):
 	#print("Time: " + str(time) + " " + str(light_color))
 	
 	return light_color
+	
+func get_fog_color(time):
+	if time >= 18.4 && time < 18.5:
+		# sunset
+		horizon_color = Color(1, 0.88, 0.52)
+	elif time >= 18.7 or time < 5.5:
+		horizon_color = Color()
+	else:
+		# default horizon color is 142, 210, 232
+		horizon_color = Color(142/255.0*light, 210/255.0*light, 232/255.0*light)
+	
+	return horizon_color
 
 func get_light_energy(time):
 	var lit = light
@@ -253,8 +265,10 @@ func set_colors(time):
 	# default sky color used to be 12, 116, 249
 	# 165, 214, 240
 	#sky_color = Color(165/255.0*light, 214/255.0*light, 240/255.0*light)
+	
 	# default horizon color is 142, 210, 232
-	horizon_color = Color(142/255.0*light, 210/255.0*light, 232/255.0*light)
+	#horizon_color = Color(142/255.0*light, 210/255.0*light, 232/255.0*light)
+	horizon_color = get_fog_color(time)
 	# detault ground horizon color is 123, 201, 243
 	# 107, 100, 94
 	#gr_horizon_color = Color(107/255.0*light, 100/255.0*light, 94/255.0*light)
@@ -299,6 +313,7 @@ func day_night_cycle(time):
 		night_fired = false
 		# stuff done slightly before sunrise
 		get_tree().get_nodes_in_group("roads")[0].reset_lite()
+		env.glow_hdr_threshold = 3.2
 		#get_tree().call_group("roads", "reset_lite")
 		#re-enable shadows
 		#sun.set_shadow(true)
@@ -317,6 +332,7 @@ func day_night_cycle(time):
 		get_tree().get_nodes_in_group("roads")[0].lite_up()
 		# so that emissives light effect is better visible
 		env.background_energy = 0.1
+		env.glow_hdr_threshold = 2.2
 		print("[DAYNIGHT] switch to night settings")
 		night_fired = true
 		
