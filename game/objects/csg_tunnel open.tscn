@@ -1,0 +1,131 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/cement_tunnel.tres" type="Material" id=1]
+[ext_resource path="res://objects/csg_tunnel.gd" type="Script" id=2]
+
+[node name="Spatial2" type="Spatial"]
+transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 0 )
+
+[node name="CSGCombiner" type="CSGCombiner" parent="."]
+material_override = ExtResource( 1 )
+
+[node name="CSGPolygon" type="CSGPolygon" parent="CSGCombiner"]
+use_collision = true
+collision_layer = 2
+polygon = PoolVector2Array( -3.327, 0, -3.37403, 7.17744, 3.93685, 6.82534, 3.683, 0, 2.93057, 3.31116, 0.179563, 4.75498, -2.27071, 3.21303 )
+depth = 50.0
+smooth_faces = true
+material = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="CSGBox" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.43886, 2.46031, -3.2893 )
+operation = 2
+width = 3.0
+height = 5.0
+depth = 4.0
+
+[node name="CSGBox2" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.02952, 2.50925, -3.2893 )
+operation = 2
+width = 3.0
+height = 5.0
+depth = 4.0
+
+[node name="CSGBox3" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.43886, 2.50398, -8.56489 )
+operation = 2
+width = 3.0
+height = 5.0
+depth = 4.0
+
+[node name="CSGBox4" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.02952, 2.49176, -8.56489 )
+operation = 2
+width = 3.0
+height = 5.0
+depth = 4.0
+
+[node name="CSGBox5" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.43886, 2.48035, -13.9186 )
+operation = 2
+width = 3.0
+height = 5.0
+depth = 4.0
+
+[node name="CSGBox6" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.02952, 2.48308, -13.9186 )
+operation = 2
+width = 3.0
+height = 5.0
+depth = 4.0
+
+[node name="CSGBox7" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.43886, 2.48158, -19.7721 )
+operation = 2
+width = 3.0
+height = 5.0
+depth = 4.0
+
+[node name="CSGBox8" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.02953, 2.47115, -19.7721 )
+operation = 2
+width = 3.0
+height = 5.0
+depth = 4.0
+
+[node name="CSGBox9" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.43886, 2.44001, -25.632 )
+operation = 2
+width = 3.0
+height = 5.0
+depth = 4.0
+
+[node name="CSGBox10" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.02953, 2.42627, -25.632 )
+operation = 2
+width = 3.0
+height = 5.0
+depth = 4.0
+
+[node name="CSGBox11" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.43886, 2.48716, -32.1259 )
+operation = 2
+width = 3.0
+height = 5.0
+depth = 4.0
+
+[node name="CSGBox12" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.02953, 2.44476, -32.1259 )
+operation = 2
+width = 3.0
+height = 5.0
+depth = 4.0
+
+[node name="CSGBox13" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.43885, 2.45604, -40.1994 )
+operation = 2
+width = 3.0
+height = 5.0
+depth = 4.0
+
+[node name="CSGBox14" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.02953, 2.46597, -40.1994 )
+operation = 2
+width = 3.0
+height = 5.0
+depth = 4.0
+
+[node name="CSGBox15" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.43885, 2.50559, -46.3916 )
+operation = 2
+width = 3.0
+height = 5.0
+depth = 4.0
+
+[node name="CSGBox16" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.02953, 2.46055, -46.3916 )
+operation = 2
+width = 3.0
+height = 5.0
+depth = 4.0
