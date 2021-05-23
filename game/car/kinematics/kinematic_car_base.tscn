@@ -520,13 +520,13 @@ transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 17.5
 transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, -4.11453, 0.430022, 3.54601e-07 )
 
 [node name="FrontRay" type="RayCast" parent="BODY"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.67 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, -0.67 )
 enabled = true
 cast_to = Vector3( 0, -0.5, 0 )
 collision_mask = 3
 
 [node name="RearRay" type="RayCast" parent="BODY"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0.66 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0.66 )
 enabled = true
 cast_to = Vector3( 0, -0.5, 0 )
 collision_mask = 3
@@ -578,7 +578,7 @@ near = 0.1
 far = 200.0
 
 [node name="CameraCockpit" type="Camera" parent="BODY/cambase"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.227414, -0.376636, -0.970635 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.227414, -0.204703, -1.05253 )
 near = 0.1
 far = 200.0
 
@@ -601,7 +601,7 @@ current = true
 fov = 60.0
 
 [node name="MirrorMesh" type="MeshInstance" parent="BODY/cambase"]
-transform = Transform( -0.25, 0, -1.50996e-07, 0, 0.125, 0, 3.7749e-08, 0, -1, 0.0750002, -0.25, -0.824024 )
+transform = Transform( -0.25, 0, -1.50996e-07, 0, 0.125, 0, 3.7749e-08, 0, -1, -0.167386, -0.25, -0.824024 )
 material_override = SubResource( 9 )
 cast_shadow = 0
 mesh = SubResource( 10 )
@@ -717,8 +717,8 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.251, 0.66 )
 enabled = true
 script = ExtResource( 11 )
 
-[node name="racedriver2" type="Spatial" parent="BODY" instance=ExtResource( 23 )]
-transform = Transform( -0.005, 0, -4.37114e-10, 0, 0.005, 0, 4.37114e-10, 0, -0.005, 0.248568, 0, -0.0977824 )
+[node name="racedriver2" parent="BODY" instance=ExtResource( 23 )]
+transform = Transform( -0.005, 0, -4.37114e-10, 0, 0.005, 0, 4.37114e-10, 0, -0.005, 0.248568, 0.171933, -0.0158856 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 _import_path = NodePath("AnimationPlayer")

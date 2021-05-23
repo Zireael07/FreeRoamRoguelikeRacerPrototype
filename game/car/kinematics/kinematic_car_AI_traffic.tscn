@@ -309,13 +309,13 @@ transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 17.5
 transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, -4.11453, 0.430022, 3.54601e-07 )
 
 [node name="FrontRay" type="RayCast" parent="BODY"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.67 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, -0.67 )
 enabled = true
 cast_to = Vector3( 0, -0.5, 0 )
 collision_mask = 3
 
 [node name="RearRay" type="RayCast" parent="BODY"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0.66 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0.66 )
 enabled = true
 cast_to = Vector3( 0, -0.5, 0 )
 collision_mask = 3

@@ -93,13 +93,13 @@ func _physics_process(delta):
 	
 	# Align with slopes
 	# If either wheel is in the air, align to slope
-#	if front_ray.is_colliding() or rear_ray.is_colliding():
-#		# If one wheel is in air, move it down
-#		var nf = front_ray.get_collision_normal() if front_ray.is_colliding() else Vector3.UP
-#		var nr = rear_ray.get_collision_normal() if rear_ray.is_colliding() else Vector3.UP
-#		var n = ((nr + nf) / 2.0).normalized()
-#		var xform = align_with_y(global_transform, n)
-#		global_transform = global_transform.interpolate_with(xform, 0.1)
+	if front_ray.is_colliding() or rear_ray.is_colliding():
+		# If one wheel is in air, move it down
+		var nf = front_ray.get_collision_normal() if front_ray.is_colliding() else Vector3.UP
+		var nr = rear_ray.get_collision_normal() if rear_ray.is_colliding() else Vector3.UP
+		var n = ((nr + nf) / 2.0).normalized()
+		var xform = align_with_y(global_transform, n)
+		global_transform = global_transform.interpolate_with(xform, 0.1)
 				
 	speed = velocity.length()
 	#reverse
