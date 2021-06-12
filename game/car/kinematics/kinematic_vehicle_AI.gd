@@ -516,6 +516,23 @@ func get_input():
 				else:
 					gas = true
 	
+	# reverse if stuck on something
+	var slide_count = get_slide_count()
+	if slide_count:
+	# because we only attempt 1 slide
+		var collision = get_slide_collision(0)
+		
+		#print(collision.collider.get_parent().get_name())
+		var nam = collision.collider.get_parent().get_name()
+		#print(nam)
+		# ignore ground or road "collisions"
+		if "Ground" in nam or "Road" in nam:
+			#print("Ignoring because ground or road")
+			pass
+		else:
+			# we're stuck!
+			stuck = true
+			get_node("ReverseTimer").start()
 	
 	if gas:
 		# make it easier to get going
@@ -719,6 +736,21 @@ func get_normal_point(tg_point=predict):
 	
 #-------------------------------------------
 
+func _on_StuckTimer_timeout():
+	#print("AI ", get_parent().get_name(), " stuck, start reverse timer")
+	stuck = true
+	
+	# jerk us up just in case the wheels sank into something
+	#translate_object_local(Vector3(0, 0.5, 0))
+	
+	get_node("ReverseTimer").start()
+
+
+func _on_ReverseTimer_timeout():
+	#print("AI ", get_parent().get_name(), " done reversing!")
+	stuck = false
+
+# --------------------------
 # AI generic functions
 func is_close_to_target():
 	var ret = false

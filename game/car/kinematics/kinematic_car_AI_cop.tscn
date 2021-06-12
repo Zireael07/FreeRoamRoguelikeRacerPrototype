@@ -393,3 +393,5 @@ script = ExtResource( 3 )
 
 [connection signal="input_event" from="BODY" to="BODY" method="_on_BODY_input_event"]
 [connection signal="timeout" from="BODY/Timer" to="BODY" method="_on_Timer_timeout"]
+[connection signal="timeout" from="BODY/StuckTimer" to="BODY" method="_on_StuckTimer_timeout"]
+[connection signal="timeout" from="BODY/ReverseTimer" to="BODY" method="_on_ReverseTimer_timeout"]
