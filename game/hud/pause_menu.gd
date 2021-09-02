@@ -48,3 +48,19 @@ func _on_MouseSteerButton_pressed():
 	
 	
 	#pass # Replace with function body.
+
+
+func _on_Button2_pressed():
+	hide()
+	
+	##GUI
+	var h = preload("res://hud/info_panel.tscn")
+	var hud = h.instance()
+	get_parent().add_child(hud)
+	
+	# update the values
+	var root = get_node("/root/Navigation")
+	var txt = "Roads discovered: " + str(root.discovered_roads.size()) +"/12"
+	hud.get_node("Label").set_text(txt)
+	
+	hud.show()

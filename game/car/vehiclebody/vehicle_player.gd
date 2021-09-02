@@ -1,3 +1,4 @@
+# non-kinematic version, obsolete
 # this is used by both car & bike
 extends "vehicle.gd"
 
@@ -491,6 +492,7 @@ func _process(delta):
 					# hide text if angle very small
 					if abs(angle_inter) < 40:
 						hud.update_nav_label("")
+						
 	# else we're on a dirt ground
 	else:
 		if not was_dirt:
@@ -915,6 +917,8 @@ func reset_events():
 		e.queue_free()
 		# remove minimap markers
 		mmap.remove_marker(e.get_global_transform().origin)
+
+	#TODO: add a message or a visual effect on the map!
 
 	# new events
 	var marker_data = map.get_node("nav").spawn_markers(map.samples, map.real_edges)

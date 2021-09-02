@@ -598,6 +598,8 @@ func driving_on_road():
 					# hide text if angle very small
 					if abs(angle_inter) < 40:
 						hud.update_nav_label("")
+						
+		mark_road_discovered(disp_name)
 	# else we're on a dirt ground
 	else:
 		if not was_dirt:
@@ -608,6 +610,17 @@ func driving_on_road():
 				get_node("Smoke2").set_emitting(true)
 
 	return [hit, disp_name]
+
+func mark_road_discovered(disp_name):
+	if "intersection" in disp_name:
+		return
+	
+	var root = get_node("/root/Navigation")
+	if !root.discovered_roads.has(disp_name):
+		root.discovered_roads[disp_name] = true
+		print("Marked " + disp_name + " as discovered")
+
+# ---------------------------------
 
 func get_compass_heading():
 	# because E and W were easiest to identify (the sun)
@@ -728,6 +741,8 @@ func reset_events():
 		e.queue_free()
 		# remove minimap markers
 		mmap.remove_marker(e.get_global_transform().origin)
+
+	#TODO: add a message or a visual effect on the map!
 
 	# new events
 	var marker_data = map.get_node("nav").spawn_markers(map.samples, map.real_edges)

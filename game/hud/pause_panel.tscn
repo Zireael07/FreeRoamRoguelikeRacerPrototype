@@ -37,5 +37,24 @@ margin_bottom = 135.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "Resume"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button2" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -11.5
+margin_top = -46.0
+margin_right = 71.5
+margin_bottom = -26.0
+text = "Exploration"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="pressed" from="MouseSteerButton" to="." method="_on_MouseSteerButton_pressed"]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_Button2_pressed"]
