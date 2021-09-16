@@ -19,11 +19,14 @@ var cars = []
 
 var done = false
 
+var grid 
+
 func _ready():
 	player_script = load("res://car/kinematics/kinematic_vehicle_player.gd")
 	count = false
 	
 	racer = preload("res://car/kinematics/kinematic_car_AI_racer.tscn")
+	grid = preload("res://objects/grid spot marker.tscn")
 	
 	set_process(true)
 	# Called every time the node is added to the scene.
@@ -381,6 +384,12 @@ func spawn_racer(loc):
 	
 	# find someplace we can attach cars to
 	var cars_root = player.get_parent().get_parent().get_node("Racers")
+	
+	# spawn grid marker
+	var g = grid.instance()
+	cars_root.add_child(g)
+	g.look_at(cars_root.to_global(loc), Vector3(0,1,0))
+	g.set_translation(loc)
 	
 	#print("Translation:" + str((local+loc)))
 	car.target = target
