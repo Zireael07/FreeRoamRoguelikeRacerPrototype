@@ -176,12 +176,12 @@ void fragment() {
 	ALBEDO = texture(refl_tx, UV).rgb;
 }"
 
-[sub_resource type="ViewportTexture" id=8]
+[sub_resource type="ViewportTexture" id=28]
 
 [sub_resource type="ShaderMaterial" id=9]
 resource_local_to_scene = true
 shader = SubResource( 7 )
-shader_param/refl_tx = SubResource( 8 )
+shader_param/refl_tx = SubResource( 28 )
 
 [sub_resource type="QuadMesh" id=10]
 resource_local_to_scene = true
@@ -385,9 +385,7 @@ tracks/3/keys = {
 "values": [ 0.0, 360.0 ]
 }
 
-[node name="Spatial" type="Spatial" groups=[
-"player",
-]]
+[node name="Spatial" type="Spatial" groups=["player"]]
 _import_path = NodePath(".")
 script = ExtResource( 4 )
 __meta__ = {
@@ -404,6 +402,8 @@ drag = -0.5
 
 [node name="car_mesh" type="MeshInstance" parent="BODY/tmpParent"]
 transform = Transform( 1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 0.493185, 0.307591, -0.7 )
+portal_mode = 2
+include_in_bound = false
 mesh = ExtResource( 19 )
 material/0 = null
 material/1 = null

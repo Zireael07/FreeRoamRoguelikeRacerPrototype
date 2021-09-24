@@ -175,9 +175,7 @@ flags_use_point_size = true
 params_line_width = 3.0
 params_point_size = 3.0
 
-[node name="Spatial" type="Spatial" groups=[
-"AI",
-]]
+[node name="Spatial" type="Spatial" groups=["AI"]]
 _import_path = NodePath(".")
 script = ExtResource( 3 )
 __meta__ = {
@@ -194,6 +192,8 @@ brake_distance = 10.0
 
 [node name="car_mesh" type="MeshInstance" parent="BODY/tmpParent"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.0263825, 0.307591, 0.0500417 )
+portal_mode = 2
+include_in_bound = false
 mesh = ExtResource( 1 )
 material/0 = ExtResource( 2 )
 __meta__ = {

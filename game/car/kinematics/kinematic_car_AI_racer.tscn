@@ -174,9 +174,7 @@ flags_use_point_size = true
 params_line_width = 3.0
 params_point_size = 3.0
 
-[node name="Spatial" type="Spatial" groups=[
-"race_AI",
-]]
+[node name="Spatial" type="Spatial" groups=["race_AI"]]
 _import_path = NodePath(".")
 script = ExtResource( 3 )
 __meta__ = {
@@ -191,6 +189,8 @@ script = ExtResource( 10 )
 
 [node name="car_mesh" type="MeshInstance" parent="BODY/tmpParent"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.0263825, 0.307591, 0.0500417 )
+portal_mode = 2
+include_in_bound = false
 mesh = ExtResource( 9 )
 material/0 = ExtResource( 11 )
 __meta__ = {

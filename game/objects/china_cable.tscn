@@ -40,6 +40,7 @@ __meta__ = {
 
 [node name="cable" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.47733, 0 )
+include_in_bound = false
 layers = 8
 cast_shadow = 0
 mesh = ExtResource( 1 )
@@ -47,6 +48,7 @@ material/0 = null
 
 [node name="lantern" type="MeshInstance" parent="."]
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 6.21409, 0 )
+include_in_bound = false
 layers = 8
 cast_shadow = 0
 use_in_baked_light = true
@@ -55,6 +57,7 @@ material/0 = ExtResource( 3 )
 
 [node name="lantern1" type="MeshInstance" parent="."]
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 6.214, 1.81964 )
+include_in_bound = false
 layers = 8
 cast_shadow = 0
 use_in_baked_light = true
@@ -63,6 +66,7 @@ material/0 = ExtResource( 3 )
 
 [node name="lantern2" type="MeshInstance" parent="."]
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 6.2064, 4.185 )
+include_in_bound = false
 layers = 8
 cast_shadow = 0
 use_in_baked_light = true
@@ -71,6 +75,7 @@ material/0 = ExtResource( 3 )
 
 [node name="lantern3" type="MeshInstance" parent="."]
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 6.214, -2.14428 )
+include_in_bound = false
 layers = 8
 cast_shadow = 0
 use_in_baked_light = true
@@ -79,6 +84,7 @@ material/0 = ExtResource( 3 )
 
 [node name="lantern4" type="MeshInstance" parent="."]
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 6.214, -4.48148 )
+include_in_bound = false
 layers = 8
 cast_shadow = 0
 use_in_baked_light = true

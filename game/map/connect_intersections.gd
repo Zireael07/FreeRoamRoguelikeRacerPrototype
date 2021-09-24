@@ -70,7 +70,8 @@ func connect_intersections(one, two, verbose=false):
 	var data = calculate_initial_turn(corner_points[0], corner_points[1], loc_src_exit, extendeds[0], src_exit)
 	
 	# make top node (which holds road name)
-	var top_node = Spatial.new()
+	#var top_node = Spatial.new()
+	var top_node = Room.new()
 	top_node.set_script(load("res://roads/road_top.gd"))
 	
 	#print(str(one) + " to " + str(two))
