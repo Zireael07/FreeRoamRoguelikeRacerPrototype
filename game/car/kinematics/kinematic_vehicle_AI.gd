@@ -795,6 +795,9 @@ func stopping():
 		# only traffic AI looks for new intersection target
 		if get_parent().is_in_group("AI") and not emitted:
 			# unregister from previous road
+			if not get_parent().road:
+				return 
+				
 			var road_cars = get_parent().road.AI_cars
 			# debug
 			#for c in road_cars:

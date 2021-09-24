@@ -395,6 +395,7 @@ func setup_nav_astar(pts, i, begin_id):
 	return [endpoint_id, last_id, ret]
 
 # this is governed by map not AI (so that lanes are picked consistently depending on direction of travel)
+# note to self: it doesn't care about the straight, just the turns
 # TODO: precalculate it, at least partially?
 func get_lane(road, flip, left_side):
 	# paranoia

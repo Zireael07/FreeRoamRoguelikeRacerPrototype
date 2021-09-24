@@ -25,11 +25,11 @@ var lookup_names = { Vector3(0,0,10): "point one", Vector3(10,0,0) : "point two"
 
 func connect_intersections(one, two, verbose=false):
 	if one > get_child_count() -1 or two > get_child_count() -1:
-		Logger.mapgen_print("Wrong indices given")
+		Logger.mapgen_print("Wrong indices given: " + str(one) + str(two))
 		return false
 	
 	if not "point_one" in get_child(one) or not "point_one" in get_child(two):
-		print("Targets are not intersections?" + get_child(one).get_name() + " " + get_child(two).get_name())
+		print("Targets are not intersections? " + get_child(one).get_name() + " " + get_child(two).get_name())
 		return false
 	
 	Logger.mapgen_print("Connecting intersections " + get_child(one).get_name() + " " + get_child(two).get_name())

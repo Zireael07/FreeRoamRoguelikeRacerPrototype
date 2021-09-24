@@ -101,6 +101,10 @@ func look_for_path_initial(start_ind, left):
 			
 	print("[AI] our intersection path: " + str(int_path))
 	
+	# paranoia
+	if int_path == null:
+		return
+	
 	# get road and direction
 	var rd_name = "Road "+str(int_path[0])+"-"+str(int_path[1])
 	var flip = false
