@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://pqa0vcgbrupq"]
+
+[ext_resource type="PackedScene" uid="uid://cdnw34xyuxbh1" path="res://vulkan sky/Node3D.tscn" id="1_2a2qr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kq4e2"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_v4iiu"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_txv7a"]
+albedo_color = Color(0.207843, 0.207843, 0.207843, 1)
+metallic = 1.0
+roughness = 0.0
+
+[node name="Node3D" type="Node3D"]
+script = null
+
+[node name="Node3D" parent="." instance=ExtResource( "1_2a2qr" )]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 6.39747)
+material_override = SubResource( "StandardMaterial3D_kq4e2" )
+mesh = SubResource( "BoxMesh_v4iiu" )
+surface_material_override/0 = null
+script = null
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.12204, 1, 6.39747)
+material_override = SubResource( "StandardMaterial3D_txv7a" )
+mesh = SubResource( "BoxMesh_v4iiu" )
+surface_material_override/0 = null
+script = null

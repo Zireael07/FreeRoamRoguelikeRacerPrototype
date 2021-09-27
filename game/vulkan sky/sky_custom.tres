@@ -1,4 +1,4 @@
-[gd_resource type="Shader" format=3 uid="uid://cklnpar3qtwdv"]
+[gd_resource type="Shader" format=3 uid="uid://8erll0hlfq61"]
 
 [resource]
 code = "
@@ -110,7 +110,7 @@ void sky() {
 		}
 	}
 	
-	sky = clouds(EYEDIR, c, sky);
+	//sky = clouds(EYEDIR, c, sky);
 	
 	//sky = vec3(EYEDIR.y);
 	
@@ -118,23 +118,22 @@ void sky() {
 	//sky = vec3(c,c,0.0);
 	//sky = vec3(c,c,c);
 
+//performance
+	if (AT_HALF_RES_PASS) {
 
-//	if (AT_HALF_RES_PASS) {
-//
-//		// Run cloud calculation for 1/4 of the pixels
-//        vec3 color = clouds(EYEDIR, c, sky);
-//        COLOR = color.rgb;
-//        //ALPHA = color.a;
-//	}
-//	else {
-//        // At full resolution pass, blend sky and clouds together
-//		sky = HALF_RES_COLOR.rgb;
-//		//sky = mix(sky, HALF_RES_COLOR.rgb, 1.0);
-//	}	
-
-
-
-
+		// Run cloud calculation for 1/4 of the pixels
+        vec3 color = clouds(EYEDIR, c, sky);
+		//vec3 color = EYEDIR;
+        COLOR = color.rgb;
+        //ALPHA = color.a;
+	}
+	else {
+        // At full resolution pass, blend sky and clouds together
+		vec3 sky = HALF_RES_COLOR.rgb;
+		//sky = mix(sky, HALF_RES_COLOR.rgb, 1.0);
+	
+	//} breaks the shader?!
+	
 	//ground
 	c = (v_angle - (PI * 0.5)) / (PI * 0.5);
 	vec3 ground = mix(ground_horizon_color.rgb, ground_bottom_color.rgb, clamp(1.0 - pow(1.0 - c, 1.0 / ground_curve), 0.0, 1.0));
@@ -143,5 +142,6 @@ void sky() {
 	//COLOR = sky;
 
 	COLOR = mix(ground, sky, step(0.0, EYEDIR.y));
+	}
 }
 "
