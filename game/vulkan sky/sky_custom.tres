@@ -1,0 +1,147 @@
+[gd_resource type="Shader" format=3 uid="uid://cklnpar3qtwdv"]
+
+[resource]
+code = "
+// NOTE: Shader automatically converted from Godot Engine 4.0.dev's ProceduralSkyMaterial.
+
+shader_type sky;
+render_mode use_half_res_pass;
+
+
+uniform vec4 sky_top_color : hint_color = vec4(0.35, 0.46, 0.71, 1.0);
+uniform vec4 sky_horizon_color : hint_color = vec4(0.55, 0.69, 0.81, 1.0);
+uniform float sky_curve : hint_range(0, 1) = 0.09;
+uniform float sky_energy = 1.0;
+uniform vec4 ground_bottom_color : hint_color = vec4(0.12, 0.12, 0.13, 1.0);
+uniform vec4 ground_horizon_color : hint_color = vec4(0.37, 0.33, 0.31, 1.0);
+uniform float ground_curve : hint_range(0, 1) = 0.02;
+uniform float ground_energy = 1.0;
+uniform float sun_angle_max = 1.74;
+uniform float sun_curve : hint_range(0, 1) = 0.05;
+
+//custom
+uniform sampler2D clouds_tex;
+uniform float COVERAGE :hint_range(0,1); //0.5
+
+float noise( in vec3 x )
+{
+    x*=0.01;
+	float  z = x.z*256.0;
+	vec2 offz = vec2(0.317,0.123);
+	vec2 uv1 = x.xy + offz*floor(z); 
+	vec2 uv2 = uv1  + offz;
+	return mix(textureLod( clouds_tex, uv1 ,0.0).x,textureLod( clouds_tex, uv2 ,0.0).x,fract(z));
+}
+
+float fbm(vec3 pos,float lacunarity){
+	vec3 p = pos;
+	float
+	t  = 0.51749673 * noise(p); p *= lacunarity;
+	t += 0.25584929 * noise(p); p *= lacunarity;
+	t += 0.12527603 * noise(p); p *= lacunarity;
+	t += 0.06255931 * noise(p);
+	return t;
+}
+
+float get_noise(vec3 x)
+{
+	float FBM_FREQ=2.76434;
+	return fbm(x, FBM_FREQ);
+}
+
+float density(vec3 pos,vec3 offset,float t){
+	vec3 p = pos * .0212242 + offset;
+	float dens = get_noise(p);
+
+	float cov = 1. - COVERAGE;
+	dens *= smoothstep (cov, cov + .05, dens);
+	
+	//prevent clouds below horizon (t is eyedir.y)
+	dens = clamp(dens, 0.0, t);
+	
+	//dens = lim;
+	return clamp(dens, 0., 1.);	
+}
+
+vec3 clouds(vec3 eye, float hor, vec3 sky) {
+	// clouds
+	//vec3 clouds = texture(clouds_tex, SKY_COORDS).xyz*0.25;
+	//vec3 coord = vec3(coords.x, coords.y,eye.y);
+	vec3 coord = eye;
+	vec3 off = eye; //vec3(eye.x, eye.z, step(0.0, eye.y)); //vec3(smoothstep(0.0, 1.0, eye.y)); //vec3(0.2, 0.1, 0.5);
+	
+	//divide or multiply here to get cirrus
+	float den = density(coord,off,eye.y);
+	
+	//clamp density
+	//den = step(1.0, eye.y); //clamp(0.0, 1.0-eye.y, den);
+	
+	vec3 clouds_col = vec3(1.0, 1.0, 1.0); 
+	
+	//mix in a horizon tint
+	vec3 horizon_tint = sky_horizon_color.rgb*0.9;
+	float tint = smoothstep(0.89, 0.99, 1.-hor);
+	//float tint = clamp((  1.0 - exp(-2.3 * pow(max((0.0), 0.8), (2.6)))),0.,1.);
+
+	clouds_col = mix(clouds_col, horizon_tint, tint);
+
+	float fac = smoothstep(den, 1.0, 1.0-eye.y);
+
+	vec3 clr = mix(sky, clouds_col, clamp(0.0, 1.0,den));
+
+	return clr;
+}
+
+
+void sky() {
+	float v_angle = acos(clamp(EYEDIR.y, -1.0, 1.0));
+	float c = (1.0 - v_angle / (PI * 0.5));
+	//vec3 sky = sky_top_color.rgb;
+	vec3 sky = mix(sky_horizon_color.rgb, sky_top_color.rgb, clamp(1.0 - pow(1.0 - c, 1.0 / sky_curve), 0.0, 1.0));
+	sky *= sky_energy;
+
+	if (LIGHT0_ENABLED) {
+		float sun_angle = acos(dot(LIGHT0_DIRECTION, EYEDIR));
+		if (sun_angle < LIGHT0_SIZE) {
+			sky = LIGHT0_COLOR * LIGHT0_ENERGY;
+		} else if (sun_angle < sun_angle_max) {
+			float c2 = (sun_angle - LIGHT0_SIZE) / (sun_angle_max - LIGHT0_SIZE);
+			sky = mix(LIGHT0_COLOR * LIGHT0_ENERGY, sky, clamp(1.0 - pow(1.0 - c2, 1.0 / sun_curve), 0.0, 1.0));
+		}
+	}
+	
+	sky = clouds(EYEDIR, c, sky);
+	
+	//sky = vec3(EYEDIR.y);
+	
+	//sky = vec3(c, EYEDIR.y, 0.0);
+	//sky = vec3(c,c,0.0);
+	//sky = vec3(c,c,c);
+
+
+//	if (AT_HALF_RES_PASS) {
+//
+//		// Run cloud calculation for 1/4 of the pixels
+//        vec3 color = clouds(EYEDIR, c, sky);
+//        COLOR = color.rgb;
+//        //ALPHA = color.a;
+//	}
+//	else {
+//        // At full resolution pass, blend sky and clouds together
+//		sky = HALF_RES_COLOR.rgb;
+//		//sky = mix(sky, HALF_RES_COLOR.rgb, 1.0);
+//	}	
+
+
+
+
+	//ground
+	c = (v_angle - (PI * 0.5)) / (PI * 0.5);
+	vec3 ground = mix(ground_horizon_color.rgb, ground_bottom_color.rgb, clamp(1.0 - pow(1.0 - c, 1.0 / ground_curve), 0.0, 1.0));
+	ground *= ground_energy;
+	
+	//COLOR = sky;
+
+	COLOR = mix(ground, sky, step(0.0, EYEDIR.y));
+}
+"
