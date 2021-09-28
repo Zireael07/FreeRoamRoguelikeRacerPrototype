@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://ds5nliexnxvyd" path="res://vulkan sky/textures/noise.png" id="1_5uyfw"]
 [ext_resource type="Script" path="res://vulkan sky/daynight.gd" id="1_7qdev"]
-[ext_resource type="Shader" uid="uid://cklnpar3qtwdv" path="res://vulkan sky/sky_custom.tres" id="1_xbnim"]
+[ext_resource type="Shader" uid="uid://btotycw2uifv3" path="res://vulkan sky/sky_custom.tres" id="1_xbnim"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_n3wus"]
 shader = ExtResource( "1_xbnim" )
@@ -21,7 +21,8 @@ shader_param/clouds_tex = ExtResource( "1_5uyfw" )
 
 [sub_resource type="Sky" id="Sky_y75us"]
 sky_material = SubResource( "ShaderMaterial_n3wus" )
-radiance_size = 2
+process_mode = 3
+radiance_size = 0
 
 [sub_resource type="Environment" id="Environment_r1ciq"]
 background_mode = 2

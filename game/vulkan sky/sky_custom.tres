@@ -1,4 +1,4 @@
-[gd_resource type="Shader" format=3 uid="uid://8erll0hlfq61"]
+[gd_resource type="Shader" format=3 uid="uid://btotycw2uifv3"]
 
 [resource]
 code = "
@@ -94,6 +94,10 @@ vec3 clouds(vec3 eye, float hor, vec3 sky) {
 
 
 void sky() {
+	
+	//moar perf
+	if (!AT_CUBEMAP_PASS) {
+	//draw the sun
 	float v_angle = acos(clamp(EYEDIR.y, -1.0, 1.0));
 	float c = (1.0 - v_angle / (PI * 0.5));
 	//vec3 sky = sky_top_color.rgb;
@@ -108,7 +112,7 @@ void sky() {
 			float c2 = (sun_angle - LIGHT0_SIZE) / (sun_angle_max - LIGHT0_SIZE);
 			sky = mix(LIGHT0_COLOR * LIGHT0_ENERGY, sky, clamp(1.0 - pow(1.0 - c2, 1.0 / sun_curve), 0.0, 1.0));
 		}
-	}
+	//}
 	
 	//sky = clouds(EYEDIR, c, sky);
 	
@@ -117,6 +121,7 @@ void sky() {
 	//sky = vec3(c, EYEDIR.y, 0.0);
 	//sky = vec3(c,c,0.0);
 	//sky = vec3(c,c,c);
+	}
 
 //performance
 	if (AT_HALF_RES_PASS) {
@@ -142,6 +147,11 @@ void sky() {
 	//COLOR = sky;
 
 	COLOR = mix(ground, sky, step(0.0, EYEDIR.y));
+	}
+	}
+	//cubemap
+	else {
+		COLOR = sky_top_color.rgb;
 	}
 }
 "
