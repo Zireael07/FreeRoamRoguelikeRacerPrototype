@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=3 uid="uid://cpmcd4higc4bb"]
+
+[ext_resource type="Material" uid="uid://h1uthbinxc67" path="res://mountains_mat.tres" id="1_mexff"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_3glw4"]
+size = Vector2(100, 100)
+subdivide_width = 30
+subdivide_depth = 30
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ugted"]
+size = Vector2(75, 50)
+subdivide_width = 50
+
+[node name="Node3D" type="Node3D"]
+script = null
+
+[node name="original_mountains" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.401743, 1.17108)
+material_override = ExtResource( "1_mexff" )
+cast_shadow = 0
+mesh = SubResource( "PlaneMesh_3glw4" )
+surface_material_override/0 = null
+script = null
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.401743, 1.17108)
+visible = false
+material_override = ExtResource( "1_mexff" )
+cast_shadow = 0
+mesh = SubResource( "PlaneMesh_3glw4" )
+surface_material_override/0 = null
+script = null
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+visible = false
+material_override = ExtResource( "1_mexff" )
+cast_shadow = 0
+mesh = SubResource( "PlaneMesh_ugted" )
+surface_material_override/0 = null
+script = null

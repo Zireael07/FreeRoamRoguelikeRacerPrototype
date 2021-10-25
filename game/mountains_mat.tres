@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://h1uthbinxc67"]
+
+[ext_resource type="Shader" path="res://horizon_mountains.gdshader" id="1_lerjn"]
+[ext_resource type="Texture2D" uid="uid://ds5nliexnxvyd" path="res://vulkan sky/textures/noise.png" id="2_nlvei"]
+[ext_resource type="Texture2D" uid="uid://bso38hd81t3qp" path="res://assets/Seamless Gravel.jpg" id="3_iy6cl"]
+
+[resource]
+shader = ExtResource( "1_lerjn" )
+shader_param/mountain_distance = 100.0
+shader_param/height = 25.0
+shader_param/aerial_perspective_color = Color(0.141176, 0.415686, 0.670588, 1)
+shader_param/mountain_uv_scale = Vector2(25, 25)
+shader_param/mountain_texture = ExtResource( "3_iy6cl" )
+shader_param/height_map = ExtResource( "2_nlvei" )
