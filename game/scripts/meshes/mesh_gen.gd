@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 # class member variables go here, for example:
 var TWO_PI = PI * 2
@@ -16,7 +16,7 @@ func addRoad(material, dx, dy, dz):
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	#Create a node building that will hold the mesh
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_name("road")
 	add_child(node)
 	
@@ -31,7 +31,7 @@ func addTerrain(material, dx, dy, dz):
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	#Create a node building that will hold the mesh
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_name("plane")
 	add_child(node)
 	
@@ -58,7 +58,7 @@ func addRoadCurve(material, left_one, right_one, left_two, right_two, flip_uv):
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	#Create a node that will hold the mesh
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_name("road_curved")
 	add_child(node)
 	
@@ -77,7 +77,7 @@ func addRoadCurveTest(material, one, two, three, four, five, six, parent):
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	#Create a node that will hold the mesh
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_name("road_curved")
 	if (parent !=null):
 		parent.add_child(node)
@@ -112,7 +112,7 @@ func addQuad(one, two, three, four, material, surface, flip_uv):
 		surface.set_material(material)
 	
 	#Top
-	surface.add_normal(Vector3(0,1,0))
+	surface.set_normal(Vector3(0,1,0))
 	
 	#First triangle
 	#UV mapping 0-1-2 -- 2-3-0 for normal
@@ -120,35 +120,35 @@ func addQuad(one, two, three, four, material, surface, flip_uv):
 	#UV hint: wide line is between 0 and 3
 	#First triangle
 	if (flip_uv):
-		surface.add_uv(uvs[2])
+		surface.set_uv(uvs[2])
 	else:
-		surface.add_uv(uvs[0])
+		surface.set_uv(uvs[0])
 	surface.add_vertex(corners[0])
 	if (flip_uv):
-		surface.add_uv(uvs[3])
+		surface.set_uv(uvs[3])
 	else:
-		surface.add_uv(uvs[1])
+		surface.set_uv(uvs[1])
 	surface.add_vertex(corners[1])
 	if (flip_uv):
-		surface.add_uv(uvs[0])
+		surface.set_uv(uvs[0])
 	else:
-		surface.add_uv(uvs[2])
+		surface.set_uv(uvs[2])
 	surface.add_vertex(corners[2])
 	#Second triangle
 	if (flip_uv):
-		surface.add_uv(uvs[0])
+		surface.set_uv(uvs[0])
 	else:
-		surface.add_uv(uvs[2])
+		surface.set_uv(uvs[2])
 	surface.add_vertex(corners[2])
 	if (flip_uv):
-		surface.add_uv(uvs[1])
+		surface.set_uv(uvs[1])
 	else:
-		surface.add_uv(uvs[3])
+		surface.set_uv(uvs[3])
 	surface.add_vertex(corners[3])
 	if (flip_uv):
-		surface.add_uv(uvs[2])
+		surface.set_uv(uvs[2])
 	else:
-		surface.add_uv(uvs[0])
+		surface.set_uv(uvs[0])
 	surface.add_vertex(corners[0])
 
 func addTri(one, two, three, material, surface):
@@ -174,7 +174,7 @@ func addTri(one, two, three, material, surface):
 	
 	
 func make_circle(center, segments, radius):
-	var points_arc = PoolVector2Array()
+	var points_arc = PackedVector2Array()
 	var angle_from = 0
 	var angle_to = 360
 

@@ -1,4 +1,4 @@
-extends Area
+extends Area3D
 
 # Declare member variables here. Examples:
 var player_script 
@@ -19,7 +19,7 @@ func _on_Area_body_entered(body):
 #			pass
 			#print("Intersection: " + get_parent().get_name())
 	
-	if body is StaticBody:
+	if body is StaticBody3D:
 		# exclude planes
 		if body.get_name() == "plane_col":
 			return

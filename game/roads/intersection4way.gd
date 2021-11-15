@@ -1,8 +1,8 @@
-tool
+@tool
 extends "../scripts/meshes/mesh_gen.gd"
 
-export(Material)    var material    = preload("res://assets/road_material.tres")
-var m = SpatialMaterial.new()
+@export var material    = preload("res://assets/road_material.tres")
+var m = Material.new()
 
 var road_height = 0.05
 var road_width = 3
@@ -139,7 +139,7 @@ func meshCreate(material, array):
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 
 	#Create a node that will hold the mesh
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_name("plane")
 	add_child(node)
 
@@ -148,8 +148,10 @@ func meshCreate(material, array):
 	addQuad(array[1], array[4], array[5], array[2], material, surface, true)
 
 	# other end
-	addQuad(array[11], array[12], array[13], array[9], material, surface, false)
-	addQuad(array[12], array[14], array[15], array[13], material, surface, true)
+	#11 12 13 9 results in flipped
+	addQuad(array[9], array[13], array[12], array[11], material, surface, false)
+	# 12 14 15 13 is also flipped
+	addQuad(array[13], array[15], array[14], array[12], material, surface, true)
 
 
 	# second road
@@ -164,7 +166,8 @@ func meshCreate(material, array):
 	addQuad(array[3], array[5], array[15], array[9], material, surface, true)
 
 	surface.generate_normals()
-	surface.index()
+	surface.generate_tangents()
+	#surface.index()
 
 	#Set the created mesh to the node
 	node.set_mesh(surface.commit())
@@ -177,9 +180,9 @@ func meshCreate(material, array):
 
 # debug
 func debug_cube(loc, red=false):
-	var mesh = CubeMesh.new()
+	var mesh = BoxMesh.new()
 	mesh.set_size(Vector3(0.5,0.5,0.5))
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_mesh(mesh)
 	if red:
 		node.get_mesh().surface_set_material(0, flip_mat)
@@ -188,7 +191,8 @@ func debug_cube(loc, red=false):
 	node.set_translation(loc)
 
 func send_position(map):
-	map.add_intersection(get_global_transform().xform(Vector3(0,0,0)))
+	pass
+	#map.add_intersection(get_global_transform().xform(Vector3(0,0,0)))
 
 func snap_pos_to_points(pos,debug=false):
 	if abs(pos.x) > abs(pos.z):

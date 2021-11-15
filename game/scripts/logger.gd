@@ -1,4 +1,4 @@
-tool # because it's used by some tool scripts
+@tool # because it's used by some tool scripts
 extends Node
 
 
