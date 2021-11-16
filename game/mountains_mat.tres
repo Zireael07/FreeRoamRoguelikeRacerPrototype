@@ -5,10 +5,12 @@
 [ext_resource type="Texture2D" uid="uid://bso38hd81t3qp" path="res://assets/Seamless Gravel.jpg" id="3_iy6cl"]
 
 [resource]
+render_priority = 0
 shader = ExtResource( "1_lerjn" )
 shader_param/mountain_distance = 100.0
 shader_param/height = 25.0
 shader_param/aerial_perspective_color = Color(0.141176, 0.415686, 0.670588, 1)
 shader_param/mountain_uv_scale = Vector2(25, 25)
+shader_param/sand_uv_scale = null
 shader_param/mountain_texture = ExtResource( "3_iy6cl" )
 shader_param/height_map = ExtResource( "2_nlvei" )

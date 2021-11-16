@@ -12,15 +12,19 @@ size = Vector2(75, 50)
 subdivide_width = 50
 
 [node name="Node3D" type="Node3D"]
-script = null
 
 [node name="original_mountains" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.401743, 1.17108)
+visible = false
+material_override = ExtResource( "1_mexff" )
+cast_shadow = 0
+mesh = SubResource( "PlaneMesh_3glw4" )
+
+[node name="far_mountains" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.401743, 1.17108)
 material_override = ExtResource( "1_mexff" )
 cast_shadow = 0
 mesh = SubResource( "PlaneMesh_3glw4" )
-surface_material_override/0 = null
-script = null
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.401743, 1.17108)
@@ -28,8 +32,6 @@ visible = false
 material_override = ExtResource( "1_mexff" )
 cast_shadow = 0
 mesh = SubResource( "PlaneMesh_3glw4" )
-surface_material_override/0 = null
-script = null
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
@@ -37,5 +39,3 @@ visible = false
 material_override = ExtResource( "1_mexff" )
 cast_shadow = 0
 mesh = SubResource( "PlaneMesh_ugted" )
-surface_material_override/0 = null
-script = null
