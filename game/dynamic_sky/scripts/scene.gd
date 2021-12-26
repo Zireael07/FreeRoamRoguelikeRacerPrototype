@@ -63,6 +63,13 @@ var player
 
 
 func _ready():
+	# get real world date
+	var winter = OS.get_datetime(true)
+	#print(winter)
+	if winter.month == 12 and winter.day > 21 or winter.month < 3:
+		get_parent().get_node("Ground").snow = true
+	else:
+		get_parent().get_node("Ground").snow = false
 	
 	time = start_time;
 	prev_time = start_time;
