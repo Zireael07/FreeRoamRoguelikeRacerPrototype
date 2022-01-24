@@ -238,8 +238,8 @@ func setupBuilding(index, base_height):
 	return build
 
 func setupBuildingSimple(index):
-	#var build = building.instance()
-	var build = building_test.instance()
+	var build = building.instance()
+	#var build = building_test.instance()
 
 	build.set_name("Skyscraper"+String(index))
 	add_child(build)
