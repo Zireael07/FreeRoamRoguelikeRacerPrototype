@@ -1,13 +1,13 @@
-tool
+@tool
 extends "res://scripts/meshes/mesh_gen.gd"
 
-export var wheel_thick = 0.2
-export var wheel_radius = 0.25
+@export var wheel_thick = 0.2
+@export var wheel_radius = 0.25
 
 # class member variables go here, for example:
-var m = SpatialMaterial.new()
+var m = StandardMaterial3D.new()
 
-export(Material) var material = SpatialMaterial.new()
+@export var material : Material
 
 func _ready():
 	var half_thick = wheel_thick/2
@@ -20,7 +20,7 @@ func _ready():
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	#Create a node building that will hold the mesh
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_name("plane")
 	add_child(node)
 	

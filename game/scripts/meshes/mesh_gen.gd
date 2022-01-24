@@ -199,11 +199,11 @@ func addTriCustUV(one, two, three, uv_one, uv_two, uv_three, material, surface):
 	uvs.push_back(uv_two)
 	uvs.push_back(uv_three)
 	
-	surface.add_uv(uvs[0])
+	surface.set_uv(uvs[0])
 	surface.add_vertex(corners[0])
-	surface.add_uv(uvs[1])
+	surface.set_uv(uvs[1])
 	surface.add_vertex(corners[1])
-	surface.add_uv(uvs[2])
+	surface.set_uv(uvs[2])
 	surface.add_vertex(corners[2])
 	
 func addQuadCustUV(one, two, three, four, uv_one, uv_two, uv_three, uv_four, material, surface):
@@ -225,19 +225,19 @@ func addQuadCustUV(one, two, three, four, uv_one, uv_two, uv_three, uv_four, mat
 
 	#UV mapping 0-1-2 -- 2-3-0 for normal
 	#First triangle
-	surface.add_uv(uvs[0])
+	surface.set_uv(uvs[0])
 	surface.add_vertex(corners[0])
-	surface.add_uv(uvs[1])
+	surface.set_uv(uvs[1])
 	surface.add_vertex(corners[1])
-	surface.add_uv(uvs[2])
+	surface.set_uv(uvs[2])
 	surface.add_vertex(corners[2])
 	
 	#Second triangle
-	surface.add_uv(uvs[2])
+	surface.set_uv(uvs[2])
 	surface.add_vertex(corners[2])
-	surface.add_uv(uvs[3])
+	surface.set_uv(uvs[3])
 	surface.add_vertex(corners[3])
-	surface.add_uv(uvs[0])
+	surface.set_uv(uvs[0])
 	surface.add_vertex(corners[0])
 	
 # textured version of a cube
