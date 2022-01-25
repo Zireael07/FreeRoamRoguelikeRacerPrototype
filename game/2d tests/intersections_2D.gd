@@ -1,4 +1,4 @@
-tool
+@tool
 extends Node2D
 
 # class member variables go here, for example:
@@ -44,7 +44,7 @@ func extend_lines(one,two):
 	loc_dest_extended = dest_line*extend + get_child(two).get_position()
 
 func setup_line_2d():
-	var help = helper_line.instance()
+	var help = helper_line.instantiate()
 	
 	help.points = [loc_src_exit, loc_src_extended, loc_dest_extended, loc_dest_exit]
 	# looks

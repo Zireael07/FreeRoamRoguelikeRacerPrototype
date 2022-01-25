@@ -6,6 +6,6 @@
 [node name="Node2D" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
-_sections_unfolded = [ "Z Index" ]
+_sections_unfolded = ["Z Index"]
 
 

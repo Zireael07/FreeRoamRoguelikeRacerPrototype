@@ -3,25 +3,25 @@
 [ext_resource path="res://scripts/dealer_city.gd" type="Script" id=2]
 [ext_resource path="res://objects/showroom.tscn" type="PackedScene" id=3]
 
-[sub_resource type="BoxShape" id=1]
-extents = Vector3( 3, 1, 3 )
+[sub_resource type="BoxShape3D" id=1]
+extents = Vector3(3, 1, 3)
 
-[node name="Spatial" type="Spatial" groups=[
+[node name="Node3D" type="Node3D" groups=[
 "poi",
 ]]
 script = ExtResource( 2 )
 
 [node name="showroom" parent="." instance=ExtResource( 3 )]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
 
-[node name="Area" type="Area" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0445414 )
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0445414)
 angular_damp = 1.0
 
-[node name="CollisionShape" type="CollisionShape" parent="Area"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource( 1 )
 
 [node name="Position3D" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.93426 )
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.93426)
 
-[connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_Area_body_entered"]

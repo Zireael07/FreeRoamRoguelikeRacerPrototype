@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 # class member variables go here, for example:
 var player
@@ -10,11 +10,11 @@ var finish = false
 var start
 
 # test
-export var raceline = PoolVector3Array() #[]
+@export var raceline = PackedVector3Array() #[]
 var dist = 0
 var target_time = 0
 
-export var target = Vector3()
+@export var target = Vector3()
 
 func _ready():
 	player_script = load("res://car/kinematics/kinematic_vehicle_player.gd")
@@ -37,9 +37,9 @@ func set_finish(val):
 	finish = val
 
 func _on_Area_body_enter( body ):
-	if body is KinematicBody:
+	if body is CharacterBody3D:
 		if body is player_script and not body.get_parent().is_in_group("bike"):
-			print("Area entered by the player")
+			print("Area3D entered by the player")
 			player = body
 			
 			if player.race != null:
@@ -49,26 +49,26 @@ func _on_Area_body_enter( body ):
 				print("Reached finish marker")
 				start.count = false
 				
-				var msg = body.get_node("Messages")
+				var msg = body.get_node(^"Messages")
 				#msg.set_initial(false)
-				var results = player.get_node("root").get_node("Label timer").get_text()
+				var results = player.get_node(^"root").get_node(^"Label timer").get_text()
 				msg.set_text("FINISH TIME TRIAL!" + "\n" + results)
-				#msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
+				#msg.get_node(^"OK_button").connect(&"pressed", self._on_ok_click)
 				msg.enable_ok(false)
 				msg.show()
 				
 				# clear & hide timing
-				player.get_node("root").get_node("Label timer").set_text("")
-				player.get_node("root").get_node("Label timer").hide()
+				player.get_node(^"root").get_node(^"Label timer").set_text("")
+				player.get_node(^"root").get_node(^"Label timer").hide()
 				
 				# remove raceline from map
-				var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+				var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 				track_map.points = []
 				# force redraw
 				track_map.update()
 				
 				# remove target flag from minimap
-				var minimap = player.get_node("Viewport_root/Viewport/minimap")
+				var minimap = player.get_node(^"Viewport_root/SubViewport/minimap")
 				minimap.remove_marker(self.get_global_transform().origin)
 				
 				# prize
@@ -80,7 +80,7 @@ func _on_Area_body_enter( body ):
 				#remove finish
 				queue_free()
 			else:
-				var msg = body.get_node("Messages")
+				var msg = body.get_node(^"Messages")
 				#msg.set_initial(false)
 				var numbers = extract_numbers()
 				var race_name = ""
@@ -88,13 +88,13 @@ func _on_Area_body_enter( body ):
 					race_name = "Route " + str(numbers[0]) + "-" + str(numbers[1])
 				msg.set_text("TIME TRIAL RACE! " + "\n" + race_name + "\n" +
 				"Drive along the road to the finish marker")
-				if not msg.get_node("OK_button").is_connected("pressed", self, "_on_ok_click"):
+				if not msg.get_node(^"OK_button").is_connected("pressed", self, "_on_ok_click"):
 					print("Not connected")
 					# disconnect all others just in case
-					for d in msg.get_node("OK_button").get_signal_connection_list("pressed"):
+					for d in msg.get_node(^"OK_button").get_signal_connection_list("pressed"):
 						#print(d["target"])
-						msg.get_node("OK_button").disconnect("pressed", d["target"], "_on_ok_click")
-					msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
+						msg.get_node(^"OK_button").disconnect(&"pressed", d["target"]._on_ok_click)
+					msg.get_node(^"OK_button").connect(&"pressed", self._on_ok_click)
 
 				#else:
 				#	print("Connected")
@@ -102,21 +102,21 @@ func _on_Area_body_enter( body ):
 				msg.show()
 				
 				# show raceline on map
-				var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+				var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 				track_map.points = track_map.vec3s_convert(raceline)
 				# force redraw
 				track_map.update()
 				
 		#else:
-		#	print("Area entered by a car " + body.get_parent().get_name())
+		#	print("Area3D entered by a car " + body.get_parent().get_name())
 	#else:
-	#	print("Area entered by something else")
+	#	print("Area3D entered by something else")
 
 
 func _on_ok_click():
 	count = true
 	time = 0.0
-	player.get_parent().get_node("AnimationPlayer").recording = true
+	player.get_parent().get_node(^"AnimationPlayer").recording = true
 	spawn_finish(self)
 	print("Clicked ok!")
 	play_replay()
@@ -126,26 +126,26 @@ func _process(delta):
 	if count:
 		time += delta
 		#print("Timer is " + str(time))
-		player.get_node("root").get_node("Label timer").show()
-		player.get_node("root").update_timer(str(time))
+		player.get_node(^"root").get_node(^"Label timer").show()
+		player.get_node(^"root").update_timer(str(time))
 	#else:
 	#	print("Count is off")
 
 func _on_Area_body_exit( body ):
-	if body is KinematicBody:
+	if body is CharacterBody3D:
 		if body is player_script:
-			#print(" TT Area exited by the player")
+			#print(" TT Area3D exited by the player")
 			player = body
 			
 			if player.race != null:
 				return # ignore if player is in a race
 			
 			if not finish:
-				var msg = body.get_node("Messages")
+				var msg = body.get_node(^"Messages")
 				msg.hide()
 				if not count:
 					# remove raceline (preview) from map
-					var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+					var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 					track_map.points = []
 					# force redraw
 					track_map.update()
@@ -161,7 +161,7 @@ func spawn_finish(start):
 	var loc = target
 	# this was BAD, a leak waiting to happen
 	#var our = preload("res://objects/marker.tscn")
-	#var finish = our.instance()
+	#var finish = our.instantiate()
 	var finish = self.duplicate()
 	finish.set_name("Finish")
 	finish.set_translation(loc)
@@ -173,7 +173,7 @@ func spawn_finish(start):
 	
 	get_parent().add_child(finish)
 	
-	var minimap = player.get_node("Viewport_root/Viewport/minimap")
+	var minimap = player.get_node(^"Viewport_root/SubViewport/minimap")
 	minimap.add_marker(finish.get_global_transform().origin, minimap.blue_flag)
 
 	
@@ -203,15 +203,15 @@ func play_replay():
 		var cars = player.get_parent().get_parent()
 		if cars.has_node("Ghost"):
 			print("We already have a ghost")
-			cars.get_node("Ghost").queue_free()
+			cars.get_node(^"Ghost").queue_free()
 		
 		# load our stuff
 		var ghost = preload("res://car/car_replay.tscn")
-		var ghost_in = ghost.instance()
+		var ghost_in = ghost.instantiate()
 		ghost_in.set_name("Ghost")
 		
 		var repl = load("res://replay/replay.tscn")
-		var replay = repl.instance()
+		var replay = repl.instantiate()
 		replay.set_name("replay")
 		# test
 		replay.set_script(preload("res://replay/replay.gd"))
@@ -234,5 +234,5 @@ func play_replay():
 		#print("Ghost local: " + str(cars.to_local(ghost_in.get_global_transform().origin)))
 		
 		# play
-		ghost_in.get_node("replay").play("BODY")
+		ghost_in.get_node(^"replay").play("BODY")
 		

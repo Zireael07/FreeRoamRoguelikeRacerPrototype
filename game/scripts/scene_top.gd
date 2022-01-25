@@ -1,4 +1,4 @@
-extends Navigation
+extends Node3D
 
 
 # Declare member variables here. Examples:

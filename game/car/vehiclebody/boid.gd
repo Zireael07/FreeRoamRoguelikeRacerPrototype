@@ -1,7 +1,7 @@
 # steering behaviors implementation
 # for VEHICLE BODY cars
 # relies on local (2D) input and output
-extends Spatial
+extends Node3D
 
 # class member variables go here, for example:
 var velocity = Vector2(0,0)
@@ -13,7 +13,7 @@ var dist = 0.0
 
 var max_speed = 50
 var max_force = 15 #9
-export(Vector2) var target = Vector2(800,700) # dummy
+@export var target: Vector2 = Vector2(800,700) # dummy
 
 var lane_change_deg = 20
 var lane_change_dist_factor = 1
@@ -24,7 +24,7 @@ func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
 	max_speed = 50 # speed limit   #get_parent().top_speed
-	#marker = get_parent().get_node("target_marker")
+	#marker = get_parent().get_node(^"target_marker")
 	
 	# test changing lanes
 	

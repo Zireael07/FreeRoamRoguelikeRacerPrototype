@@ -3,14 +3,14 @@ extends "vehicle.gd"
 # class member variables go here, for example:
 #export (Vector3Array) var target_array = null
 
-onready var brain = get_node("brain")
+@onready var brain = get_node(^"brain")
 
 
-var target_array = PoolVector3Array() # those are global
+var target_array = PackedVector3Array() # those are global
 var current = 0
 var prev = 0
 #export var target_angle = 0.2
-export var top_speed = 15 #50 kph?
+@export var top_speed = 15 #50 kph?
 
 var rel_loc
 var dot
@@ -58,16 +58,16 @@ var bribed = false
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
-	get_parent().connect("found_path", self, "_on_path_found")
+	get_parent().connect(&"found_path", self._on_path_found)
 	
 	target_array.resize(0)
 	
-	#navigation_node = get_node("/root/Navigation")
+	#navigation_node = get_node(^"/root/Node3D")
 	
 	var source = get_global_transform().origin
 	
 	# need a dummy target for before we get path
-	var forw_global = get_global_transform().xform(Vector3(0, 0, 4))
+	var forw_global = get_global_transform() * (Vector3(0, 0, 4))
 	var target = forw_global
 	
 	# the brain is a 3D node, so it converts Vec3
@@ -85,11 +85,11 @@ func _ready():
 func debug_draw_lines():
 	#points
 	var pos = get_transform().origin #get_translation()
-	var points = PoolVector3Array()
+	var points = PackedVector3Array()
 	points.push_back(get_translation())
 	# from relative location
-	var gl_tg = get_global_transform().xform(rel_loc)
-	var par_rel = get_parent().get_global_transform().xform_inv(gl_tg)
+	var gl_tg = get_global_transform() * (rel_loc)
+	var par_rel = gl_tg * get_parent().get_global_transform()
 	points.push_back(Vector3(par_rel.x, 1, par_rel.z))
 	
 	#var dist = rel_loc.distance_to(compare_pos)
@@ -132,7 +132,7 @@ func draw_debugging():
 		# draw desired steer
 		#points
 		var pos = get_transform().origin #get_translation()
-		var points = PoolVector3Array()
+		var points = PackedVector3Array()
 		# this is the start point of most drawing
 		points.push_back(get_translation())
 		# 25 is a magic number (see line 412)
@@ -145,8 +145,8 @@ func draw_debugging():
 		# draw velocity
 #			# from relative location
 #			var loc_to_dr = Vector3(brain.velocity.x, 1, brain.velocity.y)
-#			var gl_tg = get_global_transform().xform(loc_to_dr)
-#			var par_rel = get_parent().get_global_transform().xform_inv(gl_tg)
+#			var gl_tg = get_global_transform() * (loc_to_dr)
+#			var par_rel = gl_tg * get_parent().get_global_transform()
 #			points.push_back(Vector3(par_rel.x, 1, par_rel.z))
 
 #			get_parent().draw_arc.draw_line_color(points, 3, Color(1,0,1))
@@ -154,8 +154,8 @@ func draw_debugging():
 		# draw forward vector
 		# from relative location
 #		var loc_dr = Vector3(0, 0, 4)
-#		var gl_tg = get_global_transform().xform(loc_dr)
-#		var par_rel = get_parent().get_global_transform().xform_inv(gl_tg)
+#		var gl_tg = get_global_transform() * (loc_dr)
+#		var par_rel = gl_tg * get_parent().get_global_transform()
 #		points.push_back(Vector3(par_rel.x, 1, par_rel.z))
 #		get_parent().draw_arc.draw_line_color(points, 3, Color(1,0,1))
 
@@ -179,7 +179,7 @@ func draw_debugging():
 #		if pt_locs_rel.size() > 0:
 #			points.push_back(get_translation())
 #			var gl_norm = get_normal_point()
-#			var par_rel = get_parent().get_global_transform().xform_inv(gl_norm)
+#			var par_rel = gl_norm * get_parent().get_global_transform()
 #			points.push_back(Vector3(par_rel.x, 1, par_rel.z))
 #			get_parent().draw_arc.draw_line_color(points, 3, Color(0,1,0))
 
@@ -194,36 +194,36 @@ func _on_ok_click():
 	bribed = true
 	
 func coplights_on(player):
-	var material = get_node("coplight").get_mesh().surface_get_material(0)
-	#material.set_feature(SpatialMaterial.FEATURE_EMISSION, true)
+	var material = get_node(^"coplight").get_mesh().surface_get_material(0)
+	#material.set_feature(StandardMaterial3D.FEATURE_EMISSION, true)
 	material.set_albedo(Color(1,0,0))
-	get_node("SpotLight2").set_visible(true)
-	get_node("SpotLight3").set_visible(true)
+	get_node(^"SpotLight2").set_visible(true)
+	get_node(^"SpotLight3").set_visible(true)
 	
 	# minimap icon flashes
-	var map = player.get_node("BODY/Viewport_root/Viewport/minimap")
+	var map = player.get_node(^"BODY/Viewport_root/SubViewport/minimap")
 	map.flash_cop_arrow()
 	
 func coplights_off(player):
-	var material = get_node("coplight").get_mesh().surface_get_material(0)
-	#material.set_feature(SpatialMaterial.FEATURE_EMISSION, false)
+	var material = get_node(^"coplight").get_mesh().surface_get_material(0)
+	#material.set_feature(StandardMaterial3D.FEATURE_EMISSION, false)
 	material.set_albedo(Color(0.5, 0, 0))
-	get_node("SpotLight2").set_visible(false)
-	get_node("SpotLight3").set_visible(false)
+	get_node(^"SpotLight2").set_visible(false)
+	get_node(^"SpotLight3").set_visible(false)
 	
 	# stop minimap flashing
-	var map = player.get_node("BODY/Viewport_root/Viewport/minimap")
+	var map = player.get_node(^"BODY/Viewport_root/SubViewport/minimap")
 	map.stop_cop_arrow()
 
 func start_chase():
 	var playr = get_tree().get_nodes_in_group("player")[0]
-	var playr_loc = playr.get_node("BODY").get_global_transform().origin
+	var playr_loc = playr.get_node(^"BODY").get_global_transform().origin
 	#print("Player loc: " + str(playr_loc))
 	# if player close enough
-	if playr_loc.distance_to(get_node("BODY").get_global_transform().origin) < 10:
+	if playr_loc.distance_to(get_node(^"BODY").get_global_transform().origin) < 10:
 		#print("Player within 10 m of cop")
 		# ignore player that is keeping to speed limit
-		var playr_speed = playr.get_node("BODY").speed
+		var playr_speed = playr.get_node(^"BODY").speed
 		if playr_speed < 15:
 			return
 			
@@ -237,18 +237,18 @@ func start_chase():
 		coplights_on(playr)
 		
 		# notify player
-		var msg = playr.get_node("BODY").get_node("Messages")
+		var msg = playr.get_node(^"BODY").get_node(^"Messages")
 		msg.set_text("CHASE STARTED!" + "\n" + "Bribe the cops with Y100?")
 		msg.enable_ok(true)
 		msg.show()
 		# set up the OK button
-		if not msg.get_node("OK_button").is_connected("pressed", self, "_on_ok_click"):
+		if not msg.get_node(^"OK_button").is_connected("pressed", self, "_on_ok_click"):
 			print("Not connected")
 			# disconnect all others just in case
-			for d in msg.get_node("OK_button").get_signal_connection_list("pressed"):
+			for d in msg.get_node(^"OK_button").get_signal_connection_list("pressed"):
 				#print(d["target"])
-				msg.get_node("OK_button").disconnect("pressed", d["target"], "_on_ok_click")
-			msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
+				msg.get_node(^"OK_button").disconnect(&"pressed", d["target"]._on_ok_click)
+			msg.get_node(^"OK_button").connect(&"pressed", self._on_ok_click)
 
 # -------------------------------
 # mostly draws debugging
@@ -274,12 +274,12 @@ func _process(delta):
 					brain.set_state(brain.STATE_DRIVING)
 				else:
 					var playr = get_tree().get_nodes_in_group("player")[0]
-					var playr_loc = playr.get_node("BODY").get_global_transform().origin
+					var playr_loc = playr.get_node(^"BODY").get_global_transform().origin
 					# if player hasn't outran us
-					if playr_loc.distance_to(get_node("BODY").get_global_transform().origin) < 60:
+					if playr_loc.distance_to(get_node(^"BODY").get_global_transform().origin) < 60:
 						brain.target = playr_loc
 						#print(str(brain.target))
-						if not get_node("SpotLight2").is_visible():
+						if not get_node(^"SpotLight2").is_visible():
 							coplights_on(playr)
 					else:
 						# stop chase
@@ -287,7 +287,7 @@ func _process(delta):
 						
 						print("[Cop] player escaped!")
 						# notify player
-						var msg = playr.get_node("BODY").get_node("Messages")
+						var msg = playr.get_node(^"BODY").get_node(^"Messages")
 						msg.set_text("CHASE ENDED!" + "\n" + "You escaped the cops!")
 						msg.enable_ok(false)
 						msg.show()
@@ -338,11 +338,11 @@ func setup_path(data_path):
 	
 	
 	# because the loops above take some time, to be 1000% certain we have the correct targets once we get moving
-	get_node("Timer").start()
+	get_node(^"Timer").start()
 
 
 func _on_path_found(path):
-	#print("Path was found!")
+	#print("Path3D was found!")
 	setup_path(path)
 
 # see line 340 (above)
@@ -381,7 +381,7 @@ func _physics_process(delta):
 		right = false
 		joy = Vector2(0,0)
 
-		rel_loc = get_global_transform().xform_inv(brain.target)
+		rel_loc = brain.target * get_global_transform()
 		# dummy out the y value
 		rel_loc = Vector3(rel_loc.x, 0, rel_loc.z)
 
@@ -389,7 +389,7 @@ func _physics_process(delta):
 		#rel_loc = Vector3(loc.x, 1, loc.brain.target.y)
 		
 		#this one actually reacts to rotations unlike the one using basis.z or linear velocity.z
-		var forward_global = get_global_transform().xform(Vector3(0, 0, 4))
+		var forward_global = get_global_transform() * (Vector3(0, 0, 4))
 		#B-A = from A to B
 		forward_vec = forward_global-get_global_transform().origin
 		var tg_dir = brain.target - get_global_transform().origin
@@ -418,7 +418,7 @@ func _physics_process(delta):
 		# needed for race position
 		if get_parent().is_in_group("race_AI"):
 			#print("Race AI")
-			#print("Path: " + str(self.path))
+			#print("Path3D: " + str(self.path))
 			if self.path != null and self.path.size() > 0 and not self.finished:
 				# paranoia
 				if current < path.size()-1: 
@@ -469,15 +469,15 @@ func _physics_process(delta):
 		if not get_parent().is_in_group("race_AI"):
 			if gas and not reverse and speed < 1:
 				#print("AI ", get_parent().get_name(), " STUCK!!!")
-				if get_node("StuckTimer").get_time_left() == 0:
-					get_node("StuckTimer").start()
-					#print("AI ",  get_parent().get_name(), " started timer ", get_node("StuckTimer").get_time_left())
+				if get_node(^"StuckTimer").get_time_left() == 0:
+					get_node(^"StuckTimer").start()
+					#print("AI ",  get_parent().get_name(), " started timer ", get_node(^"StuckTimer").get_time_left())
 				#else:
 				#	print("Timer already running")
 			elif gas and speed >= 1:
 				#print("No longer stuck")
 				# abort stuck timer
-				get_node("StuckTimer").stop()
+				get_node(^"StuckTimer").stop()
 		
 		
 		# don't do the next if we're a cop chasing
@@ -497,8 +497,8 @@ func _physics_process(delta):
 						
 						# prompt next car in line to drive
 						if get_parent().intersection.cars.size() > 0:
-							get_parent().intersection.cars.keys()[0].get_node("BODY").stop = false
-							get_parent().intersection.cars.keys()[0].get_node("BODY").emitted = false
+							get_parent().intersection.cars.keys()[0].get_node(^"BODY").stop = false
+							get_parent().intersection.cars.keys()[0].get_node(^"BODY").emitted = false
 						
 						get_parent().intersection = null
 					if target_array.size() > 33 and current == 32:
@@ -508,8 +508,8 @@ func _physics_process(delta):
 						
 						# prompt next car in line to drive
 						if get_parent().intersection.cars.size() > 0:
-							get_parent().intersection.cars.keys()[0].get_node("BODY").stop = false
-							get_parent().intersection.cars.keys()[0].get_node("BODY").emitted = false
+							get_parent().intersection.cars.keys()[0].get_node(^"BODY").stop = false
+							get_parent().intersection.cars.keys()[0].get_node(^"BODY").emitted = false
 						
 						get_parent().intersection = null
 		
@@ -547,16 +547,16 @@ func _physics_process(delta):
 # based on https://natureofcode.com/book/chapter-6-autonomous-agents/
 func predict_loc(s):
 	var loc_dr = Vector3(0, 0, speed)
-	var gl_tg = get_global_transform().xform(loc_dr)
-	var pos = get_global_transform().xform_inv(gl_tg)
+	var gl_tg = get_global_transform() * (loc_dr)
+	var pos = gl_tg * get_global_transform()
 	
 	# debug (this one paints the whole track)
-	#var par_rel = get_parent().get_global_transform().xform_inv(gl_tg)
+	#var par_rel = gl_tg * get_parent().get_global_transform()
 	#get_parent().debug_cube(par_rel, true)
 	
 	# is any existing? (see vehicle.gd line 370)
 	if has_node("Debug"):
-		get_node("Debug").set_translation(pos)
+		get_node(^"Debug").set_translation(pos)
 	else:
 		debug_cube(pos, true)
 	
@@ -584,7 +584,7 @@ func _on_StuckTimer_timeout():
 	# jerk us up just in case the wheels sank into something
 	#translate_object_local(Vector3(0, 0.5, 0))
 	
-	get_node("ReverseTimer").start()
+	get_node(^"ReverseTimer").start()
 
 
 func _on_ReverseTimer_timeout():
@@ -599,9 +599,9 @@ func _on_ReverseTimer_timeout():
 #		#data
 #		car.speed = car.get_linear_velocity().length();
 #		#var forward_vec = car.get_translation() + car.get_global_transform().basis.z
-#		var forward_vec = car.get_global_transform().xform(Vector3(0, 0, 4))
+#		var forward_vec = car.get_global_transform() * (Vector3(0, 0, 4))
 #
-#		car.rel_loc = car.get_global_transform().xform_inv(car.get_target(car.current))
+#		car.rel_loc = car.get_target(car.current) * car.get_global_transform()
 #
 #		#2D angle to target (local coords)
 #		car.angle = atan2(car.rel_loc.x, car.rel_loc.z)
@@ -707,7 +707,7 @@ func _on_ReverseTimer_timeout():
 #		car.speed = car.get_linear_velocity().length();
 #		var forward_vec = car.get_translation() + car.get_global_transform().basis.z
 #
-#		car.rel_loc = car.get_global_transform().xform_inv(car.target)
+#		car.rel_loc = car.target * car.get_global_transform()
 #
 #		#2D angle to target (local coords)
 #		car.angle = atan2(car.rel_loc.x, car.rel_loc.z)
@@ -739,7 +739,7 @@ func _on_ReverseTimer_timeout():
 #
 #				#car.emit_signal("changed_dir", car.get_transform().origin)
 ##				print("Location when turning back " + str(car.get_transform().origin))
-##				delta_change = self.initial_pos.xform_inv(car.get_transform().origin)
+##				delta_change = (car.get_transform( * self.initial_pos).origin)
 #				#print("Delta pos: " + str(delta_change))
 ##				print("Speed when turning back: " + str(car.speed))
 ##				print("Angle when turning back: " + str(car.angle) + " " + str(rad2deg(car.angle)) + " deg")
@@ -820,7 +820,7 @@ func stopping():
 			# axe the debug cubes
 			get_parent().clear_cubes()
 			emitted = true
-			var forw_global = get_global_transform().xform(Vector3(0, 0, 4))
+			var forw_global = get_global_transform() * (Vector3(0, 0, 4))
 			target_array.append(forw_global)
 			stop = false
 
@@ -831,9 +831,9 @@ func go_back(pos):
 	#print("Trying to go back because too far off the path")
 		flag = "GOING BACK"
 		
-		#rel_loc = get_global_transform().xform_inv(offset[1])
+		#rel_loc = offset[1] * get_global_transform()
 		#angle = atan2(rel_loc.x, rel_loc.z)
-		var rel_target = get_global_transform().xform_inv(offset[1])
+		var rel_target = offset[1] * get_global_transform()
 		var rel_angle = atan2(rel_target.x, rel_target.z)
 		#print("Angle to new target: " + str(rel_angle))
 		#print("Offset loc: 	" + str(rel_loc.x) + " " + str(rel_loc.z))

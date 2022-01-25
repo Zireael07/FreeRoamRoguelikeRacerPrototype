@@ -1,9 +1,9 @@
-tool
+@tool
 extends Node2D
 
 # class member variables go here, for example:
-#export(PoolVector2Array) var points = []
-var points = PoolVector2Array()
+#export(PackedVector2Array) var points = []
+var points = PackedVector2Array()
 
 func _ready():
 	#points = [Vector2(-52, 30), Vector2(-150, 50), Vector2(-50, 100)]

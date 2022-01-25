@@ -1,11 +1,11 @@
-tool
+@tool
 
 extends "mesh_gen.gd"
 
 # class member variables go here, for example:
-export var snow = false
-export(SpatialMaterial) var snowmaterial = null
-export(SpatialMaterial) var groundmaterial = null
+@export var snow = false
+@export var snowmaterial: StandardMaterial3D = null
+@export var groundmaterial: StandardMaterial3D = null
 
 var terrainmaterial = null
 
@@ -28,9 +28,9 @@ func _ready():
 	#setup_collision(400,0)
 
 func setup_collision(x,z):
-	var shape = BoxShape.new()
+	var shape = BoxShape3D.new()
 	shape.set_extents(Vector3(200,0.05,200))
-	var coll = CollisionShape.new()
+	var coll = CollisionShape3D.new()
 	coll.shape = shape
 	coll.set_translation(Vector3(x, 0, z))
-	get_node("StaticBody").add_child(coll)
+	get_node(^"StaticBody3D").add_child(coll)

@@ -9,5 +9,5 @@
 script = ExtResource( 1 )
 
 [node name="curve" type="Node2D" parent="Placer"]
-position = Vector2( -9.18485e-16, 15 )
+position = Vector2(-9.18485e-16, 15)
 script = ExtResource( 2 )

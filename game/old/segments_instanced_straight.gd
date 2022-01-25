@@ -1,9 +1,9 @@
-tool
+@tool
 
 extends Position3D
 
 # class member variables go here, for example:
-export(int) var numSegments = 2
+@export var numSegments: int = 2
 
 #elements we're using
 var road
@@ -27,15 +27,15 @@ func _ready():
 # utility functions
 func get_prev_segment(index):
 	if has_node("Road_instance"+String(index-1)):
-		return get_node("Road_instance"+String(index-1))
+		return get_node(^"Road_instance"+String(index-1))
 	
 	#handle the fact that the straight needs a spatial parent
-	if has_node("Spatial/Road_instance"+String(index-1)):
-		return get_node("Spatial/Road_instance"+String(index-1))
+	if has_node("Node3D/Road_instance"+String(index-1)):
+		return get_node(^"Node3D/Road_instance"+String(index-1))
 		
 func setupCurvedRoad(index, left, fit):
 	if (left):
-		var road_node_left = road_left.instance()
+		var road_node_left = road_left.instantiate()
 		road_node_left.set_name("Road_instance" + String(index))
 		if (fit):
 			road_node_left.get_child(0).get_child(0).start_angle = 90
@@ -44,17 +44,17 @@ func setupCurvedRoad(index, left, fit):
 		add_child(road_node_left)
 		return road_node_left
 	else:
-		var road_node_right = road.instance()
+		var road_node_right = road.instantiate()
 		road_node_right.set_name("Road_instance" + String(index))
 		add_child(road_node_right)
 		return road_node_right
 
 func setupStraightRoad(index):
-	var road_node = road_straight.instance()
+	var road_node = road_straight.instantiate()
 	road_node.set_name("Road_instance" + String(index))
 	
-	var spatial = Spatial.new()
-	spatial.set_name("Spatial")
+	var spatial = Node3D.new()
+	spatial.set_name("Node3D")
 	add_child(spatial)
 	spatial.add_child(road_node)
 	return road_node
@@ -119,7 +119,7 @@ func placeRoad(index):
 					#print("Previous segment location is " + String(prev_loc))
 					print("Location is " + String(loc))
 					
-					road_node = road.instance()
+					road_node = road.instantiate()
 					road_node.set_name("Road_instance" + String(index))
 					add_child(road_node)
 					
@@ -131,7 +131,7 @@ func placeRoad(index):
 					print("No previous segment found")
 	else:
 		print("We already have a segment")
-		var node = get_node("Road_instance"+String(index))
+		var node = get_node(^"Road_instance"+String(index))
 		#var end = node.get_child(0).get_child(0).relative_end
 		#print("Location is " + String(node.get_translation()) + " end is " + String(end))
 		
@@ -174,7 +174,7 @@ func fitNavMesh(straight, straight_ind, straight_ind2, curve, curve_ind, curve_i
 			
 func navMesh():
 	#move the vertices so that the curve fits the straight
-	var straight = get_node("Spatial/Road_instance0")
-	var curved = get_node("Road_instance1").get_child(0).get_child(0)
+	var straight = get_node(^"Node3D/Road_instance0")
+	var curved = get_node(^"Road_instance1").get_child(0).get_child(0)
 	if curved != null:
 		fitNavMesh(straight, 2, 3, curved, curved.nav_vertices.size()-2, curved.nav_vertices.size()-1, true)

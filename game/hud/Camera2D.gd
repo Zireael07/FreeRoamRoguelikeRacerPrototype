@@ -24,7 +24,7 @@ func _physics_process(delta):
 	var player = get_tree().get_nodes_in_group("player")[0].get_child(0)
 	var player_rot = player.get_heading()
 	# https://godotengine.org/qa/11335/getting-the-y-axis-rotation-of-an-object-in-3d
-#	var forward_global = player.get_global_transform().xform(Vector3(0, 0, 2))
+#	var forward_global = player.get_global_transform() * (Vector3(0, 0, 2))
 #	var forward_vec = forward_global-player.get_global_transform().origin
 #	var basis_vec = player.get_global_transform().basis.z
 #	var player_rot = forward_vec.angle_to(Vector3(0,0,1))
@@ -48,7 +48,7 @@ func _physics_process(delta):
 #	if abs(player_rot.y) < deg2rad(48):
 #		arr_rot = arr_rot+deg2rad(180)
 	
-	#get_node("player").set_rotation(arr_rot)
+	#get_node(^"player").set_rotation(arr_rot)
 
 func calc_panning():
 	#print("Minimap offset is " + String(minimap_bg.uv_offset))

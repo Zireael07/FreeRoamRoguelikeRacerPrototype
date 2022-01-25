@@ -1,4 +1,4 @@
-extends ViewportContainer
+extends SubViewportContainer
 
 
 # Declare member variables here. Examples:
@@ -9,18 +9,18 @@ var pan = Vector2()
 var player
 var map
 var int_path = []
-var nav_result = PoolVector3Array()
+var nav_result = PackedVector3Array()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	cam = get_node("Viewport/Camera2D")
+	cam = get_node(^"SubViewport/Camera2D")
 	#the camera seems to be offset by this value from minimap center
 	# experimentally determined
 	mmap_offset = Vector2(74,89)
 
 	player = get_parent()
-	map = get_node("/root/Navigation").get_node("map")
-	get_node("track").set_position(get_node("center").get_position() + mmap_offset)
+	map = get_node(^"/root/Node3D").get_node(^"map")
+	get_node(^"track").set_position(get_node(^"center").get_position() + mmap_offset)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -42,31 +42,31 @@ func _on_ButtonMinus_pressed():
 func _on_ButtonUp_pressed():
 	pan.y -= 10 
 	cam.offset = pan
-	get_node("track").set_position(get_node("center").get_position() + mmap_offset - pan)
+	get_node(^"track").set_position(get_node(^"center").get_position() + mmap_offset - pan)
 	update()
-	get_node("track").update()
+	get_node(^"track").update()
 
 
 func _on_ButtonDown_pressed():
 	pan.y += 10 
 	cam.offset = pan
-	get_node("track").set_position(get_node("center").get_position() + mmap_offset - pan)
+	get_node(^"track").set_position(get_node(^"center").get_position() + mmap_offset - pan)
 	update()
-	get_node("track").update()
+	get_node(^"track").update()
 
 func _on_ButtonLeft_pressed():
 	pan.x -= 10 
 	cam.offset = pan
-	get_node("track").set_position(get_node("center").get_position() + mmap_offset - pan)
+	get_node(^"track").set_position(get_node(^"center").get_position() + mmap_offset - pan)
 	update()
-	get_node("track").update()
+	get_node(^"track").update()
 
 func _on_ButtonRight_pressed():
 	pan.x += 10 
 	cam.offset = pan
-	get_node("track").set_position(get_node("center").get_position() + mmap_offset - pan)
+	get_node(^"track").set_position(get_node(^"center").get_position() + mmap_offset - pan)
 	update()
-	get_node("track").update()
+	get_node(^"track").update()
 
 
 # detect clicks
@@ -82,7 +82,7 @@ func _draw():
 # returns id of closest intersection
 func find_closest_intersection(pos):
 	# list of intersection global positions
-	var intersections = get_parent().get_node("Viewport_root/Viewport/minimap").intersections
+	var intersections = get_parent().get_node(^"Viewport_root/SubViewport/minimap").intersections
 	
 	# pos is flipped for some reason, so unflip it
 	pos = -pos
@@ -108,34 +108,34 @@ func find_closest_intersection(pos):
 			return t[1]
 
 func get_drawn_path(int_path):
-	var nav_path = PoolVector3Array()
-	var path_look = map.get_node("nav").path_look # shortcut
+	var nav_path = PackedVector3Array()
+	var path_look = map.get_node(^"nav").path_look # shortcut
 	if [int_path[0], int_path[1]] in path_look:
 		#print("First pair: " + str(int_path[0]) + "," + str(int_path[1]))			
 		var lookup_path = path_look[[int_path[0], int_path[1]]]
 		#print("Lookup path pt1: " + str(lookup_path))
-		nav_path = map.get_node("nav").nav.get_point_path(lookup_path[0], lookup_path[1])
+		nav_path = map.get_node(^"nav").nav.get_point_path(lookup_path[0], lookup_path[1])
 		#print("Nav path: " + str(nav_path))
 
-	var nav_path2 = PoolVector3Array()
-	var nav_path3 = PoolVector3Array()
+	var nav_path2 = PackedVector3Array()
+	var nav_path3 = PackedVector3Array()
 	if int_path.size() > 2 and [int_path[1], int_path[2]] in path_look:
 		#print("Second pair: " + str(int_path[1]) + "," + str(int_path[2]))
 		var lookup_path = path_look[[int_path[1], int_path[2]]]
 		#print("Lookup path pt2: " + str(lookup_path))
-		nav_path2 = map.get_node("nav").nav.get_point_path(lookup_path[0], lookup_path[1])
+		nav_path2 = map.get_node(^"nav").nav.get_point_path(lookup_path[0], lookup_path[1])
 		#print("Nav path pt2 : " + str(nav_path2))
 
 	nav_result = nav_path + nav_path2
 	
 	if nav_result.size() > 0:
 		# show line on map
-		var track_map = get_node("track")
+		var track_map = get_node(^"track")
 		track_map.points = track_map.vec3s_convert(nav_result)
 		# force redraw
 		track_map.update()
 		# show on minimap, too
-		var minimap_track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+		var minimap_track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 		minimap_track_map.points = minimap_track_map.vec3s_convert(nav_result)
 		# force redraw
 		minimap_track_map.update()
@@ -152,7 +152,7 @@ func player_nav(target):
 	#print("Closest: " + str(closest.get_name()))
 	
 	# this operates on ids, therefore we subtract 3 from child id
-	int_path = map.get_node("nav").ast.get_id_path(closest_ind-3, target)
+	int_path = map.get_node(^"nav").ast.get_id_path(closest_ind-3, target)
 	print("Intersections path: " + str(int_path))
 	get_drawn_path(int_path)
 	# mark #0 as reached because in 99% of cases we're already past it
@@ -163,7 +163,7 @@ func _on_MapView_gui_input(event):
 		mouse = event.position
 		print("Clicked mouse in map viewport @ ", event.position+pan)
 		# camera position is half viewport width and half viewport height
-		var rel_pos = get_node("center").get_transform().xform_inv(event.position+pan)
+		var rel_pos = event.position+pan * get_node(^"center").get_transform()
 		#print("Relative to camera: ", rel_pos)
 		# somehow, this fits the intersection positions sent to minimap (just flipped signs)
 		# before transforming to 2d
@@ -182,7 +182,7 @@ func _on_MapView_gui_input(event):
 func redraw_nav():
 	if nav_result.size() > 0:
 		# show on minimap, too
-		var minimap_track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+		var minimap_track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 		minimap_track_map.points = minimap_track_map.vec3s_convert(nav_result)
 		# force redraw
 		minimap_track_map.update()

@@ -1,4 +1,4 @@
-tool
+@tool
 extends Node
 
 # Declare member variables here. Examples:
@@ -115,7 +115,7 @@ func setupBuilding(index, base_height):
 	
 	var ran = randf()
 	
-	var build = building.instance()
+	var build = building.instantiate()
 	
 	if ran < 0.2:
 		var mat = building_tex2
@@ -181,9 +181,9 @@ func setupBuilding(index, base_height):
 		if store_tex == store_tex5 or store_tex == store_tex5_d:
 			var hue = randf()
 			var saturation = randf()
-			var lightness = rand_range(0.25, 0.75)
+			var lightness = randf_range(0.25, 0.75)
 			
-			var color = Color.from_hsv(hue, saturation, lightness)
+			var color = Color.FROM_hsv(hue, saturation, lightness)
 			
 			build.storefront_mat.set_shader_param("modulate", color)
 	else:
@@ -195,19 +195,19 @@ func setupBuilding(index, base_height):
 	
 	if rand < 0.15:
 		var sign_mat = sign_tex1
-		build.get_node("MeshInstance").set_surface_material(0, sign_mat)
+		build.get_node(^"MeshInstance3D").set_surface_material(0, sign_mat)
 	elif rand < 0.33:
 		var sign_mat = sign_tex1_d
-		build.get_node("MeshInstance").set_surface_material(0, sign_mat)
+		build.get_node(^"MeshInstance3D").set_surface_material(0, sign_mat)
 	elif rand < 0.5:
 		var sign_mat = sign_tex1_dd
-		build.get_node("MeshInstance").set_surface_material(0, sign_mat)
+		build.get_node(^"MeshInstance3D").set_surface_material(0, sign_mat)
 	elif rand < 0.66:
 		var sign_mat = sign_tex2
-		build.get_node("MeshInstance").set_surface_material(0, sign_mat)
+		build.get_node(^"MeshInstance3D").set_surface_material(0, sign_mat)
 	else:
 		var sign_mat = sign_tex3
-		build.get_node("MeshInstance").set_surface_material(0, sign_mat)
+		build.get_node(^"MeshInstance3D").set_surface_material(0, sign_mat)
 		
 	# sign color
 	#var rand_color_r = randf()
@@ -216,19 +216,19 @@ func setupBuilding(index, base_height):
 	
 	var hue = randf()
 	var saturation = randf()
-	var lightness = rand_range(0.25, 0.75)
+	var lightness = randf_range(0.25, 0.75)
 	
-	var color = Color.from_hsv(hue, saturation, lightness)
+	var color = Color.FROM_hsv(hue, saturation, lightness)
 	
 	#print("Sign color: ", color)
 	
-	build.get_node("MeshInstance").get_surface_material(0).set_shader_param("modulate", color)
+	build.get_node(^"MeshInstance3D").get_surface_material(0).set_shader_param("modulate", color)
 	
 	# vary sign placement height
 	var rand_i = randi() % 5
 	
 	# if base_height < 0, we're building for a bridge/elevated road so let's flip the sign
-	build.get_node("MeshInstance").translate(Vector3(0, -base_height+rand_i, 0))
+	build.get_node(^"MeshInstance3D").translate(Vector3(0, -base_height+rand_i, 0))
 	
 	
 	#build.set_scale(Vector3(2, 2, 2))
@@ -238,8 +238,8 @@ func setupBuilding(index, base_height):
 	return build
 
 func setupBuildingSimple(index):
-	#var build = building.instance()
-	var build = building_test.instance()
+	#var build = building.instantiate()
+	var build = building_test.instantiate()
 
 	build.set_name("Skyscraper"+String(index))
 	add_child(build)
@@ -260,7 +260,7 @@ func placeBuilding(index, base_height):
 	build.set_translation(loc)
 	build.set_rotation_degrees(Vector3(0, 180, 0))
 	
-	build.get_node("Spatial").set_translation(Vector3(-8, 0,0))
+	build.get_node(^"Node3D").set_translation(Vector3(-8, 0,0))
 	
 	build = setupBuilding(index, base_height)
 	
@@ -276,11 +276,11 @@ func placeBuilding(index, base_height):
 	build.set_translation(loc)
 	
 	# move detect area
-	build.get_node("Spatial").set_translation(Vector3(-8, 0,0))
+	build.get_node(^"Node3D").set_translation(Vector3(-8, 0,0))
 	
 func placeCable(index, base_height):
 	if (index % 2 > 0):
-		var cable = cables.instance()
+		var cable = cables.instantiate()
 		
 		# random selection
 		randomize()
@@ -296,7 +296,7 @@ func placeCable(index, base_height):
 			cable.get_child(5).set_surface_material(0, red)
 		
 		elif rand > 0.4:
-			cable = cables2.instance()
+			cable = cables2.instantiate()
 		
 		cable.set_name("Cable"+String(index))
 		add_child(cable)
@@ -306,7 +306,7 @@ func placeCable(index, base_height):
 		cable.set_translation(loc)
 
 func placeTree(index, base_height):
-	var tree = cherry_tree.instance()
+	var tree = cherry_tree.instantiate()
 	tree.set_name("Tree"+String(index))
 	add_child(tree)
 
@@ -319,7 +319,7 @@ func placeTree(index, base_height):
 	
 	tree.set_translation(loc)
 	
-	tree = cherry_tree.instance()
+	tree = cherry_tree.instantiate()
 	tree.set_name("Tree"+String(index))
 	add_child(tree)
 	
@@ -338,7 +338,7 @@ func placeBamboo(index, base_height):
 	var rand = randf()
 	
 	
-	var clump = bamboo_clump.instance()
+	var clump = bamboo_clump.instantiate()
 	clump.set_name("Bamboo"+String(index))
 	add_child(clump)
 
@@ -354,7 +354,7 @@ func placeBamboo(index, base_height):
 	
 	clump.set_translation(loc)
 	
-	clump = bamboo_clump.instance()
+	clump = bamboo_clump.instantiate()
 	clump.set_name("Bamboo"+String(index))
 	add_child(clump)
 	

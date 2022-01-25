@@ -3,62 +3,62 @@
 [ext_resource path="res://hud/MapView.gd" type="Script" id=1]
 [ext_resource path="res://hud/Node2D.gd" type="Script" id=2]
 
-[node name="MapView" type="ViewportContainer"]
+[node name="MapView" type="SubViewportContainer"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -400.0
-margin_top = -200.0
-margin_right = 400.0
-margin_bottom = 200.0
+offset_left = -400.0
+offset_top = -200.0
+offset_right = 400.0
+offset_bottom = 200.0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Viewport" type="Viewport" parent="."]
-size = Vector2( 800, 400 )
+[node name="SubViewport" type="SubViewport" parent="."]
+size = Vector2(800, 400)
 handle_input_locally = false
 usage = 0
 render_target_update_mode = 3
 
-[node name="Camera2D" type="Camera2D" parent="Viewport"]
+[node name="Camera2D" type="Camera2D" parent="SubViewport"]
 current = true
 
 [node name="center" type="Control" parent="."]
-margin_left = 400.0
-margin_top = 200.0
-margin_right = 440.0
-margin_bottom = 240.0
+offset_left = 400.0
+offset_top = 200.0
+offset_right = 440.0
+offset_bottom = 240.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_right = 41.0
-margin_bottom = 20.0
-rect_min_size = Vector2( 0, 20 )
+offset_right = 41.0
+offset_bottom = 20.0
+rect_min_size = Vector2(0, 20)
 
 [node name="ButtonPlus" type="Button" parent="HBoxContainer"]
-margin_right = 20.0
-margin_bottom = 20.0
+offset_right = 20.0
+offset_bottom = 20.0
 text = "+"
 
 [node name="ButtonMinus" type="Button" parent="HBoxContainer"]
-margin_left = 24.0
-margin_right = 41.0
-margin_bottom = 20.0
+offset_left = 24.0
+offset_right = 41.0
+offset_bottom = 20.0
 text = "-"
 
 [node name="Control" type="Control" parent="."]
-margin_top = 400.0
-margin_right = 40.0
-margin_bottom = 440.0
+offset_top = 400.0
+offset_right = 40.0
+offset_bottom = 440.0
 
 [node name="ButtonUp" type="Button" parent="Control"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -6.0
-margin_right = 6.0
-margin_bottom = 20.0
+offset_left = -6.0
+offset_right = 6.0
+offset_bottom = 20.0
 text = "^"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -69,9 +69,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -6.0
-margin_top = -20.0
-margin_right = 6.0
+offset_left = -6.0
+offset_top = -20.0
+offset_right = 6.0
 text = "v"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -80,9 +80,9 @@ __meta__ = {
 [node name="ButtonLeft" type="Button" parent="Control"]
 anchor_top = 0.5
 anchor_bottom = 0.5
-margin_top = -10.0
-margin_right = 12.0
-margin_bottom = 10.0
+offset_top = -10.0
+offset_right = 12.0
+offset_bottom = 10.0
 text = "<"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -93,16 +93,16 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -12.0
-margin_top = -10.0
-margin_bottom = 10.0
+offset_left = -12.0
+offset_top = -10.0
+offset_bottom = 10.0
 text = ">"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="track" type="Node2D" parent="."]
-position = Vector2( 400, 200 )
+position = Vector2(400, 200)
 script = ExtResource( 2 )
 [connection signal="gui_input" from="." to="." method="_on_MapView_gui_input"]
 [connection signal="pressed" from="HBoxContainer/ButtonPlus" to="." method="_on_ButtonPlus_pressed"]

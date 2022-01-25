@@ -1,4 +1,4 @@
-tool
+@tool
 # this one extends node to work nicely in 3D, later on
 # this one is actually used by the 3D map
 extends Node
@@ -36,7 +36,10 @@ var samples = [] # a list of lists (we don't use Vector2 here for speed)
 var edges = []
 var out_edges = []
 
-#export var seede = 3046862638 setget set_seed
+#export var seede = 3046862638:
+	set(value):
+		# TODO: Manually copy the code from this method.
+		set_seed(value)
 var seede = 10000001 #3046862638
 
 
@@ -61,7 +64,7 @@ func set_seed(value):
 	if Engine.is_editor_hint():
 		print("Seed value is " + str(value))
 	# if not set_get we don't need this
-	#if !Engine.editor_hint:
+	#if not Engine.editor_hint:
 	#yield(self, 'tree_entered')
 	
 	for ix in range(nx):
@@ -215,8 +218,8 @@ func get_point(k, refpt, samples):
 	"""
 	var i = 0
 	while i < k:
-		var rho = rand_range(r, 2 * r)
-		var theta = rand_range(0, 2 * PI)
+		var rho = randf_range(r, 2 * r)
+		var theta = randf_range(0, 2 * PI)
 		var pt = [refpt[0] + rho * cos(theta), refpt[1] + rho * sin(theta)]
 		if (0 < pt[0] and pt[0] < width and 0 < pt[1] and pt[1] < height):
 			# This point falls outside the domain, so try again.
@@ -229,7 +232,7 @@ func get_point(k, refpt, samples):
 
 func run():
 	# Pick a random point to start with.
-	var pt = [rand_range(0, width), rand_range(0, height)]
+	var pt = [randf_range(0, width), randf_range(0, height)]
 	samples = [pt]
 	# Our first sample is indexed at 0 in the samples list...
 	var coords = get_cell_coords(pt)

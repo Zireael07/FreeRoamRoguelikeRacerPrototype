@@ -1,28 +1,28 @@
 [gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://assets/851H-kktt.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/851H-kktt.ttf" type="FontData" id=1]
 [ext_resource path="res://hud/message_panel.gd" type="Script" id=2]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="Font" id=1]
 font_data = ExtResource( 1 )
 
 [sub_resource type="InputEventKey" id=2]
 scancode = 16777220
 
-[sub_resource type="ShortCut" id=3]
+[sub_resource type="Shortcut" id=3]
 shortcut = SubResource( 2 )
 
 [sub_resource type="InputEventKey" id=4]
 scancode = 16777221
 
-[sub_resource type="ShortCut" id=5]
+[sub_resource type="Shortcut" id=5]
 shortcut = SubResource( 4 )
 
 [node name="Control" type="Control"]
-pause_mode = 2
-margin_left = 3.0
-margin_right = 1026.0
-margin_bottom = 300.0
+process_mode = 3
+offset_left = 3.0
+offset_right = 1026.0
+offset_bottom = 300.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 script = ExtResource( 2 )
@@ -31,19 +31,19 @@ __meta__ = {
 }
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_right = 1021.0
-margin_bottom = 300.0
-color = Color( 0, 0.155029, 0.992188, 0.552471 )
+offset_right = 1021.0
+offset_bottom = 300.0
+color = Color(0, 0.155029, 0.992188, 0.552471)
 
 [node name="Label" type="Label" parent="."]
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 1022.0
-margin_bottom = 135.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 1022.0
+offset_bottom = 135.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 1 )
-custom_colors/font_color = Color( 0.0151978, 0.905335, 0.972656, 1 )
+custom_colors/font_color = Color(0.0151978, 0.905335, 0.972656, 1)
 custom_constants/shadow_offset_x = 1
 custom_constants/line_spacing = 2
 custom_constants/shadow_offset_y = 1
@@ -51,10 +51,10 @@ custom_constants/shadow_as_outline = 1
 text = "Roads discovered: 0/12"
 
 [node name="Button" type="Button" parent="."]
-margin_left = 410.0
-margin_top = 275.0
-margin_right = 496.0
-margin_bottom = 295.0
+offset_left = 410.0
+offset_top = 275.0
+offset_right = 496.0
+offset_bottom = 295.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 shortcut = SubResource( 3 )
@@ -62,10 +62,10 @@ text = "Close"
 
 [node name="OK_button" type="Button" parent="."]
 visible = false
-margin_left = 503.0
-margin_top = 275.0
-margin_right = 589.0
-margin_bottom = 295.0
+offset_left = 503.0
+offset_top = 275.0
+offset_right = 589.0
+offset_bottom = 295.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 disabled = true
@@ -73,9 +73,9 @@ shortcut = SubResource( 5 )
 text = "OK"
 
 [node name="Control" type="Control" parent="."]
-margin_top = 50.0
-margin_right = 40.0
-margin_bottom = 90.0
+offset_top = 50.0
+offset_right = 40.0
+offset_bottom = 90.0
 __meta__ = {
 "_edit_use_anchors_": false
 }

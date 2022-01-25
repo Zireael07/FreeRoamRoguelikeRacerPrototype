@@ -2,29 +2,29 @@ extends Control
  
 
 # class member variables go here, for example:
-onready var label = get_node("Label")
-onready var debug_label = get_node("Label3")
-onready var fps_label = get_node("Label FPS")
-onready var dist_label = get_node("Label dist")
-onready var road_label = get_node("Label road")
-onready var label_timer = get_node("Label timer")
-onready var label_clock = get_node("Label clock")
-onready var compass_label = get_node("CompassLabel")
+@onready var label = get_node(^"Label")
+@onready var debug_label = get_node(^"Label3")
+@onready var fps_label = get_node(^"Label FPS")
+@onready var dist_label = get_node(^"Label dist")
+@onready var road_label = get_node(^"Label road")
+@onready var label_timer = get_node(^"Label timer")
+@onready var label_clock = get_node(^"Label clock")
+@onready var compass_label = get_node(^"CompassLabel")
 
 # wheel/turn debug
-onready var label_angle = get_node("WheelAngle")
-onready var angle_bar = get_node("WheelAngleBar")
-onready var angle_limit_bar = get_node("WheelAngleBar2")
+@onready var label_angle = get_node(^"WheelAngle")
+@onready var angle_bar = get_node(^"WheelAngleBar")
+@onready var angle_limit_bar = get_node(^"WheelAngleBar2")
 
-onready var money_label = get_node("DriverInfo/MoneyLabel")
+@onready var money_label = get_node(^"DriverInfo/MoneyLabel")
 
-onready var health_bar = get_node("Health")
-onready var battery_bar = get_node("Battery")
+@onready var health_bar = get_node(^"Health")
+@onready var battery_bar = get_node(^"Battery")
 
-onready var cam_control = get_node("CAM blink")
-onready var seed_label = get_node("SeedLabel")
+@onready var cam_control = get_node(^"CAM blink")
+@onready var seed_label = get_node(^"SeedLabel")
 
-onready var nav_label = get_node("NavLabel")
+@onready var nav_label = get_node(^"NavLabel")
 
 var fps
 var draws
@@ -66,7 +66,7 @@ func format_verts(text):
 		#	print(i.get_string())
 		
 		# we don't have an array
-		#var joined_string = PoolStringArray(matches).join(" ")
+		#var joined_string = PackedStringArray(matches).join(" ")
 		#print(n_txt)
 		
 		text = n_txt

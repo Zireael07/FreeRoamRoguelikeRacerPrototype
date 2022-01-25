@@ -12,11 +12,11 @@
 
 
 
-[sub_resource type="PlaneShape" id=1]
+[sub_resource type="WorldMarginShape3D" id=1]
 
-plane = Plane( 0, 1, 0, 0 )
+plane = Plane(0, 1, 0, 0)
 
-[sub_resource type="SpatialMaterial" id=2]
+[sub_resource type="StandardMaterial3D" id=2]
 
 render_priority = 0
 flags_transparent = false
@@ -39,7 +39,7 @@ params_point_size = 3.0
 params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = false
-albedo_color = Color( 1, 1, 1, 1 )
+albedo_color = Color(1, 1, 1, 1)
 metallic = 0.0
 metallic_specular = 0.5
 metallic_texture_channel = 0
@@ -56,25 +56,25 @@ subsurf_scatter_enabled = false
 transmission_enabled = false
 refraction_enabled = false
 detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
+uv1_scale = Vector3(1, 1, 1)
+uv1_offset = Vector3(0, 0, 0)
 uv1_triplanar = false
 uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
+uv2_scale = Vector3(1, 1, 1)
+uv2_offset = Vector3(0, 0, 0)
 uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 
-[node name="Spatial" type="Spatial" index="0"]
+[node name="Node3D" type="Node3D" index="0"]
 
-[node name="Ground" type="Spatial" parent="." index="0"]
+[node name="Ground" type="Node3D" parent="." index="0"]
 
 script = ExtResource( 1 )
 terrainmaterial = ExtResource( 2 )
 
-[node name="StaticBody" type="StaticBody" parent="Ground" index="0"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Ground" index="0"]
 
 input_ray_pickable = true
 input_capture_on_drag = false
@@ -82,29 +82,29 @@ collision_layer = 1
 collision_mask = 1
 friction = 1.0
 bounce = 0.0
-constant_linear_velocity = Vector3( 0, 0, 0 )
-constant_angular_velocity = Vector3( 0, 0, 0 )
+constant_linear_velocity = Vector3(0, 0, 0)
+constant_angular_velocity = Vector3(0, 0, 0)
 
-[node name="CollisionShape" type="CollisionShape" parent="Ground/StaticBody" index="0"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D" index="0"]
 
 shape = SubResource( 1 )
 disabled = false
 
-[node name="Road" type="Spatial" parent="." index="1"]
+[node name="Road" type="Node3D" parent="." index="1"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18.7979, 0, 0 )
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.7979, 0, 0)
 script = ExtResource( 3 )
 material = ExtResource( 4 )
 
 [node name="Position3D" type="Position3D" parent="." index="2"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21.8439, 0, -31.0813 )
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.8439, 0, -31.0813)
 script = ExtResource( 5 )
 sidewalks = false
 barriers = true
 lane_width = 3.0
 radius = 15
-loc = Vector2( 0, 0 )
+loc = Vector2(0, 0)
 left_turn = false
 start_angle = 90
 end_angle = 170
@@ -112,7 +112,7 @@ material = ExtResource( 4 )
 sidewalk_material = ExtResource( 6 )
 barrier_material = ExtResource( 7 )
 
-[node name="draw" type="ImmediateGeometry" parent="Position3D" index="0"]
+[node name="draw" type="ImmediateGeometry3D" parent="Position3D" index="0"]
 
 layers = 1
 material_override = SubResource( 2 )
@@ -124,6 +124,6 @@ lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
 script = ExtResource( 8 )
-color = Color( 1, 1, 1, 1 )
+color = Color(1, 1, 1, 1)
 
 

@@ -1,10 +1,10 @@
-tool
+@tool
 extends "mesh_gen.gd"
 
 # class member variables go here, for example:
-export(int) var height = 1
-export(int) var width = 1
-export(int) var thick = 1
+@export var height: int = 1
+@export var width: int = 1
+@export var thick: int = 1
 # var b = "textvar"
 
 func _ready():
@@ -13,13 +13,13 @@ func _ready():
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 
 	#Create a node building that will hold the mesh
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_name("building")
 	add_child(node)
 	
 	
 	var mat = preload("res://assets/building_shader_matl.tres")
-	#var mat = SpatialMaterial.new()
+	#var mat = StandardMaterial3D.new()
 	
 	addCubeTexture(0,0,0, surface, mat, width,height,thick)
 	

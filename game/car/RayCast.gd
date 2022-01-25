@@ -1,4 +1,4 @@
-extends RayCast
+extends RayCast3D
 
 # Declare member variables here. Examples:
 # var a = 2

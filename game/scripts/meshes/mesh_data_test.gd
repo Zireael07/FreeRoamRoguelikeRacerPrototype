@@ -1,5 +1,5 @@
-tool
-extends Spatial
+@tool
+extends Node3D
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -16,7 +16,7 @@ func deform_cube():
 	# setup
 	var mdt = MeshDataTool.new()
 	var st = SurfaceTool.new()
-	var mesh = $"MeshInstance".get_mesh()
+	var mesh = $"MeshInstance3D".get_mesh()
 
 	# randomness!
 	randomize()
@@ -51,7 +51,7 @@ func deform_cube():
 	mdt.commit_to_surface(array_plane)
 	st.create_from(array_plane, 0)
 	st.generate_normals()
-	$MeshInstance.mesh = st.commit()
+	$MeshInstance3D.mesh = st.commit()
 	# time it
 	var endtt = float(OS.get_ticks_msec())
 	print("Execution time: %.2f" % ((endtt - startt)/1000))
@@ -85,7 +85,7 @@ func modify_plane():
 	mdt.commit_to_surface(array_plane)
 	st.create_from(array_plane, 0)
 	st.generate_normals()
-	$MeshInstance.mesh = st.commit()
+	$MeshInstance3D.mesh = st.commit()
 	# time it
 	var endtt = float(OS.get_ticks_msec())
 	print("Execution time: %.2f" % ((endtt - startt)/1000))

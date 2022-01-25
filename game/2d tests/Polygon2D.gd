@@ -1,4 +1,4 @@
-tool
+@tool
 extends Polygon2D
 
 # class member variables go here, for example:
@@ -107,7 +107,7 @@ func draw_circle_arc(center, radius, angle_from, angle_to, right, clr):
 # from maths
 func get_circle_arc( center, radius, angle_from, angle_to, right ):
 	var nb_points = 32
-	var points_arc = PoolVector2Array()
+	var points_arc = PackedVector2Array()
 
 	for i in range(nb_points+1):
 		if right:

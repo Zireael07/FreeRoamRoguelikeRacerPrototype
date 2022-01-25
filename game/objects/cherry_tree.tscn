@@ -1,31 +1,31 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/beech.obj" type="ArrayMesh" id=1]
-[ext_resource path="res://assets/bark.png" type="Texture" id=2]
-[ext_resource path="res://assets/bark_n.png" type="Texture" id=3]
+[ext_resource path="res://assets/bark.png" type="Texture2D" id=2]
+[ext_resource path="res://assets/bark_n.png" type="Texture2D" id=3]
 [ext_resource path="res://assets/cherry_tree_blossom.tres" type="Material" id=4]
 
-[sub_resource type="SpatialMaterial" id=1]
+[sub_resource type="StandardMaterial3D" id=1]
 albedo_texture = ExtResource( 2 )
 normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource( 3 )
 
-[sub_resource type="BoxShape" id=2]
-extents = Vector3( 6, 120, 6 )
+[sub_resource type="BoxShape3D" id=2]
+extents = Vector3(6, 120, 6)
 
-[node name="MeshInstance" type="MeshInstance"]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
+[node name="MeshInstance3D" type="MeshInstance3D"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
 cast_shadow = 0
 mesh = ExtResource( 1 )
-material/0 = SubResource( 1 )
+surface_material_override/0 = SubResource( 1 )
 material/1 = ExtResource( 4 )
 __meta__ = {
 "_editor_description_": "The blossom material needs Lambert_Wrap to avoid weird self-shadowing. Unshaded turns off fog, so doesn't work"
 }
 
-[node name="StaticBody" type="StaticBody" parent="."]
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
 
-[node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 118.849, 0 )
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 118.849, 0)
 shape = SubResource( 2 )

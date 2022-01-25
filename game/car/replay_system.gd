@@ -28,7 +28,7 @@ func _ready():
 	nodes.erase(self)
 	
 	# we only need to record BODY
-#	while not to_visit.empty():
+#	while not to_visit.is_empty():
 #		var current = to_visit.pop_back()
 #		for node in current.get_children():
 #			# only record visible nodes
@@ -39,7 +39,7 @@ func _ready():
 	# Add properties to be recorded
 	for node in nodes:
 		#if node is Node2D:
-		if node is Spatial:
+		if node is Node3D:
 			# Alas, can't play back multiple animations at once, but nonetheless ...
 			var animation = Animation.new()
 #			animation.set_step(get_physics_process_delta_time())
@@ -60,7 +60,7 @@ func _physics_process(delta):
 		# Uncomment to record every second instead of every frame
 	#	if frame % 60 == 0:
 		for node in nodes:
-			if node is Spatial:
+			if node is Node3D:
 				#print(node.get_name())
 			#if node is Node2D:
 				for idx in properties.size():

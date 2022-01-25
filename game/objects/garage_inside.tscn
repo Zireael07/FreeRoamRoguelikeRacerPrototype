@@ -5,16 +5,16 @@
 [ext_resource path="res://car/car_dealer.tscn" type="PackedScene" id=3]
 [ext_resource path="res://car/bike_dealer.tscn" type="PackedScene" id=4]
 
-[node name="Spatial" type="Spatial"]
+[node name="Node3D" type="Node3D"]
 script = ExtResource( 1 )
 
-[node name="Spatial" parent="." instance=ExtResource( 2 )]
+[node name="Node3D" parent="." instance=ExtResource( 2 )]
 
 [node name="Spatial2" parent="." instance=ExtResource( 3 )]
 
 [node name="Spatial3" parent="." instance=ExtResource( 4 )]
 visible = false
 
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 2.47521, 2.01955 )
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 2.47521, 2.01955)
 current = true

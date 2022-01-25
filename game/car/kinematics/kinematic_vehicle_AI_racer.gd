@@ -65,7 +65,7 @@ func get_input():
 		#cancel braking visual
 		if tail_mat != null:
 			tail_mat.set_albedo(Color(0.62,0.62,0.62))
-			tail_mat.set_feature(SpatialMaterial.FEATURE_EMISSION, false)
+			tail_mat.set_feature(StandardMaterial3D.FEATURE_EMISSION, false)
 	if braking:
 		# brakes
 		acceleration += -global_transform.basis.z * braking_power
@@ -73,4 +73,4 @@ func get_input():
 		#visual effect
 		if tail_mat != null:
 			tail_mat.set_albedo(Color(1,1,1))
-			tail_mat.set_feature(SpatialMaterial.FEATURE_EMISSION, true)
+			tail_mat.set_feature(StandardMaterial3D.FEATURE_EMISSION, true)

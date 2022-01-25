@@ -1,14 +1,14 @@
 # based on http://kidscancode.org/godot_recipes/3d/kinematic_car/car_base/
-extends KinematicBody
+extends CharacterBody3D
 
-export var gravity = -20.0
-export var wheel_base = 0.6
-export var steering_limit = 10.0
-export var engine_power = 6.0
-export var braking_power = -9.0
-export var friction = -2.0
-export var drag = -2.0
-export var max_speed_reverse = 3.0
+@export var gravity = -20.0
+@export var wheel_base = 0.6
+@export var steering_limit = 10.0
+@export var engine_power = 6.0
+@export var braking_power = -9.0
+@export var friction = -2.0
+@export var drag = -2.0
+@export var max_speed_reverse = 3.0
 
 var acceleration = Vector3.ZERO
 var velocity = Vector3.ZERO
@@ -47,16 +47,16 @@ var sparks
 
 var flip_mat = preload("res://assets/car/car_red.tres")
 
-onready var front_ray = $FrontRay
-onready var rear_ray = $RearRay
+@onready var front_ray = $FrontRay
+@onready var rear_ray = $RearRay
 
 func _ready():
 	sparks = load("res://objects/Particles_sparks.tscn")
 	
 	#get lights
-	headlight_one = get_node("SpotLight")
-	headlight_two = get_node("SpotLight1")
-	taillights = get_node("taillights")
+	headlight_one = get_node(^"SpotLight3D")
+	headlight_two = get_node(^"SpotLight1")
+	taillights = get_node(^"taillights")
 
 func _physics_process(delta):	
 	
@@ -88,7 +88,8 @@ func _physics_process(delta):
 		hvel.y = 0
 	
 	# velocity, up, snap, slope, slides
-	velocity = move_and_slide_with_snap(hvel, #velocity,
+	# TODO: This information should be set to the CharacterBody properties instead of arguments.
+	move_and_slide(hvel, #velocity,
 				-transform.basis.y, Vector3.UP, true, 1)
 	
 	# Align with slopes
@@ -262,13 +263,13 @@ func trigger_sparks():
 		# bug! sometimes there are weird "collisions" far away, ignore them
 		#if l_pos != c_pos:
 		#	pass
-			#var g_pos = tr.xform(l_pos)
+			#var g_pos = tr * (l_pos)
 			#print("Global pos of collision" + str(g_pos))
 		
-			#local = get_global_transform().xform_inv(g_pos)
+			#local = g_pos * get_global_transform()
 		#else:
 			#pass
-		local = get_global_transform().xform_inv(c_pos)
+		local = c_pos * get_global_transform()
 		#print("Local" + str(local))
 
 		if local != null:
@@ -298,11 +299,11 @@ func kill_sparks():
 	# kill old cubes
 	for c in get_children():
 		if c.get_name().find("Spark") != -1:
-	#if get_node("Debug") != null:
+	#if get_node(^"Debug") != null:
 			c.queue_free()
 			
 func spawn_sparks(loc, normal):
-	var spark = sparks.instance()
+	var spark = sparks.instantiate()
 	
 	add_child(spark)
 	spark.set_name("Spark")
@@ -311,13 +312,13 @@ func spawn_sparks(loc, normal):
 	#print("Normal " + str(normal))
 	spark.get_process_material().set_gravity(normal)
 	# set timer
-	spark.get_node("Timer").start()
+	spark.get_node(^"Timer").start()
 
 # debug
 func debug_cube(loc, red=false):
-	var mesh = CubeMesh.new()
+	var mesh = BoxMesh.new()
 	mesh.set_size(Vector3(0.5,0.5,0.5))
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_mesh(mesh)
 	if red:
 		node.get_mesh().surface_set_material(0, flip_mat)

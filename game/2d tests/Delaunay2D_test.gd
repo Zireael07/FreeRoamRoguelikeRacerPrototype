@@ -1,4 +1,4 @@
-tool
+@tool
 extends "res://2d tests/Delaunay2D.gd"
 
 # class member variables go here, for example:

@@ -1,4 +1,4 @@
-extends MeshInstance
+extends MeshInstance3D
 
 func _ready():
 	pass

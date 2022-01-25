@@ -1,25 +1,25 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://hud/loading_screen.gd" type="Script" id=1]
-[ext_resource path="res://hud/car at night.png" type="Texture" id=2]
-[ext_resource path="res://assets/LCDM2N__.TTF" type="DynamicFontData" id=3]
-[ext_resource path="res://assets/851H-kktt.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://hud/car at night.png" type="Texture2D" id=2]
+[ext_resource path="res://assets/LCDM2N__.TTF" type="FontData" id=3]
+[ext_resource path="res://assets/851H-kktt.ttf" type="FontData" id=4]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="Font" id=1]
 
 size = 20
 use_mipmaps = false
 use_filter = false
 font_data = ExtResource( 3 )
-_sections_unfolded = [ "Font", "Settings" ]
+_sections_unfolded = ["Font", "Settings"]
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="Font" id=2]
 
 size = 20
 use_mipmaps = false
 use_filter = false
 font_data = ExtResource( 4 )
-_sections_unfolded = [ "Font", "Settings" ]
+_sections_unfolded = ["Font", "Settings"]
 
 [node name="Control" type="Control" index="0"]
 
@@ -27,9 +27,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 40.0
-margin_bottom = 40.0
-rect_pivot_offset = Vector2( 0, 0 )
+offset_right = 40.0
+offset_bottom = 40.0
+rect_pivot_offset = Vector2(0, 0)
 rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -43,9 +43,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 1024.0
-margin_bottom = 760.0
-rect_pivot_offset = Vector2( 0, 0 )
+offset_right = 1024.0
+offset_bottom = 760.0
+rect_pivot_offset = Vector2(0, 0)
 rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
@@ -61,11 +61,11 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 367.0
-margin_top = 502.0
-margin_right = 817.0
-margin_bottom = 518.0
-rect_pivot_offset = Vector2( 0, 0 )
+offset_left = 367.0
+offset_top = 502.0
+offset_right = 817.0
+offset_bottom = 518.0
+rect_pivot_offset = Vector2(0, 0)
 rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -79,7 +79,7 @@ value = 0.0
 exp_edit = false
 rounded = false
 percent_visible = true
-_sections_unfolded = [ "Percent", "Rect" ]
+_sections_unfolded = ["Percent", "Rect"]
 
 [node name="Label" type="Label" parent="." index="2"]
 
@@ -87,24 +87,24 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 555.0
-margin_top = 524.0
-margin_right = 625.0
-margin_bottom = 545.0
-rect_pivot_offset = Vector2( 0, 0 )
+offset_left = 555.0
+offset_top = 524.0
+offset_right = 625.0
+offset_bottom = 545.0
+rect_pivot_offset = Vector2(0, 0)
 rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 custom_fonts/font = SubResource( 1 )
-custom_colors/font_color = Color( 0.211765, 0.878431, 0.988235, 1 )
+custom_colors/font_color = Color(0.211765, 0.878431, 0.988235, 1)
 text = "Loading"
 align = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "custom_colors", "custom_fonts" ]
+_sections_unfolded = ["custom_colors", "custom_fonts"]
 
 [node name="Label2" type="Label" parent="." index="3"]
 
@@ -112,23 +112,23 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 555.0
-margin_top = 548.0
-margin_right = 625.0
-margin_bottom = 569.0
-rect_pivot_offset = Vector2( 0, 0 )
+offset_left = 555.0
+offset_top = 548.0
+offset_right = 625.0
+offset_bottom = 569.0
+rect_pivot_offset = Vector2(0, 0)
 rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 custom_fonts/font = SubResource( 2 )
-custom_colors/font_color = Color( 0.211765, 0.878431, 0.988235, 1 )
+custom_colors/font_color = Color(0.211765, 0.878431, 0.988235, 1)
 text = "読中"
 align = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "custom_colors", "custom_fonts" ]
+_sections_unfolded = ["custom_colors", "custom_fonts"]
 
 

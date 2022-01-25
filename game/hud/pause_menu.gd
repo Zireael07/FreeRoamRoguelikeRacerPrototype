@@ -21,10 +21,10 @@ func _input(event):
 #func _on_CheckGIButton_pressed():
 #	var root = get_parent().get_parent().get_parent()
 #	# disable GI
-#	if root.get_node("GIProbe").is_visible():
-#		root.get_node("GIProbe").hide()
+#	if root.get_node(^"VoxelGI").is_visible():
+#		root.get_node(^"VoxelGI").hide()
 #	else:
-#		root.get_node("GIProbe").show()
+#		root.get_node(^"VoxelGI").show()
 #
 #	#pass # replace with function body
 
@@ -39,12 +39,12 @@ func _on_Button_pressed():
 
 
 func _on_MouseSteerButton_pressed():
-	if !get_parent().mouse_steer:
+	if not get_parent().mouse_steer:
 		get_parent().mouse_steer = true
-		get_parent().get_node("Joystick").show()
+		get_parent().get_node(^"Joystick").show()
 	else:
 		get_parent().mouse_steer = false
-		get_parent().get_node("Joystick").hide()
+		get_parent().get_node(^"Joystick").hide()
 	
 	
 	#pass # Replace with function body.
@@ -55,7 +55,7 @@ func _on_Button2_pressed():
 	
 	var player = get_tree().get_nodes_in_group("player")[0]
 	# list of intersection global positions
-	var intersections = player.get_node("BODY/Viewport_root/Viewport/minimap").intersections
+	var intersections = player.get_node(^"BODY/Viewport_root/SubViewport/minimap").intersections
 	#the camera seems to be offset by this value from minimap center
 	# experimentally determined (note it's different from MapView.gd for some reason)
 	var mmap_offset = Vector2(30,-100)
@@ -64,26 +64,26 @@ func _on_Button2_pressed():
 	
 	##GUI
 	var h = preload("res://hud/info_panel.tscn")
-	var hud = h.instance()
+	var hud = h.instantiate()
 	get_parent().add_child(hud)
 	
 	var c = preload("res://hud/card.tscn")
 	
 	# update the values
-	var root = get_node("/root/Navigation")
+	var root = get_node(^"/root/Node3D")
 	var txt = "Roads discovered: " + str(root.discovered_roads.size()) +"/12"
-	hud.get_node("Label").set_text(txt)
+	hud.get_node(^"Label").set_text(txt)
 	
 	for i in range(root.discovered_roads.size()):
-		var card = c.instance()
-		hud.get_node("Control").add_child(card)
+		var card = c.instantiate()
+		hud.get_node(^"Control").add_child(card)
 		card.set_position(Vector2(i*210, 0))
 		#print(root.discovered_roads.keys()[i])
-		card.get_node("VBoxContainer/Label").set_text(root.discovered_roads.keys()[i])
+		card.get_node(^"VBoxContainer/Label").set_text(root.discovered_roads.keys()[i])
 		
 		# FIXME: stop leaking car positions, set a fresh world (just the map bg)
 		# set world
-		card.get_node("VBoxContainer/MapView/Viewport").world_2d = player.get_node("BODY/Viewport_root/Viewport").world_2d
+		card.get_node(^"VBoxContainer/MapView/SubViewport").world_2d = player.get_node(^"BODY/Viewport_root/SubViewport").world_2d
 	
 		# extract intersection numbers
 		var ret = []
@@ -102,6 +102,6 @@ func _on_Button2_pressed():
 		var inter_pos2 = Vector2(inter.x, inter.z)-inter1
 		var off = (inter_pos+inter_pos2)/2
 		print("Off: " + str(off))
-		card.get_node("VBoxContainer/MapView/Viewport/Camera2D").offset = mmap_offset-off 
+		card.get_node(^"VBoxContainer/MapView/SubViewport/Camera2D").offset = mmap_offset-off 
 	
 	hud.show()

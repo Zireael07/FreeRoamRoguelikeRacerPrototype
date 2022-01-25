@@ -1,8 +1,8 @@
-tool
+@tool
 extends "helpers.gd"
 
 # class member variables go here, for example:
-var m = SpatialMaterial.new()
+var m = StandardMaterial3D.new()
 var points_center
 var points_inner
 var points_outer
@@ -12,24 +12,24 @@ var points_inner_nav
 var points_outer_nav
 
 #sidewalks
-export(bool) var sidewalks = false
+@export var sidewalks: bool = false
 var points_inner_side
 var points_outer_side
 
-export(bool) var barriers = true
+@export var barriers: bool = true
 var points_outer_barrier
 var barrier_quads = []
 
 var road_height = 0.01
 
 #road variables
-export var lane_width = 3
-export var radius = 15
-export(Vector2) var loc = Vector2(0,0)
-export(bool) var left_turn = false
+@export var lane_width = 3
+@export var radius = 15
+@export var loc: Vector2 = Vector2(0,0)
+@export var left_turn: bool = false
 #export var angle = 120
-export(int) var start_angle = 90
-export(int) var end_angle = 180
+@export var start_angle: int = 90
+@export var end_angle: int = 180
 #for matching the segments
 var start_point
 var last
@@ -41,19 +41,19 @@ var start_axis
 var end_axis
 
 #editor drawing
-var positions  = PoolVector3Array()
-var left_positions = PoolVector3Array()
-var right_positions = PoolVector3Array()
+var positions  = PackedVector3Array()
+var left_positions = PackedVector3Array()
+var right_positions = PackedVector3Array()
 var draw = null
 
 # margin
 var margin = 1.0
-var left_nav_positions = PoolVector3Array()
-var right_nav_positions = PoolVector3Array()
+var left_nav_positions = PackedVector3Array()
+var right_nav_positions = PackedVector3Array()
 
 #for minimap
 var mid_point
-var global_positions = PoolVector3Array()
+var global_positions = PackedVector3Array()
 
 var start_vector = Vector3()
 var end_vector = Vector3()
@@ -63,9 +63,9 @@ var end_ref
 
 
 #mesh material
-export(SpatialMaterial)    var material    = preload("res://assets/road_material.tres")
-export(SpatialMaterial) var sidewalk_material = preload("res://assets/cement.tres")
-export(Material) var barrier_material = preload("res://assets/barrier_material.tres")
+@export(StandardMaterial3D)    var material    = preload("res://assets/road_material.tres")
+@export var sidewalk_material: StandardMaterial3D = preload("res://assets/cement.tres")
+@export var barrier_material: Material = preload("res://assets/barrier_material.tres")
 
 #props
 var streetlight
@@ -75,9 +75,9 @@ func _ready():
 	# Initialization here
 	#add_to_group("roads")
 	
-	draw = get_node("draw")
+	draw = get_node(^"draw")
 	if has_node("Position3D"):
-		look_at_pos = get_node("Position3D")
+		look_at_pos = get_node(^"Position3D")
 	
 	#draw_debug_point(loc, Color(1,1,1))
 	streetlight = preload("res://objects/streetlight.scn")
@@ -148,7 +148,7 @@ func _ready():
 
 
 func draw_debug_point(loc, color):
-	.addTestColor(m, color, null, loc.x, road_height, loc.y, 0.05,0.05,0.05)
+	super.addTestColor(m, color, null, loc.x, road_height, loc.y, 0.05,0.05,0.05)
 
 	
 
@@ -183,11 +183,11 @@ func debug():
 		#var trans = Vector3(start_point.x, 0, start_point.z)
 		#set_translation(trans+loc3d)
 	
-	global_end = get_global_transform().xform_inv(last)
-	global_start = get_global_transform().xform_inv(start_point)
+	global_end = last * get_global_transform()
+	global_start = start_point * get_global_transform()
 	
-	#global_end = get_global_transform().xform_inv(last)
-	#global_start = get_global_transform().xform_inv(start_point)
+	#global_end = last * get_global_transform()
+	#global_start = start_point * get_global_transform()
 	#relative_end = start_point-last 
 	
 	relative_end = global_start - global_end
@@ -309,7 +309,7 @@ func optimizedmeshCreate(quads, material):
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	#Create a node building that will hold the mesh
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_name("plane")
 	add_child(node)
 	
@@ -358,13 +358,13 @@ func optimizedmeshCreate(quads, material):
 #		print("No sides given")
 
 func get_global_positions():
-	global_positions.push_back(get_global_transform().xform(start_point))
-	global_positions.push_back(get_global_transform().xform(mid_point))
-	global_positions.push_back(get_global_transform().xform(last))
+	global_positions.push_back(get_global_transform() * (start_point))
+	global_positions.push_back(get_global_transform() * (mid_point))
+	global_positions.push_back(get_global_transform() * (last))
 	
-	#global_positions.push_back(get_global_transform().xform(positions[0]))
-	#global_positions.push_back(get_global_transform().xform(mid_point))
-	#global_positions.push_back(get_global_transform().xform(positions[31]))
+	#global_positions.push_back(get_global_transform() * (positions[0]))
+	#global_positions.push_back(get_global_transform() * (mid_point))
+	#global_positions.push_back(get_global_transform() * (positions[31]))
 		
 	return global_positions
 
@@ -395,19 +395,19 @@ func create_road():
 	
 #	# to perfect the connection
 #	if has_node("last_pos"):
-#		get_node("last_pos").set_translation(positions[positions.size()-1])
-#		get_node("last_pos").set_rotation(Vector3(0,0,0))
-#		get_node("last_pos").rotate_object_local(Vector3(0,0,1), deg2rad(end_angle))
-#		get_node("last_pos").translate_object_local(Vector3(0, 0, lane_width))
+#		get_node(^"last_pos").set_translation(positions[positions.size()-1])
+#		get_node(^"last_pos").set_rotation(Vector3(0,0,0))
+#		get_node(^"last_pos").rotate_object_local(Vector3(0,0,1), deg2rad(end_angle))
+#		get_node(^"last_pos").translate_object_local(Vector3(0, 0, lane_width))
 #
 #	if has_node("last_pos2"):
-#		get_node("last_pos2").set_translation(positions[positions.size()-1])
-#		get_node("last_pos").set_rotation(Vector3(0,0,0))
-#		get_node("last_pos2").rotate_object_local(Vector3(0,0,1), deg2rad(end_angle))
-#		get_node("last_pos2").translate_object_local(Vector3(0,0, -lane_width))
+#		get_node(^"last_pos2").set_translation(positions[positions.size()-1])
+#		get_node(^"last_pos").set_rotation(Vector3(0,0,0))
+#		get_node(^"last_pos2").rotate_object_local(Vector3(0,0,1), deg2rad(end_angle))
+#		get_node(^"last_pos2").translate_object_local(Vector3(0,0, -lane_width))
 #
 #	if has_node("last_pos3"):
-#		get_node("last_pos3").set_translation(positions[positions.size()-1])
+#		get_node(^"last_pos3").set_translation(positions[positions.size()-1])
 	
 	# 2D because 3D doesn't have tangent()
 	var start_axis_2d = -(points_center[0]-loc).tangent().normalized()*10
@@ -435,7 +435,7 @@ func create_road():
 	if Engine.is_editor_hint() or not Engine.is_editor_hint():
 		var quads = []
 		#dummy to be able to get the road mesh faster
-		#var road_mesh = Spatial.new()
+		#var road_mesh = Node3D.new()
 		#road_mesh.set_name("road_mesh")
 		#add_child(road_mesh)
 		
@@ -496,9 +496,9 @@ func create_road():
 		var outline = Geometry.convex_hull_2d(points_inner+points_outer)
 		#print("curve outline: ", outline)
 		# the existence of collision polygon is really good news for us
-		var poly = get_node("StaticBody/CollisionPolygon").polygon
+		var poly = get_node(^"StaticBody3D/CollisionPolygon3D").polygon
 		poly = outline
-		get_node("StaticBody/CollisionPolygon").set_polygon(poly)
+		get_node(^"StaticBody3D/CollisionPolygon3D").set_polygon(poly)
 		
 		
 	if not Engine.is_editor_hint():	
@@ -556,14 +556,14 @@ func create_road():
 		
 #		if has_node("Position3D"):
 #			#print("We have position marker")
-#			#get_node("Position3D").set_translation(end_ref)
+#			#get_node(^"Position3D").set_translation(end_ref)
 #			# because look_at() uses -Z not +Z!
-#			get_node("Position3D").set_translation(inv_end_ref)
+#			get_node(^"Position3D").set_translation(inv_end_ref)
 		
 	
 #props
 func placeStreetlight():
-	var light = streetlight.instance()
+	var light = streetlight.instantiate()
 	light.set_name("Streetlight")
 	add_child(light)
 	
@@ -589,10 +589,10 @@ func placeStreetlight():
 	# rotations
 	if (left_turn): #or abs(get_parent().get_parent().get_rotation_degrees().y) > 178:
 		light.set_rotation_degrees(Vector3(0,90,0))
-		#get_node("Debug").set_rotation_degrees(Vector3(0,90,0))
+		#get_node(^"Debug").set_rotation_degrees(Vector3(0,90,0))
 	else:
 		light.set_rotation_degrees(Vector3(0,0,0))
-		#get_node("Debug").set_rotation_degrees(Vector3(0,0,0))
+		#get_node(^"Debug").set_rotation_degrees(Vector3(0,0,0))
 
 
 
@@ -618,7 +618,7 @@ func get_barrier_quads(array):
 
 func make_barrier(quads, material):
 	#Create a node building that will hold the mesh
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_name("barrier")
 	add_child(node)
 	
@@ -651,26 +651,26 @@ func send_positions(map):
 
 func lite_up():
 	#print("Lit up road")
-	var material = get_node("plane").get_mesh().surface_get_material(0)
+	var material = get_node(^"plane").get_mesh().surface_get_material(0)
 	material.set_shader_param("emission_energy", 3)
 	material.set_shader_param("emission", Color(0,0,1))
-	#material.set_feature(SpatialMaterial.FEATURE_EMISSION, true)
+	#material.set_feature(StandardMaterial3D.FEATURE_EMISSION, true)
 	#material.set_emission(Color(0,0,1))
 	
 func reset_lite():
 	#print("Reset lite")
-	var material = get_node("plane").get_mesh().surface_get_material(0)
+	var material = get_node(^"plane").get_mesh().surface_get_material(0)
 	material.set_shader_param("emission_energy", 0)
-	#material.set_feature(SpatialMaterial.FEATURE_EMISSION, false)
+	#material.set_feature(StandardMaterial3D.FEATURE_EMISSION, false)
 
 func rain_shine(rain_amount):
-	var material = get_node("plane").get_mesh().surface_get_material(0)
+	var material = get_node(^"plane").get_mesh().surface_get_material(0)
 	material.set_shader_param("roughness", 0.2)
 	material.set_shader_param("metallic", 0.85)
 	material.set_shader_param("puddle_size", rain_amount)
 	
 func no_rain():
-	var material = get_node("plane").get_mesh().surface_get_material(0)
+	var material = get_node(^"plane").get_mesh().surface_get_material(0)
 	material.set_shader_param("roughness", 1.0)
 	material.set_shader_param("metallic", 0.0)
 	material.set_shader_param("puddle_size", 0.0)
@@ -678,9 +678,9 @@ func no_rain():
 	#material.set_metallic(0.0)
 	
 func debug_cube(loc):
-	var mesh = CubeMesh.new()
+	var mesh = BoxMesh.new()
 	mesh.set_size(Vector3(0.5,0.5,0.5))
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_mesh(mesh)
 	node.set_name("Debug")
 	add_child(node)
@@ -689,12 +689,12 @@ func debug_cube(loc):
 
 
 func _on_Area_body_entered(body):
-	if body is KinematicBody:
+	if body is CharacterBody3D:
 		body.hit = self
 	pass # Replace with function body.
 
 
 func _on_Area_body_exited(body):
-	if body is KinematicBody:
+	if body is CharacterBody3D:
 		body.hit = null
 	pass # Replace with function body.

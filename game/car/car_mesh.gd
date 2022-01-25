@@ -1,11 +1,11 @@
-extends MeshInstance
+extends MeshInstance3D
 
 var msh = preload("res://save_test.tres")
 var car_front = []
 var car_rear = []
 var window_poly = []
 
-export(float) var width = 1.0
+@export var width: float = 1.0
 
 var indices = []
 var indices_top = []
@@ -15,9 +15,9 @@ var indices_rear = []
 
 var indices_body = []
 	
-export(SpatialMaterial) var material = SpatialMaterial.new()
+@export var material: StandardMaterial3D = StandardMaterial3D.new()
 #export(ShaderMaterial) var glass_material = ShaderMaterial.new()
-export(SpatialMaterial) var glass_material = SpatialMaterial.new()
+@export var glass_material: StandardMaterial3D = StandardMaterial3D.new()
 
 
 # Called when the node enters the scene tree for the first time.

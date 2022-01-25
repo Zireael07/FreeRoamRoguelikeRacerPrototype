@@ -1,12 +1,12 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://hud/camera_minimap.gd" type="Script" id=1]
-[ext_resource path="res://map_edited.png" type="Texture" id=2]
+[ext_resource path="res://map_edited.png" type="Texture2D" id=2]
 [ext_resource path="res://hud/map_texture.gd" type="Script" id=3]
 [ext_resource path="res://hud/Node2D.gd" type="Script" id=4]
 [ext_resource path="res://hud/Camera2D.gd" type="Script" id=5]
-[ext_resource path="res://hud/flag.png" type="Texture" id=6]
-[ext_resource path="res://hud/border.png" type="Texture" id=7]
+[ext_resource path="res://hud/flag.png" type="Texture2D" id=6]
+[ext_resource path="res://hud/border.png" type="Texture2D" id=7]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 light_mode = 1
@@ -21,15 +21,15 @@ script = ExtResource( 1 )
 [node name="clipper_pos" type="Node2D" parent="Container/Node2D2"]
 
 [node name="clipper" type="Control" parent="Container/Node2D2/clipper_pos"]
-margin_right = 175.0
-margin_bottom = 175.0
+offset_right = 175.0
+offset_bottom = 175.0
 
 [node name="map_background" type="TextureRect" parent="Container/Node2D2/clipper_pos/clipper"]
-margin_left = -425.0
-margin_top = -410.0
-margin_right = 575.0
-margin_bottom = 590.0
-rect_pivot_offset = Vector2( 500, 500 )
+offset_left = -425.0
+offset_top = -410.0
+offset_right = 575.0
+offset_bottom = 590.0
+rect_pivot_offset = Vector2(500, 500)
 size_flags_horizontal = 2
 size_flags_vertical = 2
 texture = ExtResource( 2 )
@@ -38,7 +38,7 @@ stretch_mode = 5
 script = ExtResource( 3 )
 
 [node name="Control_pos" type="Node2D" parent="Container/Node2D2"]
-position = Vector2( 75, 90 )
+position = Vector2(75, 90)
 
 [node name="track" type="Node2D" parent="Container/Node2D2/Control_pos"]
 script = ExtResource( 4 )
@@ -56,25 +56,25 @@ script = ExtResource( 5 )
 
 [node name="test in-cam" type="TextureRect" parent="Container/Node2D2/Control_pos/Camera2D"]
 visible = false
-self_modulate = Color( 1, 0.0078125, 0.0078125, 1 )
-margin_left = -16.0
-margin_top = -16.0
-margin_right = 48.0
-margin_bottom = 48.0
-rect_scale = Vector2( 0.5, 0.5 )
+self_modulate = Color(1, 0.0078125, 0.0078125, 1)
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 48.0
+offset_bottom = 48.0
+rect_scale = Vector2(0.5, 0.5)
 texture = ExtResource( 6 )
 
 [node name="Node2D" type="Node2D" parent="Container"]
 visible = false
-position = Vector2( 125, 125 )
+position = Vector2(125, 125)
 
 [node name="border" type="TextureRect" parent="Container/Node2D"]
 visible = false
-margin_left = -123.0
-margin_top = -122.0
-margin_right = 498.0
-margin_bottom = 499.0
-rect_scale = Vector2( 0.4, 0.4 )
+offset_left = -123.0
+offset_top = -122.0
+offset_right = 498.0
+offset_bottom = 499.0
+rect_scale = Vector2(0.4, 0.4)
 size_flags_horizontal = 2
 size_flags_vertical = 2
 texture = ExtResource( 7 )

@@ -1,4 +1,4 @@
-tool
+@tool
 extends Position3D
 
 # class member variables go here, for example:
@@ -6,7 +6,7 @@ extends Position3D
 var road
 var road_left
 var road_straight
-export(int) var length_mult = 10
+@export var length_mult: int = 10
 
 var dat
 
@@ -55,7 +55,7 @@ func loadData():
 			#print("Parsing the file")
 			var line = savegame.get_line()
 			#skip empty lines
-			if line.empty(): break
+			if line.is_empty(): break
 			
 			loadeddata["game" + str(linenum)] = parseJson(line)
 			datas.append(loadeddata["game"+str(linenum)])
@@ -222,21 +222,21 @@ func setupRoad(index, data):
 		return node
 	
 func setupStraightRoad(index, data):
-	var road_node = road_straight.instance()
+	var road_node = road_straight.instantiate()
 	road_node.set_name("Road_instance" + String(index))
 	# set length
 	if data["length"] > 0:
 		road_node.length = data["length"]*length_mult
 	
-	var spatial = Spatial.new()
-	spatial.set_name("Spatial"+String(index))
+	var spatial = Node3D.new()
+	spatial.set_name("Node3D"+String(index))
 	add_child(spatial)
 	spatial.add_child(road_node)
 	return road_node
 	
 func setupCurvedRoad(index, data):
 	if data["left_turn"] == false:
-		var road_node_right = road.instance()
+		var road_node_right = road.instantiate()
 		road_node_right.set_name("Road_instance" + String(index))
 		#set the angle we wanted
 		#if data["angle"] > 0:
@@ -247,7 +247,7 @@ func setupCurvedRoad(index, data):
 		add_child(road_node_right)
 		return road_node_right
 	else:
-		var road_node_left = road_left.instance()
+		var road_node_left = road_left.instantiate()
 		road_node_left.set_name("Road_instance" + String(index))
 		if data["radius"] > 0:
 			road_node_left.get_child(0).get_child(0).radius = data["radius"]
@@ -272,16 +272,16 @@ func get_end_location_straight(prev):
 	#this is positive!!!
 	var end_loc = prev.relative_end #- Vector3(0,0,0.5) #tiny fudge to hide imperfect rotations
 	#the relative end in global space
-	var g_loc = prev.get_global_transform().xform(end_loc)
+	var g_loc = prev.get_global_transform() * (end_loc)
 	#global space to local space
-	var loc = get_global_transform().xform_inv(g_loc)
+	var loc = g_loc * get_global_transform()
 	return loc
 	
 func get_end_location_right_turn(prev, end_loc):
 	#var end_loc = prev.get_child(0).get_child(0).relative_end
-	var g_loc = prev.get_global_transform().xform(-end_loc)
+	var g_loc = prev.get_global_transform() * (-end_loc)
 	#print("Global location of relative end is" + String(g_loc))
-	var loc = get_global_transform().xform_inv(g_loc)
+	var loc = g_loc * get_global_transform()
 	return loc	
 
 # rotations
@@ -293,14 +293,14 @@ func get_end_location_right_turn(prev, end_loc):
 func vectors_to_fit_to_straight(segment, prev, data):
 	var target_loc = prev.end_ref #prev.relative_end - prev.end_vector
 	#print("Target loc is " + String(target_loc))
-	var g_target_loc = prev.get_global_transform().xform(target_loc)
+	var g_target_loc = prev.get_global_transform() * (target_loc)
 	print("Global target loc is " + String(g_target_loc))
 	#make the global a local again but in our space
-	var check_loc = get_global_transform().xform_inv(g_target_loc)
+	var check_loc = g_target_loc * get_global_transform()
 	
 	var start_vec = segment.get_child(0).get_child(0).start_ref #get_start_vector(segment, data)
-	var g_start_vec = segment.get_child(0).get_child(0).get_global_transform().xform(start_vec)
-	var start_g = get_global_transform().xform_inv(g_start_vec)
+	var g_start_vec = segment.get_child(0).get_child(0).get_global_transform() * (start_vec)
+	var start_g = g_start_vec * get_global_transform()
 	
 	return [start_g, check_loc]
 
@@ -309,19 +309,19 @@ func vectors_to_fit_to_curve(segment, prev, end_loc, data):
 	#print("Previous segment's end vector " + String(prev.end_vector))
 	var target_loc = prev.get_child(0).get_child(0).end_ref
 	#print("Target loc: " + str(target_loc))
-	var g_target_loc = prev.get_child(0).get_child(0).get_global_transform().xform(target_loc)
+	var g_target_loc = prev.get_child(0).get_child(0).get_global_transform() * (target_loc)
 	#var target_loc = end_loc + prev.get_child(0).get_child(0).end_vector
 	#negate (a curve's relative end is start-end)
-	#var g_target_loc = prev.get_global_transform().xform(-target_loc)
+	#var g_target_loc = prev.get_global_transform() * (-target_loc)
 	
 	#make the global a local again but in our space
-	var check_loc = get_global_transform().xform_inv(g_target_loc)
+	var check_loc = g_target_loc * get_global_transform()
 	
 	print("Check loc is " + String(check_loc))
 	#this is local
 	var start_vec = segment.start_ref #get_start_vector(segment, data) 
-	var g_start_vec = segment.get_parent().get_global_transform().xform(start_vec)
-	var start_g = get_global_transform().xform_inv(g_start_vec)
+	var g_start_vec = segment.get_parent().get_global_transform() * (start_vec)
+	var start_g = g_start_vec * get_global_transform()
 	
 	return [start_g, check_loc, g_target_loc]
 
@@ -341,26 +341,26 @@ func rotate_to_fit(loc, start_loc, check_loc):
 
 # utility
 func get_previous_segment(index):
-	if has_node("Road_instance"+String(index-1)): #get_node("Road_instance"+String(index-1)):
-		return get_node("Road_instance"+String(index-1))
+	if has_node("Road_instance"+String(index-1)): #get_node(^"Road_instance"+String(index-1)):
+		return get_node(^"Road_instance"+String(index-1))
 	
 	#handle the fact that the straight needs a spatial parent
-	if has_node("Spatial"+String(index-1)+"/Road_instance"+String(index-1)):
-		return get_node("Spatial"+String(index-1)+"/Road_instance"+String(index-1))
+	if has_node("Node3D"+String(index-1)+"/Road_instance"+String(index-1)):
+		return get_node(^"Node3D"+String(index-1)+"/Road_instance"+String(index-1))
 	
-	if has_node("Spatial/Road_instance"+String(index-1)):
-		return get_node("Spatial/Road_instance"+String(index-1))
+	if has_node("Node3D/Road_instance"+String(index-1)):
+		return get_node(^"Node3D/Road_instance"+String(index-1))
 	
 func get_current_segment(index):
-	if has_node("Road_instance"+String(index)): #get_node("Road_instance"+String(index-1)):
-		return get_node("Road_instance"+String(index))
+	if has_node("Road_instance"+String(index)): #get_node(^"Road_instance"+String(index-1)):
+		return get_node(^"Road_instance"+String(index))
 	
 	#handle the fact that the straight needs a spatial parent
-	if has_node("Spatial"+String(index)+"/Road_instance"+String(index)):
-		return get_node("Spatial"+String(index)+"/Road_instance"+String(index))
+	if has_node("Node3D"+String(index)+"/Road_instance"+String(index)):
+		return get_node(^"Node3D"+String(index)+"/Road_instance"+String(index))
 	
-	if has_node("Spatial/Road_instance"+String(index)):
-		return get_node("Spatial/Road_instance"+String(index))
+	if has_node("Node3D/Road_instance"+String(index)):
+		return get_node(^"Node3D/Road_instance"+String(index))
 
 # navmesh
 func fitNavMesh(straight, straight_ind, straight_ind2, curve, curve_ind, curve_ind2, left):

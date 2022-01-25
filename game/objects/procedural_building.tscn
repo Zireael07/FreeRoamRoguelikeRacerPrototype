@@ -7,105 +7,105 @@
 [ext_resource path="res://assets/neon_sign1.tres" type="Material" id=5]
 [ext_resource path="res://assets/china_cable.obj" type="ArrayMesh" id=6]
 [ext_resource path="res://assets/metal_mat.tres" type="Material" id=7]
-[ext_resource path="res://assets/storefront/storefront_tinted.shader" type="Shader" id=8]
-[ext_resource path="res://assets/storefront/shop_front16_ed.png" type="Texture" id=9]
+[ext_resource path="res://assets/storefront/storefront_tinted.gdshader" type="Shader" id=8]
+[ext_resource path="res://assets/storefront/shop_front16_ed.png" type="Texture2D" id=9]
 [ext_resource path="res://avoid_area.gd" type="Script" id=10]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 8 )
-shader_param/albedo = Color( 0.968627, 0.921569, 0.921569, 1 )
+shader_param/albedo = Color(0.968627, 0.921569, 0.921569, 1)
 shader_param/specular = 0.5
 shader_param/metallic = 0.0
 shader_param/roughness = 1.0
 shader_param/point_size = 1.0
-shader_param/uv1_scale = Vector3( -1, 1, 1 )
-shader_param/uv1_offset = Vector3( 0, 0, 0 )
-shader_param/uv2_scale = Vector3( 1, 1, 1 )
-shader_param/uv2_offset = Vector3( 0, 0, 0 )
-shader_param/mask_color = Color( 1, 1, 1, 1 )
-shader_param/modulate = Color( 1, 0.905882, 0.0196078, 1 )
+shader_param/uv1_scale = Vector3(-1, 1, 1)
+shader_param/uv1_offset = Vector3(0, 0, 0)
+shader_param/uv2_scale = Vector3(1, 1, 1)
+shader_param/uv2_offset = Vector3(0, 0, 0)
+shader_param/mask_color = Color(1, 1, 1, 1)
+shader_param/modulate = Color(1, 0.905882, 0.0196078, 1)
 shader_param/mask_range = 0.2
 shader_param/texture_albedo = ExtResource( 9 )
 
-[sub_resource type="CubeMesh" id=2]
-size = Vector3( 10, 20, 10 )
+[sub_resource type="BoxMesh" id=2]
+size = Vector3(10, 20, 10)
 
-[sub_resource type="BoxShape" id=3]
-extents = Vector3( 2, 1, 8 )
+[sub_resource type="BoxShape3D" id=3]
+extents = Vector3(2, 1, 8)
 
-[sub_resource type="CubeMesh" id=4]
-size = Vector3( 4, 1, 16 )
+[sub_resource type="BoxMesh" id=4]
+size = Vector3(4, 1, 16)
 
-[sub_resource type="BoxShape" id=5]
-extents = Vector3( 6, 20, 6 )
+[sub_resource type="BoxShape3D" id=5]
+extents = Vector3(6, 20, 6)
 
-[node name="Spatial" type="Spatial"]
+[node name="Node3D" type="Node3D"]
 script = ExtResource( 1 )
 storefront = true
 material = ExtResource( 2 )
 windows_mat = ExtResource( 3 )
 storefront_mat = SubResource( 1 )
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 1, 7.63328, 8.47983, 0 )
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 1, 7.63328, 8.47983, 0)
 layers = 4
 cast_shadow = 0
 mesh = ExtResource( 4 )
-material/0 = ExtResource( 5 )
+surface_material_override/0 = ExtResource( 5 )
 
-[node name="cable" type="MeshInstance" parent="."]
-transform = Transform( 1.47721, 0.17101, 0.0603075, 0, 0.173648, -1.96962, -0.260472, 0.969847, 0.342021, 6.76171, 21.4082, -2.15234 )
+[node name="cable" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.47721, 0.17101, 0.0603075, 0, 0.173648, -1.96962, -0.260472, 0.969847, 0.342021, 6.76171, 21.4082, -2.15234)
 layers = 8
 cast_shadow = 0
 mesh = ExtResource( 6 )
-material/0 = ExtResource( 7 )
+surface_material_override/0 = ExtResource( 7 )
 
-[node name="cable3" type="MeshInstance" parent="."]
-transform = Transform( 1.5, 0, 0, 0, 0.0871559, -1.99239, 0, 0.996195, 0.174312, 2.56961, 20.8978, 7.03558 )
+[node name="cable3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.5, 0, 0, 0, 0.0871559, -1.99239, 0, 0.996195, 0.174312, 2.56961, 20.8978, 7.03558)
 layers = 8
 cast_shadow = 0
 mesh = ExtResource( 6 )
-material/0 = ExtResource( 7 )
+surface_material_override/0 = ExtResource( 7 )
 
-[node name="cable4" type="MeshInstance" parent="."]
-transform = Transform( 1.5, 0, 0, 0, -0.0871559, -1.99239, 0, 0.996195, -0.174312, 2.56961, 20.8978, -7.38459 )
+[node name="cable4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.5, 0, 0, 0, -0.0871559, -1.99239, 0, 0.996195, -0.174312, 2.56961, 20.8978, -7.38459)
 layers = 8
 cast_shadow = 0
 mesh = ExtResource( 6 )
-material/0 = ExtResource( 7 )
+surface_material_override/0 = ExtResource( 7 )
 
-[node name="cable2" type="MeshInstance" parent="."]
-transform = Transform( 1.44889, 0.254887, -0.0674152, 0, 0.173648, 1.47721, 0.388229, -0.951251, 0.251597, 6.51664, 12.8601, -4.0928 )
+[node name="cable2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.44889, 0.254887, -0.0674152, 0, 0.173648, 1.47721, 0.388229, -0.951251, 0.251597, 6.51664, 12.8601, -4.0928)
 layers = 8
 cast_shadow = 0
 mesh = ExtResource( 6 )
-material/0 = ExtResource( 7 )
+surface_material_override/0 = ExtResource( 7 )
 
-[node name="shadowmesh" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.0377, 0 )
+[node name="shadowmesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.0377, 0)
 visible = false
 cast_shadow = 3
 mesh = SubResource( 2 )
-material/0 = null
+surface_material_override/0 = null
 
-[node name="Spatial" type="Area" parent="."]
+[node name="Node3D" type="Area3D" parent="."]
 input_ray_pickable = false
 script = ExtResource( 10 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Spatial"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D"]
 shape = SubResource( 3 )
 disabled = true
 
-[node name="MeshInstance" type="MeshInstance" parent="Spatial"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 visible = false
 mesh = SubResource( 4 )
-material/0 = null
+surface_material_override/0 = null
 
-[node name="StaticBody" type="StaticBody" parent="."]
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
 
-[node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0 )
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0)
 shape = SubResource( 5 )
 
-[connection signal="body_entered" from="Spatial" to="Spatial" method="_on_Spatial_body_entered"]
+[connection signal="body_entered" from="Node3D" to="Node3D" method="_on_Spatial_body_entered"]

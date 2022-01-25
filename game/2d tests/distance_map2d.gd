@@ -1,4 +1,4 @@
-tool
+@tool
 extends Node2D
 
 # class member variables go here, for example:
@@ -15,11 +15,11 @@ func _ready():
 	
 	# we'll use AStar to have an easy map of neighbors
 	ast = AStar.new()
-	points = get_node("Node2D").points
+	points = get_node(^"Node2D").points
 	for i in range(0,points.size()):
 		ast.add_point(i, Vector3(points[i].x, 0, points[i].y))
 
-	for t in get_node("Node2D").tris:
+	for t in get_node(^"Node2D").tris:
 		#print("Edges: " + str(t.get_edges()))
 		for e in t.get_edges():
 			# avoid duplicates

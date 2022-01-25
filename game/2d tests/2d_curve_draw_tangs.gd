@@ -1,15 +1,33 @@
-tool
+@tool
 
 extends Node2D
 
 # class member variables go here, for example:
-export(int) var radius = 15 setget set_radius
-export(int) var angle_from = 0 setget set_angle_from
-export(int) var angle_to = 90 setget set_angle_to
-export(int) var width_out = 5 setget set_width_out
-export(bool) var right = true setget set_right
+@export var radius: int = 15:
+	set(value):
+		# TODO: Manually copy the code from this method.
+		set_radius(value)
+@export var angle_from: int = 0:
+	set(value):
+		# TODO: Manually copy the code from this method.
+		set_angle_from(value)
+@export var angle_to: int = 90:
+	set(value):
+		# TODO: Manually copy the code from this method.
+		set_angle_to(value)
+@export var width_out: int = 5:
+	set(value):
+		# TODO: Manually copy the code from this method.
+		set_width_out(value)
+@export var right: bool = true:
+	set(value):
+		# TODO: Manually copy the code from this method.
+		set_right(value)
 
-#export(bool) var snap setget set_snap
+#export(bool) var snap:
+	set(value):
+		# TODO: Manually copy the code from this method.
+		set_snap(value)
 signal enabled_snap
 
 # for debugging
@@ -26,7 +44,7 @@ var tangs
 func _ready():
 	#add_to_group("lines", true)
 	# signals
-	#connect("enabled_snap", self, "on_snap_enabled")
+	#connect(&"enabled_snap", self.on_snap_enabled)
 	
 	# arc
 	points_arc = get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
@@ -92,7 +110,7 @@ func draw_circle_arc(center, radius, angle_from, angle_to, color):
 
 func get_circle_arc( center, radius, angle_from, angle_to, right):
 	var nb_points = 32
-	var points_arc = PoolVector2Array()
+	var points_arc = PackedVector2Array()
 
 	for i in range(nb_points+1):
 		if right:
@@ -107,8 +125,8 @@ func get_circle_arc( center, radius, angle_from, angle_to, right):
 	return points_arc
 	
 func get_tangs(width_out, outer):
-	var sides = PoolVector2Array()
-	var tangs = PoolVector2Array()
+	var sides = PackedVector2Array()
+	var tangs = PackedVector2Array()
 	
 	# test side
 	for i in range((points_arc.size()-1)):

@@ -1,25 +1,25 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://assets/sky_texture.shader" type="Shader" id=1]
+[ext_resource path="res://assets/sky_texture.gdshader" type="Shader" id=1]
 [ext_resource path="res://dynamic_sky/sky_rect.gd" type="Script" id=2]
-[ext_resource path="res://dynamic_sky/Sprite.tscn" type="PackedScene" id=3]
-[ext_resource path="res://dynamic_sky/shaders/Sky.shader" type="Shader" id=4]
-[ext_resource path="res://dynamic_sky/textures/noise.png" type="Texture" id=5]
+[ext_resource path="res://dynamic_sky/Sprite2D.tscn" type="PackedScene" id=3]
+[ext_resource path="res://dynamic_sky/shaders/Sky.gdshader" type="Shader" id=4]
+[ext_resource path="res://dynamic_sky/textures/noise.png" type="Texture2D" id=5]
 
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 1 )
-shader_param/sky_color_day = Color( 0.4, 0.7, 0.7, 1 )
-shader_param/sky_color_night = Color( 0, 0, 0.2, 1 )
-shader_param/horizon_color = Color( 0.8, 0.2, 0.1, 0.35 )
-shader_param/day_horizon_color = Color( 0.55, 0.82, 0.91, 0.35 )
-shader_param/sun_color1 = Color( 1, 1, 1, 1 )
-shader_param/sun_color2 = Color( 1, 0, 0, 0.952941 )
+shader_param/sky_color_day = Color(0.4, 0.7, 0.7, 1)
+shader_param/sky_color_night = Color(0, 0, 0.2, 1)
+shader_param/horizon_color = Color(0.8, 0.2, 0.1, 0.35)
+shader_param/day_horizon_color = Color(0.55, 0.82, 0.91, 0.35)
+shader_param/sun_color1 = Color(1, 1, 1, 1)
+shader_param/sun_color2 = Color(1, 0, 0, 0.952941)
 shader_param/horizon_size = 0.015
 shader_param/sun_size1 = 0.01
 shader_param/sun_size2 = 0.1
-shader_param/sun_pos = Vector2( 0.5, 0.5 )
-shader_param/bounds = Vector2( 0.5, 0.5 )
+shader_param/sun_pos = Vector2(0.5, 0.5)
+shader_param/bounds = Vector2(0.5, 0.5)
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 4 )
@@ -29,21 +29,21 @@ shader_param/COVERAGE = 0.5
 shader_param/THICKNESS = 20.0
 shader_param/ABSORPTION = 1.031
 shader_param/STEPS = 25
-shader_param/HORIZON_COL = Color( 1, 1, 1, 1 )
+shader_param/HORIZON_COL = Color(1, 1, 1, 1)
 shader_param/TINT_DIST = 6.4
 shader_param/iChannel0 = ExtResource( 5 )
 
 [sub_resource type="ImageTexture" id=3]
-size = Vector2( 1280, 720 )
+size = Vector2(1280, 720)
 
 [node name="Node2D" type="Node2D"]
 
 [node name="sky_rect" type="ColorRect" parent="."]
 material = SubResource( 1 )
-margin_left = 1280.0
-margin_top = 720.0
-margin_right = 2560.0
-margin_bottom = 1440.0
+offset_left = 1280.0
+offset_top = 720.0
+offset_right = 2560.0
+offset_bottom = 1440.0
 rect_rotation = 180.0
 script = ExtResource( 2 )
 
@@ -52,6 +52,6 @@ material = SubResource( 2 )
 texture = SubResource( 3 )
 
 [node name="ground_rect" type="ColorRect" parent="."]
-margin_right = 1280.0
-margin_bottom = 360.0
-color = Color( 0.501961, 0.501961, 0.501961, 1 )
+offset_right = 1280.0
+offset_bottom = 360.0
+color = Color(0.501961, 0.501961, 0.501961, 1)

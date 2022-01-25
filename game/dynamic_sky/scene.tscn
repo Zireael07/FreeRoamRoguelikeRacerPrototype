@@ -4,13 +4,13 @@
 [ext_resource path="res://dynamic_sky/SkyTexture.gd" type="Script" id=2]
 [ext_resource path="res://dynamic_sky/sky_texture.tscn" type="PackedScene" id=3]
 
-[node name="scene" type="Spatial" groups=[
+[node name="scene" type="Node3D" groups=[
 "root",
 ]]
 script = ExtResource( 1 )
 
-[node name="Sky" type="Viewport" parent="."]
-size = Vector2( 1280, 720 )
+[node name="Sky" type="SubViewport" parent="."]
+size = Vector2(1280, 720)
 render_target_update_mode = 3
 script = ExtResource( 2 )
 

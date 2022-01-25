@@ -45,7 +45,7 @@ var flip_mat = preload("res://assets/car/car_blue.tres")
 var cars = {}
 
 func _ready():
-	#draw = get_node("draw")
+	#draw = get_node(^"draw")
 	
 	array = []
 	positions_left = []
@@ -172,7 +172,7 @@ func debug_cube(loc, red=false):
 	
 func send_position(map):
 	pass
-	#map.add_intersection(get_global_transform().xform(Vector3(0,0,0)))
+	#map.add_intersection(get_global_transform() * (Vector3(0,0,0)))
 
 func snap_pos_to_points(pos):
 	if abs(pos.x) > abs(pos.z):

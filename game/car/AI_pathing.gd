@@ -1,8 +1,8 @@
-extends Spatial
+extends Node3D
 
 # class member variables go here, for example:
-export(Vector3) var target = Vector3(0,0,0)
-export(bool) var left = true # because Japan is LHD
+@export var target: Vector3 = Vector3(0,0,0)
+@export var left: bool = true # because Japan is LHD
 
 var path
 var end_ind
@@ -25,13 +25,13 @@ func _ready():
 	
 		# hack fix
 	if rotation.y != 0:
-		get_node("BODY").rotate_y(rotation.y)
+		get_node(^"BODY").rotate_y(rotation.y)
 		rotation.y = 0
 	
-	#navigation_node = get_node("/root/root")
+	#navigation_node = get_node(^"/root/root")
 	# only traffic AI
 	if is_in_group("AI"):
-		map = get_node("/root/Navigation").get_node("map")
+		map = get_node(^"/root/Node3D").get_node(^"map")
 		
 		# look up the closest intersection
 		var map_loc = map.to_local(get_global_transform().origin)
@@ -46,16 +46,16 @@ func _ready():
 		
 	# Initialization here
 	if has_node("draw"):
-		draw = get_node("draw")
+		draw = get_node(^"draw")
 	if has_node("draw2"):
-		draw_arc = get_node("draw2")
+		draw_arc = get_node(^"draw2")
 
 func look_for_path_initial(start_ind, left):
 	var closest = map.get_child(start_ind)
 	#print("Closest int: " + closest.get_name() + " " + str(closest.get_translation()))
 
 	# this operates on ids, therefore we subtract 3 from child id
-	var int_paths = map.get_node("nav").get_paths(start_ind-3, -1)
+	var int_paths = map.get_node(^"nav").get_paths(start_ind-3, -1)
 	
 	print("Paths: ", int_paths)
 	
@@ -76,8 +76,8 @@ func look_for_path_initial(start_ind, left):
 			
 			road = map.get_node(rd_name)
 			# main part of the road
-			var gl = road.get_node("Spatial0").get_global_transform().origin
-			var rel_pos = get_node("BODY").get_global_transform().xform_inv(gl)
+			var gl = road.get_node(^"Spatial0").get_global_transform().origin
+			var rel_pos = gl * get_node(^"BODY").get_global_transform()
 			#print(get_name() + ", rel pos for : ", rd_name, " - ", rel_pos)
 			var angle = atan2(rel_pos.x, rel_pos.z)
 			angles.append(abs(angle))
@@ -86,7 +86,7 @@ func look_for_path_initial(start_ind, left):
 		angles.sort()
 		#print("Angles: ", angles)
 		
-		if get_node("BODY") is VehicleBody:		
+		if get_node(^"BODY") is VehicleBody3D:		
 			# return the path
 			for t in tmp:
 				#print("Check t " + str(t))
@@ -117,7 +117,7 @@ func look_for_path_initial(start_ind, left):
 	road = map.get_node(rd_name)
 	#print("Road: " + str(road))
 	
-	var nav_data = map.get_node("nav").get_lane(road, flip, left)
+	var nav_data = map.get_node(^"nav").get_lane(road, flip, left)
 	var nav_path = nav_data[0]
 
 	path = traffic_reduce_path(nav_path, nav_data[1])
@@ -136,7 +136,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	#print("Closest int: " + closest.get_name() + " " + str(closest.get_translation()))
 
 	# this operates on ids, therefore we subtract 3 from child id
-	var int_path = map.get_node("nav").get_path_look(start_ind-3, exclude)
+	var int_path = map.get_node(^"nav").get_path_look(start_ind-3, exclude)
 			
 	#print("[AI] our intersection path: " + str(int_path))
 	
@@ -145,9 +145,9 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	if exclude == int_path[1]:
 		back = true
 	
-	var lookup_path = map.get_node("nav").path_look[[int_path[0], int_path[1]]]
+	var lookup_path = map.get_node(^"nav").path_look[[int_path[0], int_path[1]]]
 	#print("[AI] Lookup path: " + str(lookup_path))
-	#var nav_path = map.get_node("nav").nav.get_point_path(lookup_path[0], lookup_path[1])
+	#var nav_path = map.get_node(^"nav").nav.get_point_path(lookup_path[0], lookup_path[1])
 	#print("[AI] Nav path: " + str(nav_path))
 	#print("Nav path length: " + str(nav_path.size()-1))
 	
@@ -164,7 +164,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	road = map.get_node(rd_name)
 	#print("Road: " + str(road))
 	
-	var nav_data = map.get_node("nav").get_lane(road, flip, left_side)
+	var nav_data = map.get_node(^"nav").get_lane(road, flip, left_side)
 	var nav_path = nav_data[0]
 	
 	var arc_pos = null
@@ -188,7 +188,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 		else:
 			#pos = null
 			
-#			var loc = get_node("BODY").to_local(nav_path[0])
+#			var loc = get_node(^"BODY").to_local(nav_path[0])
 #			# 2D angle to new target
 #			var angle = atan2(loc.x, loc.z)
 #			print("Angle to #1 of new road: ", angle)
@@ -200,7 +200,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 			if straight:
 				pass # do nothing
 			else:
-				arc_pos = map.get_node("nav").intersection_arc(get_node("BODY"), closest, nav_path)
+				arc_pos = map.get_node(^"nav").intersection_arc(get_node(^"BODY"), closest, nav_path)
 				if arc_pos != null:
 					pos = null
 				# just in case
@@ -232,7 +232,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	# we're on an intersection until we reach path_start
 	# if the intersection only has two exits in use, assume we can navigate easily
 	if not back and closest.used_exits.size() > 2:
-		var loc = get_node("BODY").to_local(path_start)
+		var loc = get_node(^"BODY").to_local(path_start)
 		var left_turn = false
 		if loc.x < 0: # right
 			left_turn = false
@@ -249,7 +249,7 @@ func look_for_path(start_ind, left_side, exclude=-1):
 	#print(road.AI_cars)
 
 func is_going_straight_across(closest, target):
-	var car = closest.to_local(get_node("BODY").get_global_transform().origin)
+	var car = closest.to_local(get_node(^"BODY").get_global_transform().origin)
 	var tg = closest.to_local(target)
 
 	# debug
@@ -273,7 +273,7 @@ func is_going_straight_across(closest, target):
 
 func intersection_turn_offset(closest, pos, right):
 	# distance to intersection
-	var rel_int = get_node("BODY").to_local(pos)
+	var rel_int = get_node(^"BODY").to_local(pos)
 	var dist = rel_int.length()
 	
 	var sig = 1.0
@@ -282,7 +282,7 @@ func intersection_turn_offset(closest, pos, right):
 	
 	# this is relative to AI car
 	var rel_loc = Vector3(sig*2.0, 0.0, dist-2.0)
-	var off = get_node("BODY").get_global_transform().xform(rel_loc) 
+	var off = get_node(^"BODY").get_global_transform() * (rel_loc) 
 	#print("off gl: ", off)
 	#debug_cube(to_local(off), true)
 	# now in closest intersection's space
@@ -307,7 +307,7 @@ func traffic_reduce_path(path, flip):
 
 	# if tunnel, add midpoint 
 	# IRL tunnels often have lower speed limits, and it also prevents the AI rubbing the wall
-	if road.get_node("Spatial0/Road_instance 0").tunnel:
+	if road.get_node(^"Spatial0/Road_instance 0").tunnel:
 		#print("Road is tunnel")
 		to_keep.append(path.size()-1)
 		
@@ -375,9 +375,9 @@ func reduce_path(path):
 
 
 func debug_cube(loc, red=false):
-	var mesh = CubeMesh.new()
+	var mesh = BoxMesh.new()
 	mesh.set_size(Vector3(0.5,0.5,0.5))
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_mesh(mesh)
 	if red:
 		node.get_mesh().surface_set_material(0, flip_mat)
@@ -391,5 +391,5 @@ func debug_cube(loc, red=false):
 	
 func clear_cubes():
 	for c in get_children():
-		if c.is_in_group("debug") and c.is_class("MeshInstance"):
+		if c.is_in_group("debug") and c.is_class("MeshInstance3D"):
 			c.queue_free()

@@ -3,6 +3,6 @@
 [ext_resource type="Script" path="res://car/procedural_wheel.gd" id="1"]
 [ext_resource type="Material" uid="uid://c5qul5sib2dvw" path="res://assets/car/car_wheel_shader.tres" id="2"]
 
-[node name="Spatial" type="Node3D"]
+[node name="Node3D" type="Node3D"]
 script = ExtResource( "1" )
 material = ExtResource( "2" )

@@ -2,11 +2,11 @@ extends "AI_pathing.gd"
 
 # class member variables go here, for example:
 
-export(String) var AI_name = "一郎"
-export(String) var romaji = "Ichiro"
+@export var AI_name: String = "一郎"
+@export var romaji: String = "Ichiro"
 
-onready var panel = get_node("BODY").get_node("Viewport").get_node("Nametag")
-#onready	var nameplate = get_node("BODY").get_node("Viewport1").get_node("nameplate")
+@onready var panel = get_node(^"BODY").get_node(^"SubViewport").get_node(^"Nametag")
+#onready	var nameplate = get_node(^"BODY").get_node(^"Viewport1").get_node(^"nameplate")
 
 var romaji1_list = ["Ichi", "Ji", "Sabu", "Shi", "Go", "Roku", "Shichi", "Hachi", "Ku"]
 var name1_list = ["一", "ニ", "三", "四", "五", "六", "七", "八", "九"]
@@ -22,7 +22,7 @@ func _ready():
 	if is_in_group("race_AI"):
 		print("Race AI pathing")
 		# we don't need to look up map itself, so let's make it a shortcut to nav
-		map = get_node("/root/Navigation").get_node("map").get_node("nav")
+		map = get_node(^"/root/Node3D").get_node(^"map").get_node(^"nav")
 		var lookup_path = map.path_look[[race_int_path[0], race_int_path[1]]]
 		#print("[AI] Lookup path: " + str(lookup_path))
 		var nav_path = map.nav.get_point_path(lookup_path[0], lookup_path[1])
@@ -44,15 +44,15 @@ func _ready():
 	
 	# Initialization here
 	if has_node("draw"):
-		draw = get_node("draw")
+		draw = get_node(^"draw")
 	if has_node("draw2"):
-		draw_arc = get_node("draw2")
+		draw_arc = get_node(^"draw2")
 	
 #	if race:
 #		print("Connect race " + str(race) + " to path_gotten")
-#		get_node("BODY").connect("path_gotten", race, "_on_path_gotten")
-#		print(get_node("BODY").is_connected("path_gotten", race, "_on_path_gotten"))
-#		print(str(get_node("BODY").get_signal_connection_list("path_gotten")))
+#		get_node(^"BODY").connect(&"path_gotten", race._on_path_gotten)
+#		print(get_node(^"BODY").is_connected("path_gotten", race, "_on_path_gotten"))
+#		print(str(get_node(^"BODY").get_signal_connection_list("path_gotten")))
 	
 func random_name():
 	# seed the rng
@@ -83,7 +83,7 @@ func set_our_name():
 	
 	if AI_name != "" and romaji != "":
 		#panel.set_name(romaji)
-		panel.get_node("Label").set_text(romaji)
+		panel.get_node(^"Label").set_text(romaji)
 		
 		print("AI panel name " + panel.name)
 		#nameplate.set_name(AI_name)

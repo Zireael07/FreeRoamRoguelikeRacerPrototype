@@ -1,38 +1,38 @@
 [gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://hud/hud_labels.gd" type="Script" id=1]
-[ext_resource path="res://assets/851H-kktt.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://hud/cam_icon.png" type="Texture" id=3]
-[ext_resource path="res://hud/battery_icon_full.png" type="Texture" id=4]
-[ext_resource path="res://hud/thin lcd font.tres" type="DynamicFont" id=5]
+[ext_resource path="res://assets/851H-kktt.ttf" type="FontData" id=2]
+[ext_resource path="res://hud/cam_icon.png" type="Texture2D" id=3]
+[ext_resource path="res://hud/battery_icon_full.png" type="Texture2D" id=4]
+[ext_resource path="res://hud/thin lcd font.tres" type="Font" id=5]
 [ext_resource path="res://hud/debugdraw3d.gd" type="Script" id=6]
 
-[sub_resource type="DynamicFontData" id=1]
+[sub_resource type="FontData" id=1]
 font_path = "res://assets/DSEG7ClassicMini-Bold.ttf"
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="Font" id=2]
 outline_size = 1
 font_data = SubResource( 1 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="Font" id=3]
 size = 18
 font_data = ExtResource( 2 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="Font" id=4]
 font_data = ExtResource( 2 )
 
 [sub_resource type="StyleBoxFlat" id=5]
-bg_color = Color( 0.980469, 0, 0, 1 )
-border_color = Color( 0.980469, 0.0114899, 0.0114899, 1 )
+bg_color = Color(0.980469, 0, 0, 1)
+border_color = Color(0.980469, 0.0114899, 0.0114899, 1)
 
 [sub_resource type="StyleBoxFlat" id=6]
-bg_color = Color( 0.367188, 0.061676, 0.061676, 1 )
-border_color = Color( 0.460938, 0, 0, 1 )
+bg_color = Color(0.367188, 0.061676, 0.061676, 1)
+border_color = Color(0.460938, 0, 0, 1)
 
 [node name="root" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = -462.0
+offset_bottom = -462.0
 mouse_filter = 2
 size_flags_horizontal = 2
 size_flags_vertical = 2
@@ -42,11 +42,11 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="."]
-modulate = Color( 0.0156863, 0.988235, 0.988235, 1 )
-margin_left = 25.0
-margin_top = -22.0
-margin_right = 227.0
-margin_bottom = 77.0
+modulate = Color(0.0156863, 0.988235, 0.988235, 1)
+offset_left = 25.0
+offset_top = -22.0
+offset_right = 227.0
+offset_bottom = 77.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 2 )
@@ -59,11 +59,11 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="."]
-modulate = Color( 0.0156863, 0.988235, 0.988235, 1 )
-margin_left = 60.0
-margin_top = -22.0
-margin_right = 262.0
-margin_bottom = 77.0
+modulate = Color(0.0156863, 0.988235, 0.988235, 1)
+offset_left = 60.0
+offset_top = -22.0
+offset_right = 262.0
+offset_bottom = 77.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 custom_fonts/font = ExtResource( 5 )
@@ -77,11 +77,11 @@ __meta__ = {
 
 [node name="Label3" type="Label" parent="."]
 visible = false
-modulate = Color( 0.0156863, 0.988235, 0.988235, 1 )
-margin_left = 60.0
-margin_top = 150.0
-margin_right = 262.0
-margin_bottom = 249.0
+modulate = Color(0.0156863, 0.988235, 0.988235, 1)
+offset_left = 60.0
+offset_top = 150.0
+offset_right = 262.0
+offset_bottom = 249.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 text = "kph"
@@ -91,48 +91,48 @@ __meta__ = {
 }
 
 [node name="Label timer" type="Label" parent="."]
-margin_top = 229.0
-margin_right = 202.0
-margin_bottom = 328.0
+offset_top = 229.0
+offset_right = 202.0
+offset_bottom = 328.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 3 )
-custom_colors/font_color = Color( 0.0154419, 0.988281, 0.988281, 1 )
+custom_colors/font_color = Color(0.0154419, 0.988281, 0.988281, 1)
 align = 1
 valign = 1
 
 [node name="Label dist" type="Label" parent="."]
-margin_left = 620.0
-margin_top = 495.0
-margin_right = 822.0
-margin_bottom = 595.0
+offset_left = 620.0
+offset_top = 495.0
+offset_right = 822.0
+offset_bottom = 595.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
-custom_colors/font_color = Color( 0.0156863, 0.988235, 0.988235, 1 )
+custom_colors/font_color = Color(0.0156863, 0.988235, 0.988235, 1)
 text = "dist"
 align = 1
 valign = 2
 max_lines_visible = 1
 
 [node name="Label clock" type="Label" parent="."]
-margin_left = 638.0
-margin_top = 461.0
-margin_right = 840.0
-margin_bottom = 561.0
+offset_left = 638.0
+offset_top = 461.0
+offset_right = 840.0
+offset_bottom = 561.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 4 )
-custom_colors/font_color = Color( 0.0154419, 0.988281, 0.988281, 1 )
+custom_colors/font_color = Color(0.0154419, 0.988281, 0.988281, 1)
 text = "clock"
 align = 1
 valign = 2
 max_lines_visible = 1
 
 [node name="Label road" type="Label" parent="."]
-margin_left = 10.0
-margin_top = 130.0
-margin_right = 218.0
-margin_bottom = 150.0
+offset_left = 10.0
+offset_top = 130.0
+offset_right = 218.0
+offset_bottom = 150.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 align = 1
@@ -142,11 +142,11 @@ __meta__ = {
 }
 
 [node name="Label FPS" type="Label" parent="."]
-margin_right = 80.0
-margin_bottom = 72.0
+offset_right = 80.0
+offset_bottom = 72.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
-custom_colors/font_color = Color( 0.9, 0.00899999, 0.20205, 1 )
+custom_colors/font_color = Color(0.9, 0.00899999, 0.20205, 1)
 align = 1
 valign = 1
 __meta__ = {
@@ -154,72 +154,72 @@ __meta__ = {
 }
 
 [node name="CAM blink" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="CAM" type="Label" parent="CAM blink"]
-margin_left = 29.0
-margin_top = 7.0
-margin_right = 69.0
-margin_bottom = 21.0
+offset_left = 29.0
+offset_top = 7.0
+offset_right = 69.0
+offset_bottom = 21.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 text = "CAM"
 
 [node name="TextureFrame" type="TextureRect" parent="CAM blink"]
-margin_left = 6.0
-margin_top = 3.0
-margin_right = 46.0
-margin_bottom = 43.0
-rect_scale = Vector2( 0.5, 0.5 )
+offset_left = 6.0
+offset_top = 3.0
+offset_right = 46.0
+offset_bottom = 43.0
+rect_scale = Vector2(0.5, 0.5)
 size_flags_horizontal = 2
 size_flags_vertical = 2
 texture = ExtResource( 3 )
 
 [node name="WheelAngleBar" type="HScrollBar" parent="."]
-margin_left = 352.0
-margin_top = 573.0
-margin_right = 499.0
-margin_bottom = 585.0
+offset_left = 352.0
+offset_top = 573.0
+offset_right = 499.0
+offset_bottom = 585.0
 min_value = -100.0
 
 [node name="WheelAngleBar2" type="HScrollBar" parent="."]
-margin_left = 352.0
-margin_top = 587.0
-margin_right = 499.0
-margin_bottom = 599.0
+offset_left = 352.0
+offset_top = 587.0
+offset_right = 499.0
+offset_bottom = 599.0
 min_value = -100.0
 
 [node name="WheelAngle" type="Label" parent="."]
-margin_left = 405.0
-margin_top = 559.0
-margin_right = 445.0
-margin_bottom = 573.0
+offset_left = 405.0
+offset_top = 559.0
+offset_right = 445.0
+offset_bottom = 573.0
 
 [node name="Health" type="ProgressBar" parent="."]
-margin_left = 11.0
-margin_top = 59.0
-margin_right = 108.0
-margin_bottom = 78.0
+offset_left = 11.0
+offset_top = 59.0
+offset_right = 108.0
+offset_bottom = 78.0
 custom_styles/fg = SubResource( 5 )
 custom_styles/bg = SubResource( 6 )
 step = 1.0
 value = 100.0
 
 [node name="batteryIcon" type="TextureRect" parent="."]
-margin_left = 42.0
-margin_top = 82.0
-margin_right = 82.0
-margin_bottom = 117.0
+offset_left = 42.0
+offset_top = 82.0
+offset_right = 82.0
+offset_bottom = 117.0
 rect_rotation = 90.0
 texture = ExtResource( 4 )
 expand = true
 
 [node name="Battery" type="ProgressBar" parent="."]
-margin_left = 52.0
-margin_top = 94.0
-margin_right = 149.0
-margin_bottom = 113.0
+offset_left = 52.0
+offset_top = 94.0
+offset_right = 149.0
+offset_bottom = 113.0
 custom_styles/fg = SubResource( 5 )
 custom_styles/bg = SubResource( 6 )
 step = 1.0
@@ -228,50 +228,50 @@ value = 100.0
 [node name="CompassLabel" type="Label" parent="."]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -20.0
-margin_right = 20.0
-margin_bottom = 14.0
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 14.0
 
 [node name="DriverInfo" type="Control" parent="."]
-margin_top = 457.0
-margin_right = 40.0
-margin_bottom = 497.0
+offset_top = 457.0
+offset_right = 40.0
+offset_bottom = 497.0
 
 [node name="ColorRect" type="ColorRect" parent="DriverInfo"]
-margin_right = 251.0
-margin_bottom = 138.0
-color = Color( 0, 0.155029, 0.992188, 0.552471 )
+offset_right = 251.0
+offset_bottom = 138.0
+color = Color(0, 0.155029, 0.992188, 0.552471)
 
 [node name="NameLabel" type="Label" parent="DriverInfo"]
-margin_right = 40.0
-margin_bottom = 14.0
+offset_right = 40.0
+offset_bottom = 14.0
 custom_fonts/font = ExtResource( 5 )
-custom_colors/font_color = Color( 0.0117647, 0.988235, 0.988235, 1 )
+custom_colors/font_color = Color(0.0117647, 0.988235, 0.988235, 1)
 text = "Ichiro"
 
 [node name="MoneyLabel" type="Label" parent="DriverInfo"]
-margin_top = 30.0
-margin_right = 93.0
-margin_bottom = 51.0
+offset_top = 30.0
+offset_right = 93.0
+offset_bottom = 51.0
 custom_fonts/font = ExtResource( 5 )
-custom_colors/font_color = Color( 0.0117647, 0.988235, 0.988235, 1 )
+custom_colors/font_color = Color(0.0117647, 0.988235, 0.988235, 1)
 text = "Money:   0"
 
 [node name="Label" type="Label" parent="DriverInfo"]
-margin_left = 62.0
-margin_top = 32.0
-margin_right = 72.0
-margin_bottom = 46.0
-rect_scale = Vector2( 1.5, 1.5 )
-custom_colors/font_color = Color( 0.0117647, 0.988235, 0.988235, 1 )
+offset_left = 62.0
+offset_top = 32.0
+offset_right = 72.0
+offset_bottom = 46.0
+rect_scale = Vector2(1.5, 1.5)
+custom_colors/font_color = Color(0.0117647, 0.988235, 0.988235, 1)
 text = "¥"
 
 [node name="SeedLabel" type="Label" parent="."]
-margin_left = 10.0
-margin_top = 42.0
-margin_right = 50.0
-margin_bottom = 73.0
-custom_colors/font_color = Color( 0.988235, 0, 0, 1 )
+offset_left = 10.0
+offset_top = 42.0
+offset_right = 50.0
+offset_bottom = 73.0
+custom_colors/font_color = Color(0.988235, 0, 0, 1)
 text = "Seed:
 "
 
@@ -280,12 +280,12 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -20.0
-margin_top = 6.0
-margin_right = 20.0
-margin_bottom = 20.0
-rect_scale = Vector2( 1.5, 1.5 )
-custom_colors/font_color = Color( 0.0156863, 0.988235, 0.988235, 1 )
+offset_left = -20.0
+offset_top = 6.0
+offset_right = 20.0
+offset_bottom = 20.0
+rect_scale = Vector2(1.5, 1.5)
+custom_colors/font_color = Color(0.0156863, 0.988235, 0.988235, 1)
 uppercase = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -294,7 +294,7 @@ __meta__ = {
 [node name="DebugDraw3D" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = 459.0
+offset_bottom = 459.0
 mouse_filter = 2
 script = ExtResource( 6 )
 __meta__ = {

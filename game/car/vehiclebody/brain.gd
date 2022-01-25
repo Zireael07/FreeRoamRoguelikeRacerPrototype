@@ -4,7 +4,7 @@ extends "boid.gd"
 # Declare member variables here. Examples:
 
 # FSM
-onready var state = DrivingState.new(self)
+@onready var state = DrivingState.new(self)
 var prev_state
 
 #const STATE_PATHING = 0
@@ -79,7 +79,7 @@ class DrivingState:
 		#print("Spd steer" + str(spd_steer))
 		
 		# we're a 3D node, so unfortunately we can only convert Vec3
-		var to_loc = car.get_global_transform().xform_inv(car.target)
+		var to_loc = car.target * car.get_global_transform()
 		
 		var arr = null
 		# special case for target behind us
@@ -128,10 +128,10 @@ class DrivingState:
 		# -z means we're moving forward
 		# doesn't work if the AI is going the other way
 		#car.velocity = Vector2(car.get_parent().get_angular_velocity().y, -car.get_parent().get_linear_velocity().z)
-		if car.get_parent() is VehicleBody:		
+		if car.get_parent() is VehicleBody3D:		
 			# forward vector scaled by our speed
-			var gl_tg = car.get_parent().get_global_transform().xform(Vector3(0, 0, 4))
-			var rel = car.get_parent().get_global_transform().xform_inv(gl_tg)
+			var gl_tg = car.get_parent().get_global_transform() * (Vector3(0, 0, 4))
+			var rel = gl_tg * car.get_parent().get_global_transform()
 			var vel = rel * car.get_parent().speed
 			
 			#var vel = car.get_parent().forward_vec * car.get_parent().get_linear_velocity().length()
@@ -161,10 +161,10 @@ class DrivingState:
 		else:
 			car.detect_range = 10
 		
-		if car.get_parent() is VehicleBody:
-			car.get_parent().get_node("RayFront").set_cast_to(Vector3(0,0, car.detect_range))
-			car.get_parent().get_node("RayFrontRight").set_cast_to(Vector3(0,0, car.detect_range))
-			car.get_parent().get_node("RayFrontLeft").set_cast_to(Vector3(0,0,car.detect_range))
+		if car.get_parent() is VehicleBody3D:
+			car.get_parent().get_node(^"RayFront").set_cast_to(Vector3(0,0, car.detect_range))
+			car.get_parent().get_node(^"RayFrontRight").set_cast_to(Vector3(0,0, car.detect_range))
+			car.get_parent().get_node(^"RayFrontLeft").set_cast_to(Vector3(0,0,car.detect_range))
 		
 					
 		
@@ -195,7 +195,7 @@ class ChaseState:
 		#print("Spd steer" + str(spd_steer))
 		
 		# we're a 3D node, so unfortunately we can only convert Vec3
-		var to_loc = car.get_global_transform().xform_inv(car.target)
+		var to_loc = car.target * car.get_global_transform()
 		
 		var seek = car.seek(Vector2(to_loc.x, to_loc.z))
 		
@@ -204,8 +204,8 @@ class ChaseState:
 		
 		# our actual velocity
 		# forward vector scaled by our speed
-		var gl_tg = car.get_parent().get_global_transform().xform(Vector3(0, 0, 4))
-		var rel = car.get_parent().get_global_transform().xform_inv(gl_tg)
+		var gl_tg = car.get_parent().get_global_transform() * (Vector3(0, 0, 4))
+		var rel = gl_tg * car.get_parent().get_global_transform()
 		var vel = rel * car.get_parent().get_linear_velocity().length()
 		
 		car.velocity = Vector2(car.get_parent().get_angular_velocity().y, vel.z)
@@ -227,7 +227,7 @@ class BuildingAvoidState:
 		#print("Spd steer" + str(spd_steer))
 		
 		# we're a 3D node, so unfortunately we can only convert Vec3
-		var to_loc = car.get_global_transform().xform_inv(target)
+		var to_loc = target * car.get_global_transform()
 		
 		var arr = car.arrive(Vector2(to_loc.x, to_loc.z), 10)
 		#var seek = car.seek(Vector2(to_loc.x, to_loc.z))
@@ -239,8 +239,8 @@ class BuildingAvoidState:
 		
 		# our actual velocity
 		# forward vector scaled by our speed
-		var gl_tg = car.get_parent().get_global_transform().xform(Vector3(0, 0, 4))
-		var rel = car.get_parent().get_global_transform().xform_inv(gl_tg)
+		var gl_tg = car.get_parent().get_global_transform() * (Vector3(0, 0, 4))
+		var rel = gl_tg * car.get_parent().get_global_transform()
 		var vel = rel * car.get_parent().get_linear_velocity().length()
 		
 		car.velocity = Vector2(car.get_parent().get_angular_velocity().y, vel.z)
@@ -266,7 +266,7 @@ class ObstacleState:
 		var max_range = car.detect_range # same as cast_to of the rays
 		
 		var gl = obstacle.get_global_transform().origin
-		var loc = car.get_parent().get_global_transform().xform_inv(gl)
+		var loc = gl * car.get_parent().get_global_transform()
 		
 		# obstacle's CTE
 		var norm_pt = car.get_parent().get_normal_point(gl)
@@ -293,25 +293,25 @@ class ObstacleState:
 				#print("Str:", car.steer, " direction: " , car.readable_dir(sig))
 		#print(car.get_parent().get_parent().get_name() + " rel ", rel_pos) #"cte: ", obst_cte, " car cte: ", car.get_parent().cte) #, " str: ", car.steer, " dir: ", car.readable_dir(sig))
 		
-#		if car.get_parent().has_node("RayRightFront") and car.get_parent().get_node("RayRightFront").is_colliding() and (car.get_parent().get_node("RayRightFront").get_collider() != null):
-#			var gl = car.get_parent().get_node("RayRightFront").get_collider().get_global_transform().origin
-#			var loc = car.get_parent().get_global_transform().xform_inv(gl)
+#		if car.get_parent().has_node("RayRightFront") and car.get_parent().get_node(^"RayRightFront").is_colliding() and (car.get_parent().get_node(^"RayRightFront").get_collider() != null):
+#			var gl = car.get_parent().get_node(^"RayRightFront").get_collider().get_global_transform().origin
+#			var loc = gl * car.get_parent().get_global_transform()
 #			var rel_pos = Vector2(loc.x, loc.z)
 #			print(car.get_parent().get_parent().get_name() + " rel to obstacle right: ", rel_pos)
 #			# steer < 0 is left, > 0 is right
 #			car.steer = Vector2(-1*(max_range-loc.z)-(abs(max_range-loc.x)), 0.1)
 #
-#		if car.get_parent().has_node("RayLeftFront") and car.get_parent().get_node("RayLeftFront").is_colliding() and (car.get_parent().get_node("RayLeftFront").get_collider() != null):
-#			var gl = car.get_parent().get_node("RayLeftFront").get_collider().get_global_transform().origin
-#			var loc = car.get_parent().get_global_transform().xform_inv(gl)
+#		if car.get_parent().has_node("RayLeftFront") and car.get_parent().get_node(^"RayLeftFront").is_colliding() and (car.get_parent().get_node(^"RayLeftFront").get_collider() != null):
+#			var gl = car.get_parent().get_node(^"RayLeftFront").get_collider().get_global_transform().origin
+#			var loc = gl * car.get_parent().get_global_transform()
 #			var rel_pos = Vector2(loc.x, loc.z)
 #			print(car.get_parent().get_parent().get_name() + " rel to obstacle left: ", rel_pos)
 #			car.steer = Vector2(1*(max_range-loc.z)+(abs(max_range-loc.x)), 0.1)	
 			
 		# our actual velocity
 		# forward vector scaled by our speed
-		var gl_tg = car.get_parent().get_global_transform().xform(Vector3(0, 0, 4))
-		var rel = car.get_parent().get_global_transform().xform_inv(gl_tg)
+		var gl_tg = car.get_parent().get_global_transform() * (Vector3(0, 0, 4))
+		var rel = gl_tg * car.get_parent().get_global_transform()
 		var vel = rel * car.get_parent().get_linear_velocity().length()
 		
 		car.velocity = Vector2(car.get_parent().get_angular_velocity().y, vel.z)
@@ -324,37 +324,37 @@ class ObstacleState:
 # this checks the three long front-facing rays that are supposed to detect big obstacles (roadblock, other cars)
 func obstacle_detected(body):
 	var ret = false
-	if body.has_node("RayFront") and body.get_node("RayFront").is_colliding() and body.get_node("RayFront").get_collider_hit() != null:
-		if body.get_node("RayFront").get_collider_hit().get_parent().is_in_group("obstacle"):
-			ret = body.get_node("RayFront").get_collider_hit()		
-	if body.has_node("RayFrontRight") and body.get_node("RayFrontRight").is_colliding() and (body.get_node("RayFrontRight").get_collider() != null):
-		if body.get_node("RayFrontRight").get_collider_hit().get_parent().is_in_group("obstacle"):
-			ret = body.get_node("RayFrontRight").get_collider_hit()
-	if body.has_node("RayFrontLeft") and body.get_node("RayFrontLeft").is_colliding() and (body.get_node("RayFrontLeft").get_collider() != null):
-		if body.get_node("RayFrontLeft").get_collider_hit().get_parent().is_in_group("obstacle"):
-			ret = body.get_node("RayFrontLeft").get_collider_hit() # true
+	if body.has_node("RayFront") and body.get_node(^"RayFront").is_colliding() and body.get_node(^"RayFront").get_collider_hit() != null:
+		if body.get_node(^"RayFront").get_collider_hit().get_parent().is_in_group("obstacle"):
+			ret = body.get_node(^"RayFront").get_collider_hit()		
+	if body.has_node("RayFrontRight") and body.get_node(^"RayFrontRight").is_colliding() and (body.get_node(^"RayFrontRight").get_collider() != null):
+		if body.get_node(^"RayFrontRight").get_collider_hit().get_parent().is_in_group("obstacle"):
+			ret = body.get_node(^"RayFrontRight").get_collider_hit()
+	if body.has_node("RayFrontLeft") and body.get_node(^"RayFrontLeft").is_colliding() and (body.get_node(^"RayFrontLeft").get_collider() != null):
+		if body.get_node(^"RayFrontLeft").get_collider_hit().get_parent().is_in_group("obstacle"):
+			ret = body.get_node(^"RayFrontLeft").get_collider_hit() # true
 		
 	return ret
 
 func car_ahead_detected(body):
 	var ret = false
-	if body.has_node("RayFront") and body.get_node("RayFront").is_colliding() and body.get_node("RayFront").get_collider_hit() != null:
-		if body.get_node("RayFront").get_collider_hit().get_parent().is_in_group("AI"):
-			ret = body.get_node("RayFront").get_collider_hit()		
-	if body.has_node("RayFrontRight") and body.get_node("RayFrontRight").is_colliding() and (body.get_node("RayFrontRight").get_collider() != null):
-		if body.get_node("RayFrontRight").get_collider_hit().get_parent().is_in_group("AI"):
-			ret = body.get_node("RayFrontRight").get_collider_hit()
-	if body.has_node("RayFrontLeft") and body.get_node("RayFrontLeft").is_colliding() and (body.get_node("RayFrontLeft").get_collider() != null):
-		if body.get_node("RayFrontLeft").get_collider_hit().get_parent().is_in_group("AI"):
-			ret = body.get_node("RayFrontLeft").get_collider_hit() # true
+	if body.has_node("RayFront") and body.get_node(^"RayFront").is_colliding() and body.get_node(^"RayFront").get_collider_hit() != null:
+		if body.get_node(^"RayFront").get_collider_hit().get_parent().is_in_group("AI"):
+			ret = body.get_node(^"RayFront").get_collider_hit()		
+	if body.has_node("RayFrontRight") and body.get_node(^"RayFrontRight").is_colliding() and (body.get_node(^"RayFrontRight").get_collider() != null):
+		if body.get_node(^"RayFrontRight").get_collider_hit().get_parent().is_in_group("AI"):
+			ret = body.get_node(^"RayFrontRight").get_collider_hit()
+	if body.has_node("RayFrontLeft") and body.get_node(^"RayFrontLeft").is_colliding() and (body.get_node(^"RayFrontLeft").get_collider() != null):
+		if body.get_node(^"RayFrontLeft").get_collider_hit().get_parent().is_in_group("AI"):
+			ret = body.get_node(^"RayFrontLeft").get_collider_hit() # true
 		
 	return ret
 	
 #func collision_avoidance():
-#	if has_node("RayFront") and get_node("RayFront").get_collider_hit() != null:
+#	if has_node("RayFront") and get_node(^"RayFront").get_collider_hit() != null:
 #		# if all rays hit
 #		if has_node("RayRightFront") and has_node("RayLeftFront") \
-#		and get_node("RayRightFront").get_collider_hit() != null and get_node("RayLeftFront").get_collider_hit() != null:
+#		and get_node(^"RayRightFront").get_collider_hit() != null and get_node(^"RayLeftFront").get_collider_hit() != null:
 #			#print(get_parent().get_name() + " all three rays hit")
 #			flag = "AVOID - REVERSE"
 #			braking = true
@@ -367,11 +367,11 @@ func car_ahead_detected(body):
 #		else:
 #
 #			# if one of the other rays collides
-#			if has_node("RayRightFront") and get_node("RayRightFront").get_collider_hit() != null:
+#			if has_node("RayRightFront") and get_node(^"RayRightFront").get_collider_hit() != null:
 #				right = true
 #				flag = "AVOID - REVERSE"
 #				braking = true
-#			elif has_node("RayLeftFront") and get_node("RayLeftFront").get_collider_hit() != null:
+#			elif has_node("RayLeftFront") and get_node(^"RayLeftFront").get_collider_hit() != null:
 #				left = true
 #				flag = "AVOID - REVERSE"
 #				braking = true
@@ -383,10 +383,10 @@ func car_ahead_detected(body):
 #					flag = "AVOID"
 #					gas = true
 #
-#	elif has_node("RayRightFront") and get_node("RayRightFront").is_colliding() and (get_node("RayRightFront").get_collider() != null):
-#			#print("Detected obstacle " + (get_node("RayRightFront").get_collider().get_parent().get_name()))
+#	elif has_node("RayRightFront") and get_node(^"RayRightFront").is_colliding() and (get_node(^"RayRightFront").get_collider() != null):
+#			#print("Detected obstacle " + (get_node(^"RayRightFront").get_collider().get_parent().get_name()))
 #			if has_node("RayLeftFront"):
-#				if not (get_node("RayLeftFront").is_colliding() and (get_node("RayLeftFront").get_collider() != null)):
+#				if not (get_node(^"RayLeftFront").is_colliding() and (get_node(^"RayLeftFront").get_collider() != null)):
 #					#print(get_parent().get_name() + " rays cancelling out")
 #				#else:
 #					flag = "AVOID - LEFT TURN"
@@ -399,8 +399,8 @@ func car_ahead_detected(body):
 #				gas = true
 #
 #	elif has_node("RayLeftFront"):
-#		if get_node("RayLeftFront").is_colliding() and (get_node("RayLeftFront").get_collider() != null):
-#			#print(get_parent().get_name() + " detected left obstacle " + (get_node("RayLeftFront").get_collider().get_parent().get_name()))
+#		if get_node(^"RayLeftFront").is_colliding() and (get_node(^"RayLeftFront").get_collider() != null):
+#			#print(get_parent().get_name() + " detected left obstacle " + (get_node(^"RayLeftFront").get_collider().get_parent().get_name()))
 #			flag = "AVOID - RIGHT TURN"
 #			right = true
 #
@@ -432,9 +432,9 @@ class CarAheadState:
 		if dot < 0:
 			# drive towards the edge of the road
 			# we're a 3D node, so unfortunately we can only convert Vec3
-			var to_loc = car.get_global_transform().xform_inv(car.target)
+			var to_loc = car.target * car.get_global_transform()
 			var max_range = car.detect_range # same as cast_to of the rays
-			var to_obstacle_loc = car.get_global_transform().xform_inv(obstacle.get_global_transform().origin)
+			var to_obstacle_loc = (obstacle.get_global_transform( * car.get_global_transform()).origin)
 			var mag = (max_range-to_obstacle_loc.z)
 			# steer > 0 is left, < 0 is right
 			var sig = sign(to_loc.x)
@@ -455,7 +455,7 @@ class CarAheadState:
 			
 			# the other one needs to do the same thing!
 			# we're a 3D node, so unfortunately we can only convert Vec3
-			var obst_to_loc = obstacle.get_global_transform().xform_inv(obstacle.brain.target)
+			var obst_to_loc = obstacle.brain.target * obstacle.get_global_transform()
 			# steer > 0 is left, < 0 is right
 			var sig_obst = sign(obst_to_loc.x)
 			
@@ -478,8 +478,8 @@ class CarAheadState:
 		car.steer = Vector2(ster.x, ster.y)
 		# our actual velocity
 		# forward vector scaled by our speed
-		var gl_tg = car.get_parent().get_global_transform().xform(Vector3(0, 0, 4))
-		var rel = car.get_parent().get_global_transform().xform_inv(gl_tg)
+		var gl_tg = car.get_parent().get_global_transform() * (Vector3(0, 0, 4))
+		var rel = gl_tg * car.get_parent().get_global_transform()
 		var vel = rel * car.get_parent().get_linear_velocity().length()
 		
 		car.velocity = Vector2(car.get_parent().get_angular_velocity().y, vel.z)

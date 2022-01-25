@@ -4,21 +4,21 @@
 
 [node name="Control" type="Control" index="0"]
 
-pause_mode = 2
+process_mode = 3
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 40.0
-margin_bottom = 40.0
-rect_pivot_offset = Vector2( 0, 0 )
+offset_right = 40.0
+offset_bottom = 40.0
+rect_pivot_offset = Vector2(0, 0)
 rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 script = ExtResource( 1 )
-_sections_unfolded = [ "Pause" ]
+_sections_unfolded = ["Pause"]
 
 [node name="ColorRect" type="ColorRect" parent="." index="0"]
 
@@ -26,15 +26,15 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 1025.0
-margin_bottom = 601.0
-rect_pivot_offset = Vector2( 0, 0 )
+offset_right = 1025.0
+offset_bottom = 601.0
+rect_pivot_offset = Vector2(0, 0)
 rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-color = Color( 0, 0.152941, 0.992157, 0.54902 )
+color = Color(0, 0.152941, 0.992157, 0.54902)
 
 [node name="Label" type="Label" parent="." index="1"]
 
@@ -42,22 +42,22 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 444.0
-margin_top = 238.0
-margin_right = 524.0
-margin_bottom = 252.0
-rect_pivot_offset = Vector2( 0, 0 )
+offset_left = 444.0
+offset_top = 238.0
+offset_right = 524.0
+offset_bottom = 252.0
+rect_pivot_offset = Vector2(0, 0)
 rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_colors/font_color = Color( 0.0117647, 0.988235, 0.988235, 1 )
+custom_colors/font_color = Color(0.0117647, 0.988235, 0.988235, 1)
 text = "GAME OVER!"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "Margin", "custom_colors" ]
+_sections_unfolded = ["Margin", "custom_colors"]
 
 [node name="Button" type="Button" parent="." index="2"]
 
@@ -65,11 +65,11 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 459.0
-margin_top = 258.0
-margin_right = 471.0
-margin_bottom = 278.0
-rect_pivot_offset = Vector2( 0, 0 )
+offset_left = 459.0
+offset_top = 258.0
+offset_right = 471.0
+offset_bottom = 278.0
+rect_pivot_offset = Vector2(0, 0)
 rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0

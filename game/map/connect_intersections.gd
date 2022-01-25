@@ -1,5 +1,5 @@
-tool
-extends Spatial
+@tool
+extends Node3D
 
 # class member variables go here, for example:
 var draw
@@ -16,7 +16,7 @@ var last_turn
 var extend_turns = false
 
 func _ready():
-	draw = get_node("draw")
+	draw = get_node(^"draw")
 	road_straight = preload("res://roads/road_segment_straight.tscn")
 	road = preload("res://roads/road_segment.tscn")
 
@@ -70,7 +70,7 @@ func connect_intersections(one, two, verbose=false):
 	var data = calculate_initial_turn(corner_points[0], corner_points[1], loc_src_exit, extendeds[0], src_exit)
 	
 	# make top node (which holds road name)
-	var top_node = Spatial.new()
+	var top_node = Node3D.new()
 	top_node.set_script(load("res://roads/road_top.gd"))
 	
 	#print(str(one) + " to " + str(two))
@@ -330,7 +330,7 @@ func last_turn_test(one, two, data, loc, node, verbose=false):
 	
 	
 func set_straight(loc, loc2, node):
-	var road_node = road_straight.instance()
+	var road_node = road_straight.instantiate()
 	road_node.set_name("Road_instance 0")
 	# set length
 	var dist = loc.distance_to(loc2)
@@ -357,7 +357,7 @@ func set_straight(loc, loc2, node):
 			road_node.trees = true
 	
 	
-	var spatial = Spatial.new()
+	var spatial = Node3D.new()
 	spatial.set_name("Spatial0")
 	node.add_child(spatial)
 	spatial.add_child(road_node)
@@ -380,7 +380,7 @@ func set_curved_road(radius, start_angle, end_angle, index, node, verbose):
 		Logger.mapgen_print("Bad radius given!")
 		return null
 
-	var road_node_right = road.instance()
+	var road_node_right = road.instantiate()
 	road_node_right.set_name("Road_instance"+String(index))
 	#set the radius we wanted
 	road_node_right.get_child(0).get_child(0).radius = radius
@@ -409,7 +409,7 @@ func set_curved_road(radius, start_angle, end_angle, index, node, verbose):
 	return road_node_right
 	
 func set_straight_slope(loc, rot, node, i):
-	var road_node = road_straight.instance()
+	var road_node = road_straight.instantiate()
 	road_node.set_name("Road_instance "+str(i))
 	# values here are experimental
 	# set length
@@ -434,7 +434,7 @@ func set_straight_slope(loc, rot, node, i):
 			road_node.trees = true
 	
 	
-	#var spatial = Spatial.new()
+	#var spatial = Node3D.new()
 	#spatial.set_name("Spatial0")
 	node.add_child(road_node)
 	#spatial.add_child(road_node)
@@ -471,7 +471,7 @@ func get_src_exit(src, dest, verbose=false):
 			Logger.mapgen_print("available src exits: " + str(src_exits))
 			Logger.mapgen_print("used exits" + str(src.used_exits))
 		
-	var rel_pos = src.get_global_transform().xform_inv(dest.get_global_transform().origin)
+	var rel_pos = (dest.get_global_transform( * src.get_global_transform()).origin)
 	if verbose:
 		Logger.mapgen_print("Src exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.z, rel_pos.x)))
 	
@@ -593,7 +593,7 @@ func get_dest_exit(src, dest, verbose=false):
 			Logger.mapgen_print("available dest exits: " + str(dest_exits))
 			Logger.mapgen_print("used exits" + str(dest.used_exits))
 	
-	var rel_pos = dest.get_global_transform().xform_inv(src.get_global_transform().origin)
+	var rel_pos = (src.get_global_transform( * dest.get_global_transform()).origin)
 	if verbose:
 		Logger.mapgen_print("Dest exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.z, rel_pos.x)))
 	
@@ -686,9 +686,9 @@ func get_dest_exit(src, dest, verbose=false):
 
 # debug
 func debug_cube(loc):
-	var mesh = CubeMesh.new()
+	var mesh = BoxMesh.new()
 	mesh.set_size(Vector3(0.5,0.5,0.5))
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_mesh(mesh)
 	node.set_name("Debug")
 	add_child(node)
@@ -749,7 +749,7 @@ func draw_circle_arc(center, radius, angle_from, angle_to, right, clr):
 # from maths
 func get_circle_arc( center, radius, angle_from, angle_to, right ):
 	var nb_points = 32
-	var points_arc = PoolVector2Array()
+	var points_arc = PackedVector2Array()
 
 	for i in range(nb_points+1):
 		if right:

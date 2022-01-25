@@ -19,17 +19,17 @@
 [ext_resource path="res://assets/ground_material.tres" type="Material" id=17]
 [ext_resource path="res://objects/spikestrip.tscn" type="PackedScene" id=18]
 
-[sub_resource type="SpatialMaterial" id=3]
+[sub_resource type="StandardMaterial3D" id=3]
 flags_unshaded = true
 flags_use_point_size = true
 params_line_width = 3.0
 params_point_size = 3.0
-albedo_color = Color( 1, 0.961243, 0.0078125, 1 )
+albedo_color = Color(1, 0.961243, 0.0078125, 1)
 
-[sub_resource type="BoxShape" id=2]
-extents = Vector3( 500, 1, 500 )
+[sub_resource type="BoxShape3D" id=2]
+extents = Vector3(500, 1, 500)
 
-[node name="Navigation" type="Navigation"]
+[node name="Node3D" type="Node3D"]
 script = ExtResource( 15 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -42,8 +42,8 @@ __meta__ = {
 [node name="scene" parent="." instance=ExtResource( 4 )]
 rain_amount = 0.5
 
-[node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( 1, 0, 0, 0, -0.766045, 0.642788, 0, -0.642788, -0.766045, 0, 18.629, 0 )
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.766045, 0.642788, 0, -0.642788, -0.766045, 0, 18.629, 0)
 shadow_enabled = true
 shadow_bias = 0.0
 shadow_reverse_cull_face = true
@@ -52,77 +52,77 @@ directional_shadow_normal_bias = 0.0
 directional_shadow_bias_split_scale = 0.0
 directional_shadow_max_distance = 50.0
 
-[node name="map" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -128.754, 0, -209.444 )
+[node name="map" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -128.754, 0, -209.444)
 script = ExtResource( 5 )
 
-[node name="triangulate" type="Spatial" parent="map"]
+[node name="triangulate" type="Node3D" parent="map"]
 script = ExtResource( 6 )
 
-[node name="poisson" type="Spatial" parent="map/triangulate"]
+[node name="poisson" type="Node3D" parent="map/triangulate"]
 script = ExtResource( 7 )
 
-[node name="nav" type="Spatial" parent="map"]
+[node name="nav" type="Node3D" parent="map"]
 script = ExtResource( 13 )
 
-[node name="draw" type="ImmediateGeometry" parent="map"]
+[node name="draw" type="ImmediateGeometry3D" parent="map"]
 visible = false
 material_override = SubResource( 3 )
 cast_shadow = 0
 script = ExtResource( 8 )
-color = Color( 1, 0.961243, 0.0078125, 1 )
+color = Color(1, 0.961243, 0.0078125, 1)
 
-[node name="Racers" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 47.594, 0, 192.855 )
+[node name="Racers" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.594, 0, 192.855)
 __meta__ = {
 "_editor_description_": "This is rotated to align with the raceline"
 }
 
-[node name="AI" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 47.594, 0, 192.855 )
+[node name="AI" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.594, 0, 192.855)
 
 [node name="Spatial10" parent="AI" instance=ExtResource( 10 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.01203, 0, 0.0882263 )
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.01203, 0, 0.0882263)
 
 [node name="Spatial12" parent="AI" instance=ExtResource( 10 )]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.29308, 0, 4.66875 )
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.29308, 0, 4.66875)
 
 [node name="Spatial11" parent="AI" instance=ExtResource( 10 )]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 4.38827, 0, -1.53667 )
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 4.38827, 0, -1.53667)
 
 [node name="cop" parent="AI" instance=ExtResource( 14 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.1935 )
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.1935)
 
 [node name="car" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2119, 0, 192.855 )
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2119, 0, 192.855)
 
-[node name="Ground" type="Spatial" parent="."]
+[node name="Ground" type="Node3D" parent="."]
 script = ExtResource( 11 )
 snowmaterial = ExtResource( 12 )
 groundmaterial = ExtResource( 17 )
 
-[node name="StaticBody" type="StaticBody" parent="Ground"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
 collision_layer = 2
 
-[node name="CollisionShape5" type="CollisionShape" parent="Ground/StaticBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.95, 0 )
+[node name="CollisionShape5" type="CollisionShape3D" parent="Ground/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.95, 0)
 shape = SubResource( 2 )
 
-[node name="Spatial" parent="." instance=ExtResource( 16 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 72.419, 0, 186.771 )
+[node name="Node3D" parent="." instance=ExtResource( 16 )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72.419, 0, 186.771)
 
 [node name="Spatial4" parent="." instance=ExtResource( 9 )]
-transform = Transform( 0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 25.9671, 1.5, 155.39 )
+transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 25.9671, 1.5, 155.39)
 
 [node name="Spatial2" parent="." instance=ExtResource( 16 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 26.2849, 0, 154.204 )
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.2849, 0, 154.204)
 visible = false
 
 [node name="Spatial3" parent="." instance=ExtResource( 16 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12.2038, 0, 210.359 )
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.2038, 0, 210.359)
 
 [node name="Spatial5" parent="." instance=ExtResource( 18 )]
-transform = Transform( 0.258819, 0, 0.965925, 0, 1, 0, -0.965925, 0, 0.258819, 36.751, 0.1, 159.19 )
+transform = Transform3D(0.258819, 0, 0.965925, 0, 1, 0, -0.965925, 0, 0.258819, 36.751, 0.1, 159.19)
 
-[node name="marker_North" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 900, 0, 0 )
+[node name="marker_North" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 900, 0, 0)

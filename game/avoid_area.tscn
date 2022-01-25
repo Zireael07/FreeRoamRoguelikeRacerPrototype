@@ -2,20 +2,20 @@
 
 [ext_resource path="res://avoid_area.gd" type="Script" id=1]
 
-[sub_resource type="BoxShape" id=1]
+[sub_resource type="BoxShape3D" id=1]
 
-[sub_resource type="CubeMesh" id=2]
-size = Vector3( 1, 1, 1 )
+[sub_resource type="BoxMesh" id=2]
+size = Vector3(1, 1, 1)
 
-[node name="Spatial" type="Area"]
+[node name="Node3D" type="Area3D"]
 input_ray_pickable = false
 script = ExtResource( 1 )
 
-[node name="CollisionShape" type="CollisionShape" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource( 1 )
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 mesh = SubResource( 2 )
-material/0 = null
+surface_material_override/0 = null
 [connection signal="body_entered" from="." to="." method="_on_Spatial_body_entered"]

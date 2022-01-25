@@ -1,5 +1,5 @@
-tool
-extends Spatial
+@tool
+extends Node3D
 
 var ast # for BFS
 var nav # for actual navigation
@@ -76,7 +76,7 @@ func spawn_marker(samples, spots, mark, _name, limit=2):
 	#print("Selected spot: " + str(id))
 	var p = samples[id]
 	
-	var marker = mark.instance()
+	var marker = mark.instantiate()
 	#marker.set_name(_name)
 	marker.set_translation(Vector3(p[0]*mult, 0, p[1]*mult))
 
@@ -155,7 +155,7 @@ func spawn_markers(samples, real_edges):
 	# id equals intersection number
 	var p = samples[id]
 
-	var sp_marker = sp_mark.instance()
+	var sp_marker = sp_mark.instantiate()
 	sp_marker.set_translation(Vector3(p[0]*mult, 0, p[1]*mult))
 	sp_marker.set_name("speed_marker"+">" + str(id))
 	# add marker to the map itself
@@ -210,7 +210,7 @@ func setup_map_nav(samples, real_edges):
 func setup_markers(marker_data):
 	# test the nav
 	if marker_data != null:
-		#var marker = get_node("tt_marker")
+		#var marker = get_node(^"tt_marker")
 		var marker = get_parent().get_marker("tt_marker")
 	#print(marker.get_translation())
 		var tg = marker.target
@@ -229,7 +229,7 @@ func setup_markers(marker_data):
 #	marker.raceline = nav_path
 
 		#paranoia
-		var nav_path = PoolVector3Array()
+		var nav_path = PackedVector3Array()
 		if [int_path[0], int_path[1]] in path_look:
 			#print("First pair: " + str(int_path[0]) + "," + str(int_path[1]))			
 			var lookup_path = path_look[[int_path[0], int_path[1]]]
@@ -238,8 +238,8 @@ func setup_markers(marker_data):
 			#print("Nav path: " + str(nav_path))
 			# so that the player can see
 			#marker.raceline = nav_path
-		var nav_path2 = PoolVector3Array()
-		var nav_path3 = PoolVector3Array()
+		var nav_path2 = PackedVector3Array()
+		var nav_path3 = PackedVector3Array()
 		if int_path.size() > 2 and [int_path[1], int_path[2]] in path_look:
 			#print("Second pair: " + str(int_path[1]) + "," + str(int_path[2]))
 			var lookup_path = path_look[[int_path[1], int_path[2]]]
@@ -261,7 +261,7 @@ func setup_markers(marker_data):
 		
 		# the same for race marker	
 		marker = get_parent().get_marker("race_marker")
-		#marker = get_node("race_marker")
+		#marker = get_node(^"race_marker")
 	#print(marker.get_translation())
 		tg = marker.target
 	#print("tg : " + str(tg))
@@ -272,7 +272,7 @@ func setup_markers(marker_data):
 
 		# TODO: factor out into a function
 		#paranoia
-		nav_path = PoolVector3Array()
+		nav_path = PackedVector3Array()
 		if [int_path[0], int_path[1]] in path_look:
 			#print("First pair: " + str(int_path[0]) + "," + str(int_path[1]))			
 			var lookup_path = path_look[[int_path[0], int_path[1]]]
@@ -281,8 +281,8 @@ func setup_markers(marker_data):
 			#print("Nav path: " + str(nav_path))
 			# so that the player can see
 			#marker.raceline = nav_path
-		nav_path2 = PoolVector3Array()
-		nav_path3 = PoolVector3Array()
+		nav_path2 = PackedVector3Array()
+		nav_path3 = PackedVector3Array()
 		if int_path.size() > 2 and [int_path[1], int_path[2]] in path_look:
 			#print("Second pair: " + str(int_path[1]) + "," + str(int_path[2]))
 			var lookup_path = path_look[[int_path[1], int_path[2]]]
@@ -327,10 +327,10 @@ func setup_nav_astar(pts, i, begin_id):
 	if not get_parent().get_child(i).has_node("Road_instance1"):
 		return
 
-	var turn1 = get_parent().get_child(i).get_node("Road_instance0").get_child(0).get_child(0)
-	var turn2 = get_parent().get_child(i).get_node("Road_instance1").get_child(0).get_child(0)
+	var turn1 = get_parent().get_child(i).get_node(^"Road_instance0").get_child(0).get_child(0)
+	var turn2 = get_parent().get_child(i).get_node(^"Road_instance1").get_child(0).get_child(0)
 
-	#print("Straight positions: " + str(get_child(i).get_node("Spatial0").get_child(0).positions))
+	#print("Straight positions: " + str(get_child(i).get_node(^"Spatial0").get_child(0).positions))
 	#print("Turn 1 positions: " + str(turn1.positions))
 	#print("Turn 1 center points: " + str(turn1.points_center))
 	#print("Turn 2 positions: " + str(turn2.positions))
@@ -421,7 +421,7 @@ func get_lane(road, flip, left_side):
 	var src = get_parent().get_child(ret[0]+3)
 	var dst = get_parent().get_child(ret[1]+3)
 	# which direction are we going?
-	var rel_pos = src.get_global_transform().xform_inv(dst.get_global_transform().origin)
+	var rel_pos = (dst.get_global_transform( * src.get_global_transform()).origin)
 	# same as in connect_intersections.gd
 	# by convention, y comes first
 	var angle = atan2(rel_pos.z, rel_pos.x)
@@ -432,8 +432,8 @@ func get_lane(road, flip, left_side):
 	
 	
 	# this part actually gets A* points
-	var turn1 = road.get_node("Road_instance0").get_child(0).get_child(0)
-	var turn2 = road.get_node("Road_instance1").get_child(0).get_child(0)
+	var turn1 = road.get_node(^"Road_instance0").get_child(0).get_child(0)
+	var turn2 = road.get_node(^"Road_instance1").get_child(0).get_child(0)
 
 	var offsets = reference_pos(road, src, dst, turn1, turn2, false)
 	var cross = false
@@ -502,7 +502,7 @@ func get_pts_from_lanes(lanes, flip, turn1, turn2):
 	#print("Points with turn 2: ", pts.size()) # 65 = 33+32
 
 	if flip:
-		pts.invert()
+		pts.reverse()
 		
 	var midpoint = get_lane_midpoint(pts, flip)
 	pts.append(midpoint)
@@ -540,7 +540,7 @@ func get_paths(id, exclude=-1):
 	for p in self.path_look:
 	#for i in range(self.path_look.size()):
 	#	var p = self.path_look.keys()[i]
-		#print("Path considered: " + str(p))
+		#print("Path3D considered: " + str(p))
 		if p[0] == id:
 			paths.append(p)
 
@@ -578,8 +578,8 @@ func reference_pos(road, src, dst, turn1, turn2, flip):
 	#print("Inner 0: ", turn1.points_inner_nav[0], "outer 0", turn2.points_outer_nav[0])
 	
 	# from intersection, looking at start point
-	var src_tr = Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), src.get_global_transform().origin)
-	var dst_tr = Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), dst.get_global_transform().origin)
+	var src_tr = Transform3D(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), src.get_global_transform().origin)
+	var dst_tr = Transform3D(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), dst.get_global_transform().origin)
 
 	# TODO optimize - this creates two nodes per call
 #	var test_src = Position3D.new()
@@ -614,16 +614,16 @@ func reference_pos(road, src, dst, turn1, turn2, flip):
 	var outer_offset = null
 	if not flip:
 		#inner_offset = test_src.to_local(turn1.to_global(inn))
-		inner_offset = src_tr.xform_inv(turn1.to_global(inn))
+		inner_offset = turn1.to_global(inn) * src_tr
 		#print(road.get_name(), " inner offset ", inner_offset.x, " right: ", inner_offset.x < 0)
 		#outer_offset = test_dst.to_local(turn2.to_global(out))
-		outer_offset = dst_tr.xform_inv(turn2.to_global(out))
+		outer_offset = turn2.to_global(out) * dst_tr
 	else:
 		#outer_offset = test_src.to_local(turn2.to_global(out))
-		outer_offset = src_tr.xform_inv(turn2.to_global(out))
+		outer_offset = turn2.to_global(out) * src_tr
 		#print(road.get_name(), " outer offset ", outer_offset.x, " right: ", outer_offset.x < 0)
 		#inner_offset = test_dst.to_local(turn1.to_global(inn))
-		inner_offset = dst_tr.xform_inv(turn1.to_global(inn))
+		inner_offset = turn1.to_global(inn) * dst_tr
 	
 	#debug_cube(to_local(turn1.to_global(Vector3(turn1.points_inner_nav[0].x, 0.5, turn1.points_inner_nav[0].y))), "left_flip") # blue
 	#debug_cube(to_local(turn2.to_global(Vector3(turn2.points_outer_nav[0].x, 0.5, turn2.points_outer_nav[0].y))), "left") # black
@@ -679,7 +679,7 @@ func debug_lane_lists():
 		var src = map.get_child(p[0]+3)
 		var dst = map.get_child(p[1]+3)
 		# which direction are we going?
-		var rel_pos = src.get_global_transform().xform_inv(dst.get_global_transform().origin)
+		var rel_pos = (dst.get_global_transform( * src.get_global_transform()).origin)
 		# same as in connect_intersections.gd
 		# by convention, y comes first
 		var angle = atan2(rel_pos.z, rel_pos.x)
@@ -689,8 +689,8 @@ func debug_lane_lists():
 		
 		
 		# this part actually gets A* points
-		var turn1 = road.get_node("Road_instance0").get_child(0).get_child(0)
-		var turn2 = road.get_node("Road_instance1").get_child(0).get_child(0)
+		var turn1 = road.get_node(^"Road_instance0").get_child(0).get_child(0)
+		var turn2 = road.get_node(^"Road_instance1").get_child(0).get_child(0)
 	
 		var offsets = reference_pos(road, src, dst, turn1, turn2, flip)
 		var cross = false
@@ -728,8 +728,8 @@ func debug_lane_lists():
 		
 		# detect bugs
 		# those two should line up relative to the straight part of the road
-		var midpoint_offset = road.get_node("Spatial0/Road_instance 0").to_local(pts[pts.size()-1]).x
-		var turn_offset = road.get_node("Spatial0/Road_instance 0").to_local(pts[33]).x
+		var midpoint_offset = road.get_node(^"Spatial0/Road_instance 0").to_local(pts[pts.size()-1]).x
+		var turn_offset = road.get_node(^"Spatial0/Road_instance 0").to_local(pts[33]).x
 		if abs(midpoint_offset-turn_offset) > 0.75:
 			print("Bug! Lanes crossing over for road ", road.get_name())
 			# debugging
@@ -952,7 +952,7 @@ func get_arc_angle(center_point, start_point, end_point, angle0, verbose=false):
 # from maths
 func get_circle_arc( center, radius, angle_from, angle_to, right, nb_points=32):
 	#var nb_points = 32
-	var points_arc = PoolVector2Array()
+	var points_arc = PackedVector2Array()
 
 	for i in range(nb_points+1):
 		if right:
@@ -968,9 +968,9 @@ func get_circle_arc( center, radius, angle_from, angle_to, right, nb_points=32):
 
 
 func debug_cube(loc, flag=""):
-	var mesh = CubeMesh.new()
+	var mesh = BoxMesh.new()
 	mesh.set_size(Vector3(0.5,0.5,0.5))
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_mesh(mesh)
 	if flag == "flip":
 		node.get_mesh().surface_set_material(0, flip_mat) #red
@@ -988,5 +988,5 @@ func debug_cube(loc, flag=""):
 	
 func clear_cubes():
 	for c in get_children():
-		if c.is_in_group("debug") and c.is_class("MeshInstance"):
+		if c.is_in_group("debug") and c.is_class("MeshInstance3D"):
 			c.queue_free()

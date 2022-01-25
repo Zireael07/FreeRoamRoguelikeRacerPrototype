@@ -46,7 +46,7 @@ var prev = 0
 var current = 0
 var dot = 0
 var rel_loc = Vector3()
-var race_path = PoolVector3Array()
+var race_path = PackedVector3Array()
 var finished = false
 
 # performance testing
@@ -86,19 +86,19 @@ func _ready():
 
 
 	# our custom signal
-	connect("load_ended", self, "on_load_ended")
+	connect(&"load_ended", self.on_load_ended)
 
-	World_node = get_parent().get_parent().get_node("scene")
+	World_node = get_parent().get_parent().get_node(^"scene")
 	cockpit_cam = $"cambase/CameraCockpit"
 	debug_cam = $"cambase/CameraDebug"
 
 	##GUI
 	var h = preload("res://hud/hud.tscn")
-	hud = h.instance()
+	hud = h.instantiate()
 	add_child(hud)
 
 	var v = preload("res://hud/virtual_joystick.tscn")
-	vjoy = v.instance()
+	vjoy = v.instantiate()
 	vjoy.set_name("Joystick")
 	# we default to mouse steering off
 	vjoy.hide()
@@ -106,28 +106,28 @@ func _ready():
 
 
 	# get map seed
-	map = get_parent().get_parent().get_node("map")
+	map = get_parent().get_parent().get_node(^"map")
 	if map != null:
-		hud.update_seed(map.get_node("triangulate/poisson").seed3)
+		hud.update_seed(map.get_node(^"triangulate/poisson").seed3)
 
 	#var m = preload("res://hud/minimap.tscn")
-	var m = preload("res://hud/Viewport.tscn")
-	minimap = m.instance()
+	var m = preload("res://hud/SubViewport.tscn")
+	minimap = m.instantiate()
 	minimap.set_name("Viewport_root")
 	add_child(minimap)
 	minimap.set_name("Viewport_root")
 
 	m = preload("res://hud/MapView.tscn")
-	map_big = m.instance()
+	map_big = m.instantiate()
 	map_big.set_name("Map")
 	# share the world with the minimap
-	map_big.get_node("Viewport").world_2d = get_node("Viewport_root/Viewport").world_2d
+	map_big.get_node(^"SubViewport").world_2d = get_node(^"Viewport_root/SubViewport").world_2d
 	add_child(map_big)
 	map_big.hide()
 
 
 	var msg = preload("res://hud/message_panel.tscn")
-	panel = msg.instance()
+	panel = msg.instantiate()
 	panel.set_name("Messages")
 	#panel.set_text("Welcome to 大都市")
 	add_child(panel)
@@ -145,7 +145,7 @@ func _ready():
 
 
 	var pause = preload("res://hud/pause_panel.tscn")
-	var pau = pause.instance()
+	var pau = pause.instantiate()
 	add_child(pau)
 
 	game_over = preload("res://hud/game_over.tscn")
@@ -178,18 +178,18 @@ func random_date():
 func on_load_ended():
 	print("Loaded all pertinent stuff")
 	# enable our cam
-	var chase_cam = get_node("cambase/Camera")
+	var chase_cam = get_node(^"cambase/Camera3D")
 	chase_cam.make_current()
 	# disable rear view mirror
 	$"cambase/MirrorMesh".set_visible(false)
-	$"cambase/Viewport/CameraCockpitBack".clear_current()
-	$"cambase/Viewport".set_update_mode(Viewport.UPDATE_DISABLED)
+	$"cambase/SubViewport/CameraCockpitBack".clear_current()
+	$"cambase/SubViewport".set_update_mode(SubViewport.UPDATE_DISABLED)
 
 	# temporarily disable
-	#get_node("driver_new").setup_ik()
+	#get_node(^"driver_new").setup_ik()
 
 	# optimize label/nameplate rendering
-	get_node("..").freeze_viewports()
+	get_node(^"..").freeze_viewports()
 
 #-------------------------------------------------
 # interacting with physics
@@ -222,7 +222,7 @@ func _physics_process(delta):
 
 	# racing
 	if race and race_path.size() > 0:
-		var forward_global = get_global_transform().xform(Vector3(0, 0, 2))
+		var forward_global = get_global_transform() * (Vector3(0, 0, 2))
 		var forward_vec = forward_global-get_global_transform().origin
 
 		var pos = get_global_transform().origin
@@ -231,7 +231,7 @@ func _physics_process(delta):
 		# forward vec goes from origin to forward
 		dot = forward_vec.dot(target_vec)
 
-		rel_loc = get_global_transform().xform_inv(race_path[current])
+		rel_loc = race_path[current] * get_global_transform()
 
 		#offset = offset_dist(race_path[prev], race_path[current], pos)
 
@@ -285,7 +285,7 @@ func _physics_process(delta):
 
 	# virtual joystick
 	if mouse_steer:
-		joy = get_node("Joystick/Control").val
+		joy = get_node(^"Joystick/Control").val
 
 
 
@@ -343,18 +343,18 @@ func _physics_process(delta):
 	# test stuck detection
 	if gas and not reverse and speed < 2:
 		#print("STUCK!!!")
-		if get_node("StuckTimer").get_time_left() == 0:
-			get_node("StuckTimer").start()
-			#print("Started timer ", get_node("StuckTimer").get_time_left())
+		if get_node(^"StuckTimer").get_time_left() == 0:
+			get_node(^"StuckTimer").start()
+			#print("Started timer ", get_node(^"StuckTimer").get_time_left())
 		#else:
 		#	print("Timer already running")
 	elif gas and speed > 2:
 		#print("No longer stuck")
 		# abort stuck timer
-		get_node("StuckTimer").stop()
+		get_node(^"StuckTimer").stop()
 
-	get_node("driver_new/Armature/Spatial").set_rotation(Vector3(get_steering()*2,0,0))
-	#get_node("proc_mesh/Spatial/steering").set_rotation(Vector3(get_steering()*2, 0, 0))
+	get_node(^"driver_new/Armature/Node3D").set_rotation(Vector3(get_steering()*2,0,0))
+	#get_node(^"proc_mesh/Node3D/steering").set_rotation(Vector3(get_steering()*2, 0, 0))
 
 	#reset
 	if (Input.is_action_pressed("steer_reset")):
@@ -425,17 +425,17 @@ func _process(delta):
 	var disp = get_compass_heading()
 	hud.update_compass(str(disp))
 
-	#var cam_minimap = minimap.get_node("Viewport/minimap").cam2d
+	#var cam_minimap = minimap.get_node(^"SubViewport/minimap").cam2d
 	#var cam_rot = (cam_minimap.arr_rot)
 
 	# detect what we're driving on
-	var hit = get_node("RayCast").get_collider_hit()
+	var hit = get_node(^"RayCast3D").get_collider_hit()
 	var disp_name = ""
 	if hit != null:
 		# particles
 		was_dirt = false
-		get_node("Smoke").set_emitting(false)
-		get_node("Smoke2").set_emitting(false)
+		get_node(^"Smoke").set_emitting(false)
+		get_node(^"Smoke2").set_emitting(false)
 		
 		var road_ = hit.get_parent().get_parent().get_name().find("Road_")
 		var road = hit.get_parent().get_parent().get_name().find("Road")
@@ -463,7 +463,7 @@ func _process(delta):
 						print("Not race end intersection")
 						r.queue_free()
 						# remove minimap marker
-						minimap.get_node("Viewport/minimap").remove_arrow(r)
+						minimap.get_node(^"SubViewport/minimap").remove_arrow(r)
 			
 			# if we have a player navigation path
 			if map_big.int_path.size() > 0:
@@ -497,8 +497,8 @@ func _process(delta):
 	else:
 		if not was_dirt:
 			was_dirt = true
-			get_node("Smoke").set_emitting(true)
-			get_node("Smoke2").set_emitting(true)
+			get_node(^"Smoke").set_emitting(true)
+			get_node(^"Smoke2").set_emitting(true)
 						
 	# clear text if we passed the newly reached intersection				
 	if not reached_changed and not show_nav_tip:
@@ -516,43 +516,43 @@ func _process(delta):
 		
 
 	# shaders stuff
-#	#print("Light color" + str(World_node.light_color))
+#	#print("Light3D color" + str(World_node.light_color))
 #	if "light_color" in World_node and World_node.light_color != null:
 #		var color = Vector3(World_node.light_color.r, World_node.light_color.g, World_node.light_color.b)
 #	#print("Color input: " + str(color))
-#		get_node("skysphere/Skysphere").get_material_override().set_shader_param("light", color) #Color(World_node.light_color.r, World_node.light_color.g, World_node.light_color.b))
-#	#print("Shader color: " + str(get_node("skysphere/Skysphere").get_material_override().get_shader_param("light")))
+#		get_node(^"skysphere/Skysphere").get_material_override().set_shader_param("light", color) #Color(World_node.light_color.r, World_node.light_color.g, World_node.light_color.b))
+#	#print("Shader color: " + str(get_node(^"skysphere/Skysphere").get_material_override().get_shader_param("light")))
 
 	# speed effects
 	# less rain visible if going fast
 	if World_node.weather > 1:
 		if speed > 20:
-			get_node("RainParticles").amount = 128
-			get_node("RainParticles2").amount = 128
+			get_node(^"RainParticles").amount = 128
+			get_node(^"RainParticles2").amount = 128
 		else:
-			get_node("RainParticles").amount = 256
-			get_node("RainParticles").amount = 256
+			get_node(^"RainParticles").amount = 256
+			get_node(^"RainParticles").amount = 256
 	
 	
 	if speed > 25:
 		if not was_fast:
-			get_node("cambase/AnimationPlayer2").play("fov")
-		#get_node("cambase/Camera").fov = 75
+			get_node(^"cambase/AnimationPlayer2").play("fov")
+		#get_node(^"cambase/Camera3D").fov = 75
 		was_fast = true
 
 	else:
 		if was_fast:
-			get_node("cambase/AnimationPlayer2").play_backwards("fov")
+			get_node(^"cambase/AnimationPlayer2").play_backwards("fov")
 		was_fast = false
 		
 		if speed < 20:
-			get_node("cambase/Camera").fov = 60
+			get_node(^"cambase/Camera3D").fov = 60
 
 
 	if speed > 35:
-		get_node("SpeedParticles").set_emitting(true)
+		get_node(^"SpeedParticles").set_emitting(true)
 	else:
-		get_node("SpeedParticles").set_emitting(false)
+		get_node(^"SpeedParticles").set_emitting(false)
 	# motion blur
 	if speed > 28: #100 kphs
 		enable_motion_blur(true)
@@ -562,30 +562,30 @@ func _process(delta):
 	# stop weather particles when in tunnel
 	if hit != null and 'tunnel' in hit.get_parent().get_parent() and hit.get_parent().get_parent().tunnel:
 		was_tunnel = true
-		get_node("RainParticles").set_emitting(false)
-		get_node("RainParticles2").set_emitting(false)
+		get_node(^"RainParticles").set_emitting(false)
+		get_node(^"RainParticles2").set_emitting(false)
 	else:
 		if was_tunnel and World_node.weather > 1: # rain or snow
 			was_tunnel = false
-			get_node("RainParticles").set_emitting(true)
-			get_node("RainParticles2").set_emitting(true)
+			get_node(^"RainParticles").set_emitting(true)
+			get_node(^"RainParticles2").set_emitting(true)
 			
 	# skid marks
 	if speed < 5:
-		var pos = get_node("cambase/Camera").get_global_transform().origin
-		var mark = skidmark.instance()
-		var wh_pos = get_node("wheel2")
+		var pos = get_node(^"cambase/Camera3D").get_global_transform().origin
+		var mark = skidmark.instantiate()
+		var wh_pos = get_node(^"wheel2")
 		var mark_pos = wh_pos.get_global_transform().origin - Vector3(0,0.3, 0) # tiny offset to make marks show on roads
 		var lpos = map.to_local(mark_pos)
 		mark.set_translation(lpos)
 		# place all the skidmarks under a common parent
 		var gfx = null
-		if !map.has_node("gfx"):
-			gfx = Spatial.new()
+		if not map.has_node("gfx"):
+			gfx = Node3D.new()
 			gfx.set_name("gfx")
 			map.add_child(gfx)
 		else:
-			gfx = map.get_node("gfx")
+			gfx = map.get_node(^"gfx")
 			
 		gfx.add_child(mark)
 		mark.look_at(pos, Vector3(0,1,0))
@@ -593,8 +593,8 @@ func _process(delta):
 		#mark.rotate_y(deg2rad(180))
 		#mark.rotate_x(deg2rad(-90))
 
-		mark = skidmark.instance()
-		wh_pos = get_node("wheel4")
+		mark = skidmark.instantiate()
+		wh_pos = get_node(^"wheel4")
 		mark_pos = wh_pos.get_global_transform().origin - Vector3(0,0.3, 0) # tiny offset to make marks show on roads
 		lpos = map.to_local(mark_pos)
 		mark.set_translation(lpos)
@@ -603,7 +603,7 @@ func _process(delta):
 		mark.look_at(pos, Vector3(0,1,0))
 
 func enable_motion_blur(on):
-	get_node("cambase/Camera/motion_blur").switch_motion_blur(on)
+	get_node(^"cambase/Camera3D/motion_blur").switch_motion_blur(on)
 	# blur trick
 	#World_node.env.set_dof_blur_far_enabled(on)
 	#World_node.env.set_dof_blur_near_enabled(on)
@@ -628,7 +628,7 @@ func get_compass_heading():
 	return disp
 
 func get_heading():
-	var forward_global = get_global_transform().xform(Vector3(0, 0, 2))
+	var forward_global = get_global_transform() * (Vector3(0, 0, 2))
 	var forward_vec = forward_global-get_global_transform().origin
 	#var basis_vec = player.get_global_transform().basis.z
 	
@@ -636,8 +636,8 @@ func get_heading():
 	#var player_rot = forward_vec.angle_to(Vector3(0,0,1))
 	# returns radians
 	#return player_rot
-	var North = get_node("/root/Navigation/marker_North")
-	var rel_loc = get_global_transform().xform_inv(North.get_global_transform().origin)
+	var North = get_node(^"/root/Node3D/marker_North")
+	var rel_loc = (North.get_global_transform( * get_global_transform()).origin)
 	#2D angle to target (local coords)
 	var angle = atan2(rel_loc.x, rel_loc.z)
 	#print("Heading: ", rad2deg(angle))
@@ -646,15 +646,15 @@ func get_heading():
 #doesn't interact with physics
 func _input(event):
 	if (Input.is_action_pressed("headlights_toggle")):
-		if (get_node("SpotLight").is_visible()):
+		if (get_node(^"SpotLight3D").is_visible()):
 			setHeadlights(false)
 		else:
 			setHeadlights(true)
 
 	# switch cameras
 	if (Input.is_action_pressed("camera")):
-		var chase_cam = get_node("cambase/Camera")
-		var cockpit_cam = get_node("cambase/CameraCockpit")
+		var chase_cam = get_node(^"cambase/Camera3D")
+		var cockpit_cam = get_node(^"cambase/CameraCockpit")
 		if chase_cam.is_current():
 			cockpit_cam.make_current()
 
@@ -663,8 +663,8 @@ func _input(event):
 			hud.speed_cockpit()
 
 			# enable rear view mirror
-			$"cambase/Viewport/CameraCockpitBack".make_current()
-			$"cambase/Viewport".set_update_mode(Viewport.UPDATE_ALWAYS)
+			$"cambase/SubViewport/CameraCockpitBack".make_current()
+			$"cambase/SubViewport".set_update_mode(SubViewport.UPDATE_ALWAYS)
 			$"cambase/MirrorMesh".set_visible(true)
 		else:
 			chase_cam.make_current()
@@ -675,13 +675,13 @@ func _input(event):
 
 			# disable rear view mirror
 			$"cambase/MirrorMesh".set_visible(false)
-			$"cambase/Viewport/CameraCockpitBack".clear_current()
-			$"cambase/Viewport".set_update_mode(Viewport.UPDATE_DISABLED)
+			$"cambase/SubViewport/CameraCockpitBack".clear_current()
+			$"cambase/SubViewport".set_update_mode(SubViewport.UPDATE_DISABLED)
 
 
 
 	if (Input.is_action_pressed("camera_debug")):
-		var chase_cam = get_node("cambase/Camera")
+		var chase_cam = get_node(^"cambase/Camera3D")
 		if debug_cam.is_current():
 			chase_cam.make_current()
 			# hud changes
@@ -700,7 +700,7 @@ func _input(event):
 				if 'tunnel' in r and r.tunnel:
 					r.debug_tunnel()
 
-#		var cam = get_node("cambase/Camera")
+#		var cam = get_node(^"cambase/Camera3D")
 #		if (cam !=null):
 #			if (not cam.debug):
 #				cam.set_debug(true)
@@ -710,7 +710,7 @@ func _input(event):
 
 	if (Input.is_action_pressed("look_back")):
 		print("Look back!")
-		var cam = get_node("cambase/Camera")
+		var cam = get_node(^"cambase/Camera3D")
 		if (cam != null):
 			if (not cam.debug):
 				if not cam.look_back:
@@ -726,16 +726,16 @@ func _input(event):
 		perf_distance = 0
 
 	if (Input.is_action_pressed("map")):
-		if get_node("Map").is_visible():
-			get_node("Map").hide()
+		if get_node(^"Map").is_visible():
+			get_node(^"Map").hide()
 		else:
 			#print("Show map!")
-			get_node("Map").show()
+			get_node(^"Map").show()
 			# force redraw minimap track if any
-			get_node("Map").redraw_nav()
+			get_node(^"Map").redraw_nav()
 
 	if (Input.is_action_pressed("arc_test")):
-		var map = get_node("/root/Navigation").get_node("map")
+		var map = get_node(^"/root/Node3D").get_node(^"map")
 		
 		# find closest intersection
 		# look up the closest intersection
@@ -754,7 +754,7 @@ func _input(event):
 		var car = closest.to_local(get_global_transform().origin)
 		
 		# debug
-		map.get_node("nav").debug_cube(map.get_node("nav").to_local(closest.get_global_transform().origin+lo))
+		map.get_node(^"nav").debug_cube(map.get_node(^"nav").to_local(closest.get_global_transform().origin+lo))
 		
 		
 		# snap car and loc to intersection points for simpler logic
@@ -764,7 +764,7 @@ func _input(event):
 		# debug
 		var g_loc = closest.get_global_transform().origin+lo
 		#var g_loc = closest.get_global_transform().origin+car
-		map.get_node("nav").debug_cube(map.get_node("nav").to_local(g_loc), "flip")
+		map.get_node(^"nav").debug_cube(map.get_node(^"nav").to_local(g_loc), "flip")
 		
 		# don't care about y
 		car = Vector2(car.x, car.z)
@@ -774,8 +774,8 @@ func _input(event):
 		print("Exit is ahead: ", abs(angle)>deg2rad(120))
 		
 		#var nav_path = [ closest.get_global_transform().origin + test_locs[2] ]
-		#map.get_node("nav").clear_cubes()
-		#map.get_node("nav").intersection_arc(self, closest, nav_path)
+		#map.get_node(^"nav").clear_cubes()
+		#map.get_node(^"nav").intersection_arc(self, closest, nav_path)
 
 # -------------------------------------
 func _on_BODY_body_entered(body):
@@ -793,12 +793,12 @@ func _on_BODY_body_entered(body):
 			health -= round(speed)
 			# deform
 			if not get_parent().is_in_group("bike"):
-				var local = get_global_transform().xform_inv((obj.get_global_transform().origin))
+				var local = ((obj.get_global_transform( * get_global_transform()).origin))
 				$"car_mesh".hit_deform(local)
 
 	if health <= 0:
 		# game over!
-		var over = game_over.instance()
+		var over = game_over.instantiate()
 		add_child(over)
 
 	#print("Health" + str(health))
@@ -817,10 +817,10 @@ func create_race_path(path):
 
 func angle_to_intersection(id):
 	# contains intersections global positions
-	var intersections = get_node("Viewport_root/Viewport/minimap").intersections
+	var intersections = get_node(^"Viewport_root/SubViewport/minimap").intersections
 	var pos_gl = intersections[id]
 	#print("Global position ", pos_gl)
-	var rel_pos = get_global_transform().xform_inv(pos_gl)
+	var rel_pos = pos_gl * get_global_transform()
 	# dummy out the y value
 	rel_pos = Vector3(rel_pos.x, 0, rel_pos.z)
 	#print("Relative loc of intersection", id, " is ", rel_pos)
@@ -837,16 +837,16 @@ func swap_to_bike():
 	
 	get_parent().queue_free()
 	#var bike_scene = load("res://car/bike_base.tscn")
-	var bike = bike_scene.instance()
+	var bike = bike_scene.instantiate()
 	bike.set_name("bike")
 	# place the bike where the car was
 	#bike.get_parent().global_transform.origin = p_pos
 	bike.set_translation(p_pos)
-	bike.get_node("BODY").set_translation(pos)
+	bike.get_node(^"BODY").set_translation(pos)
 	
 	get_parent().get_parent().add_child(bike)
 	#print("Dummy")
-	return bike.get_node("BODY")
+	return bike.get_node(^"BODY")
 
 func swap_to_car():
 	# get positions
@@ -857,16 +857,16 @@ func swap_to_car():
 	
 	get_parent().queue_free()
 	#var car_scene = load("res://car/car_base.tscn")
-	var car = car_scene.instance()
+	var car = car_scene.instantiate()
 	car.set_name("car")
 	# place the car where the bike was
 	#car.get_parent().global_transform.origin = p_pos
 	car.set_translation(p_pos)
-	car.get_node("BODY").set_translation(pos)
+	car.get_node(^"BODY").set_translation(pos)
 	
 	get_parent().get_parent().add_child(car)
 	#print("Dummy")
-	return car.get_node("BODY")
+	return car.get_node(^"BODY")
 
 # -------------------------------------------
 # performance
@@ -896,7 +896,7 @@ func time_from_accel(a):
 func _on_StuckTimer_timeout():
 	#print("We're stuck, start reverse timer")
 	stuck = true
-	get_node("ReverseTimer").start()
+	get_node(^"ReverseTimer").start()
 
 
 func _on_ReverseTimer_timeout():
@@ -905,12 +905,12 @@ func _on_ReverseTimer_timeout():
 
 # -------------------------
 func delay_new_events():
-	var mmap = get_node("Viewport_root/Viewport/minimap")
+	var mmap = get_node(^"Viewport_root/SubViewport/minimap")
 	mmap.add_event_markers()
 
 
 func reset_events():
-	var mmap = get_node("Viewport_root/Viewport/minimap")
+	var mmap = get_node(^"Viewport_root/SubViewport/minimap")
 	var markers = get_tree().get_nodes_in_group("marker")
 	# remove previous day's events
 	for e in markers:
@@ -921,8 +921,8 @@ func reset_events():
 	#TODO: add a message or a visual effect on the map!
 
 	# new events
-	var marker_data = map.get_node("nav").spawn_markers(map.samples, map.real_edges)
-	#map.get_node("nav").setup_markers(marker_data)
+	var marker_data = map.get_node(^"nav").spawn_markers(map.samples, map.real_edges)
+	#map.get_node(^"nav").setup_markers(marker_data)
 	
 	# we have to wait here because otherwise it shows markers for old events too
 	# wait
@@ -931,9 +931,9 @@ func reset_events():
 	t.set_one_shot(true)
 	self.add_child(t)
 	t.start()
-	yield(t, "timeout")
+	await t.timeout
 	# stuff after delay
-	map.get_node("nav").setup_markers(marker_data)
+	map.get_node(^"nav").setup_markers(marker_data)
 	delay_new_events()
 	t.queue_free()
 	

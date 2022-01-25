@@ -1,15 +1,15 @@
-tool
+@tool
 
 extends "../scripts/meshes/mesh_gen.gd"
 
 # class member variables go here, for example:
-export(Material)    var material    = preload("res://assets/road_material.tres")
-var temp_positions = PoolVector3Array()
+@export(Material)    var material    = preload("res://assets/road_material.tres")
+var temp_positions = PackedVector3Array()
 
 #editor drawing
-var positions = [] # PoolVector3Array() PV3 does not have has() ...
-var left_positions = [] #PoolVector3Array()
-var right_positions = [] #PoolVector3Array()
+var positions = [] # PackedVector3Array() PV3 does not have has() ...
+var left_positions = [] #PackedVector3Array()
+var right_positions = [] #PackedVector3Array()
 var draw = null
 
 
@@ -17,33 +17,33 @@ var length = 5.0 # how many sections?
 var roadwidth = 3
 var sectionlength = 2
 var roadheight = 0.01
-export(float) var road_slope = 0.0
+@export var road_slope: float = 0.0
 
 #sidewalks
-export(bool) var sidewalks = false
-var points_inner_side = PoolVector3Array()
-var points_outer_side = PoolVector3Array()
+@export var sidewalks: bool = false
+var points_inner_side = PackedVector3Array()
+var points_outer_side = PackedVector3Array()
 # mesh
-var sidewalk_left = PoolVector3Array()
-var sidewalk_right = PoolVector3Array()
+var sidewalk_left = PackedVector3Array()
+var sidewalk_right = PackedVector3Array()
 
-export(bool) var guardrails = false
+@export var guardrails: bool = false
 # debugging
-var points_inner_rail = PoolVector3Array()
-var points_outer_rail = PoolVector3Array()
+var points_inner_rail = PackedVector3Array()
+var points_outer_rail = PackedVector3Array()
 # actual mesh
-var rail_positions_left = PoolVector3Array()
-var rail_positions_right = PoolVector3Array()
+var rail_positions_left = PackedVector3Array()
+var rail_positions_right = PackedVector3Array()
 
-var support_positions = PoolVector3Array()
+var support_positions = PackedVector3Array()
 
 #for matching
 var start_point = Vector3()
-export(Vector3) var relative_end = Vector3(0,0,100)
+@export var relative_end: Vector3 = Vector3(0,0,100)
 
 #for minimap
 var mid_point = Vector3()
-var global_positions = PoolVector3Array()
+var global_positions = PackedVector3Array()
 
 #for rotations
 var end_vector = Vector3()
@@ -51,9 +51,9 @@ var start_vector = Vector3()
 var start_ref = Vector3()
 var end_ref = Vector3()
 
-export(bool) var trees = false
-export(bool) var bamboo = false
-export(bool) var tunnel = false
+@export var trees: bool = false
+@export var bamboo: bool = false
+@export var tunnel: bool = false
 
 ## materials
 var railing_tex = null
@@ -66,7 +66,7 @@ func _ready():
 	# Initialization here
 	#add_to_group("roads")
 	
-	draw = get_node("draw")
+	draw = get_node(^"draw")
 	
 	railing_tex = preload("res://assets/railing_material.tres")
 	cement_tex = preload("res://assets/cement.tres")	
@@ -92,11 +92,11 @@ func generateRoad():
 	#print("Calculated length: " + str(length))
 	
 	#overdraw fix
-	#if (get_parent().get_name().find("Spatial") != -1):
+	#if (get_parent().get_name().find("Node3D") != -1):
 	makeRoad()
 	
 	#place props
-	get_node("Spatial").place_props(trees, bamboo, sectionlength*length)
+	get_node(^"Node3D").place_props(trees, bamboo, sectionlength*length)
 
 func makeRoad():
 	var quads = []
@@ -216,7 +216,7 @@ func makeRoad():
 			var surface = SurfaceTool.new()
 			surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 			#Create a node that will hold the mesh
-			var node = MeshInstance.new()
+			var node = MeshInstance3D.new()
 			node.set_name("sidewalk")
 			add_child(node)
 			
@@ -245,7 +245,7 @@ func makeRoad():
 			surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 
 			#Create a node that will hold the mesh
-			var node = MeshInstance.new()
+			var node = MeshInstance3D.new()
 			node.set_name("support")
 			add_child(node)
 
@@ -268,7 +268,7 @@ func makeRoad():
 			surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 
 			#Create a node building that will hold the mesh
-			var node = MeshInstance.new()
+			var node = MeshInstance3D.new()
 			node.set_name("guardrail")
 			add_child(node)
 		
@@ -294,7 +294,7 @@ func makeRoad():
 			#node.create_trimesh_collision()
 				
 		if tunnel:
-			var tun = tunnel_obj.instance()
+			var tun = tunnel_obj.instantiate()
 			var sc = round(floor(relative_end.z/50))
 			tun.set_scale(Vector3(1.2, 1.0, sc))
 			tun.set_name("tunnel")
@@ -351,18 +351,18 @@ func makeRoad():
 	# workaround for https://github.com/godotengine/godot/issues/36729
 	# if we're on the ground and not sloped, we don't need a collision shape
 	if global_transform.origin.y < 1 and road_slope < 0.1:
-		var shape = BoxShape.new()
+		var shape = BoxShape3D.new()
 		shape.set_extents(Vector3(6,1,mid_point.z))
-		get_node("Area/CollisionShape").set_translation(Vector3(0,0,mid_point.z))
-		get_node("Area/CollisionShape").set_shape(shape)
+		get_node(^"Area3D/CollisionShape3D").set_translation(Vector3(0,0,mid_point.z))
+		get_node(^"Area3D/CollisionShape3D").set_shape(shape)
 	# otherwise make a simple collision shape
 	else:
-		var shape = BoxShape.new()
+		var shape = BoxShape3D.new()
 		shape.set_extents(Vector3(6,3, mid_point.z+0.2)) #fudge necessary for bike not to fall through a crack
-		var body = StaticBody.new()
+		var body = StaticBody3D.new()
 		body.set_collision_layer(2) # AI raycasts ignore layer 2
 		add_child(body)
-		var coll = CollisionShape.new()
+		var coll = CollisionShape3D.new()
 		body.add_child(coll)
 		coll.set_shape(shape)
 		# if sloped, just rotate the box shape
@@ -373,16 +373,16 @@ func makeRoad():
 			coll.set_translation(Vector3(0, -0.4, mid_point.z))
 			
 			# prevent falling off (especially AI)
-			coll = CollisionShape.new()
-			shape = BoxShape.new()
+			coll = CollisionShape3D.new()
+			shape = BoxShape3D.new()
 			shape.set_extents(Vector3(2,3, mid_point.z-1))
 			body.add_child(coll)
 			coll.set_shape(shape)
 			coll.set_rotation(Vector3(rot, 0,0))
 			coll.set_translation(Vector3(6,0,mid_point.z))
 			# other side
-			coll = CollisionShape.new()
-			shape = BoxShape.new()
+			coll = CollisionShape3D.new()
+			shape = BoxShape3D.new()
 			shape.set_extents(Vector3(2,3, mid_point.z-1))
 			body.add_child(coll)
 			coll.set_shape(shape)
@@ -395,24 +395,24 @@ func makeRoad():
 
 	
 #	if relative_end.z > 250:
-#		var shape = BoxShape.new()
+#		var shape = BoxShape3D.new()
 #		shape.set_extents(Vector3(6,0.05,125))
-#		get_node("StaticBody/CollisionShape").set_translation(Vector3(0,0,125))
-#		get_node("StaticBody/CollisionShape").set_shape(shape)
+#		get_node(^"StaticBody3D/CollisionShape3D").set_translation(Vector3(0,0,125))
+#		get_node(^"StaticBody3D/CollisionShape3D").set_shape(shape)
 #
 #
-#		#var sh = CollisionShape.new()
-#		#get_node("StaticBody").add_child(sh)
-#		#shape = BoxShape.new()
+#		#var sh = CollisionShape3D.new()
+#		#get_node(^"StaticBody3D").add_child(sh)
+#		#shape = BoxShape3D.new()
 #		#shape.set_extents(Vector3(6,0.02, (relative_end.z-250)/2))
-#		#get_node("StaticBody").get_child(1).set_translation(Vector3(0,0,relative_end.z-250))
-#		#get_node("StaticBody").get_child(1).set_shape(shape)
+#		#get_node(^"StaticBody3D").get_child(1).set_translation(Vector3(0,0,relative_end.z-250))
+#		#get_node(^"StaticBody3D").get_child(1).set_shape(shape)
 #
 #	else:
-#		var shape = BoxShape.new()
+#		var shape = BoxShape3D.new()
 #		shape.set_extents(Vector3(6,0.05,mid_point.z))
-#		get_node("StaticBody/CollisionShape").set_translation(Vector3(0,0,mid_point.z))
-#		get_node("StaticBody/CollisionShape").set_shape(shape)
+#		get_node(^"StaticBody3D/CollisionShape3D").set_translation(Vector3(0,0,mid_point.z))
+#		get_node(^"StaticBody3D/CollisionShape3D").set_shape(shape)
 
 
 func roadCap(diff, cap_quads, slope_diff):
@@ -483,10 +483,10 @@ func makeSupport(start, slope):
 
 func get_global_positions():
 	global_positions = []
-	global_positions.push_back(get_global_transform().xform(positions[0]))
-	global_positions.push_back(get_global_transform().xform(mid_point))
-	global_positions.push_back(get_global_transform().xform(positions[positions.size()-2]))
-	global_positions.push_back(get_global_transform().xform(positions[positions.size()-1]))
+	global_positions.push_back(get_global_transform() * (positions[0]))
+	global_positions.push_back(get_global_transform() * (mid_point))
+	global_positions.push_back(get_global_transform() * (positions[positions.size()-2]))
+	global_positions.push_back(get_global_transform() * (positions[positions.size()-1]))
 		
 	return global_positions
 
@@ -506,7 +506,7 @@ func optimizedmeshCreate(quads, cap_quads, material):
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	#Create a node building that will hold the mesh
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_name("plane")
 	add_child(node)
 	
@@ -536,7 +536,7 @@ func meshCreate(array, material):
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	#Create a node building that will hold the mesh
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_name("plane")
 	add_child(node)
 	
@@ -562,25 +562,25 @@ func send_positions(map):
 # ---------------------------------------------------------------	
 func lite_up():
 	#print("Lit up road")
-	var material = get_node("plane").get_mesh().surface_get_material(0)
+	var material = get_node(^"plane").get_mesh().surface_get_material(0)
 	material.set_shader_param("emission_energy", 3)
 	material.set_shader_param("emission", Color(0,0,1))
-	#material.set_feature(SpatialMaterial.FEATURE_EMISSION, true)
+	#material.set_feature(StandardMaterial3D.FEATURE_EMISSION, true)
 	#material.set_emission(Color(0,0,1))
 	
 func reset_lite():
-	var material = get_node("plane").get_mesh().surface_get_material(0)
+	var material = get_node(^"plane").get_mesh().surface_get_material(0)
 	material.set_shader_param("emission_energy", 0)
-	#material.set_feature(SpatialMaterial.FEATURE_EMISSION, false)
+	#material.set_feature(StandardMaterial3D.FEATURE_EMISSION, false)
 	
 func rain_shine(rain_amount):
-	var material = get_node("plane").get_mesh().surface_get_material(0)
+	var material = get_node(^"plane").get_mesh().surface_get_material(0)
 	material.set_roughness(0.2)
 	material.set_metallic(0.85)
 	material.set_shader_param("puddle_size", rain_amount)
 	
 func no_rain():
-	var material = get_node("plane").get_mesh().surface_get_material(0)
+	var material = get_node(^"plane").get_mesh().surface_get_material(0)
 	material.set_shader_param("roughness", 1.0)
 	material.set_shader_param("metallic", 0.0)
 	material.set_shader_param("puddle_size", 0.0)
@@ -589,27 +589,27 @@ func no_rain():
 
 func debug_tunnel():
 	# works but makes buildings transparent, too
-	var tun = get_node("tunnel").get_mesh().surface_get_material(0)
-	tun.set_feature(SpatialMaterial.FEATURE_TRANSPARENT, true)
-	#var tun = get_node("tunnel")
+	var tun = get_node(^"tunnel").get_mesh().surface_get_material(0)
+	tun.set_feature(StandardMaterial3D.FEATURE_TRANSPARENT, true)
+	#var tun = get_node(^"tunnel")
 	#tun.hide()
 	
 func show_tunnel():
-	var tun = get_node("tunnel").get_mesh().surface_get_material(0)
-	tun.set_feature(SpatialMaterial.FEATURE_TRANSPARENT, false)
-	#var tun = get_node("tunnel")
+	var tun = get_node(^"tunnel").get_mesh().surface_get_material(0)
+	tun.set_feature(StandardMaterial3D.FEATURE_TRANSPARENT, false)
+	#var tun = get_node(^"tunnel")
 	#tun.show()
 
 
 func _on_Area_body_entered(body):
-	if body is KinematicBody and 'hit' in body:
+	if body is CharacterBody3D and 'hit' in body:
 		body.hit = self
 		print("Entered area: ", get_parent().get_parent().get_name())
 	pass # Replace with function body.
 
 
 func _on_Area_body_exited(body):
-	if body is KinematicBody and 'hit' in body:
+	if body is CharacterBody3D and 'hit' in body:
 		body.hit = null
 		print("Exited area: ", get_parent().get_parent().get_name(), " ,", body.hit)
 	pass # Replace with function body.

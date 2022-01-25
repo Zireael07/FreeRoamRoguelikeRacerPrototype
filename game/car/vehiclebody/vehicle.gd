@@ -1,5 +1,5 @@
 
-extends VehicleBody
+extends VehicleBody3D
 
 # Member variables
 #const STEER_LIMIT = 1 #radians
@@ -15,7 +15,7 @@ var SPEED_FACT = 1.0 #10.0
 var FUDGE = 8 # account for TORCS timestep being 0.002 seconds (500Hz) and our physics tick is 60 hz
 
 
-export var force = 1500
+@export var force = 1500
 # doing performance upgrades via multiplying makes it easier to balance
 var braking_force_mult = 4
 var engine_force_mult = 1
@@ -52,9 +52,9 @@ func _ready():
 	
 	
 	#get lights
-	headlight_one = get_node("SpotLight")
-	headlight_two = get_node("SpotLight1")
-	taillights = get_node("taillights")
+	headlight_one = get_node(^"SpotLight3D")
+	headlight_two = get_node(^"SpotLight1")
+	taillights = get_node(^"taillights")
 
 
 func process_car_physics(delta, gas, braking, left, right, joy):
@@ -190,7 +190,7 @@ func process_car_physics(delta, gas, braking, left, right, joy):
 	set_steering(steer_angle)
 	
 	#this one actually reacts to rotations unlike the one using basis.z or linear velocity.z
-	var forward_vec = get_global_transform().xform(Vector3(0, 1.5, 2))-get_global_transform().origin
+	var forward_vec = get_global_transform() * (Vector3(0, 1.5, 2))-get_global_transform().origin
 	#reverse
 	if (get_linear_velocity().dot(forward_vec) > 0):
 		reverse = false
@@ -212,7 +212,7 @@ func _integrate_forces(state):
 		var l_pos = state.get_contact_local_position(0)
 		
 		var normal = state.get_contact_local_normal(0)
-		#var tr = Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), c_pos)
+		#var tr = Transform3D(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), c_pos)
 		#print("Local pos of contact: " + str(l_pos) + " collider " + str(c_pos))
 		
 		var local
@@ -220,18 +220,18 @@ func _integrate_forces(state):
 		# bug! sometimes there are weird "collisions" far away, ignore them
 		if l_pos != c_pos:
 			pass
-			#var g_pos = tr.xform(l_pos)
+			#var g_pos = tr * (l_pos)
 			#print("Global pos of collision" + str(g_pos))
 		
-			#local = get_global_transform().xform_inv(g_pos)
+			#local = g_pos * get_global_transform()
 		else:
 			#pass
-			local = get_global_transform().xform_inv(l_pos)
+			local = l_pos * get_global_transform()
 			#print("Local" + str(local))
 			
 			# probably because the vehicle body car is looking down +Z
 			# the above somehow results in inverted location, so we do some transformations
-			var tr = Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), local)
+			var tr = Transform3D(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), local)
 			var axis = Vector3(0,1,0)
 			var angle_fix = deg2rad(180)
 			local = tr.rotated(axis, angle_fix).origin
@@ -263,7 +263,7 @@ func kill_sparks():
 	# kill old cubes
 	for c in get_children():
 		if c.get_name().find("Spark") != -1:
-	#if get_node("Debug") != null:
+	#if get_node(^"Debug") != null:
 			c.queue_free()
 
 func reset_car():
@@ -271,7 +271,7 @@ func reset_car():
 	var axis = Vector3(0,1,0)
 	
 	# why the minus?
-	var forward_vec = get_global_transform().xform(Vector3(0, 0, -10))
+	var forward_vec = get_global_transform() * (Vector3(0, 0, -10))
 	# we don't have scaling so this gets the job done
 	look_at(forward_vec, axis)
 	
@@ -379,9 +379,9 @@ func setHeadlights(on):
 		
 # debug
 func debug_cube(loc, red=false):
-	var mesh = CubeMesh.new()
+	var mesh = BoxMesh.new()
 	mesh.set_size(Vector3(0.5,0.5,0.5))
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_mesh(mesh)
 	if red:
 		node.get_mesh().surface_set_material(0, flip_mat)
@@ -391,7 +391,7 @@ func debug_cube(loc, red=false):
 	node.set_translation(loc)
 	
 func spawn_sparks(loc, normal):
-	var spark = sparks.instance()
+	var spark = sparks.instantiate()
 	
 	add_child(spark)
 	spark.set_name("Spark")
@@ -400,4 +400,4 @@ func spawn_sparks(loc, normal):
 	#print("Normal " + str(normal))
 	spark.get_process_material().set_gravity(normal)
 	# set timer
-	spark.get_node("Timer").start()
+	spark.get_node(^"Timer").start()

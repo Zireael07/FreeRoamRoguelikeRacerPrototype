@@ -1,37 +1,37 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/cement.png" type="Texture" id=1]
+[ext_resource path="res://assets/cement.png" type="Texture2D" id=1]
 [ext_resource path="res://assets/garage/garage.obj" type="ArrayMesh" id=2]
-[ext_resource path="res://objects/CSGCombiner.gd" type="Script" id=3]
+[ext_resource path="res://objects/CSGCombiner3D.gd" type="Script" id=3]
 
-[sub_resource type="SpatialMaterial" id=1]
+[sub_resource type="StandardMaterial3D" id=1]
 albedo_texture = ExtResource( 1 )
 
-[node name="Spatial" type="Spatial"]
+[node name="Node3D" type="Node3D"]
 
-[node name="CSGCombiner" type="CSGCombiner" parent="."]
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
 script = ExtResource( 3 )
 
-[node name="CSGMesh" type="CSGMesh" parent="CSGCombiner"]
+[node name="CSGMesh3D" type="CSGMesh3D" parent="CSGCombiner3D"]
 material_override = SubResource( 1 )
 mesh = ExtResource( 2 )
 
-[node name="CSGBox" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.566924, -3.16525 )
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.566924, -3.16525)
 operation = 2
 width = 4.73091
 height = 2.02129
 depth = 0.533295
 
-[node name="CSGBox3" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.566924, 2.88133 )
+[node name="CSGBox3" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.566924, 2.88133)
 operation = 2
 width = 4.73091
 height = 2.02129
 depth = 0.533295
 
-[node name="CSGBox2" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.00055, 0.724857, 0 )
+[node name="CSGBox2" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.00055, 0.724857, 0)
 operation = 2
 height = 1.82487
 depth = 4.55569

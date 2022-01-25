@@ -1,7 +1,7 @@
 [gd_resource type="ShaderMaterial" load_steps=3 format=2]
 
-[ext_resource path="res://assets/storefront/shop_front16_ed.png" type="Texture" id=1]
-[ext_resource path="res://assets/storefront/storefront_tinted.shader" type="Shader" id=2]
+[ext_resource path="res://assets/storefront/shop_front16_ed.png" type="Texture2D" id=1]
+[ext_resource path="res://assets/storefront/storefront_tinted.gdshader" type="Shader" id=2]
 
 [resource]
 shader = ExtResource( 2 )

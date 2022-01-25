@@ -24,9 +24,9 @@ var indices = []
 
 func _ready():
 	# connect to the load_ended signal of the player
-	get_tree().get_nodes_in_group("player")[0].get_child(0).connect("load_ended", self, "make_map")
+	get_tree().get_nodes_in_group("player")[0].get_child(0).connect(&"load_ended", self.make_map)
 	# TODO: clear up!
-	#get_parent().get_parent().get_parent().get_parent().get_parent().connect("load_ended", self, "make_map")
+	#get_parent().get_parent().get_parent().get_parent().get_parent().connect(&"load_ended", self.make_map)
 	
 	if not Engine.is_editor_hint():
 		textur = get_texture()
@@ -36,7 +36,7 @@ func _ready():
 	#register ourselves with the minimap root
 	var player = get_tree().get_nodes_in_group("player")[0].get_child(0)
 	
-	player.get_node("Viewport_root/Viewport/minimap").minimap_bg = self
+	player.get_node(^"Viewport_root/SubViewport/minimap").minimap_bg = self
 		
 	pass
 
@@ -48,7 +48,7 @@ func make_map():
 	
 	#positions = get_parent().get_parent().get_parent().positions
 	var player = get_tree().get_nodes_in_group("player")[0].get_child(0)
-	positions = player.get_node("Viewport_root/Viewport/minimap").positions
+	positions = player.get_node(^"Viewport_root/SubViewport/minimap").positions
 	
 	#draw background
 	# massive speed up
@@ -63,7 +63,7 @@ func make_map():
 		for j in range (pos_c.y-(dot_size+1), pos_c.y+(dot_size+1)):
 			image.set_pixel(i,j, testcolor)
 	
-	intersections = player.get_node("Viewport_root/Viewport/minimap").intersections
+	intersections = player.get_node(^"Viewport_root/SubViewport/minimap").intersections
 	
 	if intersections.size() == 0:
 		print("No intersections detected")
@@ -146,7 +146,7 @@ func make_map():
 	#get_parent().get_parent().get_parent().minimap_bg = self
 	#player = get_tree().get_nodes_in_group("player")[0].get_child(0)
 	
-	player.get_node("Viewport_root/Viewport/minimap").minimap_bg = self
+	player.get_node(^"Viewport_root/SubViewport/minimap").minimap_bg = self
 	
 # drawing
 func pos3d_to_minimap_point(pos):
@@ -232,7 +232,7 @@ func swap(a,b):
 #translation of C version from https://rosettacode.org/wiki/Bitmap/Bresenham%27s_line_algorithm
 func bresenham_complex(start, end):
 	#print("Running bresenham complex for " + String(start) + " to " + String(end))
-	var points = PoolVector2Array()
+	var points = PackedVector2Array()
 	
 	#helper vars
 	var sx = start.x

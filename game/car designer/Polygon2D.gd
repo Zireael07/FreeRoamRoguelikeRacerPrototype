@@ -1,4 +1,4 @@
-tool
+@tool
 extends Polygon2D
 
 # Declare member variables here. Examples:
@@ -9,7 +9,7 @@ func _ready():
 	poly.resize(0)
 	#print(str(get_polygon()))
 	
-	#get_polygon().invert()
+	#get_polygon().reverse()
 	#print(str(get_polygon()))
 	
 	for i in range(get_polygon().size()):

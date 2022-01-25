@@ -4,22 +4,22 @@
 
 [sub_resource type="CylinderMesh" id=4]
 
-custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+custom_aabb = AABB(0, 0, 0, 0, 0, 0)
 top_radius = 0.2
 bottom_radius = 0.2
 height = 20.0
 radial_segments = 32
 rings = 4
 
-[sub_resource type="BoxShape" id=5]
+[sub_resource type="BoxShape3D" id=5]
 
-extents = Vector3( 0.2, 10, 0.2 )
+extents = Vector3(0.2, 10, 0.2)
 
-[node name="Spatial" type="Spatial" index="0"]
+[node name="Node3D" type="Node3D" index="0"]
 
-[node name="MeshInstance5" type="MeshInstance" parent="." index="0"]
+[node name="MeshInstance5" type="MeshInstance3D" parent="." index="0"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0 )
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -31,23 +31,23 @@ lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
 mesh = SubResource( 4 )
 skeleton = NodePath("..")
-material/0 = ExtResource( 1 )
-_sections_unfolded = [ "Geometry", "Transform", "material" ]
+surface_material_override/0 = ExtResource( 1 )
+_sections_unfolded = ["Geometry", "Transform3D", "material"]
 
-[node name="StaticBody" type="StaticBody" parent="." index="1"]
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="1"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0 )
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
 input_ray_pickable = true
 input_capture_on_drag = false
 collision_layer = 1
 collision_mask = 1
 friction = 1.0
 bounce = 0.0
-constant_linear_velocity = Vector3( 0, 0, 0 )
-constant_angular_velocity = Vector3( 0, 0, 0 )
-_sections_unfolded = [ "Transform" ]
+constant_linear_velocity = Vector3(0, 0, 0)
+constant_angular_velocity = Vector3(0, 0, 0)
+_sections_unfolded = ["Transform3D"]
 
-[node name="CollisionShape" type="CollisionShape" parent="StaticBody" index="0"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
 
 shape = SubResource( 5 )
 disabled = false

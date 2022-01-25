@@ -4,18 +4,18 @@
 
 [sub_resource type="CylinderMesh" id=5]
 
-custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+custom_aabb = AABB(0, 0, 0, 0, 0, 0)
 top_radius = 0.1
 bottom_radius = 0.1
 height = 2.0
 radial_segments = 32
 rings = 4
 
-[node name="Spatial" type="Spatial" index="0"]
+[node name="Node3D" type="Node3D" index="0"]
 
-[node name="neon_tube" type="MeshInstance" parent="." index="0"]
+[node name="neon_tube" type="MeshInstance3D" parent="." index="0"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 layers = 1
 material_override = ExtResource( 1 )
 cast_shadow = 0
@@ -27,7 +27,7 @@ lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
 mesh = SubResource( 5 )
 skeleton = NodePath("..")
-material/0 = null
-_sections_unfolded = [ "Geometry", "Transform" ]
+surface_material_override/0 = null
+_sections_unfolded = ["Geometry", "Transform3D"]
 
 

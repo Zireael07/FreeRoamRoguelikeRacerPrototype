@@ -1,9 +1,9 @@
-extends Sprite
+extends Sprite2D
 
 #update uniforms
 
-#onready var global_v=get_tree().get_root().get_node("scene")
-onready var global_v = get_tree().get_nodes_in_group("root")[0]
+#onready var global_v=get_tree().get_root().get_node(^"scene")
+@onready var global_v = get_tree().get_nodes_in_group("root")[0]
 
 func _ready():
 	pass

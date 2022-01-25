@@ -1,4 +1,4 @@
-tool
+@tool
 extends Node2D
 
 # class member variables go here, for example:

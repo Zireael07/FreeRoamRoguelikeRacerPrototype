@@ -1,4 +1,4 @@
-tool
+@tool
 extends Polygon2D
 
 # Declare member variables here. Examples:
@@ -22,12 +22,12 @@ func _ready():
 		
 		
 	# we don't have to triangulate a 2D polygon drawn by hand in editor, since if it draws it can be triangulated
-	#var indices = Array(Geometry.triangulate_polygon(PoolVector2Array(get_polygon())))
+	#var indices = Array(Geometry.triangulate_polygon(PackedVector2Array(get_polygon())))
 	#print(str(indices))
 
 	# add window
 	var fin = []
-	# because PoolVector2Array doesn't have duplicate
+	# because PackedVector2Array doesn't have duplicate
 	fin = Array(get_polygon()).duplicate()	
 	if get_name() == "reartest":
 		# because the final point is the midpoint
@@ -54,7 +54,7 @@ func _ready():
 		fin[0] = window_top[0]
 		fin[1] = window_top[1] 
 	
-	var indices = Array(Geometry.triangulate_polygon(PoolVector2Array(fin)))
+	var indices = Array(Geometry.triangulate_polygon(PackedVector2Array(fin)))
 	#print(str(indices))	
 	print(str((indices.size() > 0)))
 

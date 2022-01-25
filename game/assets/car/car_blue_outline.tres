@@ -1,6 +1,6 @@
-[gd_resource type="SpatialMaterial" load_steps=2 format=2]
+[gd_resource type="StandardMaterial3D" load_steps=2 format=2]
 
-[sub_resource type="SpatialMaterial" id=1]
+[sub_resource type="StandardMaterial3D" id=1]
 params_cull_mode = 1
 params_grow = true
 params_grow_amount = 0.02

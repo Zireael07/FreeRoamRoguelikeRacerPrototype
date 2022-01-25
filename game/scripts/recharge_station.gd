@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 # class member variables go here, for example:
 var player
@@ -10,7 +10,7 @@ func _ready():
 
 
 func _on_Area_body_entered(body):
-	if body is VehicleBody:
+	if body is VehicleBody3D:
 		if body is player_script:
 			print("Charging area entered by the player")
 			player = body
@@ -22,7 +22,7 @@ func _process(delta):
 			player.battery += 1
 
 func _on_Area_body_exited(body):
-	if body is VehicleBody:
+	if body is VehicleBody3D:
 		if body is player_script:
 			print("Charging area exited by the player")
 			player = body

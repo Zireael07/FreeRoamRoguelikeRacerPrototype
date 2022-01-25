@@ -1,4 +1,4 @@
-tool
+@tool
 extends Polygon2D
 
 # class member variables go here, for example:

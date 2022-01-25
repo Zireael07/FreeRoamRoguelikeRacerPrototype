@@ -1,14 +1,29 @@
-tool
+@tool
 
 extends Node2D
 
 # class member variables go here, for example:
-export(int) var radius = 15 setget set_radius
-export(int) var angle_from = 0 setget set_angle_from
-export(int) var angle_to = 90 setget set_angle_to
-export(bool) var right = true setget set_right
+@export var radius: int = 15:
+	set(value):
+		# TODO: Manually copy the code from this method.
+		set_radius(value)
+@export var angle_from: int = 0:
+	set(value):
+		# TODO: Manually copy the code from this method.
+		set_angle_from(value)
+@export var angle_to: int = 90:
+	set(value):
+		# TODO: Manually copy the code from this method.
+		set_angle_to(value)
+@export var right: bool = true:
+	set(value):
+		# TODO: Manually copy the code from this method.
+		set_right(value)
 
-#export(bool) var snap setget set_snap
+#export(bool) var snap:
+	set(value):
+		# TODO: Manually copy the code from this method.
+		set_snap(value)
 signal enabled_snap
 
 # for debugging
@@ -28,7 +43,7 @@ var relative_end
 func _ready():
 	#add_to_group("lines", true)
 	# signals
-	#connect("enabled_snap", self, "on_snap_enabled")
+	#connect(&"enabled_snap", self.on_snap_enabled)
 	
 	# arc
 	points_arc = get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
@@ -37,8 +52,8 @@ func _ready():
 	first = points_arc[0]
 	
 	# need relative 
-	var global_end = get_global_transform().xform_inv(last)
-	var global_start = get_global_transform().xform_inv(first)
+	var global_end = last * get_global_transform()
+	var global_start = first * get_global_transform()
 	
 	relative_end = global_start - global_end
 	print("Last relative to start is " + String(relative_end))
@@ -108,7 +123,7 @@ func draw_circle_arc(center, radius, angle_from, angle_to, color):
 
 func get_circle_arc( center, radius, angle_from, angle_to, right):
 	var nb_points = 32
-	var points_arc = PoolVector2Array()
+	var points_arc = PackedVector2Array()
 
 	for i in range(nb_points+1):
 		if right:

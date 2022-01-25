@@ -1,6 +1,6 @@
-tool
+@tool
 extends "res://2d tests/Delaunay2D.gd"
-#extends Spatial
+#extends Node3D
 
 # class member variables go here, for example:
 var tris = []

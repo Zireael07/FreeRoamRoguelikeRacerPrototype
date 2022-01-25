@@ -1,4 +1,4 @@
-extends RayCast
+extends RayCast3D
 
 # class member variables go here, for example:
 var loc

@@ -1,8 +1,8 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://assets/851H-kktt.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/851H-kktt.ttf" type="FontData" id=1]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="Font" id=1]
 
 size = 120
 use_mipmaps = false
@@ -15,9 +15,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 400.0
-margin_bottom = 150.0
-rect_pivot_offset = Vector2( 0, 0 )
+offset_right = 400.0
+offset_bottom = 150.0
+rect_pivot_offset = Vector2(0, 0)
 rect_clip_content = false
 mouse_filter = 0
 size_flags_horizontal = 2
@@ -29,17 +29,17 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 1.0
-margin_top = 1.0
-margin_right = 401.0
-margin_bottom = 151.0
-rect_pivot_offset = Vector2( 0, 0 )
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 401.0
+offset_bottom = 151.0
+rect_pivot_offset = Vector2(0, 0)
 rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 2
 size_flags_vertical = 0
 custom_fonts/font = SubResource( 1 )
-custom_colors/font_color = Color( 0.03125, 1, 0, 1 )
+custom_colors/font_color = Color(0.03125, 1, 0, 1)
 text = "一郎"
 align = 1
 valign = 1

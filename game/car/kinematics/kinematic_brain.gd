@@ -2,7 +2,7 @@ extends "kinematic_boid.gd"
 
 # Declare member variables here. Examples:
 # FSM
-onready var state = DrivingState.new(self)
+@onready var state = DrivingState.new(self)
 var prev_state
 
 #const STATE_PATHING = 0

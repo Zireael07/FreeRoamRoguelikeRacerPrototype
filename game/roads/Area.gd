@@ -14,7 +14,7 @@ func _ready():
 
 
 func _on_Area_body_entered(body):
-#	if body is VehicleBody:
+#	if body is VehicleBody3D:
 #		if body is player_script:
 #			pass
 			#print("Intersection: " + get_parent().get_name())

@@ -1,12 +1,12 @@
-extends Spatial
+extends Node3D
 
 # class member variables go here, for example:
 
-export(String) var player_name = "一郎"
-export(String) var romaji = "Ichiro"
+@export var player_name: String = "一郎"
+@export var romaji: String = "Ichiro"
 
-onready var panel = get_node("BODY").get_node("Viewport").get_node("Nametag")
-onready	var nameplate = get_node("BODY").get_node("Viewport 2").get_node("nameplate")
+@onready var panel = get_node(^"BODY").get_node(^"SubViewport").get_node(^"Nametag")
+@onready	var nameplate = get_node(^"BODY").get_node(^"SubViewport 2").get_node(^"nameplate")
 
 
 func _ready():
@@ -14,7 +14,7 @@ func _ready():
 	
 	# hack fix
 	if rotation.y != 0:
-		get_node("BODY").rotate_y(rotation.y)
+		get_node(^"BODY").rotate_y(rotation.y)
 		rotation.y = 0
 	
 	#pass
@@ -36,5 +36,5 @@ func set_name_custom():
 		#print("Nameplate " + nameplate.name)
 
 func freeze_viewports():
-	get_node("BODY/Viewport").set_update_mode(Viewport.UPDATE_DISABLED)
-	get_node("BODY/Viewport 2").set_update_mode(Viewport.UPDATE_DISABLED)
+	get_node(^"BODY/SubViewport").set_update_mode(SubViewport.UPDATE_DISABLED)
+	get_node(^"BODY/SubViewport 2").set_update_mode(SubViewport.UPDATE_DISABLED)

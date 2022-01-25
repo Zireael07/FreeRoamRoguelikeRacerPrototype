@@ -4,8 +4,8 @@
 
 [node name="Node2D" type="Node2D" index="0"]
 
-position = Vector2( 0, 2 )
+position = Vector2(0, 2)
 script = ExtResource( 1 )
-_sections_unfolded = [ "Transform" ]
+_sections_unfolded = ["Transform3D"]
 
 

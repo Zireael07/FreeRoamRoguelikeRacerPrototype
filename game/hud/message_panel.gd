@@ -7,9 +7,9 @@ var ok_button
 
 func _ready():
 	
-	label = get_node("Label")
-	button = get_node("Button")
-	ok_button = get_node("OK_button")
+	label = get_node(^"Label")
+	button = get_node(^"Button")
+	ok_button = get_node(^"OK_button")
 	
 	# Called every time the node is added to the scene.
 	# Initialization here

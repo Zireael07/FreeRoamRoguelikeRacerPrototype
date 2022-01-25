@@ -1,4 +1,4 @@
-extends Reference
+extends RefCounted
 
 class_name Splerger
 
@@ -75,8 +75,8 @@ func _get_num_splits_z(si : _SplitInfo)->int:
 
 func _find_meshes_recursive(node : Node, meshlist, si : _SplitInfo):
 	# is it a mesh?
-	if node is MeshInstance:
-		var mi : MeshInstance = node as MeshInstance
+	if node is MeshInstance3D:
+		var mi : MeshInstance3D = node as MeshInstance3D
 		si.aabb = _calc_aabb(mi)
 		print ("mesh " + mi.get_name() + "\n\tAABB " + str(si.aabb))
 
@@ -96,7 +96,7 @@ func _find_meshes_recursive(node : Node, meshlist, si : _SplitInfo):
 
 
 # split a mesh according to the grid size
-func split(mesh_instance : MeshInstance, attachment_node : Node, grid_size : float, grid_size_y : float, use_local_space : bool = false, delete_orig : bool = false):
+func split(mesh_instance : MeshInstance3D, attachment_node : Node, grid_size : float, grid_size_y : float, use_local_space : bool = false, delete_orig : bool = false):
 	
 	# save all the info we can into a class to avoid passing it around
 	var si : _SplitInfo = _SplitInfo.new()
@@ -127,11 +127,11 @@ func split(mesh_instance : MeshInstance, attachment_node : Node, grid_size : flo
 		return true
 
 	# new .. create pre transformed to world space verts, no need to transform for each split
-	var world_verts = PoolVector3Array([Vector3(0, 0, 0)])
+	var world_verts = PackedVector3Array([Vector3(0, 0, 0)])
 	world_verts.resize(nVerts)
 	var xform = mesh_instance.global_transform
 	for n in range (nVerts):
-		world_verts.set(n, xform.xform(mdt.get_vertex(n)))
+		world_verts.set(n, xform * (mdt.get_vertex(n)))
 
 	print ("\tnVerts " + str(nVerts))
 
@@ -155,7 +155,7 @@ func split(mesh_instance : MeshInstance, attachment_node : Node, grid_size : flo
 
 
 
-func _split_mesh(mdt : MeshDataTool, orig_mi : MeshInstance, grid_x : float, grid_y : float, grid_z : float, si : _SplitInfo, attachment_node : Node, faces_assigned, world_verts : PoolVector3Array):
+func _split_mesh(mdt : MeshDataTool, orig_mi : MeshInstance3D, grid_x : float, grid_y : float, grid_z : float, si : _SplitInfo, attachment_node : Node, faces_assigned, world_verts : PackedVector3Array):
 
 	print ("\tsplit " + str(grid_x) + ", " + str(grid_y) + ", " + str(grid_z))
 
@@ -199,7 +199,7 @@ func _split_mesh(mdt : MeshDataTool, orig_mi : MeshInstance, grid_x : float, gri
 		for i in range (3):
 			var ind = mdt.get_face_vertex(f, i)
 			#var vert = mdt.get_vertex(ind)
-			#vert = xform.xform(vert)
+			#vert = xform * (vert)
 			var vert = world_verts[ind]
 
 			#if bDebug:
@@ -254,7 +254,7 @@ func _split_mesh(mdt : MeshDataTool, orig_mi : MeshInstance, grid_x : float, gri
 	#var mat = orig_mi.get_surface_material(0)
 	var mat = orig_mi.mesh.surface_get_material(0)
 		
-	#var mat = SpatialMaterial.new()
+	#var mat = StandardMaterial3D.new()
 	#mat = mat_orig
 	#var color = Color(0.1, 0.8, 0.1)
 	#mat.albedo_color = color
@@ -277,10 +277,10 @@ func _split_mesh(mdt : MeshDataTool, orig_mi : MeshInstance, grid_x : float, gri
 		var tang = mdt.get_vertex_tangent(n)
 
 		if si.use_local_space == false:
-			vert = xform.xform(vert)
-			norm = xform.basis.xform(norm)
+			vert = xform * (vert)
+			norm = xform.basis * (norm)
 			norm = norm.normalized()
-			tang = xform.xform(tang)
+			tang = xform * (tang)
 		
 		if norm:
 			st.add_normal(norm)
@@ -303,7 +303,7 @@ func _split_mesh(mdt : MeshDataTool, orig_mi : MeshInstance, grid_x : float, gri
 
 	st.commit(tmpMesh)
 
-	var new_mi = MeshInstance.new()
+	var new_mi = MeshInstance3D.new()
 	new_mi.mesh = tmpMesh
 	
 	new_mi.set_surface_material(0, mat)
@@ -334,7 +334,7 @@ func _find_or_add_unique_vert(orig_index : int, unique_verts, ind_mapping):
 	return new_index
 	
 
-func split_by_surface(orig_mi : MeshInstance, attachment_node : Node, use_local_space : bool = false):
+func split_by_surface(orig_mi : MeshInstance3D, attachment_node : Node, use_local_space : bool = false):
 
 	print ("split_by_surface " + orig_mi.get_name())
 
@@ -361,7 +361,7 @@ func split_by_surface(orig_mi : MeshInstance, attachment_node : Node, use_local_
 	pass
 
 func split_multi_surface_meshes_recursive(var node : Node):
-	if node is MeshInstance:
+	if node is MeshInstance3D:
 		if node.get_child_count() == 0:
 			split_by_surface(node, node.get_parent())
 	
@@ -369,7 +369,7 @@ func split_multi_surface_meshes_recursive(var node : Node):
 	for c in range (node.get_child_count()):
 		split_multi_surface_meshes_recursive(node.get_child(c))
 
-func merge_suitable_meshes_across_branches(var root : Spatial):
+func merge_suitable_meshes_across_branches(var root : Node3D):
 	var master_list = []
 	_list_mesh_instances(root, master_list)
 	
@@ -406,20 +406,20 @@ func merge_suitable_meshes_across_branches(var root : Spatial):
 		var sl = sub_list[n]
 		
 		if (sl.size() > 1):
-			var new_mi : MeshInstance = merge_meshinstances(sl, root)
+			var new_mi : MeshInstance3D = merge_meshinstances(sl, root)
 			
 			# compensate for local transform on the parent node
 			# (as the new verts will be in global space)
-			var tr : Transform = root.global_transform
+			var tr : Transform3D = root.global_transform
 			tr = tr.inverse()
 			new_mi.transform = tr
 	
 
 
 func _list_mesh_instances(var node, var list):
-	if node is MeshInstance:
+	if node is MeshInstance3D:
 		if node.get_child_count() == 0:
-			var mi : MeshInstance = node
+			var mi : MeshInstance3D = node
 			if mi.get_surface_material_count() <= 1:
 				list.push_back(node)
 		
@@ -438,19 +438,19 @@ func merge_suitable_meshes_recursive(var node : Node):
 	
 
 func _merge_suitable_child_meshes(var node : Node):
-	if node is Spatial:
-		var spat : Spatial = node
+	if node is Node3D:
+		var spat : Node3D = node
 	
 		var child_list = []
 		for c in range (node.get_child_count()):
 			_find_suitable_meshes(child_list, node.get_child(c))
 			
 		if (child_list.size() > 1):
-			var new_mi : MeshInstance = merge_meshinstances(child_list, node)
+			var new_mi : MeshInstance3D = merge_meshinstances(child_list, node)
 			
 			# compensate for local transform on the parent node
 			# (as the new verts will be in global space)
-			var tr : Transform = spat.global_transform
+			var tr : Transform3D = spat.global_transform
 			tr = tr.inverse()
 			new_mi.transform = tr
 		
@@ -461,8 +461,8 @@ func _find_suitable_meshes(var child_list, var node : Node):
 	if node.get_child_count():
 		return
 	
-	if node is MeshInstance:
-		var mi : MeshInstance = node
+	if node is MeshInstance3D:
+		var mi : MeshInstance3D = node
 		# must have only one surface
 		if mi.get_surface_material_count() <= 1:
 			print("found mesh instance " + mi.get_name())
@@ -495,7 +495,7 @@ func merge_meshinstances(var mesh_array, var attachment_node : Node, var use_loc
 	var first_mi = mesh_array[0]
 	
 	var mat
-	if first_mi is MeshInstance:
+	if first_mi is MeshInstance3D:
 		mat = first_mi.mesh.surface_get_material(0)
 	else:
 		printerr("merge_meshinstances array must contain mesh instances")
@@ -512,7 +512,7 @@ func merge_meshinstances(var mesh_array, var attachment_node : Node, var use_loc
 
 	st.commit(tmpMesh)
 
-	var new_mi = MeshInstance.new()
+	var new_mi = MeshInstance3D.new()
 	new_mi.mesh = tmpMesh
 	
 	new_mi.set_surface_material(0, mat)
@@ -538,7 +538,7 @@ func merge_meshinstances(var mesh_array, var attachment_node : Node, var use_loc
 	return new_mi
 		
 
-func _merge_meshinstance(st : SurfaceTool, mi : MeshInstance, var use_local_space : bool, var vertex_count : int):
+func _merge_meshinstance(st : SurfaceTool, mi : MeshInstance3D, var use_local_space : bool, var vertex_count : int):
 	if mi == null:
 		printerr("_merge_meshinstance - not a mesh instance, ignoring")
 		return vertex_count
@@ -568,10 +568,10 @@ func _merge_meshinstance(st : SurfaceTool, mi : MeshInstance, var use_local_spac
 		var tang = mdt.get_vertex_tangent(n)
 
 		if use_local_space == false:
-			vert = xform.xform(vert)
-			norm = xform.basis.xform(norm)
+			vert = xform * (vert)
+			norm = xform.basis * (norm)
 			norm = norm.normalized()
-			tang = xform.xform(tang)
+			tang = xform * (tang)
 		
 		if norm:
 			st.add_normal(norm)
@@ -597,7 +597,7 @@ func _merge_meshinstance(st : SurfaceTool, mi : MeshInstance, var use_local_spac
 	return vertex_count + nVerts
 
 
-func _split_mesh_by_surface(mdt : MeshDataTool, orig_mi : MeshInstance, attachment_node : Node, surf_id : int, use_local_space : bool):
+func _split_mesh_by_surface(mdt : MeshDataTool, orig_mi : MeshInstance3D, attachment_node : Node, surf_id : int, use_local_space : bool):
 	var nVerts = mdt.get_vertex_count()
 	var nFaces = mdt.get_face_count()
 	
@@ -621,10 +621,10 @@ func _split_mesh_by_surface(mdt : MeshDataTool, orig_mi : MeshInstance, attachme
 		var tang = mdt.get_vertex_tangent(n)
 
 		if use_local_space == false:
-			vert = xform.xform(vert)
-			norm = xform.basis.xform(norm)
+			vert = xform * (vert)
+			norm = xform.basis * (norm)
 			norm = norm.normalized()
-			tang = xform.xform(tang)
+			tang = xform * (tang)
 		
 		if norm:
 			st.add_normal(norm)
@@ -646,7 +646,7 @@ func _split_mesh_by_surface(mdt : MeshDataTool, orig_mi : MeshInstance, attachme
 
 	st.commit(tmpMesh)
 
-	var new_mi = MeshInstance.new()
+	var new_mi = MeshInstance3D.new()
 	new_mi.mesh = tmpMesh
 	
 	new_mi.set_surface_material(0, mat)
@@ -670,7 +670,7 @@ func _check_aabb(aabb : AABB):
 	assert (aabb.size.y >= 0)
 	assert (aabb.size.z >= 0)
 
-func _calc_aabb(mesh_instance : MeshInstance):
+func _calc_aabb(mesh_instance : MeshInstance3D):
 	var aabb : AABB = mesh_instance.get_transformed_aabb()
 	# godot intersection doesn't work on borders ...
 	aabb = aabb.grow(0.1)
@@ -686,7 +686,7 @@ func _calc_aabb(mesh_instance : MeshInstance):
 #
 #	for n in range (nVerts):
 #		var vert = mdt.get_vertex(n)
-#		vert = xform.xform(vert)
+#		vert = xform * (vert)
 #		if n == 0:
 #			aabb.position = vert
 #			aabb.size = Vector3(0, 0, 0)

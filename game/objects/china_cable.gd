@@ -1,5 +1,5 @@
-tool
-extends Spatial
+@tool
+extends Node3D
 
 # Declare member variables here. Examples:
 var list = []
@@ -30,7 +30,7 @@ func combine(list):
 	var mdt = MeshDataTool.new()
 	var st = SurfaceTool.new()
 	
-	var tg = MeshInstance.new()
+	var tg = MeshInstance3D.new()
 	var base = PlaneMesh.new()
 	
 	# convert to arraymesh
@@ -58,7 +58,7 @@ func combine(list):
 			# convert
 			var vtx_g = vtx*list[i].get_scale()
 			vtx_g = vtx_g+list[i].get_translation()
-			#var vtx_g = list[i].get_global_transform().xform(vtx)
+			#var vtx_g = list[i].get_global_transform() * (vtx)
 			#print("l" + str(vtx) + ": g: " + str(vtx_g))
 			mdt.set_vertex(j, vtx_g)
 		

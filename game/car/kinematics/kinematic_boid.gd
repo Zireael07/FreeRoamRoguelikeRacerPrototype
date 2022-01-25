@@ -1,6 +1,6 @@
 # steering behavior for kinematics
 # this one returns global steering
-extends Spatial
+extends Node3D
 
 # Declare member variables here. Examples:
 var velocity = Vector3.ZERO

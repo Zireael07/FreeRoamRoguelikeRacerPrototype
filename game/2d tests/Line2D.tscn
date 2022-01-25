@@ -4,9 +4,9 @@
 
 [node name="Line2D" type="Line2D" index="0"]
 
-points = PoolVector2Array( 114, 0, 114, 20, 23, 60.5, 0.552856, 63.3175 )
+points = PackedVector2Array(114, 0, 114, 20, 23, 60.5, 0.552856, 63.3175)
 width = 10.0
-default_color = Color( 0.4, 0.5, 1, 1 )
+default_color = Color(0.4, 0.5, 1, 1)
 texture_mode = 4
 sharp_limit = 2.0
 round_precision = 8

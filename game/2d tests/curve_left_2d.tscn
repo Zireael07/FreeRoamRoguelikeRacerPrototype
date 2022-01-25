@@ -11,10 +11,10 @@ script = ExtResource( 1 )
 
 [node name="Node2D" type="Node2D" parent="Placer" index="0"]
 
-position = Vector2( 9.18485e-16, -15 )
+position = Vector2(9.18485e-16, -15)
 rotation = 3.14159
 script = ExtResource( 2 )
-_sections_unfolded = [ "Transform" ]
+_sections_unfolded = ["Transform3D"]
 radius = 15
 angle_from = 0
 angle_to = 90

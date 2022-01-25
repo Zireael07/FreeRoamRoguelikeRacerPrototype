@@ -1,12 +1,12 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/beech.obj" type="ArrayMesh" id=1]
-[ext_resource path="res://assets/bark.png" type="Texture" id=2]
-[ext_resource path="res://assets/bark_n.png" type="Texture" id=3]
-[ext_resource path="res://assets/beech leaf.dds" type="Texture" id=4]
-[ext_resource path="res://assets/beech leaf_n.png" type="Texture" id=5]
+[ext_resource path="res://assets/bark.png" type="Texture2D" id=2]
+[ext_resource path="res://assets/bark_n.png" type="Texture2D" id=3]
+[ext_resource path="res://assets/beech leaf.dds" type="Texture2D" id=4]
+[ext_resource path="res://assets/beech leaf_n.png" type="Texture2D" id=5]
 
-[sub_resource type="SpatialMaterial" id=1]
+[sub_resource type="StandardMaterial3D" id=1]
 
 render_priority = 0
 flags_transparent = false
@@ -29,7 +29,7 @@ params_point_size = 1.0
 params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = false
-albedo_color = Color( 1, 1, 1, 1 )
+albedo_color = Color(1, 1, 1, 1)
 albedo_texture = ExtResource( 2 )
 metallic = 0.0
 metallic_specular = 0.5
@@ -49,19 +49,19 @@ subsurf_scatter_enabled = false
 transmission_enabled = false
 refraction_enabled = false
 detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
+uv1_scale = Vector3(1, 1, 1)
+uv1_offset = Vector3(0, 0, 0)
 uv1_triplanar = false
 uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
+uv2_scale = Vector3(1, 1, 1)
+uv2_offset = Vector3(0, 0, 0)
 uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
-_sections_unfolded = [ "Albedo", "NormalMap", "Roughness" ]
+_sections_unfolded = ["Albedo", "NormalMap", "Roughness"]
 
-[sub_resource type="SpatialMaterial" id=2]
+[sub_resource type="StandardMaterial3D" id=2]
 
 render_priority = 0
 flags_transparent = false
@@ -85,7 +85,7 @@ params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = true
 params_alpha_scissor_threshold = 0.3
-albedo_color = Color( 1, 1, 1, 1 )
+albedo_color = Color(1, 1, 1, 1)
 albedo_texture = ExtResource( 4 )
 metallic = 0.0
 metallic_specular = 0.5
@@ -105,25 +105,25 @@ subsurf_scatter_enabled = false
 transmission_enabled = false
 refraction_enabled = false
 detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
+uv1_scale = Vector3(1, 1, 1)
+uv1_offset = Vector3(0, 0, 0)
 uv1_triplanar = false
 uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
+uv2_scale = Vector3(1, 1, 1)
+uv2_offset = Vector3(0, 0, 0)
 uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
-_sections_unfolded = [ "Albedo", "Flags", "NormalMap", "Parameters", "Roughness" ]
+_sections_unfolded = ["Albedo", "Flags", "NormalMap", "Parameters", "Roughness"]
 
-[sub_resource type="BoxShape" id=3]
+[sub_resource type="BoxShape3D" id=3]
 
-extents = Vector3( 6, 120, 6 )
+extents = Vector3(6, 120, 6)
 
-[node name="MeshInstance" type="MeshInstance" index="0"]
+[node name="MeshInstance3D" type="MeshInstance3D" index="0"]
 
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
 layers = 1
 material_override = null
 cast_shadow = 0
@@ -135,11 +135,11 @@ lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
 mesh = ExtResource( 1 )
 skeleton = NodePath("..")
-material/0 = SubResource( 1 )
+surface_material_override/0 = SubResource( 1 )
 material/1 = SubResource( 2 )
-_sections_unfolded = [ "Geometry", "Transform", "material" ]
+_sections_unfolded = ["Geometry", "Transform3D", "material"]
 
-[node name="StaticBody" type="StaticBody" parent="." index="0"]
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="0"]
 
 input_ray_pickable = true
 input_capture_on_drag = false
@@ -147,12 +147,12 @@ collision_layer = 1
 collision_mask = 1
 friction = 1.0
 bounce = 0.0
-constant_linear_velocity = Vector3( 0, 0, 0 )
-constant_angular_velocity = Vector3( 0, 0, 0 )
+constant_linear_velocity = Vector3(0, 0, 0)
+constant_angular_velocity = Vector3(0, 0, 0)
 
-[node name="CollisionShape" type="CollisionShape" parent="StaticBody" index="0"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 118.849, 0 )
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 118.849, 0)
 shape = SubResource( 3 )
 disabled = false
 

@@ -1,6 +1,6 @@
 # based on https://github.com/TassuP/GodotStuff/blob/master/DelaunayTriangulator/Delaunay.gd
 
-tool
+@tool
 extends Node
 
 # class member variables go here, for example:
@@ -25,7 +25,7 @@ func generate_points(width, height, num_points):
 	
 	for i in range(num_points):
 		# coords
-		points.append(Vector2(rand_range(0, width), rand_range(0, height)))
+		points.append(Vector2(randf_range(0, width), randf_range(0, height)))
 
 func _draw():
 	pass

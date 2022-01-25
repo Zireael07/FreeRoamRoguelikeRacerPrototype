@@ -62,7 +62,7 @@ func _process(_delta):
 	update()
 
 func _draw():
-	var camera = get_viewport().get_camera()
+	var camera = get_viewport().get_camera_3d()
 	
 	if camera.get_name() != "CameraDebug":
 		return
@@ -102,6 +102,6 @@ func draw_triangle(pos, dir, size, color):
 	var a = pos + dir * size
 	var b = pos + dir.rotated(2*PI/3) * size
 	var c = pos + dir.rotated(4*PI/3) * size
-	var points = PoolVector2Array([a, b, c])
-	if !points.empty():
-		draw_polygon(points, PoolColorArray([color]))
+	var points = PackedVector2Array([a, b, c])
+	if not points.is_empty():
+		draw_polygon(points, PackedColorArray([color]))

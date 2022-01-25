@@ -5,15 +5,15 @@
 [ext_resource path="res://assets/shadermaterial_glass.tres" type="Material" id=3]
 
 
-[sub_resource type="SpatialMaterial" id=1]
-albedo_color = Color( 0.988281, 0.675432, 0.0115814, 1 )
+[sub_resource type="StandardMaterial3D" id=1]
+albedo_color = Color(0.988281, 0.675432, 0.0115814, 1)
 roughness = 0.0
 
-[node name="Spatial" type="Spatial"]
+[node name="Node3D" type="Node3D"]
 script = ExtResource( 1 )
 material = ExtResource( 2 )
 glass_material = ExtResource( 3 )
 steering_material = SubResource( 1 )
 
-[node name="Spatial" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, 0.404, 0.655 )
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, 0.404, 0.655)

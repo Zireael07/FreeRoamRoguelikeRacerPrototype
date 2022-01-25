@@ -1,11 +1,11 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://assets/garage/garage.obj" type="ArrayMesh" id=1]
-[ext_resource path="res://assets/garage/lowpolygarage_Material_AlbedoTransparency.png" type="Texture" id=2]
-[ext_resource path="res://assets/garage/lowpolygarage_Material_MetallicSmoothness.png" type="Texture" id=3]
-[ext_resource path="res://assets/garage/lowpolygarage_Material_Normal.png" type="Texture" id=4]
+[ext_resource path="res://assets/garage/lowpolygarage_Material_AlbedoTransparency.png" type="Texture2D" id=2]
+[ext_resource path="res://assets/garage/lowpolygarage_Material_MetallicSmoothness.png" type="Texture2D" id=3]
+[ext_resource path="res://assets/garage/lowpolygarage_Material_Normal.png" type="Texture2D" id=4]
 
-[sub_resource type="SpatialMaterial" id=1]
+[sub_resource type="StandardMaterial3D" id=1]
 params_cull_mode = 2
 albedo_texture = ExtResource( 2 )
 metallic_texture = ExtResource( 3 )
@@ -13,9 +13,9 @@ normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource( 4 )
 
-[node name="Spatial" type="Spatial"]
+[node name="Node3D" type="Node3D"]
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
 mesh = ExtResource( 1 )
-material/0 = SubResource( 1 )
+surface_material_override/0 = SubResource( 1 )

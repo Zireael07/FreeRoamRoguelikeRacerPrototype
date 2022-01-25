@@ -36,7 +36,7 @@ func goto_scene(path): # game requests to switch to this scene
 	#current_scene.queue_free() # get rid of the old scene
 
 	# start your "loading..." animation
-	#get_node("animation").play("loading")
+	#get_node(^"animation").play("loading")
 
 	wait_frames = 1
 
@@ -56,7 +56,7 @@ func _process(time):
 				#current_scene.queue_free() # get rid of the old scene
 				print("Switching to new scene")
 				set_new_scene(resource)
-				#print("[After set] New root: " + str(get_node("/root").get_name()))
+				#print("[After set] New root: " + str(get_node(^"/root").get_name()))
 				print("Done loading new scene")
 				
 				final_progress()
@@ -108,21 +108,21 @@ func update_progress():
 	var progress_percent = progress * 100
 	#print("Progress is " + String(progress_percent))
 	# update your progress bar?
-	get_node("ProgressBar").set_value(progress_percent)
+	get_node(^"ProgressBar").set_value(progress_percent)
 
 	# or update a progress animation?
-	#var len = get_node("animation").get_current_animation_length()
+	#var len = get_node(^"animation").get_current_animation_length()
 
 	# call this on a paused animation. use "true" as the second parameter to force the animation to update
-	#get_node("animation").seek(progress * len, true)
+	#get_node(^"animation").seek(progress * len, true)
 
 func set_new_scene(scene_resource):
-	var new_scene = scene_resource.instance()
-	get_node("/root").add_child(new_scene)
-	#print("[Set new scene] New root: " + str(get_node("/root").get_name()))
+	var new_scene = scene_resource.instantiate()
+	get_node(^"/root").add_child(new_scene)
+	#print("[Set new scene] New root: " + str(get_node(^"/root").get_name()))
 	
 func show_error():
 	print("Oops! An error happened")
 
 func final_progress():
-	get_node("ProgressBar").set_value(99)	
+	get_node(^"ProgressBar").set_value(99)	

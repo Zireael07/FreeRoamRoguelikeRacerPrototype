@@ -1,10 +1,10 @@
-tool
-extends ImmediateGeometry
+@tool
+extends ImmediateGeometry3D
 
 # class member variables go here, for example:
-var m = SpatialMaterial.new()
-var points = PoolVector3Array()
-export(Color) var color = Color(1,1,1)
+var m = StandardMaterial3D.new()
+var points = PackedVector3Array()
+@export var color: Color = Color(1,1,1)
 
 
 func _ready():
@@ -17,8 +17,8 @@ func _ready():
 func set_material():
 	m.set_line_width(3)
 	m.set_point_size(3)
-	m.set_flag(SpatialMaterial.FLAG_UNSHADED, true)
-	m.set_flag(SpatialMaterial.FLAG_USE_POINT_SIZE, true)
+	m.set_flag(StandardMaterial3D.FLAG_UNSHADED, true)
+	m.set_flag(StandardMaterial3D.FLAG_USE_POINT_SIZE, true)
 	
 	m.set_albedo(color)
 	
@@ -29,8 +29,8 @@ func set_material():
 func set_material_color(color):	
 	m.set_line_width(3)
 	m.set_point_size(3)
-	m.set_flag(SpatialMaterial.FLAG_UNSHADED, true)
-	m.set_flag(SpatialMaterial.FLAG_USE_POINT_SIZE, true)
+	m.set_flag(StandardMaterial3D.FLAG_UNSHADED, true)
+	m.set_flag(StandardMaterial3D.FLAG_USE_POINT_SIZE, true)
 	
 	m.set_albedo(color)
 	
@@ -73,16 +73,16 @@ func get_circle_arc_poly(center, radius, angle_from, angle_to):
 	center = Vector2(center.x, center.z)
 	# usual arc stuff
 	var nb_points = 32
-	var points_arc = PoolVector2Array()
+	var points_arc = PackedVector2Array()
 	points_arc.push_back(center)
-	var colors = PoolColorArray([color])
+	var colors = PackedColorArray([color])
 
 	for i in range(nb_points+1):
 		var angle_point = angle_from + i*(angle_to-angle_from)/nb_points
 		points_arc.push_back(center + Vector2( cos( deg2rad(angle_point) ), sin( deg2rad(angle_point) ) ) * radius)
 	
 	# to 3D
-	var points_arc_3d = PoolVector3Array()
+	var points_arc_3d = PackedVector3Array()
 	
 	for p in points_arc:
 		points_arc_3d.push_back(Vector3(p.x, 1, p.y))

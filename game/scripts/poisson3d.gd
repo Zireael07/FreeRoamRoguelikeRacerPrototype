@@ -1,9 +1,12 @@
-tool
+@tool
 extends "res://2d tests/poisson2DNode.gd"
 
 # class member variables go here, for example:
 var mult = 2
-#export var seed3 = 104686263 setget set_seed3
+#export var seed3 = 104686263:
+	set(value):
+		# TODO: Manually copy the code from this method.
+		set_seed3(value)
 var seed3 = 10000001 #3046862638
 
 func _ready():
@@ -41,7 +44,7 @@ func _ready():
 func set_seed3(value):
 	#print("Seed3 value is " + str(value))
 	# if not set_get we don't need this
-	#if !Engine.editor_hint:
+	#if not Engine.editor_hint:
 	#yield(self, 'tree_entered')
 	
 	for ix in range(nx):
@@ -88,9 +91,9 @@ func map():
 #	# Update game logic here.
 #	pass
 func debug_cube(loc):
-	var mesh = CubeMesh.new()
+	var mesh = BoxMesh.new()
 	mesh.set_size(Vector3(1,1,1))
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_mesh(mesh)
 	add_child(node)
 	node.set_translation(loc)

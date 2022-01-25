@@ -4,19 +4,19 @@
 
 [node name="Polygon2D" type="Polygon2D" index="0"]
 
-polygon = PoolVector2Array( 0, 0, 30, 140, 180, 100, 350, 38 )
-uv = PoolVector2Array(  )
-color = Color( 0.996094, 0.988312, 0.988312, 0.0718039 )
-vertex_colors = PoolColorArray(  )
-offset = Vector2( 0, 0 )
+polygon = PackedVector2Array(0, 0, 30, 140, 180, 100, 350, 38)
+uv = PackedVector2Array()
+color = Color(0.996094, 0.988312, 0.988312, 0.0718039)
+vertex_colors = PackedColorArray()
+offset = Vector2(0, 0)
 antialiased = false
 texture = null
-texture_offset = Vector2( 0, 0 )
-texture_scale = Vector2( 1, 1 )
+texture_offset = Vector2(0, 0)
+texture_scale = Vector2(1, 1)
 texture_rotation = 0.0
 invert_enable = false
 invert_border = 100.0
 script = ExtResource( 1 )
-_sections_unfolded = [ "Invert", "Texture", "Transform", "Visibility" ]
+_sections_unfolded = ["Invert", "Texture2D", "Transform3D", "Visibility"]
 
 

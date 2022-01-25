@@ -4,48 +4,48 @@
 [ext_resource path="res://roads/road_segment.tscn" type="PackedScene" id=2]
 [ext_resource path="res://old/road_segment_left.tscn" type="PackedScene" id=3]
 
-[node name="Spatial" type="Spatial"]
+[node name="Node3D" type="Node3D"]
 
-_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+_import_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="Position3D" type="Position3D" parent="."]
 
-_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+_import_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 script = ExtResource( 1 )
 numSegments = 7
-positions = PoolVector3Array( 0, 0, 0, 1.29677, 0, 37.1346, 2.59354, 0, 74.2692, 3.89031, 0, 111.404, 5.18708, 0, 148.538, 6.48385, 0, 185.673, 7.78062, 0, 222.808 )
-ends = PoolVector3Array( -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346 )
+positions = PackedVector3Array(0, 0, 0, 1.29677, 0, 37.1346, 2.59354, 0, 74.2692, 3.89031, 0, 111.404, 5.18708, 0, 148.538, 6.48385, 0, 185.673, 7.78062, 0, 222.808)
+ends = PackedVector3Array(-1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346, -1.29677, 0, -37.1346)
 
-[node name="Road_instance0" type="Spatial" parent="Position3D" instance=ExtResource( 2 )]
+[node name="Road_instance0" type="Node3D" parent="Position3D" instance=ExtResource( 2 )]
 
-_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+_import_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
-[node name="Road_instance1" type="Spatial" parent="Position3D" instance=ExtResource( 3 )]
+[node name="Road_instance1" type="Node3D" parent="Position3D" instance=ExtResource( 3 )]
 
-_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.29677, 0, 37.1346 )
+_import_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.29677, 0, 37.1346)
 
-[node name="Road_instance2" type="Spatial" parent="Position3D" instance=ExtResource( 2 )]
+[node name="Road_instance2" type="Node3D" parent="Position3D" instance=ExtResource( 2 )]
 
-_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59354, 0, 74.2692 )
+_import_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.59354, 0, 74.2692)
 
-[node name="Road_instance3" type="Spatial" parent="Position3D" instance=ExtResource( 3 )]
+[node name="Road_instance3" type="Node3D" parent="Position3D" instance=ExtResource( 3 )]
 
-_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.89031, 0, 111.404 )
+_import_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.89031, 0, 111.404)
 
-[node name="Road_instance4" type="Spatial" parent="Position3D" instance=ExtResource( 2 )]
+[node name="Road_instance4" type="Node3D" parent="Position3D" instance=ExtResource( 2 )]
 
-_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.18708, 0, 148.538 )
+_import_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.18708, 0, 148.538)
 
-[node name="Road_instance5" type="Spatial" parent="Position3D" instance=ExtResource( 3 )]
+[node name="Road_instance5" type="Node3D" parent="Position3D" instance=ExtResource( 3 )]
 
-_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.48385, 0, 185.673 )
+_import_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.48385, 0, 185.673)
 
-[node name="Road_instance6" type="Spatial" parent="Position3D" instance=ExtResource( 2 )]
+[node name="Road_instance6" type="Node3D" parent="Position3D" instance=ExtResource( 2 )]
 
-_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.78062, 0, 222.808 )
+_import_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.78062, 0, 222.808)

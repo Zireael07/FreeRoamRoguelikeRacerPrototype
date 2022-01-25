@@ -1,4 +1,4 @@
-tool
+@tool
 extends "res://scripts/meshes/mesh_gen.gd"
 
 # class member variables go here, for example:
@@ -7,7 +7,7 @@ var car_front = []
 var car_rear = []
 var window_poly = []
 
-export(float) var width = 1.0
+@export var width: float = 1.0
 
 var indices = []
 var indices_top = []
@@ -17,9 +17,9 @@ var indices_rear = []
 
 var indices_body = []
 	
-export(SpatialMaterial) var material = SpatialMaterial.new()
-export(ShaderMaterial) var glass_material = ShaderMaterial.new()
-export(SpatialMaterial) var steering_material = SpatialMaterial.new()
+@export var material: StandardMaterial3D = StandardMaterial3D.new()
+@export var glass_material: ShaderMaterial = ShaderMaterial.new()
+@export var steering_material: StandardMaterial3D = StandardMaterial3D.new()
 
 var rain_glass_mat
 var car_surface = null
@@ -31,14 +31,14 @@ func _ready():
 	rain_glass_mat = preload("res://assets/shadermaterial_glass_rain.tres")
 	
 	#Create a node that will hold the mesh
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_name("plane")
 	add_child(node)
 	
 	#Create a node that will hold the mesh
-	var steer_node = MeshInstance.new()
+	var steer_node = MeshInstance3D.new()
 	steer_node.set_name("steering")
-	get_node("Spatial").add_child(steer_node)
+	get_node(^"Node3D").add_child(steer_node)
 		
 	#Turn off shadows
 	steer_node.set_cast_shadows_setting(0)
@@ -262,7 +262,7 @@ func createSteeringWheel(steering_surf, steering_material):
 	side_poly.append(Vector2(0.015, 0.05))
 	side_poly.append(Vector2(-0.015, 0.05))
 	
-	var indices = Array(Geometry.triangulate_polygon(PoolVector2Array(side_poly)))
+	var indices = Array(Geometry.triangulate_polygon(PackedVector2Array(side_poly)))
 	
 	createSide(indices, side_poly, steering_surf, -0.1)
 	createSide(indices, side_poly, steering_surf, -0.1, true)
@@ -290,7 +290,7 @@ func createCar(car_front, trueno_rear, car, window_poly, surface, glass_surf):
 	poly_bottom.append(window_poly[3]) # bottom right of window
 	poly_bottom.append(window_poly[0]) # bottom left of window
 	
-	indices = Array(Geometry.triangulate_polygon(PoolVector2Array(poly_bottom)))
+	indices = Array(Geometry.triangulate_polygon(PackedVector2Array(poly_bottom)))
 	#print("Indices" + str(indices))
 	
 	# make the top
@@ -304,7 +304,7 @@ func createCar(car_front, trueno_rear, car, window_poly, surface, glass_surf):
 		poly_top.append(trueno_rear[trueno_rear.size()-4])
 		poly_top.append(car_front[front_wheel_end+3]) # the point above the front windows
 		
-		indices_top = Array(Geometry.triangulate_polygon(PoolVector2Array(poly_top)))
+		indices_top = Array(Geometry.triangulate_polygon(PackedVector2Array(poly_top)))
 		# error message if something went wrong
 		if indices_top.size() < 1:
 			print("Top polygon couldn't be triangulated!")
@@ -314,7 +314,7 @@ func createCar(car_front, trueno_rear, car, window_poly, surface, glass_surf):
 	poly_front = car_front
 
 
-	indices_front = Array(Geometry.triangulate_polygon(PoolVector2Array(poly_front)))
+	indices_front = Array(Geometry.triangulate_polygon(PackedVector2Array(poly_front)))
 	# error message if something went wrong
 	if indices_front.size() < 1:
 		print("Front polygon couldn't be triangulated!")
@@ -324,7 +324,7 @@ func createCar(car_front, trueno_rear, car, window_poly, surface, glass_surf):
 	poly_rear = trueno_rear
 
 	
-	indices_rear = Array(Geometry.triangulate_polygon(PoolVector2Array(poly_rear)))
+	indices_rear = Array(Geometry.triangulate_polygon(PackedVector2Array(poly_rear)))
 	# error message if something went wrong
 	if indices_rear.size() < 1:
 		print("Front polygon couldn't be triangulated!")
@@ -394,7 +394,7 @@ func createCar(car_front, trueno_rear, car, window_poly, surface, glass_surf):
 	car.remove(car.find(poly_rear[poly_rear.size()-4]))
 	
 	
-	indices_body = Array(Geometry.triangulate_polygon(PoolVector2Array(car)))
+	indices_body = Array(Geometry.triangulate_polygon(PackedVector2Array(car)))
 	
 	#print("Indices: " + str(indices_body))
 	linkSides(indices_body, car, surface, width)
@@ -579,13 +579,13 @@ func createQuadNoUV(surface, one, two, three, four, flip=false):
 	#print("Created quad")
 
 func createSide(indices, poly, surface, offset, flip=false):
-	if indices.empty():
+	if indices.is_empty():
 		return
 		
 	if flip:
 		# prevents weirdness
 		var dup = indices.duplicate()
-		dup.invert()
+		dup.reverse()
 		#print("Indices after flip: " + str(dup))
 		indices = dup	
 		
@@ -636,10 +636,10 @@ func linkSides(indices, polygon, surface, offset, begin=0, dup=false):
 
 # functions called by in-game events		
 func rain_glass():
-	get_node("plane").set_surface_material(1, rain_glass_mat)		
+	get_node(^"plane").set_surface_material(1, rain_glass_mat)		
 
 func rain_clear():
-	get_node("plane").set_surface_material(1, glass_material)
+	get_node(^"plane").set_surface_material(1, glass_material)
 
 ## 'pos' is local space?	
 #func hit_deform(pos):

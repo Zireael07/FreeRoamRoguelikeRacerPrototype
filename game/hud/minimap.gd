@@ -161,7 +161,7 @@ func get_point_rel_loc(global_loc):
 	var player_tr = get_tree().get_nodes_in_group("player")[0].get_child(0).get_global_transform()
 	#var player_tr = get_parent().get_parent().get_global_transform()
 	
-	var rel_loc = player_tr.xform_inv(global_loc)
+	var rel_loc = global_loc * player_tr
 	return rel_loc
 	
 func get_AI_rel_loc(AI):
@@ -169,7 +169,7 @@ func get_AI_rel_loc(AI):
 	var player_tr = get_tree().get_nodes_in_group("player")[0].get_child(0).get_global_transform()
 	#var player_tr = get_parent().get_parent().get_global_transform()
 	
-	var rel_loc = player_tr.xform_inv(global_loc)
+	var rel_loc = global_loc * player_tr
 		
 	return rel_loc
 

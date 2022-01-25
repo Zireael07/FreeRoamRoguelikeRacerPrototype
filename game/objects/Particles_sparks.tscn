@@ -4,7 +4,7 @@
 [ext_resource path="res://objects/Particles_sparks.gd" type="Script" id=2]
 
 [sub_resource type="Gradient" id=1]
-colors = PoolColorArray( 0.988281, 0.984421, 0.984421, 1, 0.988281, 0.400735, 0.0115814, 1 )
+colors = PackedColorArray(0.988281, 0.984421, 0.984421, 1, 0.988281, 0.400735, 0.0115814, 1)
 
 [sub_resource type="GradientTexture" id=2]
 gradient = SubResource( 1 )
@@ -14,7 +14,7 @@ emission_shape = 1
 emission_sphere_radius = 0.25
 flag_align_y = true
 spread = 20.0
-gravity = Vector3( -9.8, 0, 0 )
+gravity = Vector3(-9.8, 0, 0)
 initial_velocity = 1.0
 radial_accel = 2.0
 tangential_accel = 10.0
@@ -24,16 +24,16 @@ color_ramp = SubResource( 2 )
 
 [sub_resource type="QuadMesh" id=4]
 material = ExtResource( 1 )
-size = Vector2( 0.25, 0.25 )
+size = Vector2(0.25, 0.25)
 
-[node name="Particles" type="Particles"]
+[node name="GPUParticles3D" type="GPUParticles3D"]
 cast_shadow = 0
 emitting = false
 amount = 1
 lifetime = 0.5
 one_shot = true
 explosiveness = 1.0
-visibility_aabb = AABB( -0.5, -0.5, -0.5, 1, 1, 1 )
+visibility_aabb = AABB(-0.5, -0.5, -0.5, 1, 1, 1)
 process_material = SubResource( 3 )
 draw_pass_1 = SubResource( 4 )
 script = ExtResource( 2 )

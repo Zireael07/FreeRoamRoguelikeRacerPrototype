@@ -17,9 +17,9 @@ var halfY
 
 func _ready():
 	set_process_input(true)
-	joystick=get_node("Joystick")
+	joystick=get_node(^"Joystick")
 	
-	valOut=get_node("../valV")
+	valOut=get_node(^"../valV")
 	
 	# centers x = floor(float(get_size().x))/2.0)
 	
@@ -42,11 +42,11 @@ func _ready():
 #	if isVertical: #vertical joystick?
 #		minXY=Vector2(floor((float(get_size().x))/2.0),0)
 #		maxXY=Vector2(floor((float(get_size().x))/2.0),get_size().y-1)
-#		valOut=get_node("../valV")
+#		valOut=get_node(^"../valV")
 #	else: #horizontal joystick
 #		minXY=Vector2(0,floor((float(get_size().y))/2.0))
 #		maxXY=Vector2(get_size().x-1,floor((float(get_size().y))/2.0))
-#		valOut=get_node("../valH")
+#		valOut=get_node(^"../valH")
 	
 			
 func _input(ev):

@@ -1,4 +1,4 @@
-tool
+@tool
 #extends Node
 extends "../map/connect_intersections.gd"
 

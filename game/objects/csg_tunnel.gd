@@ -1,4 +1,4 @@
-extends CSGPolygon
+extends CSGPolygon3D
 
 
 # Declare member variables here. Examples:

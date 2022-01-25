@@ -3,40 +3,40 @@
 [ext_resource path="res://car/car_wheel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/car/car_gray.tres" type="Material" id=2]
 
-[sub_resource type="CubeMesh" id=1]
-size = Vector3( 4, 2, 2 )
+[sub_resource type="BoxMesh" id=1]
+size = Vector3(4, 2, 2)
 
-[sub_resource type="SpatialMaterial" id=2]
-albedo_color = Color( 0.137255, 0.101961, 0.756863, 1 )
+[sub_resource type="StandardMaterial3D" id=2]
+albedo_color = Color(0.137255, 0.101961, 0.756863, 1)
 
-[sub_resource type="CubeMesh" id=3]
-size = Vector3( 1, 1.5, 1.75 )
+[sub_resource type="BoxMesh" id=3]
+size = Vector3(1, 1.5, 1.75)
 
-[node name="Spatial" type="Spatial"]
+[node name="Node3D" type="Node3D"]
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource( 1 )
-material/0 = SubResource( 2 )
+surface_material_override/0 = SubResource( 2 )
 
-[node name="MeshInstance2" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.51486, 0, 0 )
+[node name="MeshInstance2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.51486, 0, 0)
 mesh = SubResource( 3 )
-material/0 = ExtResource( 2 )
+surface_material_override/0 = ExtResource( 2 )
 
-[node name="Spatial" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 1.91261, -1.19732, 0.93702 )
+[node name="Node3D" parent="." instance=ExtResource( 1 )]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 1.91261, -1.19732, 0.93702)
 
 [node name="Spatial2" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -1.87978, -1.19732, 0.93702 )
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -1.87978, -1.19732, 0.93702)
 
 [node name="Spatial3" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 1.28645, -1.19732, 0.93702 )
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 1.28645, -1.19732, 0.93702)
 
 [node name="Spatial4" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 1.91261, -1.19732, -0.995732 )
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 1.91261, -1.19732, -0.995732)
 
 [node name="Spatial5" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -1.87978, -1.19732, -0.995732 )
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -1.87978, -1.19732, -0.995732)
 
 [node name="Spatial6" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 1.28645, -1.19732, -0.995732 )
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 1.28645, -1.19732, -0.995732)

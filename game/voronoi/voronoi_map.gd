@@ -1,4 +1,4 @@
-tool
+@tool
 extends "voronoi3d.gd"
 
 # class member variables go here, for example:
@@ -32,9 +32,9 @@ func spawn_cubes_line(line):
 
 
 func debug_cube(loc):
-	var mesh = CubeMesh.new()
+	var mesh = BoxMesh.new()
 	mesh.set_size(Vector3(1,1,1))
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_mesh(mesh)
 	add_child(node)
 	node.set_translation(loc)
@@ -47,7 +47,7 @@ func spawn_road(line):
 	#print("Spawning road, distance " + str(dist))
 	if dist > 6 and long > 0:
 		print("Instance road")
-		var road = road_straight.instance()
+		var road = road_straight.instantiate()
 		#var ang = line[0].angle_to(line[1])
 		var rel = line[1]-line[0]
 		var ang = atan2(rel.x, rel.y)
@@ -63,7 +63,7 @@ func spawn_road(line):
 func spawn_roads(lines):
 	for l in lines:
 		#print("Instance road")
-		#var road = road_straight.instance()
+		#var road = road_straight.instantiate()
 		#add_child(road)
 		#road.set_translation(Vector3(l[0].x, 0, l[0].y))
 		

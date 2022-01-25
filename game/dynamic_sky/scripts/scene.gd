@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 var iTime=0.0
 var iFrame=0
@@ -12,7 +12,7 @@ var DAY_SPEED = 10; # in real-time minutes
 var trigger_count = 0
 #const UPDATE_TIME = 1/30.0;
 
-export var start_time = 8.0
+@export var start_time = 8.0
 
 var prev_time = 0.0
 var time = 0.0;
@@ -23,7 +23,7 @@ var minute = 0
 
 var light
 
-export var day_night = true
+@export var day_night = true
 
 var sun = null
 var sunmoon_angle
@@ -46,8 +46,8 @@ var midnight_fired = false
 
 # weather
 
-export(int) var weather = 0
-export(float) var rain_amount = 0.3
+@export var weather: int = 0
+@export var rain_amount: float = 0.3
 # we can't init it on ready because it relies on our own setup
 var state = null #WeatherSunny.new(self)
 var prev_state
@@ -67,9 +67,9 @@ func _ready():
 	var winter = OS.get_datetime(true)
 	#print(winter)
 	if winter.month == 12 and winter.day > 21 or winter.month < 3:
-		get_parent().get_node("Ground").snow = true
+		get_parent().get_node(^"Ground").snow = true
 	else:
-		get_parent().get_node("Ground").snow = false
+		get_parent().get_node(^"Ground").snow = false
 	
 	time = start_time;
 	prev_time = start_time;
@@ -78,11 +78,11 @@ func _ready():
 	#target 60 fps
 	Engine.set_target_fps(60)
 	
-	sun = get_parent().get_node("DirectionalLight")
-	env = get_parent().get_node("WorldEnvironment").get_environment()
+	sun = get_parent().get_node(^"DirectionalLight3D")
+	env = get_parent().get_node(^"WorldEnvironment").get_environment()
 	#sky = env.get_sky()
-	sky = get_node("Sky/Node2D/sky_rect")
-	clouds = get_node("Sky/Node2D/Sprite2")
+	sky = get_node(^"Sky/Node2D/sky_rect")
+	clouds = get_node(^"Sky/Node2D/Sprite2")
 	
 	#print("Real-life minutes/day is: " + str(DAY_SPEED) + ", 1 h is: " + str((DAY_SPEED/24.0)*60.0) + " s")
 	
@@ -155,9 +155,9 @@ func _process(delta):
 	# TODO: weather should be a fsm and effects should be applied only on weather change
 	# weather
 #	if weather == WEATHER_SUNNY:
-#		player.get_node("BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 25)
+#		player.get_node(^"BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 25)
 #	elif weather == WEATHER_OVERCAST or weather == WEATHER_RAIN:
-#		player.get_node("BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 85)
+#		player.get_node(^"BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 85)
 	
 #	if weather == WEATHER_RAIN:
 #		rain()
@@ -305,7 +305,7 @@ func day_night_cycle(time):
 	#sunmoon_lat = calculate_sun_latitude(time)
 	
 	light = calculate_lightning(hour, minute);
-	sun.set_param(Light.PARAM_ENERGY, light);
+	sun.set_param(Light3D.PARAM_ENERGY, light);
 	
 	set_colors(time)
 	
@@ -329,7 +329,7 @@ func day_night_cycle(time):
 	if time >= 18.4 && time < 18.5:
 		pass
 		# no idea what it was needed for, removing it fixes the stutter
-		#get_node("Sky")._trigger_update_sky()
+		#get_node(^"Sky")._trigger_update_sky()
 		#print("Update sky")
 	elif time >= 18.5 && not night_fired:
 
@@ -345,7 +345,7 @@ func day_night_cycle(time):
 		
 
 	elif time >= 23.5 && not midnight_fired:
-		player.get_node("BODY").reset_events() # in player because it needs minimap
+		player.get_node(^"BODY").reset_events() # in player because it needs minimap
 		midnight_fired = true
 
 	
@@ -353,8 +353,8 @@ func day_night_cycle(time):
 
 # weather
 func rain():
-	player.get_node("BODY/RainParticles").set_emitting(true)
-	player.get_node("BODY/RainParticles2").set_emitting(true)
+	player.get_node(^"BODY/RainParticles").set_emitting(true)
+	player.get_node(^"BODY/RainParticles2").set_emitting(true)
 	
 	#if rain_amount> 0.1:
 	# enable SSR
@@ -365,34 +365,34 @@ func rain():
 	if get_tree().get_nodes_in_group("roads").size() > 0:
 		get_tree().get_nodes_in_group("roads")[0].rain_shine(rain_amount)
 		
-	#player.get_node("BODY/proc_mesh").rain_glass()
+	#player.get_node(^"BODY/proc_mesh").rain_glass()
 
 func no_rain():
 	env.set_ssr_enabled(false)
 	env.adjustment_enabled = false
 	env.fog_color = Color(0.5, 0.6, 0.7)
 		
-	player.get_node("BODY/RainParticles").set_emitting(false)
-	player.get_node("BODY/RainParticles2").set_emitting(false)
+	player.get_node(^"BODY/RainParticles").set_emitting(false)
+	player.get_node(^"BODY/RainParticles2").set_emitting(false)
 	if get_tree().get_nodes_in_group("roads").size() > 0:
 		get_tree().get_nodes_in_group("roads")[0].no_rain()
 
 	# car glass
-	#player.get_node("BODY/proc_mesh").rain_clear()
+	#player.get_node(^"BODY/proc_mesh").rain_clear()
 	
 func snow():
 	var snow = load("res://assets/snow_material.tres")
-	player.get_node("BODY/RainParticles").set_material_override(snow)
-	player.get_node("BODY/RainParticles2").set_material_override(snow)
+	player.get_node(^"BODY/RainParticles").set_material_override(snow)
+	player.get_node(^"BODY/RainParticles2").set_material_override(snow)
 	
 	
-	player.get_node("BODY/RainParticles").set_emitting(true)
-	player.get_node("BODY/RainParticles2").set_emitting(true)
+	player.get_node(^"BODY/RainParticles").set_emitting(true)
+	player.get_node(^"BODY/RainParticles2").set_emitting(true)
 	
 #	if get_tree().get_nodes_in_group("roads").size() > 0:
 #		get_tree().get_nodes_in_group("roads")[0].rain_shine()
 		
-#	player.get_node("BODY/proc_mesh").rain_glass()
+#	player.get_node(^"BODY/proc_mesh").rain_glass()
 
 func overcast():
 	# in percent

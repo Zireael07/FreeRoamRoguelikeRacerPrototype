@@ -1,24 +1,24 @@
 [gd_scene load_steps=3 format=2]
 
-[sub_resource type="CubeMesh" id=1]
+[sub_resource type="BoxMesh" id=1]
 
-size = Vector3( 6, 20, 6 )
+size = Vector3(6, 20, 6)
 subdivide_width = 0
 subdivide_height = 0
 subdivide_depth = 0
 
-[sub_resource type="ConvexPolygonShape" id=2]
+[sub_resource type="ConvexPolygonShape3D" id=2]
 
-points = PoolVector3Array( -3, 10, 3, 3, 10, -3, 3, 10, 3, -3, 10, -3, -3, -10, 3, 3, -10, -3, 3, -10, 3, -3, -10, -3, 3, 10, 3, -3, 10, -3, 3, 10, -3, -3, 10, 3, 3, -10, 3, -3, -10, -3, 3, -10, -3, -3, -10, 3, 3, 10, 3, -3, -10, 3, -3, 10, 3, 3, -10, 3, 3, 10, -3, -3, -10, -3, -3, 10, -3, 3, -10, -3 )
+points = PackedVector3Array(-3, 10, 3, 3, 10, -3, 3, 10, 3, -3, 10, -3, -3, -10, 3, 3, -10, -3, 3, -10, 3, -3, -10, -3, 3, 10, 3, -3, 10, -3, 3, 10, -3, -3, 10, 3, 3, -10, 3, -3, -10, -3, 3, -10, -3, -3, -10, 3, 3, 10, 3, -3, -10, 3, -3, 10, 3, 3, -10, 3, 3, 10, -3, -3, -10, -3, -3, 10, -3, 3, -10, -3)
 
-[node name="skyscraper" type="Spatial" index="0"]
+[node name="skyscraper" type="Node3D" index="0"]
 
 _import_path = NodePath(".")
-transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0 )
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
-[node name="MeshInstance" type="MeshInstance" parent="." index="0"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="0"]
 
-transform = Transform( 0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 0, 10, 0 )
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 0, 10, 0)
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -30,10 +30,10 @@ lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
 mesh = SubResource( 1 )
 skeleton = NodePath("..")
-material/0 = null
-_sections_unfolded = [ "Transform" ]
+surface_material_override/0 = null
+_sections_unfolded = ["Transform3D"]
 
-[node name="StaticBody" type="StaticBody" parent="MeshInstance" index="0"]
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" index="0"]
 
 input_ray_pickable = true
 input_capture_on_drag = false
@@ -41,10 +41,10 @@ collision_layer = 1
 collision_mask = 1
 friction = 1.0
 bounce = 0.0
-constant_linear_velocity = Vector3( 0, 0, 0 )
-constant_angular_velocity = Vector3( 0, 0, 0 )
+constant_linear_velocity = Vector3(0, 0, 0)
+constant_angular_velocity = Vector3(0, 0, 0)
 
-[node name="CollisionShape" type="CollisionShape" parent="MeshInstance/StaticBody" index="0"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" index="0"]
 
 shape = SubResource( 2 )
 disabled = false

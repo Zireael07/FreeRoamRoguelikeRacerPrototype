@@ -1,4 +1,4 @@
-extends Particles
+extends GPUParticles3D
 
 # Declare member variables here. Examples:
 

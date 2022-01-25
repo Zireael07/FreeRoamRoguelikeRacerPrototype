@@ -1,28 +1,28 @@
-tool
+@tool
 extends "res://scripts/meshes/mesh_gen.gd"
 
 # class member variables go here, for example:
-export var door_h = 0.55
-export var window_h = 0.35
+@export var door_h = 0.55
+@export var window_h = 0.35
 #export var hood_h = 0.65
-export var rh = 0.35
-export var door = 0.4
-export var front = 0.8
-export var rear = 0.7
-export var roof_w = 0.5
+@export var rh = 0.35
+@export var door = 0.4
+@export var front = 0.8
+@export var rear = 0.7
+@export var roof_w = 0.5
 
-export var well_h = 0.25
-export var well_w = 0.4
+@export var well_h = 0.25
+@export var well_w = 0.4
 
-export var width = 1.0
+@export var width = 1.0
 
 var pillar_w = 0.1
 
-export(SpatialMaterial) var material = SpatialMaterial.new()
-export(SpatialMaterial) var glass_material = SpatialMaterial.new()
-export(SpatialMaterial) var taillights_material = SpatialMaterial.new()
-export(SpatialMaterial) var inside_material = SpatialMaterial.new()
-export(SpatialMaterial) var steering_material = SpatialMaterial.new()
+@export var material: StandardMaterial3D = StandardMaterial3D.new()
+@export var glass_material: StandardMaterial3D = StandardMaterial3D.new()
+@export var taillights_material: StandardMaterial3D = StandardMaterial3D.new()
+@export var inside_material: StandardMaterial3D = StandardMaterial3D.new()
+@export var steering_material: StandardMaterial3D = StandardMaterial3D.new()
 
 func _ready():
 	
@@ -39,7 +39,7 @@ func _ready():
 	inside_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	#Create a node building that will hold the mesh
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_name("plane")
 	add_child(node)
 	
@@ -47,7 +47,7 @@ func _ready():
 	steering_surf.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	#Create a node that will hold the mesh
-	var steer_node = MeshInstance.new()
+	var steer_node = MeshInstance3D.new()
 	steer_node.set_name("steering")
 	add_child(steer_node)
 	

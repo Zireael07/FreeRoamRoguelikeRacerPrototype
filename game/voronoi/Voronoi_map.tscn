@@ -9,15 +9,15 @@
 
 
 
-[sub_resource type="PlaneShape" id=1]
+[sub_resource type="WorldMarginShape3D" id=1]
 
-plane = Plane( 0, 1, 0, 0 )
+plane = Plane(0, 1, 0, 0)
 
-[node name="Navigation" type="Navigation" index="0"]
+[node name="Node3D" type="Node3D" index="0"]
 
-up_vector = Vector3( 0, 1, 0 )
+up_vector = Vector3(0, 1, 0)
 
-[node name="Spatial" type="Spatial" parent="." index="0"]
+[node name="Node3D" type="Node3D" parent="." index="0"]
 
 script = ExtResource( 1 )
 
@@ -25,7 +25,7 @@ script = ExtResource( 1 )
 
 environment = ExtResource( 2 )
 
-[node name="World" type="Spatial" parent="." index="2"]
+[node name="World3D" type="Node3D" parent="." index="2"]
 
 script = ExtResource( 3 )
 SPEED = 10.0
@@ -33,9 +33,9 @@ start_time = 8.0
 day_night = true
 weather = 0
 
-[node name="Camera" type="Camera" parent="." index="3"]
+[node name="Camera3D" type="Camera3D" parent="." index="3"]
 
-transform = Transform( 0.999422, 0, 0.0339803, 0, 1, 0, -0.0339803, 0, 0.999422, 0.3423, 0.509534, -5.59995 )
+transform = Transform3D(0.999422, 0, 0.0339803, 0, 1, 0, -0.0339803, 0, 0.999422, 0.3423, 0.509534, -5.59995)
 keep_aspect = 0
 cull_mask = 1048575
 environment = null
@@ -49,11 +49,11 @@ size = 1.0
 near = 0.1
 far = 100.0
 
-[node name="DirectionalLight" type="DirectionalLight" parent="." index="4"]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="4"]
 
-transform = Transform( 1, 0, 0, 0, -0.766045, 0.642788, 0, -0.642788, -0.766045, 0, 18.629, 0 )
+transform = Transform3D(1, 0, 0, 0, -0.766045, 0.642788, 0, -0.642788, -0.766045, 0, 18.629, 0)
 layers = 1
-light_color = Color( 1, 1, 1, 1 )
+light_color = Color(1, 1, 1, 1)
 light_energy = 1.0
 light_indirect_energy = 1.0
 light_negative = false
@@ -61,7 +61,7 @@ light_specular = 0.5
 light_bake_mode = 1
 light_cull_mask = -1
 shadow_enabled = true
-shadow_color = Color( 0, 0, 0, 1 )
+shadow_color = Color(0, 0, 0, 1)
 shadow_bias = 0.0
 shadow_contact = 0.0
 shadow_reverse_cull_face = true
@@ -75,18 +75,18 @@ directional_shadow_normal_bias = 0.0
 directional_shadow_bias_split_scale = 0.0
 directional_shadow_depth_range = 0
 directional_shadow_max_distance = 100.0
-_sections_unfolded = [ "Directional Shadow", "Shadow" ]
+_sections_unfolded = ["Directional Shadow", "Shadow"]
 
 [node name="car" parent="." index="5" instance=ExtResource( 4 )]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.2608, 0, 0 )
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.2608, 0, 0)
 
-[node name="Ground" type="Spatial" parent="." index="6"]
+[node name="Ground" type="Node3D" parent="." index="6"]
 
 script = ExtResource( 5 )
 terrainmaterial = ExtResource( 6 )
 
-[node name="StaticBody" type="StaticBody" parent="Ground" index="0"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Ground" index="0"]
 
 input_ray_pickable = true
 input_capture_on_drag = false
@@ -94,10 +94,10 @@ collision_layer = 1
 collision_mask = 1
 friction = 1.0
 bounce = 0.0
-constant_linear_velocity = Vector3( 0, 0, 0 )
-constant_angular_velocity = Vector3( 0, 0, 0 )
+constant_linear_velocity = Vector3(0, 0, 0)
+constant_angular_velocity = Vector3(0, 0, 0)
 
-[node name="CollisionShape" type="CollisionShape" parent="Ground/StaticBody" index="0"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D" index="0"]
 
 shape = SubResource( 1 )
 disabled = false

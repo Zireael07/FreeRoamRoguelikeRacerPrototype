@@ -1,4 +1,4 @@
-tool
+@tool
 extends Node2D
 
 # class member variables go here, for example:
@@ -30,7 +30,7 @@ func _ready():
 	#print(str(commons))
 
 #func set_textur():
-#	get_node("Sprite").set_texture(load("res://VoronoiMap.png"))
+#	get_node(^"Sprite2D").set_texture(load("res://VoronoiMap.png"))
 
 func hypot(x,y):
 	return sqrt(x*x + y*y)
@@ -41,8 +41,8 @@ func generate_voronoi_diagram_data(width, height, num_cells):
 	
 	for i in range(num_cells):
 		# coords
-		nx.append(rand_range(0, width))
-		ny.append(rand_range(0, height))
+		nx.append(randf_range(0, width))
+		ny.append(randf_range(0, height))
 		var cell = []
 		data.append(cell)
 	
@@ -81,8 +81,8 @@ func generate_voronoi_diagram_image(width, height, num_cells):
 	var nb = []
 	for i in range(num_cells):
 		# coords
-		nx.append(rand_range(0, imgx))
-		ny.append(rand_range(0, imgy))
+		nx.append(randf_range(0, imgx))
+		ny.append(randf_range(0, imgy))
 		# colors
 		nr.append(randf())
 		ng.append(randf())
@@ -117,7 +117,7 @@ func generate_voronoi_diagram_image(width, height, num_cells):
 	set_textur()
 	
 	#var textur = load("res://VoronoiMap.png")
-	#get_node("Sprite").set_texture(textur)
+	#get_node(^"Sprite2D").set_texture(textur)
 	
 func data_to_polygon():
 	for c in data:

@@ -7,9 +7,9 @@
 [node name="marker" index="0" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 
-[node name="MeshInstance" parent="." index="0"]
+[node name="MeshInstance3D" parent="." index="0"]
 material_override = ExtResource( 3 )
-material/0 = null
+surface_material_override/0 = null
 
-[node name="Particles" parent="." index="2"]
+[node name="GPUParticles3D" parent="." index="2"]
 material_override = ExtResource( 3 )

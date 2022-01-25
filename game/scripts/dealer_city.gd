@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 # class member variables go here, for example:
 var player
@@ -16,8 +16,8 @@ func enter_dealer(body):
 	player = body
 	
 	# hide normal gui
-	var hud = player.get_node("root")
-	var map = player.get_node("Viewport_root") #"/Viewport/minimap")
+	var hud = player.get_node(^"root")
+	var map = player.get_node(^"Viewport_root") #"/SubViewport/minimap")
 	hud.hide()
 	map.hide()
 	
@@ -40,16 +40,16 @@ func enter_dealer(body):
 	# stop time passage
 	var root = get_parent().get_parent() #.get_parent() #.get_parent()
 	print(root.get_name())
-	var world = root.get_node("scene")
+	var world = root.get_node(^"scene")
 	world.set_process(false)
 	# hide the sun
-	root.get_node("DirectionalLight").set_visible(false)
+	root.get_node(^"DirectionalLight3D").set_visible(false)
 	
-	var env = root.get_node("WorldEnvironment").get_environment()
+	var env = root.get_node(^"WorldEnvironment").get_environment()
 	env.set_fog_enabled(false)
 	
 	#spawn dealer interior scene
-	var dealer_interior = dealer_scene.instance()
+	var dealer_interior = dealer_scene.instantiate()
 	dealer_interior.translate(get_translation())
 	dealer_interior.rotate_y(get_rotation().y)
 	
@@ -66,8 +66,8 @@ func enter_dealer(body):
 
 
 func _on_Area_body_entered( body ):
-	print("Area triggered")
-	if body is KinematicBody:
+	print("Area3D triggered")
+	if body is CharacterBody3D:
 		if body is player_script:
 			if body.speed < 10:
 				enter_dealer(body)

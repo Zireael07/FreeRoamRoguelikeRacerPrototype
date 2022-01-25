@@ -9,45 +9,45 @@
 
 [node name="Node2D" type="Node2D" parent="." index="0"]
 
-position = Vector2( 96, 182 )
-_sections_unfolded = [ "Transform" ]
+position = Vector2(96, 182)
+_sections_unfolded = ["Transform3D"]
 
 [node name="curve2" parent="Node2D" index="0" instance=ExtResource( 1 )]
 
-_sections_unfolded = [ "Transform" ]
+_sections_unfolded = ["Transform3D"]
 
 [node name="curve" parent="Node2D" index="1" instance=ExtResource( 1 )]
 
-_sections_unfolded = [ "Transform" ]
+_sections_unfolded = ["Transform3D"]
 angle_from = 90
 angle_to = 180
 
 [node name="Node2D 2" type="Node2D" parent="." index="1"]
 
-position = Vector2( 23, 90 )
-_sections_unfolded = [ "Transform" ]
+position = Vector2(23, 90)
+_sections_unfolded = ["Transform3D"]
 
 [node name="straight" parent="Node2D 2" index="0" instance=ExtResource( 2 )]
 
-position = Vector2( -15, 0 )
+position = Vector2(-15, 0)
 rotation = -1.5708
 
 [node name="curve" parent="Node2D 2" index="1" instance=ExtResource( 1 )]
 
-position = Vector2( -9.18485e-16, -15 )
+position = Vector2(-9.18485e-16, -15)
 angle_from = 180
 angle_to = 270
 
 [node name="Node2D 3" type="Node2D" parent="." index="2"]
 
-position = Vector2( 46, 167 )
-_sections_unfolded = [ "Transform" ]
+position = Vector2(46, 167)
+_sections_unfolded = ["Transform3D"]
 
 [node name="curve3" type="Node2D" parent="Node2D 3" index="0"]
 
-position = Vector2( -9.18485e-16, -15 )
+position = Vector2(-9.18485e-16, -15)
 script = ExtResource( 3 )
-_sections_unfolded = [ "Transform" ]
+_sections_unfolded = ["Transform3D"]
 radius = 15
 angle_from = 180
 angle_to = 270
@@ -57,22 +57,22 @@ right = true
 
 [node name="straight" parent="Node2D 3" index="2" instance=ExtResource( 2 )]
 
-position = Vector2( -15, -15 )
+position = Vector2(-15, -15)
 rotation = -2.0944
 
 [node name="Node2D 4" type="Node2D" parent="." index="3"]
 
-position = Vector2( 96, 96 )
-_sections_unfolded = [ "Transform" ]
+position = Vector2(96, 96)
+_sections_unfolded = ["Transform3D"]
 
 [node name="straight" parent="Node2D 4" index="0" instance=ExtResource( 2 )]
 
-position = Vector2( 10, -10 )
+position = Vector2(10, -10)
 rotation = 0.698132
 
 [node name="Node2D2" parent="Node2D 4" index="1" instance=ExtResource( 4 )]
 
-position = Vector2( -10.6066, 10.6066 )
+position = Vector2(-10.6066, 10.6066)
 angle_from = 45
 
 

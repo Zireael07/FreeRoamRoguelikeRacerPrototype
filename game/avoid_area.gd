@@ -1,4 +1,4 @@
-extends Area
+extends Area3D
 
 
 # Declare member variables here. Examples:
@@ -15,7 +15,7 @@ func _ready():
 #	pass
 
 func get_target(body):
-	var road = get_node("../../../../..")
+	var road = get_node(^"../../../../..")
 			
 	var int0 = road.get_child(0).get_global_transform().origin
 	var int1 = road.get_child(1).get_global_transform().origin
@@ -33,7 +33,7 @@ func get_target(body):
 		print("Closer to dist1, head for dist0 + offset")
 		tg_end = 0
 		
-	var props_par = get_node("../..")
+	var props_par = get_node(^"../..")
 	
 	# tg is local to props_par (the same space we're placed in)
 
@@ -52,11 +52,11 @@ func get_target(body):
 	return tg
 
 func debug_draw(tg):
-	var props_par = get_node("../..")
+	var props_par = get_node(^"../..")
 	# debug
-	var mesh = CubeMesh.new()
+	var mesh = BoxMesh.new()
 	mesh.set_size(Vector3(0.5,0.5,0.5))
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_mesh(mesh)
 	node.get_mesh().surface_set_material(0, mat)
 	node.set_cast_shadows_setting(0)
@@ -65,23 +65,23 @@ func debug_draw(tg):
 	node.set_translation(tg+Vector3(0,1,0))
 
 func _on_Spatial_body_entered(body):
-	if body is VehicleBody:
+	if body is VehicleBody3D:
 		if body.get_parent().is_in_group("player"):
-			var road = get_node("../../../../..")
+			var road = get_node(^"../../../../..")
 			#print("Player entered avoid area for ", road.get_name() + " @ ", body.get_global_transform().origin)
 		
 			var tg = get_target(body)
 			#debug_draw(tg)
 		
 		if body.get_parent().is_in_group("cop"):
-			var road = get_node("../../../../..")
+			var road = get_node(^"../../../../..")
 			print("AI cop entered avoid area for ", road.get_name() + "@ ", body.get_global_transform().origin)
 	
-			var brain = body.get_node("brain")
+			var brain = body.get_node(^"brain")
 			if brain.get_state() != brain.STATE_BUILDING:
 				var tg = get_target(body)
 				debug_draw(tg)
 				# convert to global space for AI target
-				var props_par = get_node("../..")
+				var props_par = get_node(^"../..")
 				brain.set_state(brain.STATE_BUILDING, props_par.get_global_transform().origin + tg)
 	

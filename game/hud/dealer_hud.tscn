@@ -1,9 +1,9 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://hud/dealer_hud.gd" type="Script" id=1]
-[ext_resource path="res://assets/851H-kktt.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://assets/851H-kktt.ttf" type="FontData" id=2]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="Font" id=1]
 size = 20
 font_data = ExtResource( 2 )
 
@@ -16,44 +16,44 @@ __meta__ = {
 }
 
 [node name="Button" type="Button" parent="."]
-margin_left = 3.0
-margin_top = 57.0
-margin_right = 105.0
-margin_bottom = 77.0
+offset_left = 3.0
+offset_top = 57.0
+offset_right = 105.0
+offset_bottom = 77.0
 text = "Return to city!"
 
 [node name="StatsContainer" type="Control" parent="."]
 anchor_top = 0.5
 anchor_bottom = 0.5
-margin_top = -200.0
-margin_right = 200.0
+offset_top = -200.0
+offset_right = 200.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="MoneyLabel" type="Label" parent="."]
-margin_top = 30.0
-margin_right = 93.0
-margin_bottom = 51.0
+offset_top = 30.0
+offset_right = 93.0
+offset_bottom = 51.0
 custom_fonts/font = SubResource( 1 )
-custom_colors/font_color = Color( 0.0117647, 0.988235, 0.988235, 1 )
+custom_colors/font_color = Color(0.0117647, 0.988235, 0.988235, 1)
 text = "Money:   0"
 
 [node name="Label" type="Label" parent="."]
-margin_left = 62.0
-margin_top = 32.0
-margin_right = 72.0
-margin_bottom = 46.0
-rect_scale = Vector2( 1.5, 1.5 )
-custom_colors/font_color = Color( 0.0117647, 0.988235, 0.988235, 1 )
+offset_left = 62.0
+offset_top = 32.0
+offset_right = 72.0
+offset_bottom = 46.0
+rect_scale = Vector2(1.5, 1.5)
+custom_colors/font_color = Color(0.0117647, 0.988235, 0.988235, 1)
 text = "¥"
 
 [node name="ButtonLeft" type="Button" parent="."]
 anchor_top = 0.5
 anchor_bottom = 0.5
-margin_top = -50.0
-margin_right = 20.0
-margin_bottom = 50.0
+offset_top = -50.0
+offset_right = 20.0
+offset_bottom = 50.0
 text = "<"
 
 [node name="ButtonRight" type="Button" parent="."]
@@ -61,9 +61,9 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -50.0
-margin_bottom = 50.0
+offset_left = -20.0
+offset_top = -50.0
+offset_bottom = 50.0
 text = ">"
 
 [node name="ButtonBuy" type="Button" parent="."]
@@ -71,10 +71,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -5.99997
-margin_top = -60.0
-margin_right = 32.0
-margin_bottom = -40.0
+offset_left = -5.99997
+offset_top = -60.0
+offset_right = 32.0
+offset_bottom = -40.0
 text = "BUY"
 __meta__ = {
 "_edit_use_anchors_": false

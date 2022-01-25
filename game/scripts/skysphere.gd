@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 # class member variables go here, for example:
 var target_orig
@@ -10,7 +10,7 @@ func _ready():
 	origin = get_global_transform().origin
 	target_orig = get_parent().get_global_transform().origin
 	# This detaches the camera transform from the parent spatial node
-	set_as_toplevel(true)
+	set_as_top_level(true)
 	#set_physics_process(true)
 	set_process(true)
 	

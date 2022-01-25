@@ -1,22 +1,22 @@
-tool 
+@tool 
 extends "mesh_gen.gd"
 
 # class member variables go here, for example:
-export(int) var storeys = 18
+@export var storeys: int = 18
 
-export(int) var width = 6
+@export var width: int = 6
 var height = 4
-export(int) var thick = 6
+@export var thick: int = 6
 
 var wind_width = 1.0 #0.95
 var wind_height = 0.95
 var wind_thick = 0.1
 
-export var storefront = false
+@export var storefront = false
 
-export(SpatialMaterial) var material = SpatialMaterial.new()
-export(SpatialMaterial) var windows_mat = SpatialMaterial.new()
-export(Material) var storefront_mat = SpatialMaterial.new()
+@export var material: StandardMaterial3D = StandardMaterial3D.new()
+@export var windows_mat: StandardMaterial3D = StandardMaterial3D.new()
+@export var storefront_mat: Material = StandardMaterial3D.new()
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -34,7 +34,7 @@ func _ready():
 		surface_store.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	#Create a node building that will hold the mesh
-	var node = MeshInstance.new()
+	var node = MeshInstance3D.new()
 	node.set_name("scraper")
 	add_child(node)
 	
@@ -67,10 +67,10 @@ func _ready():
 	#node.create_convex_collision()
 	
 
-	var shape = BoxShape.new()
+	var shape = BoxShape3D.new()
 	shape.set_extents(Vector3(thick,storeys+1,width))
-	get_node("StaticBody/CollisionShape").set_translation(Vector3(0,storeys+1,0))
-	get_node("StaticBody/CollisionShape").set_shape(shape)
+	get_node(^"StaticBody3D/CollisionShape3D").set_translation(Vector3(0,storeys+1,0))
+	get_node(^"StaticBody3D/CollisionShape3D").set_shape(shape)
 	
 	
 	#Turn off shadows

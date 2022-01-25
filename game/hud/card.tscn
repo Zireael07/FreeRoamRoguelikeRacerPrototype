@@ -1,13 +1,13 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://hud/Viewport card.tscn" type="PackedScene" id=1]
+[ext_resource path="res://hud/SubViewport card.tscn" type="PackedScene" id=1]
 
 [node name="Control" type="Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = -814.0
-margin_bottom = -470.0
-rect_min_size = Vector2( 210, 130 )
+offset_right = -814.0
+offset_bottom = -470.0
+rect_min_size = Vector2(210, 130)
 size_flags_horizontal = 0
 size_flags_vertical = 0
 __meta__ = {
@@ -15,14 +15,14 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 205.0
-margin_bottom = 123.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 205.0
+offset_bottom = 123.0
 
 [node name="Label" type="Label" parent="VBoxContainer"]
-margin_right = 200.0
-margin_bottom = 14.0
+offset_right = 200.0
+offset_bottom = 14.0
 text = "Road"
 align = 1
 __meta__ = {
@@ -30,5 +30,5 @@ __meta__ = {
 }
 
 [node name="MapView" parent="VBoxContainer" instance=ExtResource( 1 )]
-margin_top = 18.0
-margin_bottom = 118.0
+offset_top = 18.0
+offset_bottom = 118.0

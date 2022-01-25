@@ -1,10 +1,10 @@
-tool
+@tool
 extends Node2D
 
 # class member variables go here, for example:
-export(Vector2) var start_point = Vector2(0,0)
-export(Vector2) var end_point = Vector2(0,0)
-export(int) var height = 5
+@export var start_point: Vector2 = Vector2(0,0)
+@export var end_point: Vector2 = Vector2(0,0)
+@export var height: int = 5
 #export(int) var radius = 15
 
 # helpers (A LOT)
@@ -15,7 +15,7 @@ var radius = 0
 var center_point = Vector2(0,0)
 var angle0 = Vector2(0,0)
 var angles = []
-export(bool) var right = true
+@export var right: bool = true
 
 # result
 var points_arc = []
@@ -109,7 +109,7 @@ func draw_circle_arc(center, radius, angle_from, angle_to, right, clr):
 # from maths
 func get_circle_arc( center, radius, angle_from, angle_to, right ):
 	var nb_points = 32
-	var points_arc = PoolVector2Array()
+	var points_arc = PackedVector2Array()
 
 	for i in range(nb_points+1):
 		if right:

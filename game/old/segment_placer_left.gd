@@ -1,4 +1,4 @@
-tool
+@tool
 
 extends Position3D
 
@@ -16,7 +16,7 @@ func place_road():
 #	if get_tree().is_editor_hint():
 #		print("Editor mode")
 #	else:
-		var road = get_node("Road")
+		var road = get_node(^"Road")
 		
 		if (road != null):
 			#print("We have a road")

@@ -5,8 +5,8 @@
 [node name="Node2D" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
-start_point = Vector2( 10, 0 )
-end_point = Vector2( 0, 20 )
+start_point = Vector2(10, 0)
+end_point = Vector2(0, 20)
 height = 10
 
 

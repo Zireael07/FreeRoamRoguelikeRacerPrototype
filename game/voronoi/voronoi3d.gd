@@ -1,4 +1,4 @@
-tool
+@tool
 extends Node
 
 # class member variables go here, for example:
@@ -52,8 +52,8 @@ func generate_voronoi_diagram_data(width, height, num_cells):
 	
 	for i in range(num_cells):
 		# coords
-		nx.append(rand_range(0, width))
-		ny.append(rand_range(0, height))
+		nx.append(randf_range(0, width))
+		ny.append(randf_range(0, height))
 		var cell = []
 		data.append(cell)
 	

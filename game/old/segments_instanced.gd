@@ -1,14 +1,14 @@
-tool
+@tool
 
 extends Position3D
 
 # class member variables go here, for example:
-export(int) var numSegments = 2
+@export var numSegments: int = 2
 var road
 var road_left
 
-export(PoolVector3Array) var positions = PoolVector3Array()
-export(PoolVector3Array) var ends = PoolVector3Array()
+@export var positions: PackedVector3Array = PackedVector3Array()
+@export var ends: PackedVector3Array = PackedVector3Array()
 
 
 func _ready():
@@ -22,19 +22,19 @@ func _ready():
 	
 	#this prevent multiplying of road meshes
 	#only if we have a parent
-	#if (get_parent().get_name() == "Spatial"):
-	if (get_parent().get_name().find("Spatial") != -1):
+	#if (get_parent().get_name() == "Node3D"):
+	if (get_parent().get_name().find("Node3D") != -1):
 		# Initialization here
 		for index in range (numSegments):
 			placeRoad(index)
 	
-	#call_deferred("setupNavigation")
+	#call_deferred("setupNode3D")
 	
 	#pass
 
-func setupNavigation():
+func setupNode3D():
 	for index in range (numSegments):
-		var segment = get_node("Road_instance"+String(index)).get_child(0).get_child(0)
+		var segment = get_node(^"Road_instance"+String(index)).get_child(0).get_child(0)
 		
 		if (segment != null):
 			if (segment.nav_vertices != null):
@@ -56,18 +56,18 @@ func clearChildren():
 
 func get_prev_segment(index):
 	if has_node("Road_instance"+String(index-1)):
-		return get_node("Road_instance"+String(index-1))
+		return get_node(^"Road_instance"+String(index-1))
 
 func setupRoad(index, left):
 	if (left):
-		var road_node_left = road_left.instance()
+		var road_node_left = road_left.instantiate()
 		road_node_left.set_name("Road_instance" + String(index))
 		road_node_left.get_child(0).get_child(0).start_angle = 45
 		road_node_left.get_child(0).get_child(0).end_angle = 135
 		add_child(road_node_left)
 		return road_node_left
 	else:
-		var road_node = road.instance()
+		var road_node = road.instantiate()
 		road_node.set_name("Road_instance" + String(index))
 		road_node.get_child(0).get_child(0).start_angle = 45
 		road_node.get_child(0).get_child(0).end_angle = 135
@@ -118,7 +118,7 @@ func placeRoad(index):
 					var end_loc = prev.get_child(0).get_child(0).relative_end
 					
 					# even is right
-					road_node = road.instance()
+					road_node = road.instantiate()
 					road_node.set_name("Road_instance" + String(index))
 					add_child(road_node)
 					
@@ -166,7 +166,7 @@ func placeRoad(index):
 #					#print("Previous segment location is " + String(prev_loc))
 #					print("Location is " + String(loc))
 #					
-#					road_node = road.instance()
+#					road_node = road.instantiate()
 #					road_node.set_name("Road_instance" + String(index))
 #					add_child(road_node)
 #					
@@ -181,13 +181,13 @@ func placeRoad(index):
 	    #		road_node.set_owner(get_tree().get_edited_scene_root())
 	else:
 		print("We already have a segment")
-		var node = get_node("Road_instance"+String(index))
+		var node = get_node(^"Road_instance"+String(index))
 		var end = node.get_child(0).get_child(0).relative_end
 		print("Location is " + String(node.get_translation()) + " end is " + String(end))
 #		
 func get_end_location_turn(prev, end_loc):
 	#var end_loc = prev.get_child(0).get_child(0).relative_end
-	var g_loc = prev.get_global_transform().xform(-end_loc)
+	var g_loc = prev.get_global_transform() * (-end_loc)
 	#print("Global location of relative end is" + String(g_loc))
-	var loc = get_global_transform().xform_inv(g_loc)
+	var loc = g_loc * get_global_transform()
 	return loc

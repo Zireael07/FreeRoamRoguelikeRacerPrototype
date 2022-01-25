@@ -1,7 +1,7 @@
 extends Node2D
 
 # class member variables go here, for example:
-#var AIs = PoolStringArray()
+#var AIs = PackedStringArray()
 var AIs = []
 
 #var player_pos = Vector2(110, 110)
@@ -48,11 +48,11 @@ func _ready():
 	
 	cop_arrow_sc = preload("res://hud/cop_arrow.tscn")
 	
-	cam2d = get_node("Container/Node2D2/Control_pos/Camera2D")
+	cam2d = get_node(^"Container/Node2D2/Control_pos/Camera2D")
 	#print(cam2d.get_name())
 	
 	#attach = get_child(0)
-	attach = get_node("Container/Node2D2/Control_pos/attach")
+	attach = get_node(^"Container/Node2D2/Control_pos/attach")
 	
 	getPositions()
 	
@@ -79,7 +79,7 @@ func setupMinimap(arrow, player_arrow):
 
 		# police
 		if AI.is_in_group("cop"):
-			tex = cop_arrow_sc.instance()
+			tex = cop_arrow_sc.instantiate()
 #			tex.set_modulate(Color(0,0,1))
 			tex.set_name("cop-AI")
 			cop_arrow = tex
@@ -200,7 +200,7 @@ func getIntersections():
 	
 func _process(delta):
 	#var player_coord = get_tree().get_nodes_in_group("player")[0].get_child(0).get_global_transform().origin
-	#cam2d.get_node("player").set_position(Vector2(-16-player_coord.x, -16-player_coord.z))
+	#cam2d.get_node(^"player").set_position(Vector2(-16-player_coord.x, -16-player_coord.z))
 	for index in range(AIs.size()):
 		#the actual AI lives in the child of the spatial
 		var AI_node = AIs[index].get_child(0)

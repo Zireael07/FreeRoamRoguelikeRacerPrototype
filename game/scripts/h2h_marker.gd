@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 # class member variables go here, for example:
 var player
@@ -9,8 +9,8 @@ var count
 var finish = false
 var start
 
-export var target = Vector3()
-var raceline = PoolVector3Array()
+@export var target = Vector3()
+var raceline = PackedVector3Array()
 var ai_data = []
 
 # race
@@ -33,9 +33,9 @@ func set_finish(val):
 	finish = val
 
 func _on_Area_body_enter( body ):
-	if body is KinematicBody:
+	if body is CharacterBody3D:
 		if body is player_script and not body.get_parent().is_in_group("bike"):
-			print("Area entered by the player")
+			print("Area3D entered by the player")
 			player = body
 			
 			if finish:
@@ -46,54 +46,54 @@ func _on_Area_body_enter( body ):
 				
 				start.count = false
 				
-				var msg = body.get_node("Messages")
+				var msg = body.get_node(^"Messages")
 				#msg.set_initial(false)
 				
-				var results = player.get_node("root").get_node("Label timer").get_text()
+				var results = player.get_node(^"root").get_node(^"Label timer").get_text()
 				msg.set_text("FINISH TEST RACE!" + "\n" + results)
-				#msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
+				#msg.get_node(^"OK_button").connect(&"pressed", self._on_ok_click)
 				msg.enable_ok(false)
 				msg.show()
 				
 				# clear & hide timing
-				player.get_node("root").get_node("Label timer").set_text("")
-				player.get_node("root").get_node("Label timer").hide()
+				player.get_node(^"root").get_node(^"Label timer").set_text("")
+				player.get_node(^"root").get_node(^"Label timer").hide()
 				
 				# remove raceline from map
-				var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+				var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 				track_map.points = []
 				# force redraw
 				track_map.update()
 				
 				# remove target flag from minimap
-				var minimap = player.get_node("Viewport_root/Viewport/minimap")
+				var minimap = player.get_node(^"Viewport_root/SubViewport/minimap")
 				minimap.remove_marker(self.get_global_transform().origin)
 				
 				#remove finish
 				queue_free()
 			else:
-				var msg = body.get_node("Messages")
+				var msg = body.get_node(^"Messages")
 				#msg.set_initial(false)
 				msg.set_text("TEST RACE! " + "\n" + "Race one guy to the finish marker")
 
 				# disconnect all others to prevent bugs
-				for d in msg.get_node("OK_button").get_signal_connection_list("pressed"):
+				for d in msg.get_node(^"OK_button").get_signal_connection_list("pressed"):
 						print(d["target"])
-						msg.get_node("OK_button").disconnect("pressed", d["target"], "_on_ok_click")
+						msg.get_node(^"OK_button").disconnect(&"pressed", d["target"]._on_ok_click)
 								
-				msg.get_node("OK_button").connect("pressed", self, "_on_ok_click")
+				msg.get_node(^"OK_button").connect(&"pressed", self._on_ok_click)
 				if raceline.size() > 0:
 					print("Got raceline")
 					msg.enable_ok(true)
 					
 					# show raceline on minimap
-					var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+					var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 					track_map.points = track_map.vec3s_convert(raceline)
 					# force redraw
 					track_map.update()
 					
 					# prompt to turn around if needed
-					var rel_pos = player.get_global_transform().xform_inv(raceline[1])
+					var rel_pos = raceline[1] * player.get_global_transform()
 					print("Race rel pos: ", rel_pos)
 					player.show_nav_tip = true
 					#if rel_pos.z > 0 and rel_pos.z > 3:
@@ -110,15 +110,15 @@ func _on_Area_body_enter( body ):
 				
 				msg.show()
 		else:
-			#print("Area entered by AI car")
+			#print("Area3D entered by AI car")
 			if finish:
 				print("Finish area entered by AI")
 				if body.get_parent().is_in_group("race_AI"):
 					# flag AI as finished
 					body.finished = true
-		#	print("Area entered by a car " + body.get_parent().get_name())
+		#	print("Area3D entered by a car " + body.get_parent().get_name())
 	#else:
-	#	print("Area entered by something else")
+	#	print("Area3D entered by something else")
 
 
 func _on_ok_click():
@@ -138,7 +138,7 @@ func _on_ok_click():
 # the AI sends us a signal when it has the path
 func _on_path_gotten():
 	print("[RACE] On path gotten")
-	var ai = car.get_node("BODY")
+	var ai = car.get_node(^"BODY")
 	var raceline = ai.path
 	#print("Race line is " + str(raceline))
 	player.race = self
@@ -146,7 +146,7 @@ func _on_path_gotten():
 	#print("[RACE] Player was given the path")
 
 	# send the track to the map
-	var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+	var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 	track_map.points = track_map.vec3s_convert(raceline)
 	# force redraw
 	track_map.update()
@@ -154,7 +154,7 @@ func _on_path_gotten():
 func get_AI_position_on_raceline():
 	if not done: return null
 	else:
-		var ai = car.get_node("BODY")
+		var ai = car.get_node(^"BODY")
 		#var raceline = ai.path
 		var AI_pos = ai.position_on_line
 		#print("AI position on racelone " + str(AI_pos) )
@@ -175,7 +175,7 @@ func get_positions_on_raceline():
 	var player_pos = get_player_position_on_raceline()
 #	if not done: return null
 #	else:
-#		var ai = car.get_node("BODY")
+#		var ai = car.get_node(^"BODY")
 #		var raceline = ai.path
 #		var AI_pos = ai.position_on_line
 #		
@@ -204,7 +204,7 @@ func get_distance_from_prev(line_pos, path):
 		
 func get_positions():
 	if not done: return null
-	var ai = car.get_node("BODY")
+	var ai = car.get_node(^"BODY")
 	var raceline = ai.path
 	
 	
@@ -221,12 +221,12 @@ func get_positions_simple():
 	if not done: return []
 	else:
 		var positions = []
-		var ai = car.get_node("BODY")
+		var ai = car.get_node(^"BODY")
 	
 		var raceline = ai.path
 		#print("Raceline: " + str(ai.path))
 		
-		var dist = player.get_global_transform().origin.distance_to(car.get_node("BODY").get_global_transform().origin)
+		var dist = player.get_global_transform().origin.distance_to(car.get_node(^"BODY").get_global_transform().origin)
 		
 		# check for crossing the finish line first
 		if ai.finished and not player.finished:
@@ -279,24 +279,24 @@ func _process(delta):
 	if count:
 		time += delta
 		#print("Timer is " + str(time))
-		player.get_node("root").get_node("Label timer").show()
+		player.get_node(^"root").get_node(^"Label timer").show()
 		#print(str(get_positions_simple()))
-		player.get_node("root").update_timer(str(time) + '\n' + str(displayed_positions()))
+		player.get_node(^"root").update_timer(str(time) + '\n' + str(displayed_positions()))
 		# str(get_positions_simple()))
 	#else:
 	#	print("Count is off")
 
 func _on_Area_body_exit( body ):
-	if body is VehicleBody:
+	if body is VehicleBody3D:
 		if body is player_script:
-			print("Area exited by the player")
+			print("Area3D exited by the player")
 			player = body
 			if not finish:
-				var msg = body.get_node("Messages")
+				var msg = body.get_node(^"Messages")
 				msg.hide()
 				if not count:
 					# remove raceline (preview) from map
-					var track_map = player.get_node("Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+					var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 					track_map.points = []
 					# force redraw
 					track_map.update()
@@ -313,7 +313,7 @@ func spawn_finish(start):
 	print("Should be spawning finish")
 	var loc = target
 	#var our = preload("res://objects/race_marker.tscn")
-	#var finish = our.instance()
+	#var finish = our.instantiate()
 	var finish = self.duplicate()
 	finish.set_name("Finish")
 	finish.set_translation(Vector3(loc.x, 0.25, loc.z))
@@ -321,20 +321,20 @@ func spawn_finish(start):
 	finish.start = start
 	
 	# make the detection area wide...
-	finish.get_node("Area/CollisionShape").shape.set_extents(Vector3(4, 1, 0.85))
+	finish.get_node(^"Area3D/CollisionShape3D").shape.set_extents(Vector3(4, 1, 0.85))
 	
 	#finish.set_val(true)
 	
 	get_parent().add_child(finish)
 	#add to minimap
-	var minimap = player.get_node("Viewport_root/Viewport/minimap")
+	var minimap = player.get_node(^"Viewport_root/SubViewport/minimap")
 	minimap.add_marker(finish.get_global_transform().origin, minimap.red_flag)
 	
 
 # differences to normal marker start here
 func spawn_racer(loc):
 	print("Offset: " + str(loc))
-	car = racer.instance()
+	car = racer.instantiate()
 	car.set_name("Racer")
 	
 	# find the root of the scene
@@ -358,6 +358,6 @@ func spawn_racer(loc):
 	print("Added the car")
 	
 	# add a minimap arrow
-	var minimap = player.get_node("Viewport_root/Viewport/minimap")
+	var minimap = player.get_node(^"Viewport_root/SubViewport/minimap")
 	minimap.add_arrow(car)
 	

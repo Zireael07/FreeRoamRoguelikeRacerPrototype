@@ -1,8 +1,8 @@
-extends Viewport
+extends SubViewport
 
 signal sky_updated
 
-onready var material = get_node("Node2D/Sprite2").material
+@onready var material = get_node(^"Node2D/Sprite2").material
 var trigger_count = 0
 
 func _ready():
@@ -28,18 +28,18 @@ func copy_to_environment(environment):
 	
 	
 func _trigger_update_sky():
-	var debug_cam = get_tree().get_nodes_in_group("player")[0].get_node("BODY").debug_cam
+	var debug_cam = get_tree().get_nodes_in_group("player")[0].get_node(^"BODY").debug_cam
 	if debug_cam and debug_cam.is_current():
 		return 
 		
 	# trigger an update
-	render_target_update_mode = Viewport.UPDATE_ONCE
+	render_target_update_mode = SubViewport.UPDATE_ONCE
 	
 	# delay sending out our changed signal
 	trigger_count = 2
 	
 	# restore original
-	render_target_update_mode = Viewport.UPDATE_ALWAYS
+	render_target_update_mode = SubViewport.UPDATE_ALWAYS
 
 func _process(delta):
 	# We don't seem to have a way to detect if the viewport has actually been updated so we just wait a few frames
