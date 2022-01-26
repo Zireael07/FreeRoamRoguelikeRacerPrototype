@@ -330,18 +330,18 @@ func makeRoad():
 			
 			
 			#debug drawing
-			draw.draw_line(positions)
-			draw.draw_line(left_positions)
-			draw.draw_line(right_positions)
-			draw.draw_line(debug_start_axis)
-			draw.draw_line(debug_end_axis)
-			if points_inner_side.size() > 0:
-				draw.draw_line(points_inner_side)
-				draw.draw_line(points_outer_side)
-				
-			if points_inner_rail.size() > 0:
-				draw.draw_line(points_inner_rail)
-				draw.draw_line(points_outer_rail)
+#			draw.draw_line(positions)
+#			draw.draw_line(left_positions)
+#			draw.draw_line(right_positions)
+#			draw.draw_line(debug_start_axis)
+#			draw.draw_line(debug_end_axis)
+#			if points_inner_side.size() > 0:
+#				draw.draw_line(points_inner_side)
+#				draw.draw_line(points_outer_side)
+#
+#			if points_inner_rail.size() > 0:
+#				draw.draw_line(points_inner_rail)
+#				draw.draw_line(points_outer_rail)
 	
 	
 	# kill debug draw in game
@@ -352,13 +352,13 @@ func makeRoad():
 	# if we're on the ground and not sloped, we don't need a collision shape
 	if global_transform.origin.y < 1 and road_slope < 0.1:
 		var shape = BoxShape3D.new()
-		shape.set_extents(Vector3(6,1,mid_point.z))
-		get_node(^"Area3D/CollisionShape3D").set_translation(Vector3(0,0,mid_point.z))
+		shape.set_size(Vector3(6,1,mid_point.z))
+		get_node(^"Area3D/CollisionShape3D").set_position(Vector3(0,0,mid_point.z))
 		get_node(^"Area3D/CollisionShape3D").set_shape(shape)
 	# otherwise make a simple collision shape
 	else:
 		var shape = BoxShape3D.new()
-		shape.set_extents(Vector3(6,3, mid_point.z+0.2)) #fudge necessary for bike not to fall through a crack
+		shape.set_size(Vector3(6,3, mid_point.z+0.2)) #fudge necessary for bike not to fall through a crack
 		var body = StaticBody3D.new()
 		body.set_collision_layer(2) # AI raycasts ignore layer 2
 		add_child(body)
@@ -370,27 +370,27 @@ func makeRoad():
 			# Godot's atan is y,x
 			var rot = -atan2(end_ref.y-mid_point.y, end_ref.z-mid_point.z)
 			coll.set_rotation(Vector3(rot, 0,0))
-			coll.set_translation(Vector3(0, -0.4, mid_point.z))
+			coll.set_position(Vector3(0, -0.4, mid_point.z))
 			
 			# prevent falling off (especially AI)
 			coll = CollisionShape3D.new()
 			shape = BoxShape3D.new()
-			shape.set_extents(Vector3(2,3, mid_point.z-1))
+			shape.set_size(Vector3(2,3, mid_point.z-1))
 			body.add_child(coll)
 			coll.set_shape(shape)
 			coll.set_rotation(Vector3(rot, 0,0))
-			coll.set_translation(Vector3(6,0,mid_point.z))
+			coll.set_position(Vector3(6,0,mid_point.z))
 			# other side
 			coll = CollisionShape3D.new()
 			shape = BoxShape3D.new()
-			shape.set_extents(Vector3(2,3, mid_point.z-1))
+			shape.set_size(Vector3(2,3, mid_point.z-1))
 			body.add_child(coll)
 			coll.set_shape(shape)
 			coll.set_rotation(Vector3(rot, 0,0))
-			coll.set_translation(Vector3(-6,0,mid_point.z))
+			coll.set_position(Vector3(-6,0,mid_point.z))
 			
 		else:
-			coll.set_translation(Vector3(0,-2.9, mid_point.z))
+			coll.set_position(Vector3(0,-2.9, mid_point.z))
 	
 
 	

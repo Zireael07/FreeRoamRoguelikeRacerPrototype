@@ -1,39 +1,27 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=3 uid="uid://bh5qfdgmv1k1t"]
 
-[ext_resource path="res://roads/straight_road_segment.gd" type="Script" id=1]
-[ext_resource path="res://assets/road_shadermat.tres" type="Material" id=2]
-[ext_resource path="res://scripts/draw_line.gd" type="Script" id=3]
-[ext_resource path="res://roads/straight_road_props.gd" type="Script" id=4]
+[ext_resource type="Script" path="res://roads/straight_road_segment.gd" id="1"]
+[ext_resource type="Material" uid="uid://dw68qicraawdi" path="res://assets/road_shadermat.tres" id="2"]
+[ext_resource type="Script" path="res://roads/straight_road_props.gd" id="4"]
 
-[sub_resource type="StandardMaterial3D" id=1]
-flags_unshaded = true
-flags_use_point_size = true
-params_line_width = 3.0
-params_point_size = 3.0
+[sub_resource type="BoxShape3D" id="BoxShape3D_y4wsq"]
+size = Vector3(6, 1, 50)
 
-[sub_resource type="BoxShape3D" id=2]
-extents = Vector3(5, 0.1, 50)
-
-[node name="Position3D" type="Position3D" groups=[
-"roads",
-]]
-script = ExtResource( 1 )
-material = ExtResource( 2 )
+[node name="Position3D" type="Position3D" groups=["roads"]]
+script = ExtResource( "1" )
+material = ExtResource( "2" )
 sidewalks = true
 
-[node name="draw" type="ImmediateGeometry3D" parent="."]
-material_override = SubResource( 1 )
-cast_shadow = 0
-script = ExtResource( 3 )
+[node name="draw" type="Node" parent="."]
 
 [node name="Node3D" type="Node3D" parent="."]
-script = ExtResource( 4 )
+script = ExtResource( "4" )
 
 [node name="Area3D" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50)
-shape = SubResource( 2 )
+shape = SubResource( "BoxShape3D_y4wsq" )
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_Area_body_entered"]
 [connection signal="body_exited" from="Area3D" to="." method="_on_Area_body_exited"]

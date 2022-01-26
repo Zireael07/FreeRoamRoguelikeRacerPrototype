@@ -41,7 +41,7 @@ func _ready():
 	pass
 
 func make_map():
-	var start_time = OS.get_ticks_msec()
+	var start_time = Time.get_ticks_msec()
 	#print("Started at " + String(start_time))
 	image = Image.new()
 	image.create(1000, 1000, false, Image.FORMAT_RGBA8)
@@ -55,7 +55,7 @@ func make_map():
 	image.fill(bg)
 	
 	# necessary in 3.0
-	image.lock()
+	#image.lock()
 	
 	#draw center point (=0,0)
 	var pos_c = Vector2(image.get_width()/2, image.get_height()/2)
@@ -119,7 +119,7 @@ func make_map():
 							# paranoia
 							if i > 0 and i < 1000 and j > 0 and j < 1000:
 								# necessary in 3.0
-								image.lock()
+								#image.lock()
 								image.set_pixel(i,j, road)
 
 					draw_lines(ind, index)
@@ -128,8 +128,8 @@ func make_map():
 			#draw_lines_differently(index)
 
 	
-	var exec_time = OS.get_ticks_msec() - start_time
-	print("Minimap generation execution time: " + String(exec_time))
+	var exec_time = Time.get_ticks_msec() - start_time
+	print("Minimap generation execution time: " + var2str(exec_time))
 	
 	##textur = load("res://map_edited.png") #set_data(image)
 	
@@ -178,7 +178,7 @@ func draw_lines(ind, index):
 					# paranoia
 					if i > 0 and i < 1000 and j > 0 and j < 1000:
 						# necessary in 3.0
-						image.lock()
+						#image.lock()
 						image.set_pixel(i,j, road)
 
 #for debugging purposes, different colors for straight vs. curves
@@ -199,7 +199,7 @@ func draw_lines_differently(index):
 							# paranoia
 							if i > 0 and i < 1000 and j > 0 and j < 1000:
 								# necessary in 3.0
-								image.lock()
+								#image.lock()
 								image.set_pixel(i,j, road)	
 					
 	else:		
@@ -216,7 +216,7 @@ func draw_lines_differently(index):
 					for i in range(line[index].x, line[index].x+dot_size):
 						for j in range(line[index].y, line[index].y+dot_size):
 							# necessary in 3.0
-							image.lock()
+							#image.lock()
 							image.set_pixel(i,j, linecolor)
 							
 # BRESENHAM

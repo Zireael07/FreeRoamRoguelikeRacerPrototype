@@ -262,7 +262,7 @@ func createSteeringWheel(steering_surf, steering_material):
 	side_poly.append(Vector2(0.015, 0.05))
 	side_poly.append(Vector2(-0.015, 0.05))
 	
-	var indices = Array(Geometry.triangulate_polygon(PackedVector2Array(side_poly)))
+	var indices = Array(Geometry2D.triangulate_polygon(PackedVector2Array(side_poly)))
 	
 	createSide(indices, side_poly, steering_surf, -0.1)
 	createSide(indices, side_poly, steering_surf, -0.1, true)
@@ -290,7 +290,7 @@ func createCar(car_front, trueno_rear, car, window_poly, surface, glass_surf):
 	poly_bottom.append(window_poly[3]) # bottom right of window
 	poly_bottom.append(window_poly[0]) # bottom left of window
 	
-	indices = Array(Geometry.triangulate_polygon(PackedVector2Array(poly_bottom)))
+	indices = Array(Geometry2D.triangulate_polygon(PackedVector2Array(poly_bottom)))
 	#print("Indices" + str(indices))
 	
 	# make the top
@@ -304,7 +304,7 @@ func createCar(car_front, trueno_rear, car, window_poly, surface, glass_surf):
 		poly_top.append(trueno_rear[trueno_rear.size()-4])
 		poly_top.append(car_front[front_wheel_end+3]) # the point above the front windows
 		
-		indices_top = Array(Geometry.triangulate_polygon(PackedVector2Array(poly_top)))
+		indices_top = Array(Geometry2D.triangulate_polygon(PackedVector2Array(poly_top)))
 		# error message if something went wrong
 		if indices_top.size() < 1:
 			print("Top polygon couldn't be triangulated!")
@@ -314,7 +314,7 @@ func createCar(car_front, trueno_rear, car, window_poly, surface, glass_surf):
 	poly_front = car_front
 
 
-	indices_front = Array(Geometry.triangulate_polygon(PackedVector2Array(poly_front)))
+	indices_front = Array(Geometry2D.triangulate_polygon(PackedVector2Array(poly_front)))
 	# error message if something went wrong
 	if indices_front.size() < 1:
 		print("Front polygon couldn't be triangulated!")
@@ -324,7 +324,7 @@ func createCar(car_front, trueno_rear, car, window_poly, surface, glass_surf):
 	poly_rear = trueno_rear
 
 	
-	indices_rear = Array(Geometry.triangulate_polygon(PackedVector2Array(poly_rear)))
+	indices_rear = Array(Geometry2D.triangulate_polygon(PackedVector2Array(poly_rear)))
 	# error message if something went wrong
 	if indices_rear.size() < 1:
 		print("Front polygon couldn't be triangulated!")
@@ -388,13 +388,13 @@ func createCar(car_front, trueno_rear, car, window_poly, surface, glass_surf):
 	
 	
 	# we need to exclude the parts where the front/rear windows go (see above)
-	#car.remove(car.find(poly_front[poly_front.size()-2]))
-	car.remove(car.find(poly_front[front_wheel_end+3]))
-	#car.remove(car.find(poly_rear[poly_rear.size()-5]))
-	car.remove(car.find(poly_rear[poly_rear.size()-4]))
+	#car.remove_at(car.find(poly_front[poly_front.size()-2]))
+	car.remove_at(car.find(poly_front[front_wheel_end+3]))
+	#car.remove_at(car.find(poly_rear[poly_rear.size()-5]))
+	car.remove_at(car.find(poly_rear[poly_rear.size()-4]))
 	
 	
-	indices_body = Array(Geometry.triangulate_polygon(PackedVector2Array(car)))
+	indices_body = Array(Geometry2D.triangulate_polygon(PackedVector2Array(car)))
 	
 	#print("Indices: " + str(indices_body))
 	linkSides(indices_body, car, surface, width)
@@ -636,10 +636,10 @@ func linkSides(indices, polygon, surface, offset, begin=0, dup=false):
 
 # functions called by in-game events		
 func rain_glass():
-	get_node(^"plane").set_surface_material(1, rain_glass_mat)		
+	get_node(^"plane").set_surface_override_material(1, rain_glass_mat)		
 
 func rain_clear():
-	get_node(^"plane").set_surface_material(1, glass_material)
+	get_node(^"plane").set_surface_override_material(1, glass_material)
 
 ## 'pos' is local space?	
 #func hit_deform(pos):

@@ -29,13 +29,13 @@ func connect_intersections(one, two, verbose=false):
 		return false
 	
 	if not "point_one" in get_child(one) or not "point_one" in get_child(two):
-		print("Targets are not intersections? " + get_child(one).get_name() + " " + get_child(two).get_name())
+		print("Targets are not intersections? " + String(get_child(one).get_name()) + " " + String(get_child(two).get_name()))
 		return false
 	
-	Logger.mapgen_print("Connecting intersections " + get_child(one).get_name() + " " + get_child(two).get_name())
+	Logger.mapgen_print("Connecting intersections " + String(get_child(one).get_name()) + " " + String(get_child(two).get_name()))
 	
 	var src_exit = get_src_exit(get_child(one), get_child(two), verbose)
-	if not src_exit:
+	if src_exit != null:
 		Logger.mapgen_print("No src exits found or left, abort")
 		return false
 	if verbose:
@@ -44,7 +44,7 @@ func connect_intersections(one, two, verbose=false):
 
 	var dest_exit = get_dest_exit(get_child(one), get_child(two), verbose)
 	
-	if not dest_exit:
+	if dest_exit != null:
 		Logger.mapgen_print("No dest exits found or left, abort")
 		return false
 	if verbose:
@@ -83,7 +83,7 @@ func connect_intersections(one, two, verbose=false):
 
 	data = calculate_last_turn(corner_points[2], corner_points[3], loc_dest_exit, extendeds[1], dest_exit)
 
-	last_turn_test(one, two, data, corner_points[2], top_node, verbose)	
+	last_turn_test(one, two, data, corner_points[2], top_node, verbose)
 	
 	set_straight(corner_points[1], corner_points[3], top_node)
 
@@ -147,8 +147,8 @@ func get_corner_points(one, two, loc_src_extended, loc_dest_extended, dist):
 func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, src_exit):
 	#B-A: A->B 
 	# 3D has no tangent()
-	var tang = (Vector2(corner1.x, corner1.z)-Vector2(loc_src_extended.x, loc_src_extended.z)).tangent()
-	var tang2 = (Vector2(corner2.x, corner2.z)-Vector2(loc_src_extended.x, loc_src_extended.z)).tangent()
+	var tang = (Vector2(corner1.x, corner1.z)-Vector2(loc_src_extended.x, loc_src_extended.z)).orthogonal()
+	var tang2 = (Vector2(corner2.x, corner2.z)-Vector2(loc_src_extended.x, loc_src_extended.z)).orthogonal()
 	
 	# extend them
 	var tang_factor = 100 # to cover absolutely everything
@@ -177,7 +177,7 @@ func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, sr
 	#debug_cube(Vector3(end_b.x, 1, end_b.y))
 	
 	# check for intersection (2D only)
-	var inters = Geometry.segment_intersects_segment_2d(start, end, start_b, end_b)
+	var inters = Geometry2D.segment_intersects_segment_2d(start, end, start_b, end_b)
 	
 	if inters:
 		#print("Intersect: " + str(inters))
@@ -217,8 +217,8 @@ func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, sr
 func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, dest_ex):
 	#B-A: A->B 
 	# 3D has no tangent()
-	var tang = (Vector2(corner1.x, corner1.z)-Vector2(loc_dest_extended.x, loc_dest_extended.z)).tangent()
-	var tang2 = (Vector2(corner2.x, corner2.z)-Vector2(loc_dest_extended.x, loc_dest_extended.z)).tangent()
+	var tang = (Vector2(corner1.x, corner1.z)-Vector2(loc_dest_extended.x, loc_dest_extended.z)).orthogonal()
+	var tang2 = (Vector2(corner2.x, corner2.z)-Vector2(loc_dest_extended.x, loc_dest_extended.z)).orthogonal()
 	
 	# extend them
 	var tang_factor = 150 # to cover absolutely everything
@@ -245,7 +245,7 @@ func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, des
 	#debug_cube(Vector3(end_b.x, 1, end_b.y))
 	
 	# check for intersection (2D only)
-	var inters = Geometry.segment_intersects_segment_2d(start, end, start_b, end_b)
+	var inters = Geometry2D.segment_intersects_segment_2d(start, end, start_b, end_b)
 	
 	if inters:
 		#print("Intersect: " + str(inters))
@@ -373,7 +373,7 @@ func set_straight(loc, loc2, node):
 	# because we're pointing at +Z, sigh...
 	spatial.rotate_y(deg2rad(180))
 	
-	return road_node	
+	return road_node
 	
 func set_curved_road(radius, start_angle, end_angle, index, node, verbose):
 	if radius < 3: # less than lanes we want
@@ -387,7 +387,7 @@ func set_curved_road(radius, start_angle, end_angle, index, node, verbose):
 
 	if start_angle-90 > end_angle-90 and end_angle-90 < 0:
 		if verbose:
-			Logger.mapgen_print("Bad road settings: " + str(start_angle-90) + ", " + str(end_angle-90)) 
+			Logger.mapgen_print("Bad road settings: " + str(start_angle-90) + ", " + str(end_angle-90))
 		start_angle = start_angle+360
 	
 	if verbose:
@@ -471,7 +471,7 @@ func get_src_exit(src, dest, verbose=false):
 			Logger.mapgen_print("available src exits: " + str(src_exits))
 			Logger.mapgen_print("used exits" + str(src.used_exits))
 		
-	var rel_pos = (dest.get_global_transform( * src.get_global_transform()).origin)
+	var rel_pos = (dest.get_global_transform() * src.get_global_transform().origin)
 	if verbose:
 		Logger.mapgen_print("Src exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.z, rel_pos.x)))
 	
@@ -487,27 +487,27 @@ func get_src_exit(src, dest, verbose=false):
 			Logger.mapgen_print("Quadrant 1... angle: " + str(atan2(rel_pos.z, rel_pos.x)))
 		if atan2(rel_pos.z, rel_pos.x) > 1:
 			if src_exits.has(src.point_one):
-				src_exits.remove(src_exits.find(src.point_one))
+				src_exits.remove_at(src_exits.find(src.point_one))
 				src.used_exits[src.point_one] = 1 # quadrant
 				return src.point_one
 			elif src_exits.has(src.point_two):
-				src_exits.remove(src_exits.find(src.point_two))
+				src_exits.remove_at(src_exits.find(src.point_two))
 				src.used_exits[src.point_two] = 1 # quadrant
 				return src.point_two
-			else: 
+			else:
 				print("No exits found for src quadrant 1!")
 		else:
 			if src_exits.has(src.point_two) and \
 				src.used_exits.has(src.point_three) and src.used_exits[src.point_three] != 3:
 				# extending doesn't quite work, so just forbid
 				#if src.used_exits.has(src.point_three) and src.used_exits[src.point_three] == 3:
-					 #print("Extending turns...")
-					 #extend_turns = true
-				src_exits.remove(src_exits.find(src.point_two))
+					#print("Extending turns...")
+					#extend_turns = true
+				src_exits.remove_at(src_exits.find(src.point_two))
 				src.used_exits[src.point_two] = 1 #quadrant
 				return src.point_two
 			elif src_exits.has(src.point_one):
-				src_exits.remove(src_exits.find(src.point_one))
+				src_exits.remove_at(src_exits.find(src.point_one))
 				src.used_exits[src.point_one] = 1 #quadrant
 				return src.point_one
 			else:
@@ -520,28 +520,28 @@ func get_src_exit(src, dest, verbose=false):
 		# if angle is small, consider only bottom and right
 		if atan2(rel_pos.z, rel_pos.x) < 2.5:
 			if src_exits.has(src.point_one):
-				src_exits.remove(src_exits.find(src.point_one))
+				src_exits.remove_at(src_exits.find(src.point_one))
 				src.used_exits[src.point_one] = 2 #quadrant
 				return src.point_one
 			elif src_exits.has(src.point_two) and \
 			src.used_exits[src.point_one] != 1:
-				src_exits.remove(src_exits.find(src.point_two))
+				src_exits.remove_at(src_exits.find(src.point_two))
 				src.used_exits[src.point_two] = 2 # quadrant
 				return src.point_two
 			elif src_exits.has(src.point_four) and \
 			src.used_exits[src.point_one] != 2:
-				src_exits.remove(src_exits.find(src.point_four))
+				src_exits.remove_at(src_exits.find(src.point_four))
 				src.used_exits[src.point_four] = 2 # quadrant
 				return src.point_four
 			else:
 				print("No exits found for src quadrant 2")
 		else:
 			if src_exits.has(src.point_one):
-				src_exits.remove(src_exits.find(src.point_one))
+				src_exits.remove_at(src_exits.find(src.point_one))
 				src.used_exits[src.point_one] = 2 # quadrant
 				return src.point_one
 			elif src_exits.has(src.point_three):
-				src_exits.remove(src_exits.find(src.point_three))
+				src_exits.remove_at(src_exits.find(src.point_three))
 				src.used_exits[src.point_three] = 2 # quadrant
 				return src.point_three
 			else:
@@ -551,12 +551,12 @@ func get_src_exit(src, dest, verbose=false):
 		if verbose:
 			Logger.mapgen_print("Quadrant 3")
 		if src_exits.has(src.point_three):
-			src_exits.remove(src_exits.find(src.point_three))
+			src_exits.remove_at(src_exits.find(src.point_three))
 			src.used_exits[src.point_three] = 3 #quadrant
 			return src.point_three
 		elif src_exits.has(src.point_two) and \
 			src.used_exits.has(src.point_three) and src.used_exits[src.point_three] != 3:
-			src_exits.remove(src_exits.find(src.point_two))
+			src_exits.remove_at(src_exits.find(src.point_two))
 			src.used_exits[src.point_two] = 3 # quadrant
 			return src.point_two
 		else:
@@ -566,16 +566,16 @@ func get_src_exit(src, dest, verbose=false):
 		if verbose:
 			Logger.mapgen_print("Quadrant 4")
 #		if src_exits.has(src.point_four):
-#			src_exits.remove(src_exits.find(src.point_four))
+#			src_exits.remove_at(src_exits.find(src.point_four))
 #			print("Src exit 4 picked")
 #			return src.point_four
 #		el
 		if src_exits.has(src.point_three):
-			src_exits.remove(src_exits.find(src.point_three))
+			src_exits.remove_at(src_exits.find(src.point_three))
 			src.used_exits[src.point_three] = 4 # quadrant
 			return src.point_three
 		elif src_exits.has(src.point_one):
-			src_exits.remove(src_exits.find(src.point_one))
+			src_exits.remove_at(src_exits.find(src.point_one))
 			src.used_exits[src.point_one] = 4 # quadrant
 			return src.point_one
 		else:
@@ -593,7 +593,7 @@ func get_dest_exit(src, dest, verbose=false):
 			Logger.mapgen_print("available dest exits: " + str(dest_exits))
 			Logger.mapgen_print("used exits" + str(dest.used_exits))
 	
-	var rel_pos = (src.get_global_transform( * dest.get_global_transform()).origin)
+	var rel_pos = (src.get_global_transform() * dest.get_global_transform().origin)
 	if verbose:
 		Logger.mapgen_print("Dest exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.z, rel_pos.x)))
 	
@@ -609,17 +609,17 @@ func get_dest_exit(src, dest, verbose=false):
 			if verbose:
 				Logger.mapgen_print("Case 1")
 			if dest_exits.has(dest.point_three):
-				dest_exits.remove(dest_exits.find(dest.point_three))
+				dest_exits.remove_at(dest_exits.find(dest.point_three))
 				dest.used_exits[dest.point_three] = 4 # quadrant
 				return dest.point_three
 			elif dest_exits.has(dest.point_four):
-				dest_exits.remove(dest_exits.find(dest.point_four))
+				dest_exits.remove_at(dest_exits.find(dest.point_four))
 				dest.used_exits[dest.point_four] = 4 # quadrant
 				if verbose:
 					Logger.mapgen_print("Picked exit 4")
 				return dest.point_four
 			elif dest_exits.has(dest.point_two):
-				dest_exits.remove(dest_exits.find(dest.point_two))
+				dest_exits.remove_at(dest_exits.find(dest.point_two))
 				dest.used_exits[dest.point_two] = 4 # quadrant
 				return dest.point_two
 		else:
@@ -628,18 +628,18 @@ func get_dest_exit(src, dest, verbose=false):
 			# additional requirement to prevent crossing over (for now)
 			if atan2(rel_pos.z, rel_pos.x) < -2.5:
 				if dest_exits.has(dest.point_four):
-					dest_exits.remove(dest_exits.find(dest.point_four))
+					dest_exits.remove_at(dest_exits.find(dest.point_four))
 					dest.used_exits[dest.point_four] = 4 # quadrant
 					if verbose:
 						Logger.mapgen_print("Picked exit 4... " + str(atan2(rel_pos.z, rel_pos.x)))
 					return dest.point_four
 			
 			if dest_exits.has(dest.point_three):
-				dest_exits.remove(dest_exits.find(dest.point_three))
+				dest_exits.remove_at(dest_exits.find(dest.point_three))
 				dest.used_exits[dest.point_three] = 4 # quadrant
 				return dest.point_three
 			elif dest_exits.has(dest.point_one):
-				dest_exits.remove(dest_exits.find(dest.point_one))
+				dest_exits.remove_at(dest_exits.find(dest.point_one))
 				dest.used_exits[dest.point_one] = 4 # quadrant
 				return dest.point_one
 	# quadrant 3, same
@@ -647,17 +647,17 @@ func get_dest_exit(src, dest, verbose=false):
 		if verbose:
 			Logger.mapgen_print("Dest quadrant 3")
 		if dest_exits.has(dest.point_three):
-			dest_exits.remove(dest_exits.find(dest.point_three))
+			dest_exits.remove_at(dest_exits.find(dest.point_three))
 			dest.used_exits[dest.point_three] = 3 # quadrant
 			return dest.point_three
 		elif dest_exits.has(dest.point_two) \
 		and dest.used_exits.has(src.point_three) and dest.used_exits[src.point_three] != 3:
-			dest_exits.remove(dest_exits.find(dest.point_two))
+			dest_exits.remove_at(dest_exits.find(dest.point_two))
 			dest.used_exits[dest.point_two] = 3 # quadrant
 			return dest.point_two
 		elif dest_exits.has(dest.point_four) \
 		and dest.used_exits.has(src.point_three) and dest.used_exits[src.point_three] == 3:
-			dest_exits.remove(dest_exits.find(dest.point_four))
+			dest_exits.remove_at(dest_exits.find(dest.point_four))
 			dest.used_exits[dest.point_four] = 3 # quadrant
 			return dest.point_four
 	# quadrant 2
@@ -665,21 +665,21 @@ func get_dest_exit(src, dest, verbose=false):
 		if verbose:
 			Logger.mapgen_print("Dest quadrant 2")
 		if dest_exits.has(dest.point_one):
-			dest_exits.remove(dest_exits.find(dest.point_one))
+			dest_exits.remove_at(dest_exits.find(dest.point_one))
 			dest.used_exits[dest.point_one] = 2 # quadrant
 			return dest.point_one
 		elif dest_exits.has(dest.point_three):
-			dest_exits.remove(dest_exits.find(dest.point_three))
+			dest_exits.remove_at(dest_exits.find(dest.point_three))
 			dest.used_exits[dest.point_three] = 2 # quadrant
 			return dest.point_three
 	# quadrant 1, same
 	elif rel_pos.x > 0 and rel_pos.z > 0:
 		if dest_exits.has(dest.point_two):
-			dest_exits.remove(dest_exits.find(dest.point_two))
+			dest_exits.remove_at(dest_exits.find(dest.point_two))
 			dest.used_exits[dest.point_two] = 1 # quadrant
 			return dest.point_two
 		elif dest_exits.has(dest.point_three):
-			dest_exits.remove(dest_exits.find(dest.point_three))
+			dest_exits.remove_at(dest_exits.find(dest.point_three))
 			dest.used_exits[dest.point_three] = 1 # quadrant
 			return dest.point_three
 

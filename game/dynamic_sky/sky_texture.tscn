@@ -2,7 +2,7 @@
 
 [ext_resource path="res://assets/sky_texture.gdshader" type="Shader" id=1]
 [ext_resource path="res://dynamic_sky/sky_rect.gd" type="Script" id=2]
-[ext_resource path="res://dynamic_sky/Sprite2D.tscn" type="PackedScene" id=3]
+[ext_resource path="res://dynamic_sky/Sprite.tscn" type="PackedScene" id=3]
 [ext_resource path="res://dynamic_sky/shaders/Sky.gdshader" type="Shader" id=4]
 [ext_resource path="res://dynamic_sky/textures/noise.png" type="Texture2D" id=5]
 

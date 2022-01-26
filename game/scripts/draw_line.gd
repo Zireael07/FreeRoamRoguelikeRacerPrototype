@@ -1,5 +1,5 @@
 @tool
-extends ImmediateGeometry3D
+extends ImmediateMesh
 
 # class member variables go here, for example:
 var m = StandardMaterial3D.new()
@@ -24,7 +24,7 @@ func set_material():
 	
 	#m.set_fixed_flag(FixedMaterial.FLAG_USE_COLOR_ARRAY, true)
 	
-	set_material_override(m)
+	surface_set_material(0, m)
 
 func set_material_color(color):	
 	m.set_line_width(3)
@@ -34,7 +34,7 @@ func set_material_color(color):
 	
 	m.set_albedo(color)
 	
-	set_material_override(m)
+	surface_set_material(0, m)
 
 
 
@@ -42,17 +42,17 @@ func draw_line(points):
 	set_material()
 
 
-	begin(Mesh.PRIMITIVE_LINE_STRIP, null)
+	surface_begin(Mesh.PRIMITIVE_LINE_STRIP, null)
 	for i in points:
-		add_vertex(i)
-	end()
+		surface_add_vertex(i)
+	surface_end()
 	
 	pass
 
 func draw_line_color(points, size, color_par):
 	#set_material_color(color)	
 	
-	clear()
+	clear_surfaces()
 	
 	color = color_par
 	set_material()
@@ -62,11 +62,11 @@ func draw_line_color(points, size, color_par):
 		m.set_line_width(size)
 		m.set_point_size(size)
 	
-	begin(Mesh.PRIMITIVE_LINE_STRIP, null)
+	surface_begin(Mesh.PRIMITIVE_LINE_STRIP, null)
 	for i in points:
 		#set_color(color)
-		add_vertex(i)
-	end()	
+		surface_add_vertex(i)
+	surface_end()	
 
 func get_circle_arc_poly(center, radius, angle_from, angle_to):
 	# from 3d to 2d
@@ -94,7 +94,7 @@ func get_circle_arc_poly(center, radius, angle_from, angle_to):
 	
 func draw_arc_poly(center, rot, angle, color_par):
 	var points = []
-	clear()
+	clear_surfaces()
 	
 	color = color_par
 	set_material()
@@ -102,7 +102,7 @@ func draw_arc_poly(center, rot, angle, color_par):
 	points = get_circle_arc_poly(center, 2, rot, rot+angle)
 	
 	#begin(Mesh.PRIMITIVE_TRIANGLES,null)
-	begin(Mesh.PRIMITIVE_LINE_STRIP, null)
+	surface_begin(Mesh.PRIMITIVE_LINE_STRIP, null)
 	for i in points:
-		add_vertex(i)
-	end()
+		surface_add_vertex(i)
+	surface_end()

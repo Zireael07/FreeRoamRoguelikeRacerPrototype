@@ -208,10 +208,10 @@ func set_colors(time):
 	# detault ground horizon color is 123, 201, 243
 	# 107, 100, 94
 	gr_horizon_color = Color(107/255.0*light, 100/255.0*light, 94/255.0*light)
-	sky.set_sky_top_color(sky_color)
-	sky.set_sky_horizon_color(horizon_color)
-	sky.set_ground_horizon_color(gr_horizon_color)	
-	env.set_fog_color(horizon_color)
+#	sky.set_sky_top_color(sky_color)
+#	sky.set_sky_horizon_color(horizon_color)
+#	sky.set_ground_horizon_color(gr_horizon_color)	
+#	env.set_fog_color(horizon_color)
 
 
 func day_night_cycle(time):
@@ -247,7 +247,7 @@ func day_night_cycle(time):
 
 	
 	# set sun latitude
-	sky.set_sun_latitude(sunmoon_lat)
+	#sky.set_sun_latitude(sunmoon_lat)
 	
 	#env.set_background_param(Environment.BG_PARAM_COLOR, col);
 

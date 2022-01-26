@@ -75,8 +75,8 @@ func format_verts(text):
 	
 func update_fps():
 	fps = str(Engine.get_frames_per_second()) + " ms: %.3f" % (1000.0/Engine.get_frames_per_second())
-	draws = str(Performance.get_monitor(Performance.RENDER_DRAW_CALLS_IN_FRAME)) 
-	vertices = str(Performance.get_monitor(Performance.RENDER_VERTICES_IN_FRAME))
+	draws = str(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)) 
+	vertices = str(Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME))
 	fps_label.set_text(fps+ " draw calls" + draws + " verts: " + format_verts(vertices))
 
 func update_distance(text):
