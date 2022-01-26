@@ -78,7 +78,7 @@ func _find_meshes_recursive(node : Node, meshlist, si : _SplitInfo):
 	if node is MeshInstance3D:
 		var mi : MeshInstance3D = node as MeshInstance3D
 		si.aabb = _calc_aabb(mi)
-		print ("mesh " + mi.get_name() + "\n\tAABB " + str(si.aabb))
+		print ("mesh " + String(mi.get_name()) + "\n\tAABB " + str(si.aabb))
 
 		var splits_x = _get_num_splits_x(si)
 		var splits_y = _get_num_splits_y(si)
@@ -86,7 +86,7 @@ func _find_meshes_recursive(node : Node, meshlist, si : _SplitInfo):
 		
 		if (splits_x + splits_y + splits_z) > 3:
 			meshlist.push_back(mi)
-			print ("\tfound mesh to split : " + mi.get_name())
+			print ("\tfound mesh to split : " + String(mi.get_name()))
 			print ("\t\tsplits_x : " + str(splits_x) + " _y " + str(splits_y) + " _z " + str(splits_z))
 			#print("\tAABB is " + str(aabb))
 	
@@ -110,7 +110,7 @@ func split(mesh_instance : MeshInstance3D, attachment_node : Node, grid_size : f
 	si.y_splits = _get_num_splits_y(si)
 	si.z_splits = _get_num_splits_z(si)
 
-	print (mesh_instance.get_name() + " : x_splits " + str(si.x_splits) + " y_splits " + str(si.y_splits) + " z_splits " + str(si.z_splits))
+	print (String(mesh_instance.get_name()) + " : x_splits " + str(si.x_splits) + " y_splits " + str(si.y_splits) + " z_splits " + str(si.z_splits))
 
 	## no need to split .. should never happen
 	if ((si.x_splits + si.y_splits + si.z_splits) == 3):
@@ -308,7 +308,7 @@ func _split_mesh(mdt : MeshDataTool, orig_mi : MeshInstance3D, grid_x : float, g
 	
 	new_mi.set_surface_material(0, mat)
 	
-	new_mi.set_name(orig_mi.get_name() + "_" + str(grid_x) + str(grid_z))
+	new_mi.set_name(String(orig_mi.get_name()) + "_" + str(grid_x) + str(grid_z))
 	
 	if si.use_local_space:
 		new_mi.transform = orig_mi.transform
@@ -336,7 +336,7 @@ func _find_or_add_unique_vert(orig_index : int, unique_verts, ind_mapping):
 
 func split_by_surface(orig_mi : MeshInstance3D, attachment_node : Node, use_local_space : bool = false):
 
-	print ("split_by_surface " + orig_mi.get_name())
+	print ("split_by_surface " + String(orig_mi.get_name()))
 
 	var mesh = orig_mi.mesh
 	
@@ -360,7 +360,7 @@ func split_by_surface(orig_mi : MeshInstance3D, attachment_node : Node, use_loca
 	
 	pass
 
-func split_multi_surface_meshes_recursive(var node : Node):
+func split_multi_surface_meshes_recursive(node : Node):
 	if node is MeshInstance3D:
 		if node.get_child_count() == 0:
 			split_by_surface(node, node.get_parent())
@@ -369,7 +369,7 @@ func split_multi_surface_meshes_recursive(var node : Node):
 	for c in range (node.get_child_count()):
 		split_multi_surface_meshes_recursive(node.get_child(c))
 
-func merge_suitable_meshes_across_branches(var root : Node3D):
+func merge_suitable_meshes_across_branches(root : Node3D):
 	var master_list = []
 	_list_mesh_instances(root, master_list)
 	
@@ -416,7 +416,7 @@ func merge_suitable_meshes_across_branches(var root : Node3D):
 	
 
 
-func _list_mesh_instances(var node, var list):
+func _list_mesh_instances(node, list):
 	if node is MeshInstance3D:
 		if node.get_child_count() == 0:
 			var mi : MeshInstance3D = node
@@ -428,7 +428,7 @@ func _list_mesh_instances(var node, var list):
 		
 
 
-func merge_suitable_meshes_recursive(var node : Node):
+func merge_suitable_meshes_recursive(node : Node):
 	# try merging child mesh instances
 	_merge_suitable_child_meshes(node)
 	
@@ -437,7 +437,7 @@ func merge_suitable_meshes_recursive(var node : Node):
 		merge_suitable_meshes_recursive(node.get_child(c))
 	
 
-func _merge_suitable_child_meshes(var node : Node):
+func _merge_suitable_child_meshes(node : Node):
 	if node is Node3D:
 		var spat : Node3D = node
 	
@@ -456,7 +456,7 @@ func _merge_suitable_child_meshes(var node : Node):
 		
 	
 
-func _find_suitable_meshes(var child_list, var node : Node):
+func _find_suitable_meshes(child_list, node : Node):
 	# don't want to merge meshes with children
 	if node.get_child_count():
 		return
@@ -465,7 +465,7 @@ func _find_suitable_meshes(var child_list, var node : Node):
 		var mi : MeshInstance3D = node
 		# must have only one surface
 		if mi.get_surface_material_count() <= 1:
-			print("found mesh instance " + mi.get_name())
+			print("found mesh instance " + String(mi.get_name()))
 	
 			var mat_this = mi.mesh.surface_get_material(0)
 	
@@ -484,7 +484,7 @@ func _find_suitable_meshes(var child_list, var node : Node):
 				child_list.push_back(mi)
 	
 
-func merge_meshinstances(var mesh_array, var attachment_node : Node, var use_local_space : bool = false, var delete_originals : bool = true):
+func merge_meshinstances(mesh_array, attachment_node : Node, use_local_space : bool = false, delete_originals : bool = true):
 	if mesh_array.size() < 2:
 		printerr("merge_meshinstances array must contain at least 2 meshes")
 		return
@@ -515,12 +515,12 @@ func merge_meshinstances(var mesh_array, var attachment_node : Node, var use_loc
 	var new_mi = MeshInstance3D.new()
 	new_mi.mesh = tmpMesh
 	
-	new_mi.set_surface_material(0, mat)
+	new_mi.set_surface_override_material(0, mat)
 	
 	if use_local_space:
 		new_mi.transform = first_mi.transform
 	
-	var sz = first_mi.get_name() + "_merged"
+	var sz = String(first_mi.get_name()) + "_merged"
 	new_mi.set_name(sz)
 	
 	# add the new mesh as a child
@@ -538,7 +538,7 @@ func merge_meshinstances(var mesh_array, var attachment_node : Node, var use_loc
 	return new_mi
 		
 
-func _merge_meshinstance(st : SurfaceTool, mi : MeshInstance3D, var use_local_space : bool, var vertex_count : int):
+func _merge_meshinstance(st : SurfaceTool, mi : MeshInstance3D, use_local_space : bool, vertex_count : int):
 	if mi == null:
 		printerr("_merge_meshinstance - not a mesh instance, ignoring")
 		return vertex_count
@@ -574,11 +574,11 @@ func _merge_meshinstance(st : SurfaceTool, mi : MeshInstance3D, var use_local_sp
 			tang = xform * (tang)
 		
 		if norm:
-			st.add_normal(norm)
+			st.set_normal(norm)
 		if col:
 			st.add_color(col)
 		if uv and fmt != 97299: #no uvs, uv2 bones or weights
-			st.add_uv(uv)
+			st.set_uv(uv)
 		if uv2:
 			st.add_uv2(uv2)
 		if tang:
@@ -654,7 +654,7 @@ func _split_mesh_by_surface(mdt : MeshDataTool, orig_mi : MeshInstance3D, attach
 	if use_local_space:
 		new_mi.transform = orig_mi.transform
 	
-	var sz = orig_mi.get_name() + "_" + str(surf_id)
+	var sz = String(orig_mi.get_name()) + "_" + str(surf_id)
 	if mat:
 		if mat.resource_name != "":
 			sz += "_" + mat.resource_name

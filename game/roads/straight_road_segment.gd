@@ -3,7 +3,7 @@
 extends "../scripts/meshes/mesh_gen.gd"
 
 # class member variables go here, for example:
-@export(Material)    var material    = preload("res://assets/road_material.tres")
+@export var material : Material = preload("res://assets/road_material.tres")
 var temp_positions = PackedVector3Array()
 
 #editor drawing
@@ -550,7 +550,7 @@ func meshCreate(array, material):
 	node.set_cast_shadows_setting(0)
 
 func global_to_local_vert(pos):
-	return get_global_transform().xform_inv(pos)
+	return pos * get_global_transform()
 	
 func send_positions(map):
 	if positions.size() < 1:

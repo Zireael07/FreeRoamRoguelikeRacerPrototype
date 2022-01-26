@@ -183,7 +183,7 @@ func setupBuilding(index, base_height):
 			var saturation = randf()
 			var lightness = randf_range(0.25, 0.75)
 			
-			var color = Color.FROM_hsv(hue, saturation, lightness)
+			var color = Color.from_hsv(hue, saturation, lightness)
 			
 			build.storefront_mat.set_shader_param("modulate", color)
 	else:
@@ -195,19 +195,19 @@ func setupBuilding(index, base_height):
 	
 	if rand < 0.15:
 		var sign_mat = sign_tex1
-		build.get_node(^"MeshInstance3D").set_surface_material(0, sign_mat)
+		build.get_node(^"MeshInstance3D").set_surface_override_material(0, sign_mat)
 	elif rand < 0.33:
 		var sign_mat = sign_tex1_d
-		build.get_node(^"MeshInstance3D").set_surface_material(0, sign_mat)
+		build.get_node(^"MeshInstance3D").set_surface_override_material(0, sign_mat)
 	elif rand < 0.5:
 		var sign_mat = sign_tex1_dd
-		build.get_node(^"MeshInstance3D").set_surface_material(0, sign_mat)
+		build.get_node(^"MeshInstance3D").set_surface_override_material(0, sign_mat)
 	elif rand < 0.66:
 		var sign_mat = sign_tex2
-		build.get_node(^"MeshInstance3D").set_surface_material(0, sign_mat)
+		build.get_node(^"MeshInstance3D").set_surface_override_material(0, sign_mat)
 	else:
 		var sign_mat = sign_tex3
-		build.get_node(^"MeshInstance3D").set_surface_material(0, sign_mat)
+		build.get_node(^"MeshInstance3D").set_surface_override_material(0, sign_mat)
 		
 	# sign color
 	#var rand_color_r = randf()
@@ -218,11 +218,11 @@ func setupBuilding(index, base_height):
 	var saturation = randf()
 	var lightness = randf_range(0.25, 0.75)
 	
-	var color = Color.FROM_hsv(hue, saturation, lightness)
+	var color = Color.from_hsv(hue, saturation, lightness)
 	
 	#print("Sign color: ", color)
 	
-	build.get_node(^"MeshInstance3D").get_surface_material(0).set_shader_param("modulate", color)
+	build.get_node(^"MeshInstance3D").get_surface_override_material(0).set_shader_param("modulate", color)
 	
 	# vary sign placement height
 	var rand_i = randi() % 5
@@ -232,16 +232,16 @@ func setupBuilding(index, base_height):
 	
 	
 	#build.set_scale(Vector3(2, 2, 2))
-	build.set_name("Skyscraper"+String(index))
+	build.set_name("Skyscraper"+var2str(index))
 	add_child(build)
 	
 	return build
 
 func setupBuildingSimple(index):
-	#var build = building.instantiate()
-	var build = building_test.instantiate()
+	var build = building.instantiate()
+	#var build = building_test.instantiate()
 
-	build.set_name("Skyscraper"+String(index))
+	build.set_name("Skyscraper"+var2str(index))
 	add_child(build)
 
 	return build
@@ -257,10 +257,10 @@ func placeBuilding(index, base_height):
 	else:
 		loc = Vector3(roadwidth+buildDistance, base_height, index+buildOffset)
 	
-	build.set_translation(loc)
-	build.set_rotation_degrees(Vector3(0, 180, 0))
+	build.set_position(loc)
+	build.set_rotation(Vector3(0, deg2rad(180), 0))
 	
-	build.get_node(^"Node3D").set_translation(Vector3(-8, 0,0))
+	build.get_node(^"Node3D").set_position(Vector3(-8, 0,0))
 	
 	build = setupBuilding(index, base_height)
 	
@@ -273,10 +273,10 @@ func placeBuilding(index, base_height):
 	else:
 		loc = Vector3(-(roadwidth+buildDistance), base_height, index+buildOffset)
 	
-	build.set_translation(loc)
+	build.set_position(loc)
 	
 	# move detect area
-	build.get_node(^"Node3D").set_translation(Vector3(-8, 0,0))
+	build.get_node(^"Node3D").set_position(Vector3(-8, 0,0))
 	
 func placeCable(index, base_height):
 	if (index % 2 > 0):
@@ -289,25 +289,25 @@ func placeCable(index, base_height):
 		if rand > 0.2:
 			var red = load("res://assets/lantern_mat_red.tres")
 			# make all of them red
-			cable.get_child(1).set_surface_material(0, red)
-			cable.get_child(2).set_surface_material(0, red)
-			cable.get_child(3).set_surface_material(0, red)
-			cable.get_child(4).set_surface_material(0, red)
-			cable.get_child(5).set_surface_material(0, red)
+			cable.get_child(1).set_surface_override_material(0, red)
+			cable.get_child(2).set_surface_override_material(0, red)
+			cable.get_child(3).set_surface_override_material(0, red)
+			cable.get_child(4).set_surface_override_material(0, red)
+			cable.get_child(5).set_surface_override_material(0, red)
 		
 		elif rand > 0.4:
 			cable = cables2.instantiate()
 		
-		cable.set_name("Cable"+String(index))
+		cable.set_name("Cable"+var2str(index))
 		add_child(cable)
 	
 		# if base_height < 0, we're building for a bridge/elevated road so let's flip the sign
 		var loc = Vector3(0,-base_height+3,index*15)
-		cable.set_translation(loc)
+		cable.set_position(loc)
 
 func placeTree(index, base_height):
 	var tree = cherry_tree.instantiate()
-	tree.set_name("Tree"+String(index))
+	tree.set_name("Tree"+var2str(index))
 	add_child(tree)
 
 	#left side of the road
@@ -317,7 +317,7 @@ func placeTree(index, base_height):
 	else:
 		loc = Vector3(roadwidth+(buildDistance/2), base_height, index)
 	
-	tree.set_translation(loc)
+	tree.set_position(loc)
 	
 	tree = cherry_tree.instantiate()
 	tree.set_name("Tree"+String(index))
@@ -330,7 +330,7 @@ func placeTree(index, base_height):
 	else:
 		loc = Vector3(-(roadwidth+(buildDistance/2)), base_height, index)
 	
-	tree.set_translation(loc)
+	tree.set_position(loc)
 
 func placeBamboo(index, base_height):
 	# vary position a bit
@@ -352,7 +352,7 @@ func placeBamboo(index, base_height):
 	else:
 		loc = Vector3(roadwidth+(buildDistance/2), base_height, index)
 	
-	clump.set_translation(loc)
+	clump.set_position(loc)
 	
 	clump = bamboo_clump.instantiate()
 	clump.set_name("Bamboo"+String(index))
@@ -371,7 +371,7 @@ func placeBamboo(index, base_height):
 	else:
 		loc = Vector3(-(roadwidth+(buildDistance/2)), base_height, index)
 	
-	clump.set_translation(loc)
+	clump.set_position(loc)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -63,7 +63,7 @@ var end_ref
 
 
 #mesh material
-@export(StandardMaterial3D)    var material    = preload("res://assets/road_material.tres")
+@export var material: StandardMaterial3D = preload("res://assets/road_material.tres")
 @export var sidewalk_material: StandardMaterial3D = preload("res://assets/cement.tres")
 @export var barrier_material: Material = preload("res://assets/barrier_material.tres")
 
@@ -147,8 +147,8 @@ func _ready():
 
 
 
-func draw_debug_point(loc, color):
-	super.addTestColor(m, color, null, loc.x, road_height, loc.y, 0.05,0.05,0.05)
+#func draw_debug_point(loc, color):
+#	super.addTestColor(m, color, null, loc.x, road_height, loc.y, 0.05,0.05,0.05)
 
 	
 
@@ -167,11 +167,11 @@ func fix_stuff():
 
 func debug():
 	start_point = Vector3(points_center[0].x, road_height, points_center[0].y) 
-	Logger.road_print("Position of start point is " + String(start_point))
+	#Logger.road_print("Position of start point is " + String(start_point))
 	#addTestColor(m, Color(0, 1,0), "start_cube", start_point.x, start_point.y, start_point.z, 0.1, 0.1, 0.1)
 
 	last = Vector3(points_center[points_center.size()-1].x, road_height, points_center[points_center.size()-1].y)
-	Logger.road_print("Position of last point is " + String(last))
+	#Logger.road_print("Position of last point is " + String(last))
 	
 	#var loc3d = Vector3(loc.x, 0, loc.y)
 	#if (left_turn):
@@ -191,7 +191,7 @@ func debug():
 	#relative_end = start_point-last 
 	
 	relative_end = global_start - global_end
-	Logger.road_print("Last relative to start is " + String(relative_end))
+	Logger.road_print("Last relative to start is " + var2str(relative_end))
 	
 	var mid_loc = points_center[(round(32/2))]
 	mid_point = Vector3(mid_loc.x, road_height, mid_loc.y)
@@ -410,8 +410,8 @@ func create_road():
 #		get_node(^"last_pos3").set_translation(positions[positions.size()-1])
 	
 	# 2D because 3D doesn't have tangent()
-	var start_axis_2d = -(points_center[0]-loc).tangent().normalized()*10
-	var end_axis_2d = -(points_center[points_center.size()-1]-loc).tangent().normalized()*10
+	var start_axis_2d = -(points_center[0]-loc).orthogonal().normalized()*10
+	var end_axis_2d = -(points_center[points_center.size()-1]-loc).orthogonal().normalized()*10
 		
 	if left_turn:
 		start_axis_2d = -start_axis_2d
@@ -481,7 +481,7 @@ func create_road():
 			var mergelist = []
 
 			for c in get_children():
-				if c.name.find("road_curved") != -1:
+				if String(c.name).find("road_curved") != -1:
 					mergelist.append(c)
 
 			# hide originals
@@ -493,7 +493,7 @@ func create_road():
 		placeStreetlight()
 		
 		# assign a more optimized collision shape :)
-		var outline = Geometry.convex_hull_2d(points_inner+points_outer)
+		var outline = Geometry2D.convex_hull(points_inner+points_outer)
 		#print("curve outline: ", outline)
 		# the existence of collision polygon is really good news for us
 		var poly = get_node(^"StaticBody3D/CollisionPolygon3D").polygon
@@ -533,20 +533,21 @@ func create_road():
 		var debug_start_axis = [positions[0], start_ref]
 		var debug_end_axis = [positions[positions.size()-1], end_ref]
 	
-		if (draw != null):
-			draw.draw_line(positions)
-			draw.draw_line(left_positions)
-			draw.draw_line(right_positions)
+#		if (draw != null):
+#			draw.draw_line(positions)
+#			draw.draw_line(left_positions)
+#			draw.draw_line(right_positions)
+			
 			# debug
 			#draw.draw_line(start_positions)
 			#draw.draw_line(end_positions)
 			
 			
-			draw.draw_line(debug_pos)
-			draw.draw_line(debug_pos2)
-			
-			draw.draw_line(debug_start_axis)
-			draw.draw_line(debug_end_axis)
+#			draw.draw_line(debug_pos)
+#			draw.draw_line(debug_pos2)
+#
+#			draw.draw_line(debug_start_axis)
+#			draw.draw_line(debug_end_axis)
 			
 			#draw.draw_line(debug_inner)
 			#draw.draw_line(debug_inner2)
@@ -584,14 +585,14 @@ func placeStreetlight():
 	
 	# place
 	#debug_cube(right_positions[num]+offset)
-	light.set_translation(right_positions[num]+offset)
+	light.set_position(right_positions[num]+offset)
 	
 	# rotations
 	if (left_turn): #or abs(get_parent().get_parent().get_rotation_degrees().y) > 178:
-		light.set_rotation_degrees(Vector3(0,90,0))
+		light.set_rotation(Vector3(0,deg2rad(90),0))
 		#get_node(^"Debug").set_rotation_degrees(Vector3(0,90,0))
 	else:
-		light.set_rotation_degrees(Vector3(0,0,0))
+		light.set_rotation(Vector3(0,0,0))
 		#get_node(^"Debug").set_rotation_degrees(Vector3(0,0,0))
 
 
@@ -642,7 +643,7 @@ func make_barrier(quads, material):
 	node.set_cast_shadows_setting(0)
 
 func global_to_local_vert(pos):
-	return get_global_transform().xform_inv(pos)
+	return pos * get_global_transform()
 	
 func send_positions(map):
 	#print(get_name() + " sending position to map")
