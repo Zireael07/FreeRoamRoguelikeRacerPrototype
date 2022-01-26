@@ -1,6 +1,6 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bxcmra3br5t4e"]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id="1"]
 code = "//based on https://www.shadertoy.com/view/4tdSWr
 
 shader_type spatial;
@@ -166,7 +166,8 @@ void fragment() {
 "
 
 [resource]
-shader = SubResource( 1 )
+render_priority = 0
+shader = SubResource( "1" )
 shader_param/cloudscale = 0.1
 shader_param/speed = 0.001
 shader_param/clouddark = 0.5
@@ -174,6 +175,6 @@ shader_param/cloudlight = 0.3
 shader_param/cloudcover = 0.1
 shader_param/cloudalpha = 8.0
 shader_param/skytint = 0.5
-shader_param/skycolour = Vector3( 0.2, 0.4, 0.6 )
+shader_param/skycolour = Vector3(0.2, 0.4, 0.6)
 shader_param/cut_off = 0.1
-shader_param/m = Transform2D( 1.6, -1.2, 1.2, 1.6, 0, 0 )
+shader_param/m = Transform2D(1.6, -1.2, 1.2, 1.6, 0, 0)

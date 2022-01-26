@@ -1,30 +1,25 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=3 uid="uid://linmfo4v4t1c"]
 
-[ext_resource path="res://default_env.tres" type="Environment" id=1]
-[ext_resource path="res://scripts/daynight.gd" type="Script" id=2]
-[ext_resource path="res://scripts/meshes/ground_gen.gd" type="Script" id=3]
-[ext_resource path="res://objects/garage_road.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scripts/intersections_test_minimal.gd" type="Script" id=6]
-[ext_resource path="res://roads/intersection.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scripts/draw_line.gd" type="Script" id=8]
-[ext_resource path="res://car/vehiclebody/car_base.tscn" type="PackedScene" id=9]
+[ext_resource type="Environment" uid="uid://bcvdjji0jnory" path="res://default_env.tres" id="1"]
+[ext_resource type="Script" path="res://scripts/daynight.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/meshes/ground_gen.gd" id="3"]
+[ext_resource type="Material" path="res://assets/ground_material_snow.tres" id="4_gdwvg"]
+[ext_resource type="PackedScene" path="res://objects/garage_road.tscn" id="5"]
+[ext_resource type="Material" path="res://assets/ground_material.tres" id="5_v5jgj"]
+[ext_resource type="Script" path="res://scripts/intersections_test_minimal.gd" id="6"]
+[ext_resource type="PackedScene" path="res://roads/intersection.tscn" id="7"]
+[ext_resource type="Script" path="res://scripts/draw_line.gd" id="8"]
+[ext_resource type="PackedScene" path="res://car/vehiclebody/car_base.tscn" id="9"]
 
-[sub_resource type="WorldMarginShape3D" id=1]
-
-[sub_resource type="StandardMaterial3D" id=2]
-flags_unshaded = true
-flags_use_point_size = true
-params_line_width = 3.0
-params_point_size = 3.0
-albedo_color = Color(1, 0.961243, 0.0078125, 1)
+[sub_resource type="WorldBoundaryShape3D" id="1"]
 
 [node name="Node3D" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = ExtResource( 1 )
+environment = ExtResource( "1" )
 
 [node name="World3D" type="Node3D" parent="."]
-script = ExtResource( 2 )
+script = ExtResource( "2" )
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(0.999422, 0, 0.0339803, 0, 1, 0, -0.0339803, 0, 0.999422, 0.3423, 0.509534, -5.59995)
@@ -39,37 +34,35 @@ shadow_enabled = true
 shadow_bias = 0.0
 shadow_reverse_cull_face = true
 directional_shadow_blend_splits = true
-directional_shadow_normal_bias = 0.0
-directional_shadow_bias_split_scale = 0.0
 
 [node name="Ground" type="Node3D" parent="."]
-script = ExtResource( 3 )
+script = ExtResource( "3" )
+snowmaterial = ExtResource( "4_gdwvg" )
+groundmaterial = ExtResource( "5_v5jgj" )
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
-shape = SubResource( 1 )
+shape = SubResource( "1" )
 
-[node name="sample" parent="." instance=ExtResource( 5 )]
+[node name="sample" parent="." instance=ExtResource( "5" )]
 
 [node name="Node3D" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2052, 0, 91.8753)
-script = ExtResource( 6 )
+script = ExtResource( "6" )
 __meta__ = {
 "_editor_description_": "Intersections cannot be too close together as the algorithm breaks"
 }
 
-[node name="Node3D" parent="Node3D" instance=ExtResource( 7 )]
+[node name="Node3D" parent="Node3D" instance=ExtResource( "7" )]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 47.9559)
 
-[node name="Spatial2" parent="Node3D" instance=ExtResource( 7 )]
+[node name="Spatial2" parent="Node3D" instance=ExtResource( "7" )]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.3338, 0, -64.3236)
 
-[node name="draw" type="ImmediateGeometry3D" parent="Node3D"]
-material_override = SubResource( 2 )
-cast_shadow = 0
-script = ExtResource( 8 )
+[node name="draw" type="Node" parent="Node3D"]
+script = ExtResource( "8" )
 color = Color(1, 0.961243, 0.0078125, 1)
 
-[node name="car" parent="." instance=ExtResource( 9 )]
+[node name="car" parent="." instance=ExtResource( "9" )]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.8615, 0, 87.3719)

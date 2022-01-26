@@ -72,11 +72,11 @@ func _ready():
 	#target 60 fps
 	Engine.set_target_fps(60)
 	
-	sun = get_node("DirectionalLight3D")
-	env = get_node("WorldEnvironment").get_environment()
+	sun = get_node(^"DirectionalLight3D")
+	env = get_node(^"WorldEnvironment").get_environment()
 	#sky = env.get_sky()
-	#sky = get_node("Sky/Node2D/sky_rect")
-	#clouds = get_node("Sky/Node2D/Sprite2")
+	#sky = get_node(^"Sky/Node2D/sky_rect")
+	#clouds = get_node(^"Sky/Node2D/Sprite2")
 	
 	#print("Real-life minutes/day is: " + str(DAY_SPEED) + ", 1 h is: " + str((DAY_SPEED/24.0)*60.0) + " s")
 	
@@ -159,9 +159,9 @@ func _process(delta):
 	# TODO: weather should be a fsm and effects should be applied only on weather change
 	# weather
 #	if weather == WEATHER_SUNNY:
-#		player.get_node("BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 25)
+#		player.get_node(^"BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 25)
 #	elif weather == WEATHER_OVERCAST or weather == WEATHER_RAIN:
-#		player.get_node("BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 85)
+#		player.get_node(^"BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 85)
 	
 #	if weather == WEATHER_RAIN:
 #		rain()
@@ -312,7 +312,7 @@ func day_night_cycle(time):
 	#sunmoon_lat = calculate_sun_latitude(time)
 	
 	light = calculate_lightning(hour, minute);
-	#sun.set_param(Light.PARAM_ENERGY, light);
+	#sun.set_param(Light3D.PARAM_ENERGY, light);
 	
 	set_colors(time)
 	
@@ -337,7 +337,7 @@ func day_night_cycle(time):
 	if time >= 18.4 && time < 18.5:
 		pass
 		# no idea what it was needed for, removing it fixes the stutter
-		#get_node("Sky")._trigger_update_sky()
+		#get_node(^"Sky")._trigger_update_sky()
 		#print("Update sky")
 	elif time >= 18.5 && not night_fired:
 

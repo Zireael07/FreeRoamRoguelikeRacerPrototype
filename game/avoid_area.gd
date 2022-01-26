@@ -75,7 +75,7 @@ func _on_Spatial_body_entered(body):
 		
 		if body.get_parent().is_in_group("cop"):
 			var road = get_node(^"../../../../..")
-			print("AI cop entered avoid area for ", road.get_name() + "@ ", body.get_global_transform().origin)
+			print("AI cop entered avoid area for ", String(road.get_name()) + "@ ", body.get_global_transform().origin)
 	
 			var brain = body.get_node(^"brain")
 			if brain.get_state() != brain.STATE_BUILDING:

@@ -12,7 +12,7 @@ var timer = null
 var blur_prev = false
 
 func _ready():
-	mat = get_surface_material(0)
+	mat = get_surface_override_material(0)
 	cam = get_parent()
 	#assert cam is Camera3D
 	timer = cam.get_node(^"LerpTimer")

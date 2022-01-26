@@ -27,7 +27,7 @@ func _process(delta):
 	delta_mv = target - target_orig
 		
 	#move up and rotate to look down
-	set_translation(origin+delta_mv)
+	set_position(origin+delta_mv)
 	
 	
 

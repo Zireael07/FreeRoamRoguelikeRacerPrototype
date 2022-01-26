@@ -11,7 +11,7 @@
 [ext_resource path="res://car/vehiclebody/car_base.tscn" type="PackedScene" id=9]
 
 
-[sub_resource type="WorldMarginShape3D" id=1]
+[sub_resource type="WorldBoundaryShape3D" id=1]
 
 [sub_resource type="StandardMaterial3D" id=2]
 flags_unshaded = true
