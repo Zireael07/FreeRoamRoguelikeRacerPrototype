@@ -46,4 +46,5 @@ func _process(delta):
 	if trigger_count > 0:
 		trigger_count -= 1
 		if trigger_count == 0:
-			emit_signal("sky_updated")
+			pass
+#			emit_signal("sky_updated")

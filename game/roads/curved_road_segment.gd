@@ -63,8 +63,8 @@ var end_ref
 
 
 #mesh material
-@export var material: StandardMaterial3D = preload("res://assets/road_material.tres")
-@export var sidewalk_material: StandardMaterial3D = preload("res://assets/cement.tres")
+@export var material: Material = preload("res://assets/road_material.tres")
+@export var sidewalk_material: Material = preload("res://assets/cement.tres")
 @export var barrier_material: Material = preload("res://assets/barrier_material.tres")
 
 #props

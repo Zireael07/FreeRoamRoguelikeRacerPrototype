@@ -172,9 +172,9 @@ func draw_lines(ind, index):
 		var end = positions_2d[index][ind+1]
 #						
 		var line = bresenham_complex(start, end)
-		for index in range (line.size()):
-			for i in range(line[index].x, line[index].x+dot_size):
-				for j in range(line[index].y, line[index].y+dot_size):
+		for _index in range (line.size()):
+			for i in range(line[_index].x, line[_index].x+dot_size):
+				for j in range(line[_index].y, line[_index].y+dot_size):
 					# paranoia
 					if i > 0 and i < 1000 and j > 0 and j < 1000:
 						# necessary in 3.0

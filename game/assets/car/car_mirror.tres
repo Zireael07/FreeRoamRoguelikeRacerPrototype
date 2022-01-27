@@ -1,6 +1,6 @@
-[gd_resource type="ShaderMaterial" load_steps=3 format=2]
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://c7pr8dcvg54i4"]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id="1"]
 code = "shader_type spatial;
 render_mode unshaded;
  
@@ -11,9 +11,10 @@ void fragment() {
 	ALBEDO = texture(refl_tx, UV).rgb;
 }"
 
-[sub_resource type="ViewportTexture" id=2]
+[sub_resource type="ViewportTexture" id="2"]
 
 [resource]
 resource_local_to_scene = true
-shader = SubResource( 1 )
-shader_param/refl_tx = SubResource( 2 )
+render_priority = 0
+shader = SubResource( "1" )
+shader_param/refl_tx = SubResource( "2" )
