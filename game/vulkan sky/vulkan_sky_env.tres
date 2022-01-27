@@ -1,0 +1,31 @@
+[gd_resource type="Environment" load_steps=5 format=3 uid="uid://c56vuaipcdg3k"]
+
+[ext_resource type="Shader" uid="uid://btotycw2uifv3" path="res://vulkan sky/sky_custom.tres" id="1_jwecp"]
+[ext_resource type="Texture2D" uid="uid://ds5nliexnxvyd" path="res://vulkan sky/textures/noise.png" id="2_v4vqf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n3wus"]
+shader = ExtResource( "1_jwecp" )
+shader_param/sky_top_color = Color(0.35, 0.46, 0.71, 1)
+shader_param/sky_horizon_color = Color(0.55, 0.69, 0.81, 1)
+shader_param/sky_curve = 0.09
+shader_param/sky_energy = 1.0
+shader_param/ground_bottom_color = Color(0.12, 0.12, 0.13, 1)
+shader_param/ground_horizon_color = Color(0.37, 0.33, 0.31, 1)
+shader_param/ground_curve = 0.02
+shader_param/ground_energy = 1.0
+shader_param/sun_angle_max = 1.74
+shader_param/sun_curve = 0.05
+shader_param/COVERAGE = 0.535
+shader_param/clouds_tex = ExtResource( "2_v4vqf" )
+
+[sub_resource type="Sky" id="Sky_y75us"]
+sky_material = SubResource( "ShaderMaterial_n3wus" )
+process_mode = 3
+radiance_size = 0
+
+[resource]
+background_mode = 2
+sky = SubResource( "Sky_y75us" )
+ambient_light_color = Color(1, 1, 1, 1)
+glow_hdr_threshold = 2.2
+fog_light_color = Color(0.0221679, 0.0337797, 0.0744209, 1)

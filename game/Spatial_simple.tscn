@@ -1,12 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://do1x8k5fq0jtp"]
+[gd_scene load_steps=8 format=3 uid="uid://do1x8k5fq0jtp"]
 
 [ext_resource type="PackedScene" uid="uid://bh5qfdgmv1k1t" path="res://roads/road_segment_straight.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://e6fhyicompkr" path="res://roads/road_segment.tscn" id="2"]
-[ext_resource type="Environment" path="res://dynamic_env.tres" id="3"]
+[ext_resource type="Script" path="res://vulkan sky/daynight.gd" id="2_r7md2"]
+[ext_resource type="Environment" uid="uid://c56vuaipcdg3k" path="res://vulkan sky/vulkan_sky_env.tres" id="3_6h6kk"]
 [ext_resource type="PackedScene" path="res://roads/intersection.tscn" id="4"]
-[ext_resource type="Script" path="res://scripts/WorldEnvironment.gd" id="7"]
 [ext_resource type="PackedScene" uid="uid://caucweey32fbc" path="res://car/kinematics/kinematic_car_base.tscn" id="9"]
-[ext_resource type="PackedScene" path="res://dynamic_sky/scene.tscn" id="10"]
 
 [sub_resource type="BoxShape3D" id="1"]
 size = Vector3(400, 0.1, 400)
@@ -24,14 +23,14 @@ shape = SubResource( "1" )
 
 [node name="city" type="Node3D" parent="."]
 
-[node name="scene" parent="city" instance=ExtResource( "10" )]
+[node name="scene" type="Node3D" parent="city"]
+script = ExtResource( "2_r7md2" )
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="city"]
-environment = ExtResource( "3" )
-script = ExtResource( "7" )
+[node name="WorldEnvironment" type="WorldEnvironment" parent="city/scene"]
+environment = ExtResource( "3_6h6kk" )
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="city"]
-transform = Transform3D(1, 0, 0, 0, -0.766044, 0.642788, 0, -0.642788, -0.766044, 0, 18.629, 0)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="city/scene"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 18.629, 0)
 shadow_enabled = true
 shadow_bias = 0.0
 shadow_reverse_cull_face = true
