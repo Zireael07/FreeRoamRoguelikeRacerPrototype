@@ -1,19 +1,21 @@
 [remap]
 
 importer="wavefront_obj"
+importer_version=1
 type="Mesh"
-path="res://.import/china_cable.obj-408a05b9e54cdf338e2f6aef10167d61.mesh"
+uid="uid://dtrfyr7iylmmq"
+path="res://.godot/imported/china_cable.obj-408a05b9e54cdf338e2f6aef10167d61.mesh"
 
 [deps]
 
-files=[ "res://.import/china_cable.obj-408a05b9e54cdf338e2f6aef10167d61.mesh" ]
+files=["res://.godot/imported/china_cable.obj-408a05b9e54cdf338e2f6aef10167d61.mesh"]
 
 source_file="res://assets/china_cable.obj"
-dest_files=[ "res://.import/china_cable.obj-408a05b9e54cdf338e2f6aef10167d61.mesh", "res://.import/china_cable.obj-408a05b9e54cdf338e2f6aef10167d61.mesh" ]
+dest_files=["res://.godot/imported/china_cable.obj-408a05b9e54cdf338e2f6aef10167d61.mesh", "res://.godot/imported/china_cable.obj-408a05b9e54cdf338e2f6aef10167d61.mesh"]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3( 1, 1, 1 )
-offset_mesh=Vector3( 0, 0, 0 )
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
 optimize_mesh=true

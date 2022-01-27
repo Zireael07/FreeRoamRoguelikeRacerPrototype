@@ -1,19 +1,21 @@
 [remap]
 
 importer="wavefront_obj"
+importer_version=1
 type="Mesh"
-path="res://.import/garage.obj-92165dc0902a6991ab7710f9fc357df2.mesh"
+uid="uid://c3gmpw1pk7hb4"
+path="res://.godot/imported/garage.obj-92165dc0902a6991ab7710f9fc357df2.mesh"
 
 [deps]
 
-files=[ "res://.import/garage.obj-92165dc0902a6991ab7710f9fc357df2.mesh" ]
+files=["res://.godot/imported/garage.obj-92165dc0902a6991ab7710f9fc357df2.mesh"]
 
 source_file="res://assets/garage/garage.obj"
-dest_files=[ "res://.import/garage.obj-92165dc0902a6991ab7710f9fc357df2.mesh", "res://.import/garage.obj-92165dc0902a6991ab7710f9fc357df2.mesh" ]
+dest_files=["res://.godot/imported/garage.obj-92165dc0902a6991ab7710f9fc357df2.mesh", "res://.godot/imported/garage.obj-92165dc0902a6991ab7710f9fc357df2.mesh"]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3( 1, 1, 1 )
-offset_mesh=Vector3( 0, 0, 0 )
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
 optimize_mesh=true

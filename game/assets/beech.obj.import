@@ -1,18 +1,21 @@
 [remap]
 
 importer="wavefront_obj"
+importer_version=1
 type="Mesh"
-path="res://.import/beech.obj-c6b87237909ba9b146a14ccda5db739c.mesh"
+uid="uid://gctgst3ctn4"
+path="res://.godot/imported/beech.obj-c6b87237909ba9b146a14ccda5db739c.mesh"
 
 [deps]
 
-files=[ "res://.import/beech.obj-c6b87237909ba9b146a14ccda5db739c.mesh" ]
+files=["res://.godot/imported/beech.obj-c6b87237909ba9b146a14ccda5db739c.mesh"]
 
 source_file="res://assets/beech.obj"
-dest_files=[ "res://.import/beech.obj-c6b87237909ba9b146a14ccda5db739c.mesh", "res://.import/beech.obj-c6b87237909ba9b146a14ccda5db739c.mesh" ]
+dest_files=["res://.godot/imported/beech.obj-c6b87237909ba9b146a14ccda5db739c.mesh", "res://.godot/imported/beech.obj-c6b87237909ba9b146a14ccda5db739c.mesh"]
 
 [params]
 
 generate_tangents=true
-scale_mesh=Vector3( 1, 1, 1 )
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
 optimize_mesh=true
