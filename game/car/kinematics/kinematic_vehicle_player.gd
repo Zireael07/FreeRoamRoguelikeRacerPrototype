@@ -70,6 +70,9 @@ var car_scene = null
 var bike_scene = null
 
 func _ready():
+	# need to do it explicitly in Godot 4 for some reason
+	super._ready()
+	
 	# preload doesn't work since we're loading from a script that both scenes use
 	car_scene = load("res://car/kinematics/kinematic_car_base.tscn")
 	bike_scene = load("res://car/kinematics/kinematic_bike.tscn")
@@ -77,7 +80,7 @@ func _ready():
 	# our custom signal
 	connect(&"load_ended", self.on_load_ended)
 
-	World_node = get_parent().get_parent().get_node(^"scene")
+	World_node = get_parent().get_parent().get_node("scene")
 	cockpit_cam = $"cambase/CameraCockpit"
 	debug_cam = $"cambase/CameraDebug"
 	chase_cam = get_node(^"cambase/Camera3D")
@@ -141,7 +144,7 @@ func _ready():
 	game_over = preload("res://hud/game_over.tscn")
 
 	# distance
-	last_pos = get_translation()
+	last_pos = get_position()
 
 	skidmark = preload("res://objects/skid_mark.tscn")
 	
@@ -317,7 +320,7 @@ func _physics_process(delta):
 		#	print("Setting to target angle: " + str(cockpit_cam.target_angle))
 		#	cockpit_cam.angle = cockpit_cam.target_angle
 
-	cockpit_cam.set_rotation_degrees(Vector3(180,cockpit_cam_angle, 180))
+	cockpit_cam.set_rotation(Vector3(deg2rad(180),deg2rad(cockpit_cam_angle), deg2rad(180)))
 
 
 func after_move():
@@ -351,7 +354,7 @@ func reset_car():
 	#global_translate(Vector3(0, 0.5,0))
 	translate_object_local(Vector3(0,0.1,0))
 	# solution from https://godotengine.org/qa/56193/how-to-manually-set-the-position-of-a-kinematicbody2d
-	move_and_slide(Vector3(0,gravity/10,0))
+	move_and_slide() #Vector3(0,gravity/10,0))
 
 	#gravity = 20
 
@@ -364,7 +367,7 @@ func _process(delta):
 	speed_int = round(speed)
 	speed_kph = round(speed*3.6)
 	#speed_text = String(speed_int) + " m/s " + String(speed_kph) + " kph"
-	speed_text = String(speed_kph)
+	speed_text = var2str(speed_kph)
 	# make speed reading red if above speed limit
 	if speed > 15:
 		hud.update_speed(speed_text, Color(1,0,0))
@@ -378,18 +381,18 @@ func _process(delta):
 	# in-game time
 	var text = " "
 	if (World_node != null):
-		text = String(World_node.hour) + " : " + String(round(World_node.minute))
+		text = var2str(World_node.hour) + " : " + var2str(round(World_node.minute))
 
 	hud.update_clock(text)
 
 	#increment distance counter
-	distance = distance + get_translation().distance_to(last_pos)
+	distance = distance + get_position().distance_to(last_pos)
 
-	last_pos = get_translation()
+	last_pos = get_position()
 
 	distance_int = round(distance)
 	#update distance HUD
-	hud.update_distance("Distance: " + String(distance_int) + " m")
+	hud.update_distance("Distance: " + var2str(distance_int) + " m")
 
 	var disp = get_compass_heading()
 	hud.update_compass(str(disp))
@@ -524,7 +527,7 @@ func _input(event):
 
 func driving_on_road():
 	# detect what we're driving on
-	var ray_hit = get_node(^"RayCast3D").get_collider_hit()
+	var ray_hit = get_node("RayCast3D").get_collider()
 	var disp_name = ""
 
 	# don't lose track of area assigned hits
@@ -541,7 +544,7 @@ func driving_on_road():
 		get_node(^"Smoke2").set_emitting(false)
 		
 		#var road_ = hit.get_parent().get_name().find("Road_")
-		var road = hit.get_node(^"../../..").get_name().find("Road")
+		var road = String(hit.get_node(^"../../..").get_name()).find("Road")
 		#var road = hit.get_node(^"../../../../").get_name().find("Road")
 		# straight
 		if 'length' in hit:
@@ -656,7 +659,7 @@ func get_heading():
 	var North = get_node(^"/root/Node3D/marker_North")
 	#if North == null:
 	#	return 0
-	var rel_loc = (North.get_global_transform( * get_global_transform()).origin)
+	var rel_loc = (North.get_global_transform() * get_global_transform().origin)
 	#2D angle to target (local coords)
 	var angle = atan2(rel_loc.x, rel_loc.z)
 	#print("Heading: ", rad2deg(angle))
@@ -691,7 +694,7 @@ func swap_to_bike():
 	# get positions
 	var p_pos = get_parent().get_translation() #.get_global_transform().origin
 	#print("Parent position before swap: " + str(p_pos))
-	var pos = get_translation()
+	var pos = get_position()
 	#print("Body pos before swap: " + str(pos))
 	
 	get_parent().queue_free()
@@ -710,7 +713,7 @@ func swap_to_car():
 	# get positions
 	var p_pos = get_parent().get_translation() #.get_global_transform().origin
 	#print("Parent position before swap: " + str(p_pos))
-	var pos = get_translation()
+	var pos = get_position()
 	#print("Body pos before swap: " + str(pos))
 	
 	get_parent().queue_free()

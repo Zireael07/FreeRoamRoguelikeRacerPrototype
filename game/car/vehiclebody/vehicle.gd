@@ -52,9 +52,9 @@ func _ready():
 	
 	
 	#get lights
-	headlight_one = get_node(^"SpotLight3D")
-	headlight_two = get_node(^"SpotLight1")
-	taillights = get_node(^"taillights")
+	headlight_one = get_node("SpotLight3D")
+	headlight_two = get_node("SpotLight1")
+	taillights = get_node("taillights")
 
 
 func process_car_physics(delta, gas, braking, left, right, joy):
@@ -262,7 +262,7 @@ func _integrate_forces(state):
 func kill_sparks():	
 	# kill old cubes
 	for c in get_children():
-		if c.get_name().find("Spark") != -1:
+		if String(c.get_name()).find("Spark") != -1:
 	#if get_node(^"Debug") != null:
 			c.queue_free()
 

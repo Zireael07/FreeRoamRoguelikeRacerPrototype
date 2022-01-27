@@ -76,6 +76,9 @@ var skidmark = null
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
+	# need to do it explicitly in Godot 4 for some reason
+	super._ready()
+	
 	# preload doesn't work since we're loading from a script that both scenes use
 	car_scene = load("res://car/car_base.tscn")
 	bike_scene = load("res://car/bike_base.tscn")
@@ -111,7 +114,7 @@ func _ready():
 		hud.update_seed(map.get_node(^"triangulate/poisson").seed3)
 
 	#var m = preload("res://hud/minimap.tscn")
-	var m = preload("res://hud/SubViewport.tscn")
+	var m = preload("res://hud/Viewport.tscn")
 	minimap = m.instantiate()
 	minimap.set_name("Viewport_root")
 	add_child(minimap)
@@ -151,7 +154,7 @@ func _ready():
 	game_over = preload("res://hud/game_over.tscn")
 
 	# distance
-	last_pos = get_translation()
+	last_pos = get_position()
 
 	skidmark = preload("res://objects/skid_mark.tscn")
 
@@ -302,7 +305,7 @@ func _physics_process(delta):
 			cockpit_cam_target_angle = 0
 
 	# vary cam speed
-	var speed = get_linear_velocity().length()
+	#var speed = get_linear_velocity().length()
 
 	cam_speed = 1
 	if speed > 25:
@@ -330,7 +333,7 @@ func _physics_process(delta):
 		#	print("Setting to target angle: " + str(cockpit_cam.target_angle))
 		#	cockpit_cam.angle = cockpit_cam.target_angle
 
-	cockpit_cam.set_rotation_degrees(Vector3(180,cockpit_cam_angle, 180))
+	cockpit_cam.set_rotation(Vector3(deg2rad(180),deg2rad(cockpit_cam_angle), deg2rad(180)))
 
 
 	if stuck:
@@ -343,17 +346,17 @@ func _physics_process(delta):
 	# test stuck detection
 	if gas and not reverse and speed < 2:
 		#print("STUCK!!!")
-		if get_node(^"StuckTimer").get_time_left() == 0:
-			get_node(^"StuckTimer").start()
+		if get_node("StuckTimer").get_time_left() == 0:
+			get_node("StuckTimer").start()
 			#print("Started timer ", get_node(^"StuckTimer").get_time_left())
 		#else:
 		#	print("Timer already running")
 	elif gas and speed > 2:
 		#print("No longer stuck")
 		# abort stuck timer
-		get_node(^"StuckTimer").stop()
+		get_node("StuckTimer").stop()
 
-	get_node(^"driver_new/Armature/Node3D").set_rotation(Vector3(get_steering()*2,0,0))
+	get_node("driver_new/Armature/Node3D").set_rotation(Vector3(get_steering()*2,0,0))
 	#get_node(^"proc_mesh/Node3D/steering").set_rotation(Vector3(get_steering()*2, 0, 0))
 
 	#reset
@@ -393,7 +396,7 @@ func _process(delta):
 	speed_int = round(speed)
 	speed_kph = round(speed*3.6)
 	#speed_text = String(speed_int) + " m/s " + String(speed_kph) + " kph"
-	speed_text = String(speed_kph)
+	speed_text = var2str(speed_kph)
 	# make speed reading red if above speed limit
 	if speed > 15:
 		hud.update_speed(speed_text, Color(1,0,0))
@@ -407,20 +410,20 @@ func _process(delta):
 	# in-game time
 	var text = " "
 	if (World_node != null):
-		text = String(World_node.hour) + " : " + String(round(World_node.minute))
+		text = var2str(World_node.hour) + " : " + var2str(round(World_node.minute))
 
 	hud.update_clock(text)
 
 	#increment distance counter
-	distance = distance + get_translation().distance_to(last_pos)
+	distance = distance + get_position().distance_to(last_pos)
 	# same for performance testing
 	if count:
-		perf_distance = perf_distance + get_translation().distance_to(last_pos)
-	last_pos = get_translation()
+		perf_distance = perf_distance + get_position().distance_to(last_pos)
+	last_pos = get_position()
 
 	distance_int = round(distance)
 	#update distance HUD
-	hud.update_distance("Distance: " + String(distance_int) + " m")
+	hud.update_distance("Distance: " + var2str(distance_int) + " m")
 
 	var disp = get_compass_heading()
 	hud.update_compass(str(disp))
@@ -429,7 +432,7 @@ func _process(delta):
 	#var cam_rot = (cam_minimap.arr_rot)
 
 	# detect what we're driving on
-	var hit = get_node(^"RayCast3D").get_collider_hit()
+	var hit = get_node(^"RayCast3D").get_collider()
 	var disp_name = ""
 	if hit != null:
 		# particles
@@ -437,8 +440,8 @@ func _process(delta):
 		get_node(^"Smoke").set_emitting(false)
 		get_node(^"Smoke2").set_emitting(false)
 		
-		var road_ = hit.get_parent().get_parent().get_name().find("Road_")
-		var road = hit.get_parent().get_parent().get_name().find("Road")
+		var road_ = String(hit.get_parent().get_parent().get_name()).find("Road_")
+		var road = String(hit.get_parent().get_parent().get_name()).find("Road")
 		# straight
 		if road_ != -1:
 			disp_name = hit.get_parent().get_parent().get_parent().get_parent().get_name()
@@ -585,7 +588,7 @@ func _process(delta):
 			gfx.set_name("gfx")
 			map.add_child(gfx)
 		else:
-			gfx = map.get_node(^"gfx")
+			gfx = map.get_node("gfx")
 			
 		gfx.add_child(mark)
 		mark.look_at(pos, Vector3(0,1,0))
@@ -594,7 +597,7 @@ func _process(delta):
 		#mark.rotate_x(deg2rad(-90))
 
 		mark = skidmark.instantiate()
-		wh_pos = get_node(^"wheel4")
+		wh_pos = get_node("wheel4")
 		mark_pos = wh_pos.get_global_transform().origin - Vector3(0,0.3, 0) # tiny offset to make marks show on roads
 		lpos = map.to_local(mark_pos)
 		mark.set_translation(lpos)
@@ -663,8 +666,8 @@ func _input(event):
 			hud.speed_cockpit()
 
 			# enable rear view mirror
-			$"cambase/SubViewport/CameraCockpitBack".make_current()
-			$"cambase/SubViewport".set_update_mode(SubViewport.UPDATE_ALWAYS)
+			$"cambase/Viewport/CameraCockpitBack".make_current()
+			$"cambase/Viewport".set_update_mode(SubViewport.UPDATE_ALWAYS)
 			$"cambase/MirrorMesh".set_visible(true)
 		else:
 			chase_cam.make_current()
@@ -675,8 +678,8 @@ func _input(event):
 
 			# disable rear view mirror
 			$"cambase/MirrorMesh".set_visible(false)
-			$"cambase/SubViewport/CameraCockpitBack".clear_current()
-			$"cambase/SubViewport".set_update_mode(SubViewport.UPDATE_DISABLED)
+			$"cambase/Viewport/CameraCockpitBack".clear_current()
+			$"cambase/Viewport".set_update_mode(SubViewport.UPDATE_DISABLED)
 
 
 
@@ -710,7 +713,7 @@ func _input(event):
 
 	if (Input.is_action_pressed("look_back")):
 		print("Look back!")
-		var cam = get_node(^"cambase/Camera3D")
+		var cam = get_node("cambase/Camera3D")
 		if (cam != null):
 			if (not cam.debug):
 				if not cam.look_back:
@@ -793,7 +796,7 @@ func _on_BODY_body_entered(body):
 			health -= round(speed)
 			# deform
 			if not get_parent().is_in_group("bike"):
-				var local = ((obj.get_global_transform( * get_global_transform()).origin))
+				var local = (obj.get_global_transform() * get_global_transform().origin)
 				$"car_mesh".hit_deform(local)
 
 	if health <= 0:
@@ -832,7 +835,7 @@ func swap_to_bike():
 	# get positions
 	var p_pos = get_parent().get_translation() #.get_global_transform().origin
 	#print("Parent position before swap: " + str(p_pos))
-	var pos = get_translation()
+	var pos = get_position()
 	#print("Body pos before swap: " + str(pos))
 	
 	get_parent().queue_free()
@@ -852,7 +855,7 @@ func swap_to_car():
 	# get positions
 	var p_pos = get_parent().get_translation() #.get_global_transform().origin
 	#print("Parent position before swap: " + str(p_pos))
-	var pos = get_translation()
+	var pos = get_position()
 	#print("Body pos before swap: " + str(pos))
 	
 	get_parent().queue_free()

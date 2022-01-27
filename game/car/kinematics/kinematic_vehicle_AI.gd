@@ -362,7 +362,7 @@ func _physics_process(delta):
 		if unstick_count > 2:
 			translate_object_local(Vector3(0,0.1,0))
 			# solution from https://godotengine.org/qa/56193/how-to-manually-set-the-position-of-a-kinematicbody2d
-			move_and_slide(Vector3(0,gravity/10,0))
+			move_and_slide() #Vector3(0,gravity/10,0))
 			unstick_count = 0
 
 # ------------------------------------
@@ -517,7 +517,7 @@ func get_input():
 					gas = true
 	
 	# reverse if stuck on something
-	var slide_count = get_slide_count()
+	var slide_count = get_slide_collision_count()
 	if slide_count:
 	# because we only attempt 1 slide
 		var collision = get_slide_collision(0)

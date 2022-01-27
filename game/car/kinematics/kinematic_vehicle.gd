@@ -57,6 +57,9 @@ func _ready():
 	headlight_one = get_node(^"SpotLight3D")
 	headlight_two = get_node(^"SpotLight1")
 	taillights = get_node(^"taillights")
+	
+	# setup properties
+	set_max_slides(1)
 
 func _physics_process(delta):	
 	
@@ -88,9 +91,11 @@ func _physics_process(delta):
 		hvel.y = 0
 	
 	# velocity, up, snap, slope, slides
+	self.set_motion_velocity(hvel)
+	
 	# TODO: This information should be set to the CharacterBody properties instead of arguments.
-	move_and_slide(hvel, #velocity,
-				-transform.basis.y, Vector3.UP, true, 1)
+	move_and_slide() #hvel, #velocity,
+				#-transform.basis.y, Vector3.UP, true, 1)
 	
 	# Align with slopes
 	# If either wheel is in the air, align to slope
@@ -110,7 +115,7 @@ func _physics_process(delta):
 		reverse = true
 	
 	# sparks
-	var slide_count = get_slide_count()
+	var slide_count = get_slide_collision_count()
 	if slide_count:
 		trigger_sparks()
 	
@@ -298,7 +303,7 @@ func trigger_sparks():
 func kill_sparks():	
 	# kill old cubes
 	for c in get_children():
-		if c.get_name().find("Spark") != -1:
+		if String(c.get_name()).find("Spark") != -1:
 	#if get_node(^"Debug") != null:
 			c.queue_free()
 			

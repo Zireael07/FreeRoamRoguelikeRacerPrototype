@@ -93,6 +93,6 @@ func save():
 func _notification(what):
 	# Save replay upon exit
 	match what:
-		MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+		NOTIFICATION_WM_CLOSE_REQUEST:
 			if recording:
 				save()
