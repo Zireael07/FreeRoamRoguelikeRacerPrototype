@@ -209,16 +209,16 @@ func _physics_process(delta):
 	if count:
 		timer += delta
 
-	if speed > 28:
-		count = false
-		if timer and timer > 0.0:
-			#var perc_str = str((timer/12.0)*100) + "% of 12s (1500 force)"
-			print("Reached 100 kph, timer: " + str(timer) + " " + str(perf_distance) + " m " + \
-			#"acc: " + str(accel_from_time(timer)) + " m/s^2 " + \
-			"acc: " + str(accel_from_data(timer, perf_distance)) + " m/s^2 " + \
-			str(time_from_accel(accel_from_data(timer, perf_distance))) + " s")
-			# \n " + perc_str)
-			timer = 0.0
+#	if speed > 28:
+#		count = false
+#		if timer and timer > 0.0:
+#			#var perc_str = str((timer/12.0)*100) + "% of 12s (1500 force)"
+#			print("Reached 100 kph, timer: " + str(timer) + " " + str(perf_distance) + " m " + \
+#			#"acc: " + str(accel_from_time(timer)) + " m/s^2 " + \
+#			"acc: " + str(accel_from_data(timer, perf_distance)) + " m/s^2 " + \
+#			str(time_from_accel(accel_from_data(timer, perf_distance))) + " s")
+#			# \n " + perc_str)
+#			timer = 0.0
 		#else:
 		#	print("Reached 100")
 
@@ -528,7 +528,7 @@ func _process(delta):
 
 	# speed effects
 	# less rain visible if going fast
-	if World_node.weather > 1:
+	if World_node != null and World_node.weather > 1:
 		if speed > 20:
 			get_node(^"RainParticles").amount = 128
 			get_node(^"RainParticles2").amount = 128
@@ -574,10 +574,10 @@ func _process(delta):
 			get_node(^"RainParticles2").set_emitting(true)
 			
 	# skid marks
-	if speed < 5:
+	if speed < 5 and map != null:
 		var pos = get_node(^"cambase/Camera3D").get_global_transform().origin
 		var mark = skidmark.instantiate()
-		var wh_pos = get_node(^"wheel2")
+		var wh_pos = get_node("wheel2")
 		var mark_pos = wh_pos.get_global_transform().origin - Vector3(0,0.3, 0) # tiny offset to make marks show on roads
 		var lpos = map.to_local(mark_pos)
 		mark.set_translation(lpos)
@@ -640,7 +640,11 @@ func get_heading():
 	# returns radians
 	#return player_rot
 	var North = get_node(^"/root/Node3D/marker_North")
-	var rel_loc = (North.get_global_transform( * get_global_transform()).origin)
+	
+	if North == null:
+		return 0
+	
+	var rel_loc = (North.get_global_transform() * get_global_transform().origin)
 	#2D angle to target (local coords)
 	var angle = atan2(rel_loc.x, rel_loc.z)
 	#print("Heading: ", rad2deg(angle))

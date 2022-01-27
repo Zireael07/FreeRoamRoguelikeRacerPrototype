@@ -100,23 +100,23 @@ func _ready():
 
 
 	# get map seed
-	map = get_parent().get_parent().get_node(^"map")
+	map = get_parent().get_parent().get_node("map")
 	if map != null:
 		hud.update_seed(map.get_node(^"triangulate/poisson").seed3)
 
-	var m = preload("res://hud/SubViewport.tscn")
-	minimap = m.instantiate()
-	minimap.set_name("Viewport_root")
-	add_child(minimap)
-	minimap.set_name("Viewport_root")
-
-	m = preload("res://hud/MapView.tscn")
-	map_big = m.instantiate()
-	map_big.set_name("Map")
-	# share the world with the minimap
-	map_big.get_node(^"SubViewport").world_2d = get_node(^"Viewport_root/SubViewport").world_2d
-	add_child(map_big)
-	map_big.hide()
+#	var m = preload("res://hud/Viewport.tscn")
+#	minimap = m.instantiate()
+#	minimap.set_name("Viewport_root")
+#	add_child(minimap)
+#	minimap.set_name("Viewport_root")
+#
+#	m = preload("res://hud/MapView.tscn")
+#	map_big = m.instantiate()
+#	map_big.set_name("Map")
+#	# share the world with the minimap
+#	map_big.get_node(^"SubViewport").world_2d = get_node(^"Viewport_root/SubViewport").world_2d
+#	add_child(map_big)
+#	map_big.hide()
 
 
 	var msg = preload("res://hud/message_panel.tscn")
@@ -151,12 +151,12 @@ func _ready():
 	# smoke color
 	var snow_mat = load("res://assets/snow_smoke_mat.tres")
 	var smoke_mat = load("res://assets/Smoke_mat.tres")
-	if get_parent().get_parent().get_node(^"Ground").snow:
-		get_node(^"Smoke").material_override = snow_mat
-		get_node(^"Smoke2").material_override = snow_mat
-	else:
-		get_node(^"Smoke").material_override = smoke_mat
-		get_node(^"Smoke2").material_override = smoke_mat
+#	if get_parent().get_parent().get_node(^"Ground").snow:
+#		get_node(^"Smoke").material_override = snow_mat
+#		get_node(^"Smoke2").material_override = snow_mat
+#	else:
+#		get_node(^"Smoke").material_override = smoke_mat
+#		get_node(^"Smoke2").material_override = smoke_mat
 
 func random_date():
 	# seed the rng
@@ -602,7 +602,7 @@ func driving_on_road():
 					if abs(angle_inter) < 40:
 						hud.update_nav_label("")
 						
-		mark_road_discovered(disp_name)
+		#mark_road_discovered(disp_name)
 	# else we're on a dirt ground
 	else:
 		if not was_dirt:
@@ -619,6 +619,11 @@ func mark_road_discovered(disp_name):
 		return
 	
 	var root = get_node(^"/root/Node3D")
+	# paranoia
+	if root == null:
+		return
+	# or !"discovered_roads" in root
+	
 	if not root.discovered_roads.has(disp_name):
 		root.discovered_roads[disp_name] = true
 		print("Marked " + disp_name + " as discovered")

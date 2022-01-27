@@ -64,12 +64,12 @@ var player
 
 func _ready():
 	# get real world date
-	var winter = OS.get_datetime(true)
+	var winter = Time.get_date_dict_from_system(true)
 	#print(winter)
-	if winter.month == 12 and winter.day > 21 or winter.month < 3:
-		get_parent().get_node(^"Ground").snow = true
-	else:
-		get_parent().get_node(^"Ground").snow = false
+#	if winter.month == 12 and winter.day > 21 or winter.month < 3:
+#		get_parent().get_node(^"Ground").snow = true
+#	else:
+#		get_parent().get_node(^"Ground").snow = false
 	
 	time = start_time;
 	prev_time = start_time;
@@ -284,7 +284,7 @@ func set_colors(time):
 	#sky.set_sky_top_color(sky_color)
 	#sky.set_sky_horizon_color(horizon_color)
 	#sky.set_ground_horizon_color(gr_horizon_color)	
-	env.set_fog_color(horizon_color)
+	#env.set_fog_color(horizon_color)
 
 func set_clouds(time):
 	if time >= 18.1 && time < 18.5:
@@ -370,10 +370,10 @@ func rain():
 func no_rain():
 	env.set_ssr_enabled(false)
 	env.adjustment_enabled = false
-	env.fog_color = Color(0.5, 0.6, 0.7)
+	#env.fog_color = Color(0.5, 0.6, 0.7)
 		
-	player.get_node(^"BODY/RainParticles").set_emitting(false)
-	player.get_node(^"BODY/RainParticles2").set_emitting(false)
+	player.get_node("BODY/RainParticles").set_emitting(false)
+	player.get_node("BODY/RainParticles2").set_emitting(false)
 	if get_tree().get_nodes_in_group("roads").size() > 0:
 		get_tree().get_nodes_in_group("roads")[0].no_rain()
 
