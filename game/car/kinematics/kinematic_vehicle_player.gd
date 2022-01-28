@@ -104,19 +104,19 @@ func _ready():
 	if map != null:
 		hud.update_seed(map.get_node(^"triangulate/poisson").seed3)
 
-#	var m = preload("res://hud/Viewport.tscn")
-#	minimap = m.instantiate()
-#	minimap.set_name("Viewport_root")
-#	add_child(minimap)
-#	minimap.set_name("Viewport_root")
-#
-#	m = preload("res://hud/MapView.tscn")
-#	map_big = m.instantiate()
-#	map_big.set_name("Map")
-#	# share the world with the minimap
-#	map_big.get_node(^"SubViewport").world_2d = get_node(^"Viewport_root/SubViewport").world_2d
-#	add_child(map_big)
-#	map_big.hide()
+	var m = preload("res://hud/Viewport.tscn")
+	minimap = m.instantiate()
+	minimap.set_name("Viewport_root")
+	add_child(minimap)
+	minimap.set_name("Viewport_root")
+
+	m = preload("res://hud/MapView.tscn")
+	map_big = m.instantiate()
+	map_big.set_name("Map")
+	# share the world with the minimap
+	map_big.get_node(^"SubViewport").world_2d = get_node(^"Viewport_root/SubViewport").world_2d
+	add_child(map_big)
+	map_big.hide()
 
 
 	var msg = preload("res://hud/message_panel.tscn")
