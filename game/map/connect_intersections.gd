@@ -35,7 +35,7 @@ func connect_intersections(one, two, verbose=false):
 	Logger.mapgen_print("Connecting intersections " + String(get_child(one).get_name()) + " " + String(get_child(two).get_name()))
 	
 	var src_exit = get_src_exit(get_child(one), get_child(two), verbose)
-	if src_exit != null:
+	if src_exit == null:
 		Logger.mapgen_print("No src exits found or left, abort")
 		return false
 	if verbose:
@@ -44,7 +44,7 @@ func connect_intersections(one, two, verbose=false):
 
 	var dest_exit = get_dest_exit(get_child(one), get_child(two), verbose)
 	
-	if dest_exit != null:
+	if dest_exit == null:
 		Logger.mapgen_print("No dest exits found or left, abort")
 		return false
 	if verbose:
@@ -55,7 +55,7 @@ func connect_intersections(one, two, verbose=false):
 	positions.append(loc_src_exit)
 	positions.append(loc_dest_exit)
 	
-	draw.draw_line(positions)
+	#draw.draw_line(positions)
 
 	#print("Line length: " + str(loc_dest_exit.distance_to(loc_src_exit)))
 	# a sensible default
@@ -90,14 +90,14 @@ func connect_intersections(one, two, verbose=false):
 # the length of the extend parameter here determines the radii of start and end turns
 func extend_lines(one, two, loc_src_exit, loc_dest_exit, extend):
 	#B-A: A->B
-	var src_line = loc_src_exit-get_child(one).get_translation()
+	var src_line = loc_src_exit-get_child(one).get_position()
 	#var extend = ex
-	var loc_src_extended = src_line*extend + get_child(one).get_translation()
+	var loc_src_extended = src_line*extend + get_child(one).get_position()
 	
 	#debug_cube(loc_src_extended)
 	
-	var dest_line = loc_dest_exit-get_child(two).get_translation()
-	var loc_dest_extended = dest_line*extend + get_child(two).get_translation()
+	var dest_line = loc_dest_exit-get_child(two).get_position()
+	var loc_dest_extended = dest_line*extend + get_child(two).get_position()
 	#debug_cube(loc_dest_extended)
 	
 	return [loc_src_extended, loc_dest_extended]
@@ -106,7 +106,7 @@ func get_corner_points(one, two, loc_src_extended, loc_dest_extended, dist):
 	var corners = []
 	
 	# B-A = A-> B
-	var vec_back = get_child(one).get_translation() - loc_src_extended
+	var vec_back = get_child(one).get_position() - loc_src_extended
 	vec_back = vec_back.normalized()*dist # x units away
 	
 	var corner_back = loc_src_extended + vec_back
@@ -124,7 +124,7 @@ func get_corner_points(one, two, loc_src_extended, loc_dest_extended, dist):
 	
 	# the destinations
 	# B-A = A-> B
-	vec_back = get_child(two).get_translation() - loc_dest_extended
+	vec_back = get_child(two).get_position() - loc_dest_extended
 	vec_back = vec_back.normalized()*dist # x units away
 	
 	corner_back = loc_dest_extended + vec_back
@@ -177,7 +177,7 @@ func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, sr
 	#debug_cube(Vector3(end_b.x, 1, end_b.y))
 	
 	# check for intersection (2D only)
-	var inters = Geometry2D.segment_intersects_segment_2d(start, end, start_b, end_b)
+	var inters = Geometry2D.segment_intersects_segment(start, end, start_b, end_b)
 	
 	if inters:
 		#print("Intersect: " + str(inters))
@@ -245,7 +245,7 @@ func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, des
 	#debug_cube(Vector3(end_b.x, 1, end_b.y))
 	
 	# check for intersection (2D only)
-	var inters = Geometry2D.segment_intersects_segment_2d(start, end, start_b, end_b)
+	var inters = Geometry2D.segment_intersects_segment(start, end, start_b, end_b)
 	
 	if inters:
 		#print("Intersect: " + str(inters))
@@ -290,10 +290,10 @@ func initial_road_test(one, two, data, loc, node, verbose=false):
 	
 	first_turn = set_curved_road(radius, start_angle, end_angle, 0, node, verbose)
 	if first_turn != null:
-		first_turn.set_translation(loc)
+		first_turn.set_position(loc)
 	
 		# place
-		if get_child(two).get_translation().y > get_child(one).get_translation().y:
+		if get_child(two).get_position().y > get_child(one).get_position().y:
 			pass
 			#if verbose:
 			#	Logger.mapgen_print("Road in normal direction, positive y")
@@ -316,10 +316,10 @@ func last_turn_test(one, two, data, loc, node, verbose=false):
 	
 	last_turn = set_curved_road(radius, start_angle, end_angle, 1, node, verbose)
 	if last_turn != null:
-		last_turn.set_translation(loc)
+		last_turn.set_position(loc)
 	
 		# place
-		if get_child(two).get_translation().y > get_child(one).get_translation().y:
+		if get_child(two).get_position().y > get_child(one).get_position().y:
 			pass
 			#if verbose:
 			#	Logger.mapgen_print("Road in normal direction, positive y")
@@ -363,7 +363,7 @@ func set_straight(loc, loc2, node):
 	spatial.add_child(road_node)
 	
 	# place
-	spatial.set_translation(loc)
+	spatial.set_position(loc)
 	
 	# looking down -Z
 	var tg = to_global(loc2)
@@ -381,7 +381,7 @@ func set_curved_road(radius, start_angle, end_angle, index, node, verbose):
 		return null
 
 	var road_node_right = road.instantiate()
-	road_node_right.set_name("Road_instance"+String(index))
+	road_node_right.set_name("Road_instance"+var2str(index))
 	#set the radius we wanted
 	road_node_right.get_child(0).get_child(0).radius = radius
 
@@ -440,7 +440,7 @@ func set_straight_slope(loc, rot, node, i):
 	#spatial.add_child(road_node)
 	
 	# place
-	road_node.set_translation(loc)
+	road_node.set_position(loc)
 	
 	# looking down -Z
 	#var tg = to_global(loc2)
@@ -692,7 +692,7 @@ func debug_cube(loc):
 	node.set_mesh(mesh)
 	node.set_name("Debug")
 	add_child(node)
-	node.set_translation(loc)
+	node.set_position(loc)
 
 # calculated arc is in respect to X axis
 func get_arc_angle(center_point, start_point, end_point, angle0, verbose=false):

@@ -20,6 +20,8 @@ var AI = preload("res://car/kinematics/kinematic_car_AI_traffic.tscn")
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
+	# need to do it explicitly in Godot 4 for some reason
+	super._ready()
 
 	mult = get_node(^"triangulate/poisson").mult
 
@@ -33,13 +35,13 @@ func _ready():
 	for i in range(0, get_node(^"triangulate/poisson").samples.size()-1):
 		var p = get_node(^"triangulate/poisson").samples[i]
 		var intersection = intersects.instantiate()
-		intersection.set_translation(Vector3(p[0]*mult, 0, p[1]*mult))
+		intersection.set_position(Vector3(p[0]*mult, 0, p[1]*mult))
 		#print("Placing intersection at " + str(p[0]*mult) + ", " + str(p[1]*mult))
 		intersection.set_name("intersection" + str(i))
 		add_child(intersection)
 
 	# get the triangulation
-	var tris = get_node(^"triangulate").tris
+	var tris = get_node("triangulate").tris
 
 	for t in tris:
 		#var poly = []
@@ -104,7 +106,7 @@ func _ready():
 		for e in to_remove:
 			#print("To remove: " + str(e))
 			# works because e is taken directly from out_edges (see line 87)
-			out_edges.remove(out_edges.find(e))
+			out_edges.remove_at(out_edges.find(e))
 			
 		print("Outer edges post filter: " + str(out_edges))
 
@@ -124,25 +126,25 @@ func _ready():
 #	get_node(^"nav").debug_lane_lists()
 
 	# test: replace longest road with a bridge
-	# done after nav setup to avoid having to mess with navigation
-	var straight = get_node(^"Road 6-5/Spatial0/Road_instance 0")
-	var str_tr = get_node(^"Road 6-5/Spatial0/Road_instance 0").get_translation()
-	var str_len = straight.relative_end
-	var slope = set_straight_slope(str_tr, get_node(^"Road 6-5/Spatial0/Road_instance 0").get_rotation(), get_node(^"Road 6-5/Spatial0"), 1)
-	# position the other end correctly
-	var end_p_gl = straight.global_transform * (str_len)
-	var end_p = get_node(^"Road 6-5/Spatial0").to_local(end_p_gl)
-	var slope2 = set_straight_slope(end_p, get_node(^"Road 6-5/Spatial0/Road_instance 0").get_rotation()+Vector3(0,deg2rad(180),0), get_node(^"Road 6-5/Spatial0"), 2)
-	# regenerate the straight
-	straight.translate_object_local(Vector3(0, 5, 40))
-	straight.relative_end = Vector3(0,0,str_len.z-80) # because both slopes are 40 m long
-	straight.get_node(^"plane").queue_free()
-	straight.get_node(^"sidewalk").queue_free()
-	# regenerate all the decor
-	for c in straight.get_node(^"Node3D").get_children():
-		c.queue_free()
-	#straight.get_node(^"Node3D").queue_free()
-	straight.generateRoad()
+#	# done after nav setup to avoid having to mess with navigation
+#	var straight = get_node("Road 6-5/Spatial0/Road_instance 0")
+#	var str_tr = get_node("Road 6-5/Spatial0/Road_instance 0").get_position()
+#	var str_len = straight.relative_end
+#	var slope = set_straight_slope(str_tr, get_node(^"Road 6-5/Spatial0/Road_instance 0").get_rotation(), get_node(^"Road 6-5/Spatial0"), 1)
+#	# position the other end correctly
+#	var end_p_gl = straight.global_transform * (str_len)
+#	var end_p = get_node(^"Road 6-5/Spatial0").to_local(end_p_gl)
+#	var slope2 = set_straight_slope(end_p, get_node(^"Road 6-5/Spatial0/Road_instance 0").get_rotation()+Vector3(0,deg2rad(180),0), get_node(^"Road 6-5/Spatial0"), 2)
+#	# regenerate the straight
+#	straight.translate_object_local(Vector3(0, 5, 40))
+#	straight.relative_end = Vector3(0,0,str_len.z-80) # because both slopes are 40 m long
+#	straight.get_node(^"plane").queue_free()
+#	straight.get_node(^"sidewalk").queue_free()
+#	# regenerate all the decor
+#	for c in straight.get_node(^"Node3D").get_children():
+#		c.queue_free()
+#	#straight.get_node(^"Node3D").queue_free()
+#	straight.generateRoad()
 
 
 	# place cars on intersections
@@ -160,7 +162,7 @@ func _ready():
 			# is it in the edges that actually were connected?
 			for e in real_edges:
 				if e.x == i or e.y == i:
-					Logger.mapgen_print(inters.get_name() + " is an option for garage road")
+					Logger.mapgen_print(String(inters.get_name()) + " is an option for garage road")
 					garage_opts.append(inters)
 					break #the first find should be enough
 			
@@ -189,13 +191,13 @@ func _ready():
 		print(sel.get_name() + str(sel.open_exits[0]))
 		var garage_rd = garage.instantiate()
 		# test placement
-		garage_rd.set_translation(sel.get_translation() + sel.open_exits[0])
+		garage_rd.set_position(sel.get_position() + sel.open_exits[0])
 		#print(str(garage_rd.get_translation()))
 		#print(str(sel.open_exits[1]))
 		
 		# assign correct rotation
 		if rots.has(sel.open_exits[0]): 
-			garage_rd.set_rotation_degrees(rots[sel.open_exits[0]])
+			garage_rd.set_rotation(deg2rad(rots[sel.open_exits[0]]))
 		else:
 			# prevent weirdness
 			print("Couldn't find correct rotation for " + str(sel.open_exits[0]))
@@ -211,11 +213,11 @@ func _ready():
 		print(sel.get_name() + str(sel.open_exits[1]))
 		var station = recharge.instantiate()
 		# place including offset that accounts for the size
-		station.set_translation(sel.get_translation() + sel.open_exits[1] + Vector3(4,0,4))
+		station.set_position(sel.get_position() + sel.open_exits[1] + Vector3(4,0,4))
 	
 		# assign correct rotation
 		if rots.has(sel.open_exits[1]): 
-			station.set_rotation_degrees(rots[sel.open_exits[1]])
+			station.set_rotation(deg2rad(rots[sel.open_exits[1]]))
 	
 		station.set_name("station")
 		add_child(station)
@@ -226,11 +228,11 @@ func _ready():
 		print(sel.get_name() + str(sel.open_exits[0]))
 		var dealer = dealership.instantiate()
 		# place
-		dealer.set_translation(sel.get_translation() + sel.open_exits[0])
+		dealer.set_position(sel.get_position() + sel.open_exits[0])
 		
 		# assign correct rotation
 		if rots.has(sel.open_exits[0]): 
-			dealer.set_rotation_degrees(rots[sel.open_exits[0]])
+			dealer.set_rotation(deg2rad(rots[sel.open_exits[0]]))
 		
 		dealer.set_name("dealership")
 		add_child(dealer)
@@ -264,9 +266,9 @@ func sort_intersections_distance(tg = Vector3(0,0,0), debug=true):
 			#print("Check t " + str(t))
 			if t[0] == dists[0]:
 				closest.append(t)
-				tmp.remove(tmp.find(t))
+				tmp.remove_at(tmp.find(t))
 				# key line
-				dists.remove(0)
+				dists.remove_at(0)
 				#print("Adding " + str(t))
 	# if it's not empty by now, we have an issue
 	#print(tmp)
@@ -285,7 +287,7 @@ func auto_connect(initial_int, real_edges, verbose=false):
 
 	if verbose:
 		# +3 because of helper nodes that come first
-		Logger.mapgen_print("Auto connecting... " + get_child(initial_int+3).get_name() + " @ " + str(get_child(initial_int+3).get_global_transform().origin))
+		Logger.mapgen_print("Auto connecting... " + String(get_child(initial_int+3).get_name()) + " @ " + str(get_child(initial_int+3).get_global_transform().origin))
 
 	for e in edges:
 		if e.x == initial_int:
@@ -316,7 +318,7 @@ func auto_connect(initial_int, real_edges, verbose=false):
 	to_remove.reverse()
 	#print("Inverted: " + str(to_remove))
 	for i in to_remove:
-		edges.remove(i)
+		edges.remove_at(i)
 
 	#print(sorted_n)
 
@@ -334,9 +336,9 @@ func auto_connect(initial_int, real_edges, verbose=false):
 			#print(str(d) + " " + str(sorted_n[0]))
 			# the first part of this needs to match what was used for sorting
 			if atan2(d[1].z, d[1].x) == sorted_n[0]:
-				next_ints.remove(next_ints.find(d))
+				next_ints.remove_at(next_ints.find(d))
 				res.append(d)
-				sorted_n.remove(0)
+				sorted_n.remove_at(0)
 
 	#print("Res " + str(res) + " lower y: " + str(res[0]))
 	#print("next ints: " + str(next_ints))
@@ -366,7 +368,7 @@ func place_player_random():
 	var pos = Vector3(p[0]*mult, 0, p[1]*mult)
 
 	# because player is child of root which is at 0,0,0
-	player.set_translation(to_global(pos))
+	player.set_position(to_global(pos))
 
 func place_player(id):
 	var player = get_tree().get_nodes_in_group("player")[0]
@@ -374,7 +376,7 @@ func place_player(id):
 	var pos = Vector3(p[0]*mult, 0, p[1]*mult)
 
 	# because player is child of root which is at 0,0,0
-	player.set_translation(to_global(pos))
+	player.set_position(to_global(pos))
 
 func place_AI(id, exit=1):
 	var AI_g = get_parent().get_node(^"AI")
@@ -398,12 +400,12 @@ func place_AI(id, exit=1):
 		pos = pos + Vector3(0,0,-5)
 
 	# because car is child of AI group node which is not at 0,0,0
-	car.set_translation(AI_g.to_local(to_global(pos)))
+	car.set_position(AI_g.to_local(to_global(pos)))
 
 
 func get_marker(_name):
 	for c in get_children():
-		if c.get_name().find(_name) != -1:
+		if String(c.get_name()).find(_name) != -1:
 			return c
 
 # markers are spawned in map_nav.gd because they use BFS/distance map

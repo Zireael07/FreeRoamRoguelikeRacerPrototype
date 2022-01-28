@@ -50,7 +50,7 @@ func enter_dealer(body):
 	
 	#spawn dealer interior scene
 	var dealer_interior = dealer_scene.instantiate()
-	dealer_interior.translate(get_translation())
+	dealer_interior.translate(get_position())
 	dealer_interior.rotate_y(get_rotation().y)
 	
 	dealer_interior.set_name("dealer_interior")

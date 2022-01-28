@@ -4,10 +4,10 @@ extends "res://2d tests/poisson2DNode.gd"
 # class member variables go here, for example:
 var mult = 2
 #export var seed3 = 104686263:
+@export var seed3 = 10000001: #3046862638
 	set(value):
 		# TODO: Manually copy the code from this method.
 		set_seed3(value)
-var seed3 = 10000001 #3046862638
 
 func _ready():
 	# Called when the node is added to the scene for the first time.
@@ -66,7 +66,7 @@ func set_seed3(value):
 	for s in samples:
 		vec2.append(Vector2(s[0], s[1]))
 		
-	var conv = Geometry.convex_hull_2d(vec2)
+	var conv = Geometry2D.convex_hull(vec2)
 	print("Convex hull: " + str(conv))
 	
 	convex_pos_to_edge_indices(conv)
@@ -96,4 +96,4 @@ func debug_cube(loc):
 	var node = MeshInstance3D.new()
 	node.set_mesh(mesh)
 	add_child(node)
-	node.set_translation(loc)
+	node.set_position(loc)

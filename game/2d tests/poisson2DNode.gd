@@ -37,11 +37,10 @@ var edges = []
 var out_edges = []
 
 #export var seede = 3046862638:
+var seede = 10000001: #3046862638
 	set(value):
 		# TODO: Manually copy the code from this method.
 		set_seed(value)
-var seede = 10000001 #3046862638
-
 
 func _ready():
 	# Called when the node is added to the scene for the first time.
@@ -86,7 +85,7 @@ func set_seed(value):
 	for s in samples:
 		vec2.append(Vector2(s[0], s[1]))
 		
-	var conv = Geometry.convex_hull_2d(vec2)
+	var conv = Geometry2D.convex_hull(vec2)
 	#print("Convex hull: " + str(conv))
 	
 	#convex_pos_to_edge_indices(conv)
@@ -275,7 +274,7 @@ func run():
 			# We had to give up looking for valid points near refpt, so remove it
 			# from the list of "active" points.
 			#if active.size() > idx:
-			active.remove(idx)
+			active.remove_at(idx)
 	
 	#print(samples)
 	return samples

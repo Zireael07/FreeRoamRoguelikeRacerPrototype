@@ -53,7 +53,7 @@ class Triangle:
 	var p1
 	var p2
 	var p3
-	func _init(var point1, var point2, var point3):
+	func _init(point1, point2, point3):
 		p1 = point1
 		p2 = point2
 		p3 = point3
@@ -64,10 +64,10 @@ class Triangle:
 class Edge:
 	var p1
 	var p2
-	func _init(var point1, var point2):
+	func _init(point1,point2):
 		p1 = point1
 		p2 = point2
-	func Equals(var other):
+	func Equals(other):
 		return ((p1 == other.p2) && (p2 == other.p1)) || ((p1 == other.p1) && (p2 == other.p2))
 
 # magic
@@ -118,7 +118,7 @@ func TriangulatePolygon(points):
 				Edges.append(Edge.new(TriangleList[ii2].p1, TriangleList[ii2].p2));
 				Edges.append(Edge.new(TriangleList[ii2].p2, TriangleList[ii2].p3));
 				Edges.append(Edge.new(TriangleList[ii2].p3, TriangleList[ii2].p1));
-				TriangleList.remove(ii2);
+				TriangleList.remove_at(ii2);
 				ii2-=1
 			ii2+=1
 		
@@ -127,8 +127,8 @@ func TriangulatePolygon(points):
 			var ii3 = Edges.size()-1
 			while(ii3 >= ii2+1):
 				if (Edges[ii2].Equals(Edges[ii3])):
-					Edges.remove(ii3);
-					Edges.remove(ii2);
+					Edges.remove_at(ii3);
+					Edges.remove_at(ii2);
 					ii3-=1
 				ii3-=1
 			ii2-=1
@@ -143,7 +143,7 @@ func TriangulatePolygon(points):
 	ii1 = TriangleList.size()-1
 	while(ii1 >= 0):
 		if (TriangleList[ii1].p1 >= VertexCount || TriangleList[ii1].p2 >= VertexCount || TriangleList[ii1].p3 >= VertexCount):
-			TriangleList.remove(ii1);
+			TriangleList.remove_at(ii1);
 		ii1-=1
 		
 	return TriangleList

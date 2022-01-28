@@ -9,6 +9,8 @@ extends "../map/connect_intersections.gd"
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
+	# need to do it explicitly in Godot 4 for some reason
+	super._ready()
 
 	# just the intersection selection
 	connect_intersections(0,1, true)
