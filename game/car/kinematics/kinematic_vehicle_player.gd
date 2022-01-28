@@ -371,7 +371,7 @@ func _process(delta):
 	speed_int = round(speed)
 	speed_kph = round(speed*3.6)
 	#speed_text = String(speed_int) + " m/s " + String(speed_kph) + " kph"
-	speed_text = var2str(speed_kph)
+	speed_text = var2str(int(speed_kph))
 	# make speed reading red if above speed limit
 	if speed > 15:
 		hud.update_speed(speed_text, Color(1,0,0))
@@ -385,7 +385,7 @@ func _process(delta):
 	# in-game time
 	var text = " "
 	if (World_node != null):
-		text = var2str(World_node.hour) + " : " + var2str(round(World_node.minute))
+		text = var2str(int(World_node.hour)) + " : " + var2str(int(round(World_node.minute)))
 
 	hud.update_clock(text)
 
