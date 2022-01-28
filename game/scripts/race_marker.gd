@@ -70,7 +70,7 @@ func _on_Area_body_enter( body ):
 				msg.set_text("FINISH TEST RACE!" + "\n" + results)
 				#msg.get_node(^"OK_button").connect(&"pressed", self._on_results_close)
 				msg.get_node(^"Button").connect(&"pressed", self._on_results_close)
-				print("Connected: ", msg.get_node(^"Button").is_connected("pressed", self, "_on_results_close"))
+				print("Connected: ", msg.get_node(^"Button").is_connected("pressed", Callable(self, "_on_results_close")))
 				msg.enable_ok(false)
 				msg.show()
 				
@@ -79,13 +79,13 @@ func _on_Area_body_enter( body ):
 				player.get_node(^"root").get_node(^"Label timer").hide()
 				
 				# remove raceline from map
-				var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
+				var track_map = player.get_node(^"Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
 				track_map.points = []
 				# force redraw
 				track_map.update()
 				
 				# remove target flag from minimap
-				var minimap = player.get_node(^"Viewport_root/SubViewport/minimap")
+				var minimap = player.get_node(^"Viewport_root/Viewport/minimap")
 				minimap.remove_marker(self.get_global_transform().origin)
 				
 				#remove finish

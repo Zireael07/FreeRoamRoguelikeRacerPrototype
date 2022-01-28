@@ -26,12 +26,12 @@ func _ready():
 	pass
 
 func extract_numbers():
-	var split = get_name().split(">")
+	var split = String(get_name()).split(">")
 	#print(get_name())
 	if split.size() > 1:
 		var nrs = split[1].split("-")
 		return nrs
-	return null
+	return []
 
 func set_finish(val):
 	finish = val
@@ -62,13 +62,13 @@ func _on_Area_body_enter( body ):
 				player.get_node(^"root").get_node(^"Label timer").hide()
 				
 				# remove raceline from map
-				var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
+				var track_map = player.get_node(^"Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
 				track_map.points = []
 				# force redraw
 				track_map.update()
 				
 				# remove target flag from minimap
-				var minimap = player.get_node(^"Viewport_root/SubViewport/minimap")
+				var minimap = player.get_node(^"Viewport_root/Viewport/minimap")
 				minimap.remove_marker(self.get_global_transform().origin)
 				
 				# prize
@@ -88,12 +88,12 @@ func _on_Area_body_enter( body ):
 					race_name = "Route " + str(numbers[0]) + "-" + str(numbers[1])
 				msg.set_text("TIME TRIAL RACE! " + "\n" + race_name + "\n" +
 				"Drive along the road to the finish marker")
-				if not msg.get_node(^"OK_button").is_connected("pressed", self, "_on_ok_click"):
+				if not msg.get_node(^"OK_button").is_connected("pressed", Callable(self, "_on_ok_click")):
 					print("Not connected")
 					# disconnect all others just in case
-					for d in msg.get_node(^"OK_button").get_signal_connection_list("pressed"):
+					#for d in msg.get_node(^"OK_button").get_signal_connection_list("pressed"):
 						#print(d["target"])
-						msg.get_node(^"OK_button").disconnect(&"pressed", d["target"]._on_ok_click)
+					#	msg.get_node(^"OK_button").disconnect(&"pressed", d["target"]._on_ok_click)
 					msg.get_node(^"OK_button").connect(&"pressed", self._on_ok_click)
 
 				#else:
@@ -102,7 +102,7 @@ func _on_Area_body_enter( body ):
 				msg.show()
 				
 				# show raceline on map
-				var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
+				var track_map = player.get_node(^"Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
 				track_map.points = track_map.vec3s_convert(raceline)
 				# force redraw
 				track_map.update()
@@ -145,7 +145,7 @@ func _on_Area_body_exit( body ):
 				msg.hide()
 				if not count:
 					# remove raceline (preview) from map
-					var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
+					var track_map = player.get_node(^"Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
 					track_map.points = []
 					# force redraw
 					track_map.update()
@@ -167,13 +167,13 @@ func spawn_finish(start):
 	finish.set_translation(loc)
 	finish.finish = true
 	finish.start = start
-	finish.target_time = target_time()
+	finish.target_time = calc_target_time()
 	print("Target time: " + str(finish.target_time) + " s")
 	#finish.set_val(true)
 	
 	get_parent().add_child(finish)
 	
-	var minimap = player.get_node(^"Viewport_root/SubViewport/minimap")
+	var minimap = player.get_node(^"Viewport_root/Viewport/minimap")
 	minimap.add_marker(finish.get_global_transform().origin, minimap.blue_flag)
 
 	
@@ -186,7 +186,7 @@ func calculate_distance():
 	
 	print("Length of race: " + str(dist) + "m")
 	
-func target_time():
+func calc_target_time():
 	# we assume we need to beat a time set by avg speed
 	# speed limit (60 kph) = 16.7 m/s
 	var calc = dist/18
