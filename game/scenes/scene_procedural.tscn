@@ -1,9 +1,8 @@
-[gd_scene load_steps=19 format=3 uid="uid://dr7kf5v6sxlls"]
+[gd_scene load_steps=18 format=3 uid="uid://dr7kf5v6sxlls"]
 
-[ext_resource type="Environment" uid="uid://dt4c7rkngc270" path="res://dynamic_env.tres" id="1"]
-[ext_resource type="Script" path="res://scripts/WorldEnvironment.gd" id="2"]
+[ext_resource type="Script" path="res://vulkan sky/daynight.gd" id="2_t0aug"]
 [ext_resource type="PackedScene" uid="uid://caucweey32fbc" path="res://car/kinematics/kinematic_car_base.tscn" id="3"]
-[ext_resource type="PackedScene" path="res://dynamic_sky/scene.tscn" id="4"]
+[ext_resource type="Environment" uid="uid://c56vuaipcdg3k" path="res://vulkan sky/vulkan_sky_env.tres" id="3_p7qju"]
 [ext_resource type="Script" path="res://map/procedural_map.gd" id="5"]
 [ext_resource type="Script" path="res://map/triangulate.gd" id="6"]
 [ext_resource type="Script" path="res://scripts/poisson3d.gd" id="7"]
@@ -24,18 +23,14 @@ size = Vector3(1000, 2, 1000)
 [node name="Node3D" type="Node3D"]
 script = ExtResource( "15" )
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = ExtResource( "1" )
-script = ExtResource( "2" )
-__meta__ = {
-"_editor_description_": "HDR threshold needs to be roughly emission strength of emissive stuff-1"
-}
+[node name="scene" type="Node3D" parent="." groups=["root"]]
+script = ExtResource( "2_t0aug" )
 
-[node name="scene" parent="." instance=ExtResource( "4" )]
-rain_amount = 0.5
+[node name="WorldEnvironment" type="WorldEnvironment" parent="scene"]
+environment = ExtResource( "3_p7qju" )
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.766045, 0.642788, 0, -0.642788, -0.766045, 0, 18.629, 0)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="scene"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 18.629, 0)
 shadow_enabled = true
 shadow_bias = 0.0
 shadow_reverse_cull_face = true
