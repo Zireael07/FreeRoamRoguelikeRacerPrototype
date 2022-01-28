@@ -577,7 +577,7 @@ func _merge_meshinstance(st : SurfaceTool, mi : MeshInstance3D, use_local_space 
 			st.set_normal(norm)
 		if col:
 			st.add_color(col)
-		if uv and fmt != 97299: #no uvs, uv2 bones or weights
+		if uv and fmt != 19: #no uvs, uv2 bones or weights
 			st.set_uv(uv)
 		if uv2:
 			st.add_uv2(uv2)

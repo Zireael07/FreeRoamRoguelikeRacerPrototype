@@ -102,7 +102,7 @@ func _on_Area_body_enter( body ):
 				msg.show()
 				
 				# show raceline on map
-				var track_map = player.get_node(^"Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+				var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 				track_map.points = track_map.vec3s_convert(raceline)
 				# force redraw
 				track_map.update()
