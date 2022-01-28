@@ -68,7 +68,7 @@ func _ready():
 	
 
 	var shape = BoxShape3D.new()
-	shape.set_size(Vector3(thick,storeys+1,width))
+	shape.set_size(Vector3(thick*2,(storeys+1)*2,width*2))
 	get_node(^"StaticBody3D/CollisionShape3D").set_position(Vector3(0,storeys+1,0))
 	get_node(^"StaticBody3D/CollisionShape3D").set_shape(shape)
 	
