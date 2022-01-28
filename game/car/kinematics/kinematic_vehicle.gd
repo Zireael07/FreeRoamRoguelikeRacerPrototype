@@ -78,6 +78,7 @@ func _physics_process(delta):
 	else:
 		acceleration = Vector3.ZERO
 		apply_friction(delta)
+	#print("is on ground: ", on_ground)
 	
 	#acceleration.y = 0
 	acceleration.y = gravity
@@ -249,7 +250,7 @@ func trigger_sparks():
 	var collision = get_slide_collision(0)
 	
 	#print(collision.collider.get_parent().get_name())
-	var nam = collision.collider.get_parent().get_name()
+	var nam = collision.get_collider().get_parent().get_name()
 	#print(nam)
 	# ignore ground or road "collisions"
 	if "Ground" in nam or "Road" in nam:
@@ -257,9 +258,9 @@ func trigger_sparks():
 		pass
 	else:
 	
-		var c_pos = collision.position
+		var c_pos = collision.get_position()
 		
-		var normal = collision.normal
+		var normal = collision.get_normal()
 		#print("Local pos of contact: " + str(l_pos) + " collider " + str(c_pos))
 		
 		
@@ -312,7 +313,7 @@ func spawn_sparks(loc, normal):
 	
 	add_child(spark)
 	spark.set_name("Spark")
-	spark.set_translation(loc)
+	spark.set_position(loc)
 	spark.set_emitting(true)
 	#print("Normal " + str(normal))
 	spark.get_process_material().set_gravity(normal)
@@ -330,4 +331,4 @@ func debug_cube(loc, red=false):
 	node.set_cast_shadows_setting(0)
 	node.set_name("Debug")
 	add_child(node)
-	node.set_translation(loc)
+	node.set_position(loc)

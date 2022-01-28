@@ -222,6 +222,10 @@ func get_input():
 # --------------------------------------------------
 
 func _physics_process(delta):
+	# for some reason, needed in Godot 4
+	super._physics_process(delta)
+	
+	
 	# were we peeking last tick?
 	var old_peek = peek
 	
@@ -428,7 +432,7 @@ func _process(delta):
 		var wh_pos = get_node(^"tmpParent/Spatial_RL")
 		var mark_pos = wh_pos.get_global_transform().origin - Vector3(0,0.3, 0) # tiny offset to make marks show on roads
 		var lpos = map.to_local(mark_pos)
-		mark.set_translation(lpos)
+		mark.set_position(lpos)
 		# place all the skidmarks under a common parent
 		var gfx = null
 		if not map.has_node("gfx"):
