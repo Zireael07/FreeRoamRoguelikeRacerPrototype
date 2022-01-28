@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dr7kf5v6sxlls"]
+[gd_scene load_steps=19 format=3 uid="uid://dr7kf5v6sxlls"]
 
 [ext_resource type="Environment" uid="uid://dt4c7rkngc270" path="res://dynamic_env.tres" id="1"]
 [ext_resource type="Script" path="res://scripts/WorldEnvironment.gd" id="2"]
@@ -7,13 +7,12 @@
 [ext_resource type="Script" path="res://map/procedural_map.gd" id="5"]
 [ext_resource type="Script" path="res://map/triangulate.gd" id="6"]
 [ext_resource type="Script" path="res://scripts/poisson3d.gd" id="7"]
-[ext_resource type="Script" path="res://scripts/draw_line.gd" id="8"]
 [ext_resource type="PackedScene" path="res://objects/TIR_block.tscn" id="9"]
-[ext_resource type="PackedScene" path="res://car/kinematics/kinematic_car_AI_traffic.tscn" id="10"]
+[ext_resource type="PackedScene" uid="uid://b1dlvakxhwt0o" path="res://car/kinematics/kinematic_car_AI_traffic.tscn" id="10"]
 [ext_resource type="Script" path="res://scripts/meshes/ground_gen.gd" id="11"]
 [ext_resource type="Material" path="res://assets/ground_material_snow.tres" id="12"]
 [ext_resource type="Script" path="res://map/map_nav.gd" id="13"]
-[ext_resource type="PackedScene" path="res://car/kinematics/kinematic_car_AI_cop.tscn" id="14"]
+[ext_resource type="PackedScene" uid="uid://yanqthyykw70" path="res://car/kinematics/kinematic_car_AI_cop.tscn" id="14"]
 [ext_resource type="Script" path="res://scripts/scene_top.gd" id="15"]
 [ext_resource type="PackedScene" path="res://objects/roadblock.tscn" id="16"]
 [ext_resource type="Material" path="res://assets/ground_material.tres" id="17"]
@@ -56,8 +55,7 @@ script = ExtResource( "7" )
 [node name="nav" type="Node3D" parent="map"]
 script = ExtResource( "13" )
 
-[node name="draw" type="Node" parent="map"]
-script = ExtResource( "8" )
+[node name="draw" type="Node3D" parent="map"]
 
 [node name="Racers" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.594, 0, 192.855)
