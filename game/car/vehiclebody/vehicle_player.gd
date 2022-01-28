@@ -801,7 +801,7 @@ func _on_BODY_body_entered(body):
 			# deform
 			if not get_parent().is_in_group("bike"):
 				var local = (obj.get_global_transform() * get_global_transform().origin)
-				$"car_mesh".hit_deform(local)
+				#$"car_mesh".hit_deform(local)
 
 	if health <= 0:
 		# game over!

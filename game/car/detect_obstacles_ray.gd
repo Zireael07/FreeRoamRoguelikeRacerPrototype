@@ -27,4 +27,4 @@ func _physics_process(delta):
 		hit = false
 	
 	
-	loc = self.get_cast_to() 
+	loc = self.get_target_position() 

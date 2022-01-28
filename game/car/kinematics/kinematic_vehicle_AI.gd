@@ -70,6 +70,9 @@ var bribed = false
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
+	# need to do it explicitly in Godot 4 for some reason
+	super._ready()
+	
 	tail_mat = taillights.get_mesh().surface_get_material(0)
 	
 	get_parent().connect(&"found_path", self._on_path_found)
@@ -104,16 +107,16 @@ func add_rays():
 		# TODO: base on polar angle?
 		# TODO: make speed dependent
 		if i == 0 or i == 1 or i == num_rays-1:
-			r.cast_to = Vector3.FORWARD * look_ahead
+			r.target_position = Vector3.FORWARD * look_ahead
 		elif i == 2 or i == num_rays-2:
-			r.cast_to = Vector3.FORWARD * (look_ahead-2)
+			r.target_position = Vector3.FORWARD * (look_ahead-2)
 		else:
-			r.cast_to = Vector3.FORWARD * look_side
+			r.target_position = Vector3.FORWARD * look_side
 		r.rotation.y = -angle * i
 		r.add_exception(self)
 		r.enabled = true
 		# debug
-		rays[i] = (r.cast_to.normalized()*4).rotated(Vector3(0,1,0), r.rotation.y)
+		rays[i] = (r.target_position.normalized()*4).rotated(Vector3(0,1,0), r.rotation.y)
 	forward_ray = $ContextRays.get_child(0)
 
 # ---------------------------------------
@@ -175,12 +178,12 @@ func start_chase():
 		msg.enable_ok(true)
 		msg.show()
 		# set up the OK button
-		if not msg.get_node(^"OK_button").is_connected("pressed", self, "_on_ok_click"):
+		if not msg.get_node(^"OK_button").is_connected("pressed", Callable(self, "_on_ok_click")):
 			print("Not connected")
 			# disconnect all others just in case
-			for d in msg.get_node(^"OK_button").get_signal_connection_list("pressed"):
+			#for d in msg.get_node(^"OK_button").get_signal_connection_list("pressed"):
 				#print(d["target"])
-				msg.get_node(^"OK_button").disconnect(&"pressed", d["target"]._on_ok_click)
+			#	msg.get_node(^"OK_button").disconnect(&"pressed", d["target"]._on_ok_click)
 			msg.get_node(^"OK_button").connect(&"pressed", self._on_ok_click)
 
 

@@ -252,7 +252,7 @@ func hit_deform(pos):
 	# don't waste time if nothing to do
 	if done:
 		# Remove existing surface
-		mesh.surface_remove(id)
+		#mesh.surface_remove(id)
 
 #		# this always adds at the end
 		mdt.commit_to_surface(mesh)

@@ -452,7 +452,7 @@ func _process(delta):
 		wh_pos = get_node(^"tmpParent/Spatial_RR")
 		mark_pos = wh_pos.get_global_transform().origin - Vector3(0,0.3, 0) # tiny offset to make marks show on roads
 		lpos = map.to_local(mark_pos)
-		mark.set_translation(lpos)
+		mark.set_position(lpos)
 		# we should already have the common parent, see above
 		gfx.add_child(mark)
 		mark.look_at(pos, Vector3(0,1,0))

@@ -78,7 +78,7 @@ func spawn_marker(samples, spots, mark, _name, limit=2):
 	
 	var marker = mark.instantiate()
 	#marker.set_name(_name)
-	marker.set_translation(Vector3(p[0]*mult, 0, p[1]*mult))
+	marker.set_position(Vector3(p[0]*mult, 0, p[1]*mult))
 
 	# create a distance map from our intersection
 	# because the spots map can have different id from the samples
@@ -118,7 +118,7 @@ func spawn_marker(samples, spots, mark, _name, limit=2):
 	marker.set_name(_name + ">" + str(id)+"-"+str(t_id))
 	
 	# remove from list of possible spots
-	spots.remove(sel) # this works by id not value!
+	spots.remove_at(sel) # this works by id not value!
 	
 	if _name == "race_marker":
 		#print("Set marker ai data")
@@ -156,13 +156,13 @@ func spawn_markers(samples, real_edges):
 	var p = samples[id]
 
 	var sp_marker = sp_mark.instantiate()
-	sp_marker.set_translation(Vector3(p[0]*mult, 0, p[1]*mult))
+	sp_marker.set_position(Vector3(p[0]*mult, 0, p[1]*mult))
 	sp_marker.set_name("speed_marker"+">" + str(id))
 	# add marker to the map itself
 	get_parent().add_child(sp_marker)
 
 	# remove from list of possible spots
-	spots.remove(sel) # this works by id not value, unlike Python!
+	spots.remove_at(sel) # this works by id not value, unlike Python!
 
 	var marker_data = spawn_marker(samples, spots, mark, "tt_marker")
 	print("Marker data: " + str(marker_data))
@@ -315,10 +315,10 @@ func setup_nav_astar(pts, i, begin_id):
 
 	# extract intersection numbers
 	var ret = []
-	var strs = get_parent().get_child(i).get_name().split("-")
+	var strs = String(get_parent().get_child(i).get_name()).split("-")
 	# convert to int
-	ret.append(int(strs[0].lstrip("Road ")))
-	ret.append(int(strs[1]))
+	ret.append((strs[0].lstrip("Road ").to_int()))
+	ret.append((strs[1].to_int()))
 	#print("Ret: " + str(ret))
 
 	# paranoia
@@ -412,16 +412,16 @@ func get_lane(road, flip, left_side):
 	
 	# extract intersection numbers
 	var ret = []
-	var strs = road.get_name().split("-")
+	var strs = String(road.get_name()).split("-")
 	# convert to int
-	ret.append(int(strs[0].lstrip("Road ")))
-	ret.append(int(strs[1]))
+	ret.append(strs[0].lstrip("Road ").to_int())
+	ret.append(strs[1].to_int())
 
 	# shortcut (we know map has 3 nodes before intersections)
 	var src = get_parent().get_child(ret[0]+3)
 	var dst = get_parent().get_child(ret[1]+3)
 	# which direction are we going?
-	var rel_pos = (dst.get_global_transform( * src.get_global_transform()).origin)
+	var rel_pos = (dst.get_global_transform() * src.get_global_transform().origin)
 	# same as in connect_intersections.gd
 	# by convention, y comes first
 	var angle = atan2(rel_pos.z, rel_pos.x)
@@ -679,7 +679,7 @@ func debug_lane_lists():
 		var src = map.get_child(p[0]+3)
 		var dst = map.get_child(p[1]+3)
 		# which direction are we going?
-		var rel_pos = (dst.get_global_transform( * src.get_global_transform()).origin)
+		var rel_pos = (dst.get_global_transform() * src.get_global_transform().origin)
 		# same as in connect_intersections.gd
 		# by convention, y comes first
 		var angle = atan2(rel_pos.z, rel_pos.x)

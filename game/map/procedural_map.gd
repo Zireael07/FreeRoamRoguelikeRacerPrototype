@@ -171,7 +171,7 @@ func _ready():
 				#Logger.mapgen_print(inters.get_name() + " is not in the actual connected map")
 				
 	var sel = null
-	if not garage_opts:
+	if garage_opts.is_empty():
 		print("No garage options found")
 		return
 
@@ -188,7 +188,7 @@ func _ready():
 	sel = wanted
 
 	if sel.open_exits.size() > 0:
-		print(sel.get_name() + str(sel.open_exits[0]))
+		print(String(sel.get_name()) + str(sel.open_exits[0]))
 		var garage_rd = garage.instantiate()
 		# test placement
 		garage_rd.set_position(sel.get_position() + sel.open_exits[0])
@@ -196,8 +196,9 @@ func _ready():
 		#print(str(sel.open_exits[1]))
 		
 		# assign correct rotation
-		if rots.has(sel.open_exits[0]): 
-			garage_rd.set_rotation(deg2rad(rots[sel.open_exits[0]]))
+		if rots.has(sel.open_exits[0]):
+			var rot = rots[sel.open_exits[0]]
+			garage_rd.set_rotation(Vector3(rot.x, deg2rad(rot.y), rot.z))
 		else:
 			# prevent weirdness
 			print("Couldn't find correct rotation for " + str(sel.open_exits[0]))
@@ -216,8 +217,9 @@ func _ready():
 		station.set_position(sel.get_position() + sel.open_exits[1] + Vector3(4,0,4))
 	
 		# assign correct rotation
-		if rots.has(sel.open_exits[1]): 
-			station.set_rotation(deg2rad(rots[sel.open_exits[1]]))
+		if rots.has(sel.open_exits[1]):
+			var rot = rots[sel.open_exits[1]]
+			station.set_rotation(Vector3(rot.x, deg2rad(rot.y), rot.z))
 	
 		station.set_name("station")
 		add_child(station)
@@ -225,14 +227,15 @@ func _ready():
 	# place vehicle dealership
 	sel = get_child(8) # intersection 5
 	if sel.open_exits.size() > 1:
-		print(sel.get_name() + str(sel.open_exits[0]))
+		print(String(sel.get_name()) + str(sel.open_exits[0]))
 		var dealer = dealership.instantiate()
 		# place
 		dealer.set_position(sel.get_position() + sel.open_exits[0])
 		
 		# assign correct rotation
-		if rots.has(sel.open_exits[0]): 
-			dealer.set_rotation(deg2rad(rots[sel.open_exits[0]]))
+		if rots.has(sel.open_exits[0]):
+			var rot = rots[sel.open_exits[0]]
+			dealer.set_rotation(Vector3(rot.x, deg2rad(rot.y), rot.z))
 		
 		dealer.set_name("dealership")
 		add_child(dealer)
