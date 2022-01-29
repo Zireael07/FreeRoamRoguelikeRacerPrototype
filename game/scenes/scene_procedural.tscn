@@ -32,8 +32,6 @@ environment = ExtResource( "3_p7qju" )
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="scene"]
 transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 18.629, 0)
 shadow_enabled = true
-shadow_bias = 0.0
-shadow_reverse_cull_face = true
 directional_shadow_blend_splits = true
 directional_shadow_max_distance = 50.0
 

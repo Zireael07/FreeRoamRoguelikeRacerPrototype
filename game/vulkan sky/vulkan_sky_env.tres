@@ -28,4 +28,6 @@ background_mode = 2
 sky = SubResource( "Sky_y75us" )
 ambient_light_color = Color(1, 1, 1, 1)
 glow_hdr_threshold = 2.2
-fog_light_color = Color(0.0221679, 0.0337797, 0.0744209, 1)
+fog_enabled = true
+fog_density = 0.002
+fog_aerial_perspective = 0.5
