@@ -145,7 +145,7 @@ func _on_Area_body_exit( body ):
 				msg.hide()
 				if not count:
 					# remove raceline (preview) from map
-					var track_map = player.get_node(^"Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+					var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 					track_map.points = []
 					# force redraw
 					track_map.update()
@@ -164,7 +164,7 @@ func spawn_finish(start):
 	#var finish = our.instantiate()
 	var finish = self.duplicate()
 	finish.set_name("Finish")
-	finish.set_translation(loc)
+	finish.set_position(loc)
 	finish.finish = true
 	finish.start = start
 	finish.target_time = calc_target_time()
@@ -173,7 +173,7 @@ func spawn_finish(start):
 	
 	get_parent().add_child(finish)
 	
-	var minimap = player.get_node(^"Viewport_root/Viewport/minimap")
+	var minimap = player.get_node(^"Viewport_root/SubViewport/minimap")
 	minimap.add_marker(finish.get_global_transform().origin, minimap.blue_flag)
 
 	

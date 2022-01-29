@@ -28,7 +28,7 @@ func enter_dealer(body):
 	player.hide()
 	
 	# brake
-	player.set_translation(player.get_translation())
+	player.set_position(player.get_translation())
 	player.velocity = Vector3.ZERO
 	player.acceleration = Vector3.ZERO
 	#player.set_engine_force(-player.get_engine_force())

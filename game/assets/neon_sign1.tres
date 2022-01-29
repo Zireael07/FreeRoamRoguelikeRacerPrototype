@@ -1,23 +1,24 @@
-[gd_resource type="ShaderMaterial" load_steps=4 format=2]
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://dyhdr8jyel8d1"]
 
-[ext_resource path="res://assets/NeonChinaSign1.png" type="Texture2D" id=1]
-[ext_resource path="res://assets/NeonChinaSign1 - part mask.png" type="Texture2D" id=2]
-[ext_resource path="res://assets/neon_sign_tinted.gdshader" type="Shader" id=3]
+[ext_resource type="Texture2D" uid="uid://bygurxs40tuyj" path="res://assets/NeonChinaSign1.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://05nptdnv0rqj" path="res://assets/NeonChinaSign1 - part mask.png" id="2"]
+[ext_resource type="Shader" path="res://assets/neon_sign_tinted.gdshader" id="3"]
 
 [resource]
-shader = ExtResource( 3 )
-shader_param/albedo = Color( 0.886719, 0.886719, 0.886719, 1 )
+render_priority = 0
+shader = ExtResource( "3" )
+shader_param/albedo = Color(0.886719, 0.886719, 0.886719, 1)
 shader_param/specular = 0.5
 shader_param/metallic = 0.0
 shader_param/roughness = 0.0
 shader_param/point_size = 1.0
-shader_param/emission = Color( 0.960784, 0.956863, 0.952941, 1 )
+shader_param/emission = Color(0.960784, 0.956863, 0.952941, 1)
 shader_param/emission_energy = 2.0
-shader_param/uv1_scale = Vector3( 1, 1, 1 )
-shader_param/uv1_offset = Vector3( 0, 0, 0 )
-shader_param/uv2_scale = Vector3( 1, 1, 1 )
-shader_param/uv2_offset = Vector3( 0, 0, 0 )
-shader_param/mask_color = Color( 0.219608, 1, 0.152941, 1 )
-shader_param/modulate = Color( 0.741176, 0, 0, 1 )
-shader_param/texture_albedo = ExtResource( 1 )
-shader_param/texture_emission = ExtResource( 2 )
+shader_param/uv1_scale = Vector3(1, 1, 1)
+shader_param/uv1_offset = Vector3(0, 0, 0)
+shader_param/uv2_scale = Vector3(1, 1, 1)
+shader_param/uv2_offset = Vector3(0, 0, 0)
+shader_param/mask_color = Color(0.219608, 1, 0.152941, 1)
+shader_param/modulate = Color(0.39063, 0.447482, 0.398838, 1)
+shader_param/texture_albedo = ExtResource( "1" )
+shader_param/texture_emission = ExtResource( "2" )

@@ -154,6 +154,9 @@ shadow_filter=3
 
 [rendering]
 
+global_illumination/gi/use_half_resolution=true
+anti_aliasing/quality/msaa=1
+anti_aliasing/quality/use_debanding=true
 quality/directional_shadow/size=2048
 quality/shadows/filter_mode=2
 environment/default_environment="res://default_env.tres"

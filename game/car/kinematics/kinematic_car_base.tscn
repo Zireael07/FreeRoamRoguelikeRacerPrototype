@@ -1,10 +1,10 @@
 [gd_scene load_steps=52 format=3 uid="uid://caucweey32fbc"]
 
 [ext_resource type="PackedScene" path="res://hud/test_car_label.tscn" id="1"]
-[ext_resource type="Material" path="res://assets/car/taillights.tres" id="2"]
+[ext_resource type="Material" uid="uid://b4ab7wyhgv5ip" path="res://assets/car/taillights.tres" id="2"]
 [ext_resource type="Script" path="res://hud/label_3d.gd" id="3"]
 [ext_resource type="Script" path="res://car/car_player.gd" id="4"]
-[ext_resource type="PackedScene" path="res://car/car_wheel.tscn" id="5"]
+[ext_resource type="PackedScene" uid="uid://cboor5a21yjpa" path="res://car/car_wheel.tscn" id="5"]
 [ext_resource type="Script" path="res://hud/nameplate_3d.gd" id="6"]
 [ext_resource type="PackedScene" path="res://hud/test_car_nameplate.tscn" id="7"]
 [ext_resource type="Script" path="res://car/follow_camera.gd" id="8"]
@@ -264,8 +264,8 @@ size = Vector2(1, 1.5)
 
 [sub_resource type="SphereMesh" id="21"]
 material = ExtResource( "14" )
-radius = 0.05
-height = 0.1
+radius = 0.1
+height = 0.25
 radial_segments = 6
 rings = 3
 
@@ -377,6 +377,7 @@ drag = -0.5
 
 [node name="car_mesh" type="MeshInstance3D" parent="BODY/tmpParent"]
 transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 0.493185, 0.307591, -0.7)
+cast_shadow = 2
 mesh = ExtResource( "19" )
 script = ExtResource( "21" )
 __meta__ = {
