@@ -4,7 +4,7 @@
 [ext_resource type="Material" path="res://assets/procedural_building_metal_mat.tres" id="2"]
 [ext_resource type="Material" path="res://assets/windows_material2.tres" id="3"]
 [ext_resource type="ArrayMesh" uid="uid://ovqhjme5oywr" path="res://assets/chinasign_1.obj" id="4"]
-[ext_resource type="Material" path="res://assets/neon_sign1.tres" id="5"]
+[ext_resource type="Material" uid="uid://dyhdr8jyel8d1" path="res://assets/neon_sign1.tres" id="5"]
 [ext_resource type="ArrayMesh" uid="uid://dtrfyr7iylmmq" path="res://assets/china_cable.obj" id="6"]
 [ext_resource type="Material" path="res://assets/metal_mat.tres" id="7"]
 [ext_resource type="Shader" path="res://assets/storefront/storefront_tinted.gdshader" id="8"]
@@ -37,8 +37,8 @@ size = Vector3(4, 2, 16)
 [sub_resource type="BoxMesh" id="4"]
 size = Vector3(4, 1, 16)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_awv31"]
-size = Vector3(6, 19, 6)
+[sub_resource type="BoxShape3D" id="BoxShape3D_agdc4"]
+size = Vector3(12, 38, 12)
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource( "1" )
@@ -105,6 +105,6 @@ mesh = SubResource( "4" )
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 19, 0)
-shape = SubResource( "BoxShape3D_awv31" )
+shape = SubResource( "BoxShape3D_agdc4" )
 
 [connection signal="body_entered" from="Node3D" to="Node3D" method="_on_Spatial_body_entered"]

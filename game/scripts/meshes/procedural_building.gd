@@ -74,7 +74,8 @@ func _ready():
 	
 	
 	#Turn off shadows
-	#node.set_cast_shadows_setting(0)
+	node.set_cast_shadows_setting(0)
+	node.set_gi_mode(GeometryInstance3D.GI_MODE_STATIC)
 	
 	# test
 	#node.set_visible(false)
