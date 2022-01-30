@@ -1,0 +1,90 @@
+[gd_scene load_steps=16 format=3 uid="uid://j6ut3b8look8"]
+
+[ext_resource type="Script" path="res://scripts/scene_top.gd" id="1_jistc"]
+[ext_resource type="Script" path="res://vulkan sky/daynight.gd" id="2_e3lj3"]
+[ext_resource type="Environment" uid="uid://c56vuaipcdg3k" path="res://vulkan sky/vulkan_sky_env.tres" id="3_57s23"]
+[ext_resource type="Script" path="res://map/map_loaded.gd" id="4_oytew"]
+[ext_resource type="Script" path="res://map/triangulate.gd" id="5_8tg0x"]
+[ext_resource type="Script" path="res://scripts/poisson3d.gd" id="6_gdese"]
+[ext_resource type="Script" path="res://map/map_nav.gd" id="7_mhbyk"]
+[ext_resource type="PackedScene" uid="uid://caucweey32fbc" path="res://car/kinematics/kinematic_car_base.tscn" id="10_aie5x"]
+[ext_resource type="Script" path="res://scripts/meshes/ground_gen.gd" id="11_h2f17"]
+[ext_resource type="Material" path="res://assets/ground_material_snow.tres" id="12_6nc3w"]
+[ext_resource type="Material" path="res://assets/ground_material.tres" id="13_reqkb"]
+[ext_resource type="PackedScene" path="res://objects/roadblock.tscn" id="14_5ld0n"]
+[ext_resource type="PackedScene" path="res://objects/TIR_block.tscn" id="15_bc8ag"]
+[ext_resource type="PackedScene" path="res://objects/spikestrip.tscn" id="16_ja0n8"]
+
+[sub_resource type="BoxShape3D" id="2"]
+size = Vector3(1000, 2, 1000)
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource( "1_jistc" )
+
+[node name="scene" type="Node3D" parent="." groups=["root"]]
+script = ExtResource( "2_e3lj3" )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="scene"]
+environment = ExtResource( "3_57s23" )
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="scene"]
+transform = Transform3D(1, 0, 0, 0, 0.766045, -0.642788, 0, 0.642788, 0.766045, 0, 18.629, 0)
+shadow_enabled = true
+shadow_reverse_cull_face = true
+directional_shadow_blend_splits = true
+directional_shadow_max_distance = 50.0
+
+[node name="map" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -128.754, 0, -209.444)
+script = ExtResource( "4_oytew" )
+
+[node name="triangulate" type="Node3D" parent="map"]
+script = ExtResource( "5_8tg0x" )
+
+[node name="poisson" type="Node3D" parent="map/triangulate"]
+script = ExtResource( "6_gdese" )
+
+[node name="nav" type="Node3D" parent="map"]
+script = ExtResource( "7_mhbyk" )
+
+[node name="draw" type="Node3D" parent="map"]
+
+[node name="Racers" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.594, 0, 192.855)
+__meta__ = {
+"_editor_description_": "This is rotated to align with the raceline"
+}
+
+[node name="car" parent="." instance=ExtResource( "10_aie5x" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2119, 0, 192.855)
+
+[node name="Ground" type="Node3D" parent="."]
+script = ExtResource( "11_h2f17" )
+snowmaterial = ExtResource( "12_6nc3w" )
+groundmaterial = ExtResource( "13_reqkb" )
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
+collision_layer = 2
+
+[node name="CollisionShape5" type="CollisionShape3D" parent="Ground/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.95, 0)
+shape = SubResource( "2" )
+
+[node name="Node3D" parent="." instance=ExtResource( "14_5ld0n" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72.419, 0, 186.771)
+
+[node name="Spatial4" parent="." instance=ExtResource( "15_bc8ag" )]
+transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 25.9671, 1.5, 155.39)
+
+[node name="Spatial2" parent="." instance=ExtResource( "14_5ld0n" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.2849, 0, 154.204)
+visible = false
+
+[node name="Spatial3" parent="." instance=ExtResource( "14_5ld0n" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.2038, 0, 210.359)
+
+[node name="Spatial5" parent="." instance=ExtResource( "16_ja0n8" )]
+transform = Transform3D(0.258819, 0, 0.965925, 0, 1, 0, -0.965925, 0, 0.258819, 36.751, 0.1, 159.19)
+
+[node name="marker_North" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 900, 0, 0)
