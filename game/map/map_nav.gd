@@ -218,7 +218,7 @@ func setup_markers(marker_data):
 
 #	print("Marker intersection id" + str(marker_data[0]) + " tg id" + str(marker_data[1]))
 		var int_path = ast.get_id_path(marker_data[0], marker_data[1])
-		print("Intersections path: " + str(int_path))
+		print("Intersections path: " + var2str(int_path))
 
 #	# test (get path_look entry at id x)
 #	var test = path_look[path_look.keys()[5]]
@@ -268,7 +268,7 @@ func setup_markers(marker_data):
 
 #	print("Marker intersection id" + str(marker_data[0]) + " tg id" + str(marker_data[1]))
 		int_path = ast.get_id_path(marker_data[2], marker_data[3])
-		print("Intersections path: " + str(int_path))
+		print("Intersections path: " + var2str(int_path))
 
 		# TODO: factor out into a function
 		#paranoia
@@ -428,7 +428,7 @@ func get_lane(road, flip, left_side):
 	
 	var quadrant = get_quadrant(rel_pos)
 		
-	print(road.get_name(), " rel pos road start-end: ", rel_pos, " angle: ", angle, " ", rad2deg(angle), " deg, quadrant ", quadrant)
+	print(String(road.get_name()), " rel pos road start-end: ", rel_pos, " angle: ", angle, " ", rad2deg(angle), " deg, quadrant ", quadrant)
 	
 	
 	# this part actually gets A* points
@@ -438,7 +438,7 @@ func get_lane(road, flip, left_side):
 	var offsets = reference_pos(road, src, dst, turn1, turn2, false)
 	var cross = false
 	if (offsets[0] < 0) == (offsets[1] < 0):
-		print(road.get_name(), " predict lanes will cross!")
+		print(String(road.get_name()), " predict lanes will cross!")
 		cross = true
 		
 	# default
@@ -555,7 +555,7 @@ func get_paths(id, exclude=-1):
 		for p in paths:
 			if p[1] == exclude:
 				paths.remove(paths.find(p))
-	print("Possible paths for id : " + str(id) + " " + str(paths))
+	print("Possible paths for id : " + var2str(id) + " " + var2str(paths))
 	return paths
 
 func get_path_look(id, exclude=-1):
@@ -685,7 +685,7 @@ func debug_lane_lists():
 		var angle = atan2(rel_pos.z, rel_pos.x)
 		var quadrant = get_quadrant(rel_pos)
 		
-		print(road.get_name(), " rel pos road start-end: ", rel_pos, " angle: ", angle, " ", rad2deg(angle), " deg, quadrant ", quadrant)
+		print(String(road.get_name()), " rel pos road start-end: ", rel_pos, " angle: ", angle, " ", rad2deg(angle), " deg, quadrant ", quadrant)
 		
 		
 		# this part actually gets A* points
@@ -695,7 +695,7 @@ func debug_lane_lists():
 		var offsets = reference_pos(road, src, dst, turn1, turn2, flip)
 		var cross = false
 		if (offsets[0] < 0) == (offsets[1] < 0):
-			print(road.get_name(), " predict lanes will cross!")
+			print(String(road.get_name()), " predict lanes will cross!")
 			cross = true
 			
 		# default

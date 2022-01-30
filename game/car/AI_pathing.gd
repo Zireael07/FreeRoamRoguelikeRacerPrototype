@@ -99,7 +99,7 @@ func look_for_path_initial(start_ind, left):
 					int_path = t[1]
 			
 			
-	print("[AI] our intersection path: " + str(int_path))
+	print("[AI] our intersection path: " + var2str(int_path))
 	
 	# paranoia
 	if int_path == null:

@@ -9,6 +9,8 @@ var intersects
 var mult
 var samples = []
 
+var real_edges = []
+
 var garage
 var recharge
 var dealership
@@ -53,6 +55,9 @@ func _ready():
 			var node = null
 			if not has_node(line[0]):
 				node = make_top_node(line[0])
+				# assume the loaded data contains only real roads
+				var e = extract_intersection_numbers(line[0])
+				real_edges.append(Vector2(e[0], e[1]))
 			else:
 				node = get_node(line[0])
 				
@@ -70,6 +75,12 @@ func _ready():
 				set_straight(line[3], line[1], line[2], node)
 				
 	print("Done setting up from data!")
+	
+	
+	
+	# map setup is done, let's continue....
+	# map navigation, markers...
+	get_node(^"nav").setup(mult, samples, real_edges)
 					
 # ------------------------------------------
 func make_top_node(nm):
@@ -175,6 +186,15 @@ func set_curved_road(radius, start_angle, end_angle, index, g_loc, _basis, node)
 	
 	return road_node_right
 
+# based on a bit of code in map_nav.gd
+func extract_intersection_numbers(nm):
+	# extract intersection numbers
+	var ret = []
+	var strs = nm.split("-")
+	# convert to int
+	ret.append(strs[0].lstrip("Road ").to_int())
+	ret.append(strs[1].to_int())
+	return ret
 
 # --------------------------------
 func load_data():
@@ -238,6 +258,13 @@ func sort_intersections_distance(tg = Vector3(0,0,0), debug=true):
 		print("Sorted inters: " + str(closest))
 
 	return closest
+
+func get_marker(_name):
+	for c in get_children():
+		if String(c.get_name()).find(_name) != -1:
+			return c
+
+# markers are spawned in map_nav.gd because they use BFS/distance map
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
