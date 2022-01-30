@@ -19,7 +19,7 @@ func _ready():
 	
 	#print(points)
 	tris = super.TriangulatePolygon(points)
-	print(tris)
+	#print(tris)
 	
 	
 

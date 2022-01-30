@@ -320,7 +320,7 @@ func placeTree(index, base_height):
 	tree.set_position(loc)
 	
 	tree = cherry_tree.instantiate()
-	tree.set_name("Tree"+String(index))
+	tree.set_name("Tree"+var2str(index))
 	add_child(tree)
 	
 	#right side of the road
@@ -339,7 +339,7 @@ func placeBamboo(index, base_height):
 	
 	
 	var clump = bamboo_clump.instantiate()
-	clump.set_name("Bamboo"+String(index))
+	clump.set_name("Bamboo"+var2str(index))
 	add_child(clump)
 
 	#left side of the road
@@ -355,7 +355,7 @@ func placeBamboo(index, base_height):
 	clump.set_position(loc)
 	
 	clump = bamboo_clump.instantiate()
-	clump.set_name("Bamboo"+String(index))
+	clump.set_name("Bamboo"+var2str(index))
 	add_child(clump)
 	
 	# vary position a bit
