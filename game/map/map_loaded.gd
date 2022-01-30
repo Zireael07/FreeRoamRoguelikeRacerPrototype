@@ -199,6 +199,46 @@ func load_data():
 		return data
 
 # ----------------------------------------
+# returns a list of [dist, index] lists, operates on child ids
+func sort_intersections_distance(tg = Vector3(0,0,0), debug=true):
+	var dists = []
+	var tmp = []
+	var closest = []
+	# exclude helper nodes
+	for i in range(3, 3+samples.size()-1):
+		var e = get_child(i)
+		var dist = e.position.distance_to(tg)
+		#print("Distance: exit: " + str(e.get_name()) + " dist: " + str(dist))
+		tmp.append([dist, i])
+		dists.append(dist)
+
+	dists.sort()
+
+	#print("tmp" + str(tmp))
+	# while causes a lockup, whichever way we do it
+	#while tmp.size() > 0:
+	#	print("Tmp size > 0")
+	var max_s = tmp.size()
+	#while max_s > 0:
+	for i in range(0, max_s):
+		#print("Running add, attempt " + str(i))
+		#print("tmp: " + str(tmp))
+		for t in tmp:
+			#print("Check t " + str(t))
+			if t[0] == dists[0]:
+				closest.append(t)
+				tmp.remove_at(tmp.find(t))
+				# key line
+				dists.remove_at(0)
+				#print("Adding " + str(t))
+	# if it's not empty by now, we have an issue
+	#print(tmp)
+
+	if debug:
+		print("Sorted inters: " + str(closest))
+
+	return closest
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

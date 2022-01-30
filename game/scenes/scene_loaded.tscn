@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://j6ut3b8look8"]
+[gd_scene load_steps=18 format=3 uid="uid://j6ut3b8look8"]
 
 [ext_resource type="Script" path="res://scripts/scene_top.gd" id="1_jistc"]
 [ext_resource type="Script" path="res://vulkan sky/daynight.gd" id="2_e3lj3"]
@@ -7,6 +7,8 @@
 [ext_resource type="Script" path="res://map/triangulate.gd" id="5_8tg0x"]
 [ext_resource type="Script" path="res://scripts/poisson3d.gd" id="6_gdese"]
 [ext_resource type="Script" path="res://map/map_nav.gd" id="7_mhbyk"]
+[ext_resource type="PackedScene" uid="uid://b1dlvakxhwt0o" path="res://car/kinematics/kinematic_car_AI_traffic.tscn" id="8_p4rvx"]
+[ext_resource type="PackedScene" uid="uid://yanqthyykw70" path="res://car/kinematics/kinematic_car_AI_cop.tscn" id="9_000xv"]
 [ext_resource type="PackedScene" uid="uid://caucweey32fbc" path="res://car/kinematics/kinematic_car_base.tscn" id="10_aie5x"]
 [ext_resource type="Script" path="res://scripts/meshes/ground_gen.gd" id="11_h2f17"]
 [ext_resource type="Material" path="res://assets/ground_material_snow.tres" id="12_6nc3w"]
@@ -28,7 +30,7 @@ script = ExtResource( "2_e3lj3" )
 environment = ExtResource( "3_57s23" )
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="scene"]
-transform = Transform3D(1, 0, 0, 0, 0.766045, -0.642788, 0, 0.642788, 0.766045, 0, 18.629, 0)
+transform = Transform3D(1, 0, 0, 0, 0.866026, 0.5, 0, -0.5, 0.866026, 0, 18.629, 0)
 shadow_enabled = true
 shadow_reverse_cull_face = true
 directional_shadow_blend_splits = true
@@ -54,6 +56,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.594, 0, 192.855)
 __meta__ = {
 "_editor_description_": "This is rotated to align with the raceline"
 }
+
+[node name="AI" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.594, 0, 192.855)
+
+[node name="Spatial10" parent="AI" instance=ExtResource( "8_p4rvx" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.01203, 0, 0.0882263)
+
+[node name="Spatial12" parent="AI" instance=ExtResource( "8_p4rvx" )]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.29308, 0, 4.66875)
+
+[node name="Spatial11" parent="AI" instance=ExtResource( "8_p4rvx" )]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 4.38827, 0, -1.53667)
+
+[node name="cop" parent="AI" instance=ExtResource( "9_000xv" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.1935)
 
 [node name="car" parent="." instance=ExtResource( "10_aie5x" )]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2119, 0, 192.855)
