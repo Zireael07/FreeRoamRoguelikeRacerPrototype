@@ -98,6 +98,9 @@ func _physics_process(delta):
 	move_and_slide() #hvel, #velocity,
 				#-transform.basis.y, Vector3.UP, true, 1)
 	
+	# hackfix to restore 3.x behavior
+	velocity = get_motion_velocity()
+	
 	# Align with slopes
 	# If either wheel is in the air, align to slope
 	if front_ray.is_colliding() or rear_ray.is_colliding():
@@ -110,7 +113,7 @@ func _physics_process(delta):
 				
 	speed = velocity.length()
 	#reverse
-	if (velocity.dot(-global_transform.basis.z) > 0) or velocity.length() < 0.05:
+	if (Vector3(velocity.x, 0, velocity.z).dot(-global_transform.basis.z) > 0) or velocity.length() < 0.05:
 		reverse = false
 	else:
 		reverse = true

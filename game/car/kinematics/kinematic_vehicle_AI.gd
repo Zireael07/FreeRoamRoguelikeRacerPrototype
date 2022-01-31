@@ -810,7 +810,7 @@ func stopping():
 			# debug
 			#for c in road_cars:
 			#	print(c.get_name())
-			road_cars.remove(road_cars.find(get_parent()))
+			road_cars.remove_at(road_cars.find(get_parent()))
 			#print("[AI] Traffic looks for new path...")
 			# +3 because of helper nodes in map
 			get_parent().look_for_path(get_parent().end_ind+3, get_parent().left, get_parent().last_ind-3)

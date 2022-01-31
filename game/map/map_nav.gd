@@ -370,11 +370,13 @@ func setup_nav_astar(pts, i, begin_id):
 	var turn1_end = begin_id + turn1.points_center.size()-1
 	# because of i+1
 	for i in range(begin_id, turn1_end):
-		nav.connect_points(i, i+1)
+		if nav.has_point(i) and nav.has_point(i+1):
+			nav.connect_points(i, i+1)
 
 	var turn2_end = begin_id + turn1.points_center.size()+turn2.points_center.size()-1
 	for i in range(begin_id + turn1.points_center.size(), turn2_end):
-		nav.connect_points(i, i+1)
+		if nav.has_point(i) and nav.has_point(i+1):
+			nav.connect_points(i, i+1)
 
 	# because turn 2 is inverted
 	# connect the endpoints
@@ -554,7 +556,7 @@ func get_paths(id, exclude=-1):
 	if exclude != -1:
 		for p in paths:
 			if p[1] == exclude:
-				paths.remove(paths.find(p))
+				paths.remove_at(paths.find(p))
 	print("Possible paths for id : " + var2str(id) + " " + var2str(paths))
 	return paths
 
@@ -775,7 +777,7 @@ func intersection_arc(car, closest, nav_path):
 	var p4 = (p2+p1)/2
 	#debug_cube(to_local(closest.get_global_transform().origin+Vector3(p4.x, 0.01, p4.y)), "flip")
 	
-	var p3 = p4.clamped(3)
+	var p3 = p4.limit_length(3)
 	debug_cube(to_local(closest.get_global_transform().origin+Vector3(p3.x, 0.01, p3.y)), "flip")
 	
 	# test
@@ -981,7 +983,7 @@ func debug_cube(loc, flag=""):
 	node.set_cast_shadows_setting(0)
 	node.add_to_group("debug")
 	add_child(node)
-	node.set_translation(loc)
+	node.set_position(loc)
 	# offset flipped a bit
 	if flag == "flip" or flag == "left_flip":
 		node.translate(Vector3(0.0, 0.2, 0.0))
