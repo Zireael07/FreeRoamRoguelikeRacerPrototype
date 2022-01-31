@@ -151,12 +151,12 @@ func _ready():
 	# smoke color
 	var snow_mat = load("res://assets/snow_smoke_mat.tres")
 	var smoke_mat = load("res://assets/Smoke_mat.tres")
-#	if get_parent().get_parent().get_node(^"Ground").snow:
-#		get_node(^"Smoke").material_override = snow_mat
-#		get_node(^"Smoke2").material_override = snow_mat
-#	else:
-#		get_node(^"Smoke").material_override = smoke_mat
-#		get_node(^"Smoke2").material_override = smoke_mat
+	if get_parent().get_parent().get_node(^"Ground").snow:
+		get_node(^"Smoke").material_override = snow_mat
+		get_node(^"Smoke2").material_override = snow_mat
+	else:
+		get_node(^"Smoke").material_override = smoke_mat
+		get_node(^"Smoke2").material_override = smoke_mat
 
 func random_date():
 	# seed the rng
