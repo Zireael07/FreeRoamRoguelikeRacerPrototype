@@ -1,0 +1,20 @@
+[gd_resource type="Environment" load_steps=2 format=3 uid="uid://b20iv21l1to8r"]
+
+[sub_resource type="Sky" id="1"]
+
+[resource]
+background_mode = 1
+background_color = Color(0.647059, 0.839216, 0.941176, 1)
+sky = SubResource( "1" )
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.3
+ambient_light_energy = 0.5
+ssao_enabled = true
+glow_enabled = true
+glow_levels/2 = 1.0
+glow_levels/3 = 0.0
+glow_levels/5 = 0.0
+glow_intensity = 3.0
+glow_strength = 1.2
+glow_hdr_threshold = 4.0
+glow_hdr_scale = 1.0
