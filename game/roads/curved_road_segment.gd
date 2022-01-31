@@ -80,7 +80,7 @@ func _ready():
 		look_at_pos = get_node(^"Position3D")
 	
 	#draw_debug_point(loc, Color(1,1,1))
-	streetlight = preload("res://objects/streetlight.scn")
+	streetlight = preload("res://objects/streetlight.tscn")
 	
 	margin = float(lane_width)/2
 	
