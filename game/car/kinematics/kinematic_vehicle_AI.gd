@@ -355,6 +355,7 @@ func _on_Timer_timeout():
 
 # need to recalculate every tick for is_close_to_target to work
 func _physics_process(delta):
+	
 	rel_loc = brain.target * get_global_transform()
 	# dummy out the y value
 	rel_loc = Vector3(rel_loc.x, 0, rel_loc.z)
@@ -365,8 +366,12 @@ func _physics_process(delta):
 		if unstick_count > 2:
 			translate_object_local(Vector3(0,0.1,0))
 			# solution from https://godotengine.org/qa/56193/how-to-manually-set-the-position-of-a-kinematicbody2d
-			move_and_slide() #Vector3(0,gravity/10,0))
+			set_motion_velocity(Vector3(0,gravity/10,0))
+			move_and_slide() #
 			unstick_count = 0
+			
+	# for some reason, needed in Godot 4
+	super._physics_process(delta)
 
 # ------------------------------------
 # translates steering behaviors output 
@@ -526,7 +531,7 @@ func get_input():
 		var collision = get_slide_collision(0)
 		
 		#print(collision.collider.get_parent().get_name())
-		var nam = collision.collider.get_parent().get_name()
+		var nam = collision.get_collider().get_parent().get_name()
 		#print(nam)
 		# ignore ground or road "collisions"
 		if "Ground" in nam or "Road" in nam:
