@@ -293,6 +293,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.472078, 0.460857, -1.34116)
 
 [node name="taillights" type="MeshInstance3D" parent="BODY"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.67614, 1.40965)
+cast_shadow = 0
 mesh = SubResource( "7" )
 
 [node name="frontlights" type="MeshInstance3D" parent="BODY"]
