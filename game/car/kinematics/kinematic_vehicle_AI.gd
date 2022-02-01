@@ -798,6 +798,9 @@ func stopping():
 	# TODO: put into own function	
 	# are we stopped?
 	if speed < 0.3 and stop:
+		# set velocity to 0 to avoid creeping away
+		set_motion_velocity(Vector3(0,0,0))
+		
 		#print("Have stopped...")
 
 		# only traffic AI looks for new intersection target
