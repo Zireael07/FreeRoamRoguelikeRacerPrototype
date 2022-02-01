@@ -1,34 +1,37 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=8 format=3 uid="uid://dgo22ogst5x67"]
 
-[ext_resource path="res://hud/message_panel.gd" type="Script" id=1]
-[ext_resource path="res://assets/851H-kktt.ttf" type="FontData" id=2]
+[ext_resource type="Script" path="res://hud/message_panel.gd" id="1"]
+[ext_resource type="FontData" uid="uid://dedeqedbo3m40" path="res://assets/851H-kktt.ttf" id="2"]
 
-[sub_resource type="Font" id=1]
-font_data = ExtResource( 2 )
+[sub_resource type="Font" id="1"]
+data/0 = ExtResource( "2" )
 
-[sub_resource type="InputEventKey" id=2]
-scancode = 16777220
+[sub_resource type="InputEventKey" id="InputEventKey_lqqy8"]
+keycode = 16777220
 
-[sub_resource type="Shortcut" id=3]
-shortcut = SubResource( 2 )
+[sub_resource type="Shortcut" id="3"]
+events = [SubResource( "InputEventKey_lqqy8" )]
 
-[sub_resource type="InputEventKey" id=4]
-scancode = 16777221
+[sub_resource type="InputEventKey" id="InputEventKey_7nbx3"]
+keycode = 16777221
 
-[sub_resource type="Shortcut" id=5]
-shortcut = SubResource( 4 )
+[sub_resource type="Shortcut" id="5"]
+events = [SubResource( "InputEventKey_7nbx3" )]
 
 [node name="Control" type="Control"]
 offset_left = 3.0
 offset_right = 1026.0
-offset_bottom = 136.0
+offset_bottom = 145.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
-script = ExtResource( 1 )
+script = ExtResource( "1" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ColorRect" type="ColorRect" parent="."]
 offset_right = 1021.0
-offset_bottom = 138.0
+offset_bottom = 145.0
 color = Color(0, 0.155029, 0.992188, 0.552471)
 
 [node name="Label" type="Label" parent="."]
@@ -36,14 +39,12 @@ offset_right = 1022.0
 offset_bottom = 135.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
-custom_fonts/font = SubResource( 1 )
-custom_colors/font_color = Color(0.0151978, 0.905335, 0.972656, 1)
-custom_constants/shadow_offset_x = 1
-custom_constants/line_spacing = 2
-custom_constants/shadow_offset_y = 1
-custom_constants/shadow_as_outline = 1
+theme_override_colors/font_color = Color(0.0151978, 0.905335, 0.972656, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/line_spacing = 2
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = SubResource( "1" )
 text = " 大都市"
-align = 1
 
 [node name="Button" type="Button" parent="."]
 offset_left = 410.0
@@ -52,7 +53,7 @@ offset_right = 496.0
 offset_bottom = 132.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
-shortcut = SubResource( 3 )
+shortcut = SubResource( "3" )
 text = "Close"
 
 [node name="OK_button" type="Button" parent="."]
@@ -64,7 +65,7 @@ offset_bottom = 133.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 disabled = true
-shortcut = SubResource( 5 )
+shortcut = SubResource( "5" )
 text = "OK"
 
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
