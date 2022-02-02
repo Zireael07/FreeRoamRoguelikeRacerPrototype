@@ -5,7 +5,9 @@
 [ext_resource type="FontData" uid="uid://cnhdkg1uk6p8u" path="res://assets/DSEG7ClassicMini-Bold.ttf" id="2_2r03m"]
 [ext_resource type="Texture2D" uid="uid://bl0eibcllpgvy" path="res://hud/cam_icon.png" id="3"]
 [ext_resource type="Texture2D" uid="uid://b7ccmrq8ur7m" path="res://hud/battery_icon_full.png" id="4"]
+[ext_resource type="Script" path="res://hud/AI steering vis.gd" id="4_w7xr4"]
 [ext_resource type="Font" path="res://hud/thin lcd font.tres" id="5"]
+[ext_resource type="Script" path="res://hud/DebugRect.gd" id="5_8jop2"]
 [ext_resource type="Script" path="res://hud/debugdraw3d.gd" id="6"]
 
 [sub_resource type="Font" id="2"]
@@ -70,6 +72,25 @@ text = "kph"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AI steering vis" type="GridContainer" parent="."]
+visible = false
+offset_left = 60.0
+offset_top = 200.0
+offset_right = 100.0
+offset_bottom = 240.0
+rect_min_size = Vector2(100, 40)
+columns = 32
+script = ExtResource( "4_w7xr4" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DebugRect" type="ColorRect" parent="AI steering vis"]
+offset_right = 20.0
+offset_bottom = 40.0
+rect_min_size = Vector2(20, 40)
+script = ExtResource( "5_8jop2" )
 
 [node name="Label timer" type="Label" parent="."]
 offset_top = 229.0

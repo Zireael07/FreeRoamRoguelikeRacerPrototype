@@ -238,9 +238,10 @@ func _process(delta):
 				draw.update_vector(3, chosen_dir*5)
 			#draw.update_vector(4, -transform.basis.z)
 			
-		# label debugging
+		# debugging
 		if hud and debug:
 			hud.update_debug("D: " + str(danger) + "\n I: " + str(interest))
+			hud.update_AI_vis(self)
 
 		# cop spots player -> starts chase
 		if get_parent().is_in_group("cop"):
@@ -829,3 +830,6 @@ func _on_BODY_input_event(camera, event, click_position, click_normal, shape_idx
 		print("AI clicked is: ", get_parent().get_name())
 		debug = true
 		hud.debug_label.show()
+		hud.get_node("AI steering vis").show()
+		if hud.get_node("AI steering vis").get_child_count() < 2:
+			hud.setup_ai_vis(self)

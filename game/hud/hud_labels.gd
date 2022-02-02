@@ -128,3 +128,14 @@ func speed_cockpit():
 func update_nav_label(val):
 	nav_label.set_text(val)
 	
+# ----------------------------------
+func setup_ai_vis(ai):
+	get_node("AI steering vis").columns = ai.num_rays
+	while get_node("AI steering vis").get_child_count() < ai.num_rays:
+		var r = get_node("AI steering vis/DebugRect").duplicate()
+		get_node("AI steering vis").add_child(r)
+
+func update_AI_vis(ai):
+	get_node("AI steering vis").danger = ai.danger
+	get_node("AI steering vis").interest = ai.interest
+	get_node("AI steering vis").update_vis()
