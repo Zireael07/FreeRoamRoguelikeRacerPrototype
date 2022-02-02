@@ -82,11 +82,13 @@ func add_line(object, start, end, width, color):
 	lines[object].append(Line.new(start, end, width, color))
 
 # hack Zir
-func update_line(object, id, start, end):
+func update_line(object, id, start, end, color=false):
 	if lines.has(object):
 		var line = lines[object][id]
 		line.start = start
 		line.end = end
+		if color:
+			line.color = color
 
 func add_vector(object, vector, size, width, color):
 	vectors.append(Vector.new(object, vector, size, width, color))

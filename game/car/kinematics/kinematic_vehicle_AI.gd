@@ -198,12 +198,16 @@ func register_debugging_lines():
 		var end = brain.target
 		draw.add_line(self, pos, end, 3, Color(0,0,1)) # blue
 		
-		# TODO: those should point down car's axis, but currently point in global dir
-		draw.add_vector(self, velocity, 1, 3, Color(1,1,0)) # yellow
-		draw.add_vector(self, steer, 1, 3, Color(0,1,1)) # cyan
-		draw.add_vector(self, brain.desired, 1, 3, Color(0.33,0.33,0.33)) # gray
-		draw.add_vector(self, chosen_dir*5, 1, 3, Color(0,1,0)) # green
-		#draw.add_vector(self, -transform.basis.z, 1,3, Color(0.33,0.33,0.33)) # gray
+		# for some reason, vectors point in global dir - moving to add_line() fixes it
+		#draw.add_vector(self, velocity, 1, 3, Color(1,1,0)) # yellow
+		draw.add_line(self, pos, velocity, 3, Color(1,1,0))
+		#draw.add_vector(self, steer, 1, 3, Color(0,1,1)) # cyan
+		draw.add_line(self, pos, steer, 3, Color(0,1,1))
+		#draw.add_vector(self, brain.desired, 1, 3, Color(0.33,0.33,0.33)) # gray
+		draw.add_line(self, pos, brain.desired, 3, Color(0.33,0.33, 0.33))
+		#draw.add_vector(self, chosen_dir*5, 1, 3, Color(0,1,0)) # green
+		draw.add_line(self, pos, chosen_dir*3, 3, Color(0,1,0))
+		#draw.add_vector(self, to_local(Vector3(0, 0, -4)), 1,3, Color(0.66,0.33,0.33)) # gray
 		
 		#print("Registered target line")
 
@@ -219,24 +223,34 @@ func _process(delta):
 		done = true
 
 		if get_viewport().get_camera_3d().get_name() == "CameraDebug":
-			draw.update_line(self, 0, get_global_transform().origin, brain.target)
-			draw.update_vector(0, velocity)
+			var pos = get_global_transform().origin
+			draw.update_line(self, 0, pos, brain.target)
+			# kinematic (character) body's velocity is global
+			draw.update_line(self, 1, pos, pos+velocity)
+			#draw.update_vector(0, velocity)
 			if gas:
-				draw.update_vector(1, steer, Color(0, 0.75,0))
+				draw.update_line(self, 2, pos, pos+steer, Color(0, 0.75,0))
+				#draw.update_vector(0, steer, Color(0, 0.75,0))
 			elif braking:
-				draw.update_vector(1, steer, Color(0.75, 0,0))
+				draw.update_line(self, 2, pos, pos+steer, Color(0.75, 0,0))
+				#draw.update_vector(0, steer, Color(0.75, 0,0))
 			else:
-				draw.update_vector(1, steer)
-			draw.update_vector(2, brain.desired)
+				#draw.update_vector(0, steer)
+				draw.update_line(self, 2, pos, pos+steer)
+			#draw.update_vector(1, brain.desired)
+			draw.update_line(self, 3, pos, pos+(brain.desired/2))
 			# see get_angle_dir() below
 			if abs(a) > 0.02:
 				if a > 0: # right
-					draw.update_vector(3, chosen_dir*5, Color(1,0,0)) # red
+					draw.update_line(self, 4, pos, pos+chosen_dir*3, Color(1,0,0))
+					#draw.update_vector(2, chosen_dir*5, Color(1,0,0)) # red
 				else: # left
-					draw.update_vector(3, chosen_dir*5, Color(0.75,0.5,0)) # orange
+					draw.update_line(self, 4, pos, pos+chosen_dir*3, Color(0.75,0.5,0))
+					#draw.update_vector(2, chosen_dir*5, Color(0.75,0.5,0)) # orange
 			else:
-				draw.update_vector(3, chosen_dir*5)
-			#draw.update_vector(4, -transform.basis.z)
+				#draw.update_vector(2, chosen_dir*5)
+				draw.update_line(self, 4, pos, pos+chosen_dir*3)
+			#draw.update_vector(4, to_local(to_global(Vector3(0, 0, -4))))
 			
 		# debugging
 		if hud and debug:
