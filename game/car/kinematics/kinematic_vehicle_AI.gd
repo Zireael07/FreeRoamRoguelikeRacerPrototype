@@ -254,7 +254,11 @@ func _process(delta):
 			
 		# debugging
 		if hud and debug:
-			hud.update_debug("D: " + str(danger) + "\n I: " + str(interest))
+			# we only want 2 significant places
+			var interest_disp = []
+			for i in interest:
+				interest_disp.append(String.num(i,2))
+			hud.update_debug("D: " + str(danger) + "\n I: " + str(interest_disp))
 			hud.update_AI_vis(self)
 
 		# cop spots player -> starts chase
@@ -843,7 +847,6 @@ func _on_BODY_input_event(camera, event, click_position, click_normal, shape_idx
 	if (event is InputEventMouseButton) and (event.button_index == MOUSE_BUTTON_LEFT):
 		print("AI clicked is: ", get_parent().get_name())
 		debug = true
-		hud.debug_label.show()
-		hud.get_node("AI steering vis").show()
-		if hud.get_node("AI steering vis").get_child_count() < 2:
+		hud.get_node("DebugAI").show()
+		if hud.get_node("DebugAI/AI steering vis").get_child_count() < 2:
 			hud.setup_ai_vis(self)

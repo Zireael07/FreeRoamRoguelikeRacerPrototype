@@ -3,7 +3,7 @@ extends Control
 
 # class member variables go here, for example:
 @onready var label = get_node(^"Label")
-@onready var debug_label = get_node(^"Label3")
+@onready var debug_label = get_node(^"DebugAI/Label_info")
 @onready var fps_label = get_node(^"Label FPS")
 @onready var dist_label = get_node(^"Label dist")
 @onready var road_label = get_node(^"Label road")
@@ -130,12 +130,18 @@ func update_nav_label(val):
 	
 # ----------------------------------
 func setup_ai_vis(ai):
-	get_node("AI steering vis").columns = ai.num_rays
-	while get_node("AI steering vis").get_child_count() < ai.num_rays:
-		var r = get_node("AI steering vis/DebugRect").duplicate()
-		get_node("AI steering vis").add_child(r)
+	get_node("DebugAI/AI steering vis").columns = ai.num_rays
+	while get_node("DebugAI/AI steering vis").get_child_count() < ai.num_rays:
+		var r = get_node("DebugAI/AI steering vis/DebugRect").duplicate()
+		get_node("DebugAI/AI steering vis").add_child(r)
+	
+	# wait so that the container has its final size
+	await get_tree().process_frame
+	get_node("DebugAI/Label2")._set_position(Vector2(get_node("DebugAI/AI steering vis").get_size().x/4, 100))
+	get_node("DebugAI/Label3")._set_position(Vector2(get_node("DebugAI/AI steering vis").get_size().x/2, 100))
+	get_node("DebugAI/Label4")._set_position(Vector2(get_node("DebugAI/AI steering vis").get_size().x, 100))
 
 func update_AI_vis(ai):
-	get_node("AI steering vis").danger = ai.danger
-	get_node("AI steering vis").interest = ai.interest
-	get_node("AI steering vis").update_vis()
+	get_node("DebugAI/AI steering vis").danger = ai.danger
+	get_node("DebugAI/AI steering vis").interest = ai.interest
+	get_node("DebugAI/AI steering vis").update_vis()
