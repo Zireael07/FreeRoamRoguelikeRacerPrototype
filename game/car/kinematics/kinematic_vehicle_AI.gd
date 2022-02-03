@@ -507,6 +507,7 @@ func get_input():
 	if not stop:
 		set_interest()
 		set_danger()
+		merge_direction()
 		choose_direction()
 	
 	#if get_parent().is_in_group("race_AI"):
@@ -706,7 +707,7 @@ func set_danger():
 #			hud.update_debug("D: " + str(danger)+"\n")
 
 # TODO: optimize - if no danger at all, no need to do all those calculations
-func choose_direction():
+func merge_direction():
 	for i in num_rays:
 		if danger[i] > 0.0:
 			interest[i] = 0.0
@@ -720,7 +721,8 @@ func choose_direction():
 #	if hud: 
 #		if debug: 
 #			hud.append_debug("I: " + str(interest) + "\n")		
-			
+
+func choose_direction():	
 	chosen_dir = Vector3.ZERO
 	for i in num_rays:
 		# this is GLOBAL!!!!
