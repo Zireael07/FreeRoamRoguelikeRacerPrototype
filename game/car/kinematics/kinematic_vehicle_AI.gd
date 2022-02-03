@@ -117,6 +117,8 @@ func add_rays():
 		r.enabled = true
 		# debug
 		rays[i] = (r.target_position.normalized()*4).rotated(Vector3(0,1,0), r.rotation.y)
+		if i == num_rays-(num_rays/4): #numrays/4 is 90 degrees to the right, numrays-(x/4) is to the left
+			r.debug_shape_custom_color = Color(0.99, 0.99, 0.90)
 	forward_ray = $ContextRays.get_child(0)
 
 # ---------------------------------------
@@ -689,7 +691,7 @@ func set_danger():
 		danger[i] = 1.0 if ray.is_colliding() else 0.0
 		
 		# increase by a factor depending on distance to obstacle
-		if i == 0 or i == 1 or i == num_rays-1:
+		if i == 0 or i == 1 or i == num_rays-1 or i == num_rays-2:
 			if ray.is_colliding():
 				var d = global_transform.origin.distance_to(ray.get_collider().global_transform.origin)
 				if d < brake_distance*0.75:
@@ -710,14 +712,25 @@ func set_danger():
 func merge_direction():
 	for i in num_rays:
 		if danger[i] > 0.0:
+			# danger	"poisons" neighboring directions
+			if i-1 > 0:
+				interest[i-1] = 0.5
+			if i+1 < num_rays:
+				interest[i+1] = 0.5
+			
+			# zero any interest in dangerous directions
 			interest[i] = 0.0
 			# TODO: add interest in opposing direction?
 			# front rays add interest to the side
 			if i == 0 or i == 1 or i == 2:
-				interest[num_rays-(num_rays/4)] = 2.0*danger[i]
+				# x-(x/4) is to the left
+				# adding means we won't get stuck if all or most front rays encounter something
+				interest[num_rays-(num_rays/4)] += 2.0*danger[i]
 			if i == num_rays-1 or i == num_rays-2:
-				interest[num_rays/4] = 2.0*danger[i]
-				
+				# num_rays/4 is to the right
+				# see above
+				interest[num_rays/4] += 2.0*danger[i]
+			
 #	if hud: 
 #		if debug: 
 #			hud.append_debug("I: " + str(interest) + "\n")		
