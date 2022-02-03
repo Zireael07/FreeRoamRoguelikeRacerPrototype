@@ -590,13 +590,15 @@ func no_rain():
 func debug_tunnel():
 	# works but makes buildings transparent, too
 	var tun = get_node(^"tunnel").get_mesh().surface_get_material(0)
-	tun.set_feature(StandardMaterial3D.FEATURE_TRANSPARENT, true)
+	tun.set_transparency(1)
+	#tun.set_feature(StandardMaterial3D.FEATURE_TRANSPARENT, true)
 	#var tun = get_node(^"tunnel")
 	#tun.hide()
 	
 func show_tunnel():
 	var tun = get_node(^"tunnel").get_mesh().surface_get_material(0)
-	tun.set_feature(StandardMaterial3D.FEATURE_TRANSPARENT, false)
+	tun.set_transparency(0)
+	#tun.set_feature(StandardMaterial3D.FEATURE_TRANSPARENT, false)
 	#var tun = get_node(^"tunnel")
 	#tun.show()
 

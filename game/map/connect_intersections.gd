@@ -471,7 +471,7 @@ func get_src_exit(src, dest, verbose=false):
 			Logger.mapgen_print("available src exits: " + str(src_exits))
 			Logger.mapgen_print("used exits" + str(src.used_exits))
 		
-	var rel_pos = (dest.get_global_transform() * src.get_global_transform().origin)
+	var rel_pos = src.to_local(dest.get_global_transform().origin)
 	if verbose:
 		Logger.mapgen_print("Src exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.z, rel_pos.x)))
 	
@@ -593,7 +593,7 @@ func get_dest_exit(src, dest, verbose=false):
 			Logger.mapgen_print("available dest exits: " + str(dest_exits))
 			Logger.mapgen_print("used exits" + str(dest.used_exits))
 	
-	var rel_pos = (src.get_global_transform() * dest.get_global_transform().origin)
+	var rel_pos = dest.to_local(src.get_global_transform().origin)
 	if verbose:
 		Logger.mapgen_print("Dest exits for relative pos: " + str(rel_pos) + " angle " + str(atan2(rel_pos.z, rel_pos.x)))
 	
