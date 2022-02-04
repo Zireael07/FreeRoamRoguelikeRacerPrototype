@@ -239,6 +239,9 @@ func _ready():
 		
 		dealer.set_name("dealership")
 		add_child(dealer)
+		
+	# test
+	#Logger.save_to_file()
 
 # -----------------
 # returns a list of [dist, index] lists, operates on child ids
@@ -289,8 +292,9 @@ func auto_connect(initial_int, real_edges, verbose=false):
 	var to_remove = []
 
 	if verbose:
-		# +3 because of helper nodes that come first
-		Logger.mapgen_print("Auto connecting... " + String(get_child(initial_int+3).get_name()) + " @ " + str(get_child(initial_int+3).get_global_transform().origin))
+		if initial_int+3 < get_child_count():
+			# +3 because of helper nodes that come first
+			Logger.mapgen_print("Auto connecting... " + String(get_child(initial_int+3).get_name()) + " @ " + str(get_child(initial_int+3).get_global_transform().origin))
 
 	for e in edges:
 		if e.x == initial_int:
@@ -360,6 +364,7 @@ func auto_connect(initial_int, real_edges, verbose=false):
 			if verbose:
 				Logger.mapgen_print("We did create a connection... " + str(initial_int) + " to " + str(p[0]))
 			real_edges.append(Vector2(initial_int, p[0]))
+			
 
 # ---------------------------------------
 func place_player_random():
