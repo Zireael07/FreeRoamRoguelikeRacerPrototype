@@ -20,10 +20,10 @@ extends Node2D
 		# TODO: Manually copy the code from this method.
 		set_right(value)
 
-#export(bool) var snap:
-	set(value):
+#@export var snap: bool = true:
+#	set(value):
 		# TODO: Manually copy the code from this method.
-		set_snap(value)
+		#set_snap(value)
 signal enabled_snap
 
 # for debugging
@@ -105,7 +105,7 @@ func _get_item_rect():
 func _draw():
 	draw_circle_arc(Vector2(0,0), radius, angle_from, angle_to, Color(0,0,1))
 	# debugging
-	draw_string(font, last, str(angle_to), Color(1,1,1))
+	draw_string(font, last, str(angle_to),0,-1,16, Color(1,1,1))
 	draw_circle(first, 1, Color(0,1,0))
 	draw_circle(last, 1, Color(1,0,0))
 	

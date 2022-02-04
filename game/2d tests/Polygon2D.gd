@@ -88,9 +88,9 @@ func get_tangent(i,j):
 
 func get_intersections():
 	
-	intersections.append(Geometry.segment_intersects_segment_2d(corners[1], corners[1]+get_tangent(1,1), corners[2], corners[2]+get_tangent(1,2)))
+	intersections.append(Geometry2D.segment_intersects_segment(corners[1], corners[1]+get_tangent(1,1), corners[2], corners[2]+get_tangent(1,2)))
 	
-	intersections.append(Geometry.segment_intersects_segment_2d(corners[3], corners[3]+get_tangent(2,3), corners[4], corners[4]+get_tangent(2,4)))
+	intersections.append(Geometry2D.segment_intersects_segment(corners[3], corners[3]+get_tangent(2,3), corners[4], corners[4]+get_tangent(2,4)))
 	
 	#print("Intersection: " + str(intersections[0]) + "test" + str(intersections[0]+Vector2(4.758389,0)))
 

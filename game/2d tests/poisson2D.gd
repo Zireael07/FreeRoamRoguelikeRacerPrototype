@@ -37,10 +37,11 @@ var edges = []
 var out_edges = []
 
 #export var seede = 3046862638:
+@export var seede = 10000001: #3046862638
 	set(value):
 		# TODO: Manually copy the code from this method.
 		set_seed(value)
-var seede = 10000001 #3046862638
+
 
 
 func _ready():
