@@ -51,8 +51,12 @@ storefront_mat = SubResource( "1" )
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 1, 7.63328, 8.47983, 0)
 layers = 4
 cast_shadow = 0
+gi_mode = 1
 mesh = ExtResource( "4" )
 surface_material_override/0 = ExtResource( "5" )
+
+[node name="OmniLight3D" type="OmniLight3D" parent="MeshInstance3D"]
+omni_range = 3.0
 
 [node name="cable" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.47721, 0.17101, 0.0603075, 0, 0.173648, -1.96962, -0.260472, 0.969847, 0.342021, 6.76171, 21.4082, -2.15234)
