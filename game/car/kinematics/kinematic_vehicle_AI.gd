@@ -61,6 +61,7 @@ var rays = [] # debugging
 var chosen_dir = Vector3.ZERO
 var a = 0.0
 var forward_ray = null
+var context_has_danger = false
 
 # for race AI only
 var finished = false
@@ -506,11 +507,16 @@ func make_steering():
 func get_input():
 	make_steering()
 	# context steering
+	context_has_danger = false
 	if not stop:
-		set_interest()
 		set_danger()
-		merge_direction()
-		choose_direction()
+		# only do stuff if we need to (if we detected danger)
+		if context_has_danger:
+			set_interest()
+			merge_direction()
+			choose_direction()
+		else:
+			chosen_dir = brain.steer[1].normalized()
 	
 	#if get_parent().is_in_group("race_AI"):
 	#	chosen_dir = steer.normalized()
@@ -690,6 +696,9 @@ func set_danger():
 		var ray = $ContextRays.get_child(i)
 		danger[i] = 1.0 if ray.is_colliding() else 0.0
 		
+		if danger[i] > 0.0:
+			context_has_danger = true
+		
 		# increase by a factor depending on distance to obstacle
 		if i == 0 or i == 1 or i == num_rays-1 or i == num_rays-2:
 			if ray.is_colliding():
@@ -708,7 +717,7 @@ func set_danger():
 #		if debug:
 #			hud.update_debug("D: " + str(danger)+"\n")
 
-# TODO: optimize - if no danger at all, no need to do all those calculations
+# only done if we have danger in the first place
 func merge_direction():
 	for i in num_rays:
 		if danger[i] > 0.0:
