@@ -223,6 +223,7 @@ func setupBuilding(index, base_height):
 	#print("Sign color: ", color)
 	
 	build.get_node(^"MeshInstance3D").get_surface_override_material(0).set_shader_param("modulate", color)
+	build.get_node("MeshInstance3D/OmniLight3D").light_color = color
 	
 	# vary sign placement height
 	var rand_i = randi() % 5
