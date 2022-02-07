@@ -46,6 +46,8 @@ var cables2 = null
 var cherry_tree = null
 var bamboo_clump = null
 
+var box = null
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
@@ -88,6 +90,7 @@ func _ready():
 	cherry_tree = preload("res://objects/cherry_tree.tscn")
 	bamboo_clump = preload("res://objects/bamboo_clump.tscn")
 
+	box = preload("res://objects/cardboard_box.tscn")
 
 func place_props(trees, bamboo, long):
 	var height = 0
@@ -263,6 +266,16 @@ func placeBuilding(index, base_height):
 	
 	build.get_node(^"Node3D").set_position(Vector3(-8, 0,0))
 	
+	# place a cardboard box in the passage
+#	var c_box = box.instantiate()
+#	build.add_child(c_box)
+	var c_box = build.get_node("Node3D2")
+	if index > 0:
+		c_box.set_position(Vector3(6,2,8))
+	else:
+		c_box.queue_free()
+#	c_box.set_position(loc+Vector3(-8, 8,-8))
+	
 	build = setupBuilding(index, base_height)
 	
 	#build = setupBuildingSimple(index)
@@ -278,6 +291,16 @@ func placeBuilding(index, base_height):
 	
 	# move detect area
 	build.get_node(^"Node3D").set_position(Vector3(-8, 0,0))
+	
+	# place a cardboard box in the passage
+	c_box = build.get_node("Node3D2")
+	if index > 0:
+		c_box.set_position(Vector3(6, 2,8))
+	else:
+		c_box.queue_free()
+#	c_box = box.instantiate()
+#	build.add_child(c_box)
+#	c_box.set_position(Vector3(-10, 8,-10))
 	
 func placeCable(index, base_height):
 	if (index % 2 > 0):

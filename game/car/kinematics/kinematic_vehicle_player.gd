@@ -326,6 +326,15 @@ func _physics_process(delta):
 
 	cockpit_cam.set_rotation(Vector3(deg2rad(180),deg2rad(cockpit_cam_angle), deg2rad(180)))
 
+	# did we run into a cardboard box?
+	if get_slide_collision_count():
+		var collision = get_slide_collision(0)
+		if collision.get_collider() is RigidDynamicBody3D:
+			var nam = collision.get_collider().get_name()
+			#print(nam)
+			# push on it
+			var cr_imp = -get_global_transform().basis.z.normalized() * 4
+			collision.get_collider().apply_impulse(Vector3(0,-2,0), Vector3(cr_imp.x, 0, cr_imp.z))
 
 func after_move():
 	# racing ctd

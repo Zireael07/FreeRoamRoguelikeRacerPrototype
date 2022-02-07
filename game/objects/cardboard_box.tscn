@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://d0s76bnmcc5l3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0gvwk"]
+albedo_color = Color(0.772549, 0.588235, 0.384314, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mhawr"]
+material = SubResource( "StandardMaterial3D_0gvwk" )
+size = Vector3(1, 2, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nr27d"]
+size = Vector3(1, 2, 1)
+
+[node name="cardboard_box" type="RigidDynamicBody3D"]
+collision_mask = 3
+mass = 10.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+mesh = SubResource( "BoxMesh_mhawr" )
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource( "BoxShape3D_nr27d" )

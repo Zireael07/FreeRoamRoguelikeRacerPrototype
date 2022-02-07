@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://chxoclyxt160n"]
+[gd_scene load_steps=17 format=3 uid="uid://chxoclyxt160n"]
 
 [ext_resource type="Script" path="res://scripts/meshes/procedural_building.gd" id="1"]
 [ext_resource type="Material" path="res://assets/procedural_building_metal_mat.tres" id="2"]
@@ -10,6 +10,7 @@
 [ext_resource type="Shader" path="res://assets/storefront/storefront_tinted.gdshader" id="8"]
 [ext_resource type="Texture2D" uid="uid://bailvhtc6oa7" path="res://assets/storefront/shop_front16_ed.png" id="9"]
 [ext_resource type="Script" path="res://avoid_area.gd" id="10"]
+[ext_resource type="PackedScene" uid="uid://d0s76bnmcc5l3" path="res://objects/cardboard_box.tscn" id="11_mr5x3"]
 
 [sub_resource type="ShaderMaterial" id="1"]
 render_priority = 0
@@ -37,7 +38,7 @@ size = Vector3(4, 2, 16)
 [sub_resource type="BoxMesh" id="4"]
 size = Vector3(4, 1, 16)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_agdc4"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_jnlnx"]
 size = Vector3(12, 38, 12)
 
 [node name="Node3D" type="Node3D"]
@@ -109,6 +110,10 @@ mesh = SubResource( "4" )
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 19, 0)
-shape = SubResource( "BoxShape3D_agdc4" )
+shape = SubResource( "BoxShape3D_jnlnx" )
+
+[node name="Node3D2" parent="." instance=ExtResource( "11_mr5x3" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.13364, 2, 8.00935)
+sleeping = true
 
 [connection signal="body_entered" from="Node3D" to="Node3D" method="_on_Spatial_body_entered"]
