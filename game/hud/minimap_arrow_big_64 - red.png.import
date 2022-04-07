@@ -1,9 +1,9 @@
 [remap]
 
 importer="texture"
-type="StreamTexture2D"
+type="CompressedTexture2D"
 uid="uid://c2svgfslac160"
-path="res://.godot/imported/minimap_arrow_big_64 - red.png-65555b9aad4a920c9b5806d41817128c.stex"
+path="res://.godot/imported/minimap_arrow_big_64 - red.png-65555b9aad4a920c9b5806d41817128c.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://hud/minimap_arrow_big_64 - red.png"
-dest_files=["res://.godot/imported/minimap_arrow_big_64 - red.png-65555b9aad4a920c9b5806d41817128c.stex"]
+dest_files=["res://.godot/imported/minimap_arrow_big_64 - red.png-65555b9aad4a920c9b5806d41817128c.ctex"]
 
 [params]
 
@@ -21,7 +21,6 @@ compress/hdr_compression=1
 compress/bptc_ldr=0
 compress/normal_map=0
 compress/channel_pack=0
-compress/streamed=false
 mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
@@ -29,6 +28,6 @@ roughness/src_normal=""
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
-process/HDR_as_SRGB=false
+process/hdr_as_srgb=false
 process/size_limit=0
 detect_3d/compress_to=1

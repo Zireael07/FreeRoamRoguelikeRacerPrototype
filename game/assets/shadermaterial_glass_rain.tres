@@ -69,9 +69,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="OpenSimplexNoise" id="2"]
-period = 10.0
-lacunarity = 4.0
+[sub_resource type="FastNoiseLite" id="2"]
 
 [sub_resource type="NoiseTexture" id="3"]
 seamless = true

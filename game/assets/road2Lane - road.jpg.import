@@ -1,17 +1,19 @@
 [remap]
 
 importer="texture"
-type="StreamTexture2D"
+type="CompressedTexture2D"
 uid="uid://ym2vv407rocf"
-path="res://.godot/imported/road2Lane - road.jpg-d2479e94be53b98f3a49a0290d917e43.stex"
+path.s3tc="res://.godot/imported/road2Lane - road.jpg-d2479e94be53b98f3a49a0290d917e43.s3tc.ctex"
+path.etc2="res://.godot/imported/road2Lane - road.jpg-d2479e94be53b98f3a49a0290d917e43.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc", "etc2"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/road2Lane - road.jpg"
-dest_files=["res://.godot/imported/road2Lane - road.jpg-d2479e94be53b98f3a49a0290d917e43.stex"]
+dest_files=["res://.godot/imported/road2Lane - road.jpg-d2479e94be53b98f3a49a0290d917e43.s3tc.ctex", "res://.godot/imported/road2Lane - road.jpg-d2479e94be53b98f3a49a0290d917e43.etc2.ctex"]
 
 [params]
 
@@ -21,7 +23,6 @@ compress/hdr_compression=1
 compress/bptc_ldr=0
 compress/normal_map=0
 compress/channel_pack=0
-compress/streamed=false
 mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
@@ -29,6 +30,6 @@ roughness/src_normal=""
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
-process/HDR_as_SRGB=false
+process/hdr_as_srgb=false
 process/size_limit=0
 detect_3d/compress_to=0
