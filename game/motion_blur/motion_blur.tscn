@@ -1,14 +1,15 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=4 format=3 uid="uid://dfisly0poq01o"]
 
-[ext_resource path="res://motion_blur/moblur_shader.tres" type="Material" id=1]
-[ext_resource path="res://motion_blur/motion_blur.gd" type="Script" id=2]
+[ext_resource type="Material" path="res://motion_blur/moblur_shader.tres" id="1"]
+[ext_resource type="Script" path="res://motion_blur/motion_blur.gd" id="2"]
 
-[sub_resource type="QuadMesh" id=1]
+[sub_resource type="QuadMesh" id="1"]
 size = Vector2(2, 1.5)
 
 [node name="motion_blur" type="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+visible = false
 cast_shadow = 0
-mesh = SubResource( 1 )
-surface_material_override/0 = ExtResource( 1 )
-script = ExtResource( 2 )
+mesh = SubResource( "1" )
+surface_material_override/0 = ExtResource( "1" )
+script = ExtResource( "2" )

@@ -18,16 +18,16 @@ void fragment()
 	vec3 pixel_pos_ndc = vec3(SCREEN_UV*2.0-1.0, depth*2.0-1.0); 
     vec4 pixel_pos_clip = INV_PROJECTION_MATRIX * vec4(pixel_pos_ndc,1.0);
     vec3 pixel_pos_cam = pixel_pos_clip.xyz / pixel_pos_clip.w;
-	vec3 pixel_pos_world = (inverse(INV_CAMERA_MATRIX) * vec4(pixel_pos_cam, 1.0)).xyz;
+	vec3 pixel_pos_world = (inverse(VIEW_MATRIX) * vec4(pixel_pos_cam, 1.0)).xyz;
 	
 	//Calculate total velocity which combines linear velocity and angular velocity
-	vec3 cam_pos = inverse(INV_CAMERA_MATRIX)[3].xyz; //Correct
+	vec3 cam_pos = inverse(VIEW_MATRIX)[3].xyz; //Correct
 	vec3 r = pixel_pos_world - cam_pos;
 	vec3 total_velocity = linear_velocity + cross(angular_velocity, r);
 	
 	//Offset the world pos by the total velocity, then project back to ndc coordinates
 	vec3 pixel_prevpos_world = pixel_pos_world - total_velocity;
-	vec3 pixel_prevpos_cam =  ((INV_CAMERA_MATRIX) * vec4(pixel_prevpos_world, 1.0)).xyz;
+	vec3 pixel_prevpos_cam =  ((VIEW_MATRIX) * vec4(pixel_prevpos_world, 1.0)).xyz;
 	vec4 pixel_prevpos_clip =  PROJECTION_MATRIX * vec4(pixel_prevpos_cam, 1.0);
 	vec3 pixel_prevpos_ndc = pixel_prevpos_clip.xyz / pixel_prevpos_clip.w;
 	

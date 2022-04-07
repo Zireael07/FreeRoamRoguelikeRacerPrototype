@@ -32,7 +32,7 @@ func setup(mul, samples, real_edges):
 
 func setup_neighbors(samples, edges):
 	# we'll use AStar to have an easy map of neighbors
-	ast = AStar.new()
+	ast = AStar3D.new()
 	for i in range(0,samples.size()-1):
 		ast.add_point(i, Vector3(samples[i][0]*mult, 0, samples[i][1]*mult))
 
@@ -180,7 +180,7 @@ func spawn_markers(samples, real_edges):
 func setup_map_nav(samples, real_edges):
 	var roads_start_id = 3+samples.size()-1 # 3 helper nodes + intersections for samples
 	
-	nav = AStar.new()
+	nav = AStar3D.new()
 	var pts = []
 	var begin_id = 0
 	#var path_data = []

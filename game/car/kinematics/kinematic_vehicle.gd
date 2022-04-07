@@ -11,7 +11,7 @@ extends CharacterBody3D
 @export var max_speed_reverse = 3.0
 
 var acceleration = Vector3.ZERO
-var velocity = Vector3.ZERO
+var vel = Vector3.ZERO
 var steer_angle = 0.0
 var forward_vec
 
@@ -82,24 +82,24 @@ func _physics_process(delta):
 	
 	#acceleration.y = 0
 	acceleration.y = gravity
-	velocity += acceleration * delta # delta is unnecessary for move and collide?
+	vel += acceleration * delta # delta is unnecessary for move and collide?
 	
 	#if debug: print("acc*delta" + str(acceleration*delta) + " len: ", str((acceleration*delta).length()))
 	
 	# Set our velocity to a new variable (hvel) and remove the Y velocity.
-	var hvel = velocity
+	var hvel = vel
 	if on_ground:
 		hvel.y = 0
 	
 	# velocity, up, snap, slope, slides
-	self.set_motion_velocity(hvel)
+	self.set_velocity(hvel)
 	
 	# TODO: This information should be set to the CharacterBody properties instead of arguments.
 	move_and_slide() #hvel, #velocity,
 				#-transform.basis.y, Vector3.UP, true, 1)
 	
 	# hackfix to restore 3.x behavior
-	velocity = get_motion_velocity()
+	vel = get_velocity()
 	
 	# Align with slopes
 	# If either wheel is in the air, align to slope
@@ -111,9 +111,9 @@ func _physics_process(delta):
 		var xform = align_with_y(global_transform, n)
 		global_transform = global_transform.interpolate_with(xform, 0.1)
 				
-	speed = velocity.length()
+	speed = vel.length()
 	#reverse
-	if (Vector3(velocity.x, 0, velocity.z).dot(-global_transform.basis.z) > 0) or velocity.length() < 0.05:
+	if (Vector3(vel.x, 0, vel.z).dot(-global_transform.basis.z) > 0) or vel.length() < 0.05:
 		reverse = false
 	else:
 		reverse = true
@@ -138,13 +138,13 @@ func apply_friction(delta):
 	#	velocity.z = 0
 	
 	# fix for AI getting stuck when starting
-	if velocity.length() < 1:
+	if vel.length() < 1:
 		return	
 		
 	# Friction is proportional to velocity.	
-	var friction_force = velocity * friction * delta
+	var friction_force = vel * friction * delta
 	# Drag is proportional to velocity squared.
-	var drag_force = velocity * velocity.length() * drag * delta
+	var drag_force = vel * vel.length() * drag * delta
 	acceleration += drag_force + friction_force
 
 func get_steering_angle(steer_target, delta):
@@ -155,7 +155,7 @@ func get_steering_angle(steer_target, delta):
 
 		# TORCS style
 		var press = 2 * 1 - 1
-		var steer_change = press * STEER_SENS * delta  / (1.0 + SPEED_SENS * velocity.length() / SPEED_FACT) * FUDGE
+		var steer_change = press * STEER_SENS * delta  / (1.0 + SPEED_SENS * vel.length() / SPEED_FACT) * FUDGE
 #		var steer_change = press * STEER_SENS * delta / (1.0 + SPEED_SENS * get_linear_velocity().length() / SPEED_FACT)
 
 		steer_angle -= steer_change
@@ -167,7 +167,7 @@ func get_steering_angle(steer_target, delta):
 		
 		# TORCS style
 		var press = 2 * 1 - 1
-		var steer_change = press * STEER_SENS * delta  / (1.0 + SPEED_SENS * velocity.length() / SPEED_FACT) * FUDGE
+		var steer_change = press * STEER_SENS * delta  / (1.0 + SPEED_SENS * vel.length() / SPEED_FACT) * FUDGE
 #		var steer_change = press * STEER_SENS * delta / (1.0 + SPEED_SENS * get_linear_velocity().length() / SPEED_FACT)
 
 
@@ -186,18 +186,18 @@ func calculate_steering(delta):
 	var rear_wheel = transform.origin + transform.basis.z * wheel_base / 2.0
 	var front_wheel = transform.origin - transform.basis.z * wheel_base / 2.0
 
-	rear_wheel += velocity * delta
+	rear_wheel += vel * delta
 
 	#order of operation: forward by velocity and then rotate
-	front_wheel += velocity.rotated(transform.basis.y, steer_angle) * delta
+	front_wheel += vel.rotated(transform.basis.y, steer_angle) * delta
 	var new_heading = rear_wheel.direction_to(front_wheel)
 
-	var d = new_heading.dot(velocity.normalized())
+	var d = new_heading.dot(vel.normalized())
 	# going forward or reverse?
 	if d > 0:
-		velocity = new_heading * velocity.length()
+		vel = new_heading * vel.length()
 	if d < 0:
-		velocity = -new_heading * min(velocity.length(), max_speed_reverse)
+		vel = -new_heading * min(vel.length(), max_speed_reverse)
 	
 	# Point in the steering direction.
 	# this uses global parameters	

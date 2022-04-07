@@ -1,10 +1,11 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b7fm136p8ejjr"]
 
-[ext_resource path="res://motion_blur/moblur_shader.gdshader" type="Shader" id=1]
+[ext_resource type="Shader" path="res://motion_blur/moblur_shader.gdshader" id="1"]
 
 [resource]
-shader = ExtResource( 1 )
-shader_param/linear_velocity = Vector3( 0, 1, 0 )
-shader_param/angular_velocity = Vector3( 0, 0, 0 )
+render_priority = 0
+shader = ExtResource( "1" )
+shader_param/linear_velocity = Vector3(0, 1, 0)
+shader_param/angular_velocity = Vector3(0, 0, 0)
 shader_param/iteration_count = 4
 shader_param/intensity = 0.2
