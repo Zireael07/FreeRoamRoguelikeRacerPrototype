@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://dfi8yrsjftnve"]
+
+[ext_resource type="Script" path="res://parkinglot.gd" id="1_tiu5d"]
+[ext_resource type="Texture2D" uid="uid://ce75yh83o4p7t" path="res://assets/parking_lot.png" id="2_h6jha"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0tgbo"]
+albedo_texture = ExtResource( "2_h6jha" )
+uv1_scale = Vector3(2, 4, 1)
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_s45yh"]
+material = SubResource( "StandardMaterial3D_0tgbo" )
+shape = 0
+size = 3.0
+sections = 4
+section_length = 1.0
+section_segments = 1
+
+[node name="Node3D" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+script = ExtResource( "1_tiu5d" )
+rows = 4
+spots = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource( "RibbonTrailMesh_s45yh" )

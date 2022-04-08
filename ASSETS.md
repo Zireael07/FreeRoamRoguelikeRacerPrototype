@@ -14,3 +14,4 @@ Assets:
 * skid mark - <a href="https://www.vecteezy.com/free-vector/motorcycle">Motorcycle Vectors by Vecteezy</a>
 * big LCD font - https://github.com/keshikan/DSEG
 * cherry blossom - https://www.blenderguru.com/tutorials/how-to-make-cherry-blossom-flowers
+* parking lot - https://github.com/fegennari/3DWorld/blob/master/textures/roads/parking_lot.png
