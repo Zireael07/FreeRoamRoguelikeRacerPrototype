@@ -12,7 +12,7 @@ material = SubResource( "StandardMaterial3D_0tgbo" )
 shape = 0
 size = 3.0
 sections = 4
-section_length = 1.0
+section_length = 3.0
 section_segments = 1
 
 [node name="Node3D" type="Node3D"]
@@ -22,4 +22,5 @@ rows = 4
 spots = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
 mesh = SubResource( "RibbonTrailMesh_s45yh" )

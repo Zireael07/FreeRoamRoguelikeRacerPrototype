@@ -45,6 +45,7 @@ var cables = null
 var cables2 = null
 var cherry_tree = null
 var bamboo_clump = null
+var parking_lot = null
 
 var box = null
 
@@ -89,6 +90,7 @@ func _ready():
 	cables2 = preload("res://objects/lantern_cable.tscn")
 	cherry_tree = preload("res://objects/cherry_tree.tscn")
 	bamboo_clump = preload("res://objects/bamboo_clump.tscn")
+	parking_lot = preload("res://roads/parking_lot.tscn")
 
 	box = preload("res://objects/cardboard_box.tscn")
 
@@ -100,9 +102,16 @@ func place_props(trees, bamboo, long):
 	# buildings and lanterns
 	if not trees and not bamboo:
 		var numBuildings = int(long/buildingSpacing)
+		# randomize
+		randomize()
+		var pk = randi_range(1, numBuildings) # new in 4.0
+		
 		for index in range(numBuildings+1):
-			placeBuilding(index, height)
-			placeCable(index, height)
+			if index == pk:
+				placeLot(index)
+			else:
+				placeBuilding(index, height)
+				placeCable(index, height)
 	elif not bamboo:
 		var numTrees = int(long/treeSpacing)
 		for index in range(numTrees+1):
@@ -328,6 +337,35 @@ func placeCable(index, base_height):
 		# if base_height < 0, we're building for a bridge/elevated road so let's flip the sign
 		var loc = Vector3(0,-base_height+3,index*15)
 		cable.set_position(loc)
+
+func placeLot(index):
+	var lot = parking_lot.instantiate()
+	lot.set_name("Parking"+var2str(index))
+	add_child(lot)
+	
+	# random selection
+	randomize()
+	var rand = randf()
+	
+	var loc = Vector3(roadwidth+buildDistance, 0.05, index+buildOffset)
+	if rand < 0.5:
+		#left side of the road
+		if (index > 0):
+			loc = Vector3(roadwidth+buildDistance, 0.05, buildOffset + index*15)
+		else:
+			loc = Vector3(roadwidth+buildDistance, 0.05, index+buildOffset)
+	else:
+		#right side of the road
+		loc = Vector3(-(roadwidth+buildDistance), 0.05, index+buildOffset)
+		if (index > 0):
+			loc = Vector3(-(roadwidth+buildDistance), 0.05, buildOffset + index*15)
+		else:
+			loc = Vector3(-(roadwidth+buildDistance), 0.05, index+buildOffset)
+	
+	lot.set_position(loc)
+	
+	# TODO: spawn a building on the opposite side
+
 
 func placeTree(index, base_height):
 	var tree = cherry_tree.instantiate()
