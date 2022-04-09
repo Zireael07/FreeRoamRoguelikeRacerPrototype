@@ -140,10 +140,10 @@ func add_marker(pos, flag, offset=Vector2(0,0)):
 func remove_marker(pos):
 	print("Removing marker for: " + str(pos))
 	if marker_pos.find(pos) != -1:
-		marker_pos.remove(marker_pos.find(pos))
+		marker_pos.remove_at(marker_pos.find(pos))
 	if mapping_marker.has(pos) && mapping_marker[pos] != null:
 		var marker = mapping_marker[pos]
-		markers.remove(markers.find(marker))
+		markers.remove_at(markers.find(marker))
 		attach.remove_child(marker)
 		# clear the mapping
 		mapping_marker[pos] = null	

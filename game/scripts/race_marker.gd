@@ -79,13 +79,13 @@ func _on_Area_body_enter( body ):
 				player.get_node(^"root").get_node(^"Label timer").hide()
 				
 				# remove raceline from map
-				var track_map = player.get_node(^"Viewport_root/Viewport/minimap/Container/Node2D2/Control_pos/track")
+				var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 				track_map.points = []
 				# force redraw
 				track_map.update()
 				
 				# remove target flag from minimap
-				var minimap = player.get_node(^"Viewport_root/Viewport/minimap")
+				var minimap = player.get_node(^"Viewport_root/SubViewport/minimap")
 				minimap.remove_marker(self.get_global_transform().origin)
 				
 				#remove finish
@@ -355,12 +355,12 @@ func spawn_finish(start):
 	#var finish = our.instantiate()
 	var finish = self.duplicate()
 	finish.set_name("Finish")
-	finish.set_translation(Vector3(loc.x, 0.25, loc.z))
+	finish.set_position(Vector3(loc.x, 0.25, loc.z))
 	finish.finish = true
 	finish.start = start
 	
 	# make the detection area wide...
-	finish.get_node(^"Area3D/CollisionShape3D").shape.set_extents(Vector3(4, 1, 0.85))
+	finish.get_node(^"Area3D/CollisionShape3D").shape.set_size(Vector3(4*2, 2, 0.85*2))
 	
 	#finish.set_val(true)
 	
@@ -389,7 +389,7 @@ func spawn_racer(loc):
 	var g = grid.instantiate()
 	cars_root.add_child(g)
 	g.look_at(cars_root.to_global(loc), Vector3(0,1,0))
-	g.set_translation(loc)
+	g.set_position(loc)
 	
 	#print("Translation:" + str((local+loc)))
 	car.target = target
@@ -405,7 +405,7 @@ func spawn_racer(loc):
 	car.get_node(^"BODY").look_at(cars_root.to_global(loc), Vector3(0,1,0))
 	#car.rotate_y(deg2rad(180))
 	# needs to come AFTER rotations
-	car.set_translation(loc)
+	car.set_position(loc)
 	
 	#print("Added the car")
 	

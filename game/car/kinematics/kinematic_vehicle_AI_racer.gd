@@ -8,7 +8,8 @@ extends "kinematic_vehicle_AI.gd"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	# need to do it explicitly in Godot 4 for some reason
+	super._ready()
 
 # this is the global version, since the racers can be parented to something rotated
 func calculate_steering(delta):
@@ -17,20 +18,20 @@ func calculate_steering(delta):
 	# Using bicycle model (one front/rear wheel)
 	var rear_wheel = global_transform.origin + global_transform.basis.z * wheel_base / 2.0
 	var front_wheel = global_transform.origin - global_transform.basis.z * wheel_base / 2.0
-	rear_wheel += velocity * delta
+	rear_wheel += vel * delta
 
 	#order of operation: forward by velocity and then rotate
 	# for some reason global basis is not necessarily normalized
 	# FIXME: possible slowdown?
-	front_wheel += velocity.rotated(global_transform.basis.y.normalized(), steer_angle) * delta
+	front_wheel += vel.rotated(global_transform.basis.y.normalized(), steer_angle) * delta
 	var new_heading = rear_wheel.direction_to(front_wheel)
 
-	var d = new_heading.dot(velocity.normalized())
+	var d = new_heading.dot(vel.normalized())
 	# going forward or reverse?
 	if d > 0:
-		velocity = new_heading * velocity.length()
+		vel = new_heading * vel.length()
 	if d < 0:
-		velocity = -new_heading * min(velocity.length(), max_speed_reverse)
+		vel = -new_heading * min(velocity.length(), max_speed_reverse)
 	
 	# Point in the steering direction.
 	# this uses global parameters	
@@ -57,7 +58,7 @@ func get_input():
 
 	if gas:
 		# make it easier to get going
-		if velocity.length() < 1:
+		if vel.length() < 1:
 			acceleration = -global_transform.basis.z * engine_power*2	
 		else:
 			acceleration = -global_transform.basis.z * engine_power
