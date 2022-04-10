@@ -305,30 +305,30 @@ func setup_markers(marker_data):
 	
 
 # this is being used by racelines, therefore it can't be simplified further
-func setup_nav_astar(pts, i, begin_id):
+func setup_nav_astar(pts, idx, begin_id):
 	#print("Index: " + str(i) + " " + get_parent().get_child(i).get_name())
 	#print(get_parent().get_child(i).get_name())
 	# catch any errors
-	if i >= get_parent().get_child_count():
-		Logger.error_print("No child at index : " + str(i))
+	if idx >= get_parent().get_child_count():
+		Logger.error_print("No child at index : " + str(idx))
 		return
 
 	# extract intersection numbers
 	var ret = []
-	var strs = String(get_parent().get_child(i).get_name()).split("-")
+	var strs = String(get_parent().get_child(idx).get_name()).split("-")
 	# convert to int
 	ret.append((strs[0].lstrip("Road ").to_int()))
 	ret.append((strs[1].to_int()))
 	#print("Ret: " + str(ret))
 
 	# paranoia
-	if not get_parent().get_child(i).has_node("Road_instance0"):
+	if not get_parent().get_child(idx).has_node("Road_instance0"):
 		return
-	if not get_parent().get_child(i).has_node("Road_instance1"):
+	if not get_parent().get_child(idx).has_node("Road_instance1"):
 		return
 
-	var turn1 = get_parent().get_child(i).get_node(^"Road_instance0").get_child(0).get_child(0)
-	var turn2 = get_parent().get_child(i).get_node(^"Road_instance1").get_child(0).get_child(0)
+	var turn1 = get_parent().get_child(idx).get_node(^"Road_instance0").get_child(0).get_child(0)
+	var turn2 = get_parent().get_child(idx).get_node(^"Road_instance1").get_child(0).get_child(0)
 
 	#print("Straight positions: " + str(get_child(i).get_node(^"Spatial0").get_child(0).positions))
 	#print("Turn 1 positions: " + str(turn1.positions))
@@ -364,7 +364,7 @@ func setup_nav_astar(pts, i, begin_id):
 	for i in range(pts.size()):
 		nav.add_point(i, pts[i])
 
-	#print(nav.get_points())
+	#print("IDs:" + var2str(nav.get_point_ids()))
 
 	# connect the points
 	var turn1_end = begin_id + turn1.points_center.size()-1
@@ -433,7 +433,7 @@ func get_lane(road, flip, left_side):
 	print(String(road.get_name()), " rel pos road start-end: ", rel_pos, " angle: ", angle, " ", rad2deg(angle), " deg, quadrant ", quadrant)
 	
 	
-	# this part actually gets A* points
+	# this part actually gets the points
 	var turn1 = road.get_node(^"Road_instance0").get_child(0).get_child(0)
 	var turn2 = road.get_node(^"Road_instance1").get_child(0).get_child(0)
 
@@ -968,7 +968,7 @@ func get_circle_arc( center, radius, angle_from, angle_to, right, nb_points=32):
 	
 	return points_arc		
 
-
+# debugging
 func debug_cube(loc, flag=""):
 	var mesh = BoxMesh.new()
 	mesh.set_size(Vector3(0.5,0.5,0.5))
