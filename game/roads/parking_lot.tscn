@@ -15,7 +15,7 @@ sections = 4
 section_length = 3.0
 section_segments = 1
 
-[node name="Node3D" type="Node3D"]
+[node name="Node3D" type="Node3D" groups=["parking"]]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
 script = ExtResource( "1_tiu5d" )
 rows = 4

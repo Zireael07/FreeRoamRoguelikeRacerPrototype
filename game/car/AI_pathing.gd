@@ -10,6 +10,7 @@ var last_ind
 signal found_path
 var road
 var intersection
+var parking = true
 
 #var navigation_node
 var map
@@ -121,6 +122,21 @@ func look_for_path_initial(start_ind, left):
 	var nav_path = nav_data[0]
 
 	path = traffic_reduce_path(nav_path, nav_data[1])
+	#print("[AI] Nav path: " + str(path))
+	
+	# tunnel obstructs the way to the parking, so exclude it
+	if parking and not road.get_node(^"Spatial0/Road_instance 0").tunnel:
+		print("We want a parking lot")
+		var lot = find_lot(road)
+		if lot:
+			#var lot_pos = road.get_node(^"Spatial0/Road_instance 0").to_local(lot.get_global_transform().origin)
+			var cl = get_closest_path_point(lot.get_global_transform().origin, path)
+			# magic numbers based on reduce_traffic output
+			path.insert(3, cl)
+			path.insert(4, lot.get_global_transform().origin)
+			path.resize(5) # we drop all the unnecessary points
+			print("[AI] Nav path with lot: " + str(path))	
+	
 	last_ind = start_ind
 	end_ind = int_path[1]
 	emit_signal("found_path", [path, nav_data[1], nav_data[2]])
@@ -373,7 +389,17 @@ func reduce_path(path):
 		
 	return new_path
 
+# -----------------------------------------------
+func find_lot(road):
+	for c in road.get_node(^"Spatial0/Road_instance 0/Node3D").get_children():
+		if c.is_in_group("parking"):
+			return c
+			
+func get_closest_path_point(pos, path):
+	# this is for initial path, after it's traffic_reduced
+	return Geometry3D.get_closest_point_to_segment(pos, path[2], path[3])
 
+# ---------------------------------------------------
 func debug_cube(loc, red=false):
 	var mesh = BoxMesh.new()
 	mesh.set_size(Vector3(0.5,0.5,0.5))

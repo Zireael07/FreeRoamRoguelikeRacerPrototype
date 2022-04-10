@@ -572,7 +572,7 @@ func get_input():
 	
 	if gas:
 		# make it easier to get going
-		if velocity.length() < 1:
+		if vel.length() < 1:
 			acceleration = -transform.basis.z * engine_power*2	
 		else:
 			acceleration = -transform.basis.z * engine_power
@@ -842,12 +842,13 @@ func stopping():
 	# are we stopped?
 	if speed < 0.3 and stop:
 		# set velocity to 0 to avoid creeping away
-		set_motion_velocity(Vector3(0,0,0))
+		set_velocity(Vector3(0,0,0))
 		
 		#print("Have stopped...")
 
 		# only traffic AI looks for new intersection target
-		if get_parent().is_in_group("AI") and not emitted:
+		# we only do it if we're not parking
+		if get_parent().is_in_group("AI") and not emitted and path.size() > 5 and not get_parent().parking:
 			# unregister from previous road
 			if not get_parent().road:
 				return 
