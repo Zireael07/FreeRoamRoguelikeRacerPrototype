@@ -1,0 +1,58 @@
+[gd_resource type="Shader" format=3 uid="uid://dayoemslj3hg3"]
+
+[resource]
+code = "shader_type particles;
+
+uniform vec4 spawn_range = vec4(-1.0, -1.0, 1.0, 1.0);
+uniform float speed = 100.0;
+
+float remap(float var, float in_min, float in_max, float out_min, float out_max) {
+	float slope = (out_max - out_min) / (in_max - in_min);
+	return out_min + slope * (var - in_min);
+}
+
+float rand_from_seed(inout uint seed) {
+	int k;
+	int s = int(seed);
+	if (s == 0)
+	s = 305420679;
+	k = s / 127773;
+	s = 16807 * (s - k * 127773) - 2836 * k;
+	if (s < 0)
+		s += 2147483647;
+	seed = uint(s);
+	return float(seed % uint(65536)) / 65535.0;
+}
+
+float rand_from_seed_m1_p1(inout uint seed) {
+	return rand_from_seed(seed) * 2.0 - 1.0;
+}
+
+uint hash(uint x) {
+	x = ((x >> uint(16)) ^ x) * uint(73244475);
+	x = ((x >> uint(16)) ^ x) * uint(73244475);
+	x = (x >> uint(16)) ^ x;
+	return x;
+}
+
+void start() {
+	uint seed = hash(RANDOM_SEED + uint(INDEX));
+	CUSTOM.x = rand_from_seed(seed);
+	CUSTOM.y = rand_from_seed(seed);
+	
+	if(RESTART_POSITION) {
+		TRANSFORM[3].xyz = vec3(rand_from_seed(seed), -rand_from_seed(seed), rand_from_seed(seed));
+		TRANSFORM[3].x = remap(TRANSFORM[3].x, 0, 1, spawn_range.x, spawn_range.z);
+		TRANSFORM[3].z = remap(TRANSFORM[3].z, 0, 1, spawn_range.y, spawn_range.w);
+	}
+//	} else {
+//		VELOCITY = vec3(0, -speed * DELTA, 0);
+//		ACTIVE = TIME > LIFETIME;
+//	}
+}
+
+void process() {
+	VELOCITY = vec3(0, -speed * DELTA, 0);
+	ACTIVE = TIME > LIFETIME;	
+}
+"

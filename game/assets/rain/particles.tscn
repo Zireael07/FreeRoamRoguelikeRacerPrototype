@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://c7ly0oe4hotll"]
+
+[ext_resource type="Shader" uid="uid://dayoemslj3hg3" path="res://assets/rain/particle_shader.tres" id="1_yiux0"]
+[ext_resource type="Material" uid="uid://bq6jqj57fcby3" path="res://assets/rain/rain_mat.tres" id="2_tegb8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ldlk1"]
+shader = ExtResource( "1_yiux0" )
+shader_param/spawn_range = Plane(-10, -10, 10, 10)
+shader_param/speed = 98.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_v6max"]
+material = ExtResource( "2_tegb8" )
+size = Vector2(1, 5)
+
+[node name="Node3D" type="GPUParticles3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0)
+cast_shadow = 0
+amount = 100
+lifetime = 10.0
+preprocess = 10.0
+fixed_fps = 2
+visibility_aabb = AABB(-20, -100, -20, 41, 110, 40)
+process_material = SubResource( "ShaderMaterial_ldlk1" )
+draw_pass_1 = SubResource( "QuadMesh_v6max" )

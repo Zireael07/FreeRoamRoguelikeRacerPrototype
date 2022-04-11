@@ -15,3 +15,4 @@ Assets:
 * big LCD font - https://github.com/keshikan/DSEG
 * cherry blossom - https://www.blenderguru.com/tutorials/how-to-make-cherry-blossom-flowers
 * parking lot - https://github.com/fegennari/3DWorld/blob/master/textures/roads/parking_lot.png
+* rain effects - from https://github.com/ywaby/godot-WaterPack MIT license

@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://bq6jqj57fcby3"]
+
+[ext_resource type="Shader" path="res://assets/rain/rain_mat.gdshader" id="1_1r3cv"]
+[ext_resource type="Texture2D" uid="uid://dswmi3x6m7i4m" path="res://assets/rain/rain_particles.png" id="2_i7jyg"]
+
+[resource]
+render_priority = 0
+shader = ExtResource( "1_1r3cv" )
+shader_param/albedo = Color(1, 1, 1, 1)
+shader_param/scale = 1.0
+shader_param/rain_texture = ExtResource( "2_i7jyg" )
