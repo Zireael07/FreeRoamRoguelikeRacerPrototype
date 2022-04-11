@@ -27,6 +27,7 @@ script = ExtResource( "1_jistc" )
 script = ExtResource( "2_e3lj3" )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="scene"]
+editor_description = "Glow/SSR/SDFGI cause perf drop to 30 fps from 60"
 environment = ExtResource( "3_57s23" )
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="scene"]

@@ -15,6 +15,7 @@ run/main_scene="res://scenes/scene_procedural.tscn"
 icon="res://icon.png"
 main_scene="res://hud/main_menu.tscn"
 name="FreeRoamRacerPrototype"
+config/features=PackedStringArray("4.0")
 
 [autoload]
 
@@ -153,6 +154,12 @@ shadow_filter=3
 [rendering]
 
 global_illumination/gi/use_half_resolution=true
+scaling_3d/mode=1
+scaling_3d/scale=0.65
+environment/glow/upscale_mode=0
+global_illumination/sdfgi/probe_ray_count=0
+global_illumination/sdfgi/frames_to_converge=0
+environment/volumetric_fog/use_filter=0
 anti_aliasing/quality/msaa=1
 anti_aliasing/quality/use_debanding=true
 quality/directional_shadow/size=2048
