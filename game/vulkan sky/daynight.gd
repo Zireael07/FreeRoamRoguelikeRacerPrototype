@@ -80,7 +80,7 @@ func _ready():
 	
 	#print("Real-life minutes/day is: " + str(DAY_SPEED) + ", 1 h is: " + str((DAY_SPEED/24.0)*60.0) + " s")
 	
-	#player = get_tree().get_nodes_in_group("player")[0]
+	player = get_tree().get_nodes_in_group("player")[0]
 	
 	#test
 	if Engine.is_editor_hint():
@@ -93,7 +93,7 @@ func _ready():
 	#sunset_color()
 	
 	# set weather
-	#call_deferred("set_state", weather)
+	call_deferred("set_state", weather)
 
 func sunset_color():
 	# random sunset color
@@ -156,17 +156,6 @@ func _process(delta):
 				# update the sky every X frames
 				trigger_count = 50
 		
-	# TODO: weather should be a fsm and effects should be applied only on weather change
-	# weather
-#	if weather == WEATHER_SUNNY:
-#		player.get_node(^"BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 25)
-#	elif weather == WEATHER_OVERCAST or weather == WEATHER_RAIN:
-#		player.get_node(^"BODY/skysphere/Skysphere").get_material_override().set_shader_param("cloud_cover", 85)
-	
-#	if weather == WEATHER_RAIN:
-#		rain()
-#	else:
-#		no_rain()
 
 # day/night cycle
 func calculate_lightning(hour, minute):
@@ -350,3 +339,110 @@ func day_night_cycle(time):
 		env.glow_hdr_threshold = 2.2
 		print("[DAYNIGHT] switch to night settings")
 		night_fired = true
+
+# --------------------------------------------
+# weather
+func rain():
+	player.get_node(^"BODY/RainParticles").set_emitting(true)
+	#player.get_node(^"BODY/RainParticles2").set_emitting(true)
+	
+	#if rain_amount> 0.1:
+	# enable SSR
+	#env.set_ssr_enabled(true) 
+	#env.adjustment_enabled = true
+	env.fog_light_color = Color(0.62, 0.66, 0.70) # desaturate the usual blue
+	
+	if get_tree().get_nodes_in_group("roads").size() > 0:
+		get_tree().get_nodes_in_group("roads")[0].rain_shine(rain_amount)
+		
+	#player.get_node(^"BODY/proc_mesh").rain_glass()
+
+func no_rain():
+	env.set_ssr_enabled(false)
+	env.adjustment_enabled = false
+	#env.fog_color = Color(0.5, 0.6, 0.7)
+		
+	player.get_node("BODY/RainParticles").set_emitting(false)
+	#player.get_node("BODY/RainParticles2").set_emitting(false)
+	if get_tree().get_nodes_in_group("roads").size() > 0:
+		get_tree().get_nodes_in_group("roads")[0].no_rain()
+
+	# car glass
+	#player.get_node(^"BODY/proc_mesh").rain_clear()
+	
+func snow():
+	var snow = load("res://assets/snow_material.tres")
+	player.get_node(^"BODY/RainParticles").set_material_override(snow)
+	#player.get_node(^"BODY/RainParticles2").set_material_override(snow)
+	
+	
+	player.get_node(^"BODY/RainParticles").set_emitting(true)
+	player.get_node(^"BODY/RainParticles2").set_emitting(true)
+
+# TODO: overcast
+	
+# fsm
+func set_state(new_state):
+	# if we need to clean up
+	#state.exit()
+	if state != null:
+		prev_state = get_state()
+	
+	if new_state == WEATHER_SUNNY:
+		state = WeatherSunny.new(self)
+	elif new_state == WEATHER_OVERCAST:
+		state = WeatherOvercast.new(self)
+	elif new_state == WEATHER_RAIN:
+		state = WeatherRain.new(self)
+	elif new_state == WEATHER_SNOW:
+		state = WeatherSnow.new(self)
+	
+	emit_signal("state_changed", self)
+
+func get_state():
+	if state is WeatherSunny:
+		return WEATHER_SUNNY
+	elif state is WeatherOvercast:
+		return WEATHER_OVERCAST
+	elif state is WeatherRain:
+		return WEATHER_RAIN
+	elif state is WeatherSnow:
+		return WEATHER_SNOW
+		
+# states ----------------------------------------------------
+
+class WeatherSunny:
+	var world
+	
+	func _init(wd):
+		world = wd
+		# weather init
+		world.no_rain()
+		world.normal_sky()
+
+class WeatherOvercast:
+	var world
+	
+	func _init(wd):
+		world = wd
+		# weather init
+		world.no_rain()
+		#world.overcast()
+		
+class WeatherRain:
+	var world
+	
+	func _init(wd):
+		world = wd
+		# weather init
+		world.rain()
+		#world.overcast()
+
+class WeatherSnow:
+	var world
+	
+	func _init(wd):
+		world = wd
+		# weather init
+		world.snow()
+		#world.overcast()
