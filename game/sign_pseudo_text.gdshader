@@ -139,14 +139,11 @@ vec3 makeChars(vec2 uv) {
 	vec2 p = uv*5.+vec2(1,0);
     
     //mod(y, 2.) is a way to do even/odd
-    float dir = step(1.,mod(p.y,2.));
+    //float dir = step(1.,mod(p.y,2.));
     // direction is -1 or 1
-    dir=(dir-.5)*2.;
+    //dir=(dir-.5)*2.;
     
-    //To get the mirror effect
-    //if (p.y > 0.5) p.y = 1.0 - p.y;
-    
-    vec2 ch = vec2(p.x, sin(p.y*2.));
+    vec2 ch = vec2(p.x, sin(p.y));
     
     // The distance field to the grid full of pseudo characters.
     float d = ChChars(p);
@@ -166,7 +163,7 @@ vec3 makeChars(vec2 uv) {
     vec3 charCol = vec3(.03);
     // Using the individual character cell ID, "floor(p)," obtain a random number, then 
     // set the occasional character to red.
-    if(hash21(floor(p))>.9) charCol = vec3(1, .03, .01);
+    //if(hash21(floor(p))>.9) charCol = vec3(1, .03, .01);
 
     // Shadow (offset distance field), light character outline, and color layers.
     col = mix(col, vec3(0), (1. - smoothstep(0., .03, dSh - .06))*.25);
@@ -188,13 +185,19 @@ vec3 makeChars(vec2 uv) {
     
     
     // Apply a tiny sprinkling of noise, just to break things up a little.
-    float ns = fbm(vec3(p, 1), 64.);//n3D(vec3(p, 1)*64.)*.57 + n3D(vec3(p, 1)*128.)*.28 + n3D(vec3(p, 1)*256.)*.15;
-    col *= ns*.25 + .8;
+    //float ns = fbm(vec3(p, 1), 64.);//n3D(vec3(p, 1)*64.)*.57 + n3D(vec3(p, 1)*128.)*.28 + n3D(vec3(p, 1)*256.)*.15;
+    //col *= ns*.25 + .8;
 	return col;
 }
 
 float range(float a, float b, float v) {
-	return step(a, v)+step(b, v);
+	return step(a, v)*step(v, b);
+}
+
+vec2 mirror(vec2 uv) {
+	//To get the mirror effect
+    if (uv.y > 0.75) uv.y = 1.0 - uv.y;
+	return uv;
 }
 
 void fragment() {
@@ -202,13 +205,20 @@ void fragment() {
 	//ALBEDO = vec3(UV, 0.0);
 	// everything below UV.y 0.5 is excluded 
 	//step - everything under the limit returns 0
-	//ALBEDO = mix(vec3(1.,0.,0.), vec3(0.,1.0, 0.), range(0.5, 0.75, UV.y));
+	//ALBEDO = mix(vec3(1.,0.,0.), vec3(0.,1.0, 0.), step(0.8, UV.x));
 
-	float v = step(0.5, UV.y); //needs 0.48 offset to letters
-	vec3 col = mix(vec3(0.,1.0, 0.), makeChars(UV+vec2(0.0, 0.48)), v);
+	//front needs 0.48 offset to letters w/o sin
+	float v = range(0.5, 0.75, UV.y); //this range only covers the front itself, no back
+	vec3 text_col = makeChars(UV+vec2(0.0, 0.48));
+	vec3 col = mix(vec3(0.,1.0, 0.), text_col, v);
 	
-	v = step(0.75, UV.y); //this needs 0.225 offset to letters
-	vec3 col2 = mix(col, makeChars(UV+vec2(0.0, 0.225)), v);
+	//back
+	v = step(0.75, UV.y);
+	//UV.x should be the same as on the front, so we only need to adjust Y
+	// this grabs the same text as on the front
+	text_col = makeChars(UV-vec2(0.0, -0.225));
+	vec3 col2 = mix(col, text_col, v);
+	//vec3 col2 = mix(col, makeChars(UV+vec2(0.0, 0.225)), v);
     ALBEDO = col2;
 
 }
