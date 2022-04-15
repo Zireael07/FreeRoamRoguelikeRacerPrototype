@@ -4,9 +4,9 @@
 [ext_resource type="Material" path="res://assets/procedural_building_metal_mat.tres" id="2"]
 [ext_resource type="Material" path="res://assets/windows_material2.tres" id="3"]
 [ext_resource type="ArrayMesh" uid="uid://ovqhjme5oywr" path="res://assets/chinasign_1.obj" id="4"]
-[ext_resource type="Material" uid="uid://dyhdr8jyel8d1" path="res://assets/neon_sign1.tres" id="5"]
 [ext_resource type="ArrayMesh" uid="uid://dtrfyr7iylmmq" path="res://assets/china_cable.obj" id="6"]
 [ext_resource type="Material" path="res://assets/metal_mat.tres" id="7"]
+[ext_resource type="Material" uid="uid://b0xis65bf1axl" path="res://assets/neon_sign_shader.tres" id="7_5xoqs"]
 [ext_resource type="Shader" path="res://assets/storefront/storefront_tinted.gdshader" id="8"]
 [ext_resource type="Texture2D" uid="uid://bailvhtc6oa7" path="res://assets/storefront/shop_front16_ed.png" id="9"]
 [ext_resource type="Script" path="res://avoid_area.gd" id="10"]
@@ -38,7 +38,7 @@ size = Vector3(4, 2, 16)
 [sub_resource type="BoxMesh" id="4"]
 size = Vector3(4, 1, 16)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_jnlnx"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_1yqek"]
 size = Vector3(12, 38, 12)
 
 [node name="Node3D" type="Node3D"]
@@ -54,7 +54,7 @@ layers = 4
 cast_shadow = 0
 gi_mode = 1
 mesh = ExtResource( "4" )
-surface_material_override/0 = ExtResource( "5" )
+surface_material_override/0 = ExtResource( "7_5xoqs" )
 
 [node name="OmniLight3D" type="OmniLight3D" parent="MeshInstance3D"]
 omni_range = 3.0
@@ -110,7 +110,7 @@ mesh = SubResource( "4" )
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 19, 0)
-shape = SubResource( "BoxShape3D_jnlnx" )
+shape = SubResource( "BoxShape3D_1yqek" )
 
 [node name="Node3D2" parent="." instance=ExtResource( "11_mr5x3" )]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.13364, 2, 8.00935)

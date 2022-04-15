@@ -3,6 +3,8 @@
 
 shader_type spatial;
 
+instance uniform vec2 offset;
+
 //pseudo_western
 //const int vMax = 3;
 //const int hMax = 2;
@@ -146,7 +148,7 @@ vec3 makeChars(vec2 uv, bool flip) {
     // direction is -1 or 1
     //dir=(dir-.5)*2.;
     
-    vec2 ch = vec2(p.x, sin(p.y));
+    //vec2 ch = vec2(p.x, sin(p.y));
     
     // The distance field to the grid full of pseudo characters.
     float d = ChChars(p, flip);
@@ -213,7 +215,7 @@ void fragment() {
 	//front needs 0.48 offset to letters
 	float v = range(0.5, 0.75, UV.y); //this range only covers the front itself, no back
 	//v = v * range(0.005, 0.8, UV.x);
-	vec3 text_col = makeChars(UV+vec2(0.0, 0.48), false);
+	vec3 text_col = makeChars(UV+vec2(0.0, 0.48)+offset, false);
 	vec3 col = mix(vec3(0.,1.0, 0.), text_col, v);
 	
 	//back
@@ -222,7 +224,7 @@ void fragment() {
 	v = v * 1.0-step(0.8, UV.x);
 	//UV.x should be the same as on the front, so we only need to adjust Y
 	// this grabs the same text as on the front
-	text_col = makeChars(UV-vec2(0.0, -0.22), true);
+	text_col = makeChars(UV-vec2(0.0, -0.22)+offset, true);
 	vec3 col2 = mix(col, text_col, v);
 	//vec3 col2 = mix(col, makeChars(UV+vec2(0.0, 0.225)), v);
     ALBEDO = col2;

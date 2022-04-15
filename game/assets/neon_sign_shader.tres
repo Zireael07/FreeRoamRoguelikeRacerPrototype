@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b0xis65bf1axl"]
+
+[ext_resource type="Shader" path="res://assets/sign_pseudo_text.gdshader" id="1_mbs12"]
+
+[resource]
+render_priority = 0
+shader = ExtResource( "1_mbs12" )

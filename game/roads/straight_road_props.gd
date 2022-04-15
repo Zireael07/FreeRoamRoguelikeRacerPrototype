@@ -203,23 +203,29 @@ func setupBuilding(index, base_height):
 	
 		
 	# sign material
-	var rand = randf()
+#	var rand = randf()
+#
+#	if rand < 0.15:
+#		var sign_mat = sign_tex1
+#		build.get_node(^"MeshInstance3D").set_surface_override_material(0, sign_mat)
+#	elif rand < 0.33:
+#		var sign_mat = sign_tex1_d
+#		build.get_node(^"MeshInstance3D").set_surface_override_material(0, sign_mat)
+#	elif rand < 0.5:
+#		var sign_mat = sign_tex1_dd
+#		build.get_node(^"MeshInstance3D").set_surface_override_material(0, sign_mat)
+#	elif rand < 0.66:
+#		var sign_mat = sign_tex2
+#		build.get_node(^"MeshInstance3D").set_surface_override_material(0, sign_mat)
+#	else:
+#		var sign_mat = sign_tex3
+#		build.get_node(^"MeshInstance3D").set_surface_override_material(0, sign_mat)
 	
-	if rand < 0.15:
-		var sign_mat = sign_tex1
-		build.get_node(^"MeshInstance3D").set_surface_override_material(0, sign_mat)
-	elif rand < 0.33:
-		var sign_mat = sign_tex1_d
-		build.get_node(^"MeshInstance3D").set_surface_override_material(0, sign_mat)
-	elif rand < 0.5:
-		var sign_mat = sign_tex1_dd
-		build.get_node(^"MeshInstance3D").set_surface_override_material(0, sign_mat)
-	elif rand < 0.66:
-		var sign_mat = sign_tex2
-		build.get_node(^"MeshInstance3D").set_surface_override_material(0, sign_mat)
-	else:
-		var sign_mat = sign_tex3
-		build.get_node(^"MeshInstance3D").set_surface_override_material(0, sign_mat)
+	# ensure the offset is unique
+	var randf = randf_range(0.0, 1.0);
+	var rndf = randf_range(0.0,1.0);
+	var off = Vector2(get_parent().get_global_transform().origin.x + index + rndf, get_parent().get_global_transform().origin.y + index + randf);
+	build.get_node(^"MeshInstance3D").set_shader_instance_uniform("offset", off)
 		
 	# sign color
 	#var rand_color_r = randf()
@@ -234,7 +240,7 @@ func setupBuilding(index, base_height):
 	
 	#print("Sign color: ", color)
 	
-	build.get_node(^"MeshInstance3D").get_surface_override_material(0).set_shader_param("modulate", color)
+	#build.get_node(^"MeshInstance3D").get_surface_override_material(0).set_shader_param("modulate", color)
 	build.get_node("MeshInstance3D/OmniLight3D").light_color = color
 	
 	# vary sign placement height
