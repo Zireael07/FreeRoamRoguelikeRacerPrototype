@@ -67,7 +67,7 @@ float sBox(vec2 p, vec2 b){ return length(max(abs(p) - b, 0.)); }
 // a character. It's take most people ten minutes to code, but it took me much
 // longer... It always does. Sigh! :D
 
-float ChChars(vec2 p){
+float ChChars(vec2 p, bool flip){
     
     // The distance field value. Initiate it to the maximum.
     float d = 1.;
@@ -90,6 +90,9 @@ float ChChars(vec2 p){
     
     // Local cell coordinates -- Edged out by the cell edge spacing.
     p -= ip + sp;
+	
+	//hack but works
+	if (flip) p.y = 0.6-p.y;
    
     // Iterate through all the possible combinations of lines segments
     // in both the horizontal and the vertical. By the way, if rounded
@@ -131,8 +134,8 @@ float ChChars(vec2 p){
     
 }
 
-vec3 makeChars(vec2 uv) {
-		// Scaling and movement. 
+vec3 makeChars(vec2 uv, bool flip) {
+	// Scaling and movement. 
 	//dunno why the vec 0, .5 on shadertoy but it's not necessary in Godot
     //vec2 p = UV*5. + vec2(0, .5) + vec2(1, 0); //*TIME;
     
@@ -146,9 +149,9 @@ vec3 makeChars(vec2 uv) {
     vec2 ch = vec2(p.x, sin(p.y));
     
     // The distance field to the grid full of pseudo characters.
-    float d = ChChars(p);
+    float d = ChChars(p, flip);
     // The distance field for the corresponding shadow.
-    float dSh = ChChars(p - vec2(1, -.8)*.1);
+    float dSh = ChChars(p - vec2(1, -.8)*.1, flip);
     
     // Distance field shade value. Not to be confused with the shadow above. :)
     float dShade = max(1. - d*16., 0.)*.04;
@@ -205,18 +208,21 @@ void fragment() {
 	//ALBEDO = vec3(UV, 0.0);
 	// everything below UV.y 0.5 is excluded 
 	//step - everything under the limit returns 0
-	//ALBEDO = mix(vec3(1.,0.,0.), vec3(0.,1.0, 0.), step(0.8, UV.x));
+	//ALBEDO = mix(vec3(1.,0.,0.), vec3(0.,1.0, 0.), step(UV.x, 0.8));
 
-	//front needs 0.48 offset to letters w/o sin
+	//front needs 0.48 offset to letters
 	float v = range(0.5, 0.75, UV.y); //this range only covers the front itself, no back
-	vec3 text_col = makeChars(UV+vec2(0.0, 0.48));
+	//v = v * range(0.005, 0.8, UV.x);
+	vec3 text_col = makeChars(UV+vec2(0.0, 0.48), false);
 	vec3 col = mix(vec3(0.,1.0, 0.), text_col, v);
 	
 	//back
 	v = step(0.75, UV.y);
+	//fixes the side being text'ed
+	v = v * 1.0-step(0.8, UV.x);
 	//UV.x should be the same as on the front, so we only need to adjust Y
 	// this grabs the same text as on the front
-	text_col = makeChars(UV-vec2(0.0, -0.225));
+	text_col = makeChars(UV-vec2(0.0, -0.22), true);
 	vec3 col2 = mix(col, text_col, v);
 	//vec3 col2 = mix(col, makeChars(UV+vec2(0.0, 0.225)), v);
     ALBEDO = col2;
