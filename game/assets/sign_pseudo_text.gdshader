@@ -4,6 +4,7 @@
 shader_type spatial;
 
 instance uniform vec2 offset;
+instance uniform vec4 color: hint_color;
 
 //pseudo_western
 //const int vMax = 3;
@@ -136,7 +137,8 @@ float ChChars(vec2 p, bool flip){
     
 }
 
-vec3 makeChars(vec2 uv, bool flip) {
+//need to pass in the instance uniform because it doesn't compile otherwise
+vec3 makeChars(vec2 uv, bool flip, vec3 bg_color) {
 	// Scaling and movement. 
 	//dunno why the vec 0, .5 on shadertoy but it's not necessary in Godot
     //vec2 p = UV*5. + vec2(0, .5) + vec2(1, 0); //*TIME;
@@ -158,21 +160,23 @@ vec3 makeChars(vec2 uv, bool flip) {
     // Distance field shade value. Not to be confused with the shadow above. :)
     float dShade = max(1. - d*16., 0.)*.04;
     
-    // Set the background to a bland creme color, then mix in some subtle diagonal lines.
-    vec3 col = vec3(.96, .92, .88);
+    // Set the background
+	vec3 col = bg_color;
+    //vec3 col = vec3(.96, .92, .88);
    
+
     // Apply the distance field to the canvas. Just a mild shadow and icon outline,
     // followed by black or red characters.
     
-    // Set the character color to something dark.
-    vec3 charCol = vec3(.03);
+    // Set the character color to something light.
+    vec3 charCol = vec3(.9);
     // Using the individual character cell ID, "floor(p)," obtain a random number, then 
     // set the occasional character to red.
     //if(hash21(floor(p))>.9) charCol = vec3(1, .03, .01);
 
     // Shadow (offset distance field), light character outline, and color layers.
-    col = mix(col, vec3(0), (1. - smoothstep(0., .03, dSh - .06))*.25);
-    col = mix(col, vec3(1), (1. - smoothstep(0., .02, d - .06))*.5);
+    //col = mix(col, vec3(0), (1. - smoothstep(0., .03, dSh - .06))*.25);
+    col = mix(col, vec3(0.25), (1. - smoothstep(0., .02, d - .06))*.5);
     col = mix(col, charCol + dShade, 1. - smoothstep(0., .01, d - .04));
     
     
@@ -215,8 +219,8 @@ void fragment() {
 	//front needs 0.48 offset to letters
 	float v = range(0.5, 0.75, UV.y); //this range only covers the front itself, no back
 	//v = v * range(0.005, 0.8, UV.x);
-	vec3 text_col = makeChars(UV+vec2(0.0, 0.48)+offset, false);
-	vec3 col = mix(vec3(0.,1.0, 0.), text_col, v);
+	vec3 text_col = makeChars(UV+vec2(0.0, 0.48)+offset, false, color.rgb);
+	vec3 col = mix(vec3(0.2, 0.2, 0.2), text_col, v);
 	
 	//back
 	v = step(0.75, UV.y);
@@ -224,7 +228,7 @@ void fragment() {
 	v = v * 1.0-step(0.8, UV.x);
 	//UV.x should be the same as on the front, so we only need to adjust Y
 	// this grabs the same text as on the front
-	text_col = makeChars(UV-vec2(0.0, -0.22)+offset, true);
+	text_col = makeChars(UV-vec2(0.0, -0.22)+offset, true, color.rgb);
 	vec3 col2 = mix(col, text_col, v);
 	//vec3 col2 = mix(col, makeChars(UV+vec2(0.0, 0.225)), v);
     ALBEDO = col2;
