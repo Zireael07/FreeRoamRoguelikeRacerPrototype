@@ -3,6 +3,7 @@ extends Node3D
 # class member variables go here, for example:
 @export var target: Vector3 = Vector3(0,0,0)
 @export var left: bool = true # because Japan is LHD
+@export var parking: bool = false
 
 var path
 var end_ind
@@ -10,7 +11,6 @@ var last_ind
 signal found_path
 var road
 var intersection
-var parking = true
 
 #var navigation_node
 var map
@@ -24,7 +24,7 @@ var debug = false
 func _ready():
 	# Called every time the node is added to the scene.
 	
-		# hack fix
+	# hack fix
 	if rotation.y != 0:
 		get_node(^"BODY").rotate_y(rotation.y)
 		rotation.y = 0
@@ -34,16 +34,24 @@ func _ready():
 	if is_in_group("AI"):
 		map = get_node(^"/root/Node3D").get_node(^"map")
 		
-		# look up the closest intersection
-		var map_loc = map.to_local(get_global_transform().origin)
-		#print("global: " + str(get_global_transform().origin) + ", map_loc: " + str(map_loc))
-		
-		# this operates on child ids
-		var sorted = map.sort_intersections_distance(map_loc, true)
-		var closest_ind = sorted[0][1]
-		
-		#look_for_path(closest_ind, left)
-		look_for_path_initial(closest_ind, left)
+		# test
+		# map.get_parent().get_node(^"AI")
+		var id = self.get_index() # should be the child index
+		if id > 0:	
+			# because the cop is the first child
+			look_for_path_initial_parking(id-1, left)
+		else:	
+			# cop
+			# look up the closest intersection
+			var map_loc = map.to_local(get_global_transform().origin)
+			#print("global: " + str(get_global_transform().origin) + ", map_loc: " + str(map_loc))
+
+			# this operates on child ids
+			var sorted = map.sort_intersections_distance(map_loc, true)
+			var closest_ind = sorted[0][1]
+
+			#look_for_path(closest_ind, left)
+			look_for_path_initial_intersection(closest_ind, left)
 		
 	# Initialization here
 	if has_node("draw"):
@@ -51,7 +59,52 @@ func _ready():
 	if has_node("draw2"):
 		draw_arc = get_node(^"draw2")
 
-func look_for_path_initial(start_ind, left):
+func look_for_path_initial_parking(id, left):
+	# see procedural_map.gd l.411
+	var lots = map.get_spawn_lots()
+	var pos = lots[id][1]
+	
+	# get road (see the intersection variant, "get road and direction")
+	road = lots[id][0].get_node("../../../..")
+	print("Found road for lot #", var2str(id), ": ", road.get_name())
+	var flip = false
+	
+	var nav_data = map.get_node(^"nav").get_lane(road, flip, left)
+	var nav_path = nav_data[0]
+
+	path = traffic_reduce_path(nav_path, nav_data[1])
+	print("[AI] Nav path: " + str(path))
+	
+	var cl = get_closest_path_point(pos, path)
+	print("Pos ", pos, " closest: ", cl)
+	# magic numbers based on reduce_traffic output
+	#path.insert(3, pos)
+	path.insert(3, cl)
+	
+	# axe the first points since we're starting at the lot
+	path.remove_at(0)
+	path.remove_at(1)
+	path.remove_at(2)
+	
+	# facing (we can't rotate self due to l.28 above)
+	get_node("BODY").look_at(cl)
+	
+	# extract intersection numbers
+	var ret = []
+	var strs = String(road.get_name()).split("-")
+	# convert to int
+	ret.append((strs[0].lstrip("Road ").to_int()))
+	ret.append((strs[1].to_int()))
+	
+	last_ind = ret[0]
+	end_ind = ret[1]
+	emit_signal("found_path", [path, nav_data[1], nav_data[2]])
+	
+	# register with road
+	road.AI_cars.append(self)
+	#print(road.AI_cars)
+
+func look_for_path_initial_intersection(start_ind, left):
 	var closest = map.get_child(start_ind)
 	#print("Closest int: " + closest.get_name() + " " + str(closest.get_translation()))
 
@@ -130,6 +183,7 @@ func look_for_path_initial(start_ind, left):
 		var lot = find_lot(road)
 		if lot:
 			#var lot_pos = road.get_node(^"Spatial0/Road_instance 0").to_local(lot.get_global_transform().origin)
+			# this goes TO a parking lot
 			var cl = get_closest_path_point(lot.get_global_transform().origin, path)
 			# magic numbers based on reduce_traffic output
 			path.insert(3, cl)
@@ -396,7 +450,7 @@ func find_lot(road):
 			return c
 			
 func get_closest_path_point(pos, path):
-	# this is for initial path, after it's traffic_reduced
+	# this is for initial path, after it gets traffic_reduced
 	return Geometry3D.get_closest_point_to_segment(pos, path[2], path[3])
 
 # ---------------------------------------------------

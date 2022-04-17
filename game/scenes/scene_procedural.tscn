@@ -1,13 +1,12 @@
-[gd_scene load_steps=18 format=3 uid="uid://dr7kf5v6sxlls"]
+[gd_scene load_steps=17 format=3 uid="uid://dr7kf5v6sxlls"]
 
 [ext_resource type="Script" path="res://vulkan sky/daynight.gd" id="2_t0aug"]
-[ext_resource type="PackedScene" uid="uid://caucweey32fbc" path="res://car/kinematics/kinematic_car_base.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://bafioicjxx21v" path="res://car/kinematics/kinematic_car_base.tscn" id="3"]
 [ext_resource type="Environment" uid="uid://c56vuaipcdg3k" path="res://vulkan sky/vulkan_sky_env.tres" id="3_p7qju"]
 [ext_resource type="Script" path="res://map/procedural_map.gd" id="5"]
 [ext_resource type="Script" path="res://map/triangulate.gd" id="6"]
 [ext_resource type="Script" path="res://scripts/poisson3d.gd" id="7"]
 [ext_resource type="PackedScene" path="res://objects/TIR_block.tscn" id="9"]
-[ext_resource type="PackedScene" uid="uid://b1dlvakxhwt0o" path="res://car/kinematics/kinematic_car_AI_traffic.tscn" id="10"]
 [ext_resource type="Script" path="res://scripts/meshes/ground_gen.gd" id="11"]
 [ext_resource type="Material" path="res://assets/ground_material_snow.tres" id="12"]
 [ext_resource type="Script" path="res://map/map_nav.gd" id="13"]
@@ -52,22 +51,11 @@ script = ExtResource( "13" )
 [node name="draw" type="Node3D" parent="map"]
 
 [node name="Racers" type="Node3D" parent="."]
+editor_description = "This is rotated to fit the raceline"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.594, 0, 192.855)
-__meta__ = {
-"_editor_description_": "This is rotated to align with the raceline"
-}
 
 [node name="AI" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.594, 0, 192.855)
-
-[node name="Spatial10" parent="AI" instance=ExtResource( "10" )]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.01203, 0, 0.0882263)
-
-[node name="Spatial12" parent="AI" instance=ExtResource( "10" )]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.29308, 0, 4.66875)
-
-[node name="Spatial11" parent="AI" instance=ExtResource( "10" )]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 4.38827, 0, -1.53667)
 
 [node name="cop" parent="AI" instance=ExtResource( "14" )]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.1935)

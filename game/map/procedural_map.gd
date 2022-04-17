@@ -147,11 +147,12 @@ func _ready():
 #	straight.generateRoad()
 
 
-	# place cars on intersections
-	#place_player(1)
+	# place cars on parking lots
+	var lots = get_spawn_lots()
 	
-	for i in range(2, samples.size()-1):
-		place_AI(i)
+	#for i in range(2, samples.size()-1):
+	for i in range(lots.size()):
+		place_AI(i, lots)
 
 	# place garage road
 	var garage_opts = []
@@ -367,6 +368,27 @@ func auto_connect(initial_int, real_edges, verbose=false):
 			
 
 # ---------------------------------------
+func find_lot(road):
+	for c in road.get_node(^"Spatial0/Road_instance 0/Node3D").get_children():
+		if c.is_in_group("parking"):
+			return c
+			
+func get_spawn_lots():
+	var lots = []
+
+	var roads_start_id = 3+samples.size()-1 # 3 helper nodes + intersections for samples
+	#for e in real_edges:
+	for i in range(roads_start_id, roads_start_id+ real_edges.size()):
+		var road = get_child(i)
+		if not road.get_node(^"Spatial0/Road_instance 0").tunnel:
+			var lot = find_lot(road)
+			if lot:
+				lots.append([lot, lot.get_global_transform().origin])
+	
+	return lots
+
+		
+
 func place_player_random():
 	var player = get_tree().get_nodes_in_group("player")[0]
 
@@ -386,7 +408,7 @@ func place_player(id):
 	# because player is child of root which is at 0,0,0
 	player.set_position(to_global(pos))
 
-func place_AI(id, exit=1):
+func place_AI(id, lots):
 	var AI_g = get_parent().get_node(^"AI")
 	#var car = get_tree().get_nodes_in_group("AI")[3] #.get_parent()
 	
@@ -396,20 +418,29 @@ func place_AI(id, exit=1):
 		
 	AI_g.add_child(car)
 	
-	var p = samples[id]
-	var pos = Vector3(p[0]*mult, 0, p[1]*mult)
+	# this is global!
+	var pos = lots[id][1]
+	
+	# this was local
+	#var p = samples[id]
+	#var pos = Vector3(p[0]*mult, 0, p[1]*mult)
 	
 	# to place on intersection exit (related to point_one/two/three in intersection.gd)
-	if exit == 1:
-		pos = pos + Vector3(0,0,5)
-	elif exit == 2:
-		pos = pos + Vector3(5,0,0)
-	elif exit == 3:
-		pos = pos + Vector3(0,0,-5)
+#	if exit == 1:
+#		pos = pos + Vector3(0,0,5)
+#	elif exit == 2:
+#		pos = pos + Vector3(5,0,0)
+#	elif exit == 3:
+#		pos = pos + Vector3(0,0,-5)
 
 	# because car is child of AI group node which is not at 0,0,0
-	car.set_position(AI_g.to_local(to_global(pos)))
+	car.set_position(AI_g.to_local(pos))
+	
+	# small offset
+	car.translate_object_local(Vector3(0,0,-4))
+	
 
+	print("placed AI on a lot #", var2str(id))
 
 func get_marker(_name):
 	for c in get_children():

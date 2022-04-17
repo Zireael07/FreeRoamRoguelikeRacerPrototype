@@ -848,7 +848,7 @@ func stopping():
 
 		# only traffic AI looks for new intersection target
 		# we only do it if we're not parking
-		if get_parent().is_in_group("AI") and not emitted and path.size() > 5 and not get_parent().parking:
+		if get_parent().is_in_group("AI") and not emitted and path.size() > 5:
 			# unregister from previous road
 			if not get_parent().road:
 				return 
