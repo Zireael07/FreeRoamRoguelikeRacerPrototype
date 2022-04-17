@@ -76,18 +76,20 @@ func look_for_path_initial_parking(id, left):
 	print("[AI] Nav path: " + str(path))
 	
 	var cl = get_closest_path_point(pos, path)
-	print("Pos ", pos, " closest: ", cl)
+	#print("Pos ", pos, " closest: ", cl)
 	# magic numbers based on reduce_traffic output
-	#path.insert(3, pos)
-	path.insert(3, cl)
+	path.insert(3, pos)
+	path.insert(4, cl)
 	
 	# axe the first points since we're starting at the lot
 	path.remove_at(0)
-	path.remove_at(1)
-	path.remove_at(2)
+	path.remove_at(0) # because the array is reindexed after every remove_at
+	path.remove_at(0)
+	
+	print("Path post adjustments: ", path)
 	
 	# facing (we can't rotate self due to l.28 above)
-	get_node("BODY").look_at(cl)
+	get_node("BODY").look_at(pos)
 	
 	# extract intersection numbers
 	var ret = []
@@ -451,7 +453,7 @@ func find_lot(road):
 			
 func get_closest_path_point(pos, path):
 	# this is for initial path, after it gets traffic_reduced
-	return Geometry3D.get_closest_point_to_segment(pos, path[2], path[3])
+	return Geometry3D.get_closest_point_to_segment_uncapped(pos, path[2], path[3])
 
 # ---------------------------------------------------
 func debug_cube(loc, red=false):
