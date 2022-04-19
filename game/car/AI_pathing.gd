@@ -86,6 +86,13 @@ func look_for_path_initial_parking(id, left):
 	path.remove_at(0) # because the array is reindexed after every remove_at
 	path.remove_at(0)
 	
+	# point halfway between closest and next point on the path
+	var helper = (cl+path[2])/2
+	var h_loc = (helper-cl).limit_length(5)
+	helper = cl+h_loc # clamp helper to a certain distance from cl
+	#print("Pos, helper: ", pos, helper)
+	
+	path.insert(2, helper)
 	print("Path post adjustments: ", path)
 	
 	# facing (we can't rotate self due to l.28 above)
@@ -98,7 +105,8 @@ func look_for_path_initial_parking(id, left):
 	ret.append((strs[0].lstrip("Road ").to_int()))
 	ret.append((strs[1].to_int()))
 	
-	last_ind = ret[0]
+	# this operates on child id and not intersection id
+	last_ind = ret[0]+3
 	end_ind = ret[1]
 	emit_signal("found_path", [path, nav_data[1], nav_data[2]])
 	

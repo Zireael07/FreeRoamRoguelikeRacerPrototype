@@ -418,7 +418,7 @@ class WeatherSunny:
 		world = wd
 		# weather init
 		world.no_rain()
-		world.normal_sky()
+		#world.normal_sky()
 
 class WeatherOvercast:
 	var world
