@@ -78,8 +78,8 @@ func look_for_path_initial_parking(id, left):
 	var cl = get_closest_path_point(pos, path)
 	#print("Pos ", pos, " closest: ", cl)
 	# magic numbers based on reduce_traffic output
-	path.insert(3, pos)
-	path.insert(4, cl)
+	#path.insert(3, pos)
+	#path.insert(4, cl)
 	
 	# axe the first points since we're starting at the lot
 	path.remove_at(0)
@@ -92,8 +92,32 @@ func look_for_path_initial_parking(id, left):
 	helper = cl+h_loc # clamp helper to a certain distance from cl
 	#print("Pos, helper: ", pos, helper)
 	
-	path.insert(2, helper)
+	#path.insert(2, helper)
 	print("Path post adjustments: ", path)
+	
+	# note to self: transform's origin shouldn't be very far from the two points
+	# see map_nav.gd for an example (intersection)
+	var tr = Transform3D()
+	tr.origin = cl
+	var p1_ = pos * tr
+	var p2_ = helper * tr
+	#var p1_ = road.get_node(^"Spatial0").to_local(pos)
+	#var p2_ = road.get_node(^"Spatial0").to_local(helper)
+	# dummy out y since we are not going to care
+	var p1 = Vector2(p1_.x, p1_.z)
+	var p2 = Vector2(p2_.x, p2_.z)
+	#print("Origin: ", cl, " local pts: ", p1, p2)
+	#midpoint
+	var p4 = (p2+p1)/2
+	var p3 = p4.limit_length(3)
+	# this wants local 2D positions and origin
+	var arc_pos = map.get_node(^"nav").make_arc_from_points(p1, p2, p3, cl)
+	#print("Arc: ", arc_pos)
+	
+	# append arc_pos now if any
+	if arc_pos != null:
+		#path = arc_pos
+		path = arc_pos + path
 	
 	# facing (we can't rotate self due to l.28 above)
 	get_node("BODY").look_at(pos)

@@ -779,7 +779,11 @@ func intersection_arc(car, closest, nav_path):
 	
 	var p3 = p4.limit_length(3)
 	debug_cube(to_local(closest.get_global_transform().origin+Vector3(p3.x, 0.01, p3.y)), "flip")
+	return make_arc_from_points(p1, p2, p3, closest.get_global_transform().origin)
 	
+# NOTE: p1, p2, p3 are relative to origin and p3 is between p1 and p2
+# NOTE: breaks if origin is too far away from the three points
+func make_arc_from_points(p1, p2, p3, origin):
 	# test
 	#var ccw = is_arc_clockwise(p1, p3, p2)
 	#print("Arc clockwise? - ", ccw)
@@ -869,14 +873,16 @@ func intersection_arc(car, closest, nav_path):
 	# now we can finally find the center
 	#var center = p4+h*n
 	
-	var gloc_c = closest.get_global_transform().origin + Vector3(center.x, 0.01, center.y)
+	var gloc_c = origin + Vector3(center.x, 0.01, center.y)
 	#debug_cube(to_local(gloc_c), "flip")
 	#print("Center: ", center)
 
 	# the point to which 0 degrees corresponds
 	var angle0 = center+Vector2(radius,0)
 	#print("Angle0: ", angle0)
-	#debug_cube(to_local(closest.get_global_transform().origin + Vector3(angle0.x, 0.01, angle0.y)), "flip")
+	#debug_cube(to_local(origin + Vector3(angle0.x, 0.01, angle0.y)), "flip")
+	
+	#print("Center: ", center, " angle0 ", angle0)
 	
 	# get two angles/arcs
 	var angles = get_arc_angle(center, p1, p3, angle0)
@@ -892,7 +898,7 @@ func intersection_arc(car, closest, nav_path):
 	
 	var arcs = []
 	for i in range(points_arc.size()):
-		var gloc = Vector3(points_arc[i].x, 0.01, points_arc[i].y)+closest.get_global_transform().origin
+		var gloc = Vector3(points_arc[i].x, 0.01, points_arc[i].y)+origin
 		arcs.append(gloc)
 		#debug_cube(to_local(gloc), "left_flip")
 	
