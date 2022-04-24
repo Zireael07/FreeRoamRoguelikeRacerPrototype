@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://cgeaarrpkxkp1"]
+
+[ext_resource type="Material" path="res://assets/rain/fog_material.tres" id="1_5shx2"]
+[ext_resource type="Material" path="res://assets/rain/spray_test.tres" id="2_6dw8y"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_5lwhb"]
+size = Vector2(0.5, 0.5)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+material_override = ExtResource( "1_5shx2" )
+lifetime = 2.0
+preprocess = 10.0
+process_material = ExtResource( "2_6dw8y" )
+draw_pass_1 = SubResource( "QuadMesh_5lwhb" )
