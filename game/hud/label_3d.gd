@@ -11,6 +11,8 @@ func _ready():
 		#print("Setting a quad")
 		
 		# Set the quad's albedo texture to the viewport texture
+		# hackfix
+		await RenderingServer.frame_post_draw
 		var tex = get_parent().get_node(^"SubViewport").get_texture()
 		get_material_override().albedo_texture = tex
 		
