@@ -1,16 +1,14 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=2 format=3 uid="uid://bxd36lhm77nnq"]
 
-[ext_resource path="res://hud/pause_menu.gd" type="Script" id=1]
+[ext_resource type="Script" path="res://hud/pause_menu.gd" id="1"]
 
 [node name="Control" type="Control"]
 process_mode = 3
 visible = false
-offset_left = 3.0
-offset_right = 1026.0
-offset_bottom = 136.0
+anchor_right = 1.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
-script = ExtResource( 1 )
+script = ExtResource( "1" )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 modulate = Color(1, 1, 1, 0.314902)
@@ -23,11 +21,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -38.0
-offset_top = -20.0
-offset_right = 38.0
-offset_bottom = 20.0
+offset_left = -53.0
+offset_top = 23.0
+offset_right = 114.0
+offset_bottom = 63.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "Mouse steering"
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = false
 
 [node name="Button" type="Button" parent="."]
 offset_left = 490.0
@@ -37,23 +39,21 @@ offset_bottom = 135.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 text = "Resume"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Button2" type="Button" parent="."]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -11.5
-offset_top = -46.0
-offset_right = 71.5
-offset_bottom = -26.0
+offset_left = -29.0
+offset_top = 70.0
+offset_right = 68.0
+offset_bottom = 101.0
+grow_horizontal = 2
+grow_vertical = 0
 text = "Exploration"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = false
 
 [connection signal="pressed" from="MouseSteerButton" to="." method="_on_MouseSteerButton_pressed"]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

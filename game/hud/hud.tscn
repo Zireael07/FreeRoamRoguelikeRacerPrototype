@@ -30,7 +30,6 @@ border_color = Color(0.460938, 0, 0, 1)
 [node name="root" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = -462.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 mouse_filter = 2
@@ -73,25 +72,17 @@ offset_bottom = 99.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 text = "kph"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="AI steering vis" type="GridContainer" parent="DebugAI"]
 offset_top = 50.0
 offset_right = 100.0
 offset_bottom = 90.0
-rect_min_size = Vector2(100, 40)
 columns = 32
 script = ExtResource( "4_w7xr4" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="DebugRect" type="ColorRect" parent="DebugAI/AI steering vis"]
 offset_right = 20.0
 offset_bottom = 40.0
-rect_min_size = Vector2(20, 40)
 script = ExtResource( "5_8jop2" )
 
 [node name="Label" type="Label" parent="DebugAI"]
@@ -99,9 +90,6 @@ offset_top = 100.0
 offset_right = 9.0
 offset_bottom = 126.0
 text = "0"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label2" type="Label" parent="DebugAI"]
 offset_left = 100.0
@@ -110,9 +98,6 @@ offset_right = 127.0
 offset_bottom = 126.0
 text = "90
 "
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label3" type="Label" parent="DebugAI"]
 offset_left = 200.0
@@ -121,9 +106,6 @@ offset_right = 227.0
 offset_bottom = 126.0
 text = "180
 "
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label4" type="Label" parent="DebugAI"]
 offset_left = 200.0
@@ -132,9 +114,6 @@ offset_right = 227.0
 offset_bottom = 126.0
 text = "360
 "
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label timer" type="Label" parent="."]
 offset_top = 229.0
@@ -146,27 +125,38 @@ theme_override_colors/font_color = Color(0.0154419, 0.988281, 0.988281, 1)
 theme_override_fonts/font = SubResource( "3" )
 
 [node name="Label dist" type="Label" parent="."]
-offset_left = 620.0
-offset_top = 495.0
-offset_right = 822.0
-offset_bottom = 595.0
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -402.0
+offset_top = -75.0
+offset_right = -200.0
+offset_bottom = 25.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0.0156863, 0.988235, 0.988235, 1)
 text = "dist"
 max_lines_visible = 1
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
 
 [node name="Label clock" type="Label" parent="."]
-offset_left = 638.0
-offset_top = 461.0
-offset_right = 840.0
-offset_bottom = 561.0
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -386.0
+offset_top = -100.0
+offset_right = -184.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0.0154419, 0.988281, 0.988281, 1)
 theme_override_fonts/font = SubResource( "4" )
 text = "clock"
 max_lines_visible = 1
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
 
 [node name="Label road" type="Label" parent="."]
 offset_left = 10.0
@@ -205,24 +195,37 @@ size_flags_vertical = 2
 texture = ExtResource( "3" )
 
 [node name="WheelAngleBar" type="HScrollBar" parent="."]
-offset_left = 352.0
-offset_top = 573.0
-offset_right = 499.0
-offset_bottom = 585.0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -32.0
+offset_right = -13.0
+offset_bottom = -20.0
 min_value = -100.0
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
 
 [node name="WheelAngleBar2" type="HScrollBar" parent="."]
-offset_left = 352.0
-offset_top = 587.0
-offset_right = 499.0
-offset_bottom = 599.0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -12.0
+offset_right = -13.0
 min_value = -100.0
 
 [node name="WheelAngle" type="Label" parent="."]
-offset_left = 405.0
-offset_top = 559.0
-offset_right = 445.0
-offset_bottom = 573.0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -107.0
+offset_top = -53.0
+offset_right = -67.0
+offset_bottom = -30.0
 
 [node name="Health" type="ProgressBar" parent="."]
 offset_left = 11.0
@@ -259,9 +262,13 @@ offset_right = 20.0
 offset_bottom = 14.0
 
 [node name="DriverInfo" type="Control" parent="."]
-offset_top = 457.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -143.0
 offset_right = 40.0
-offset_bottom = 497.0
+offset_bottom = -103.0
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
 
 [node name="ColorRect" type="ColorRect" parent="DriverInfo"]
 offset_right = 251.0
@@ -318,7 +325,3 @@ anchor_bottom = 1.0
 offset_bottom = 459.0
 mouse_filter = 2
 script = ExtResource( "6" )
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": "Based on http://kidscancode.org/godot_recipes/3d/debug_overlay/"
-}

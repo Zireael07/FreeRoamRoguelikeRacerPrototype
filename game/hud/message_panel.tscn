@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dgo22ogst5x67"]
 
 [ext_resource type="Script" path="res://hud/message_panel.gd" id="1"]
-[ext_resource type="FontData" uid="uid://dedeqedbo3m40" path="res://assets/851H-kktt.ttf" id="2"]
+[ext_resource type="FontData" uid="uid://cg0vdpby3b867" path="res://assets/851H-kktt.ttf" id="2"]
 
 [sub_resource type="Font" id="1"]
 data/0 = ExtResource( "2" )
@@ -19,20 +19,17 @@ keycode = 16777221
 events = [SubResource( "InputEventKey_7nbx3" )]
 
 [node name="Control" type="Control"]
-offset_left = 3.0
-offset_right = 1026.0
-offset_bottom = 145.0
+anchor_right = 1.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 script = ExtResource( "1" )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ColorRect" type="ColorRect" parent="."]
-offset_right = 1021.0
+anchor_right = 1.0
 offset_bottom = 145.0
 color = Color(0, 0.155029, 0.992188, 0.552471)
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
 
 [node name="Label" type="Label" parent="."]
 offset_right = 1022.0
