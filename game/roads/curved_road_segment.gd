@@ -24,7 +24,7 @@ var road_height = 0.01
 
 #road variables
 @export var lane_width = 3
-@export var radius = 15
+@export var radius = 15.0
 @export var loc: Vector2 = Vector2(0,0)
 @export var left_turn: bool = false
 #export var angle = 120
