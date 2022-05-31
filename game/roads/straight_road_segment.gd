@@ -352,13 +352,13 @@ func makeRoad():
 	# if we're on the ground and not sloped, we don't need a collision shape
 	if global_transform.origin.y < 1 and road_slope < 0.1:
 		var shape = BoxShape3D.new()
-		shape.set_size(Vector3(6,1,mid_point.z))
+		shape.set_size(Vector3(6,1,mid_point.z*2))
 		get_node(^"Area3D/CollisionShape3D").set_position(Vector3(0,0,mid_point.z))
 		get_node(^"Area3D/CollisionShape3D").set_shape(shape)
 	# otherwise make a simple collision shape
 	else:
 		var shape = BoxShape3D.new()
-		shape.set_size(Vector3(6,3, mid_point.z+0.2)) #fudge necessary for bike not to fall through a crack
+		shape.set_size(Vector3(6,3, (mid_point.z*2)+0.2)) #fudge necessary for bike not to fall through a crack
 		var body = StaticBody3D.new()
 		body.set_collision_layer(2) # AI raycasts ignore layer 2
 		add_child(body)

@@ -4,8 +4,8 @@
 [ext_resource type="Material" uid="uid://dw68qicraawdi" path="res://assets/road_shadermat.tres" id="2"]
 [ext_resource type="Script" path="res://roads/straight_road_props.gd" id="4"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_y4wsq"]
-size = Vector3(6, 1, 50)
+[sub_resource type="BoxShape3D" id="BoxShape3D_bclwb"]
+size = Vector3(6, 1, 100)
 
 [node name="Position3D" type="Position3D" groups=["roads"]]
 script = ExtResource( "1" )
@@ -21,7 +21,7 @@ script = ExtResource( "4" )
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50)
-shape = SubResource( "BoxShape3D_y4wsq" )
+shape = SubResource( "BoxShape3D_bclwb" )
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_Area_body_entered"]
 [connection signal="body_exited" from="Area3D" to="." method="_on_Area_body_exited"]
