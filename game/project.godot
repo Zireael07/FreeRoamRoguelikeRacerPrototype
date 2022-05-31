@@ -8,6 +8,16 @@
 
 config_version=5
 
+_global_script_classes=[{
+"base": "RefCounted",
+"class": &"Splerger",
+"language": &"GDScript",
+"path": "res://splerger.gd"
+}]
+_global_script_class_icons={
+"Splerger": ""
+}
+
 [application]
 
 config/name="Free Drive Battle"
