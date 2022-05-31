@@ -475,10 +475,12 @@ transform = Transform3D(-1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, -4.114
 [node name="FrontRay" type="RayCast3D" parent="BODY"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, -0.67)
 collision_mask = 3
+hit_from_inside = true
 
 [node name="RearRay" type="RayCast3D" parent="BODY"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0.66)
 collision_mask = 3
+hit_from_inside = true
 script = ExtResource( "11" )
 
 [node name="SubViewport" type="SubViewport" parent="BODY"]
