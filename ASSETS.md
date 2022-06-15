@@ -16,3 +16,4 @@ Assets:
 * cherry blossom - https://www.blenderguru.com/tutorials/how-to-make-cherry-blossom-flowers
 * parking lot - https://github.com/fegennari/3DWorld/blob/master/textures/roads/parking_lot.png
 * rain effects - from https://github.com/ywaby/godot-WaterPack MIT license
+* train and tracks - https://opengameart.org/content/rail-basic-assets-v1, CC0 licensed, edited
