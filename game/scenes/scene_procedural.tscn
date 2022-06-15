@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dr7kf5v6sxlls"]
+[gd_scene load_steps=18 format=3 uid="uid://dr7kf5v6sxlls"]
 
 [ext_resource type="Script" path="res://vulkan sky/daynight.gd" id="2_t0aug"]
 [ext_resource type="PackedScene" uid="uid://bafioicjxx21v" path="res://car/kinematics/kinematic_car_base.tscn" id="3"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://yanqthyykw70" path="res://car/kinematics/kinematic_car_AI_cop.tscn" id="14"]
 [ext_resource type="Script" path="res://scripts/scene_top.gd" id="15"]
 [ext_resource type="PackedScene" path="res://objects/roadblock.tscn" id="16"]
+[ext_resource type="PackedScene" uid="uid://pt1cjmh5lxgd" path="res://objects/train.tscn" id="16_fq4aq"]
 [ext_resource type="Material" path="res://assets/ground_material.tres" id="17"]
 [ext_resource type="PackedScene" path="res://objects/spikestrip.tscn" id="18"]
 
@@ -93,3 +94,6 @@ transform = Transform3D(0.258819, 0, 0.965925, 0, 1, 0, -0.965925, 0, 0.258819, 
 
 [node name="marker_North" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 900, 0, 0)
+
+[node name="Node3D2" parent="." instance=ExtResource( "16_fq4aq" )]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 34.3512, 0, 182.155)

@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://dasd7agx3pb0v"]
+
+[ext_resource type="PackedScene" uid="uid://irky5vhe5k1b" path="res://assets/rail/straight_track.gltf" id="1_c7nh7"]
+[ext_resource type="Texture2D" uid="uid://ddx84yyb6gkl" path="res://assets/rail/buildings-houses_v1.jpg" id="2_af25o"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dpnse"]
+albedo_texture = ExtResource( "2_af25o" )
+
+[node name="straight_track" instance=ExtResource( "1_c7nh7" )]
+transform = Transform3D(1.5, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="landscape-track-1-straight001" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.04363, 0)
+surface_material_override/0 = SubResource( "StandardMaterial3D_dpnse" )
