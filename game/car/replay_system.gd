@@ -49,7 +49,7 @@ func _ready():
 				var node_name = str(get_parent().get_path_to(node))
 				animation.track_set_path(idx, node_name + ":" + property)
 				animations[node] = animation
-				add_animation(node_name.replacen('/','.'), animation)
+				#add_animation(node_name.replacen('/','.'), animation)
 			
 func _physics_process(delta):
 	if recording:

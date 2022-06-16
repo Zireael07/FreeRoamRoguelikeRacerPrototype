@@ -227,8 +227,8 @@ size = Vector2(0.1, 0.5)
 [sub_resource type="Shader" id=19]
 code = "shader_type spatial;
 render_mode unshaded,blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx;
-uniform vec4 albedo : hint_color;
-uniform sampler2D texture_albedo : hint_albedo;
+uniform vec4 albedo : source_color;
+uniform sampler2D texture_albedo;
 uniform float specular;
 uniform float metallic;
 uniform float roughness : hint_range(0,1);
@@ -238,7 +238,7 @@ uniform vec3 uv1_offset;
 uniform vec3 uv2_scale;
 uniform vec3 uv2_offset;
 
-uniform vec4 tint_color : hint_color;
+uniform vec4 tint_color : source_color;
 uniform float fresnel_power = 1.0;
 uniform float edge_intensity = 2.0;
 

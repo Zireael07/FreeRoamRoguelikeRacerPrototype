@@ -10,7 +10,7 @@ uniform float THICKNESS :hint_range(0,100); //25.
 uniform float ABSORPTION :hint_range(0,10); //1.030725
 uniform int STEPS :hint_range(0,100); //25
 
-uniform vec4 HORIZON_COL :hint_color = vec4(0.8, 0.2, 0.1, 0.35);
+uniform vec4 HORIZON_COL :source_color = vec4(0.8, 0.2, 0.1, 0.35);
 uniform float TINT_DIST = 6.4; //10.4;
 
 float noise( in vec3 x )

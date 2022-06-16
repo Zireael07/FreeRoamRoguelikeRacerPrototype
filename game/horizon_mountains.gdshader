@@ -9,11 +9,11 @@ shader_type spatial;
 render_mode unshaded, shadows_disabled;
 
 uniform float mountain_distance = 2000.0;
-uniform sampler2D mountain_texture : hint_albedo;
-uniform sampler2D sand_texture : hint_albedo;
-uniform sampler2D height_map : hint_black;
+uniform sampler2D mountain_texture : hint_default_white;
+uniform sampler2D sand_texture : source_color;
+uniform sampler2D height_map : hint_default_black;
 uniform float height = 11.0;
-uniform vec4 aerial_perspective_color : hint_color = vec4( 0.1411764705882353, 0.41568627450980394, 0.6705882352941176, 1.0 );
+uniform vec4 aerial_perspective_color : source_color = vec4( 0.1411764705882353, 0.41568627450980394, 0.6705882352941176, 1.0 );
 uniform vec2 mountain_uv_scale = vec2( 25.0, 25.0 );
 uniform vec2 sand_uv_scale = vec2( 100.0, 100.0 );
 

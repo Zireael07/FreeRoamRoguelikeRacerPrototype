@@ -1,14 +1,14 @@
-[gd_resource type="StandardMaterial3D" load_steps=3 format=2]
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://byph0tb5slekw"]
 
-[sub_resource type="Gradient" id=1]
-offsets = PackedFloat32Array( 0, 0.0566802, 0.870445, 0.91498 )
-colors = PackedColorArray( 1, 0, 0, 1, 1, 1, 1, 1, 0.810893, 0.787364, 0.994771, 1, 0.14902, 0.0431373, 0.976471, 1 )
+[sub_resource type="Gradient" id="1"]
+offsets = PackedFloat32Array(0, 0.0566802, 0.870445, 0.91498)
+colors = PackedColorArray(1, 0, 0, 1, 1, 1, 1, 1, 0.810893, 0.787364, 0.994771, 1, 0.14902, 0.0431373, 0.976471, 1)
 
-[sub_resource type="GradientTexture" id=2]
-gradient = SubResource( 1 )
+[sub_resource type="GradientTexture1D" id="2"]
+gradient = SubResource( "1" )
 
 [resource]
-params_cull_mode = 2
-albedo_texture = SubResource( 2 )
+cull_mode = 2
+albedo_texture = SubResource( "2" )
 uv1_triplanar = true
 uv1_triplanar_sharpness = 3.86375

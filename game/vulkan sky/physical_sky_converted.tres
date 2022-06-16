@@ -7,18 +7,18 @@ code = "
 shader_type sky;
 
 uniform float rayleigh : hint_range(0, 64) = 2.0;
-uniform vec4 rayleigh_color : hint_color = vec4(0.056, 0.14, 0.3, 1.0);
+uniform vec4 rayleigh_color : source_color = vec4(0.056, 0.14, 0.3, 1.0);
 uniform float mie : hint_range(0, 1) = 0.005;
 uniform float mie_eccentricity : hint_range(-1, 1) = 0.8;
-uniform vec4 mie_color : hint_color = vec4(0.36, 0.56, 0.82, 1.0);
+uniform vec4 mie_color : source_color = vec4(0.36, 0.56, 0.82, 1.0);
 
 uniform float turbidity : hint_range(0, 1000) = 10.0;
 uniform float sun_disk_scale : hint_range(0, 360) = 1.0;
-uniform vec4 ground_color : hint_color = vec4(1.0);
+uniform vec4 ground_color : source_color = vec4(1.0);
 uniform float exposure : hint_range(0, 128) = 0.1;
 uniform float dither_strength : hint_range(0, 10) = 1.0;
 
-uniform sampler2D night_sky : hint_black_albedo;
+uniform sampler2D night_sky : hint_default_black;
 
 const vec3 UP = vec3( 0.0, 1.0, 0.0 );
 

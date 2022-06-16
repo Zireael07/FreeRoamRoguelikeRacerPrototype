@@ -1,12 +1,12 @@
 shader_type canvas_item;
 
-uniform vec4 sky_color_day : hint_color = vec4(0.4, 0.7, 0.7, 1.0);
-uniform vec4 sky_color_night : hint_color = vec4(0, 0, 0.2, 1.0);
-uniform vec4 horizon_color : hint_color = vec4(0.8, 0.2, 0.1, 0.35);
-uniform vec4 day_horizon_color: hint_color = vec4(0.55, 0.82, 0.91, 0.35);
-//uniform vec4 green_color : hint_color = vec4(0, 0.3, 0, 0.5);
-uniform vec4 sun_color1 : hint_color = vec4(1.0, 1.0, 1.0, 1.0);
-uniform vec4 sun_color2 : hint_color = vec4(1.0, 0.05, 0.0, 0.75); // yellow (1.0, 0.75, 0.0, 0.75)
+uniform vec4 sky_color_day : source_color = vec4(0.4, 0.7, 0.7, 1.0);
+uniform vec4 sky_color_night : source_color = vec4(0, 0, 0.2, 1.0);
+uniform vec4 horizon_color : source_color = vec4(0.8, 0.2, 0.1, 0.35);
+uniform vec4 day_horizon_color: source_color = vec4(0.55, 0.82, 0.91, 0.35);
+//uniform vec4 green_color : source_color = vec4(0, 0.3, 0, 0.5);
+uniform vec4 sun_color1 : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform vec4 sun_color2 : source_color = vec4(1.0, 0.05, 0.0, 0.75); // yellow (1.0, 0.75, 0.0, 0.75)
 
 // Other params
 uniform float horizon_size = 0.015; //needs to be small because otherwise it curves visibly 

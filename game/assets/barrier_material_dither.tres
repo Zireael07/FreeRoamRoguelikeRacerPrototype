@@ -1,16 +1,17 @@
-[gd_resource type="ShaderMaterial" load_steps=3 format=2]
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://canowuaq6dumn"]
 
-[ext_resource path="res://assets/racing_line.png" type="Texture2D" id=1]
-[ext_resource path="res://assets/dither_opacity.gdshader" type="Shader" id=2]
+[ext_resource type="Texture2D" uid="uid://d3sqn123w341m" path="res://assets/racing_line.png" id="1"]
+[ext_resource type="Shader" path="res://assets/dither_opacity.gdshader" id="2"]
 
 [resource]
-shader = ExtResource( 2 )
-shader_param/albedo = Color( 1, 1, 1, 1 )
-shader_param/specular = 0.5
-shader_param/metallic = 0.0
-shader_param/roughness = 0.5
-shader_param/normal_strength = 1.0
+render_priority = 0
+shader = ExtResource( "2" )
+shader_param/albedo = Color(1, 1, 1, 1)
 shader_param/alpha_clip = 0.859
+shader_param/emission = Color(0, 0, 1, 1)
 shader_param/emission_energy = 4.0
-shader_param/emission = Color( 0, 0, 1, 1 )
-shader_param/texture_albedo = ExtResource( 1 )
+shader_param/metallic = 0.0
+shader_param/normal_strength = 1.0
+shader_param/roughness = 0.5
+shader_param/specular = 0.5
+shader_param/texture_albedo = ExtResource( "1" )

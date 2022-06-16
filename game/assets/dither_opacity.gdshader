@@ -5,19 +5,19 @@ shader_type spatial;
 render_mode blend_mix,depth_draw_opaque,cull_disabled,diffuse_burley,specular_schlick_ggx;
 
 // Texture maps
-uniform sampler2D texture_albedo : hint_albedo;
+uniform sampler2D texture_albedo : source_color; 
 //uniform sampler2D texture_masks : hint_white;
 //uniform sampler2D texture_normal : hint_normal;
 
 // Parameters
-uniform vec4 albedo : hint_color;
+uniform vec4 albedo : source_color;
 uniform float specular = 0.5;
 uniform float metallic = 0.0;
 uniform float roughness : hint_range(0,1) = 0.5;
 uniform float normal_strength : hint_range(0,2) = 1.0;
 uniform float alpha_clip: hint_range(0,1) = 0.0;
 uniform float emission_energy;
-uniform vec4 emission : hint_color;
+uniform vec4 emission : source_color;
 
 void fragment() {
 	vec2 coord = vec2(UV.x, UV.y+TIME);

@@ -5,7 +5,7 @@
 [resource]
 render_priority = 0
 shader = ExtResource( "1" )
-shader_param/linear_velocity = Vector3(0, 1, 0)
 shader_param/angular_velocity = Vector3(0, 0, 0)
-shader_param/iteration_count = 4
 shader_param/intensity = 0.2
+shader_param/iteration_count = 4
+shader_param/linear_velocity = Vector3(0, 1, 0)

@@ -6,12 +6,12 @@ code = "
 
 shader_type sky;
 
-uniform vec4 sky_top_color : hint_color = vec4(0.35, 0.46, 0.71, 1.0);
-uniform vec4 sky_horizon_color : hint_color = vec4(0.55, 0.69, 0.81, 1.0);
+uniform vec4 sky_top_color : source_color = vec4(0.35, 0.46, 0.71, 1.0);
+uniform vec4 sky_horizon_color : source_color = vec4(0.55, 0.69, 0.81, 1.0);
 uniform float sky_curve : hint_range(0, 1) = 0.09;
 uniform float sky_energy = 1.0;
-uniform vec4 ground_bottom_color : hint_color = vec4(0.12, 0.12, 0.13, 1.0);
-uniform vec4 ground_horizon_color : hint_color = vec4(0.37, 0.33, 0.31, 1.0);
+uniform vec4 ground_bottom_color : source_color = vec4(0.12, 0.12, 0.13, 1.0);
+uniform vec4 ground_horizon_color : source_color = vec4(0.37, 0.33, 0.31, 1.0);
 uniform float ground_curve : hint_range(0, 1) = 0.02;
 uniform float ground_energy = 1.0;
 uniform float sun_angle_max = 1.74;

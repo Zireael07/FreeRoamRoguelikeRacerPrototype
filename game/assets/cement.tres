@@ -1,8 +1,8 @@
-[gd_resource type="StandardMaterial3D" load_steps=2 format=2]
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://bx3wldhadi1ep"]
 
-[ext_resource path="res://assets/cement.png" type="Texture2D" id=1]
+[ext_resource type="Texture2D" uid="uid://chm7wyotmfqid" path="res://assets/cement.png" id="1"]
 
 [resource]
-params_diffuse_mode = 1
-albedo_texture = ExtResource( 1 )
-uv1_scale = Vector3( 5, 5, 1 )
+diffuse_mode = 1
+albedo_texture = ExtResource( "1" )
+uv1_scale = Vector3(5, 5, 1)
