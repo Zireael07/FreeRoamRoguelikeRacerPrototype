@@ -220,6 +220,18 @@ func get_input():
 		
 
 # --------------------------------------------------
+func damage_on_hit():
+	if not get_parent().is_in_group("bike"):
+		if speed > 5:
+			print("Speed at collision: " + str(round(speed*3.6)) + "km/h, deducting: " + str(round(speed)))
+			# deduct health
+			health -= round(speed)
+
+	if health <= 0:
+		# game over!
+		var over = game_over.instantiate()
+		add_child(over)
+
 
 func _physics_process(delta):
 	# for some reason, needed in Godot 4
@@ -326,16 +338,31 @@ func _physics_process(delta):
 
 	cockpit_cam.set_rotation(Vector3(deg2rad(180),deg2rad(cockpit_cam_angle), deg2rad(180)))
 
-	# did we run into a cardboard box?
+	# did we run into ...
 	if get_slide_collision_count():
 		var collision = get_slide_collision(0)
+		# a cardboard box?
 		if collision.get_collider() is RigidDynamicBody3D:
 			var nam = collision.get_collider().get_name()
 			#print(nam)
 			# push on it
 			var cr_imp = -get_global_transform().basis.z.normalized() * 4
 			collision.get_collider().apply_impulse(Vector3(0,-2,0), Vector3(cr_imp.x, 0, cr_imp.z))
-
+		# did we hit the train?
+		if collision.get_collider() is AnimatableBody3D:
+			# is it moving?
+			if collision.get_collider().get_parent().get_node("AnimationPlayer").is_playing():
+				# game over
+				health = 0
+	
+		var nam = collision.get_collider().get_parent().get_name()
+		#print(nam)
+		# ignore ground or road "collisions"
+		if "Ground" in nam or "Road" in nam:
+			pass
+		else:	
+			damage_on_hit()
+	
 func after_move():
 	# racing ctd
 	# track the path points
