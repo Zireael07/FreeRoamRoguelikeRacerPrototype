@@ -666,10 +666,10 @@ func get_heading():
 	if not has_node("/root/Node3D/marker_North"):
 		return 0
 	
-	var North = get_node(^"/root/Node3D/marker_North")
+	var North = get_node("/root/Node3D/marker_North")
 	#if North == null:
 	#	return 0
-	var rel_loc = (North.get_global_transform() * get_global_transform().origin)
+	var rel_loc = to_local(North.get_global_transform().origin)  #(North.get_global_transform() * get_global_transform().origin)
 	#2D angle to target (local coords)
 	var angle = atan2(rel_loc.x, rel_loc.z)
 	#print("Heading: ", rad2deg(angle))

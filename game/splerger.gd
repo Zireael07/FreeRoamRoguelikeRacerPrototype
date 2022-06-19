@@ -514,7 +514,7 @@ func merge_meshinstances(mesh_array, attachment_node : Node, use_local_space : b
 
 	var new_mi = MeshInstance3D.new()
 	new_mi.mesh = tmpMesh
-	
+	# FIXME: Godot 4 complains that surface 0 is out of bounds?
 	new_mi.set_surface_override_material(0, mat)
 	
 	if use_local_space:
