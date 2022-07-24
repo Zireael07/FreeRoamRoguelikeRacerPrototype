@@ -26,10 +26,27 @@ func setup(mul, samples, real_edges):
 	var marker_data = spawn_markers(samples, real_edges)
 	setup_map_nav(samples, real_edges)
 	setup_markers(marker_data)
+	# test
+	var A = get_adjacency_list(samples)
+	find_cycles(samples, A)
 
-#-------------------------
+#-----------------------------------------------
 # Distance map
 
+# because we don't have access to the graph structure underlying AStar :((
+func get_adjacency_list(samples):
+	var A = {} # adjacency list, i.e. neighbors for node v
+	# quick and dirty adjacency list
+	for i in range(0,samples.size()-1):
+		# see l. 76 for use and l.54 for creation
+		# takes id not vertex pos
+		var neighbours = ast.get_point_connections(i)
+		var node = samples[i]
+		A[i] = neighbours
+	print("Adjacency list: ", A)
+	return A
+
+# this creates an AStar map in which i always corresponds to sample's i
 func setup_neighbors(samples, edges):
 	# we'll use AStar to have an easy map of neighbors
 	ast = AStar3D.new()
@@ -174,6 +191,57 @@ func spawn_markers(samples, real_edges):
 	print("Marker data: " + str(marker_data))
 	
 	return marker_data
+
+# ----------------------------------------------------------
+func _visitor(this, low, discovered, stack, neighbors, _order, result):
+###Recursive function for DFS traversal of vertices.
+### this        --> Vertex to be visited in this call.
+### discovered{}      --> Discovery order of visited vertices.
+### low{}       --> Connected vertex of earliest discovery order
+### stack       --> Ancestor node stack during DFS.
+
+	discovered[this] = _order
+	low[this] = _order
+	_order += 1
+	stack.append(this)
+
+	# operates on adjacency list
+	for neighbr in neighbors[this]:
+		if neighbr not in discovered:
+			# neighbour not visited so do DFS recurrence.
+			_visitor(neighbr, low, discovered, stack, neighbors, _order, result)
+			# make sure we keep the lowest connected value
+			low[this] = min(low[this], low[neighbr])
+
+		elif neighbr in stack:
+			# Update low value of this only if neighbr in stack
+			low[this] = min(low[this], discovered[neighbr])
+
+	if low[this] == discovered[this]:
+		print("Found a cycle, pointing back to: ", this)
+		# Found a cycle, so store it
+		var top = null
+		var new = []
+		while top != this:
+			top = stack.pop_back()
+			new.append(top)
+		result.append(new)
+
+# our graph is undirected (all roads/edges are bidirectional)
+# BFS *can* find cycles in an undirected graph but DFS seems to be recommended
+func find_cycles(samples, neighbors):
+	var _order = 0         # Visitation order counter
+	var discovered = {}
+	var low = {} # lowest connected vertex
+	var stack = []
+
+	var result = []           # result accumulator
+	for vertex in range(samples.size()-1):
+		if vertex not in discovered:
+			_visitor(vertex, low, discovered, stack, neighbors, _order, result)
+	
+	print("Found cycles: ", result)
+
 
 # -----------------------------------
 	
