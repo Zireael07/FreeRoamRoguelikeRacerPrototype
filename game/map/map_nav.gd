@@ -22,17 +22,83 @@ func setup(mul, samples, real_edges):
 	mult = mul
 	
 	# call the functions
+	# all the functions here care only about real edges
 	setup_neighbors(samples, real_edges)
 	var marker_data = spawn_markers(samples, real_edges)
 	setup_map_nav(samples, real_edges)
 	setup_markers(marker_data)
 	# test
 	var A = get_adjacency_list(samples)
-	find_cycles(samples, A)
+	CycleFinder.new().get_cycles(A)
 
 #-----------------------------------------------
-# Distance map
+# our graph is undirected (all roads/edges are bidirectional)
+# BFS *can* find cycles in an undirected graph but DFS seems to be recommended
+class CycleFinder:
+	var cycles = [] # this lone thing is why we use an inner class
+	
+	# Function to mark the vertex with different colors for different cycles
+	func _dfs_cycle(A, u, p, color, parents):
+		# already (completely) visited vertex.
+		if color[u] == "BLACK": #2
+			return
+			
+		# seen vertex, but was not
+		# completely visited -> cycle detected.
+		# backtrack based on parents to
+		# find the complete cycle.
+		if color[u] == "GRAY": #1
+			var cur = p
+			#print("Cycle found, stumbled on ", u, " again from ", p, ".") 
+			self.cycles.push_back([p])
 
+			# backtrack the vertex which are
+			# in the current cycle thats found
+			while cur != u:
+				cur = parents[cur]
+				self.cycles[self.cycles.size()-1].append(cur)
+				#print("Backtracking in cycle, id: ", cur)
+			return
+			
+		parents[u] = p
+		
+		# partially visited.
+		color[u] = "GRAY" #1
+		
+		# simple DFS on graph
+		for v in A[u]:
+			# if it has not been visited previously
+			# skip links to parent
+			if v == parents[u]:
+				continue
+			_dfs_cycle(A, v, u, color, parents)
+			
+		# completely visited.
+		color[u] = "BLACK" #2
+
+		# debug
+		#print("DFS color: ",color)
+		
+	func get_cycles(A):
+		# Initialize variables
+		var color = []
+		var parents = []
+		#var mark = []
+		#var cyclenumber = 0
+		var num_edges = A.size()
+		
+		# 4.0 functions
+		color.resize(num_edges)
+		color.fill("WHITE")
+		parents.resize(num_edges)
+		parents.fill(-1)
+			
+		_dfs_cycle(A, 0, -1, color, parents)
+		
+		print("Cycles found: ", self.cycles)
+
+# ---------------------------------------------
+# Distance map and related stuff
 # because we don't have access to the graph structure underlying AStar :((
 func get_adjacency_list(samples):
 	var A = {} # adjacency list, i.e. neighbors for node v
@@ -191,57 +257,6 @@ func spawn_markers(samples, real_edges):
 	print("Marker data: " + str(marker_data))
 	
 	return marker_data
-
-# ----------------------------------------------------------
-func _visitor(this, low, discovered, stack, neighbors, _order, result):
-###Recursive function for DFS traversal of vertices.
-### this        --> Vertex to be visited in this call.
-### discovered{}      --> Discovery order of visited vertices.
-### low{}       --> Connected vertex of earliest discovery order
-### stack       --> Ancestor node stack during DFS.
-
-	discovered[this] = _order
-	low[this] = _order
-	_order += 1
-	stack.append(this)
-
-	# operates on adjacency list
-	for neighbr in neighbors[this]:
-		if neighbr not in discovered:
-			# neighbour not visited so do DFS recurrence.
-			_visitor(neighbr, low, discovered, stack, neighbors, _order, result)
-			# make sure we keep the lowest connected value
-			low[this] = min(low[this], low[neighbr])
-
-		elif neighbr in stack:
-			# Update low value of this only if neighbr in stack
-			low[this] = min(low[this], discovered[neighbr])
-
-	if low[this] == discovered[this]:
-		print("Found a cycle, pointing back to: ", this)
-		# Found a cycle, so store it
-		var top = null
-		var new = []
-		while top != this:
-			top = stack.pop_back()
-			new.append(top)
-		result.append(new)
-
-# our graph is undirected (all roads/edges are bidirectional)
-# BFS *can* find cycles in an undirected graph but DFS seems to be recommended
-func find_cycles(samples, neighbors):
-	var _order = 0         # Visitation order counter
-	var discovered = {}
-	var low = {} # lowest connected vertex
-	var stack = []
-
-	var result = []           # result accumulator
-	for vertex in range(samples.size()-1):
-		if vertex not in discovered:
-			_visitor(vertex, low, discovered, stack, neighbors, _order, result)
-	
-	print("Found cycles: ", result)
-
 
 # -----------------------------------
 	
