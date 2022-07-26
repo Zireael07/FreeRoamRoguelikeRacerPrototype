@@ -11,8 +11,11 @@ var map
 var int_path = []
 var nav_result = PackedVector3Array()
 
+var intersections = []
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
 	cam = get_node(^"SubViewport/Camera2D")
 	#the camera seems to be offset by this value from minimap center
 	# experimentally determined
@@ -21,6 +24,23 @@ func _ready():
 	player = get_parent()
 	map = get_node(^"/root/Node3D").get_node(^"map")
 	get_node(^"track").set_position(get_node(^"center").get_position() + mmap_offset)
+	setup()
+	
+func setup():
+	intersections = get_parent().get_node(^"Viewport_root/SubViewport/minimap").intersections
+
+	for i in range(intersections.size()-1):
+		var l = Label.new()
+		l.set_name("Label"+str(i))
+		l.set_text(str(i))
+		var inter = intersections[i]
+		#print("i: ", str(i), " global loc: ", inter)
+		var loc = Vector2(inter.x, inter.z)
+		# for some reason we need to flip
+		# the offset at the end is so that the numbers are actually visible
+		l.position = Vector2(-loc.x, -loc.y) + mmap_offset + Vector2(5,5)
+		get_node("center").add_child(l)
+		#print("Added label " + str(i) + "@" + str(l.position))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -82,7 +102,7 @@ func _draw():
 # returns id of closest intersection
 func find_closest_intersection(pos):
 	# list of intersection global positions
-	var intersections = get_parent().get_node(^"Viewport_root/SubViewport/minimap").intersections
+	#var intersections = get_parent().get_node(^"Viewport_root/SubViewport/minimap").intersections
 	
 	# pos is flipped for some reason, so unflip it
 	pos = -pos

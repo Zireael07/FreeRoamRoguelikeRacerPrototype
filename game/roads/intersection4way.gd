@@ -191,8 +191,8 @@ func debug_cube(loc, red=false):
 	node.set_translation(loc)
 
 func send_position(map):
-	pass
-	#map.add_intersection(get_global_transform() * (Vector3(0,0,0)))
+	#pass
+	map.add_intersection(get_global_transform() * (Vector3(0,0,0)))
 
 func snap_pos_to_points(pos,debug=false):
 	if abs(pos.x) > abs(pos.z):

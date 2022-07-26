@@ -89,7 +89,7 @@ func make_map():
 						# paranoia
 						if i > 0 and i < 1000 and j > 0 and j < 1000:
 							# necessary in 3.0
-							image.lock()
+							#image.lock()
 							image.set_pixel(i,j, road)
 							
 	if positions.size() == 0:
