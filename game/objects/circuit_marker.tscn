@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://grilrvc1dyfl"]
+
+[ext_resource type="PackedScene" path="res://objects/marker.tscn" id="1_gchav"]
+[ext_resource type="Script" path="res://scripts/circuit_marker.gd" id="2_br33x"]
+[ext_resource type="Material" uid="uid://bns3tkyvtd4th" path="res://assets/circuit_marker_mat.tres" id="3_1luij"]
+
+[node name="marker" groups=["race_marker"] instance=ExtResource( "1_gchav" )]
+script = ExtResource( "2_br33x" )
+
+[node name="MeshInstance3D" parent="." index="0"]
+material_override = ExtResource( "3_1luij" )
+surface_material_override/0 = null
+
+[node name="GPUParticles3D" parent="." index="2"]
+material_override = ExtResource( "3_1luij" )

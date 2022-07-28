@@ -28,8 +28,8 @@ func setup(mul, samples, real_edges):
 	setup_map_nav(samples, real_edges)
 	setup_markers(marker_data)
 	# test
-	var A = get_adjacency_list(samples)
-	CycleFinder.new().get_cycles(A)
+	#var A = get_adjacency_list(samples)
+	#cycles = CycleFinder.new().get_cycles(A)
 
 #-----------------------------------------------
 # our graph is undirected (all roads/edges are bidirectional)
@@ -96,6 +96,35 @@ class CycleFinder:
 		_dfs_cycle(A, 0, -1, color, parents)
 		
 		print("Cycles found: ", self.cycles)
+		return self.cycles
+		
+	# function to find cycles through vert X
+	func get_cycles_vert(A, id):
+		# Initialize variables
+		var color = []
+		var parents = []
+		#var mark = []
+		#var cyclenumber = 0
+		var num_edges = A.size()
+		
+		# 4.0 functions
+		color.resize(num_edges)
+		color.fill("WHITE")
+		parents.resize(num_edges)
+		parents.fill(-1)
+			
+		_dfs_cycle(A, id, -1, color, parents)
+		
+		print("Cycles found for id: ", id, ", ", self.cycles)
+		
+		# check if id is in cycles
+		self.cycles = self.cycles.filter(func(c): return id in c)
+		
+		print("Cycles post-filter: ", self.cycles)
+		
+		return self.cycles
+		
+# inner class ends here
 
 # ---------------------------------------------
 # Distance map and related stuff
@@ -209,12 +238,43 @@ func spawn_marker(samples, spots, mark, _name, limit=2):
 
 	return [m_id, t_id]
 
+func spawn_circuit_marker(samples, spots, mark):
+	# random choice of a connected (!) intersection to spawn at
+	var sel = randi() % spots.size()
+	var id = spots[sel]
+	#print("Selected spot: " + str(id))
+	var p = samples[id]
+	
+	var marker = mark.instantiate()
+	#marker.set_name(_name)
+	marker.set_position(Vector3(p[0]*mult, 0, p[1]*mult))
+	
+	# find a cycle
+	var A = get_adjacency_list(samples)
+	cycles = CycleFinder.new().get_cycles_vert(A, id)
+	
+	# save cycle
+	marker.cycle = cycles[0]
+	
+	# add marker to map itself
+	get_parent().add_child(marker)
+	# neither : nor @ works here, so I had to use something else
+	marker.set_name("circuit_marker" + ">" + str(id))
+	
+	# remove from list of possible spots
+	spots.remove_at(sel) # this works by id not value!
+	
+	print("Spawned circuit marker @ ", id)
+	
+	return [id]
+
 func spawn_markers(samples, real_edges):
 	var spots = []
 
 	var mark = preload("res://objects/marker.tscn")
 	var sp_mark = preload("res://objects/speed_marker.tscn")
 	var race_mark = preload("res://objects/race_marker.tscn")
+	var circuit_mark = preload("res://objects/circuit_marker.tscn")
 
 	# random choice of an intersection to spawn at
 	
@@ -255,6 +315,11 @@ func spawn_markers(samples, real_edges):
 	marker_data.append(mark_data[1])
 	
 	print("Marker data: " + str(marker_data))
+	
+	var m_data = spawn_circuit_marker(samples, spots, circuit_mark)
+	#marker_data.append(m_data[0])
+	#marker_data.append(m_data[1])
+	#print("Marker data: " + str(marker_data))
 	
 	return marker_data
 
@@ -385,7 +450,25 @@ func setup_markers(marker_data):
 		# display the whole path
 		marker.raceline = nav_path + nav_path2 + nav_path3
 		#print("Race raceline: " + str(marker.raceline))
-	
+		
+		# circuit marker
+		marker = get_parent().get_marker("circuit_marker")
+		print("Circuit intersections path: " + var2str(marker.cycle))
+		nav_path = PackedVector3Array()
+		for i in range(0, marker.cycle.size()-1):
+			#print("Entry: #", i, ": ", marker.cycle[i])
+			var lookup_path = path_look[[marker.cycle[i], marker.cycle[i+1]]]
+			#print("Lookup path pt1: " + str(lookup_path))
+			var tmp_path = nav.get_point_path(lookup_path[0], lookup_path[1])
+			nav_path = nav_path + tmp_path
+		
+		# close the loop
+		var lookup_path = path_look[[marker.cycle[marker.cycle.size()-1], marker.cycle[0]]]
+		var tmp_path = nav.get_point_path(lookup_path[0], lookup_path[1])
+		nav_path = nav_path + tmp_path
+		
+		# display the whole path
+		marker.raceline = nav_path
 
 # this is being used by racelines, therefore it can't be simplified further
 func setup_nav_astar(pts, idx, begin_id):
