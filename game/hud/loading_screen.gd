@@ -1,5 +1,7 @@
 extends Control
 
+# partially based on https://github.com/VP-GAMES/Godot4InteractiveSceneChanger
+
 # class member variables go here, for example:
 var loader
 var wait_frames
@@ -10,6 +12,7 @@ var resource
 
 var loaded = false
 var done = false
+var _progress = []
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -26,7 +29,7 @@ func _ready():
 func goto_scene(path): # game requests to switch to this scene
 	print("Go to scene: " + str(path))
 
-	loader = ResourceLoader.load_interactive(path)
+	loader = ResourceLoader.load_threaded_request(path)
 	if loader == null: # check for errors
 		show_error()
 		return
@@ -68,32 +71,35 @@ func _process(time):
 				print("Free current scene")
 		
 	else:
+		#print("We have a loader...")
 		process_loader()
 
 func process_loader():
-	var t = OS.get_ticks_msec()
-	while OS.get_ticks_msec() < t + time_max: # use "time_max" to control how much time we block this thread
+	var t = Time.get_ticks_usec()
+#	while Time.get_ticks_msec() < t + time_max: # use "time_max" to control how much time we block this thread
 
-		# poll your loader
-		var err = loader.poll()
-
-		if err == ERR_FILE_EOF and not loaded:
-			finished_loading()
-			break
-		elif err == OK:
+	# poll your loader
+	var load_status = ResourceLoader.load_threaded_get_status("res://scenes/scene_procedural.tscn", _progress)
+	#var err = loader.poll()
+	match load_status:
+		0, 2: # THREAD_LOAD_INVALID_RESOURCE, THREAD_LOAD_FAILED
+			# error during loading
+			show_error()
+			loader = null
+			#break
+		1: # THREAD_LOAD_IN_PROGRESS
 			update_progress()
 			# ensure we can see all progress
 			#wait_frames = 1
-			
-		
-		else: # error during loading
-			show_error()
-			loader = null
-			break
+		3: # THREAD_LOAD_LOADED
+			print("Done loading in ", (Time.get_ticks_usec()-t)/1000000.0)
+			finished_loading()
+			#break
 
 
 func finished_loading():
-	resource = loader.get_resource()
+	#resource = loader.get_resource()
+	resource = ResourceLoader.load_threaded_get("res://scenes/scene_procedural.tscn")
 	
 	loader = null
 	
@@ -103,10 +109,9 @@ func finished_loading():
 	loaded = true
 
 func update_progress():
-	var progress = float(loader.get_stage()) / loader.get_stage_count()
-	#print("Progress" + str(progress))
-	var progress_percent = progress * 100
-	#print("Progress is " + String(progress_percent))
+	#print("Progress: ", _progress[0])
+	var progress_percent = _progress[0] * 100.0
+	#print("Progress percent: ", progress_percent)
 	# update your progress bar?
 	get_node(^"ProgressBar").set_value(progress_percent)
 
