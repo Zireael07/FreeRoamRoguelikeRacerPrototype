@@ -1,7 +1,9 @@
 @tool
 extends Node3D
 
-var ast # for BFS
+# prime candidate for rewriting to something speedier in the future (also procedural_map.gd)
+
+var ast # for intersection-level pathing
 var nav # for actual navigation
 var path_look = {} # calculated paths
 
@@ -103,8 +105,6 @@ class CycleFinder:
 		# Initialize variables
 		var color = []
 		var parents = []
-		#var mark = []
-		#var cyclenumber = 0
 		var num_edges = A.size()
 		
 		# 4.0 functions
@@ -251,7 +251,7 @@ func spawn_circuit_marker(samples, spots, mark):
 	
 	# find a cycle
 	var A = get_adjacency_list(samples)
-	cycles = CycleFinder.new().get_cycles_vert(A, id)
+	var cycles = CycleFinder.new().get_cycles_vert(A, id)
 	
 	# save cycle
 	marker.cycle = cycles[0]
@@ -317,14 +317,11 @@ func spawn_markers(samples, real_edges):
 	print("Marker data: " + str(marker_data))
 	
 	var m_data = spawn_circuit_marker(samples, spots, circuit_mark)
-	#marker_data.append(m_data[0])
-	#marker_data.append(m_data[1])
-	#print("Marker data: " + str(marker_data))
 	
 	return marker_data
 
 # -----------------------------------
-	
+# NOTE: this sets up the separate AStar graph structure, for lower-level pathing (on roads)		
 func setup_map_nav(samples, real_edges):
 	var roads_start_id = 3+samples.size()-1 # 3 helper nodes + intersections for samples
 	
@@ -355,122 +352,7 @@ func setup_map_nav(samples, real_edges):
 
 	print("Path_look: " + str(path_look))
 
-func setup_markers(marker_data):
-	# test the nav
-	if marker_data != null:
-		#var marker = get_node(^"tt_marker")
-		var marker = get_parent().get_marker("tt_marker")
-	#print(marker.get_translation())
-		var tg = marker.target
-	#print("tg : " + str(tg))
-
-#	print("Marker intersection id" + str(marker_data[0]) + " tg id" + str(marker_data[1]))
-		var int_path = ast.get_id_path(marker_data[0], marker_data[1])
-		print("Intersections path: " + var2str(int_path))
-
-#	# test (get path_look entry at id x)
-#	var test = path_look[path_look.keys()[5]]
-#	print("Test: " + str(test))
-#	var nav_path = nav.get_point_path(test[0], test[1])
-#	#print("Nav path: " + str(nav_path))
-#	# so that we can see
-#	marker.raceline = nav_path
-
-		#paranoia
-		var nav_path = PackedVector3Array()
-		if [int_path[0], int_path[1]] in path_look:
-			#print("First pair: " + str(int_path[0]) + "," + str(int_path[1]))			
-			var lookup_path = path_look[[int_path[0], int_path[1]]]
-			#print("Lookup path pt1: " + str(lookup_path))
-			nav_path = nav.get_point_path(lookup_path[0], lookup_path[1])
-			#print("Nav path: " + str(nav_path))
-			# so that the player can see
-			#marker.raceline = nav_path
-		var nav_path2 = PackedVector3Array()
-		var nav_path3 = PackedVector3Array()
-		if int_path.size() > 2 and [int_path[1], int_path[2]] in path_look:
-			#print("Second pair: " + str(int_path[1]) + "," + str(int_path[2]))
-			var lookup_path = path_look[[int_path[1], int_path[2]]]
-			#print("Lookup path pt2: " + str(lookup_path))
-			nav_path2 = nav.get_point_path(lookup_path[0], lookup_path[1])
-			#print("Nav path pt2 : " + str(nav_path2))
-	
-		if int_path.size() > 3:
-			if [int_path[2], int_path[3]] in path_look:
-				#print("Third pair: " + str(int_path[2]) + "," + str(int_path[3]))
-				var lookup_path = path_look[[int_path[2], int_path[3]]]
-				#print("Lookup path pt3: " + str(lookup_path))
-				nav_path3 = nav.get_point_path(lookup_path[0], lookup_path[1])
-			#print("Nav path pt3: " + str(nav_path3))
-	
-		# display the whole path
-		marker.raceline = nav_path + nav_path2 + nav_path3
-		#print("TT raceline: ", marker.raceline)
-		
-		# the same for race marker	
-		marker = get_parent().get_marker("race_marker")
-		#marker = get_node(^"race_marker")
-	#print(marker.get_translation())
-		tg = marker.target
-	#print("tg : " + str(tg))
-
-#	print("Marker intersection id" + str(marker_data[0]) + " tg id" + str(marker_data[1]))
-		int_path = ast.get_id_path(marker_data[2], marker_data[3])
-		print("Intersections path: " + var2str(int_path))
-
-		# TODO: factor out into a function
-		#paranoia
-		nav_path = PackedVector3Array()
-		if [int_path[0], int_path[1]] in path_look:
-			#print("First pair: " + str(int_path[0]) + "," + str(int_path[1]))			
-			var lookup_path = path_look[[int_path[0], int_path[1]]]
-			#print("Lookup path pt1: " + str(lookup_path))
-			nav_path = nav.get_point_path(lookup_path[0], lookup_path[1])
-			#print("Nav path: " + str(nav_path))
-			# so that the player can see
-			#marker.raceline = nav_path
-		nav_path2 = PackedVector3Array()
-		nav_path3 = PackedVector3Array()
-		if int_path.size() > 2 and [int_path[1], int_path[2]] in path_look:
-			#print("Second pair: " + str(int_path[1]) + "," + str(int_path[2]))
-			var lookup_path = path_look[[int_path[1], int_path[2]]]
-			#print("Lookup path pt2: " + str(lookup_path))
-			nav_path2 = nav.get_point_path(lookup_path[0], lookup_path[1])
-			#print("Nav path pt2 : " + str(nav_path2))
-	
-			
-		if int_path.size() > 3:
-			if [int_path[2], int_path[3]] in path_look:
-				#print("Third pair: " + str(int_path[2]) + "," + str(int_path[3]))
-				var lookup_path = path_look[[int_path[2], int_path[3]]]
-				#print("Lookup path pt3: " + str(lookup_path))
-				nav_path3 = nav.get_point_path(lookup_path[0], lookup_path[1])
-			#print("Nav path pt3: " + str(nav_path3))
-	
-		# display the whole path
-		marker.raceline = nav_path + nav_path2 + nav_path3
-		#print("Race raceline: " + str(marker.raceline))
-		
-		# circuit marker
-		marker = get_parent().get_marker("circuit_marker")
-		print("Circuit intersections path: " + var2str(marker.cycle))
-		nav_path = PackedVector3Array()
-		for i in range(0, marker.cycle.size()-1):
-			#print("Entry: #", i, ": ", marker.cycle[i])
-			var lookup_path = path_look[[marker.cycle[i], marker.cycle[i+1]]]
-			#print("Lookup path pt1: " + str(lookup_path))
-			var tmp_path = nav.get_point_path(lookup_path[0], lookup_path[1])
-			nav_path = nav_path + tmp_path
-		
-		# close the loop
-		var lookup_path = path_look[[marker.cycle[marker.cycle.size()-1], marker.cycle[0]]]
-		var tmp_path = nav.get_point_path(lookup_path[0], lookup_path[1])
-		nav_path = nav_path + tmp_path
-		
-		# display the whole path
-		marker.raceline = nav_path
-
-# this is being used by racelines, therefore it can't be simplified further
+# this is being used by racelines, therefore it can't be simplified further, needs to be many points
 func setup_nav_astar(pts, idx, begin_id):
 	#print("Index: " + str(i) + " " + get_parent().get_child(i).get_name())
 	#print(get_parent().get_child(i).get_name())
@@ -507,7 +389,10 @@ func setup_nav_astar(pts, idx, begin_id):
 	#debug_cube(to_local(Vector3(turn1.get_global_transform().origin.x, 3, turn1.get_global_transform().origin.z)))
 	#debug_cube(to_local(Vector3(turn2.get_global_transform().origin.x, 3, turn2.get_global_transform().origin.z)))
 
+	# debug/setup ends here
+
 	# from local to global
+	# and from 2D to 3D because raceline is 3D
 	for i in range(0,turn1.points_center.size()):
 		# this seemingly small change cuts down on the number of points by half!! 
 		# yay me for noticing positions has double the number of points
@@ -516,7 +401,7 @@ func setup_nav_astar(pts, idx, begin_id):
 		var p = Vector3(c.x, turn1.road_height, c.y)
 		pts.append(turn1.to_global(p))
 
-	#print(pts)
+	#print(pts) # 33
 	for i in range(0,turn2.points_center.size()):
 		#var p = turn2.positions[i]
 		var c = turn2.points_center[i]
@@ -525,7 +410,8 @@ func setup_nav_astar(pts, idx, begin_id):
 
 	#print("All points: " + str(pts.size()))
 	#print("With turn2: " + str(pts))
-
+	
+	# TODO: potential optimization - add only key points to AStar
 	# add pts to nav (road-level AStar)
 	for i in range(pts.size()):
 		nav.add_point(i, pts[i])
@@ -539,7 +425,7 @@ func setup_nav_astar(pts, idx, begin_id):
 		if nav.has_point(i) and nav.has_point(i+1):
 			nav.connect_points(i, i+1)
 
-	var turn2_end = begin_id + turn1.points_center.size()+turn2.points_center.size()-1
+	var turn2_end = begin_id + turn1.points_center.size()+turn2.points_center.size()-1 #33+32 = 65
 	for i in range(begin_id + turn1.points_center.size(), turn2_end):
 		if nav.has_point(i) and nav.has_point(i+1):
 			nav.connect_points(i, i+1)
@@ -560,7 +446,48 @@ func setup_nav_astar(pts, idx, begin_id):
 	#print("Test 2: " + str(nav.get_point_path(begin_id + turn1.positions.size(), turn2_end)))
 
 	# road's end, list end, intersection numbers
+	# the first two are used for calculating begin in setup_map_nav() and for AStar
 	return [endpoint_id, last_id, ret]
+
+# -------------------------------------------------------------
+func setup_marker(marker, marker_data, begin_id, end_id):
+	var tg = marker.target
+	#print("tg:", tg)
+	var int_path = ast.get_id_path(marker_data[begin_id], marker_data[end_id])
+	print("Intersections path: " + var2str(int_path))
+	var raceline = PackedVector3Array()
+	for i in range(0, int_path.size()-1):
+		var lookup_path = path_look[[int_path[i], int_path[i+1]]]
+		var tmp_path = nav.get_point_path(lookup_path[0], lookup_path[1])
+		raceline = raceline + tmp_path
+	# assign the raceline
+	marker.raceline = raceline
+
+func setup_markers(marker_data):
+	# if we have something to set up
+	if marker_data != null:
+		var marker = get_parent().get_marker("tt_marker")
+		setup_marker(marker, marker_data, 0, 1)
+		marker = get_parent().get_marker("race_marker")
+		setup_marker(marker, marker_data, 2, 3)
+		
+		# circuit marker
+		marker = get_parent().get_marker("circuit_marker")
+		print("Circuit intersections path: " + var2str(marker.cycle))
+		var nav_path = PackedVector3Array()
+		for i in range(0, marker.cycle.size()-1):
+			#print("Entry: #", i, ": ", marker.cycle[i])
+			var lookup_path = path_look[[marker.cycle[i], marker.cycle[i+1]]]
+			var tmp_path = nav.get_point_path(lookup_path[0], lookup_path[1])
+			nav_path = nav_path + tmp_path
+		
+		# close the loop
+		var lookup_path = path_look[[marker.cycle[marker.cycle.size()-1], marker.cycle[0]]]
+		var tmp_path = nav.get_point_path(lookup_path[0], lookup_path[1])
+		nav_path = nav_path + tmp_path
+		
+		# assign the raceline
+		marker.raceline = nav_path
 
 # this is governed by map not AI (so that lanes are picked consistently depending on direction of travel)
 # note to self: it doesn't care about the straight, just the turns
@@ -650,7 +577,7 @@ func get_lane(road, flip, left_side):
 
 func get_pts_from_lanes(lanes, flip, turn1, turn2):
 	var pts = []
-	# keeping 'em global for consistency with the A* centerline
+	# keeping 'em global for consistency with the A* centerline/raceline
 	# from local to global
 	#print("Turn size: ", lane_lists[0].size())
 	
@@ -746,17 +673,9 @@ func reference_pos(road, src, dst, turn1, turn2, flip):
 	#print("Inner 0: ", turn1.points_inner_nav[0], "outer 0", turn2.points_outer_nav[0])
 	
 	# from intersection, looking at start point
+	# this is less readable but more optimized compared to creating two nodes per call
 	var src_tr = Transform3D(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), src.get_global_transform().origin)
 	var dst_tr = Transform3D(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), dst.get_global_transform().origin)
-
-	# TODO optimize - this creates two nodes per call
-#	var test_src = Position3D.new()
-#	add_child(test_src)
-#	test_src.set_translation(to_local(src.get_global_transform().origin))
-#	var test_dst = Position3D.new()
-#	add_child(test_dst)
-#	test_dst.set_translation(to_local(dst.get_global_transform().origin))
-# 	test_src.look_at(turn1.to_global(turn1.start_point), Vector3.UP)
 
 	if not flip:
 		src_tr = src_tr.looking_at(turn1.to_global(turn1.start_point), Vector3.UP)
@@ -764,13 +683,6 @@ func reference_pos(road, src, dst, turn1, turn2, flip):
 	else:
 		src_tr = src_tr.looking_at(turn2.to_global(turn2.start_point), Vector3.UP)
 		dst_tr = dst_tr.looking_at(turn1.to_global(turn1.start_point), Vector3.UP)
-	#test.look_at_from_position(src.get_global_transform().origin, turn1.to_global(turn1.start_point), Vector3(0,1,0))
-	# this was to make debug cube visible
-	#test_src.translate(Vector3(0,1,0))
-	
-	#test_src.set_name("refpos_"+str(flip))
-	#print("Ref pos: ", test.get_global_transform().origin, "src:", src.get_global_transform().origin)
-	#debug_cube(to_local(test_src.get_global_transform().origin), "left")
 	
 	# test
 	var inn = Vector3(turn1.points_inner_nav[0].x, 0.01, turn1.points_inner_nav[0].y)
@@ -829,9 +741,7 @@ func debug_lane_lists():
 		if not map.has_node(rd_name):
 			# skip (since flip just reverses the order, no need to debug it)
 			continue
-#			# try the other way?
-			#rd_name = "Road " + str(p[1])+"-"+str(p[0])
-			#flip = true
+
 		#print("Road name: " + rd_name)
 		var road = map.get_node(rd_name)
 		
@@ -964,7 +874,6 @@ func make_arc_from_points(p1, p2, p3, origin):
 	# paranoia
 	if k == 0:
 		return []
-	
 	
 	# midpoints of two chords
 	var m1 = (p3+p1)/2

@@ -1,4 +1,10 @@
 # based on https://github.com/TassuP/GodotStuff/blob/master/DelaunayTriangulator/Delaunay.gd
+# candidate for speeding up:
+# Godot 4 has Geometry2D.triangulate_delaunay() with the following catch:
+# where each triangle consists of three consecutive point indices into polygon 
+# (i.e. the returned array will have n * 3 elements, with n being the number of found triangles).
+# Output triangles will always be counter clockwise, and the contour will be flipped if it's clockwise
+
 
 @tool
 extends Node

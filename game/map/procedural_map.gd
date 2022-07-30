@@ -1,6 +1,8 @@
 @tool
 extends "connect_intersections.gd"
 
+# prime candidate for rewriting in something speedier, along with triangulation itself (2dtests/Delaunay2D.gd)
+
 # class member variables go here, for example:
 var intersects
 var mult

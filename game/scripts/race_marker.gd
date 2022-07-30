@@ -10,7 +10,7 @@ var finish = false
 var start
 
 @export var target = Vector3()
-var raceline = PackedVector3Array()
+var raceline = PackedVector3Array() #is a Vector3 array because of the positioning system
 var ai_data = []
 
 # race
