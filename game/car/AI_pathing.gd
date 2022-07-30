@@ -111,7 +111,7 @@ func look_for_path_initial_parking(id, left):
 	var p4 = (p2+p1)/2
 	var p3 = p4.limit_length(3)
 	# this wants local 2D positions and origin
-	var arc_pos = map.get_node(^"nav").make_arc_from_points(p1, p2, p3, cl)
+	var arc_pos = get_node("/root/Geom").make_arc_from_points(p1, p2, p3, cl)
 	#print("Arc: ", arc_pos)
 	
 	# append arc_pos now if any
@@ -319,8 +319,6 @@ func look_for_path(start_ind, left_side, exclude=-1):
 		
 		if pos:			
 			nav_path.insert(0, pos)
-		
-	
 	
 	#path = reduce_path(nav_path)
 	path = traffic_reduce_path(nav_path, nav_data[1])
@@ -430,8 +428,6 @@ func traffic_reduce_path(path, flip):
 		if to_keep[id] in range(path.size()): # paranoia
 			new_path.append(path[to_keep[id]])
 		
-
-			
 	return new_path
 
 func racer_reduce_path(path):

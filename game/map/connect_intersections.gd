@@ -25,7 +25,7 @@ var lookup_names = { Vector3(0,0,10): "point one", Vector3(10,0,0) : "point two"
 
 func connect_intersections(one, two, verbose=false):
 	if one > get_child_count() -1 or two > get_child_count() -1:
-		Logger.mapgen_print("Wrong indices given: " + str(one) + str(two))
+		Logger.mapgen_print("Wrong indices given: " + str(one) +", " + str(two))
 		return false
 	
 	if not "point_one" in get_child(one) or not "point_one" in get_child(two):
@@ -193,14 +193,13 @@ func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, sr
 		#debug_cube(Vector3(angle0.x, 1, angle0.y))
 		#positions.append(Vector3(angle0.x, 0, angle0.y))
 	
-		var angles = get_arc_angle(inters, Vector2(corner1.x, corner1.z), Vector2(corner2.x, corner2.z), angle0)
+		var angles = get_node("/root/Geom").get_arc_angle(inters, Vector2(corner1.x, corner1.z), Vector2(corner2.x, corner2.z), angle0)
 		# debug angles
 		#positions.append(corner1)
 		#positions.append(Vector3(angle0.x, 0, angle0.y))
 		#positions.append(corner2)
 			
-						
-		var points_arc = get_circle_arc(inters, radius, angles[0], angles[1], true)
+		var points_arc = get_node("/root/Geom").get_circle_arc(inters, radius, angles[0], angles[1], true)
 	
 		# back to 3D
 		#for i in range(points_arc.size()):
@@ -258,13 +257,13 @@ func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, des
 		
 		#debug_cube(Vector3(angle0.x, 1, angle0.y))
 		
-		var angles = get_arc_angle(inters, Vector2(corner1.x, corner1.z), Vector2(corner2.x, corner2.z), angle0)
+		var angles = get_node("/root/Geom").get_arc_angle(inters, Vector2(corner1.x, corner1.z), Vector2(corner2.x, corner2.z), angle0)
 		# debug angles
 		#positions.append(corner1)
 		#positions.append(Vector3(angle0.x, 0, angle0.y))
 		#positions.append(corner2)
 	
-		var points_arc = get_circle_arc(inters, radius, angles[0], angles[1], true)
+		var points_arc = get_node("/root/Geom").get_circle_arc(inters, radius, angles[0], angles[1], true)
 		
 		# back to 3D
 		#for i in range(points_arc.size()):
@@ -694,72 +693,7 @@ func debug_cube(loc):
 	add_child(node)
 	node.set_position(loc)
 
-# calculated arc is in respect to X axis
-func get_arc_angle(center_point, start_point, end_point, angle0, verbose=false):
-	var angles = []
-	
-	# angle between line from center point to angle0 and from center point to start point
-	var angle1 = rad2deg((angle0-center_point).angle_to(start_point-center_point))
-	
-	if angle1 < 0:
-		angle1 = 360+angle1
-		#print("Angle 1 " + str(angle))
-	
-	#angles.append(angle)
-	#Logger.mapgen_print("Angle 1 " + str(angle1))
-	# equivalent angle for the end point
-	var angle2 = rad2deg((angle0-center_point).angle_to(end_point-center_point))
-	
-	if angle2 < 0:
-		angle2 = 360+angle2
-		#print("Angle 2 " + str(angle))
-	
-	#Logger.mapgen_print("Angle 1 " + str(angle1) + ", angle 2 " + str(angle2))
-	#angles.append(angle)
-	
-	var arc = angle1-angle2
-	
-	if verbose:
-		Logger.mapgen_print("Angle 1 " + str(angle1) + ", angle 2 " + str(angle2) + " = arc angle " + str(arc))
-		
-	if arc > 200:
-		if verbose:
-			Logger.mapgen_print("Too big arc " + str(angle1) + " , " + str(angle2))
-		angle2 = angle2+360
-	if arc < -200:
-		if verbose:
-			Logger.mapgen_print("Too big arc " + str(angle1) + " , " + str(angle2))
-		angle1 = angle1+360
-		
-	angles = [angle1, angle2]
-	
-	return angles
-
-
-
-
 func draw_circle_arc(center, radius, angle_from, angle_to, right, clr):
-	var points_arc = get_circle_arc(center, radius, angle_from, angle_to, right)
+	var points_arc = get_node("/root/Geom").get_circle_arc(center, radius, angle_from, angle_to, right)
 	#print("Points: " + str(points_arc))
-	
-#	for index in range(points_arc.size()-1):
-#		draw_line(points_arc[index], points_arc[index+1], clr, 1.5)
-
-	
-# from maths
-func get_circle_arc( center, radius, angle_from, angle_to, right ):
-	var nb_points = 32
-	var points_arc = PackedVector2Array()
-
-	for i in range(nb_points+1):
-		if right:
-			var angle_point = angle_from + i*(angle_to-angle_from)/nb_points #- 90
-			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
-			points_arc.push_back( point )
-		else:
-			var angle_point = angle_from - i*(angle_to-angle_from)/nb_points #- 90
-			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
-			points_arc.push_back( point )
-	
-	return points_arc
 

@@ -99,26 +99,8 @@ func get_arc_angle(center_point, start_point, end_point):
 	return angles
 
 func draw_circle_arc(center, radius, angle_from, angle_to, right, clr):
-	points_arc = get_circle_arc(center, radius, angle_from, angle_to, right)
+	points_arc = get_node("/root/Geom").get_circle_arc(center, radius, angle_from, angle_to, right)
 	#print("Points: " + str(points_arc))
 	
 	for index in range(points_arc.size()-1):
 		draw_line(points_arc[index], points_arc[index+1], clr, 1.5)
-
-	
-# from maths
-func get_circle_arc( center, radius, angle_from, angle_to, right ):
-	var nb_points = 32
-	var points_arc = PackedVector2Array()
-
-	for i in range(nb_points+1):
-		if right:
-			var angle_point = angle_from + i*(angle_to-angle_from)/nb_points #- 90
-			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
-			points_arc.push_back( point )
-		else:
-			var angle_point = angle_from - i*(angle_to-angle_from)/nb_points #- 90
-			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
-			points_arc.push_back( point )
-	
-	return points_arc

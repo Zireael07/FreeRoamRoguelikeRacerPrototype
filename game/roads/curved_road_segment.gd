@@ -1,5 +1,5 @@
 @tool
-extends "helpers.gd"
+extends "helpers.gd" # this helper implements our own get_circle_arc for perf
 
 # class member variables go here, for example:
 var m = StandardMaterial3D.new()

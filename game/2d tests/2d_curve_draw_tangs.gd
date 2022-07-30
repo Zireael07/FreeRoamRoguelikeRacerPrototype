@@ -47,7 +47,7 @@ func _ready():
 	#connect(&"enabled_snap", self.on_snap_enabled)
 	
 	# arc
-	points_arc = get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
+	points_arc = get_node("/root/Geom").get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
 	
 	last = points_arc[points_arc.size()-1]
 	first = points_arc[0]
@@ -107,22 +107,6 @@ func _draw():
 func draw_circle_arc(center, radius, angle_from, angle_to, color):
 	for index in range(points_arc.size()-1):
 		draw_line(points_arc[index], points_arc[index+1], color, 2) #4
-
-func get_circle_arc( center, radius, angle_from, angle_to, right):
-	var nb_points = 32
-	var points_arc = PackedVector2Array()
-
-	for i in range(nb_points+1):
-		if right:
-			var angle_point = angle_from + i*(angle_to-angle_from)/nb_points - 90
-			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
-			points_arc.push_back( point )
-		else:
-			var angle_point = angle_from - i*(angle_to-angle_from)/nb_points - 90
-			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
-			points_arc.push_back( point )
-	
-	return points_arc
 	
 func get_tangs(width_out, outer):
 	var sides = PackedVector2Array()

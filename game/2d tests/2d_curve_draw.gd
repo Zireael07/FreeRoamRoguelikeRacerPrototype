@@ -46,7 +46,7 @@ func _ready():
 	#connect(&"enabled_snap", self.on_snap_enabled)
 	
 	# arc
-	points_arc = get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
+	points_arc = get_node("/root/Geom").get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
 	
 	last = points_arc[points_arc.size()-1]
 	first = points_arc[0]
@@ -121,28 +121,11 @@ func draw_circle_arc(center, radius, angle_from, angle_to, color):
 	for index in range(points_arc.size()-1):
 		draw_line(points_arc[index], points_arc[index+1], color, 2) #4
 
-func get_circle_arc( center, radius, angle_from, angle_to, right):
-	var nb_points = 32
-	var points_arc = PackedVector2Array()
-
-	for i in range(nb_points+1):
-		if right:
-			var angle_point = angle_from + i*(angle_to-angle_from)/nb_points - 90
-			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
-			points_arc.push_back( point )
-		else:
-			var angle_point = angle_from - i*(angle_to-angle_from)/nb_points - 90
-			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
-			points_arc.push_back( point )
-	
-	return points_arc
-	
-
 
 # signals for updating in editor
 func set_radius(val):
 	radius = val
-	points_arc = get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
+	points_arc = get_node("/root/Geom").get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
 	last = points_arc[points_arc.size()-1]
 	first = points_arc[0]
 	#draw_circle_arc(Vector2(0,0), radius, angle_from, angle_to)
@@ -150,21 +133,21 @@ func set_radius(val):
 	
 func set_angle_from(val):
 	angle_from = val
-	points_arc = get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
+	points_arc = get_node("/root/Geom").get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
 	last = points_arc[points_arc.size()-1]
 	first = points_arc[0]
 	update()
 	
 func set_angle_to(val):
 	angle_to = val
-	points_arc = get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
+	points_arc = get_node("/root/Geom").get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
 	last = points_arc[points_arc.size()-1]
 	first = points_arc[0]
 	update()
 
 func set_right(val):
 	right = val
-	points_arc = get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
+	points_arc = get_node("/root/Geom").get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
 	last = points_arc[points_arc.size()-1]
 	first = points_arc[0]
 	update()

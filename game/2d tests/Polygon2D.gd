@@ -95,7 +95,7 @@ func get_intersections():
 	#print("Intersection: " + str(intersections[0]) + "test" + str(intersections[0]+Vector2(4.758389,0)))
 
 func draw_circle_arc(center, radius, angle_from, angle_to, right, clr):
-	points_arc = get_circle_arc(center, radius, angle_from, angle_to, right)
+	points_arc = get_node("/root/Geom").get_circle_arc(center, radius, angle_from, angle_to, right)
 	
 	#draw_circle(points_arc[0], 1.0, Color(1,1,0))
 	#print("Angle 0 is " + str(points_arc[0]) + " radius is " + str(radius))
@@ -105,22 +105,6 @@ func draw_circle_arc(center, radius, angle_from, angle_to, right, clr):
 
 	
 # from maths
-func get_circle_arc( center, radius, angle_from, angle_to, right ):
-	var nb_points = 32
-	var points_arc = PackedVector2Array()
-
-	for i in range(nb_points+1):
-		if right:
-			var angle_point = angle_from + i*(angle_to-angle_from)/nb_points #- 90
-			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
-			points_arc.push_back( point )
-		else:
-			var angle_point = angle_from - i*(angle_to-angle_from)/nb_points #- 90
-			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
-			points_arc.push_back( point )
-	
-	return points_arc
-
 func get_arc_angle(corner_id, intersect_id, corner2):
 	# radius = line from intersection to corner point
 	var radius = (corners[corner_id]-intersections[intersect_id]).length()

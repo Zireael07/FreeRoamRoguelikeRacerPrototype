@@ -186,7 +186,7 @@ func setup_astar():
 # -----------------------
 
 func draw_circle_arc(center, radius, angle_from, angle_to, right, clr):
-	points_arc = get_circle_arc(center, radius, angle_from, angle_to, right)
+	points_arc = get_node("/root/Geom").get_circle_arc(center, radius, angle_from, angle_to, right)
 	
 	#draw_circle(points_arc[0], 1.0, Color(1,1,0))
 	#print("Angle 0 is " + str(points_arc[0]) + " radius is " + str(radius))
@@ -194,23 +194,6 @@ func draw_circle_arc(center, radius, angle_from, angle_to, right, clr):
 	for index in range(points_arc.size()-1):
 		draw_line(points_arc[index], points_arc[index+1], clr, 1.5)
 
-	
-# from maths
-func get_circle_arc( center, radius, angle_from, angle_to, right ):
-	var nb_points = 32
-	var points_arc = PackedVector2Array()
-
-	for i in range(nb_points+1):
-		if right:
-			var angle_point = angle_from + i*(angle_to-angle_from)/nb_points #- 90
-			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
-			points_arc.push_back( point )
-		else:
-			var angle_point = angle_from - i*(angle_to-angle_from)/nb_points #- 90
-			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
-			points_arc.push_back( point )
-	
-	return points_arc
 
 func get_arc_angle(corner_id, intersect_id, corner2):
 	if intersections.size() + 1 < intersect_id:
@@ -240,18 +223,16 @@ func get_arc_angle(corner_id, intersect_id, corner2):
 func get_arc_angles():
 	# corner1, intersection, corner2
 	get_arc_angle(1,0,2)
-	
 	# corner1, intersection, corner2
 	get_arc_angle(3,1,4)
-		
-	#pass
+
 
 func get_arc_points():
-	var arc_one = get_circle_arc(intersections[0], (corners[1]-intersections[0]).length(), angles[1], angles[1]+(angles[0]-angles[1]), true)
+	var arc_one = get_node("/root/Geom").get_circle_arc(intersections[0], (corners[1]-intersections[0]).length(), angles[1], angles[1]+(angles[0]-angles[1]), true)
 	for i in range(0, arc_one.size()):
 		arc_points.append(arc_one[i])
 	
-	var arc_two = get_circle_arc(intersections[1], (corners[3]-intersections[1]).length(), angles[3], angles[3]+(angles[2]-angles[3]), true)
+	var arc_two = get_node("/root/Geom").get_circle_arc(intersections[1], (corners[3]-intersections[1]).length(), angles[3], angles[3]+(angles[2]-angles[3]), true)
 	for i in range(0, arc_two.size()):
 		arc_points.append(arc_two[i])
 		
