@@ -120,20 +120,13 @@ func get_arc_angle(corner_id, intersect_id, corner2):
 	print("Angle " + str(angle))
 	angles.append(angle)
 	
-	#print("Difference is " + str(angl
-
-	
 
 func get_arc_angles():
 	get_arc_angle(1,0,2)
-	
 	print("Difference is " + str(angles[0]-angles[1]))
 	
 	get_arc_angle(3,1,4)
-	
 	print("Difference is " + str(angles[2]-angles[3]))
-		
-	#pass
 
 		
 func _draw():
@@ -146,15 +139,12 @@ func _draw():
 	draw_circle(intersections[0], 1, Color(1,0,1))
 	draw_circle(intersections[1], 1, Color(1,0,1))
 	
-	
 	# test
 	#draw_line(intersections[1], intersections[1]+Vector2((corners[3]-intersections[1]).length(), 0), Color(1,0,1), 1.0)
 	draw_line(intersections[1], intersections[1]+(corners[3]-intersections[1]), Color(1,0,1), 1.0)
 	draw_line(intersections[1], intersections[1]+(corners[4]-intersections[1]), Color(1,0,1), 1.0)
 	
-	
-	
-	
+
 	# draw arc for point 1 (intersection 0, corners 1 and 2)
 	# radius equals distance from intersection to point
 	draw_circle_arc(intersections[0], (corners[1]-intersections[0]).length(), angles[1], angles[1]+(angles[0]-angles[1]), true, Color(1,0,1))
@@ -177,7 +167,6 @@ func draw_tangents():
 	
 	draw_line(corners[5], corners[5]+get_tangent(3,5), Color(0,0,1), 1.0)
 
-
 	
 func draw_corner_line():
 	for i in range(corners.size()):
@@ -193,11 +182,6 @@ func draw_corners():
 		else:
 			# ahead
 			draw_circle(corners[i], 0.5, Color(0,0,1))
-
-		
-			
-		
-
 
 func draw_vectors():
 	for i in range(get_polygon().size()):

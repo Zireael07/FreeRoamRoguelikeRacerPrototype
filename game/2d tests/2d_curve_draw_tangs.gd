@@ -25,9 +25,9 @@ extends Node2D
 		set_right(value)
 
 #export(bool) var snap:
-	set(value):
-		# TODO: Manually copy the code from this method.
-		set_snap(value)
+#	set(value):
+#		# TODO: Manually copy the code from this method.
+#		set_snap(value)
 signal enabled_snap
 
 # for debugging
@@ -83,7 +83,7 @@ func _get_item_rect():
 func _draw():
 	draw_circle_arc(Vector2(0,0), radius, angle_from, angle_to, Color(0,0,1))
 	# debugging
-	draw_string(font, last, str(angle_to), Color(1,1,1))
+	draw_string(font, last, str(angle_to))
 	draw_circle(first, 1, Color(0,1,0))
 	draw_circle(last, 1, Color(1,0,0))
 	
@@ -157,7 +157,7 @@ func find_closest():
 	#print(str(childrens))
 	for e in childrens:
 		for n in e.get_children():
-			if ((n.get_name().find("curve") != -1) or (n.get_name().find("straight") != -1)):
+			if ((String(n.get_name()).find("curve") != -1) or (String(n.get_name()).find("straight") != -1)):
 				lines.push_back(n)
 	
 	print(str(lines))
@@ -166,10 +166,10 @@ func find_closest():
 	for i in range (lines.size()-1):
 		if lines[i] != self:
 			if i < 1:
-				lowest_dist = get_global_pos().distance_to(lines[i].get_global_pos())
+				lowest_dist = global_position.distance_to(lines[i].global_position)
 				closest = lines[i]
 			else:
-				var new_dist = get_global_pos().distance_to(lines[i].get_global_pos())
+				var new_dist = global_position.distance_to(lines[i].global_position)
 				if new_dist < lowest_dist:
 					lowest_dist = new_dist
 					closest = lines[i]
@@ -179,7 +179,7 @@ func find_closest():
 
 func set_radius(val):
 	radius = val
-	points_arc = get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
+	points_arc = get_node("/root/Geom").get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
 	last = points_arc[points_arc.size()-1]
 	first = points_arc[0]
 	#draw_circle_arc(Vector2(0,0), radius, angle_from, angle_to)
@@ -191,7 +191,7 @@ func set_radius(val):
 	
 func set_angle_from(val):
 	angle_from = val
-	points_arc = get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
+	points_arc = get_node("/root/Geom").get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
 	last = points_arc[points_arc.size()-1]
 	first = points_arc[0]
 	side_pts = get_tangs(width_out, true)[0]
@@ -202,7 +202,7 @@ func set_angle_from(val):
 	
 func set_angle_to(val):
 	angle_to = val
-	points_arc = get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
+	points_arc = get_node("/root/Geom").get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
 	last = points_arc[points_arc.size()-1]
 	first = points_arc[0]
 	side_pts = get_tangs(width_out, true)[0]
@@ -213,7 +213,7 @@ func set_angle_to(val):
 
 func set_right(val):
 	right = val
-	points_arc = get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
+	points_arc = get_node("/root/Geom").get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
 	last = points_arc[points_arc.size()-1]
 	first = points_arc[0]
 	side_pts = get_tangs(width_out, true)[0]
@@ -224,7 +224,7 @@ func set_right(val):
 	
 func set_width_out(val):
 	width_out = val
-	points_arc = get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
+	points_arc = get_node("/root/Geom").get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
 	last = points_arc[points_arc.size()-1]
 	first = points_arc[0]
 	side_pts = get_tangs(width_out, true)[0]
@@ -247,4 +247,4 @@ func _on_snap_enabled():
 	if get_parent().get_parent() != null:
 		var target = find_closest()[0]
 		if target != null:
-			translate(get_global_transform().xform_inv(target.get_global_pos()))
+			translate(target.global_position * get_global_transform())

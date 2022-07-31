@@ -67,18 +67,13 @@ func _draw():
 	#draw_line(arc_top, end_point, Color(0,0,1), 1.0)
 	
 	draw_circle(midpoint, 1.0, Color(0,1,0))
-	
 	draw_circle(arc_top, 1.0, Color(1,0,0))
-	
 	draw_circle(angle0, 1.0, Color(0,0,1))
-
 	draw_circle(center_point, 1.0, Color(0,0,1))
 
 	# test
-	draw_line(arc_top, center_point, Color(0,0,1), 1.0)
-	
+	draw_line(arc_top, center_point, Color(0,0,1), 1.0)	
 	draw_circle_arc(center_point, radius, angles[0], angles[1], right, Color(1,0,0))
-
 
 
 func get_arc_angle(center_point, start_point, end_point):

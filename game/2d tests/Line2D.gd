@@ -110,7 +110,7 @@ func get_intersection(index):
 	#var start_b = corners[index+1]
 	var end_b = corners[index+1]+get_tangent(index,index+1)
 	
-	var inters = Geometry.segment_intersects_segment_2d(start, end, start_b, end_b)
+	var inters = Geometry2D.segment_intersects_segment(start, end, start_b, end_b)
 	
 	intersections.append(inters)
 	#print("Appending intersection ... " + str(inters))	
@@ -142,7 +142,7 @@ func get_intersections():
 
 func setup_astar():
 	print("Setting up astar...")
-	AS = AStar.new()
+	AS = AStar3D.new()
 	
 	for i in range(points.size()):
 		AS.add_point(i, Vector3(points[i].x, 0, points[i].y))
@@ -256,9 +256,6 @@ func _draw():
 #	draw_line(intersections[1], intersections[1]+(corners[3]-intersections[1]), Color(1,0,1), 1.0)
 #	draw_line(intersections[1], intersections[1]+(corners[4]-intersections[1]), Color(1,0,1), 1.0)
 	
-	
-	
-	
 	# draw arc for point 1 (intersection 0, corners 1 and 2)
 	# radius equals distance from intersection to point
 	draw_circle_arc(intersections[0], (corners[1]-intersections[0]).length(), angles[1], angles[1]+(angles[0]-angles[1]), true, Color(1,0,1))
@@ -297,8 +294,6 @@ func draw_tangents():
 	
 	#draw_line(corners[5], corners[5]+get_tangent(3,5), Color(0,0,1), 1.0)
 
-
-	
 func draw_corner_line():
 	for i in range(corners.size()):
 		# line between the two
@@ -313,10 +308,6 @@ func draw_corners():
 		else:
 			# ahead
 			draw_circle(corners[i], 0.5, Color(0,0,1))
-
-		
-			
-		
 
 
 func draw_vectors():
