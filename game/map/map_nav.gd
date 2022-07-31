@@ -126,6 +126,13 @@ class CycleFinder:
 		
 # inner class ends here
 
+func rotate_array(arr, n):
+	#print("Rotating array ", arr,  " by ", n)
+	var new_lis = []
+	# store from n to end, then add 0 to n
+	new_lis = arr.slice(n)+arr.slice(0,n)
+	return new_lis
+
 # ---------------------------------------------
 # Distance map and related stuff
 # because we don't have access to the graph structure underlying AStar :((
@@ -253,8 +260,16 @@ func spawn_circuit_marker(samples, spots, mark):
 	var A = get_adjacency_list(samples)
 	var cycles = CycleFinder.new().get_cycles_vert(A, id)
 	
+	# for the marker to work properly, the cycle needs to START with our vert
+	# so we rotate by the id
+	print("Found cycle, ", cycles[0])
+	var _id = cycles[0].find(id)
+	var cycle = rotate_array(cycles[0], _id)
+	
+	print(cycle)
 	# save cycle
-	marker.cycle = cycles[0]
+	marker.cycle = cycle	
+	marker.ai_data = [cycle]
 	
 	# add marker to map itself
 	get_parent().add_child(marker)
