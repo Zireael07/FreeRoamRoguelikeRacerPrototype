@@ -20,10 +20,9 @@ func set_text(text):
 
 
 func _on_Button_pressed():
-	hide()
-	# get_parent().remove_child(self)
-	
-	pass # replace with function body
+	#hide()
+	queue_free()
+	#get_parent().remove_child(self)
 
 
 func enable_ok(val):
@@ -35,5 +34,5 @@ func enable_ok(val):
 		ok_button.set_disabled(true)
 
 func _on_OK_button_pressed():
-	hide()
-	pass # replace with function body
+	#hide()
+	queue_free()

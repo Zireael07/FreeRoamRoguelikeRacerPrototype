@@ -63,7 +63,7 @@ func _on_Area_body_enter( body ):
 				player.hud.update_money(player.money)
 				
 				
-				var msg = body.get_node(^"Messages")
+				var msg = body.spawn_message()
 				#msg.set_initial(false)
 				
 				var results = player.get_node(^"root").get_node(^"Label timer").get_text()
@@ -91,15 +91,10 @@ func _on_Area_body_enter( body ):
 				#remove finish
 				#queue_free()
 			else:
-				var msg = body.get_node(^"Messages")
+				var msg = body.spawn_message()
 				#msg.set_initial(false)
 				msg.set_text("TEST RACE! " + "\n" + "Race others to the finish marker")
 
-				# disconnect all others to prevent bugs
-				#for d in msg.get_node(^"OK_button").get_signal_connection_list("pressed"):
-				#	print(d["target"])
-				#	msg.get_node(^"OK_button").disconnect(&"pressed", d["target"]._on_ok_click)
-								
 				msg.get_node(^"OK_button").connect(&"pressed", self._on_ok_click)
 				if raceline.size() > 0:
 					print("Got raceline")
@@ -332,8 +327,8 @@ func _on_Area_body_exit( body ):
 			player = body
 			if not finish:
 				var msg = body.get_node(^"Messages")
-				msg.hide()
-				if not count:
+				if msg:
+					msg.queue_free()
 					# remove raceline (preview) from map
 					var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 					track_map.points = []

@@ -49,7 +49,7 @@ func _on_Area_body_enter( body ):
 				print("Reached finish marker")
 				start.count = false
 				
-				var msg = body.get_node(^"Messages")
+				var msg = body.spawn_message()
 				#msg.set_initial(false)
 				var results = player.get_node(^"root").get_node(^"Label timer").get_text()
 				msg.set_text("FINISH TIME TRIAL!" + "\n" + results)
@@ -80,7 +80,7 @@ func _on_Area_body_enter( body ):
 				#remove finish
 				queue_free()
 			else:
-				var msg = body.get_node(^"Messages")
+				var msg = body.spawn_message()
 				#msg.set_initial(false)
 				var numbers = extract_numbers()
 				var race_name = ""
@@ -90,10 +90,6 @@ func _on_Area_body_enter( body ):
 				"Drive along the road to the finish marker")
 				if not msg.get_node(^"OK_button").is_connected("pressed", Callable(self, "_on_ok_click")):
 					print("Not connected")
-					# disconnect all others just in case
-					#for d in msg.get_node(^"OK_button").get_signal_connection_list("pressed"):
-						#print(d["target"])
-					#	msg.get_node(^"OK_button").disconnect(&"pressed", d["target"]._on_ok_click)
 					msg.get_node(^"OK_button").connect(&"pressed", self._on_ok_click)
 
 				#else:
@@ -142,7 +138,8 @@ func _on_Area_body_exit( body ):
 			
 			if not finish:
 				var msg = body.get_node(^"Messages")
-				msg.hide()
+				if msg:
+					msg.queue_free()
 				if not count:
 					# remove raceline (preview) from map
 					var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")

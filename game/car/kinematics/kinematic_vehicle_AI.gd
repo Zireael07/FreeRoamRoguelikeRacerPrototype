@@ -176,17 +176,13 @@ func start_chase():
 		coplights_on(playr)
 		
 		# notify player
-		var msg = playr.get_node(^"BODY").get_node(^"Messages")
+		var msg = playr.get_node(^"BODY").spawn_message()
 		msg.set_text("CHASE STARTED!" + "\n" + "Bribe the cops with Y100?")
 		msg.enable_ok(true)
 		msg.show()
 		# set up the OK button
 		if not msg.get_node(^"OK_button").is_connected("pressed", Callable(self, "_on_ok_click")):
 			print("Not connected")
-			# disconnect all others just in case
-			#for d in msg.get_node(^"OK_button").get_signal_connection_list("pressed"):
-				#print(d["target"])
-			#	msg.get_node(^"OK_button").disconnect(&"pressed", d["target"]._on_ok_click)
 			msg.get_node(^"OK_button").connect(&"pressed", self._on_ok_click)
 
 

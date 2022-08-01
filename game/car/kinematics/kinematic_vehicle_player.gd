@@ -118,7 +118,6 @@ func _ready():
 	add_child(map_big)
 	map_big.hide()
 
-
 	var msg = preload("res://hud/message_panel.tscn")
 	panel = msg.instantiate()
 	panel.set_name("Messages")
@@ -157,6 +156,13 @@ func _ready():
 	else:
 		get_node(^"Smoke").material_override = smoke_mat
 		get_node(^"Smoke2").material_override = smoke_mat
+
+func spawn_message():
+	var msg = preload("res://hud/message_panel.tscn")
+	panel = msg.instantiate()
+	panel.set_name("Messages")
+	add_child(panel)
+	return panel
 
 func random_date():
 	# seed the rng
