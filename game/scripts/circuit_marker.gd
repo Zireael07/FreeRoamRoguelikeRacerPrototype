@@ -18,6 +18,8 @@ var ai_data = []
 var racer
 var cars = []
 
+var laps = 1
+var max_laps = 2
 var done = false
 
 var grid 
@@ -42,8 +44,9 @@ func _on_Area_body_enter( body ):
 			print("Area3D entered by the player")
 			player = body
 			
-			# TODO: will be a flag set upon the circuit being finished
-			if finish:
+			# did we finish the circuit?
+			if player.lap >= max_laps:
+			#if finish:
 				if player.finished:
 					return # ignore re-crossing if finished
 				
@@ -51,21 +54,21 @@ func _on_Area_body_enter( body ):
 				
 				# flag player as finished
 				player.finished = true
-				
-				start.count = false
+				# no need to count timer
+				count = false
 				
 				# has to be here because doing it in _on_results_close reports wrong positions
-				var player_result = start.get_player_position()
+				var player_result = self.get_player_position()
 				print("Player finished: ", player_result)
 				# prize
 				if player_result == 1:
-					player.money += 200
+					player.money += 400
 				if player_result == 2:
-					player.money += 150
+					player.money += 350
 				player.hud.update_money(player.money)
 				
 				
-				var msg = body.get_node(^"Messages")
+				var msg = body.spawn_message()
 				#msg.set_initial(false)
 				
 				var results = player.get_node(^"root").get_node(^"Label timer").get_text()
@@ -87,18 +90,13 @@ func _on_Area_body_enter( body ):
 				track_map.update()
 				
 				# remove target flag from minimap
-				var minimap = player.get_node(^"Viewport_root/SubViewport/minimap")
-				minimap.remove_marker(self.get_global_transform().origin)
+				#var minimap = player.get_node(^"Viewport_root/SubViewport/minimap")
+				#minimap.remove_marker(self.get_global_transform().origin)
 				
-			else:
-				var msg = body.get_node(^"Messages")
+			elif player.race == null:
+				var msg = body.spawn_message()
 				msg.set_text("TEST RACE! " + "\n" + "Race others on a looping course")
-
-				# disconnect all others to prevent bugs
-				#for d in msg.get_node(^"OK_button").get_signal_connection_list("pressed"):
-				#	print(d["target"])
-				#	msg.get_node(^"OK_button").disconnect(&"pressed", d["target"]._on_ok_click)
-								
+	
 				msg.get_node(^"OK_button").connect(&"pressed", self._on_ok_click)
 				if raceline.size() > 0:
 					print("Got raceline")
@@ -146,8 +144,6 @@ func _on_Area_body_enter( body ):
 	#	print("Area3D entered by something else")
 
 func _on_results_close():
-	#remove finish
-	queue_free()
 	# flag race as over
 	player.race = null
 	player.finished = true
@@ -162,13 +158,13 @@ func _on_results_close():
 	print("[RACE] RESULTS CLOSED")
 
 func _on_ok_click():
-	return # dummy out for now
 	
 	cars = []
 	# clear turn tip
 	player.show_nav_tip = false
 	count = true
 	time = 0.0
+	player.lap = 1
 
 	#print("Our pos: " + str(get_global_transform().origin))
 	
@@ -243,6 +239,11 @@ func positions_compare(a, b):
 	if a.finished and not b.finished:
 		return true
 	elif b.finished and not a.finished:
+		return false
+	# check laps
+	elif a.lap > b.lap:
+		return true
+	elif b.lap > a.lap:
 		return false
 	# check points on raceline
 	else:
@@ -330,7 +331,8 @@ func _on_Area_body_exit( body ):
 			player = body
 			if not finish:
 				var msg = body.get_node(^"Messages")
-				msg.hide()
+				if msg:
+					msg.queue_free()
 				if not count:
 					# remove raceline (preview) from map
 					var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
@@ -364,10 +366,10 @@ func spawn_racer(loc):
 	#print("Translation:" + str((local+loc)))
 	car.target = target
 	# pass intersection data to AI
-	car.race_int_path = [ai_data[0], ai_data[1]]
-	car.race_target = ai_data[2]
+	car.race_int_path = ai_data[0] #, ai_data[1]]
+	#car.race_target = ai_data[2]
 	car.race = self
-	
+	car.get_node("BODY").lap = 1
 	car.left = false
 	
 	cars_root.add_child(car)

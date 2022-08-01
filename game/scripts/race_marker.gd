@@ -38,6 +38,10 @@ func set_finish(val):
 func _on_Area_body_enter( body ):
 	if body is CharacterBody3D:
 		if body is player_script and not body.get_parent().is_in_group("bike"):
+			# ignore entering if we're in another race
+			if body.race and body.race != self and not finish:
+				print("We're in another race")
+				return
 			print("Area3D entered by the player")
 			player = body
 			
@@ -329,6 +333,7 @@ func _on_Area_body_exit( body ):
 				var msg = body.get_node(^"Messages")
 				if msg:
 					msg.queue_free()
+				if not count and not player.race: # ensure we don't hide others' racelines
 					# remove raceline (preview) from map
 					var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 					track_map.points = []

@@ -2,8 +2,7 @@ extends "kinematic_vehicle_AI.gd"
 
 
 # Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+#var lap = 0
 
 
 # Called when the node enters the scene tree for the first time.

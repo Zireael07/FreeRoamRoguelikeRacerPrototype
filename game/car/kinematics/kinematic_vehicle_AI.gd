@@ -8,6 +8,7 @@ extends "res://car/kinematics/kinematic_vehicle.gd"
 var target_array = PackedVector3Array() # those are global
 var current = 0
 var prev = 0
+var lap = 0 # for circuit races (because the AI is common to all, we can't just set it for racer)
 #export var target_angle = 0.2
 @export var top_speed = 15 #50 kph?
 
@@ -653,8 +654,15 @@ func after_move():
 				#	print("New target" + str(brain.target))
 				return
 			else:
-				#print("We're at the end")
-				stop = true
+				# race AI: don't stop if we have a lap set
+				if get_parent().is_in_group("race_AI"):
+					if lap > 0:
+						current = 0
+						lap = lap+1
+						brain.target = target_array[current]
+				else:
+					#print("We're at the end")
+					stop = true
 			
 	#if we passed the point, don't backtrack
 #	if get_parent().is_in_group("race_AI"):

@@ -44,6 +44,7 @@ var debug_cam
 var race
 var prev = 0
 var current = 0
+var lap = 0
 var dot = 0
 var rel_loc = Vector3()
 var race_path = PackedVector3Array()
@@ -374,6 +375,10 @@ func _physics_process(delta):
 			if (race_path.size() > current+1):
 				prev = current
 				current = current + 1
+			else:
+				if lap > 0:
+					current = 0
+					lap = lap+1
 			#else:
 				#print("We're at the end")
 			#	stop = true
@@ -385,7 +390,10 @@ func _physics_process(delta):
 				#print("AI " + get_parent().get_name() + " gets a next point")
 				prev = current
 				current = current + 1
-
+			else:
+				if lap > 0:
+					current = 0
+					lap = lap+1
 
 # UI stuff doesn't have to be in physics_process
 func _process(delta):

@@ -20,21 +20,30 @@ var race_target = null
 func _ready():
 	#._ready()
 	if is_in_group("race_AI"):
+		path = []
 		print("Race AI pathing")
 		# we don't need to look up map itself, so let's make it a shortcut to nav
 		map = get_node(^"/root/Node3D").get_node(^"map").get_node(^"nav")
-		var lookup_path = map.path_look[[race_int_path[0], race_int_path[1]]]
-		#print("[AI] Lookup path: " + str(lookup_path))
-		var nav_path = map.nav.get_point_path(lookup_path[0], lookup_path[1])
-		
-		path = racer_reduce_path(nav_path)
-		# append target point
-		path.append(race_target)
-		
-		# append final point
-		# B-A = A->B
-		var dir = (race_target-path[path.size()-2]).normalized()*6
-		path.append(race_target+dir)
+		for i in range(0,race_int_path.size()-1):
+			var lookup_path = map.path_look[[race_int_path[i], race_int_path[i+1]]]
+			print("[Racer AI] Lookup path: " + str(lookup_path))
+			var nav_path = map.nav.get_point_path(lookup_path[0], lookup_path[1])
+			path = path + racer_reduce_path(nav_path)
+		# if circuit (see below), close the loop
+		if race_target == null:
+			var lookup_path = map.path_look[[race_int_path[race_int_path.size()-1], race_int_path[0]]]
+			var tmp_path = map.nav.get_point_path(lookup_path[0], lookup_path[1])
+			path = path + racer_reduce_path(tmp_path)
+			
+		# circuit race doesn't have a target
+		if race_target:
+			# append target point
+			path.append(race_target)
+			
+			# append final point
+			# B-A = A->B
+			var dir = (race_target-path[path.size()-2]).normalized()*6
+			path.append(race_target+dir)
 		
 		#print("AI has path: " + str(path))
 		emit_signal("found_path", [path, false, false])
