@@ -22,15 +22,16 @@ _global_script_class_icons={
 
 config/name="Free Drive Battle"
 run/main_scene="res://scenes/scene_procedural.tscn"
+config/features=PackedStringArray("4.0")
 icon="res://icon.png"
 main_scene="res://hud/main_menu.tscn"
 name="FreeRoamRacerPrototype"
-config/features=PackedStringArray("4.0")
 
 [autoload]
 
 Logger="*res://scripts/logger.gd"
 RacerDatabase="*res://racer_database.tscn"
+Geom="*res://scripts/geom.gd"
 
 [debug]
 

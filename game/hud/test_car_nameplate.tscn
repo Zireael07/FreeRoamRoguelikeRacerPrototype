@@ -1,9 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://c3b3f7wpisbi"]
+[gd_scene load_steps=2 format=3 uid="uid://c3b3f7wpisbi"]
 
-[ext_resource type="FontData" uid="uid://cg0vdpby3b867" path="res://assets/851H-kktt.ttf" id="1"]
-
-[sub_resource type="Font" id="Font_82uby"]
-data/0 = ExtResource( "1" )
+[ext_resource type="FontFile" uid="uid://qympah3b7c18" path="res://assets/851H-kktt.ttf" id="1"]
 
 [node name="nameplate" type="Control"]
 offset_right = 400.0
@@ -23,7 +20,7 @@ offset_bottom = 75.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 1, 0, 1)
-theme_override_fonts/font = SubResource( "Font_82uby" )
+theme_override_fonts/font = ExtResource("1")
 theme_override_font_sizes/font_size = 80
 text = "一郎"
 horizontal_alignment = 1

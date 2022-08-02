@@ -1,31 +1,19 @@
-[gd_scene load_steps=15 format=3 uid="uid://bgx1ie2dar3wk"]
+[gd_scene load_steps=9 format=3 uid="uid://bgx1ie2dar3wk"]
 
 [ext_resource type="Script" path="res://hud/hud_labels.gd" id="1"]
-[ext_resource type="FontData" uid="uid://cg0vdpby3b867" path="res://assets/851H-kktt.ttf" id="2"]
-[ext_resource type="FontData" uid="uid://cnhdkg1uk6p8u" path="res://assets/DSEG7ClassicMini-Bold.ttf" id="2_2r03m"]
 [ext_resource type="Texture2D" uid="uid://bl0eibcllpgvy" path="res://hud/cam_icon.png" id="3"]
 [ext_resource type="Texture2D" uid="uid://b7ccmrq8ur7m" path="res://hud/battery_icon_full.png" id="4"]
 [ext_resource type="Script" path="res://hud/AI steering vis.gd" id="4_w7xr4"]
-[ext_resource type="Font" path="res://hud/thin lcd font.tres" id="5"]
 [ext_resource type="Script" path="res://hud/DebugRect.gd" id="5_8jop2"]
 [ext_resource type="Script" path="res://hud/debugdraw3d.gd" id="6"]
-
-[sub_resource type="Font" id="2"]
-data/0 = ExtResource( "2_2r03m" )
-
-[sub_resource type="Font" id="3"]
-data/0 = ExtResource( "2" )
-
-[sub_resource type="Font" id="4"]
-data/0 = ExtResource( "2" )
-
-[sub_resource type="StyleBoxFlat" id="5"]
-bg_color = Color(0.980469, 0, 0, 1)
-border_color = Color(0.980469, 0.0114899, 0.0114899, 1)
 
 [sub_resource type="StyleBoxFlat" id="6"]
 bg_color = Color(0.367188, 0.061676, 0.061676, 1)
 border_color = Color(0.460938, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="5"]
+bg_color = Color(0.980469, 0, 0, 1)
+border_color = Color(0.980469, 0.0114899, 0.0114899, 1)
 
 [node name="root" type="Control"]
 anchor_right = 1.0
@@ -33,7 +21,7 @@ anchor_bottom = 1.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 mouse_filter = 2
-script = ExtResource( "1" )
+script = ExtResource("1")
 
 [node name="Label" type="Label" parent="."]
 modulate = Color(0.0156863, 0.988235, 0.988235, 1)
@@ -42,7 +30,6 @@ offset_right = 332.0
 offset_bottom = 99.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
-theme_override_fonts/font = SubResource( "2" )
 text = "1
 "
 max_lines_visible = 1
@@ -54,7 +41,6 @@ offset_right = 352.0
 offset_bottom = 99.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
-theme_override_fonts/font = ExtResource( "5" )
 text = "kph"
 max_lines_visible = 1
 
@@ -78,12 +64,12 @@ offset_top = 50.0
 offset_right = 100.0
 offset_bottom = 90.0
 columns = 32
-script = ExtResource( "4_w7xr4" )
+script = ExtResource("4_w7xr4")
 
 [node name="DebugRect" type="ColorRect" parent="DebugAI/AI steering vis"]
 offset_right = 20.0
 offset_bottom = 40.0
-script = ExtResource( "5_8jop2" )
+script = ExtResource("5_8jop2")
 
 [node name="Label" type="Label" parent="DebugAI"]
 offset_top = 100.0
@@ -122,7 +108,6 @@ offset_bottom = 328.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0.0154419, 0.988281, 0.988281, 1)
-theme_override_fonts/font = SubResource( "3" )
 
 [node name="Label dist" type="Label" parent="."]
 anchor_left = 1.0
@@ -152,7 +137,6 @@ offset_right = -184.0
 size_flags_horizontal = 2
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0.0154419, 0.988281, 0.988281, 1)
-theme_override_fonts/font = SubResource( "4" )
 text = "clock"
 max_lines_visible = 1
 metadata/_edit_layout_mode = 0
@@ -192,7 +176,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
-texture = ExtResource( "3" )
+texture = ExtResource("3")
 
 [node name="WheelAngleBar" type="HScrollBar" parent="."]
 anchor_left = 0.5
@@ -232,8 +216,8 @@ offset_left = 11.0
 offset_top = 59.0
 offset_right = 108.0
 offset_bottom = 78.0
-theme_override_styles/fg = SubResource( "5" )
-theme_override_styles/bg = SubResource( "6" )
+theme_override_styles/bg = SubResource("6")
+theme_override_styles/fg = SubResource("5")
 step = 1.0
 value = 100.0
 
@@ -242,15 +226,15 @@ offset_top = 90.0
 offset_right = 160.0
 offset_bottom = 230.0
 scale = Vector2(0.25, 0.25)
-texture = ExtResource( "4" )
+texture = ExtResource("4")
 
 [node name="Battery" type="ProgressBar" parent="."]
 offset_left = 52.0
 offset_top = 94.0
 offset_right = 149.0
 offset_bottom = 113.0
-theme_override_styles/fg = SubResource( "5" )
-theme_override_styles/bg = SubResource( "6" )
+theme_override_styles/bg = SubResource("6")
+theme_override_styles/fg = SubResource("5")
 step = 1.0
 value = 100.0
 
@@ -279,7 +263,6 @@ color = Color(0, 0.155029, 0.992188, 0.552471)
 offset_right = 40.0
 offset_bottom = 14.0
 theme_override_colors/font_color = Color(0.0117647, 0.988235, 0.988235, 1)
-theme_override_fonts/font = ExtResource( "5" )
 text = "Ichiro"
 
 [node name="MoneyLabel" type="Label" parent="DriverInfo"]
@@ -287,7 +270,6 @@ offset_top = 30.0
 offset_right = 93.0
 offset_bottom = 51.0
 theme_override_colors/font_color = Color(0.0117647, 0.988235, 0.988235, 1)
-theme_override_fonts/font = ExtResource( "5" )
 text = "Money:   0"
 
 [node name="Label" type="Label" parent="DriverInfo"]
@@ -324,4 +306,4 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_bottom = 459.0
 mouse_filter = 2
-script = ExtResource( "6" )
+script = ExtResource("6")

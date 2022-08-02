@@ -1,28 +1,25 @@
-[gd_scene load_steps=8 format=3 uid="uid://dgo22ogst5x67"]
+[gd_scene load_steps=7 format=3 uid="uid://dgo22ogst5x67"]
 
 [ext_resource type="Script" path="res://hud/message_panel.gd" id="1"]
-[ext_resource type="FontData" uid="uid://cg0vdpby3b867" path="res://assets/851H-kktt.ttf" id="2"]
-
-[sub_resource type="Font" id="1"]
-data/0 = ExtResource( "2" )
+[ext_resource type="FontFile" uid="uid://qympah3b7c18" path="res://assets/851H-kktt.ttf" id="2"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_lqqy8"]
 keycode = 16777220
 
 [sub_resource type="Shortcut" id="3"]
-events = [SubResource( "InputEventKey_lqqy8" )]
+events = [SubResource("InputEventKey_lqqy8")]
 
 [sub_resource type="InputEventKey" id="InputEventKey_7nbx3"]
 keycode = 16777221
 
 [sub_resource type="Shortcut" id="5"]
-events = [SubResource( "InputEventKey_7nbx3" )]
+events = [SubResource("InputEventKey_7nbx3")]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
-script = ExtResource( "1" )
+script = ExtResource("1")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -40,7 +37,7 @@ theme_override_colors/font_color = Color(0.0151978, 0.905335, 0.972656, 1)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_constants/line_spacing = 2
-theme_override_fonts/font = SubResource( "1" )
+theme_override_fonts/font = ExtResource("2")
 text = " 大都市"
 
 [node name="Button" type="Button" parent="."]
@@ -50,7 +47,7 @@ offset_right = 496.0
 offset_bottom = 132.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
-shortcut = SubResource( "3" )
+shortcut = SubResource("3")
 text = "Close"
 
 [node name="OK_button" type="Button" parent="."]
@@ -62,7 +59,7 @@ offset_bottom = 133.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 disabled = true
-shortcut = SubResource( "5" )
+shortcut = SubResource("5")
 text = "OK"
 
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
