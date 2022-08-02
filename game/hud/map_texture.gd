@@ -133,9 +133,10 @@ func make_map():
 	
 	##textur = load("res://map_edited.png") #set_data(image)
 	
-	textur = ImageTexture.new()
+	#textur = ImageTexture.new()
 	print("Creating image tex from data")
-	textur.create_from_image(image)
+	## is static starting with 4.x alpha13
+	textur = ImageTexture.create_from_image(image)
 	
 	set_texture(textur)
 	
@@ -193,9 +194,9 @@ func draw_lines_differently(index):
 				var end = positions_2d[index][ind+1]
 				
 				var line = bresenham_complex(start, end)
-				for index in range (line.size()):
-					for i in range(line[index].x, line[index].x+dot_size):
-						for j in range(line[index].y, line[index].y+dot_size):
+				for _index in range (line.size()):
+					for i in range(line[_index].x, line[_index].x+dot_size):
+						for j in range(line[_index].y, line[_index].y+dot_size):
 							# paranoia
 							if i > 0 and i < 1000 and j > 0 and j < 1000:
 								# necessary in 3.0
@@ -212,9 +213,9 @@ func draw_lines_differently(index):
 				var end = positions_2d[index][ind+1]
 				
 				var line = bresenham_complex(start, end)
-				for index in range (line.size()):
-					for i in range(line[index].x, line[index].x+dot_size):
-						for j in range(line[index].y, line[index].y+dot_size):
+				for _index in range (line.size()):
+					for i in range(line[_index].x, line[_index].x+dot_size):
+						for j in range(line[_index].y, line[_index].y+dot_size):
 							# necessary in 3.0
 							#image.lock()
 							image.set_pixel(i,j, linecolor)

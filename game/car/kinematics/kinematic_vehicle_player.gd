@@ -32,7 +32,7 @@ var emitted = false
 signal load_ended
 
 var chase_cam
-var cockpit_cam
+var cockpit_cam = null
 var debug_cam
 # these are for cockpit cam
 var cam_speed = 1

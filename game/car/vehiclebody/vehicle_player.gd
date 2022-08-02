@@ -31,7 +31,7 @@ var emitted = false
 
 signal load_ended
 
-var cockpit_cam
+var cockpit_cam = null
 var cam_speed = 1
 var cockpit_cam_target_angle = 0
 var cockpit_cam_angle = 0
