@@ -21,7 +21,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Free Drive Battle"
-run/main_scene="res://scenes/scene_procedural.tscn"
+run/main_scene="res://hud/main_menu.tscn"
 config/features=PackedStringArray("4.0")
 icon="res://icon.png"
 main_scene="res://hud/main_menu.tscn"
