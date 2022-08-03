@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://bfe5auqgnsdy0"]
+
+[ext_resource type="Script" path="res://car/AI_occupancy_map.gd" id="1_45x31"]
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource( "1_45x31" )
+
+[node name="Timer" type="Timer" parent="."]
+process_callback = 0
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
