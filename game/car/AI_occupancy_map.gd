@@ -62,6 +62,13 @@ func update_memory():
 
 func _on_timer_timeout():
 	update_memory()
+# -------------------------
+func pos3d_to_grid(pos):
+	return Vector2(int(pos.x), int(pos.z))
+
+func pos_to_grid(pos2d):
+	# assumption: cell is 1mx1m each so no need for further calc
+	return Vector2(int(pos2d.x), int(pos2d.y))
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
