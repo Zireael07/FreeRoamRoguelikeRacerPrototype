@@ -418,6 +418,14 @@ func reset_car():
 func _process(delta):
 	#fps display
 	hud.update_fps()
+	
+	#test stuff
+	if has_node("occupancy_map"):
+		var data = []
+		for p in get_node("occupancy_map").memory:
+			var d = [to_local(p[0])]
+			data.append(d)
+		hud.update_debug_stuff(data, get_node("occupancy_map").rays)
 
 	#speedometer
 	speed_int = round(speed)

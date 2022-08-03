@@ -145,3 +145,7 @@ func update_AI_vis(ai):
 	get_node("DebugAI/AI steering vis").danger = ai.danger
 	get_node("DebugAI/AI steering vis").interest = ai.interest
 	get_node("DebugAI/AI steering vis").update_vis()
+
+func update_debug_stuff(data, rays):
+	get_node("Debug").data = data
+	get_node("Debug").rays = rays

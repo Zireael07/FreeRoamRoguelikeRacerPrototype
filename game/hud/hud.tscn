@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://hud/hud_labels.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://bl0eibcllpgvy" path="res://hud/cam_icon.png" id="3"]
 [ext_resource type="Texture2D" uid="uid://b7ccmrq8ur7m" path="res://hud/battery_icon_full.png" id="4"]
+[ext_resource type="Script" path="res://hud/Debug.gd" id="2_0ich4"]
 [ext_resource type="Script" path="res://hud/AI steering vis.gd" id="4_w7xr4"]
 [ext_resource type="Script" path="res://hud/DebugRect.gd" id="5_8jop2"]
 [ext_resource type="Script" path="res://hud/debugdraw3d.gd" id="6"]
@@ -21,7 +22,7 @@ anchor_bottom = 1.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 mouse_filter = 2
-script = ExtResource("1")
+script = ExtResource( "1" )
 
 [node name="Label" type="Label" parent="."]
 modulate = Color(0.0156863, 0.988235, 0.988235, 1)
@@ -44,6 +45,19 @@ size_flags_vertical = 0
 text = "kph"
 max_lines_visible = 1
 
+[node name="Debug" type="ColorRect" parent="."]
+offset_left = 150.0
+offset_top = 150.0
+offset_right = 155.0
+offset_bottom = 155.0
+color = Color(0.0235294, 0.0235294, 0.0235294, 1)
+script = ExtResource( "2_0ich4" )
+
+[node name="ColorRect" type="ColorRect" parent="Debug"]
+visible = false
+offset_right = 10.0
+offset_bottom = 10.0
+
 [node name="DebugAI" type="Control" parent="."]
 visible = false
 offset_left = 60.0
@@ -64,7 +78,7 @@ offset_top = 50.0
 offset_right = 100.0
 offset_bottom = 90.0
 columns = 32
-script = ExtResource("4_w7xr4")
+script = ExtResource( "4_w7xr4" )
 
 [node name="DebugRect" type="ColorRect" parent="DebugAI/AI steering vis"]
 offset_right = 20.0
@@ -306,4 +320,4 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_bottom = 459.0
 mouse_filter = 2
-script = ExtResource("6")
+script = ExtResource( "6" )
