@@ -1,18 +1,21 @@
 extends Node3D
 
 var memory = []
+var cull_poly = []
 
 # testing
 @export var num_rays = 16
 @export var look_side = 3.0
 var look_ahead = 15.0
 
+# visualize rays/directions
 var rays = [] 
 var forward_ray = null
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	rays.resize(num_rays)
 	add_rays(get_parent())
+	cull_poly = create_cull_poly()
 	
 func add_rays(body):
 	var angle = 2 * PI / num_rays
@@ -37,6 +40,20 @@ func add_rays(body):
 			r.debug_shape_custom_color = Color(0.99, 0.99, 0.90)
 	forward_ray = get_parent().get_node("ContextRays").get_child(0)
 
+func create_cull_poly():
+	var poly = []
+	poly.append(Vector2(rays[0].x, rays[0].z))
+	poly.append(Vector2(rays[1].x, rays[1].z))
+	# see above
+	poly.append(Vector2(rays[num_rays/4].x, rays[num_rays/4].y))
+	poly.append(Vector2(rays[num_rays-(num_rays/4)].x, rays[num_rays-(num_rays/4)].y))
+	poly.append(Vector2(rays[(num_rays/2)-1].x, rays[(num_rays/2)-1].y))
+	poly.append(Vector2(rays[num_rays/2].x, rays[num_rays/2].y))
+	poly.append(Vector2(rays[(num_rays/2)+1].x, rays[(num_rays/2)+1].y))
+	poly.append(Vector2(rays[num_rays-1].x, rays[num_rays-1].y))
+	print("cull poly: ", poly)
+	return poly
+
 func update_memory():
 	var cur = Time.get_ticks_usec()
 	# if we detect something, store it
@@ -50,8 +67,13 @@ func update_memory():
 	var to_rem = []
 	for i in range(memory.size()-1):
 		var p = memory[i]
-		var d = get_parent().global_transform.origin.distance_to(p[0])
-		if d > look_ahead:
+		# cull distant stuff
+#		var d = get_parent().global_transform.origin.distance_to(p[0])
+#		if d > look_ahead:
+#			to_rem.append(i)
+		#print("Pos: ", pos3d_to_2d(p[0]), " in poly: ", Geometry2D.is_point_in_polygon(pos3d_to_2d(p[0]), cull_poly))
+		# cull stuff by poly
+		if !Geometry2D.is_point_in_polygon(pos3d_to_2d(p[0]), cull_poly):
 			to_rem.append(i)
 		# memory sticks around for 5s
 		if cur > p[1]+50.0:
@@ -63,6 +85,10 @@ func update_memory():
 func _on_timer_timeout():
 	update_memory()
 # -------------------------
+func pos3d_to_2d(pos):
+	var loc = get_parent().to_local(pos)
+	return Vector2(loc.x, loc.z)
+
 func pos3d_to_grid(pos):
 	return Vector2(int(pos.x), int(pos.z))
 
