@@ -129,17 +129,17 @@ func update_nav_label(val):
 	nav_label.set_text(val)
 	
 # ----------------------------------
-func setup_ai_vis(ai):
-	get_node("DebugAI/AI steering vis").columns = ai.num_rays
-	while get_node("DebugAI/AI steering vis").get_child_count() < ai.num_rays:
-		var r = get_node("DebugAI/AI steering vis/DebugRect").duplicate()
-		get_node("DebugAI/AI steering vis").add_child(r)
+func setup_vis(node, num_rays, y=100):
+	get_node(node).columns = num_rays
+	while get_node(node).get_child_count() < num_rays:
+		var r = get_node(node+"/DebugRect").duplicate()
+		get_node(node).add_child(r)
 	
 	# wait so that the container has its final size
 	await get_tree().process_frame
-	get_node("DebugAI/Label2")._set_position(Vector2(get_node("DebugAI/AI steering vis").get_size().x/4, 100))
-	get_node("DebugAI/Label3")._set_position(Vector2(get_node("DebugAI/AI steering vis").get_size().x/2, 100))
-	get_node("DebugAI/Label4")._set_position(Vector2(get_node("DebugAI/AI steering vis").get_size().x, 100))
+	get_node(node).get_parent().get_node("Label2")._set_position(Vector2(get_node(node).get_size().x/4, y))
+	get_node(node).get_parent().get_node("Label3")._set_position(Vector2(get_node(node).get_size().x/2, y))
+	get_node(node).get_parent().get_node("Label4")._set_position(Vector2(get_node(node).get_size().x, y))
 
 func update_AI_vis(ai):
 	get_node("DebugAI/AI steering vis").danger = ai.danger

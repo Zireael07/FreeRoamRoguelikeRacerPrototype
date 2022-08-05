@@ -878,4 +878,4 @@ func _on_BODY_input_event(camera, event, click_position, click_normal, shape_idx
 		debug = true
 		hud.get_node("DebugAI").show()
 		if hud.get_node("DebugAI/AI steering vis").get_child_count() < 2:
-			hud.setup_ai_vis(self)
+			hud.setup_vis("DebugAI/AI steering vis", self.num_rays)

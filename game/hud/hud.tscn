@@ -1,9 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://bgx1ie2dar3wk"]
+[gd_scene load_steps=10 format=3 uid="uid://bgx1ie2dar3wk"]
 
 [ext_resource type="Script" path="res://hud/hud_labels.gd" id="1"]
+[ext_resource type="Script" path="res://hud/Debug.gd" id="2_0ich4"]
 [ext_resource type="Texture2D" uid="uid://bl0eibcllpgvy" path="res://hud/cam_icon.png" id="3"]
 [ext_resource type="Texture2D" uid="uid://b7ccmrq8ur7m" path="res://hud/battery_icon_full.png" id="4"]
-[ext_resource type="Script" path="res://hud/Debug.gd" id="2_0ich4"]
 [ext_resource type="Script" path="res://hud/AI steering vis.gd" id="4_w7xr4"]
 [ext_resource type="Script" path="res://hud/DebugRect.gd" id="5_8jop2"]
 [ext_resource type="Script" path="res://hud/debugdraw3d.gd" id="6"]
@@ -53,10 +53,58 @@ offset_bottom = 155.0
 color = Color(0.0235294, 0.0235294, 0.0235294, 1)
 script = ExtResource( "2_0ich4" )
 
+[node name="Label_info" type="Label" parent="Debug"]
+modulate = Color(0.0156863, 0.988235, 0.988235, 1)
+offset_right = 202.0
+offset_bottom = 99.0
+size_flags_horizontal = 2
+size_flags_vertical = 0
+text = "kph"
+
+[node name="steering vis2" type="GridContainer" parent="Debug"]
+offset_top = 100.0
+offset_right = 100.0
+offset_bottom = 140.0
+columns = 32
+script = ExtResource( "4_w7xr4" )
+
+[node name="DebugRect" type="ColorRect" parent="Debug/steering vis2"]
+script = ExtResource( "5_8jop2" )
+
 [node name="ColorRect" type="ColorRect" parent="Debug"]
 visible = false
 offset_right = 10.0
 offset_bottom = 10.0
+
+[node name="Label" type="Label" parent="Debug"]
+offset_top = 150.0
+offset_right = 10.0
+offset_bottom = 176.0
+text = "0"
+
+[node name="Label2" type="Label" parent="Debug"]
+offset_left = 100.0
+offset_top = 150.0
+offset_right = 127.0
+offset_bottom = 176.0
+text = "90
+"
+
+[node name="Label3" type="Label" parent="Debug"]
+offset_left = 200.0
+offset_top = 150.0
+offset_right = 228.0
+offset_bottom = 176.0
+text = "180
+"
+
+[node name="Label4" type="Label" parent="Debug"]
+offset_left = 200.0
+offset_top = 150.0
+offset_right = 228.0
+offset_bottom = 176.0
+text = "360
+"
 
 [node name="DebugAI" type="Control" parent="."]
 visible = false
@@ -81,9 +129,7 @@ columns = 32
 script = ExtResource( "4_w7xr4" )
 
 [node name="DebugRect" type="ColorRect" parent="DebugAI/AI steering vis"]
-offset_right = 20.0
-offset_bottom = 40.0
-script = ExtResource("5_8jop2")
+script = ExtResource( "5_8jop2" )
 
 [node name="Label" type="Label" parent="DebugAI"]
 offset_top = 100.0
@@ -190,7 +236,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
-texture = ExtResource("3")
+texture = ExtResource( "3" )
 
 [node name="WheelAngleBar" type="HScrollBar" parent="."]
 anchor_left = 0.5
@@ -230,8 +276,8 @@ offset_left = 11.0
 offset_top = 59.0
 offset_right = 108.0
 offset_bottom = 78.0
-theme_override_styles/bg = SubResource("6")
-theme_override_styles/fg = SubResource("5")
+theme_override_styles/bg = SubResource( "6" )
+theme_override_styles/fg = SubResource( "5" )
 step = 1.0
 value = 100.0
 
@@ -240,15 +286,15 @@ offset_top = 90.0
 offset_right = 160.0
 offset_bottom = 230.0
 scale = Vector2(0.25, 0.25)
-texture = ExtResource("4")
+texture = ExtResource( "4" )
 
 [node name="Battery" type="ProgressBar" parent="."]
 offset_left = 52.0
 offset_top = 94.0
 offset_right = 149.0
 offset_bottom = 113.0
-theme_override_styles/bg = SubResource("6")
-theme_override_styles/fg = SubResource("5")
+theme_override_styles/bg = SubResource( "6" )
+theme_override_styles/fg = SubResource( "5" )
 step = 1.0
 value = 100.0
 
