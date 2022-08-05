@@ -17,6 +17,10 @@ func _draw():
 	for i in range(rays.size()):
 		var r = rays[i]
 		var clr = Color(0,0,1)
+		# draw red direction if it's being blocked by something
+		for p in data:
+			if p[2] == i:
+				clr = Color(1,0,0)
 		draw_line(Vector2(0,0), Vector2(r.x*20, r.z*20), clr)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

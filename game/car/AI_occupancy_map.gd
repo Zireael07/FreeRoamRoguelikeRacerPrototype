@@ -65,8 +65,7 @@ func update_memory():
 			memory.append([gl, cur])
 	
 	var to_rem = []
-	for i in range(memory.size()-1):
-		var p = memory[i]
+	for p in memory:
 		# cull distant stuff
 #		var d = get_parent().global_transform.origin.distance_to(p[0])
 #		if d > look_ahead:
@@ -74,13 +73,15 @@ func update_memory():
 		#print("Pos: ", pos3d_to_2d(p[0]), " in poly: ", Geometry2D.is_point_in_polygon(pos3d_to_2d(p[0]), cull_poly))
 		# cull stuff by poly
 		if !Geometry2D.is_point_in_polygon(pos3d_to_2d(p[0]), cull_poly):
-			to_rem.append(i)
+			to_rem.append(p)
 		# memory sticks around for 5s
-		if cur > p[1]+50.0:
-			to_rem.append(i)
+		if cur > p[1]+5000000.0:
+			to_rem.append(p)
 
-	for i in to_rem:
-		memory.remove_at(i)
+	for p in to_rem:
+		var r = memory.find(p)
+		if r != -1:
+			memory.remove_at(r)
 
 func _on_timer_timeout():
 	update_memory()
@@ -95,6 +96,28 @@ func pos3d_to_grid(pos):
 func pos_to_grid(pos2d):
 	# assumption: cell is 1mx1m each so no need for further calc
 	return Vector2(int(pos2d.x), int(pos2d.y))
+
+func get_raycast_id_for_pos(pos):
+	var gridp = pos3d_to_grid(get_parent().to_local(pos))
+	var heading = atan2(gridp.y, gridp.x) # atan2(0,-1) = 3.14
+	#print("Heading: ", heading, " N 0deg: ", heading+PI/2)
+	var raycast_id = posmod(int(floor(16*(heading+PI/2)/(2*PI) + 16 + 0.5)), 16)
+	#print("Raycast_id for pos ", pos, ": ", raycast_id)
+	return raycast_id 
+
+func get_blocked_raycasts():
+	var blocked = {}
+	for p in memory:
+		var b = get_raycast_id_for_pos(p[0])
+		var d = get_parent().to_local(p[0]).length()
+		# don't multiplicate
+		if not b in blocked:
+			blocked[b] = d
+		else:
+			blocked[b] = min(blocked[b], d)
+	#print("Blocked raycasts: ", blocked)
+	return blocked
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass

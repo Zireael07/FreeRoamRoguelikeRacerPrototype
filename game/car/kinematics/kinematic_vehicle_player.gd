@@ -423,7 +423,7 @@ func _process(delta):
 	if has_node("occupancy_map"):
 		var data = []
 		for p in get_node("occupancy_map").memory:
-			var d = [to_local(p[0]), get_node("occupancy_map").pos3d_to_grid(to_local(p[0]))]
+			var d = [to_local(p[0]), get_node("occupancy_map").pos3d_to_grid(to_local(p[0])), get_node("occupancy_map").get_raycast_id_for_pos(p[0])]
 			data.append(d)
 		hud.update_debug_stuff(data, get_node("occupancy_map").rays)
 
