@@ -7,6 +7,11 @@ var cull_poly = []
 @export var num_rays = 16
 @export var look_side = 3.0
 var look_ahead = 15.0
+var brake_distance = 5.0
+
+var interest = []
+var danger = []
+var chosen_dir = null
 
 # visualize rays/directions
 var rays = [] 
@@ -17,6 +22,10 @@ func _ready():
 	add_rays(get_parent())
 	cull_poly = create_cull_poly()
 	
+	interest.resize(num_rays)
+	#4.x function
+	interest.fill(0.0)
+	danger.resize(num_rays)
 func add_rays(body):
 	var angle = 2 * PI / num_rays
 	for i in num_rays:
@@ -121,3 +130,101 @@ func get_blocked_raycasts():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
+	
+func _physics_process(delta):
+	test_AI()
+	pass
+	
+func test_AI():
+	set_danger()
+	set_interest_path_direction() 
+	merge_direction()
+	choose_direction_blended_normalized()
+# ----------------------------------
+# test AI context steering
+# based on Kidscancode's https://kidscancode.org/godot_recipes/ai/context_map/
+func set_interest_path_direction():
+	# hmm, this works for the player demo but not for AI, what gives???
+	
+	# Go forward unless we have somewhere to steer
+	var path_direction = -transform.basis.z
+	# this means number of decision "slots" is equal to number of rays
+	# Andrew Fray's GDC talk shows this does not need to be the case	
+	for i in num_rays:
+		var d = -get_parent().get_node("ContextRays").get_child(i).transform.basis.z
+		d = d.dot(path_direction)
+		interest[i] = max(0, d)
+
+
+func set_danger():
+	for i in num_rays:
+#		var ray = $ContextRays.get_child(i)
+#		danger[i] = 1.0 if ray.is_colliding() else 0.0		
+		var blocks = get_blocked_raycasts()
+		danger[i] = 1.0 if i in blocks else 0.0
+		
+		#print("D:", danger)
+		
+#		if danger[i] > 0.0:
+#			context_has_danger = true
+		
+		# increase by a factor depending on distance to obstacle
+		# only for stuff in front
+		if i == 0 or i == 1 or i == num_rays-1 or i == num_rays-2:
+			if danger[i] == 1.0:
+				var d = blocks[i]
+#			#if ray.is_colliding():
+#				var d = global_transform.origin.distance_to(ray.get_collider().global_transform.origin)
+				danger[i] = look_ahead-d
+				#if d < brake_distance*0.75:
+				#	danger[i] += brake_distance-d
+					
+#		if ray.is_colliding():
+#			# spread danger to neighboring rays
+#			if i-1 > 0:
+#				danger[i-1] = 1.0
+#			if i+1 < num_rays:
+#				danger[i+1] = 1.0
+
+# only done if we have danger in the first place
+func merge_direction():
+	for i in num_rays:
+		if danger[i] > 0.0:
+			# zero any interest in dangerous directions
+			interest[i] = 0.0
+			
+			# danger	"poisons" neighboring directions
+			if i-1 > 0:
+				if interest[i-1] > 0.0:
+					interest[i-1] = clamp(0.5*(1-danger[i]), 0, 0.5)
+			if i+1 < num_rays:
+				if interest[i+1] > 0.0:
+					interest[i+1] = clamp(0.5*(1-danger[i]), 0, 0.5)
+			
+			# TODO: add interest in opposing direction?
+			# front rays add interest to the side
+			# otherwise having all front rays blocked leads to still choosing forward direction
+			if i == 0 or i == 1 or i == 2:
+				if interest[num_rays-(num_rays/4)] > 0.0:
+					# x-(x/4) is to the left
+					# adding means we won't get stuck if all or most front rays encounter something
+					interest[num_rays-(num_rays/4)] += 2.0*danger[i]
+				if interest[num_rays-(num_rays/4)+i] > 0.0:
+					interest[num_rays-(num_rays/4)+i] = danger[i]
+			if i == num_rays-1 or i == num_rays-2:
+				# num_rays/4 is to the right
+				# see above
+				if interest[num_rays/4] > 0.0:
+					interest[num_rays/4] += 2.0*danger[i]
+				if interest[num_rays/4+(i-num_rays)] > 0.0:
+					interest[(num_rays/4)+(i-num_rays)] = danger[i]
+# this method requires all the components to be normalized, else it returns weird stuff
+# either ensure all interests are in [0,1] range or call normalize in the loop
+func choose_direction_blended_normalized():
+	chosen_dir = Vector3.ZERO
+	for i in num_rays:
+		# this is GLOBAL!!!!
+		#print("Adding dir: ", -get_parent().get_node("ContextRays").get_child(i).global_transform.basis.z * interest[i])
+		chosen_dir += -get_parent().get_node("ContextRays").get_child(i).global_transform.basis.z * interest[i]
+	chosen_dir = chosen_dir.normalized()
+	#print("chosen: ", chosen_dir)

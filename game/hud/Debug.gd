@@ -1,10 +1,14 @@
 extends Control
 
-var data = [ [Vector3(0,0,0), Vector2(0,0) ] ] # dummy values
+var data = [ [Vector3(0,0,0), Vector2(0,0), 0 ] ] # dummy values
 var rays = []
+
+var danger = []
+var interest = []
+var choice = Vector3(0,0,0)
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	data = [ [Vector3(0,0,0), Vector2(0,0) ]
+	data = [ [Vector3(0,0,0), Vector2(0,0), 0] ]
 	pass # Replace with function body.
 
 func _draw():
@@ -22,6 +26,14 @@ func _draw():
 			if p[2] == i:
 				clr = Color(1,0,0)
 		draw_line(Vector2(0,0), Vector2(r.x*20, r.z*20), clr)
+
+		# draw interest/danger
+		draw_line(Vector2(0,0), Vector2(r.x, r.z).normalized()*interest[i]*40, Color(0,1,0), 2.0)
+		if danger[i] > 0.0:
+			draw_line(Vector2(0,0), Vector2(r.x, r.z).normalized()*danger[i]*40, Color(1,0,0), 2.0)
+	
+	# chosen direction
+	draw_line(Vector2(0,0), Vector2(choice.x*40, choice.z*40), Color(0,0,0), 4.0)	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

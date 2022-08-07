@@ -425,7 +425,9 @@ func _process(delta):
 		for p in get_node("occupancy_map").memory:
 			var d = [to_local(p[0]), get_node("occupancy_map").pos3d_to_grid(to_local(p[0])), get_node("occupancy_map").get_raycast_id_for_pos(p[0])]
 			data.append(d)
-		hud.update_debug_stuff(data, get_node("occupancy_map").rays)
+		hud.update_debug_stuff(data, get_node("occupancy_map").rays, \
+		get_node("occupancy_map").danger, get_node("occupancy_map").interest, 
+		get_node("occupancy_map").chosen_dir)
 
 	#speedometer
 	speed_int = round(speed)

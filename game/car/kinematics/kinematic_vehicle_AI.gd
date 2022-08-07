@@ -520,6 +520,7 @@ func get_input():
 	
 	# quick and easy, no need to compare relative positions/use joy input
 	if not stop:
+		# these are all GLOBAL!!!
 		# chosen_dir is normalized before use here
 		a = angle_dir(-transform.basis.z, chosen_dir, transform.basis.y)
 		if reverse:
@@ -682,7 +683,7 @@ func after_move():
 # based on Kidscancode's https://kidscancode.org/godot_recipes/ai/context_map/
 func set_interest():
 	# Go forward unless we have somewhere to steer
-	var path_direction = -transform.basis.z
+	var path_direction = -transform.basis.z # this returns global direction
 	
 	# see line 313
 	if steer != Vector3.ZERO:

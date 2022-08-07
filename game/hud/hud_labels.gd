@@ -41,6 +41,9 @@ func _ready():
 	
 	print("Found: ", regex.search("123456"))
 	
+	if get_node("Debug").is_visible():
+		setup_vis("Debug/steering vis2", 16, 150)
+	
 	pass
 
 func update_speed(text, clr):
@@ -146,6 +149,23 @@ func update_AI_vis(ai):
 	get_node("DebugAI/AI steering vis").interest = ai.interest
 	get_node("DebugAI/AI steering vis").update_vis()
 
-func update_debug_stuff(data, rays):
+func update_debug_stuff(data, rays, dng, interest, chosen):
+	if !get_node("Debug").is_visible():
+		return
+		
 	get_node("Debug").data = data
 	get_node("Debug").rays = rays
+	get_node("Debug").danger = dng
+	get_node("Debug").interest = interest
+	
+	get_node("Debug/steering vis2").danger = dng
+	get_node("Debug/steering vis2").interest = interest
+	get_node("Debug/steering vis2").update_vis()
+	
+	# we only want 2 significant places
+	var interest_disp = []
+	for i in interest:
+		interest_disp.append(String.num(i,2))
+	get_node(^"Debug/Label_info").set_text("D: " + str(dng) + "\n I: " + str(interest_disp) + "\n" + str(chosen))
+	
+	get_node("Debug").choice = chosen
