@@ -137,9 +137,13 @@ func _physics_process(delta):
 	
 func test_AI():
 	set_danger()
-	set_interest_path_direction() 
-	merge_direction()
-	choose_direction_blended_normalized()
+	#set_interest_path_direction() # temporarily disable to better see avoid effects
+	avoid_danger()
+	mask_danger()
+	#merge_direction()
+	#choose_direction_blended_normalized()
+	choose_direction_max()
+
 # ----------------------------------
 # test AI context steering
 # based on Kidscancode's https://kidscancode.org/godot_recipes/ai/context_map/
@@ -186,6 +190,46 @@ func set_danger():
 #			if i+1 < num_rays:
 #				danger[i+1] = 1.0
 
+func mask_danger():
+	for i in num_rays:
+		if danger[i] > 0.0:
+			# zero any interest in dangerous directions
+			interest[i] = 0.0
+
+# tells the AI to move to the side to avoid danger
+# is symmetrical so will need a tie-breaker of some sort as the next step
+func avoid_danger():
+	# for tests only!
+	interest.fill(0.0)
+	for i in num_rays:
+		if danger[i] > 0.0:
+			# front rays add interest to the side
+			# otherwise having all front rays blocked leads to still choosing forward direction
+			
+			if i in [0,1,2]:
+				# x-(x/4) is to the left
+				interest[i+num_rays-(num_rays/4)] = danger[i]
+				# num_rays/4 is to the right
+				interest[i+(num_rays/4)] = danger[i]
+				
+			if i in [num_rays-1, num_rays-2]:
+				interest[-(num_rays-i)+num_rays-(num_rays/4)] = danger[i]
+				interest[-(num_rays-i)+(num_rays/4)] = danger[i]
+		
+		#if i == 0 or i == 1 or i == 2:
+			#if interest[num_rays-(num_rays/4)] > 0.0:
+				# x-(x/4) is to the left
+				# adding means we won't get stuck if all or most front rays encounter something
+			#	interest[num_rays-(num_rays/4)] += 2.0*danger[i]
+#			if interest[num_rays-(num_rays/4)+i] > 0.0:
+#				interest[num_rays-(num_rays/4)+i] = danger[i]
+#		if i == num_rays-1 or i == num_rays-2:
+#			# num_rays/4 is to the right
+#			# see above
+#			if interest[num_rays/4] > 0.0:
+#				interest[num_rays/4] += 2.0*danger[i]
+#			if interest[num_rays/4+(i-num_rays)] > 0.0:
+#				interest[(num_rays/4)+(i-num_rays)] = danger[i]
 # only done if we have danger in the first place
 func merge_direction():
 	for i in num_rays:
@@ -218,6 +262,14 @@ func merge_direction():
 					interest[num_rays/4] += 2.0*danger[i]
 				if interest[num_rays/4+(i-num_rays)] > 0.0:
 					interest[(num_rays/4)+(i-num_rays)] = danger[i]
+func choose_direction_max():
+	chosen_dir = Vector3.ZERO
+	var i = interest.find(interest.max()) 
+	#print(i)
+	# local
+	chosen_dir = -get_parent().get_node("ContextRays").get_child(i).transform.basis.z * interest.max()
+	chosen_dir = chosen_dir.normalized()
+	#print("Chosen max loc: ", chosen_dir)
 # this method requires all the components to be normalized, else it returns weird stuff
 # either ensure all interests are in [0,1] range or call normalize in the loop
 func choose_direction_blended_normalized():
