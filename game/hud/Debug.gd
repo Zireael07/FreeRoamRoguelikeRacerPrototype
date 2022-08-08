@@ -32,7 +32,7 @@ func _draw():
 		if danger[i] > 0.0:
 			draw_line(Vector2(0,0), Vector2(r.x, r.z).normalized()*danger[i]*40, Color(1,0,0), 2.0)
 	
-	# chosen direction
+	# chosen direction (expected to be LOCAL)
 	draw_line(Vector2(0,0), Vector2(choice.x*40, choice.z*40), Color(0,0,0), 4.0)	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

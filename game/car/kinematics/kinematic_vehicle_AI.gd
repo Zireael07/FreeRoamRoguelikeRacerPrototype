@@ -118,7 +118,8 @@ func add_rays():
 		r.add_exception(self)
 		r.enabled = true
 		# debug
-		rays[i] = (r.target_position.normalized()*4).rotated(Vector3(0,1,0), r.rotation.y)
+		#rays[i] = (r.target_position.normalized()*4).rotated(Vector3(0,1,0), r.rotation.y)
+		rays[i] = (r.target_position).rotated(Vector3(0,1,0), r.rotation.y)
 		if i == num_rays-(num_rays/4): #numrays/4 is 90 degrees to the right, numrays-(x/4) is to the left
 			r.debug_shape_custom_color = Color(0.99, 0.99, 0.90)
 	forward_ray = $ContextRays.get_child(0)
@@ -251,7 +252,8 @@ func _process(delta):
 				#draw.update_vector(2, chosen_dir*5)
 				draw.update_line(self, 4, pos, pos+chosen_dir*3)
 			#draw.update_vector(4, to_local(to_global(Vector3(0, 0, -4))))
-			
+		
+		# TODO: no need to do this 60 times a second	
 		# debugging
 		if hud and debug:
 			# we only want 2 significant places
@@ -877,6 +879,7 @@ func _on_BODY_input_event(camera, event, click_position, click_normal, shape_idx
 	if (event is InputEventMouseButton) and (event.button_index == MOUSE_BUTTON_LEFT):
 		print("AI clicked is: ", get_parent().get_name())
 		debug = true
+		hud.get_node("Debug").hide() # hide player debugging if any
 		hud.get_node("DebugAI").show()
 		if hud.get_node("DebugAI/AI steering vis").get_child_count() < 2:
 			hud.setup_vis("DebugAI/AI steering vis", self.num_rays)

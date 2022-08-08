@@ -106,12 +106,14 @@ offset_bottom = 176.0
 text = "360
 "
 
-[node name="DebugAI" type="Control" parent="."]
+[node name="DebugAI" type="ColorRect" parent="."]
 visible = false
-offset_left = 60.0
+offset_left = 150.0
 offset_top = 150.0
-offset_right = 100.0
-offset_bottom = 190.0
+offset_right = 155.0
+offset_bottom = 155.0
+color = Color(0, 0, 0, 1)
+script = ExtResource( "2_0ich4" )
 
 [node name="Label_info" type="Label" parent="DebugAI"]
 modulate = Color(0.0156863, 0.988235, 0.988235, 1)

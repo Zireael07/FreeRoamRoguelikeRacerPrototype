@@ -132,7 +132,7 @@ func update_nav_label(val):
 	nav_label.set_text(val)
 	
 # ----------------------------------
-func setup_vis(node, num_rays, y=100):
+func setup_vis(node, num_rays, y=150):
 	get_node(node).columns = num_rays
 	while get_node(node).get_child_count() < num_rays:
 		var r = get_node(node+"/DebugRect").duplicate()
@@ -145,6 +145,12 @@ func setup_vis(node, num_rays, y=100):
 	get_node(node).get_parent().get_node("Label4")._set_position(Vector2(get_node(node).get_size().x, y))
 
 func update_AI_vis(ai):
+	# better vis
+	get_node("DebugAI").rays = ai.rays
+	get_node("DebugAI").danger = ai.danger
+	get_node("DebugAI").interest = ai.interest
+	get_node("DebugAI").choice = ai.chosen_dir * ai.global_transform.basis # make the chosen_dir local for drawing
+	
 	get_node("DebugAI/AI steering vis").danger = ai.danger
 	get_node("DebugAI/AI steering vis").interest = ai.interest
 	get_node("DebugAI/AI steering vis").update_vis()
