@@ -505,15 +505,17 @@ func make_steering():
 # kinematic input
 func get_input():
 	make_steering()
+	# TODO: do we need to do context 60 times a second, really?
 	# context steering
 	context_has_danger = false
 	if not stop:
+		# TODO: use an area first - if area is empty, no need to set danger at all
 		set_danger()
 		# only do stuff if we need to (if we detected danger)
 		if context_has_danger:
-			set_interest()
+			set_interest_path_direction()
 			merge_direction()
-			choose_direction()
+			choose_direction_blended_normalized()
 		else:
 			chosen_dir = brain.steer[1].normalized()
 	
@@ -683,7 +685,7 @@ func after_move():
 
 # -----------------------
 # based on Kidscancode's https://kidscancode.org/godot_recipes/ai/context_map/
-func set_interest():
+func set_interest_path_direction():
 	# Go forward unless we have somewhere to steer
 	var path_direction = -transform.basis.z # this returns global direction
 	
@@ -751,7 +753,9 @@ func merge_direction():
 #		if debug: 
 #			hud.append_debug("I: " + str(interest) + "\n")		
 
-func choose_direction():	
+# this method requires all the components to be normalized, else it returns weird stuff
+# either ensure all interests are in [0,1] range or call normalize in the loop
+func choose_direction_blended_normalized():
 	chosen_dir = Vector3.ZERO
 	for i in num_rays:
 		# this is GLOBAL!!!!
