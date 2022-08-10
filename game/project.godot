@@ -32,6 +32,7 @@ name="FreeRoamRacerPrototype"
 Logger="*res://scripts/logger.gd"
 RacerDatabase="*res://racer_database.tscn"
 Geom="*res://scripts/geom.gd"
+EventBus="*res://scripts/EventBus.gd"
 
 [debug]
 

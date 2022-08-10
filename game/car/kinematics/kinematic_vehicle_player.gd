@@ -29,7 +29,7 @@ var elapsed_secs = 0
 var start_secs = 2
 var emitted = false
 
-signal load_ended
+#signal load_ended
 
 var chase_cam
 var cockpit_cam = null
@@ -79,7 +79,7 @@ func _ready():
 	bike_scene = load("res://car/kinematics/kinematic_bike.tscn")
 	
 	# our custom signal
-	connect(&"load_ended", self.on_load_ended)
+	EventBus.connect(&"load_ended", self.on_load_ended)
 
 	World_node = get_parent().get_parent().get_node("scene")
 	cockpit_cam = $"cambase/CameraCockpit"
@@ -251,7 +251,7 @@ func _physics_process(delta):
 	# emit a signal when we're all set up
 	elapsed_secs += delta
 	if (elapsed_secs > start_secs and not emitted):
-		emit_signal("load_ended")
+		EventBus.emit_signal("load_ended")
 		emitted = true
 		
 	# racing

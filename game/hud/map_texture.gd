@@ -23,8 +23,8 @@ var indices = []
 
 
 func _ready():
-	# connect to the load_ended signal of the player
-	get_tree().get_nodes_in_group("player")[0].get_child(0).connect(&"load_ended", self.make_map)
+	# connect to the load_ended signal
+	EventBus.connect(&"load_ended", self.make_map)
 	# TODO: clear up!
 	#get_parent().get_parent().get_parent().get_parent().get_parent().connect(&"load_ended", self.make_map)
 	

@@ -24,6 +24,7 @@ func _ready():
 	# Initialization here
 	# need to do it explicitly in Godot 4 for some reason
 	super._ready()
+	get_tree().paused = true
 
 	mult = get_node(^"triangulate/poisson").mult
 
@@ -245,6 +246,9 @@ func _ready():
 		
 	# test
 	#Logger.save_to_file()
+	
+	get_tree().paused = false
+	EventBus.emit_signal("mapgen_done")
 
 # -----------------
 # returns a list of [dist, index] lists, operates on child ids

@@ -88,9 +88,8 @@ func _ready():
 	set_max_contacts_reported(1)
 	set_contact_monitor(true)
 
-
 	# our custom signal
-	connect(&"load_ended", self.on_load_ended)
+	EventBus.connect(&"load_ended", self.on_load_ended)
 
 	World_node = get_parent().get_parent().get_node(^"scene")
 	cockpit_cam = $"cambase/CameraCockpit"
@@ -203,7 +202,7 @@ func _physics_process(delta):
 	# emit a signal when we're all set up
 	elapsed_secs += delta
 	if (elapsed_secs > start_secs and not emitted):
-		emit_signal("load_ended")
+		EventBus.emit_signal("load_ended")
 		emitted = true
 
 	# performance testing

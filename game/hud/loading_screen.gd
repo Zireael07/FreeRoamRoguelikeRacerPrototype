@@ -19,6 +19,8 @@ func _ready():
 	# Initialization here
 	print("Loading screen ready!")
 	
+	EventBus.connect("mapgen_done", we_are_done)
+	
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() -1)
 	
@@ -59,16 +61,17 @@ func _process(time):
 				#current_scene.queue_free() # get rid of the old scene
 				print("Switching to new scene")
 				set_new_scene(resource)
+				# NOTE: from here until the scene is done, frames don't seem to redraw
 				#print("[After set] New root: " + str(get_node(^"/root").get_name()))
 				print("Done loading new scene")
 				
 				final_progress()
 				#wait_frames = 30
 				
-				done = true
-			else: # our job is done, finally!
-				current_scene.queue_free() # get rid of the old scene
-				print("Free current scene")
+#				done = true
+#			else: # our job is done, finally!
+#				current_scene.queue_free() # get rid of the old scene
+#				print("Free current scene")
 		
 	else:
 		#print("We have a loader...")
@@ -107,6 +110,7 @@ func finished_loading():
 #	wait_frames = 1
 	
 	loaded = true
+	$"Label".set_text("Generating...")
 
 func update_progress():
 	#print("Progress: ", _progress[0])
@@ -131,3 +135,9 @@ func show_error():
 
 func final_progress():
 	get_node(^"ProgressBar").set_value(99)	
+
+# our job is done, finally!
+func we_are_done():
+	done = true
+	current_scene.queue_free() # get rid of the old scene
+	print("Free current scene")
