@@ -44,6 +44,7 @@ var taillights
 var tail_mat
 
 var sparks
+var num_sparks = 0
 
 var flip_mat = preload("res://assets/car/car_red.tres")
 
@@ -260,12 +261,14 @@ func trigger_sparks():
 		#print("Ignoring because ground or road")
 		pass
 	else:
-	
+		# ignore if we already have many sparks
+		if num_sparks > 6:
+			#print("We already have enough sparks")
+			return
+			
 		var c_pos = collision.get_position()
-		
 		var normal = collision.get_normal()
 		#print("Local pos of contact: " + str(l_pos) + " collider " + str(c_pos))
-		
 		
 		var local
 		
@@ -310,7 +313,8 @@ func kill_sparks():
 		if String(c.get_name()).find("Spark") != -1:
 	#if get_node(^"Debug") != null:
 			c.queue_free()
-			
+
+# TODO: don't spawn sparks on cars outside of visible range	
 func spawn_sparks(loc, normal):
 	var spark = sparks.instantiate()
 	
@@ -322,6 +326,7 @@ func spawn_sparks(loc, normal):
 	spark.get_process_material().set_gravity(normal)
 	# set timer
 	spark.get_node(^"Timer").start()
+	num_sparks += 1
 
 # debug
 func debug_cube(loc, red=false):

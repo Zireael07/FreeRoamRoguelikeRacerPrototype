@@ -12,6 +12,7 @@ func _ready():
 
 # remove old particles
 func _on_Timer_timeout():
+	get_parent().num_sparks =-1
 	#print("Time out particles")
 	queue_free()
 	
