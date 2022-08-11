@@ -72,6 +72,7 @@ var bribed = false
 func _ready():
 	# Called every time the node is added to the scene.
 	# Initialization here
+	EventBus.connect("mapgen_done", setup)
 	# need to do it explicitly in Godot 4 for some reason
 	super._ready()
 	
@@ -96,7 +97,7 @@ func _ready():
 	
 	#register_debugging_lines()
 	
-	
+func setup():
 	set_process(true)
 	set_physics_process(true)
 
@@ -859,7 +860,7 @@ func stopping():
 
 		# only traffic AI looks for new intersection target
 		# we only do it if we're not parking
-		if get_parent().is_in_group("AI") and not emitted and path.size() > 5:
+		if get_parent().is_in_group("AI") and not emitted and path and path.size() > 5:
 			# unregister from previous road
 			if not get_parent().road:
 				return 

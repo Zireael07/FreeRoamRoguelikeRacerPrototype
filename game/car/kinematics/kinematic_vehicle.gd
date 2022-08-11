@@ -61,6 +61,10 @@ func _ready():
 	
 	# setup properties
 	set_max_slides(1)
+	
+	# need to do because initial game setup is now spread across frames
+	set_process(false)
+	set_physics_process(false)
 
 func _physics_process(delta):	
 	

@@ -23,12 +23,13 @@ var debug = false
 
 func _ready():
 	# Called every time the node is added to the scene.
-	
+	EventBus.connect("mapgen_done", setup)
 	# hack fix
 	if rotation.y != 0:
 		get_node(^"BODY").rotate_y(rotation.y)
 		rotation.y = 0
-	
+
+func setup():
 	#navigation_node = get_node(^"/root/root")
 	# only traffic AI
 	if is_in_group("AI"):

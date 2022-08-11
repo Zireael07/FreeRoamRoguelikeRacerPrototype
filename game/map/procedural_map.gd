@@ -23,6 +23,7 @@ func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
 	# need to do it explicitly in Godot 4 for some reason
+	print("Map ready starts")
 	super._ready()
 	get_tree().paused = true
 
@@ -34,6 +35,17 @@ func _ready():
 	dealership = preload("res://objects/dealer_city.tscn")
 
 	samples = get_node(^"triangulate/poisson").samples
+	
+	await mapgen()
+	get_tree().paused = false
+	EventBus.emit_signal("mapgen_done")
+	print("Map ready done")
+			
+	# test
+	#Logger.save_to_file()
+
+func mapgen():
+	await get_tree().process_frame # to avoid things getting out of order
 	print("Number of intersections: " + str(samples.size()-1))
 	for i in range(0, get_node(^"triangulate/poisson").samples.size()-1):
 		var p = get_node(^"triangulate/poisson").samples[i]
@@ -42,6 +54,8 @@ func _ready():
 		#print("Placing intersection at " + str(p[0]*mult) + ", " + str(p[1]*mult))
 		intersection.set_name("intersection" + str(i))
 		add_child(intersection)
+		# visualization
+		#	await get_tree().process_frame
 
 	# get the triangulation
 	var tris = get_node("triangulate").tris
@@ -60,7 +74,10 @@ func _ready():
 			else:
 				edges.append(e)
 
+	await get_tree().process_frame
 	# create the map
+	if has_node("/root/Control/Label"):
+		get_node("/root/Control/Label").set_text("Created the map")
 	# for storing roads that actually got created
 	real_edges = []
 	var sorted = sort_intersections_distance()
@@ -83,6 +100,9 @@ func _ready():
 
 	#print("Real edges: ", real_edges)
 
+	await get_tree().process_frame
+	if has_node("/root/Control/Label"):
+		get_node("/root/Control/Label").set_text("Making outer loop...")
 	# road around
 	var out_edges = get_node(^"triangulate/poisson").out_edges
 	print("Outer edges: " + str(out_edges))
@@ -114,14 +134,18 @@ func _ready():
 		print("Outer edges post filter: " + str(out_edges))
 
 		for e in out_edges:
-			# +3 because of helper nodes which come first
-			var ret = connect_intersections(e[0]+3, e[1]+3, false)
-			if ret != false:
-				#if verbose:
-				#	Logger.mapgen_print("We did create a connection... " + str(initial_int) + " to " + str(p[0]))
-				real_edges.append(Vector2(e[0], e[1]))
+			# visualization
+			if has_node("/root/Control/Label"):
+				await get_tree().process_frame
+				do_connect(e[0], e[1], false)
+				get_node("/root/Control/Label").set_text(String("Connecting intersections " + var2str(e[0]) + " " + var2str(e[1])))
+			else:
+				do_connect(e[0], e[1], false)
 
+	await get_tree().process_frame
 	# map setup is done, let's continue....
+	if has_node("/root/Control/Label"):
+		get_node("/root/Control/Label").set_text("Map navigation set up")
 	# map navigation, markers...
 	get_node(^"nav").setup(mult, samples, real_edges)
 
@@ -149,7 +173,10 @@ func _ready():
 #	#straight.get_node(^"Node3D").queue_free()
 #	straight.generateRoad()
 
-
+	# basic map is done, now sprinkle stuff around
+	await get_tree().process_frame
+	if has_node("/root/Control/Label"):
+		get_node("/root/Control/Label").set_text("Spawning things...")
 	# place cars on parking lots
 	var lots = get_spawn_lots()
 	
@@ -243,14 +270,9 @@ func _ready():
 		
 		dealer.set_name("dealership")
 		add_child(dealer)
-		
-	# test
-	#Logger.save_to_file()
-	
-	get_tree().paused = false
-	EventBus.emit_signal("mapgen_done")
 
-# -----------------
+
+# --------------------------------------
 # returns a list of [dist, index] lists, operates on child ids
 func sort_intersections_distance(tg = Vector3(0,0,0), debug=true):
 	var dists = []
@@ -365,12 +387,21 @@ func auto_connect(initial_int, real_edges, verbose=false):
 		# prevent trying to connect to unsuitable things
 		if p[0]+3 > last_int:
 			return
-		# +3 because of helper nodes that come first
-		var ret = connect_intersections(initial_int+3, p[0]+3, verbose)
-		if ret != false:
-			if verbose:
-				Logger.mapgen_print("We did create a connection... " + str(initial_int) + " to " + str(p[0]))
-			real_edges.append(Vector2(initial_int, p[0]))
+		# visualization
+		if has_node("/root/Control/Label"):
+			await get_tree().process_frame
+			do_connect(initial_int, p[0], verbose)
+			get_node("/root/Control/Label").set_text(String("Connecting intersections " + var2str(initial_int) + " " + var2str(p[0])))
+		else:
+			do_connect(initial_int, p[0], verbose)
+
+func do_connect(s, end, verbose):
+	# +3 because of helper nodes that come first
+	var ret = connect_intersections(s+3, end+3, verbose)
+	if ret != false:
+		if verbose:
+			Logger.mapgen_print("We did create a connection... " + str(s) + " to " + str(end))
+		real_edges.append(Vector2(s, end))
 			
 
 # ---------------------------------------

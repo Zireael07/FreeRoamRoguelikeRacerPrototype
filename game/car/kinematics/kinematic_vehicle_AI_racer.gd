@@ -9,6 +9,9 @@ extends "kinematic_vehicle_AI.gd"
 func _ready():
 	# need to do it explicitly in Godot 4 for some reason
 	super._ready()
+	# needed because initial game setup is now spread across frames
+	set_process(true)
+	set_physics_process(true)
 
 # this is the global version, since the racers can be parented to something rotated
 func calculate_steering(delta):

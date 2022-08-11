@@ -80,6 +80,7 @@ func _ready():
 	
 	# our custom signal
 	EventBus.connect(&"load_ended", self.on_load_ended)
+	EventBus.connect("mapgen_done", start)
 
 	World_node = get_parent().get_parent().get_node("scene")
 	cockpit_cam = $"cambase/CameraCockpit"
@@ -87,7 +88,25 @@ func _ready():
 	chase_cam = get_node(^"cambase/Camera3D")
 	tail_mat = taillights.get_mesh().surface_get_material(0)
 
-	##GUI
+func spawn_message():
+	var msg = preload("res://hud/message_panel.tscn")
+	panel = msg.instantiate()
+	panel.set_name("Messages")
+	add_child(panel)
+	return panel
+
+func random_date():
+	# seed the rng
+	randomize()
+
+	var day = (randi() % 30) +1
+	var month = (randi() % 13) +1
+	var year = 2040 + (randi() % 20)
+
+	return [day, month, year]
+
+func start():
+		##GUI
 	var h = preload("res://hud/hud.tscn")
 	hud = h.instantiate()
 	add_child(hud)
@@ -157,23 +176,9 @@ func _ready():
 	else:
 		get_node(^"Smoke").material_override = smoke_mat
 		get_node(^"Smoke2").material_override = smoke_mat
-
-func spawn_message():
-	var msg = preload("res://hud/message_panel.tscn")
-	panel = msg.instantiate()
-	panel.set_name("Messages")
-	add_child(panel)
-	return panel
-
-func random_date():
-	# seed the rng
-	randomize()
-
-	var day = (randi() % 30) +1
-	var month = (randi() % 13) +1
-	var year = 2040 + (randi() % 20)
-
-	return [day, month, year]
+	
+	set_process(true)
+	set_physics_process(true)
 
 func on_load_ended():
 	print("Loaded all pertinent stuff")
