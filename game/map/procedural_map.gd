@@ -36,6 +36,9 @@ func _ready():
 
 	samples = get_node(^"triangulate/poisson").samples
 	
+	if has_node("/root/Control/MapgenVis"):
+		get_node("/root/Control/MapgenVis").prepare_labels(samples.size()-1)
+	
 	await mapgen()
 	get_tree().paused = false
 	EventBus.emit_signal("mapgen_done")
@@ -55,7 +58,14 @@ func mapgen():
 		intersection.set_name("intersection" + str(i))
 		add_child(intersection)
 		# visualization
-		#	await get_tree().process_frame
+		if has_node("/root/Control/MapgenVis"):
+			await get_tree().process_frame
+			get_node("/root/Control/MapgenVis").get_child(i).show()
+			get_node("/root/Control/MapgenVis").get_child(i).set_text(var2str(i))
+			get_node("/root/Control/MapgenVis").get_child(i).position = pos3d_to_vis_point(Vector3(p[0]*mult, 0, p[1]*mult))+Vector2(-15,-15)
+			# draw a rect
+			get_node("/root/Control/MapgenVis").rects.append(pos3d_to_vis_point(Vector3(p[0]*mult, 0, p[1]*mult)))
+			get_node("/root/Control/MapgenVis").redraw()
 
 	# get the triangulation
 	var tris = get_node("triangulate").tris
@@ -86,6 +96,7 @@ func mapgen():
 #	print("Initial int: " + str(initial_int))
 
 	# automate it!
+	print("Auto connecting intersections...")
 	for i in range(sorted.size()-1):
 		auto_connect(sorted[i][1], real_edges)
 	
@@ -100,7 +111,9 @@ func mapgen():
 
 	#print("Real edges: ", real_edges)
 
+	await get_tree().process_frame #hackfix
 	await get_tree().process_frame
+	print("Outer loop...")
 	if has_node("/root/Control/Label"):
 		get_node("/root/Control/Label").set_text("Making outer loop...")
 	# road around
@@ -134,7 +147,8 @@ func mapgen():
 		print("Outer edges post filter: " + str(out_edges))
 
 		for e in out_edges:
-			# visualization
+			print("Out edge ", var2str(e[0]), ", ", var2str(e[1]))
+			# feedback
 			if has_node("/root/Control/Label"):
 				await get_tree().process_frame
 				do_connect(e[0], e[1], false)
@@ -387,7 +401,7 @@ func auto_connect(initial_int, real_edges, verbose=false):
 		# prevent trying to connect to unsuitable things
 		if p[0]+3 > last_int:
 			return
-		# visualization
+		# feedback
 		if has_node("/root/Control/Label"):
 			await get_tree().process_frame
 			do_connect(initial_int, p[0], verbose)
@@ -395,6 +409,7 @@ func auto_connect(initial_int, real_edges, verbose=false):
 		else:
 			do_connect(initial_int, p[0], verbose)
 
+# FIXME: bail out if the edge is already taken
 func do_connect(s, end, verbose):
 	# +3 because of helper nodes that come first
 	var ret = connect_intersections(s+3, end+3, verbose)
@@ -402,7 +417,28 @@ func do_connect(s, end, verbose):
 		if verbose:
 			Logger.mapgen_print("We did create a connection... " + str(s) + " to " + str(end))
 		real_edges.append(Vector2(s, end))
-			
+		if has_node("/root/Control/MapgenVis"):
+			#await a mouseclick maybe? 
+			await get_tree().process_frame
+			#await get_tree().create_timer(1.0).timeout
+			get_node("/root/Control/MapgenVis").line = [s, end]
+			get_node("/root/Control/MapgenVis").redraw()
+
+# drawing
+func pos3d_to_vis_point(pos):
+	#the midpoint of map is equal to 0,0 in 3d
+	#var middle = Vector2(0, 0) # 250,250
+	var middle = Vector2(250,250)
+	
+	#print("Midpoint of map is " + String(middle))
+	
+	var x = round(middle.x - pos.x/2)
+	var y = round(middle.y - pos.z/2)
+	#print("Calculated position for pos " + String(pos) + "is x " + String(x) + " y " + String(y))
+	
+	#3d x is left/right (inc left) and z is forward/back (up/down)
+	#2d x is left/right (increases right) and y is top/down (from top)
+	return Vector2(x, y)			
 
 # ---------------------------------------
 func find_lot(road):
