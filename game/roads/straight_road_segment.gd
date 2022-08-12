@@ -563,27 +563,27 @@ func send_positions(map):
 func lite_up():
 	#print("Lit up road")
 	var material = get_node(^"plane").get_mesh().surface_get_material(0)
-	material.set_shader_param("emission_energy", 3)
-	material.set_shader_param("emission", Color(0,0,1))
+	material.set_shader_uniform("emission_energy", 3)
+	material.set_shader_uniform("emission", Color(0,0,1))
 	#material.set_feature(StandardMaterial3D.FEATURE_EMISSION, true)
 	#material.set_emission(Color(0,0,1))
 	
 func reset_lite():
 	var material = get_node(^"plane").get_mesh().surface_get_material(0)
-	material.set_shader_param("emission_energy", 0)
+	material.set_shader_uniform("emission_energy", 0)
 	#material.set_feature(StandardMaterial3D.FEATURE_EMISSION, false)
 	
 func rain_shine(rain_amount):
 	var material = get_node(^"plane").get_mesh().surface_get_material(0)
 	material.set_roughness(0.2)
 	material.set_metallic(0.85)
-	material.set_shader_param("puddle_size", rain_amount)
+	material.set_shader_uniform("puddle_size", rain_amount)
 	
 func no_rain():
 	var material = get_node(^"plane").get_mesh().surface_get_material(0)
-	material.set_shader_param("roughness", 1.0)
-	material.set_shader_param("metallic", 0.0)
-	material.set_shader_param("puddle_size", 0.0)
+	material.set_shader_uniform("roughness", 1.0)
+	material.set_shader_uniform("metallic", 0.0)
+	material.set_shader_uniform("puddle_size", 0.0)
 	#material.set_roughness(1.0)
 	#material.set_metallic(0.0)
 

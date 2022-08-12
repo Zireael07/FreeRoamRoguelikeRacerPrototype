@@ -197,7 +197,7 @@ func setupBuilding(index, base_height):
 			
 			var color = Color.from_hsv(hue, saturation, lightness)
 			
-			build.storefront_mat.set_shader_param("modulate", color)
+			build.storefront_mat.set_shader_uniform("modulate", color)
 	else:
 		build.storefront = false
 	
@@ -225,7 +225,7 @@ func setupBuilding(index, base_height):
 	var randi = randi_range(0, 10);
 	var rndf = randf_range(0.0,1.0);
 	var off = Vector2(get_parent().get_global_transform().origin.x + index + rndf, get_parent().get_global_transform().origin.y + index + randi);
-	build.get_node(^"MeshInstance3D").set_shader_instance_uniform("offset", off)
+	build.get_node(^"MeshInstance3D").set_instance_shader_uniform("offset", off)
 		
 	# sign color
 	#var rand_color_r = randf()
@@ -240,8 +240,8 @@ func setupBuilding(index, base_height):
 	
 	#print("Sign color: ", color)
 	
-	#build.get_node(^"MeshInstance3D").get_surface_override_material(0).set_shader_param("modulate", color)
-	build.get_node(^"MeshInstance3D").set_shader_instance_uniform("color", color)
+	#build.get_node(^"MeshInstance3D").get_surface_override_material(0).set_shader_uniform("modulate", color)
+	build.get_node(^"MeshInstance3D").set_instance_shader_uniform("color", color)
 	build.get_node("MeshInstance3D/OmniLight3D").light_color = color
 	
 	# vary sign placement height

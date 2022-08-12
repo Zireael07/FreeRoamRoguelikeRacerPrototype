@@ -88,7 +88,7 @@ func save():
 	
 	var ps = PackedScene.new()
 	ps.pack(self)
-	ResourceSaver.save("res://replay/replay.tscn", ps, ResourceSaver.FLAG_COMPRESS)
+	ResourceSaver.save(ps, "res://replay/replay.tscn", ResourceSaver.FLAG_COMPRESS)
 
 func _notification(what):
 	# Save replay upon exit
