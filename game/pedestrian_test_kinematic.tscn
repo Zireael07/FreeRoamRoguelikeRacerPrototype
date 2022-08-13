@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://bttvtcmkiy8vg"]
+
+[ext_resource type="Script" path="res://pedestrian_test.gd" id="1_28olf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gvuv4"]
+size = Vector3(1, 1.75, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nygak"]
+albedo_color = Color(1, 0.101961, 0.101961, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ebc7b"]
+
+[node name="pedestrian" type="Node3D"]
+
+[node name="AnimatableBody3D" type="CharacterBody3D" parent="."]
+script = ExtResource("1_28olf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AnimatableBody3D"]
+shape = SubResource("BoxShape3D_gvuv4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="AnimatableBody3D"]
+material_override = SubResource("StandardMaterial3D_nygak")
+cast_shadow = 0
+mesh = SubResource("CapsuleMesh_ebc7b")
+skeleton = NodePath("../..")
