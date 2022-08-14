@@ -112,23 +112,23 @@ _surfaces = [{
 }]
 
 [sub_resource type="BoxShape3D" id="4"]
-size = Vector3(1.306, 1.3, 2.496)
+size = Vector3(1.75, 1.4, 2.5)
 
 [sub_resource type="CylinderShape3D" id="5"]
+height = 1.5
 radius = 0.29888
-height = 1.30062
 
 [sub_resource type="StandardMaterial3D" id="6"]
 resource_local_to_scene = true
 diffuse_mode = 1
-albedo_texture = ExtResource( "10" )
+albedo_texture = ExtResource("10")
 roughness = 0.0
 emission_enabled = true
 emission = Color(0.63, 0.13, 0.13, 1)
 emission_energy = 4.0
 emission_operator = 1
 emission_on_uv2 = true
-emission_texture = ExtResource( "10" )
+emission_texture = ExtResource("10")
 uv1_scale = Vector3(0.2, 0.2, 1)
 
 [sub_resource type="ArrayMesh" id="7"]
@@ -138,7 +138,7 @@ _surfaces = [{
 "format": 4119,
 "index_count": 72,
 "index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 2, 0, 1, 0, 3, 0, 4, 0, 5, 0, 6, 0, 6, 0, 5, 0, 7, 0, 8, 0, 9, 0, 10, 0, 10, 0, 9, 0, 11, 0, 12, 0, 13, 0, 14, 0, 14, 0, 13, 0, 15, 0, 16, 0, 17, 0, 18, 0, 18, 0, 17, 0, 19, 0, 20, 0, 21, 0, 22, 0, 22, 0, 21, 0, 23, 0, 24, 0, 25, 0, 26, 0, 26, 0, 25, 0, 27, 0, 28, 0, 29, 0, 30, 0, 30, 0, 29, 0, 31, 0, 32, 0, 33, 0, 34, 0, 34, 0, 33, 0, 35, 0, 36, 0, 37, 0, 38, 0, 38, 0, 37, 0, 39, 0, 40, 0, 41, 0, 42, 0, 42, 0, 41, 0, 43, 0, 44, 0, 45, 0, 46, 0, 46, 0, 45, 0, 47, 0),
-"material": SubResource( "6" ),
+"material": SubResource("6"),
 "name": "taillights_simple",
 "primitive": 3,
 "vertex_count": 48,
@@ -152,52 +152,46 @@ roughness = 0.0
 
 [node name="Node3D" type="Node3D" groups=["AI"]]
 _import_path = NodePath(".")
-script = ExtResource( "3" )
-__meta__ = {
-"__editor_plugin_screen__": "3D"
-}
+script = ExtResource("3")
 
 [node name="BODY" type="CharacterBody3D" parent="."]
 collision_mask = 3
-script = ExtResource( "9" )
+script = ExtResource("9")
 num_rays = 32
 brake_distance = 10.0
 
 [node name="tmpParent" type="Node3D" parent="BODY"]
 
 [node name="car_mesh" type="MeshInstance3D" parent="BODY/tmpParent"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.0263825, 0.307591, 0.0500417)
-mesh = ExtResource( "1" )
-surface_material_override/0 = ExtResource( "2" )
-__meta__ = {
-"_editor_description_": ""
-}
+transform = Transform3D(-1.25, 0, -1.50996e-07, 0, 1.25, 0, 1.88745e-07, 0, -1, 0.0263825, 0.307591, 0.0500417)
+mesh = ExtResource("1")
+surface_material_override/0 = ExtResource("2")
 
 [node name="Spatial_FL" type="Node3D" parent="BODY/tmpParent"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.58, 0.261, -0.66)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.686538, 0.261, -0.816896)
 
-[node name="Node3D" parent="BODY/tmpParent/Spatial_FL" instance=ExtResource( "8" )]
+[node name="Node3D" parent="BODY/tmpParent/Spatial_FL" instance=ExtResource("8")]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0)
 wheel_thick = 0.1
 
 [node name="Spatial_RL" type="Node3D" parent="BODY/tmpParent"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.58, 0.261, 0.671)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.687, 0.261, 0.800335)
 
-[node name="Node3D" parent="BODY/tmpParent/Spatial_RL" instance=ExtResource( "8" )]
+[node name="Node3D" parent="BODY/tmpParent/Spatial_RL" instance=ExtResource("8")]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0)
 wheel_thick = 0.1
 
 [node name="Spatial_FR" type="Node3D" parent="BODY/tmpParent"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.592, 0.261, -0.66)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.776, 0.261, -0.817)
 
-[node name="Node3D" parent="BODY/tmpParent/Spatial_FR" instance=ExtResource( "8" )]
+[node name="Node3D" parent="BODY/tmpParent/Spatial_FR" instance=ExtResource("8")]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0)
 wheel_thick = 0.1
 
 [node name="Spatial_RR" type="Node3D" parent="BODY/tmpParent"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.592, 0.261, 0.67)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.776, 0.261, 0.8)
 
-[node name="Node3D" parent="BODY/tmpParent/Spatial_RR" instance=ExtResource( "8" )]
+[node name="Node3D" parent="BODY/tmpParent/Spatial_RR" instance=ExtResource("8")]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0)
 wheel_thick = 0.1
 
@@ -206,50 +200,50 @@ visible = false
 
 [node name="body" type="MeshInstance3D" parent="BODY/tmpParent/sedanSports"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4545e-14, 0.2, 0)
-material_override = ExtResource( "4" )
-mesh = SubResource( "1" )
+material_override = ExtResource("4")
+mesh = SubResource("1")
 
 [node name="spoiler" type="MeshInstance3D" parent="BODY/tmpParent/sedanSports/body"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.05338e-15, 0.4, 1.06869)
 visible = false
-mesh = SubResource( "2" )
+mesh = SubResource("2")
 
 [node name="wheel_backLeft" type="MeshInstance3D" parent="BODY/tmpParent/sedanSports"]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.3, 0.66)
 visible = false
-mesh = SubResource( "3" )
+mesh = SubResource("3")
 
 [node name="wheel_backRight" type="MeshInstance3D" parent="BODY/tmpParent/sedanSports"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.3, 0.66)
 visible = false
-mesh = SubResource( "3" )
+mesh = SubResource("3")
 
 [node name="wheel_frontLeft" type="MeshInstance3D" parent="BODY/tmpParent/sedanSports"]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.3, -0.66)
 visible = false
-mesh = SubResource( "3" )
+mesh = SubResource("3")
 
 [node name="wheel_frontRight" type="MeshInstance3D" parent="BODY/tmpParent/sedanSports"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.3, -0.66)
 visible = false
-mesh = SubResource( "3" )
+mesh = SubResource("3")
 
 [node name="CollisionBody" type="CollisionShape3D" parent="BODY"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.66268, 0)
-shape = SubResource( "4" )
+shape = SubResource("4")
 
 [node name="CollisionWheelsFront" type="CollisionShape3D" parent="BODY"]
-transform = Transform3D(-1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, 0, 0.299966, -0.66126)
-shape = SubResource( "5" )
+transform = Transform3D(-1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, 0, 0.299966, -0.811675)
+shape = SubResource("5")
 disabled = true
 
 [node name="CollisionWheelsRear" type="CollisionShape3D" parent="BODY"]
-transform = Transform3D(-1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, 0, 0.299966, 0.662488)
-shape = SubResource( "5" )
+transform = Transform3D(-1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, 0, 0.299966, 0.791441)
+shape = SubResource("5")
 disabled = true
 
 [node name="brain" type="Node3D" parent="BODY"]
-script = ExtResource( "7" )
+script = ExtResource("7")
 
 [node name="CameraPositions" type="Node3D" parent="BODY"]
 
@@ -272,52 +266,49 @@ collision_mask = 3
 [node name="RearRay" type="RayCast3D" parent="BODY"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0.66)
 collision_mask = 3
-script = ExtResource( "17" )
+script = ExtResource("17")
 
 [node name="ContextRays" type="Node3D" parent="BODY"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.336, 0)
-__meta__ = {
-"_editor_description_": "What it says on the tin"
-}
 
 [node name="cambase" type="Node3D" parent="BODY"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.24017, -1.06042)
 
 [node name="SpotLight3D" type="SpotLight3D" parent="BODY"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.466324, 0.426194, -1.34116)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.466324, 0.426194, -1.31606)
 
 [node name="SpotLight1" type="SpotLight3D" parent="BODY"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.472078, 0.460857, -1.34116)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.472078, 0.460857, -1.29158)
 
 [node name="taillights" type="MeshInstance3D" parent="BODY"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.67614, 1.40965)
 cast_shadow = 0
-mesh = SubResource( "7" )
+mesh = SubResource("7")
 
 [node name="frontlights" type="MeshInstance3D" parent="BODY"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.575843, -1.31511)
-mesh = SubResource( "7" )
-surface_material_override/0 = SubResource( "8" )
+transform = Transform3D(1.25, 0, 0, 0, -5.46392e-08, 1.25, 0, -1.25, -5.46392e-08, 0, 0.575843, -1.34248)
+mesh = SubResource("7")
+surface_material_override/0 = SubResource("8")
 
 [node name="RayFront" type="RayCast3D" parent="BODY"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.444)
-script = ExtResource( "6" )
+script = ExtResource("6")
 
 [node name="RayFrontRight" type="RayCast3D" parent="BODY"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.499137, 0, -1.444)
-script = ExtResource( "6" )
+script = ExtResource("6")
 
 [node name="RayFrontLeft" type="RayCast3D" parent="BODY"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.508999, 0, -1.444)
-script = ExtResource( "6" )
+script = ExtResource("6")
 
 [node name="RayLeftFront" type="RayCast3D" parent="BODY"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, -1.444)
-script = ExtResource( "6" )
+script = ExtResource("6")
 
 [node name="RayRightFront" type="RayCast3D" parent="BODY"]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, -1.444)
-script = ExtResource( "6" )
+script = ExtResource("6")
 
 [node name="Timer" type="Timer" parent="BODY"]
 one_shot = true
@@ -330,6 +321,11 @@ one_shot = true
 wait_time = 0.5
 one_shot = true
 
+[node name="MemoryTimer" type="Timer" parent="BODY"]
+process_callback = 0
+wait_time = 0.5
+autostart = true
+
 [node name="draw" type="Node" parent="."]
 
 [node name="draw2" type="Node" parent="."]
@@ -338,3 +334,4 @@ one_shot = true
 [connection signal="timeout" from="BODY/Timer" to="BODY" method="_on_Timer_timeout"]
 [connection signal="timeout" from="BODY/StuckTimer" to="BODY" method="_on_StuckTimer_timeout"]
 [connection signal="timeout" from="BODY/ReverseTimer" to="BODY" method="_on_ReverseTimer_timeout"]
+[connection signal="timeout" from="BODY/MemoryTimer" to="BODY" method="_on_memory_timer_timeout"]

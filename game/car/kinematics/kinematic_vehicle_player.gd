@@ -363,9 +363,10 @@ func _physics_process(delta):
 		# did we hit the train?
 		if collision.get_collider() is AnimatableBody3D:
 			# is it moving?
-			if collision.get_collider().get_parent().get_node("AnimationPlayer").is_playing():
-				# game over
-				health = 0
+			if collision.get_collider().get_parent().has_node("AnimationPlayer"):
+				if collision.get_collider().get_parent().get_node("AnimationPlayer").is_playing():
+					# game over
+					health = 0
 	
 		var nam = collision.get_collider().get_parent().get_name()
 		#print(nam)

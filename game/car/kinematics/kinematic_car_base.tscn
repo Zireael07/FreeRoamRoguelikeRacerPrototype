@@ -128,10 +128,10 @@ _surfaces = [{
 }]
 
 [sub_resource type="BoxShape3D" id="4"]
-size = Vector3(1.306, 1.3, 2.496)
+size = Vector3(1.75, 1.5, 2.5)
 
 [sub_resource type="CylinderShape3D" id="5"]
-height = 1.30062
+height = 1.5
 radius = 0.29888
 
 [sub_resource type="Animation" id="6"]
@@ -151,8 +151,10 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_me3ya"]
 _data = {
-"fov": SubResource( "6" )
+"fov": SubResource("6")
 }
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_d1672"]
 
 [sub_resource type="Shader" id="7"]
 code = "shader_type spatial;
@@ -165,13 +167,11 @@ void fragment() {
 	ALBEDO = texture(refl_tx, UV).rgb;
 }"
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_ipnu4"]
-
 [sub_resource type="ShaderMaterial" id="9"]
 resource_local_to_scene = true
 render_priority = 0
-shader = SubResource( "7" )
-shader_param/refl_tx = SubResource( "ViewportTexture_ipnu4" )
+shader = SubResource("7")
+refl_tx = SubResource("ViewportTexture_d1672")
 
 [sub_resource type="QuadMesh" id="10"]
 resource_local_to_scene = true
@@ -192,7 +192,7 @@ _surfaces = [{
 "format": 4119,
 "index_count": 72,
 "index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 2, 0, 1, 0, 3, 0, 4, 0, 5, 0, 6, 0, 6, 0, 5, 0, 7, 0, 8, 0, 9, 0, 10, 0, 10, 0, 9, 0, 11, 0, 12, 0, 13, 0, 14, 0, 14, 0, 13, 0, 15, 0, 16, 0, 17, 0, 18, 0, 18, 0, 17, 0, 19, 0, 20, 0, 21, 0, 22, 0, 22, 0, 21, 0, 23, 0, 24, 0, 25, 0, 26, 0, 26, 0, 25, 0, 27, 0, 28, 0, 29, 0, 30, 0, 30, 0, 29, 0, 31, 0, 32, 0, 33, 0, 34, 0, 34, 0, 33, 0, 35, 0, 36, 0, 37, 0, 38, 0, 38, 0, 37, 0, 39, 0, 40, 0, 41, 0, 42, 0, 42, 0, 41, 0, 43, 0, 44, 0, 45, 0, 46, 0, 46, 0, 45, 0, 47, 0),
-"material": ExtResource( "2" ),
+"material": ExtResource("2"),
 "name": "taillights_simple",
 "primitive": 3,
 "vertex_count": 48,
@@ -252,13 +252,13 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="19"]
 render_priority = 0
-shader = SubResource( "18" )
+shader = SubResource("18")
 
 [sub_resource type="PlaneMesh" id="20"]
 size = Vector2(1, 1.5)
 
 [sub_resource type="SphereMesh" id="21"]
-material = ExtResource( "14" )
+material = ExtResource("14")
 radius = 0.1
 height = 0.25
 radial_segments = 6
@@ -357,56 +357,57 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nj4rc"]
 _data = {
-"blur": SubResource( "25" ),
-"fov": SubResource( "26" ),
-"wheels": SubResource( "27" )
+"blur": SubResource("25"),
+"fov": SubResource("26"),
+"wheels": SubResource("27")
 }
 
 [node name="Node3D" type="Node3D" groups=["player"]]
 _import_path = NodePath(".")
-script = ExtResource( "4" )
+script = ExtResource("4")
 
 [node name="BODY" type="CharacterBody3D" parent="."]
 collision_mask = 3
-script = ExtResource( "9" )
+script = ExtResource("9")
 friction = -0.5
 drag = -0.5
 
 [node name="tmpParent" type="Node3D" parent="BODY"]
 
 [node name="car_mesh" type="MeshInstance3D" parent="BODY/tmpParent"]
-transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 0.493185, 0.307591, -0.7)
+editor_description = "Is supposed to be a city car, so small wheelbase. Scaled up on two axes to better fit the human pedestrian model"
+transform = Transform3D(-4.37114e-08, 0, -1.25, 0, 1.25, 0, 1, 0, -5.46392e-08, 0.493185, 0.307591, -0.7)
 cast_shadow = 2
-mesh = ExtResource( "19" )
-script = ExtResource( "21" )
-material = ExtResource( "10" )
-glass_material = ExtResource( "22" )
+mesh = ExtResource("19")
+script = ExtResource("21")
+material = ExtResource("10")
+glass_material = ExtResource("22")
 
 [node name="Spatial_FL" type="Node3D" parent="BODY/tmpParent"]
-transform = Transform3D(1, 0, 0, 0, 0.787895, -0.61581, 0, 0.61581, 0.787895, -0.58, 0.261, -0.66)
+transform = Transform3D(1, 0, 0, 0, 0.787895, -0.61581, 0, 0.61581, 0.787895, -0.75, 0.261, -0.79)
 
-[node name="Node3D" parent="BODY/tmpParent/Spatial_FL" instance=ExtResource( "5" )]
+[node name="Node3D" parent="BODY/tmpParent/Spatial_FL" instance=ExtResource("5")]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0)
 wheel_thick = 0.1
 
 [node name="Spatial_RL" type="Node3D" parent="BODY/tmpParent"]
-transform = Transform3D(1, 0, 0, 0, 0.787895, -0.61581, 0, 0.61581, 0.787895, -0.58, 0.261, 0.671)
+transform = Transform3D(1, 0, 0, 0, 0.787895, -0.61581, 0, 0.61581, 0.787895, -0.75, 0.261, 0.733)
 
-[node name="Node3D" parent="BODY/tmpParent/Spatial_RL" instance=ExtResource( "5" )]
+[node name="Node3D" parent="BODY/tmpParent/Spatial_RL" instance=ExtResource("5")]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0)
 wheel_thick = 0.1
 
 [node name="Spatial_FR" type="Node3D" parent="BODY/tmpParent"]
-transform = Transform3D(1, 0, 0, 0, 0.787895, -0.61581, 0, 0.61581, 0.787895, 0.592, 0.261, -0.66)
+transform = Transform3D(1, 0, 0, 0, 0.787895, -0.61581, 0, 0.61581, 0.787895, 0.48, 0.261, -0.79582)
 
-[node name="Node3D" parent="BODY/tmpParent/Spatial_FR" instance=ExtResource( "5" )]
+[node name="Node3D" parent="BODY/tmpParent/Spatial_FR" instance=ExtResource("5")]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0)
 wheel_thick = 0.1
 
 [node name="Spatial_RR" type="Node3D" parent="BODY/tmpParent"]
-transform = Transform3D(1, 0, 0, 0, 0.787895, -0.61581, 0, 0.61581, 0.787895, 0.592, 0.261, 0.67)
+transform = Transform3D(1, 0, 0, 0, 0.787895, -0.61581, 0, 0.61581, 0.787895, 0.48, 0.261, 0.733382)
 
-[node name="Node3D" parent="BODY/tmpParent/Spatial_RR" instance=ExtResource( "5" )]
+[node name="Node3D" parent="BODY/tmpParent/Spatial_RR" instance=ExtResource("5")]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0)
 wheel_thick = 0.1
 
@@ -415,46 +416,46 @@ visible = false
 
 [node name="body" type="MeshInstance3D" parent="BODY/tmpParent/sedanSports"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4545e-14, 0.2, 0)
-material_override = ExtResource( "10" )
-mesh = SubResource( "1" )
+material_override = ExtResource("10")
+mesh = SubResource("1")
 
 [node name="spoiler" type="MeshInstance3D" parent="BODY/tmpParent/sedanSports/body"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.05338e-15, 0.4, 1.06869)
 visible = false
-mesh = SubResource( "2" )
+mesh = SubResource("2")
 
 [node name="wheel_backLeft" type="MeshInstance3D" parent="BODY/tmpParent/sedanSports"]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.3, 0.66)
 visible = false
-mesh = SubResource( "3" )
+mesh = SubResource("3")
 
 [node name="wheel_backRight" type="MeshInstance3D" parent="BODY/tmpParent/sedanSports"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.3, 0.66)
 visible = false
-mesh = SubResource( "3" )
+mesh = SubResource("3")
 
 [node name="wheel_frontLeft" type="MeshInstance3D" parent="BODY/tmpParent/sedanSports"]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0.3, -0.66)
 visible = false
-mesh = SubResource( "3" )
+mesh = SubResource("3")
 
 [node name="wheel_frontRight" type="MeshInstance3D" parent="BODY/tmpParent/sedanSports"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.3, -0.66)
 visible = false
-mesh = SubResource( "3" )
+mesh = SubResource("3")
 
 [node name="CollisionBody" type="CollisionShape3D" parent="BODY"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.66268, 0)
-shape = SubResource( "4" )
+shape = SubResource("4")
 
 [node name="CollisionWheelsFront" type="CollisionShape3D" parent="BODY"]
-transform = Transform3D(-1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, 0, 0.299966, -0.66126)
-shape = SubResource( "5" )
+transform = Transform3D(-1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, -0.183684, 0.299966, -0.801045)
+shape = SubResource("5")
 disabled = true
 
 [node name="CollisionWheelsRear" type="CollisionShape3D" parent="BODY"]
-transform = Transform3D(-1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, 0, 0.299966, 0.662488)
-shape = SubResource( "5" )
+transform = Transform3D(-1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, 0, 0.3, 0.683935)
+shape = SubResource("5")
 disabled = true
 
 [node name="CameraPositions" type="Node3D" parent="BODY"]
@@ -480,7 +481,7 @@ hit_from_inside = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0.66)
 collision_mask = 3
 hit_from_inside = true
-script = ExtResource( "11" )
+script = ExtResource("11")
 
 [node name="SubViewport" type="SubViewport" parent="BODY"]
 transparent_bg = true
@@ -488,7 +489,7 @@ handle_input_locally = false
 size = Vector2i(300, 200)
 render_target_update_mode = 3
 
-[node name="Nametag" parent="BODY/SubViewport" instance=ExtResource( "1" )]
+[node name="Nametag" parent="BODY/SubViewport" instance=ExtResource("1")]
 
 [node name="cambase" type="Node3D" parent="BODY"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.24017, -1.06042)
@@ -496,21 +497,20 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.2
 [node name="AnimationPlayer2" type="AnimationPlayer" parent="BODY/cambase"]
 _import_path = NodePath("AnimationPlayer")
 libraries = {
-"": SubResource( "AnimationLibrary_me3ya" )
+"": SubResource("AnimationLibrary_me3ya")
 }
-script = ExtResource( "24" )
+script = ExtResource("24")
 
 [node name="Camera3D" type="Camera3D" parent="BODY/cambase"]
 process_priority = -10
-transform = Transform3D(-1, 8.74228e-08, 0, 8.74228e-08, 1, 8.74228e-08, 7.64274e-15, 8.74228e-08, -1, 0, 1, -4.39379)
+transform = Transform3D(-1, 8.74228e-08, 0, 8.74228e-08, 1, 8.74228e-08, 7.64274e-15, 8.74228e-08, -1, 0, 1.75, -5)
 current = true
 fov = 60.0
 near = 0.1
 far = 200.0
-script = ExtResource( "8" )
-min_distance = 1.0
+script = ExtResource("8")
 
-[node name="motion_blur" parent="BODY/cambase/Camera3D" instance=ExtResource( "27" )]
+[node name="motion_blur" parent="BODY/cambase/Camera3D" instance=ExtResource("27")]
 process_priority = -8
 transform = Transform3D(1, 6.6815e-22, 0, 6.6815e-22, 1, 0, 0, 0, 1, 0, -0.3, -1)
 skeleton = NodePath("")
@@ -525,7 +525,7 @@ near = 0.1
 far = 200.0
 
 [node name="CameraCockpit" type="Camera3D" parent="BODY/cambase"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.227414, -0.204703, -1.05253)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.227414, 0.0988275, -1.16255)
 near = 0.1
 far = 200.0
 
@@ -541,139 +541,138 @@ render_target_update_mode = 0
 [node name="CameraCockpitBack" type="Camera3D" parent="BODY/cambase/SubViewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.469, -0.274832)
 cull_mask = 1048449
-environment = ExtResource( "20" )
+environment = ExtResource("20")
 current = true
 fov = 60.0
 
 [node name="MirrorMesh" type="MeshInstance3D" parent="BODY/cambase"]
 transform = Transform3D(-0.25, 0, -1.50996e-07, 0, 0.125, 0, 3.7749e-08, 0, -1, -0.167386, -0.25, -0.824024)
-material_override = SubResource( "9" )
+material_override = SubResource("9")
 cast_shadow = 0
-mesh = SubResource( "10" )
-script = ExtResource( "18" )
+mesh = SubResource("10")
+script = ExtResource("18")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="BODY"]
 transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 1.36496, 0)
-material_override = SubResource( "11" )
+material_override = SubResource("11")
 cast_shadow = 0
-mesh = SubResource( "12" )
-script = ExtResource( "3" )
+mesh = SubResource("12")
+script = ExtResource("3")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="BODY"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.466324, 0.426194, -1.34116)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.466, 0.5, -1.30228)
 
 [node name="SpotLight1" type="SpotLight3D" parent="BODY"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.472078, 0.460857, -1.34116)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.472078, 0.572572, -1.30122)
 
 [node name="taillights" type="MeshInstance3D" parent="BODY"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.67614, 1.23029)
+transform = Transform3D(1.25, 0, 0, 0, -5.46392e-08, 1.25, 0, -1.25, -5.46392e-08, -0.0948675, 0.839443, 1.19543)
 cast_shadow = 0
-mesh = SubResource( "13" )
+mesh = SubResource("13")
 
 [node name="frontlights" type="MeshInstance3D" parent="BODY"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.575843, -1.31511)
-material_override = SubResource( "StandardMaterial3D_r656u" )
-mesh = SubResource( "13" )
+transform = Transform3D(1.25, 0, 0, 0, -5.46392e-08, 1.25, 0, -1.25, -5.46392e-08, -0.0505526, 0.575843, -1.24552)
+material_override = SubResource("StandardMaterial3D_r656u")
+mesh = SubResource("13")
 
 [node name="SubViewport 2" type="SubViewport" parent="BODY"]
 size = Vector2i(400, 150)
 render_target_update_mode = 3
 
-[node name="nameplate" parent="BODY/SubViewport 2" instance=ExtResource( "7" )]
+[node name="nameplate" parent="BODY/SubViewport 2" instance=ExtResource("7")]
 
 [node name="MeshInstance2" type="MeshInstance3D" parent="BODY"]
-transform = Transform3D(0.4, 0, 0, 0, 0.2, 0, 0, 0, 1, 0, 0.607, 1.18764)
-material_override = SubResource( "15" )
+transform = Transform3D(0.5, 0, 0, 0, 0.25, 0, 0, 0, 1.25, -0.1, 0.646626, 1.18958)
+material_override = SubResource("15")
 cast_shadow = 0
-mesh = SubResource( "16" )
-script = ExtResource( "6" )
+mesh = SubResource("16")
+script = ExtResource("6")
 
-[node name="RainParticles" parent="BODY" instance=ExtResource( "19_vvqa8" )]
+[node name="RainParticles" parent="BODY" instance=ExtResource("19_vvqa8")]
 emitting = false
 amount = 300
 
 [node name="RainParticles_old" type="GPUParticles3D" parent="BODY"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 5, -6.0586)
 visible = false
-material_override = ExtResource( "17" )
+material_override = ExtResource("17")
 cast_shadow = 0
 emitting = false
 amount = 256
 fract_delta = false
 visibility_aabb = AABB(-6, -6, -6, 12, 16, 12)
-process_material = ExtResource( "13" )
-draw_pass_1 = SubResource( "17" )
-script = ExtResource( "16" )
+process_material = ExtResource("13")
+draw_pass_1 = SubResource("17")
+script = ExtResource("16")
 
 [node name="RainParticles2_old" type="GPUParticles3D" parent="BODY"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 5, 8.69194)
 visible = false
-material_override = ExtResource( "17" )
+material_override = ExtResource("17")
 cast_shadow = 0
 emitting = false
 amount = 256
 fract_delta = false
 visibility_aabb = AABB(-6, -6, -6, 12, 16, 12)
-process_material = ExtResource( "13" )
-draw_pass_1 = SubResource( "17" )
-script = ExtResource( "16" )
+process_material = ExtResource("13")
+draw_pass_1 = SubResource("17")
+script = ExtResource("16")
 
 [node name="neon_under" type="MeshInstance3D" parent="BODY"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.002, 0.05, 0.023)
 visible = false
-material_override = SubResource( "19" )
+material_override = SubResource("19")
 cast_shadow = 0
-mesh = SubResource( "20" )
+mesh = SubResource("20")
 
 [node name="Smoke" type="GPUParticles3D" parent="BODY"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0.520701, 0.181243, 0.658347)
-material_override = ExtResource( "14" )
+material_override = ExtResource("14")
 cast_shadow = 0
 emitting = false
 amount = 32
 lifetime = 0.5
 visibility_aabb = AABB(-4, -4, -4.68213, 8, 8, 8)
-process_material = ExtResource( "12" )
-draw_pass_1 = SubResource( "21" )
+process_material = ExtResource("12")
+draw_pass_1 = SubResource("21")
 
 [node name="Smoke2" type="GPUParticles3D" parent="BODY"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.489926, 0.248742, 0.540937)
-material_override = ExtResource( "14" )
+material_override = ExtResource("14")
 cast_shadow = 0
 emitting = false
 amount = 32
 lifetime = 0.5
 visibility_aabb = AABB(-4, -4, -4.68213, 8, 8, 8)
-process_material = ExtResource( "12" )
-draw_pass_1 = SubResource( "21" )
+process_material = ExtResource("12")
+draw_pass_1 = SubResource("21")
 
 [node name="SpeedParticles" type="GPUParticles3D" parent="BODY"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-material_override = SubResource( "22" )
+material_override = SubResource("22")
 cast_shadow = 0
 emitting = false
 amount = 64
 fract_delta = false
-local_coords = false
-process_material = SubResource( "23" )
-draw_pass_1 = SubResource( "24" )
+process_material = SubResource("23")
+draw_pass_1 = SubResource("24")
 
 [node name="RayCast3D" type="RayCast3D" parent="BODY"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.251, 0.66)
-script = ExtResource( "11" )
+script = ExtResource("11")
 
-[node name="racedriver2" parent="BODY" instance=ExtResource( "23" )]
-transform = Transform3D(-0.005, 0, -4.37114e-10, 0, 0.005, 0, 4.37114e-10, 0, -0.005, 0.248568, 0.171933, -0.0158856)
+[node name="racedriver2" parent="BODY" instance=ExtResource("23")]
+transform = Transform3D(-0.007, 0, -1.05697e-09, 0, 0.007, 0, 1.05697e-09, 0, -0.007, 0.248568, 0.0228823, 0.0158087)
 
 [node name="ContextRays" type="Node3D" parent="BODY"]
 
-[node name="occupancy_map" parent="BODY" instance=ExtResource( "26_3oyke" )]
+[node name="occupancy_map" parent="BODY" instance=ExtResource("26_3oyke")]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 _import_path = NodePath("AnimationPlayer")
 autoplay = "wheels"
 playback_speed = 0.5
 libraries = {
-"": SubResource( "AnimationLibrary_nj4rc" )
+"": SubResource("AnimationLibrary_nj4rc")
 }
-script = ExtResource( "24" )
+script = ExtResource("24")
