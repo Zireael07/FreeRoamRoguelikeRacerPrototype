@@ -29,7 +29,7 @@ func move(index):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	print("Index: ", index)
+	#print("Index: ", index)
 	# doesn't work on ints :(
 	#index = lerpf(0.0, float(road.sidewalk_right.size()-1), (total_dist*2*delta)/delta)
 	global_position = road.to_global(road.right_positions[index]+ Vector3(1,1,0))

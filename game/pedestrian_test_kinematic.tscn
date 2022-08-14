@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bttvtcmkiy8vg"]
+[gd_scene load_steps=6 format=3 uid="uid://bttvtcmkiy8vg"]
 
 [ext_resource type="Script" path="res://pedestrian_test.gd" id="1_28olf"]
+[ext_resource type="PackedScene" uid="uid://loqsojwhbcg0" path="res://assets/pedestrian/animated_man/animated_man.tscn" id="2_jlqrv"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gvuv4"]
 size = Vector3(1, 1.75, 1)
@@ -19,7 +20,11 @@ script = ExtResource("1_28olf")
 shape = SubResource("BoxShape3D_gvuv4")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="AnimatableBody3D"]
+visible = false
 material_override = SubResource("StandardMaterial3D_nygak")
 cast_shadow = 0
 mesh = SubResource("CapsuleMesh_ebc7b")
 skeleton = NodePath("../..")
+
+[node name="animated_man" parent="AnimatableBody3D" instance=ExtResource("2_jlqrv")]
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, -1, 0)
