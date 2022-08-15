@@ -16,3 +16,4 @@ script = ExtResource( "3" )
 shape = SubResource( "1" )
 
 [connection signal="body_entered" from="Area3D" to="Area3D" method="_on_Area_body_entered"]
+[connection signal="input_event" from="Area3D" to="Area3D" method="_on_area_3d_input_event"]

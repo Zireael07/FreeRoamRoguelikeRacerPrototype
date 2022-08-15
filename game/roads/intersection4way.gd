@@ -208,3 +208,6 @@ func snap_pos_to_points(pos,debug=false):
 	if debug:
 		debug_cube(pos,debug)
 	return pos
+
+func display_cars():
+	print(cars)

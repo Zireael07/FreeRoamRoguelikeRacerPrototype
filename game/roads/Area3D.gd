@@ -31,3 +31,9 @@ func _on_Area_body_entered(body):
 		# yeet it
 		body.get_parent().queue_free()
 		#body.get_parent().get_parent().queue_free()
+
+
+func _on_area_3d_input_event(camera, event, position, normal, shape_idx):
+	if (event is InputEventMouseButton) and (event.button_index == MOUSE_BUTTON_LEFT):
+		print("Intersection clicked is: ", get_parent().get_name())
+		get_parent().display_cars()
