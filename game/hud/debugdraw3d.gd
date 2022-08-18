@@ -44,6 +44,9 @@ class Line:
 		arrow = a
 		
 	func draw(node, cam):
+		# paranoia
+		if start == null or end == null:
+			return
 		if cam.is_position_behind(start) or cam.is_position_behind(end):
 			return
 		var s = cam.unproject_position(start)
