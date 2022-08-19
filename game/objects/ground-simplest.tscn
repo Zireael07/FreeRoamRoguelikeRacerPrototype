@@ -1,34 +1,16 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://jm7rsdylb7hy"]
 
-[ext_resource path="res://scripts/meshes/ground_gen.gd" type="Script" id=1]
-[ext_resource path="res://assets/ground_material.tres" type="Material" id=2]
+[ext_resource type="Script" path="res://scripts/meshes/ground_gen.gd" id="1"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_o35pe"]
+size = Vector3(50, 1, 50)
 
-[sub_resource type="WorldMarginShape3D" id=1]
+[node name="Node3D" type="Node3D"]
 
-plane = Plane(0, 1, 0, 0)
+[node name="Ground" type="Node3D" parent="."]
+script = ExtResource("1")
 
-[node name="Node3D" type="Node3D" index="0"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
 
-[node name="Ground" type="Node3D" parent="." index="0"]
-
-script = ExtResource( 1 )
-terrainmaterial = ExtResource( 2 )
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Ground" index="0"]
-
-input_ray_pickable = true
-input_capture_on_drag = false
-collision_layer = 1
-collision_mask = 1
-friction = 1.0
-bounce = 0.0
-constant_linear_velocity = Vector3(0, 0, 0)
-constant_angular_velocity = Vector3(0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D" index="0"]
-
-shape = SubResource( 1 )
-disabled = false
-
-
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
+shape = SubResource("BoxShape3D_o35pe")

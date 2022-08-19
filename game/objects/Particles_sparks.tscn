@@ -1,29 +1,23 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=7 format=3 uid="uid://d0ai2hhjh0iaq"]
 
-[ext_resource path="res://assets/test_sparks.tres" type="Material" id=1]
-[ext_resource path="res://objects/Particles_sparks.gd" type="Script" id=2]
+[ext_resource type="Material" path="res://assets/test_sparks.tres" id="1"]
+[ext_resource type="Script" path="res://objects/Particles_sparks.gd" id="2"]
 
-[sub_resource type="Gradient" id=1]
+[sub_resource type="Gradient" id="1"]
 colors = PackedColorArray(0.988281, 0.984421, 0.984421, 1, 0.988281, 0.400735, 0.0115814, 1)
 
-[sub_resource type="GradientTexture" id=2]
-gradient = SubResource( 1 )
+[sub_resource type="GradientTexture1D" id="2"]
+gradient = SubResource("1")
 
-[sub_resource type="ParticlesMaterial" id=3]
+[sub_resource type="ParticlesMaterial" id="3"]
 emission_shape = 1
 emission_sphere_radius = 0.25
-flag_align_y = true
 spread = 20.0
 gravity = Vector3(-9.8, 0, 0)
-initial_velocity = 1.0
-radial_accel = 2.0
-tangential_accel = 10.0
-angle = 90.0
-angle_random = 1.0
-color_ramp = SubResource( 2 )
+color_ramp = SubResource("2")
 
-[sub_resource type="QuadMesh" id=4]
-material = ExtResource( 1 )
+[sub_resource type="QuadMesh" id="4"]
+material = ExtResource("1")
 size = Vector2(0.25, 0.25)
 
 [node name="GPUParticles3D" type="GPUParticles3D"]
@@ -34,10 +28,11 @@ lifetime = 0.5
 one_shot = true
 explosiveness = 1.0
 visibility_aabb = AABB(-0.5, -0.5, -0.5, 1, 1, 1)
-process_material = SubResource( 3 )
-draw_pass_1 = SubResource( 4 )
-script = ExtResource( 2 )
+process_material = SubResource("3")
+draw_pass_1 = SubResource("4")
+script = ExtResource("2")
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
+
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
