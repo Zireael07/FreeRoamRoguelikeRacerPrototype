@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dr7kf5v6sxlls"]
+[gd_scene load_steps=20 format=3 uid="uid://dr7kf5v6sxlls"]
 
 [ext_resource type="Script" path="res://vulkan sky/daynight.gd" id="2_t0aug"]
 [ext_resource type="PackedScene" uid="uid://bafioicjxx21v" path="res://car/kinematics/kinematic_car_base.tscn" id="3"]
@@ -6,29 +6,31 @@
 [ext_resource type="Script" path="res://map/procedural_map.gd" id="5"]
 [ext_resource type="Script" path="res://map/triangulate.gd" id="6"]
 [ext_resource type="Script" path="res://scripts/poisson3d.gd" id="7"]
-[ext_resource type="PackedScene" path="res://objects/TIR_block.tscn" id="9"]
+[ext_resource type="PackedScene" uid="uid://4f7c74n1ihv5" path="res://objects/TIR_block.tscn" id="9"]
 [ext_resource type="Script" path="res://scripts/meshes/ground_gen.gd" id="11"]
 [ext_resource type="Material" path="res://assets/ground_material_snow.tres" id="12"]
 [ext_resource type="Script" path="res://map/map_nav.gd" id="13"]
 [ext_resource type="PackedScene" uid="uid://yanqthyykw70" path="res://car/kinematics/kinematic_car_AI_cop.tscn" id="14"]
 [ext_resource type="Script" path="res://scripts/scene_top.gd" id="15"]
-[ext_resource type="PackedScene" path="res://objects/roadblock.tscn" id="16"]
+[ext_resource type="PackedScene" uid="uid://djk1mj03581k1" path="res://objects/roadblock.tscn" id="16"]
 [ext_resource type="PackedScene" uid="uid://pt1cjmh5lxgd" path="res://objects/train.tscn" id="16_fq4aq"]
 [ext_resource type="Material" path="res://assets/ground_material.tres" id="17"]
+[ext_resource type="PackedScene" uid="uid://bd6gl6ywerx1e" path="res://pedestrian_test.tscn" id="17_54jio"]
 [ext_resource type="PackedScene" path="res://objects/spikestrip.tscn" id="18"]
+[ext_resource type="PackedScene" uid="uid://bttvtcmkiy8vg" path="res://pedestrian_test_kinematic.tscn" id="18_hrrmw"]
 
 [sub_resource type="BoxShape3D" id="2"]
 size = Vector3(1000, 2, 1000)
 
 [node name="Node3D" type="Node3D"]
-script = ExtResource( "15" )
+script = ExtResource("15")
 
 [node name="scene" type="Node3D" parent="." groups=["root"]]
-script = ExtResource( "2_t0aug" )
+script = ExtResource("2_t0aug")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="scene"]
 editor_description = "Glow/SSR/SSIL/SDFGI cause performance drop from 60 to 30 fps"
-environment = ExtResource( "3_p7qju" )
+environment = ExtResource("3_p7qju")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="scene"]
 transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 18.629, 0)
@@ -38,16 +40,16 @@ directional_shadow_max_distance = 50.0
 
 [node name="map" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -128.754, 0, -209.444)
-script = ExtResource( "5" )
+script = ExtResource("5")
 
 [node name="triangulate" type="Node3D" parent="map"]
-script = ExtResource( "6" )
+script = ExtResource("6")
 
 [node name="poisson" type="Node3D" parent="map/triangulate"]
-script = ExtResource( "7" )
+script = ExtResource("7")
 
 [node name="nav" type="Node3D" parent="map"]
-script = ExtResource( "13" )
+script = ExtResource("13")
 
 [node name="draw" type="Node3D" parent="map"]
 
@@ -58,42 +60,48 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.594, 0, 192.855)
 [node name="AI" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 47.594, 0, 192.855)
 
-[node name="cop" parent="AI" instance=ExtResource( "14" )]
+[node name="cop" parent="AI" instance=ExtResource("14")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.1935)
 
-[node name="car" parent="." instance=ExtResource( "3" )]
+[node name="car" parent="." instance=ExtResource("3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.2119, 0, 192.855)
 
 [node name="Ground" type="Node3D" parent="."]
-script = ExtResource( "11" )
-snowmaterial = ExtResource( "12" )
-groundmaterial = ExtResource( "17" )
+script = ExtResource("11")
+snowmaterial = ExtResource("12")
+groundmaterial = ExtResource("17")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
 collision_layer = 2
 
 [node name="CollisionShape5" type="CollisionShape3D" parent="Ground/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.95, 0)
-shape = SubResource( "2" )
+shape = SubResource("2")
 
-[node name="Node3D" parent="." instance=ExtResource( "16" )]
+[node name="Node3D" parent="." instance=ExtResource("16")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72.419, 0, 186.771)
 
-[node name="Spatial4" parent="." instance=ExtResource( "9" )]
-transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 25.9671, 1.5, 155.39)
+[node name="Spatial4" parent="." instance=ExtResource("9")]
+transform = Transform3D(0.309017, 0, 0.951057, 0, 1, 0, -0.951057, 0, 0.309017, 25.9671, 1.5, 155.39)
 
-[node name="Spatial2" parent="." instance=ExtResource( "16" )]
+[node name="Spatial2" parent="." instance=ExtResource("16")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.2849, 0, 154.204)
 visible = false
 
-[node name="Spatial3" parent="." instance=ExtResource( "16" )]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.2038, 0, 210.359)
+[node name="Spatial3" parent="." instance=ExtResource("16")]
+transform = Transform3D(-0.526956, 0, -0.849893, 0, 1, 0, 0.849893, 0, -0.526956, 12.2038, 0, 210.359)
 
-[node name="Spatial5" parent="." instance=ExtResource( "18" )]
+[node name="Spatial5" parent="." instance=ExtResource("18")]
 transform = Transform3D(0.258819, 0, 0.965925, 0, 1, 0, -0.965925, 0, 0.258819, 36.751, 0.1, 159.19)
 
 [node name="marker_North" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 900, 0, 0)
 
-[node name="Node3D2" parent="." instance=ExtResource( "16_fq4aq" )]
+[node name="Node3D2" parent="." instance=ExtResource("16_fq4aq")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 82.864, 0, 178.712)
+
+[node name="ped" parent="." instance=ExtResource("17_54jio")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.9136, 2.50517, 190.882)
+
+[node name="pedestrian" parent="." instance=ExtResource("18_hrrmw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56.553, 2.1653, 198.769)

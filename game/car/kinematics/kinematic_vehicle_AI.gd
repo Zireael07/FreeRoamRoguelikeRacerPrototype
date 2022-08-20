@@ -121,6 +121,8 @@ func add_rays():
 		# debug
 		#rays[i] = (r.target_position.normalized()*4).rotated(Vector3(0,1,0), r.rotation.y)
 		rays[i] = (r.target_position).rotated(Vector3(0,1,0), r.rotation.y)
+		if i == 0: # ahead
+			r.debug_shape_custom_color = Color(0,0,1)
 		if i == num_rays-(num_rays/4): #numrays/4 is 90 degrees to the right, numrays-(x/4) is to the left
 			r.debug_shape_custom_color = Color(0.99, 0.99, 0.90)
 	forward_ray = $ContextRays.get_child(0)
@@ -292,7 +294,7 @@ func _process(delta):
 						
 						print("[Cop] player escaped!")
 						# notify player
-						var msg = playr.get_node(^"BODY").get_node(^"Messages")
+						var msg = playr.get_node(^"BODY").spawn_message()
 						msg.set_text("CHASE ENDED!" + "\n" + "You escaped the cops!")
 						msg.enable_ok(false)
 						msg.show()
@@ -590,6 +592,9 @@ func get_input():
 		#		hud.append_debug("Gas: " + str(gas) + "\n Accel:" + str(acceleration)) # + " ground: " + str(on_ground)) #+ " acc/d :" + str(acceleration/delta))	
 		
 	if braking:
+		# bugfix
+		#if stuck:
+		#	gas = false
 		# brakes
 		acceleration += -transform.basis.z * braking_power
 		#visual effect
@@ -647,6 +652,14 @@ func after_move():
 					return
 				
 			##do we have a next point?
+			# special case: helper points
+			if current > 200:
+				print("Reached the helper point...")
+				# assume no helper point "skips" points along line
+				current = prev + 1
+				brain.target = target_array[current]
+				return
+			# standard behavior	
 			if (target_array.size() > current+1):
 				#if not debug: #dummy out for now
 				prev = current
@@ -671,6 +684,11 @@ func after_move():
 					stop = true
 			
 	#if we passed the point, don't backtrack
+	if current > 200 and dot > 0:
+		# assume no helper point "skips" points along line
+		current = prev + 1
+		brain.target = target_array[current]
+	
 #	if get_parent().is_in_group("race_AI"):
 #		if (current > 1 and dot < 0 and not stop):
 #			print(get_parent().get_name(), " passed the point")
@@ -821,7 +839,7 @@ func is_close_to_target():
 	# only traffic AI
 	if get_parent().is_in_group("AI"):
 		##do we have a next point? if not, start stopping a bit earlier
-		if (target_array.size() > current+1) == false:
+		if (target_array.size() > current+1) == false and current < 200:
 			#print("Final point")
 			if rel_loc.length() < 5:
 				ret = true

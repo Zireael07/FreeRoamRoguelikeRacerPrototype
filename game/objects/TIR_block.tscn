@@ -1,16 +1,62 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=3]
 
-[ext_resource path="res://car/TIR_mesh.tscn" type="PackedScene" id=1]
+[ext_resource type="PackedScene" path="res://car/TIR_mesh.tscn" id="1"]
+[ext_resource type="Script" path="res://objects/vectorfield2.gd" id="2_anf4g"]
+[ext_resource type="PackedScene" path="res://avoid_area2.tscn" id="3_6v000"]
 
-[sub_resource type="BoxShape3D" id=1]
-extents = Vector3(2.5, 1.25, 1)
+[sub_resource type="BoxShape3D" id="1"]
+size = Vector3(5.1, 2.5, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bw40v"]
+size = Vector3(5.5, 1, 6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xocx1"]
+size = Vector3(4.5, 1, 4)
 
 [node name="Node3D" type="Node3D"]
 
-[node name="Node3D" parent="." instance=ExtResource( 1 )]
+[node name="Node3D" parent="." instance=ExtResource("1")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.466734, -0.244708, 0)
-shape = SubResource( 1 )
+shape = SubResource("1")
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.466734, -0.244708, 0)
+script = ExtResource("2_anf4g")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_bw40v")
+disabled = true
+
+[node name="Node3D3" parent="." instance=ExtResource("3_6v000")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.467, -0.245, 4)
+
+[node name="CollisionShape3D" parent="Node3D3" index="0"]
+shape = SubResource("BoxShape3D_xocx1")
+
+[node name="Position3D" parent="Node3D3" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, -4)
+
+[node name="MeshInstance3D" parent="Node3D3/Position3D" index="0"]
+visible = true
+
+[node name="other_way_avoid" parent="." instance=ExtResource("3_6v000")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.467, -0.245, -4)
+
+[node name="CollisionShape3D" parent="other_way_avoid" index="0"]
+shape = SubResource("BoxShape3D_xocx1")
+
+[node name="Position3D" parent="other_way_avoid" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 4)
+
+[node name="MeshInstance3D" parent="other_way_avoid/Position3D" index="0"]
+visible = true
+
+[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="Area3D" method="_on_area_3d_body_exited"]
+
+[editable path="Node3D3"]
+[editable path="other_way_avoid"]

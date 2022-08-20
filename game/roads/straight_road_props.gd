@@ -110,7 +110,7 @@ func place_props(trees, bamboo, long):
 			if index == pk:
 				placeLot(index)
 			else:
-				placeBuilding(index, height)
+				placeBuilding(index, height, numBuildings)
 				placeCable(index, height)
 	elif not bamboo:
 		var numTrees = int(long/treeSpacing)
@@ -266,7 +266,7 @@ func setupBuildingSimple(index):
 
 	return build
 
-func placeBuilding(index, base_height):
+func placeBuilding(index, base_height, numBuildings):
 	var build = setupBuilding(index, base_height)
 	#var build = setupBuildingSimple(index)
 	
@@ -281,6 +281,15 @@ func placeBuilding(index, base_height):
 	build.set_rotation(Vector3(0, deg2rad(180), 0))
 	
 	build.get_node(^"Node3D").set_position(Vector3(-8, 0,0))
+	if index == numBuildings:
+		build.get_node("Node3D3/Position3D/MeshInstance3D").show()
+		build.get_node("Node3D3").set_position(Vector3(0, 0, -9))
+	elif index == 0:
+		#build.get_node("Node3D3/CollisionShape3D").disabled = false
+		build.get_node("Node3D3/Position3D/MeshInstance3D").show()
+		build.get_node("Node3D3").set_position(Vector3(0, 0, 9))
+	else:
+		build.get_node("Node3D3").queue_free()
 	
 	# place a cardboard box in the passage
 #	var c_box = box.instantiate()
@@ -307,6 +316,15 @@ func placeBuilding(index, base_height):
 	
 	# move detect area
 	build.get_node(^"Node3D").set_position(Vector3(-8, 0,0))
+	if index == 0:
+		build.get_node("Node3D3/Position3D/MeshInstance3D").show()
+		build.get_node("Node3D3").set_position(Vector3(0, 0, -9))
+	elif index == numBuildings:
+		#build.get_node("Node3D3/CollisionShape3D").disabled = false
+		build.get_node("Node3D3/Position3D/MeshInstance3D").show()
+		build.get_node("Node3D3").set_position(Vector3(0, 0, 9))
+	else:
+		build.get_node("Node3D3").queue_free()
 	
 	# place a cardboard box in the passage
 	c_box = build.get_node("Node3D2")

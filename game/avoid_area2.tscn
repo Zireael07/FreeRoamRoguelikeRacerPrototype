@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://avoidarea2.gd" id="1_wf6y2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3cj8d"]
+size = Vector3(14, 2, 6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_clqs0"]
+albedo_color = Color(0, 1, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_5q8n7"]
+material = SubResource("StandardMaterial3D_clqs0")
+
+[sub_resource type="QuadMesh" id="QuadMesh_fw5sv"]
+size = Vector2(14, 6)
+
+[node name="Node3D3" type="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.13896)
+input_ray_pickable = false
+script = ExtResource("1_wf6y2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_3cj8d")
+
+[node name="Position3D" type="Position3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Position3D"]
+visible = false
+mesh = SubResource("BoxMesh_5q8n7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("QuadMesh_fw5sv")
+
+[connection signal="body_entered" from="." to="." method="_on_Spatial_body_entered"]

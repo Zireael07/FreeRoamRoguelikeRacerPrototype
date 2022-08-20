@@ -1,25 +1,40 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=3]
 
-[ext_resource path="res://assets/cement.png" type="Texture2D" id=1]
+[ext_resource type="Texture2D" uid="uid://chm7wyotmfqid" path="res://assets/cement.png" id="1"]
+[ext_resource type="PackedScene" path="res://avoid_area2.tscn" id="2_vq4o1"]
 
-[sub_resource type="StandardMaterial3D" id=1]
+[sub_resource type="StandardMaterial3D" id="1"]
 albedo_color = Color(0.117647, 0.117647, 0.117647, 1)
-albedo_texture = ExtResource( 1 )
+albedo_texture = ExtResource("1")
 
-[sub_resource type="PrismMesh" id=2]
-material = SubResource( 1 )
+[sub_resource type="PrismMesh" id="2"]
+material = SubResource("1")
 
-[sub_resource type="BoxShape3D" id=3]
+[sub_resource type="BoxShape3D" id="3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8xxq5"]
+size = Vector3(3, 1, 4)
 
 [node name="Node3D" type="Node3D"]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." groups=[
-"obstacle",
-]]
-mesh = SubResource( 2 )
-surface_material_override/0 = null
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." groups=["obstacle"]]
+mesh = SubResource("2")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
-shape = SubResource( 3 )
+shape = SubResource("3")
+
+[node name="Node3D3" parent="." instance=ExtResource("2_vq4o1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+
+[node name="CollisionShape3D" parent="Node3D3" index="0"]
+shape = SubResource("BoxShape3D_8xxq5")
+
+[node name="Position3D" parent="Node3D3" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 0)
+
+[node name="MeshInstance3D" parent="Node3D3/Position3D" index="0"]
+visible = true
+
+[editable path="Node3D3"]

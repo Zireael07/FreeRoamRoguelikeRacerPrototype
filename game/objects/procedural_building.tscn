@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://chxoclyxt160n"]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="Script" path="res://scripts/meshes/procedural_building.gd" id="1"]
 [ext_resource type="Material" path="res://assets/procedural_building_metal_mat.tres" id="2"]
@@ -8,53 +8,51 @@
 [ext_resource type="Material" path="res://assets/metal_mat.tres" id="7"]
 [ext_resource type="Material" uid="uid://b0xis65bf1axl" path="res://assets/neon_sign_shader.tres" id="7_5xoqs"]
 [ext_resource type="Shader" path="res://assets/storefront/storefront_tinted.gdshader" id="8"]
-[ext_resource type="Texture2D" uid="uid://bailvhtc6oa7" path="res://assets/storefront/shop_front16_ed.png" id="9"]
 [ext_resource type="Script" path="res://avoid_area.gd" id="10"]
+[ext_resource type="PackedScene" path="res://avoid_area2.tscn" id="10_vlajv"]
 [ext_resource type="PackedScene" uid="uid://d0s76bnmcc5l3" path="res://objects/cardboard_box.tscn" id="11_mr5x3"]
 
 [sub_resource type="ShaderMaterial" id="1"]
 render_priority = 0
-shader = ExtResource( "8" )
-shader_param/albedo = Color(0.968627, 0.921569, 0.921569, 1)
-shader_param/specular = 0.5
-shader_param/metallic = 0.0
-shader_param/roughness = 1.0
-shader_param/point_size = 1.0
-shader_param/uv1_scale = Vector3(-1, 1, 1)
-shader_param/uv1_offset = Vector3(0, 0, 0)
-shader_param/uv2_scale = Vector3(1, 1, 1)
-shader_param/uv2_offset = Vector3(0, 0, 0)
-shader_param/mask_color = Color(1, 1, 1, 1)
-shader_param/modulate = Color(1, 0.905882, 0.0196078, 1)
-shader_param/mask_range = 0.2
-shader_param/texture_albedo = ExtResource( "9" )
+shader = ExtResource("8")
+albedo = null
+mask_color = null
+mask_range = null
+metallic = null
+modulate = null
+point_size = null
+roughness = null
+specular = null
+uv1_offset = null
+uv1_scale = null
+uv2_offset = null
+uv2_scale = null
 
 [sub_resource type="BoxMesh" id="2"]
 size = Vector3(10, 20, 10)
 
 [sub_resource type="BoxShape3D" id="3"]
-size = Vector3(4, 2, 16)
+size = Vector3(14, 2, 6)
 
 [sub_resource type="BoxMesh" id="4"]
 size = Vector3(4, 1, 16)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_1yqek"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_w3rln"]
 size = Vector3(12, 38, 12)
 
 [node name="Node3D" type="Node3D"]
-script = ExtResource( "1" )
+script = ExtResource("1")
 storefront = true
-material = ExtResource( "2" )
-windows_mat = ExtResource( "3" )
-storefront_mat = SubResource( "1" )
+material = ExtResource("2")
+windows_mat = ExtResource("3")
+storefront_mat = SubResource("1")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 1, 7.63328, 8.47983, 0)
 layers = 4
 cast_shadow = 0
-gi_mode = 1
-mesh = ExtResource( "4" )
-surface_material_override/0 = ExtResource( "7_5xoqs" )
+mesh = ExtResource("4")
+surface_material_override/0 = ExtResource("7_5xoqs")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="MeshInstance3D"]
 omni_range = 3.0
@@ -63,57 +61,59 @@ omni_range = 3.0
 transform = Transform3D(1.47721, 0.17101, 0.0603075, 0, 0.173648, -1.96962, -0.260472, 0.969847, 0.342021, 6.76171, 21.4082, -2.15234)
 layers = 8
 cast_shadow = 0
-mesh = ExtResource( "6" )
-surface_material_override/0 = ExtResource( "7" )
+mesh = ExtResource("6")
+surface_material_override/0 = ExtResource("7")
 
 [node name="cable3" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.5, 0, 0, 0, 0.0871559, -1.99239, 0, 0.996195, 0.174312, 2.56961, 20.8978, 7.03558)
 layers = 8
 cast_shadow = 0
-mesh = ExtResource( "6" )
-surface_material_override/0 = ExtResource( "7" )
+mesh = ExtResource("6")
+surface_material_override/0 = ExtResource("7")
 
 [node name="cable4" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.5, 0, 0, 0, -0.0871559, -1.99239, 0, 0.996195, -0.174312, 2.56961, 20.8978, -7.38459)
 layers = 8
 cast_shadow = 0
-mesh = ExtResource( "6" )
-surface_material_override/0 = ExtResource( "7" )
+mesh = ExtResource("6")
+surface_material_override/0 = ExtResource("7")
 
 [node name="cable2" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.44889, 0.254887, -0.0674152, 0, 0.173648, 1.47721, 0.388229, -0.951251, 0.251597, 6.51664, 12.8601, -4.0928)
 layers = 8
 cast_shadow = 0
-mesh = ExtResource( "6" )
-surface_material_override/0 = ExtResource( "7" )
+mesh = ExtResource("6")
+surface_material_override/0 = ExtResource("7")
 
 [node name="shadowmesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.0377, 0)
 visible = false
 cast_shadow = 3
-mesh = SubResource( "2" )
+mesh = SubResource("2")
 
 [node name="Node3D" type="Area3D" parent="."]
 input_ray_pickable = false
-script = ExtResource( "10" )
+script = ExtResource("10")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D"]
-shape = SubResource( "3" )
+shape = SubResource("3")
 disabled = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 visible = false
-mesh = SubResource( "4" )
+mesh = SubResource("4")
+
+[node name="Node3D3" parent="." instance=ExtResource("10_vlajv")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 19, 0)
-shape = SubResource( "BoxShape3D_1yqek" )
+shape = SubResource("BoxShape3D_w3rln")
 
-[node name="Node3D2" parent="." instance=ExtResource( "11_mr5x3" )]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.13364, 2, 8.00935)
-sleeping = true
+[node name="Node3D2" parent="." instance=ExtResource("11_mr5x3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.13364, -117161, 8.00935)
+linear_velocity = Vector3(0, -97.9959, 0)
 
 [connection signal="body_entered" from="Node3D" to="Node3D" method="_on_Spatial_body_entered"]
