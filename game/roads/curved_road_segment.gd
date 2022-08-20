@@ -117,6 +117,9 @@ func _ready():
 		points_outer_barrier = get_circle_arc(loc, radius+(lane_width*1.5)+0.5, start_angle, end_angle, not left_turn)
 	
 	
+	var mid_loc = points_center[(round(32/2))]
+	mid_point = Vector3(mid_loc.x, road_height, mid_loc.y)
+	
 	create_road()
 	fix_stuff()
 
@@ -193,8 +196,8 @@ func debug():
 	relative_end = global_start - global_end
 	Logger.road_print("Last relative to start is " + var2str(relative_end))
 	
-	var mid_loc = points_center[(round(32/2))]
-	mid_point = Vector3(mid_loc.x, road_height, mid_loc.y)
+	#var mid_loc = points_center[(round(32/2))]
+	#mid_point = Vector3(mid_loc.x, road_height, mid_loc.y)
 	
 #make the sidewalk
 #TODO: optimize to make two meshes instead of A LOT
@@ -474,6 +477,8 @@ func create_road():
 			# optimized barriers
 			make_barrier(barrier_quads, barrier_material)
 		
+		placeStreetlight()
+		
 		# test merging
 		# TODO: this is an easy way out, we need the mesh generated better
 		if sidewalks:
@@ -489,8 +494,6 @@ func create_road():
 				m.hide()
 
 			splerger.merge_meshinstances(mergelist, self, true)
-								
-		placeStreetlight()
 		
 		# assign a more optimized collision shape :)
 		var outline = Geometry2D.convex_hull(points_inner+points_outer)
@@ -587,15 +590,18 @@ func placeStreetlight():
 	#debug_cube(right_positions[num]+offset)
 	light.set_position(right_positions[num]+offset)
 	
-	# rotations
-	if (left_turn): #or abs(get_parent().get_parent().get_rotation_degrees().y) > 178:
-		light.set_rotation(Vector3(0,deg2rad(90),0))
-		#get_node(^"Debug").set_rotation_degrees(Vector3(0,90,0))
-	else:
-		light.set_rotation(Vector3(0,0,0))
-		#get_node(^"Debug").set_rotation_degrees(Vector3(0,0,0))
+#	# rotations
+#	if (left_turn): #or abs(get_parent().get_parent().get_rotation_degrees().y) > 178:
+#		light.set_rotation(Vector3(0,deg2rad(90),0))
+#		#get_node(^"Debug").set_rotation_degrees(Vector3(0,90,0))
+#	else:
+#		light.set_rotation(Vector3(0,0,0))
+#		#get_node(^"Debug").set_rotation_degrees(Vector3(0,0,0))
 
+	#debug_cube(mid_point)
 
+	light.look_at(get_global_transform() * mid_point, Vector3(0, 1, 0)) # this looks down -Z
+	light.rotate_y(deg2rad(90)) # ... and we need +X
 
 # visual barrier
 func make_barrier_array(index):
@@ -685,8 +691,8 @@ func debug_cube(loc):
 	node.set_mesh(mesh)
 	node.set_name("Debug")
 	add_child(node)
-	node.set_translation(loc)
-
+	node.set_position(loc)
+	node.set_cast_shadows_setting(0)
 
 
 func _on_Area_body_entered(body):
