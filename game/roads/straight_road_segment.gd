@@ -73,6 +73,9 @@ func _ready():
 	tunnel_obj = preload("res://objects/tunnel_mesh.tscn")
 	
 	generateRoad()
+	
+	# test
+	global_to_road_relative(get_global_transform() * Vector3(10, 0, 44))
 
 func generateRoad():
 	positions.resize(0) # = []
@@ -615,3 +618,35 @@ func _on_Area_body_exited(body):
 		body.hit = null
 		print("Exited area: ", get_parent().get_parent().get_name(), " ,", body.hit)
 	pass # Replace with function body.
+
+# https://web.archive.org/web/20160310163127/http://blogs.msdn.com/b/shawnhar/archive/2009/12/30/motogp-ai-coordinate-systems.aspx
+func global_to_road_relative(gloc):
+	var rel_loc = to_local(gloc)
+	return local_to_road_relative(rel_loc)
+
+func local_to_road_relative(loc):
+	# road relative position is how far along the track (x) and how far to the side (y)
+	# this operates on relative positions so we don't need anything fancy
+	# our road is always aligned along local +Z
+	# let's make our "along" between 0.0 (start) and 1.0 (end)
+	var along = clamp(loc.z/relative_end.z, 0.0, 1.0)
+	# TODO: this could be made absolute by multiplying by length or just using the loc.z directly
+	#print("Along: ", along)
+	
+	# how far to the side?
+	# all we need is loc.x
+	var side = abs(loc.x)
+	
+#	# find a point on the center line at along
+#	# a bit simplified but should work
+#	# can't lerp ints :(
+#	#var id = lerp(0, points_center.size()-1, along)
+#	var id = Tween.interpolate_value(0, points_center.size()-1, along, 1.0, Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+#	var cntr = Vector3(points_center[id].x, road_height, points_center[id].y)
+#	print("Center point for along: #", int(id), ", ", points_center[int(id)])
+#
+#	var side = cntr.distance_to(loc)
+	
+	print("Road relative pos for ", loc, " : ", Vector2(along, side))
+	return Vector2(along, side)
+	

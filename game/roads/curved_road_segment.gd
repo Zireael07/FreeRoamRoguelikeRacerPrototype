@@ -122,6 +122,12 @@ func _ready():
 	
 	create_road()
 	fix_stuff()
+	
+	# test
+	var test_loc = Vector3(20, 0, 15)
+	#var test_loc = Vector3(points_center[16].x, road_height, points_center[16].y)  #Vector3(10,0,10)
+	debug_cube(test_loc)
+	global_to_road_relative(get_global_transform() * test_loc)
 
 #----------------------------------
 
@@ -705,3 +711,37 @@ func _on_Area_body_exited(body):
 	if body is CharacterBody3D:
 		body.hit = null
 	pass # Replace with function body.
+
+# https://web.archive.org/web/20160310163127/http://blogs.msdn.com/b/shawnhar/archive/2009/12/30/motogp-ai-coordinate-systems.aspx
+func global_to_road_relative(gloc):
+	var rel_loc = to_local(gloc)
+	return local_to_road_relative(rel_loc)
+
+func local_to_road_relative(loc):
+	# what is our angle relative to curve's beginning
+	var start_vec = Vector3(points_center[0].x, road_height, points_center[0].y) # this is always relative to the circle center, i.e. origin
+	var angle = loc.angle_to(start_vec)+1e-06 #fudge
+	print("angle: ", angle, ", deg: ", rad2deg(angle))
+	
+	# road relative position is how far along the track (x) and how far to the side (y)
+	var max_angle = abs(end_angle-start_angle) # in degrees
+	print("max angle: ", max_angle)
+	# let's make our "along" between 0.0 (start) and 1.0 (end)
+	var along = clamp(rad2deg(angle)/max_angle, 0.0, 1.0)
+	# TODO: this could be made absolute by multiplying by curve length
+	print("Along: ", along)
+	
+	# how far to the side?
+	# find a point on the center line at along
+	# a bit simplified but should work
+	# can't lerp ints :(
+	#var id = lerp(0, points_center.size()-1, along)
+	var id = Tween.interpolate_value(0, points_center.size()-1, along, 1.0, Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
+	var cntr = Vector3(points_center[id].x, road_height, points_center[id].y)
+	print("Center point for along: #", int(id), ", ", points_center[int(id)])
+	
+	var side = cntr.distance_to(loc)
+	
+	print("Road relative pos for ", loc, " : ", Vector2(along, side))
+	return Vector2(along, side)
+	
