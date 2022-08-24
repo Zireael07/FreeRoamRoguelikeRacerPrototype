@@ -121,7 +121,11 @@ func look_for_path_initial_parking(id, left):
 		path = arc_pos + path
 	
 	# facing (we can't rotate self due to l.28 above)
-	get_node("BODY").look_at(pos)
+	#print(get_node("BODY").transform)
+	#get_node("BODY").set_physics_process(false)
+	#get_node("BODY").look_at(pos)
+	#print("After look at: ", get_node("BODY").transform)
+	#get_node("BODY").rotate_y(deg2rad(180)) # hackfix
 	
 	# extract intersection numbers
 	var ret = []

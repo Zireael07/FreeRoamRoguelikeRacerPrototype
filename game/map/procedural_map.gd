@@ -507,11 +507,14 @@ func place_AI(id, lots):
 #		pos = pos + Vector3(0,0,-5)
 
 	# because car is child of AI group node which is not at 0,0,0
-	car.set_position(AI_g.to_local(pos))
+	#car.set_position(AI_g.to_local(pos))
 	
 	# small offset
-	car.translate_object_local(Vector3(0,0,-4))
-	
+	var offset_pos = lots[id][0].to_global(Vector3(-4,0,0))
+	car.set_position(AI_g.to_local(offset_pos))
+	#car.translate_object_local(Vector3(0,0,-4))
+	# rotate
+	car.get_node("BODY").look_at(pos)
 
 	print("placed AI on a lot #", var2str(id))
 

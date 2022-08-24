@@ -104,7 +104,7 @@ func place_props(trees, bamboo, long):
 		var numBuildings = int(long/buildingSpacing)
 		# randomize
 		randomize()
-		var pk = randi_range(1, numBuildings) # new in 4.0
+		var pk = randi_range(2, numBuildings-2) # new in 4.0
 		
 		for index in range(numBuildings+1):
 			if index == pk:
@@ -379,6 +379,8 @@ func placeLot(index):
 			loc = Vector3(roadwidth+buildDistance, 0.05, buildOffset + index*15)
 		else:
 			loc = Vector3(roadwidth+buildDistance, 0.05, index+buildOffset)
+		
+		lot.set_rotation(Vector3(deg2rad(-90), deg2rad(180), 0))
 	else:
 		#right side of the road
 		loc = Vector3(-(roadwidth+buildDistance), 0.05, index+buildOffset)
