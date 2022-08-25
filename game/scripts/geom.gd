@@ -176,6 +176,37 @@ func get_arc_angle(center_point, start_point, end_point, angle0, verbose=false):
 	
 	return angles
 
+# https://www.xarg.org/2010/06/is-an-angle-between-two-other-angles/
+func is_angle_between(n, start, end):
+	# % is only for integers
+	n = int(n)
+	start = int(start)
+	end = int(end)
+	print("Checking: is n: ", n, " between: s: ", start, " e: ", end)
+	# normalize the angles (two ways to do so)
+	n = (360 + (n % 360)) % 360;
+	start = (3600000 + start) % 360;
+	end = (3600000 + end) % 360;
+
+	# swap
+	if start > end:
+		# needs a tmp otherwise doesn't work
+		var tmp = start
+		start = end
+		end = tmp
+		
+	# doesn't work for my tests
+	#var res = start <= n || n <= end
+	
+	print("Start: ", start, "end: ", end)
+	
+	#if (start < end):
+	var res = start <= n && n <= end
+	
+	print("Result: ", res)
+	return res
+
+
 # from maths
 func get_circle_arc( center, radius, angle_from, angle_to, right, nb_points=32):
 	#var nb_points = 32

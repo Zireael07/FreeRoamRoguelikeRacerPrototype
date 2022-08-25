@@ -24,7 +24,7 @@ var road_height = 0.01
 
 #road variables
 @export var lane_width = 3
-@export var radius = 15.0
+@export var radius = 15.0 # radius is 1/curvature and curvature is 1/radius (at least for circles the latter is true)
 @export var loc: Vector2 = Vector2(0,0)
 @export var left_turn: bool = false
 #export var angle = 120
@@ -123,11 +123,23 @@ func _ready():
 	create_road()
 	fix_stuff()
 	
+	#print("Radius: ", radius, ", curvature: {0}/1000".format([var2str((1/radius)*1000).pad_decimals(2)]))
+	
 	# test
-	var test_loc = Vector3(20, 0, 15)
-	#var test_loc = Vector3(points_center[16].x, road_height, points_center[16].y)  #Vector3(10,0,10)
-	debug_cube(test_loc)
-	global_to_road_relative(get_global_transform() * test_loc)
+	var test_loc = Vector3(20, 0, -15)
+	#var test_loc = Vector3(-20,0,15)
+	#var test_loc = Vector3(points_center[16].x, road_height, points_center[16].y)
+	#debug_cube(test_loc)
+	#global_to_road_relative(get_global_transform() * test_loc)
+
+	# more tests
+#	test_loc = Vector3(-20,0,15)
+#	debug_cube(test_loc)
+#	global_to_road_relative(get_global_transform() * test_loc)
+
+#	test_loc = Vector3(points_center[16].x, road_height, points_center[16].y)
+#	debug_cube(test_loc)
+#	global_to_road_relative(get_global_transform() * test_loc)
 
 #----------------------------------
 
@@ -712,6 +724,27 @@ func _on_Area_body_exited(body):
 		body.hit = null
 	pass # Replace with function body.
 
+# ----------------------------------
+func normalize_angles(n):
+	# % is only for integers
+	n = int(n)
+	var start = int(start_angle)
+	var end = int(end_angle)
+	print("Normalizing n: ", n, " s: ", start, " e: ", end)
+	# normalize the angles (two ways to do so)
+	n = (360 + (n % 360)) % 360;
+	start = (3600000 + start) % 360;
+	end = (3600000 + end) % 360;
+
+	# swap
+	if start > end:
+		# needs a tmp otherwise doesn't work
+		var tmp = start
+		start = end
+		end = tmp
+
+	return [n, start, end]
+
 # https://web.archive.org/web/20160310163127/http://blogs.msdn.com/b/shawnhar/archive/2009/12/30/motogp-ai-coordinate-systems.aspx
 func global_to_road_relative(gloc):
 	var rel_loc = to_local(gloc)
@@ -720,16 +753,56 @@ func global_to_road_relative(gloc):
 func local_to_road_relative(loc):
 	# what is our angle relative to curve's beginning
 	var start_vec = Vector3(points_center[0].x, road_height, points_center[0].y) # this is always relative to the circle center, i.e. origin
+	#var angle = loc.signed_angle_to(start_vec, Vector3(start_vec)) #+1e-06 
 	var angle = loc.angle_to(start_vec)+1e-06 #fudge
-	print("angle: ", angle, ", deg: ", rad2deg(angle))
+
+	var end_vec = Vector3(points_center[points_center.size()-1].x, road_height, points_center[points_center.size()-1].y)
+
+	# is the angle between start and end (values given in degrees)
+	#is_angle_between(rad2deg(loc.angle_to(angle0)), start_angle, end_angle)
+	
+	# in 2D, 0 is Vec2(center,0) * radius. because points are cos(a), sin(a) (see geom.gd) and cos(0) is 1
+	# experimentally determined
+	var angle0 = Vector3(0, road_height, -radius)
+	
+	debug_cube(angle0+Vector3(0,2,0))
+	#print(rad2deg(start_vec.angle_to(angle0)), " or: ", start_angle)
+	#print(rad2deg(end_vec.angle_to(angle0)), " or: ", end_angle)
+
+	#var n = rad2deg(loc.angle_to(angle0))
+	var n = rad2deg(loc.signed_angle_to(angle0, angle0))
+	
+	# check directions (Vec3 signed_angle() does the same cross/dot combo)
+
+	# fwd cross target
+#	var p = end_vec.cross(loc)
+#	#var p = angle0.cross(loc)
+#	var dir = p.dot(Vector3.UP)
+#	print("Dir: ", dir)
+	
+	var angles = normalize_angles(n)
+	var res = clamp(angles[0], angles[1], angles[2])
+	#print("Clamped result: ", res)
+	angle = res-angles[1]
+	print("Angle: ", angle, " for clamp: ", res, " start: ", angles[1])
+	
+#	var sgn = 1
+#	if loc.dot(end_vec) > 0:
+#		print("positive angle")
+#	else:
+#		print("negative angle")
+#		sgn = -1
+#	print("angle: ", angle*sgn, ", deg: ", rad2deg(angle*sgn))
+	
 	
 	# road relative position is how far along the track (x) and how far to the side (y)
 	var max_angle = abs(end_angle-start_angle) # in degrees
-	print("max angle: ", max_angle)
+	print("max angle: ", max_angle) #rad2deg(angle)
 	# let's make our "along" between 0.0 (start) and 1.0 (end)
-	var along = clamp(rad2deg(angle)/max_angle, 0.0, 1.0)
+	var fl_angle = float(angle)+1e-06 #fudge
+	var along = clamp(fl_angle/max_angle, 0.0, 1.0)
 	# TODO: this could be made absolute by multiplying by curve length
-	print("Along: ", along)
+	#print("Along: ", along)
 	
 	# how far to the side?
 	# find a point on the center line at along
@@ -738,7 +811,7 @@ func local_to_road_relative(loc):
 	#var id = lerp(0, points_center.size()-1, along)
 	var id = Tween.interpolate_value(0, points_center.size()-1, along, 1.0, Tween.TRANS_LINEAR,Tween.EASE_IN_OUT)
 	var cntr = Vector3(points_center[id].x, road_height, points_center[id].y)
-	print("Center point for along: #", int(id), ", ", points_center[int(id)])
+	print("Center point for along: ", along, ": #", int(id), ", ", points_center[int(id)])
 	
 	var side = cntr.distance_to(loc)
 	

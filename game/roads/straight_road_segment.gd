@@ -75,7 +75,7 @@ func _ready():
 	generateRoad()
 	
 	# test
-	global_to_road_relative(get_global_transform() * Vector3(10, 0, 44))
+	#global_to_road_relative(get_global_transform() * Vector3(10, 0, 44))
 
 func generateRoad():
 	positions.resize(0) # = []
