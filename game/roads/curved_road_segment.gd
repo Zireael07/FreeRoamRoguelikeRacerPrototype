@@ -131,15 +131,18 @@ func _ready():
 	#var test_loc = Vector3(points_center[16].x, road_height, points_center[16].y)
 	#debug_cube(test_loc)
 	#global_to_road_relative(get_global_transform() * test_loc)
+	#local_to_road_relative_curve(test_loc)
 
 	# more tests
 #	test_loc = Vector3(-20,0,15)
 #	debug_cube(test_loc)
 #	global_to_road_relative(get_global_transform() * test_loc)
-
+#	local_to_road_relative_curve(test_loc)
+#
 #	test_loc = Vector3(points_center[16].x, road_height, points_center[16].y)
 #	debug_cube(test_loc)
 #	global_to_road_relative(get_global_transform() * test_loc)
+#	local_to_road_relative_curve(test_loc)
 
 #----------------------------------
 
@@ -746,11 +749,11 @@ func normalize_angles(n):
 	return [n, start, end]
 
 # https://web.archive.org/web/20160310163127/http://blogs.msdn.com/b/shawnhar/archive/2009/12/30/motogp-ai-coordinate-systems.aspx
-func global_to_road_relative(gloc):
+func global_to_road_relative_old(gloc):
 	var rel_loc = to_local(gloc)
-	return local_to_road_relative(rel_loc)
+	return local_to_road_relative_old(rel_loc)
 
-func local_to_road_relative(loc):
+func local_to_road_relative_old(loc):
 	# what is our angle relative to curve's beginning
 	var start_vec = Vector3(points_center[0].x, road_height, points_center[0].y) # this is always relative to the circle center, i.e. origin
 	#var angle = loc.signed_angle_to(start_vec, Vector3(start_vec)) #+1e-06 
@@ -813,6 +816,44 @@ func local_to_road_relative(loc):
 	var cntr = Vector3(points_center[id].x, road_height, points_center[id].y)
 	print("Center point for along: ", along, ": #", int(id), ", ", points_center[int(id)])
 	
+	var side = cntr.distance_to(loc)
+	
+	print("Road relative pos for ", loc, " : ", Vector2(along, side))
+	return Vector2(along, side)
+
+#try a version based on Godot's Curve3D resource
+func global_to_road_relative(gloc):
+	var rel_loc = to_local(gloc)
+	return local_to_road_relative_curve(rel_loc)
+
+func local_to_road_relative_curve(loc):
+	#var c = Curve2D.new() # for some reason 2D version doesn't want to work properly
+	var c = Curve3D.new()
+	# curve offset seems to want to start at 0,0, so...
+	for pt in points_center:
+		var c_p = pt-points_center[0] # hackfix (see above)
+		c.add_point(Vector3(c_p.x, road_height, c_p.y))
+		#c.add_point(pt-points_center[0]) 
+
+	#print(c.get_baked_points())
+	get_parent().get_node("Path3D").curve = c
+	
+	# ??? offset seems to assume all curves start at 0,0? and needs "curve-relative pos"
+	var c_loc = Vector2(loc.x, loc.z)-points_center[0]
+	#print("Pos in curve space: ", c_loc)
+	#var along = c.get_closest_offset(c_loc) #(Vector2(loc.x, loc.z)) #in px
+	#print("curve length: ", c.get_baked_length())
+	var along = c.get_closest_offset(Vector3(c_loc.x, road_height, c_loc.y))
+	along = along/c.get_baked_length() # convert to unit of along the road (0.0-1.0)
+	along = clamp(along, 0.0, 1.0)
+	print("curve along: ", along)
+	
+	var cntr = c.get_closest_point(Vector3(c_loc.x, road_height, c_loc.y)) #(c_loc)
+	var start_pt = Vector3(points_center[0].x, road_height, points_center[0].y)
+	cntr = cntr + start_pt # convert back to road's local instead of CURVE local
+	print("Center point for loc: ", cntr) 
+	
+	#var side = cntr.distance_to(Vector2(loc.x, loc.z))
 	var side = cntr.distance_to(loc)
 	
 	print("Road relative pos for ", loc, " : ", Vector2(along, side))
