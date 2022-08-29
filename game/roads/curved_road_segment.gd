@@ -21,6 +21,7 @@ var points_outer_barrier
 var barrier_quads = []
 
 var road_height = 0.01
+@export var road_slope = 0.0
 
 #road variables
 @export var lane_width = 3
@@ -194,7 +195,8 @@ func debug():
 	#Logger.road_print("Position of start point is " + String(start_point))
 	#addTestColor(m, Color(0, 1,0), "start_cube", start_point.x, start_point.y, start_point.z, 0.1, 0.1, 0.1)
 
-	last = Vector3(points_center[points_center.size()-1].x, road_height, points_center[points_center.size()-1].y)
+	last = Vector3(points_center[points_center.size()-1].x, road_height+(road_slope*(points_center.size()-1)), points_center[points_center.size()-1].y)
+	#print("Position of last point is ", last)
 	#Logger.road_print("Position of last point is " + String(last))
 	
 	#var loc3d = Vector3(loc.x, 0, loc.y)
@@ -254,42 +256,8 @@ func make_quad(index_one, index_two, inner):
 			# to be two-sided :P
 			addRoadCurve(sidewalk_material, left, start, ahead_right, ahead_left, false)
 
-#make the mesh (less objects)
-func make_strip_single(index_one, index_two, parent):
-	var right_side = null
-	var left_side = null
-	var center_line = null
 
-	# necessary to draw left turn since the arc turns the other way	
-	if left_turn:
-		center_line = points_center
-		left_side = points_inner
-		right_side = points_outer
-	else:
-		center_line = points_center #curve_one
-		left_side = points_outer #curve_three
-		right_side = points_inner #curve_two
-	
-	
-
-	if (left_side != null):
-		if (index_one != index_two):
-			var zero = Vector3(right_side[index_one].x, road_height, right_side[index_one].y)
-			var one = Vector3(center_line[index_one].x, road_height, center_line[index_one].y)
-			var two = Vector3(center_line[index_two].x, road_height, center_line[index_two].y)
-			var three = Vector3(right_side[index_two].x, road_height, right_side[index_two].y)
-			var four = Vector3(left_side[index_one].x, road_height, left_side[index_one].y)
-			var five = Vector3(left_side[index_two].x, road_height, left_side[index_two].y)
-			
-			
-			addRoadCurveTest(material, zero, one, two, three, four, five, parent)
-			
-						
-		else:
-			print("Bad indexes given")
-	else:
-		print("No sides given")
-
+# make the mesh (optimized way)
 func make_point_array(index_one, index_two):
 	var right_side = null
 	var left_side = null
@@ -313,6 +281,14 @@ func make_point_array(index_one, index_two):
 			var three = Vector3(right_side[index_two].x, road_height, right_side[index_two].y) #right_side.get_point_pos(index_two)
 			var four = Vector3(left_side[index_one].x, road_height, left_side[index_one].y) #left_side.get_point_pos(index_one)
 			var five = Vector3(left_side[index_two].x, road_height, left_side[index_two].y) #left_side.get_point_pos(index_two)
+			
+			if road_slope > 0:
+				zero.y = road_height+(road_slope*index_one)
+				one.y = road_height+(road_slope*index_one)
+				two.y = road_height+(road_slope*index_two)
+				three.y = road_height+(road_slope*index_two)
+				four.y = road_height+(road_slope*index_one)
+				five.y = road_height+(road_slope*index_two)
 			
 			return [zero, one, two, three, four, five]
 						
@@ -468,8 +444,6 @@ func create_road():
 			quads.append(getQuads(array)[0])
 			quads.append(getQuads(array)[1])
 			
-			#make_strip_single(index, index+1, road_mesh)
-			
 			if sidewalks:
 				make_quad(index, index+1, true)
 				make_quad(index, index+1, false)
@@ -515,14 +489,41 @@ func create_road():
 				m.hide()
 
 			splerger.merge_meshinstances(mergelist, self, true)
+
 		
-		# assign a more optimized collision shape :)
-		var outline = Geometry2D.convex_hull(points_inner+points_outer)
-		#print("curve outline: ", outline)
-		# the existence of collision polygon is really good news for us
-		var poly = get_node(^"StaticBody3D/CollisionPolygon3D").polygon
-		poly = outline
-		get_node(^"StaticBody3D/CollisionPolygon3D").set_polygon(poly)
+		if road_slope > 0:
+			var coll = CollisionShape3D.new()
+			var shape = get_node("plane").get_mesh().create_convex_shape(true, true)
+			coll.set_shape(shape)
+			if get_node("StaticBody3D").has_node("CollisionPolygon"):
+				get_node("StaticBody3D").get_child(0).queue_free()
+			get_node("StaticBody3D").add_child(coll)
+			coll.translate_object_local(Vector3(0,-1, 0))
+		else:
+			# assign a more optimized collision shape :)
+			var outline = Geometry2D.convex_hull(points_inner+points_outer)
+			#print("curve outline: ", outline)
+			
+			# the existence of collision polygon is really good news for us
+			var poly = null
+			if get_node("StaticBody3D").has_node("CollisionPolygon"):
+				poly = get_node(^"StaticBody3D/CollisionPolygon3D").polygon
+				if global_transform.origin.y > 1:
+					get_node(^"StaticBody3D/CollisionPolygon3D").translate(Vector3(0,1,0))
+			else:
+				var coll = CollisionPolygon3D.new()
+
+				if global_transform.origin.y > 1:
+					pass
+				else:
+					coll.translate(Vector3(0,-1.5, 0))
+				coll.set_rotation(Vector3(deg2rad(90), 0,0))
+				get_node("StaticBody3D").add_child(coll)
+				poly = coll.polygon
+			poly = outline
+			get_node(^"StaticBody3D/CollisionPolygon3D").set_polygon(poly)
+
+			
 		
 		
 	if not Engine.is_editor_hint():	
@@ -531,7 +532,8 @@ func create_road():
 		
 	if not Engine.is_editor_hint():
 		# kill debug draw in game
-		draw.queue_free()
+		if draw != null:
+			draw.queue_free()
 		
 	#draw an immediate line in editor instead
 	else:
