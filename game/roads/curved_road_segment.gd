@@ -308,10 +308,14 @@ func optimizedmeshCreate(quads, material):
 	var surface = SurfaceTool.new()
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
-	#Create a node building that will hold the mesh
-	var node = MeshInstance3D.new()
-	node.set_name("plane")
-	add_child(node)
+	#Create a node that will hold the mesh
+	var node = null
+	if !has_node("plane"):
+		node = MeshInstance3D.new()
+		node.set_name("plane")
+		add_child(node)
+	else:
+		node = get_node("plane")
 	
 	for qu in quads:
 		addQuad(qu[0], qu[1], qu[2], qu[3], material, surface, qu[4])

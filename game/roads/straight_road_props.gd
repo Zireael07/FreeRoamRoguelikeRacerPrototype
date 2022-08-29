@@ -98,6 +98,7 @@ func place_props(trees, bamboo, long):
 	var height = 0
 	if get_parent().global_transform.origin.y > 1:
 		height = -get_parent().global_transform.origin.y
+		#print(get_parent().get_name(), "is elevated!")
 		
 	# buildings and lanterns
 	if not trees and not bamboo:
@@ -107,7 +108,7 @@ func place_props(trees, bamboo, long):
 		var pk = randi_range(2, numBuildings-2) # new in 4.0
 		
 		for index in range(numBuildings+1):
-			if index == pk:
+			if index == pk and height > 0:
 				placeLot(index)
 			else:
 				placeBuilding(index, height, numBuildings)
@@ -291,15 +292,16 @@ func placeBuilding(index, base_height, numBuildings):
 	else:
 		build.get_node("Node3D3").queue_free()
 	
-	# place a cardboard box in the passage
-#	var c_box = box.instantiate()
-#	build.add_child(c_box)
 	var c_box = build.get_node("Node3D2")
-	if index > 0:
-		c_box.set_position(Vector3(6,2,8))
-	else:
-		c_box.queue_free()
-#	c_box.set_position(loc+Vector3(-8, 8,-8))
+	if base_height > 0:
+		# place a cardboard box in the passage
+	#	var c_box = box.instantiate()
+	#	build.add_child(c_box)
+		if index > 0:
+			c_box.set_position(Vector3(6,2,8))
+		else:
+			c_box.queue_free()
+	#	c_box.set_position(loc+Vector3(-8, 8,-8))
 	
 	build = setupBuilding(index, base_height)
 	
@@ -326,15 +328,16 @@ func placeBuilding(index, base_height, numBuildings):
 	else:
 		build.get_node("Node3D3").queue_free()
 	
-	# place a cardboard box in the passage
-	c_box = build.get_node("Node3D2")
-	if index > 0:
-		c_box.set_position(Vector3(6, 2,8))
-	else:
-		c_box.queue_free()
-#	c_box = box.instantiate()
-#	build.add_child(c_box)
-#	c_box.set_position(Vector3(-10, 8,-10))
+	if base_height > 0:
+		# place a cardboard box in the passage
+		c_box = build.get_node("Node3D2")
+		if index > 0:
+			c_box.set_position(Vector3(6, 2,8))
+		else:
+			c_box.queue_free()
+	#	c_box = box.instantiate()
+	#	build.add_child(c_box)
+	#	c_box.set_position(Vector3(-10, 8,-10))
 	
 func placeCable(index, base_height):
 	if (index % 2 > 0):

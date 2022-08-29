@@ -349,7 +349,8 @@ func makeRoad():
 	
 	# kill debug draw in game
 	else:
-		draw.queue_free()
+		if draw != null:
+			draw.queue_free()
 
 	# workaround for https://github.com/godotengine/godot/issues/36729
 	# if we're on the ground and not sloped, we don't need a collision shape
@@ -393,7 +394,7 @@ func makeRoad():
 			coll.set_position(Vector3(-6,0,mid_point.z))
 			
 		else:
-			coll.set_position(Vector3(0,-2.9, mid_point.z))
+			coll.set_position(Vector3(0,-1.5, mid_point.z)) #-2.9
 	
 
 	
