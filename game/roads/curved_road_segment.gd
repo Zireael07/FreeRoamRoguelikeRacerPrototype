@@ -178,8 +178,8 @@ func _ready():
 	
 
 func fix_stuff():
-	#debug
-	debug()
+	#calc stuff
+	calc()
 	
 	#fix rotations
 	#if (!left_turn):
@@ -190,7 +190,7 @@ func fix_stuff():
 		#let the placer do its work
 		get_parent().place_road()
 
-func debug():
+func calc():
 	start_point = Vector3(points_center[0].x, road_height, points_center[0].y) 
 	#Logger.road_print("Position of start point is " + String(start_point))
 	#addTestColor(m, Color(0, 1,0), "start_cube", start_point.x, start_point.y, start_point.z, 0.1, 0.1, 0.1)

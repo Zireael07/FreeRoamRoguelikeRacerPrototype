@@ -54,52 +54,43 @@ func connect_intersections(one, two, verbose=false):
 	# debugging
 	positions.append(loc_src_exit)
 	positions.append(loc_dest_exit)
-	
-	#draw.draw_line(positions)
-
 	#print("Line length: " + str(loc_dest_exit.distance_to(loc_src_exit)))
+	
 	# a sensible default
 	var extend_factor = 3
 #	if extend_turns:
 #		extend_factor = extend_factor*1.5
 		
 	var extendeds = extend_lines(one,two, loc_src_exit, loc_dest_exit, extend_factor) #2.5) #2)
-
 	var corner_points = get_corner_points(one,two, extendeds[0], extendeds[1], extendeds[0].distance_to(loc_src_exit))
 
-	var data = calculate_initial_turn(corner_points[0], corner_points[1], loc_src_exit, extendeds[0], src_exit)
-	
 	# make top node (which holds road name)
 	var top_node = Node3D.new()
 	top_node.set_script(load("res://roads/road_top.gd"))
-	
 	#print(str(one) + " to " + str(two))
 	# this used to be child (node) id, but this way it's more intuitive
 	# subtract 3 to get actual intersection number from child id
 	top_node.set_name("Road " +str(one-3) + "-" + str(two-3))
 	add_child(top_node)
 
-	initial_road_test(one, two, data, corner_points[0], top_node, verbose)
+	var data = calculate_initial_turn(corner_points[0], corner_points[1], loc_src_exit, extendeds[0], src_exit)
+	initial_road_attempt(one, two, data, corner_points[0], top_node, verbose)
 
 	data = calculate_last_turn(corner_points[2], corner_points[3], loc_dest_exit, extendeds[1], dest_exit)
-
-	last_turn_test(one, two, data, corner_points[2], top_node, verbose)
-	
+	last_turn_attempt(one, two, data, corner_points[2], top_node, verbose)
+	# FIXME: can't rely on corner points because this sometimes leads to holes even though the turn angles are correct
 	set_straight(corner_points[1], corner_points[3], top_node)
 
 # the length of the extend parameter here determines the radii of start and end turns
 func extend_lines(one, two, loc_src_exit, loc_dest_exit, extend):
 	#B-A: A->B
 	var src_line = loc_src_exit-get_child(one).get_position()
-	#var extend = ex
 	var loc_src_extended = src_line*extend + get_child(one).get_position()
-	
 	#debug_cube(loc_src_extended)
 	
 	var dest_line = loc_dest_exit-get_child(two).get_position()
 	var loc_dest_extended = dest_line*extend + get_child(two).get_position()
 	#debug_cube(loc_dest_extended)
-	
 	return [loc_src_extended, loc_dest_extended]
 	
 func get_corner_points(one, two, loc_src_extended, loc_dest_extended, dist):
@@ -111,7 +102,6 @@ func get_corner_points(one, two, loc_src_extended, loc_dest_extended, dist):
 	
 	var corner_back = loc_src_extended + vec_back
 	corners.append(corner_back)
-	
 	#debug_cube(Vector3(corner_back.x, 1, corner_back.z))
 	
 	var vec_forw = loc_dest_extended - loc_src_extended
@@ -119,7 +109,6 @@ func get_corner_points(one, two, loc_src_extended, loc_dest_extended, dist):
 	
 	var corner_forw = loc_src_extended + vec_forw
 	corners.append(corner_forw)
-	
 	#debug_cube(Vector3(corner_forw.x, 1, corner_forw.z))
 	
 	# the destinations
@@ -129,7 +118,6 @@ func get_corner_points(one, two, loc_src_extended, loc_dest_extended, dist):
 	
 	corner_back = loc_dest_extended + vec_back
 	corners.append(corner_back)
-	
 	#debug_cube(Vector3(corner_back.x, 1, corner_back.z))
 	
 	vec_forw = loc_src_extended - loc_dest_extended
@@ -137,13 +125,11 @@ func get_corner_points(one, two, loc_src_extended, loc_dest_extended, dist):
 	
 	corner_forw = loc_dest_extended + vec_forw
 	corners.append(corner_forw)
-	
 	#debug_cube(Vector3(corner_forw.x, 1, corner_forw.z))
 	
-	
 	return corners
-	
-	
+
+# TODO: fold this and the next function into one?	
 func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, src_exit):
 	#B-A: A->B 
 	# 3D has no tangent()
@@ -159,7 +145,6 @@ func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, sr
 	var start = Vector2(corner1.x, corner1.z) + tang
 	
 	#debug_cube(Vector3(start.x, 1, start.y))
-	
 	#positions.append(Vector3(start.x, 0, start.y))
 	
 	#var start = Vector2(corner1.x, corner1.z)
@@ -276,7 +261,7 @@ func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, des
 	else:
 		print("Last turn, no inters detected")
 	
-func initial_road_test(one, two, data, loc, node, verbose=false):
+func initial_road_attempt(one, two, data, loc, node, verbose=false):
 	if data == null:
 		print("No first turn data, return")
 		return
@@ -301,15 +286,15 @@ func initial_road_test(one, two, data, loc, node, verbose=false):
 			#if verbose:
 			#	Logger.mapgen_print("Rotated because we're going back")
 
-func last_turn_test(one, two, data, loc, node, verbose=false):
+func last_turn_attempt(one, two, data, loc, node, verbose=false):
 	if data == null:
 		print("No last turn data, return")
 		return
 	
-	
 	var radius = data[0]
 	var start_angle = data[1]
 	var end_angle = data[2]
+	
 	if verbose:
 		print("Last turn: R: " + str(radius) + " , start angle: " + str(start_angle) + " , end: " + str(end_angle))
 	
@@ -336,9 +321,6 @@ func set_straight(loc, loc2, node):
 	road_node.relative_end = Vector3(0,0, dist)
 	
 	# debug
-	#debug_cube(Vector3(loc.x, 1, loc.z))
-	#debug_cube(Vector3(loc2.x, 1, loc2.z))
-	
 	
 	# decorate
 	randomize()
@@ -371,7 +353,6 @@ func set_straight(loc, loc2, node):
 	road_node.look_at(tg, Vector3(0,1,0))
 	# because we're pointing at +Z, sigh...
 	spatial.rotate_y(deg2rad(180))
-	
 	return road_node
 	
 func set_curved_road(radius, start_angle, end_angle, index, node, verbose):
@@ -416,7 +397,6 @@ func set_straight_slope(loc, rot, node, i):
 	road_node.relative_end = Vector3(0,0, dist)
 	road_node.road_slope = 5.0
 	
-	
 	# decorate
 	randomize()
 	
@@ -431,7 +411,6 @@ func set_straight_slope(loc, rot, node, i):
 			road_node.bamboo = true
 		elif r < 0.6:
 			road_node.trees = true
-	
 	
 	#var spatial = Node3D.new()
 	#spatial.set_name("Spatial0")
@@ -450,7 +429,6 @@ func set_straight_slope(loc, rot, node, i):
 	#road_node.rotate_y(deg2rad(180))
 	
 	road_node.rotate_y(rot.y)
-	
 	return road_node
 
 # -------------------------------------
@@ -682,16 +660,6 @@ func get_dest_exit(src, dest, verbose=false):
 			dest.used_exits[dest.point_three] = 1 # quadrant
 			return dest.point_three
 
-
-# debug
-func debug_cube(loc):
-	var mesh = BoxMesh.new()
-	mesh.set_size(Vector3(0.5,0.5,0.5))
-	var node = MeshInstance3D.new()
-	node.set_mesh(mesh)
-	node.set_name("Debug")
-	add_child(node)
-	node.set_position(loc)
 
 func draw_circle_arc(center, radius, angle_from, angle_to, right, clr):
 	var points_arc = get_node("/root/Geom").get_circle_arc(center, radius, angle_from, angle_to, right)

@@ -143,7 +143,7 @@ func get_arc_angle(center_point, start_point, end_point, angle0, verbose=false):
 	var angle1 = rad2deg((angle0-center_point).angle_to(start_point-center_point))
 	
 	if angle1 < 0:
-		angle1 = 360+angle1
+		angle1 = 360.0+angle1
 		#print("Angle 1 " + str(angle))
 	
 	#angles.append(angle)
@@ -152,7 +152,7 @@ func get_arc_angle(center_point, start_point, end_point, angle0, verbose=false):
 	var angle2 = rad2deg((angle0-center_point).angle_to(end_point-center_point))
 	
 	if angle2 < 0:
-		angle2 = 360+angle2
+		angle2 = 360.0+angle2
 		#print("Angle 2 " + str(angle))
 	
 	#Logger.mapgen_print("Angle 1 " + str(angle1) + ", angle 2 " + str(angle2))
@@ -166,11 +166,11 @@ func get_arc_angle(center_point, start_point, end_point, angle0, verbose=false):
 	if arc > 190:
 		if verbose:
 			print("Too big arc " + str(angle1) + " , " + str(angle2))
-		angle2 = angle2+360
+		angle2 = angle2+360.0
 	if arc < -190:
 		if verbose:
 			print("Too big arc " + str(angle1) + " , " + str(angle2))
-		angle1 = angle1+360
+		angle1 = angle1+360.0
 		
 	angles = [angle1, angle2]
 	

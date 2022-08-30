@@ -178,6 +178,10 @@ func meshCreate(material, array):
 	# yay GD 3
 	node.create_convex_collision()
 
+# TODO: possibly replace convex above with four box colliders
+# offset from middle: 6,5m away along the exit axis
+# size: 6,5m along the axis, 6m wide
+
 # debug
 func debug_cube(loc, red=false):
 	var mesh = BoxMesh.new()
