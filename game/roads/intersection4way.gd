@@ -177,6 +177,9 @@ func meshCreate(material, array):
 	
 	# yay GD 3
 	node.create_convex_collision()
+	
+	# fix for elevated intersections
+	$"plane/plane_col".translate_object_local(Vector3(0,-0.2, 0))
 
 # TODO: possibly replace convex above with four box colliders
 # offset from middle: 6,5m away along the exit axis

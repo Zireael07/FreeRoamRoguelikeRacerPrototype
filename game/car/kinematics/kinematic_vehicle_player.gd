@@ -371,9 +371,10 @@ func _physics_process(delta):
 		var nam = collision.get_collider().get_parent().get_name()
 		#print(nam)
 		# ignore ground or road "collisions"
-		if "Ground" in nam or "Road" in nam:
+		if "Ground" in nam or "Road" in nam or "plane" in nam:
 			pass
-		else:	
+		else:
+			#print("Hit: ", nam)
 			damage_on_hit()
 	
 func after_move():

@@ -394,7 +394,7 @@ func makeRoad():
 			coll.set_position(Vector3(-6,0,mid_point.z))
 			
 		else:
-			coll.set_position(Vector3(0,-1.5, mid_point.z)) #-2.9
+			coll.set_position(Vector3(0,-1.75, mid_point.z)) #-2.9
 	
 
 	

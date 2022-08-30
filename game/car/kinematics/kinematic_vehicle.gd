@@ -194,7 +194,7 @@ func calculate_steering(delta):
 	rear_wheel += vel * delta
 
 	#order of operation: forward by velocity and then rotate
-	front_wheel += vel.rotated(transform.basis.y, steer_angle) * delta
+	front_wheel += vel.rotated(transform.basis.y.normalized(), steer_angle) * delta
 	var new_heading = rear_wheel.direction_to(front_wheel)
 
 	var d = new_heading.dot(vel.normalized())
@@ -202,6 +202,8 @@ func calculate_steering(delta):
 	if d > 0:
 		vel = new_heading * vel.length()
 	if d < 0:
+		# FIXME: this is true when going up slopes...
+		#print("Thinks is going in reverse")
 		vel = -new_heading * min(vel.length(), max_speed_reverse)
 	
 	# Point in the steering direction.

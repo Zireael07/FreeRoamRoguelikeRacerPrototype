@@ -119,6 +119,7 @@ func mapgen():
 	# road around
 	var out_edges = get_node(^"triangulate/poisson").out_edges
 	print("Outer edges: " + str(out_edges))
+	var outer_loop = out_edges.duplicate()
 	
 	# paranoia
 	if out_edges[0][0] != out_edges[out_edges.size()-1][1]:
@@ -147,7 +148,7 @@ func mapgen():
 		print("Outer edges post filter: " + str(out_edges))
 
 		for e in out_edges:
-			print("Out edge ", var2str(e[0]), ", ", var2str(e[1]))
+			#print("Out edge ", var2str(e[0]), ", ", var2str(e[1]))
 			# feedback
 			if has_node("/root/Control/Label"):
 				await get_tree().process_frame
@@ -168,24 +169,7 @@ func mapgen():
 
 	# test: replace longest road with a bridge
 #	# done after nav setup to avoid having to mess with navigation
-#	var straight = get_node("Road 6-5/Spatial0/Road_instance 0")
-#	var str_tr = get_node("Road 6-5/Spatial0/Road_instance 0").get_position()
-#	var str_len = straight.relative_end
-#	var slope = set_straight_slope(str_tr, get_node(^"Road 6-5/Spatial0/Road_instance 0").get_rotation(), get_node(^"Road 6-5/Spatial0"), 1)
-#	# position the other end correctly
-#	var end_p_gl = straight.global_transform * (str_len)
-#	var end_p = get_node(^"Road 6-5/Spatial0").to_local(end_p_gl)
-#	var slope2 = set_straight_slope(end_p, get_node(^"Road 6-5/Spatial0/Road_instance 0").get_rotation()+Vector3(0,deg2rad(180),0), get_node(^"Road 6-5/Spatial0"), 2)
-#	# regenerate the straight
-#	straight.translate_object_local(Vector3(0, 5, 40))
-#	straight.relative_end = Vector3(0,0,str_len.z-80) # because both slopes are 40 m long
-#	straight.get_node(^"plane").queue_free()
-#	straight.get_node(^"sidewalk").queue_free()
-#	# regenerate all the decor
-#	for c in straight.get_node(^"Node3D").get_children():
-#		c.queue_free()
-#	#straight.get_node(^"Node3D").queue_free()
-#	straight.generateRoad()
+	elevate_outer_loop(outer_loop)
 
 	# basic map is done, now sprinkle stuff around
 	await get_tree().process_frame
@@ -438,7 +422,99 @@ func pos3d_to_vis_point(pos):
 	
 	#3d x is left/right (inc left) and z is forward/back (up/down)
 	#2d x is left/right (increases right) and y is top/down (from top)
-	return Vector2(x, y)			
+	return Vector2(x, y)
+
+# ---------------------------------------
+func find_road_for_edge(e):
+	for c in get_children():
+		#if "Road " in c.get_name():
+		#if var2str(c.get_name()).find(var2str(e[0])+"-"+var2str(e[1])) != -1:
+		if (var2str(e[0])+"-"+var2str(e[1])) in c.get_name() or var2str(e[1])+"-"+var2str(e[0]) in c.get_name():
+				#print("Found road for edge: ", e, " ", c.get_name())
+				return c
+
+func replace_with_bridge(road):
+	# originally Road 6-5
+	var straight = road.get_node("Spatial0/Road_instance 0")
+	var str_tr = road.get_node("Spatial0/Road_instance 0").get_position()
+	var str_len = straight.relative_end
+	var slope = set_straight_slope(str_tr, road.get_node(^"Spatial0/Road_instance 0").get_rotation(), road.get_node(^"Spatial0"), 1)
+	# position the other end correctly
+	var end_p_gl = straight.global_transform * (str_len)
+	var end_p = road.get_node(^"Spatial0").to_local(end_p_gl)
+	var slope2 = set_straight_slope(end_p, road.get_node(^"Spatial0/Road_instance 0").get_rotation()+Vector3(0,deg2rad(180),0), road.get_node(^"Spatial0"), 2)
+	# regenerate the straight
+	straight.translate_object_local(Vector3(0, 5, 40))
+	straight.relative_end = Vector3(0,0,str_len.z-80) # because both slopes are 40 m long
+	straight.get_node(^"plane").queue_free()
+	straight.get_node(^"sidewalk").queue_free()
+	# regenerate all the decor
+	for c in straight.get_node(^"Node3D").get_children():
+		c.queue_free()
+	#straight.get_node(^"Node3D").queue_free()
+	straight.generateRoad()
+
+func elevate_outer_loop(loop):
+	print("Outer loop: ", loop)
+	var elevated_height = 5 #10
+	var elevated_inters = []
+	var elevated_roads = []
+	
+	for ei in range(loop.size()):
+		var e = loop[ei]
+		var road = find_road_for_edge(e)
+		if road:
+			road.translate_object_local(Vector3(0,elevated_height,0)) #elevate
+			elevated_roads.append(road)
+			var straight = road.get_node("Spatial0/Road_instance 0")
+			# regenerate all the decor
+			for c in straight.get_node(^"Node3D").get_children():
+				c.queue_free()
+			straight.generateRoad()
+			
+			# exclude helper nodes
+			for i in range(3, 3+samples.size()-1):
+				if i == e[1]+3 and not ei==loop.size()-1: # exclude final inters
+					#print("Found intersection ", i)
+					get_child(i).translate_object_local(Vector3(0,elevated_height,0)) # elevate intersections too
+					elevated_inters.append(i) # appends child node ids (real id +3)
+
+	print(elevated_inters)
+	# unfortunately we need to loop again
+	# exclude helper nodes
+	for i in range(3, 3+samples.size()-1):
+		#print("Checking i:", i, "inters: ", i-3)
+		for r in elevated_roads:
+			# extract intersection numbers
+			var ret = []
+			var strs = String(r.get_name()).split("-")
+			# convert to int
+			ret.append(strs[0].lstrip("Road ").to_int())
+			ret.append(strs[1].to_int())
+			# find non-elevated intersection
+			if i == ret[0]+3 and not i in elevated_inters:
+				var lower_inter_id = i-3
+				print("Found non-elevated intersection, #",lower_inter_id)	
+				#for r in elevated_roads:
+				if var2str(lower_inter_id) in r.get_name():
+					print("Road ", r.get_name(), " ends at non-elevated intersection!")
+					# adjust the road
+					var turn1 = r.get_node(^"Road_instance0").get_child(0).get_child(0)
+					var turn2 = r.get_node(^"Road_instance1").get_child(0).get_child(0)
+	
+					turn1.road_slope = float(elevated_height)/(turn1.points_center.size()-1)
+					print("Slope: ", turn1.road_slope, " calc end: ", turn1.road_height+(turn1.road_slope*(turn1.points_center.size()-1)))
+
+					# hackfix
+					turn1.calc()
+					# regen the road
+					turn1.create_road() # beginning and end don't change so that's all we need to call
+					# lower it back down to ground
+					turn1.translate_object_local(Vector3(0,-elevated_height,0))
+					# fix collision for angled road
+					turn1.get_node("StaticBody3D").translate_object_local(Vector3(0,0.5,0))
+				
+	print("Outer loop done!")
 
 # ---------------------------------------
 func find_lot(road):
