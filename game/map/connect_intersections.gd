@@ -78,8 +78,13 @@ func connect_intersections(one, two, verbose=false):
 
 	data = calculate_last_turn(corner_points[2], corner_points[3], loc_dest_exit, extendeds[1], dest_exit)
 	last_turn_attempt(one, two, data, corner_points[2], top_node, verbose)
-	# FIXME: can't rely on corner points because this sometimes leads to holes even though the turn angles are correct
-	set_straight(corner_points[1], corner_points[3], top_node)
+	# can't rely on corner points because this sometimes leads to holes even though the turn angles are correct
+	var turn1 = top_node.get_node("Road_instance0").get_child(0).get_child(0)
+	var turn2 = top_node.get_node("Road_instance1").get_child(0).get_child(0)
+	var loc1 = to_local(turn1.last * turn1.get_global_transform())
+	var loc2 = to_local(turn2.last * turn2.get_global_transform())
+	
+	set_straight(loc1, loc2, top_node)
 
 # the length of the extend parameter here determines the radii of start and end turns
 func extend_lines(one, two, loc_src_exit, loc_dest_exit, extend):
