@@ -282,7 +282,7 @@ func make_point_array(index_one, index_two):
 			var four = Vector3(left_side[index_one].x, road_height, left_side[index_one].y) #left_side.get_point_pos(index_one)
 			var five = Vector3(left_side[index_two].x, road_height, left_side[index_two].y) #left_side.get_point_pos(index_two)
 			
-			if road_slope > 0:
+			if abs(road_slope) > 0:
 				zero.y = road_height+(road_slope*index_one)
 				one.y = road_height+(road_slope*index_one)
 				two.y = road_height+(road_slope*index_two)
@@ -495,12 +495,13 @@ func create_road():
 			splerger.merge_meshinstances(mergelist, self, true)
 
 		
-		if road_slope > 0:
+		if abs(road_slope) > 0:
 			var coll = CollisionShape3D.new()
+			# FIXME: this convex shape has some issues :(
 			var shape = get_node("plane").get_mesh().create_convex_shape(true, true)
 			coll.set_shape(shape)
-			if get_node("StaticBody3D").has_node("CollisionPolygon"):
-				get_node("StaticBody3D").get_child(0).queue_free()
+			if get_node("StaticBody3D").has_node("CollisionPolygon3D"):
+				get_node("StaticBody3D/CollisionPolygon3D").disabled = true
 			get_node("StaticBody3D").add_child(coll)
 			coll.translate_object_local(Vector3(0,-1, 0))
 		else:
@@ -510,7 +511,7 @@ func create_road():
 			
 			# the existence of collision polygon is really good news for us
 			var poly = null
-			if get_node("StaticBody3D").has_node("CollisionPolygon"):
+			if get_node("StaticBody3D").has_node("CollisionPolygon3D"):
 				poly = get_node(^"StaticBody3D/CollisionPolygon3D").polygon
 				if global_transform.origin.y > 1:
 					get_node(^"StaticBody3D/CollisionPolygon3D").translate(Vector3(0,1,0))
