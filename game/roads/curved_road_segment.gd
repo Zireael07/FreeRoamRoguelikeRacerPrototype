@@ -496,14 +496,33 @@ func create_road():
 
 		
 		if abs(road_slope) > 0:
-			var coll = CollisionShape3D.new()
+			get_node("StaticBody3D").set_collision_layer(2) # AI raycasts ignore layer 2
+
 			# FIXME: this convex shape has some issues :(
-			var shape = get_node("plane").get_mesh().create_convex_shape(true, true)
-			coll.set_shape(shape)
+			#var shape = get_node("plane").get_mesh().create_convex_shape(true, true)
+			for i in points_center.size()-1:
+				var coll = CollisionShape3D.new()
+				var shape = BoxShape3D.new()
+				shape.size = Vector3(6,1,1)
+				
+				get_node("StaticBody3D").add_child(coll)
+				# debug
+				#coll.owner = get_parent().get_parent()
+				coll.set_shape(shape)
+				coll.transform.origin = Vector3(points_center[i].x, road_height+(road_slope*i), points_center[i].y)
+				
+				# rotate
+				if i < points_center.size()-1:
+					coll.look_at(to_global(Vector3(points_center[i+1].x, road_height+(road_slope*i), points_center[i+1].y)), Vector3.UP)
+				else:
+					coll.look_at(to_global(Vector3(points_center[i-1].x, road_height+(road_slope*i), points_center[i-1].y)), Vector3.UP)
+				
+				coll.translate_object_local(Vector3(0,-0.95,0))
+				
 			if get_node("StaticBody3D").has_node("CollisionPolygon3D"):
 				get_node("StaticBody3D/CollisionPolygon3D").disabled = true
-			get_node("StaticBody3D").add_child(coll)
-			coll.translate_object_local(Vector3(0,-1, 0))
+
+			#coll.translate_object_local(Vector3(0,-1, 0))
 		else:
 			# assign a more optimized collision shape :)
 			var outline = Geometry2D.convex_hull(points_inner+points_outer)

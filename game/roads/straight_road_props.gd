@@ -108,7 +108,7 @@ func place_props(trees, bamboo, long):
 		var pk = randi_range(2, numBuildings-2) # new in 4.0
 		
 		for index in range(numBuildings+1):
-			if index == pk and height > 0:
+			if index == pk and height > -0.01:
 				placeLot(index)
 			else:
 				placeBuilding(index, height, numBuildings)

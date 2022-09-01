@@ -273,10 +273,12 @@ script = ExtResource("10")
 [node name="SlopeRay" type="RayCast3D" parent="BODY"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, -1.181)
 target_position = Vector3(0, 0, -1)
+collision_mask = 3
 
 [node name="SlopeRay2" type="RayCast3D" parent="BODY"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -1.181)
 target_position = Vector3(0, 0, -1)
+collision_mask = 3
 
 [node name="ContextRays" type="Node3D" parent="BODY"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.336, 0)
