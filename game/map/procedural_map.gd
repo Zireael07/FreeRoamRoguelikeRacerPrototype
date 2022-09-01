@@ -426,10 +426,12 @@ func pos3d_to_vis_point(pos):
 
 # ---------------------------------------
 func find_road_for_edge(e):
+	#print("Finding road for edge ", e)
+	#print(var2str(int(e[0]))+"-"+var2str(int(e[1])))
+	#print(var2str(int(e[1]))+"-"+var2str(int(e[0])))
 	for c in get_children():
 		#if "Road " in c.get_name():
-		#if var2str(c.get_name()).find(var2str(e[0])+"-"+var2str(e[1])) != -1:
-		if (var2str(e[0])+"-"+var2str(e[1])) in c.get_name() or var2str(e[1])+"-"+var2str(e[0]) in c.get_name():
+		if (var2str(int(e[0]))+"-"+var2str(int(e[1]))) in c.get_name() or var2str(int(e[1]))+"-"+var2str(int(e[0])) in c.get_name():
 				#print("Found road for edge: ", e, " ", c.get_name())
 				return c
 
@@ -513,6 +515,34 @@ func elevate_outer_loop(loop):
 					turn1.translate_object_local(Vector3(0,-elevated_height,0))
 					# fix collision for angled road
 					turn1.get_node("StaticBody3D").translate_object_local(Vector3(0,0.5,0))
+		
+		# now check for non-elevated roads that link to elevated intersections
+		if i in elevated_inters:
+			for e in real_edges:
+				if e[0]+3 == i or e[1]+3 == i:
+					#print("Found real edge ", e, " ending at elevated inter: ", i-3)
+					var r = find_road_for_edge(e)
+					if r != null and not r in elevated_roads:
+						#print("Found non-elevated road ", r.get_name(), " for edge ", e)
+						print("Found non elevated road ", r.get_name(), " linking to intersection #", i-3)
+			
+						# adjust the road
+						var turn1 = r.get_node(^"Road_instance0").get_child(0).get_child(0)
+						var turn2 = r.get_node(^"Road_instance1").get_child(0).get_child(0)
+		
+						turn2.road_slope = -float(elevated_height)/(turn2.points_center.size()-1)
+						print("Slope: ", turn2.road_slope, " calc end: ", turn2.road_height+(turn2.road_slope*(turn2.points_center.size()-1)))
+
+						turn2.translate_object_local(Vector3(0,elevated_height,0))
+
+						# hackfix
+						turn2.calc()
+						# regen the road
+						turn2.create_road() # beginning and end don't change so that's all we need to call
+
+						# fix collision for angled road
+						turn2.get_node("StaticBody3D").translate_object_local(Vector3(0,0.5,0))
+			
 				
 	print("Outer loop done!")
 
