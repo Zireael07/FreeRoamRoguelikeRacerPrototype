@@ -99,6 +99,11 @@ func _physics_process(delta):
 	# velocity, up, snap, slope, slides
 	self.set_velocity(hvel)
 	
+	# stairstepping
+	if $SlopeRay.is_colliding() and !$SlopeRay2.is_colliding():
+		translate_object_local(Vector3(0,$SlopeRay2.transform.origin.y/2,0))
+		print("Detected a ledge...")
+	
 	# TODO: This information should be set to the CharacterBody properties instead of arguments.
 	move_and_slide() #hvel, #velocity,
 				#-transform.basis.y, Vector3.UP, true, 1)
