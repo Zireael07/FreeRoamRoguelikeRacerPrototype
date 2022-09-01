@@ -83,7 +83,7 @@ func _get_item_rect():
 func _draw():
 	draw_circle_arc(Vector2(0,0), radius, angle_from, angle_to, Color(0,0,1))
 	# debugging
-	draw_string(font, last, str(angle_to))
+	#draw_string(font, last, str(angle_to))
 	draw_circle(first, 1, Color(0,1,0))
 	draw_circle(last, 1, Color(1,0,0))
 	

@@ -15,7 +15,7 @@ func _ready():
 	# yay GD 3
 	#msh[1].create_convex_collision()
 	
-	ResourceSaver.save("res://csg_tunnel.tres",msh[1])
+	ResourceSaver.save(msh[1], "res://csg_tunnel.tres")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
