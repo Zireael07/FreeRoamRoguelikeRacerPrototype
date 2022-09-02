@@ -169,7 +169,7 @@ func mapgen():
 
 	# test: replace longest road with a bridge
 #	# done after nav setup to avoid having to mess with navigation
-	elevate_outer_loop(outer_loop)
+	var elevated_data = elevate_outer_loop(outer_loop)
 
 	# basic map is done, now sprinkle stuff around
 	await get_tree().process_frame
@@ -182,42 +182,55 @@ func mapgen():
 	for i in range(lots.size()):
 		place_AI(i, lots)
 
-	place_pois()
+	place_pois(elevated_data)
 
 # ----------------------------------------
-func place_pois():
+# sort
+func sort_exits(a,b):
+	if a.open_exits.size() > b.open_exits.size():
+		return true
+	return false
+
+func place_pois(elevated_data):
+	print("Elevated inters: ", elevated_data[0])
 	# place garage road
-	var garage_opts = []
-	for i in range(3, samples.size()-1):
-		var inters = get_child(i)
-		#Logger.mapgen_print(inters.get_name() + " exits: " + str(inters.open_exits))
-		if inters.open_exits.size() > 1:
-			# is it in the edges that actually were connected?
-			for e in real_edges:
-				if e.x == i or e.y == i:
-					Logger.mapgen_print(String(inters.get_name()) + " is an option for garage road")
-					garage_opts.append(inters)
-					break #the first find should be enough
-			
-			if garage_opts.find(inters) == -1:
-				pass
-				#Logger.mapgen_print(inters.get_name() + " is not in the actual connected map")
+	var poi_opts = []
+	# exclude helper nodes
+	for i in range(3, 3+samples.size()-1):
+		#print("Checking intersection #", i, " ", get_child(i).get_name())
+		if not i in elevated_data[0]:
+			var inters = get_child(i)
+			#Logger.mapgen_print(inters.get_name() + " exits: " + str(inters.open_exits))
+			# at least one open exit
+			if inters.open_exits.size() > 0:
+				print("Intersection ", get_child(i).get_name(), " has open exits")
+				# is it in the edges that actually were connected?
+				for e in real_edges:
+					# i - child node ids (real id +3)
+					if e.x == i-3 or e.y == i-3:
+						# prevent multiplicates
+						if not inters in poi_opts:
+							Logger.mapgen_print(String(inters.get_name()) + " is an option for POI")
+							poi_opts.append(inters)
 				
+				if poi_opts.find(inters) == -1:
+					pass
+					#Logger.mapgen_print(inters.get_name() + " is not in the actual connected map")
+	
+	poi_opts.sort_custom(sort_exits)
+					
 	var sel = null
-	if garage_opts.is_empty():
+	if poi_opts.is_empty():
 		print("No garage options found")
 		return
-
-#	if garage_opts.size() > 1:
-#		sel = garage_opts[randi() % garage_opts.size()]
-#	else:
-#		sel = garage_opts[0]
 
 	var rots = { Vector3(10,0,0): Vector3(0,-90,0), Vector3(0,0,10): Vector3(0, 180, 0), Vector3(-10,0,0) : Vector3(0, 90, 0) }
 
 	#TODO: procedural choice for garage road (pointing away from center to make sure we have space for the road)
+	
 	# force for testing
-	var wanted = get_child(3) # intersection 0
+	#var wanted = get_child(3) # intersection 0
+	var wanted = poi_opts[0]
 	sel = wanted
 
 	if sel.open_exits.size() > 0:
@@ -241,7 +254,8 @@ func place_pois():
 	
 	# TODO: procedural POI placement system
 	# place recharging station
-	wanted = get_child(6) # intersection 3
+	#wanted = get_child(6) # intersection 3
+	wanted = poi_opts[1]
 	sel = wanted
 	if sel.open_exits.size() > 2:
 		print(sel.get_name() + str(sel.open_exits[1]))
@@ -258,8 +272,9 @@ func place_pois():
 		add_child(station)
 
 	# place vehicle dealership
-	sel = get_child(8) # intersection 5
-	if sel.open_exits.size() > 1:
+	sel = poi_opts[3]
+	#sel = get_child(8) # intersection 5
+	if sel.open_exits.size() > 0:
 		print(String(sel.get_name()) + str(sel.open_exits[0]))
 		var dealer = dealership.instantiate()
 		# place
@@ -547,8 +562,8 @@ func elevate_outer_loop(loop):
 						# fix collision for angled road
 						turn2.get_node("StaticBody3D").translate_object_local(Vector3(0,0.5,0))
 			
-				
 	print("Outer loop done!")
+	return [elevated_inters]
 
 # ---------------------------------------
 func find_lot(road):
