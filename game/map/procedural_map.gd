@@ -182,6 +182,10 @@ func mapgen():
 	for i in range(lots.size()):
 		place_AI(i, lots)
 
+	place_pois()
+
+# ----------------------------------------
+func place_pois():
 	# place garage road
 	var garage_opts = []
 	for i in range(3, samples.size()-1):

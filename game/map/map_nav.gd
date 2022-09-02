@@ -427,6 +427,7 @@ func setup_nav_astar(pts, idx, begin_id):
 	#print("With turn2: " + str(pts))
 	
 	# TODO: potential optimization - add only key points to AStar
+	# begin, turn1_end, turn2_end, beginning of turn2
 	# add pts to nav (road-level AStar)
 	for i in range(pts.size()):
 		nav.add_point(i, pts[i])
@@ -504,6 +505,8 @@ func setup_markers(marker_data):
 		# assign the raceline
 		marker.raceline = nav_path
 
+# ---------------------------------------
+
 # this is governed by map not AI (so that lanes are picked consistently depending on direction of travel)
 # note to self: it doesn't care about the straight, just the turns
 # TODO: precalculate it, at least partially?
@@ -539,7 +542,6 @@ func get_lane(road, flip, left_side):
 	var quadrant = get_quadrant(rel_pos)
 		
 	print(String(road.get_name()), " rel pos road start-end: ", rel_pos, " angle: ", angle, " ", rad2deg(angle), " deg, quadrant ", quadrant)
-	
 	
 	# this part actually gets the points
 	var turn1 = road.get_node(^"Road_instance0").get_child(0).get_child(0)
@@ -829,7 +831,7 @@ func debug_lane_lists():
 			#debug_cube(to_local(turn1.to_global(turn1.start_point)))
 			#debug_cube(to_local(turn2.to_global(turn2.start_point)))
 
-		# black means it's the left lane when driving as the road was designed 
+		# black means it's the left lane when driving as the road was designed (with traffic)
 		# A->B (eg. 7 to 0 for road 7-0)
 		# red means it's the left lane when driving flipped
 
@@ -838,8 +840,8 @@ func debug_lane_lists():
 		# B-A - A->B
 		var src_debug = src.get_global_transform().origin+(turn1.to_global(turn1.start_point)-src.get_global_transform().origin).normalized()
 		var dst_debug = dst.get_global_transform().origin+(turn2.to_global(turn2.start_point)-dst.get_global_transform().origin).normalized()
-		debug_cube(to_local(src_debug), "left") # black
-		debug_cube(to_local(dst_debug), "flip") # red
+		debug_cube(to_local(src_debug), "left") # black (with traffic for designed direction)
+		debug_cube(to_local(dst_debug), "flip") # red (oncoming)
 		
 		# those points are global (see line 442)
 		for pt in pts:
@@ -873,6 +875,7 @@ func intersection_arc(car, closest, nav_path):
 	return get_node("/root/Geom").make_arc_from_points(p1, p2, p3, closest.get_global_transform().origin)
 
 # debugging
+# loc is, well, LOCAL!!!
 func debug_cube(loc, flag=""):
 	var mesh = BoxMesh.new()
 	mesh.set_size(Vector3(0.5,0.5,0.5))
