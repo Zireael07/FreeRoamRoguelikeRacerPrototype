@@ -34,8 +34,9 @@ func _on_Area_body_entered( body ):
 			
 			# brake
 			player.velocity = Vector3.ZERO
+			player.vel = Vector3.ZERO
 			player.acceleration = Vector3.ZERO
-			player.set_translation(player.get_translation())			
+			player.set_position(player.position)
 			#player.set_engine_force(-player.get_engine_force())
 			#player.set_engine_force(-400)
 			
@@ -48,9 +49,9 @@ func _on_Area_body_entered( body ):
 			var world = root.get_node(^"scene")
 			world.set_process(false)
 			# hide the sun
-			root.get_node(^"DirectionalLight3D").set_visible(false)
+			world.get_node(^"DirectionalLight3D").set_visible(false)
 			
-			var env = root.get_node(^"WorldEnvironment").get_environment()
+			var env = world.get_node(^"WorldEnvironment").get_environment()
 			env.set_fog_enabled(false)
 			
 			#spawn garage interior scene

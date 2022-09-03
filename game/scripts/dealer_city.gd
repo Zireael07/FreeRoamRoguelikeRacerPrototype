@@ -43,9 +43,9 @@ func enter_dealer(body):
 	var world = root.get_node(^"scene")
 	world.set_process(false)
 	# hide the sun
-	root.get_node(^"DirectionalLight3D").set_visible(false)
+	world.get_node(^"DirectionalLight3D").set_visible(false)
 	
-	var env = root.get_node(^"WorldEnvironment").get_environment()
+	var env = world.get_node(^"WorldEnvironment").get_environment()
 	env.set_fog_enabled(false)
 	
 	#spawn dealer interior scene

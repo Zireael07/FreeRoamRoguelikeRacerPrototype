@@ -44,10 +44,15 @@ func go_back():
 		var gl = entrance.get_node(^"Position3D").get_global_transform().origin
 		#print(gl)
 		# because player is child of 0,0,0 node
-		player.get_parent().set_translation(gl)
+		player.get_parent().position = gl
 		# actual player physics body relative to parent
-		player.set_translation(Vector3(0,0,0))
+		player.position = Vector3(0,0,0)
 		#print(player.get_parent().get_translation())
+		
+		# rotate & bring to a stop (kinematic)
+		player.set_velocity(Vector3(0,0,0))
+		player.vel = Vector3(0,0,0)
+		player.rotate_y(deg2rad(180))
 		
 		# unhide player
 		player.show()
@@ -67,7 +72,7 @@ func go_back():
 		var world = root.get_node(^"scene")
 		world.set_process(true)
 		# show the sun
-		root.get_node(^"DirectionalLight3D").set_visible(true)
+		world.get_node(^"DirectionalLight3D").set_visible(true)
 		
 
 		
