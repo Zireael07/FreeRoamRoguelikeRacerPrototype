@@ -105,3 +105,13 @@ func _on_Button2_pressed():
 		card.get_node(^"VBoxContainer/MapView/SubViewport/Camera2D").offset = mmap_offset-off 
 	
 	hud.show()
+
+
+func _on_Button3_pressed():
+	var root = get_node(^"/root/Node3D")
+	root.save_game()
+
+
+func _on_Button4_pressed():
+	var root = get_node(^"/root/Node3D")
+	root.load_game()
