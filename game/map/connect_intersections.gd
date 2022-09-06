@@ -73,10 +73,10 @@ func connect_intersections(one, two, verbose=false):
 	top_node.set_name("Road " +str(one-3) + "-" + str(two-3))
 	add_child(top_node)
 
-	var data = calculate_initial_turn(corner_points[0], corner_points[1], loc_src_exit, extendeds[0], src_exit)
+	var data = calculate_turn(corner_points[0], corner_points[1], extendeds[0])
 	initial_road_attempt(one, two, data, corner_points[0], top_node, verbose)
 
-	data = calculate_last_turn(corner_points[2], corner_points[3], loc_dest_exit, extendeds[1], dest_exit)
+	data = calculate_turn(corner_points[2], corner_points[3], extendeds[1])
 	last_turn_attempt(one, two, data, corner_points[2], top_node, verbose)
 	# can't rely on corner points because this sometimes leads to holes even though the turn angles are correct
 	var turn1 = top_node.get_node("Road_instance0").get_child(0).get_child(0)
@@ -133,32 +133,26 @@ func get_corner_points(one, two, loc_src_extended, loc_dest_extended, dist):
 	#debug_cube(Vector3(corner_forw.x, 1, corner_forw.z))
 	
 	return corners
-
-# TODO: fold this and the next function into one?	
-func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, src_exit):
+	
+func calculate_turn(corner1, corner2, loc_extended):
 	#B-A: A->B 
 	# 3D has no tangent()
-	var tang = (Vector2(corner1.x, corner1.z)-Vector2(loc_src_extended.x, loc_src_extended.z)).orthogonal()
-	var tang2 = (Vector2(corner2.x, corner2.z)-Vector2(loc_src_extended.x, loc_src_extended.z)).orthogonal()
+	var tang = (Vector2(corner1.x, corner1.z)-Vector2(loc_extended.x, loc_extended.z)).orthogonal()
+	var tang2 = (Vector2(corner2.x, corner2.z)-Vector2(loc_extended.x, loc_extended.z)).orthogonal()
 	
 	# extend them
-	var tang_factor = 100 # to cover absolutely everything
-	
+	var tang_factor = 150 # to cover absolutely everything
 	tang = tang*tang_factor
 	tang2 = tang2*tang_factor
 	
 	var start = Vector2(corner1.x, corner1.z) + tang
-	
 	#debug_cube(Vector3(start.x, 1, start.y))
 	#positions.append(Vector3(start.x, 0, start.y))
-	
-	#var start = Vector2(corner1.x, corner1.z)
+
 	var end = Vector2(corner1.x, corner1.z) - tang
-	
 	#debug_cube(Vector3(end.x, 1, end.y))
 	#positions.append(Vector3(end.x, 0, end.y))
-	
-	#var start_b = Vector2(corner2.x, corner2.z)
+
 	var start_b = Vector2(corner2.x, corner2.z) + tang2
 	#debug_cube(Vector3(start_b.x, 1, start_b.y))
 	#positions.append(Vector3(start_b.x, 0, start_b.y))
@@ -194,77 +188,12 @@ func calculate_initial_turn(corner1, corner2, loc_src_exit, loc_src_extended, sr
 		# back to 3D
 		#for i in range(points_arc.size()):
 		#	positions.append(Vector3(points_arc[i].x, 0.01, points_arc[i].y))
-		
-		#positions.append(loc_dest_ex)	
 	
 		var fin = Vector3(points_arc[points_arc.size()-1].x, 0.01, points_arc[points_arc.size()-1].y)
 	
 		return [radius, angles[0], angles[1], fin] #Vector3(end_point.x, 0, end_point.y)]
 	else:
-		print("First turn, no inters detected")
-
-func calculate_last_turn(corner1, corner2, loc_dest_exit, loc_dest_extended, dest_ex):
-	#B-A: A->B 
-	# 3D has no tangent()
-	var tang = (Vector2(corner1.x, corner1.z)-Vector2(loc_dest_extended.x, loc_dest_extended.z)).orthogonal()
-	var tang2 = (Vector2(corner2.x, corner2.z)-Vector2(loc_dest_extended.x, loc_dest_extended.z)).orthogonal()
-	
-	# extend them
-	var tang_factor = 150 # to cover absolutely everything
-	tang = tang*tang_factor
-	tang2 = tang2*tang_factor
-	var start = Vector2(corner1.x, corner1.z) + tang
-	
-	#debug_cube(Vector3(start.x, 1, start.y))
-	
-	#positions.append(Vector3(start.x, 0, start.y))
-	
-	#var start = Vector2(corner1.x, corner1.z)
-	var end = Vector2(corner1.x, corner1.z) - tang
-	
-	#debug_cube(Vector3(end.x, 1, end.y))
-	#positions.append(Vector3(end.x, 0, end.y))
-	
-	#var start_b = Vector2(corner2.x, corner2.z)
-	var start_b = Vector2(corner2.x, corner2.z) + tang2
-	#debug_cube(Vector3(start_b.x, 1, start_b.y))
-	#positions.append(Vector3(start_b.x, 0, start_b.y))
-	var end_b = Vector2(corner2.x, corner2.z)-tang2
-	#positions.append(Vector3(end_b.x, 0, end_b.y))
-	#debug_cube(Vector3(end_b.x, 1, end_b.y))
-	
-	# check for intersection (2D only)
-	var inters = Geometry2D.segment_intersects_segment(start, end, start_b, end_b)
-	
-	if inters:
-		#print("Intersect: " + str(inters))
-		#debug_cube(Vector3(inters.x, 1, inters.y))
-	
-		var radius = inters.distance_to(Vector2(corner1.x, corner1.z))
-		
-		# the point to which 0 degrees corresponds
-		var angle0 = inters+Vector2(radius,0)
-		
-		#debug_cube(Vector3(angle0.x, 1, angle0.y))
-		
-		var angles = get_node("/root/Geom").get_arc_angle(inters, Vector2(corner1.x, corner1.z), Vector2(corner2.x, corner2.z), angle0)
-		# debug angles
-		#positions.append(corner1)
-		#positions.append(Vector3(angle0.x, 0, angle0.y))
-		#positions.append(corner2)
-	
-		var points_arc = get_node("/root/Geom").get_circle_arc(inters, radius, angles[0], angles[1], true)
-		
-		# back to 3D
-		#for i in range(points_arc.size()):
-		#	positions.append(Vector3(points_arc[i].x, 0.01, points_arc[i].y))
-	
-		var fin = Vector3(points_arc[points_arc.size()-1].x, 0.01, points_arc[points_arc.size()-1].y)
-	
-	#positions.append(loc_dest_ex)	
-		return [radius, angles[0], angles[1], fin] #Vector3(end_point.x, 0, end_point.y)]
-	else:
-		print("Last turn, no inters detected")
+		print("Turn - no inters detected")
 	
 func initial_road_attempt(one, two, data, loc, node, verbose=false):
 	if data == null:
