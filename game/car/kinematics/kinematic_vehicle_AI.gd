@@ -262,7 +262,7 @@ func _process(delta):
 			# we only want 2 significant places
 			var interest_disp = []
 			for i in interest:
-				interest_disp.append(String.num(i,2))
+				interest_disp.append(str2var(String.num(i,2)))
 			hud.update_debug("D: " + str(danger) + "\n I: " + str(interest_disp))
 			hud.update_AI_vis(self)
 
@@ -279,6 +279,15 @@ func _process(delta):
 					coplights_off(playr)
 					# stop chase
 					brain.set_state(brain.STATE_DRIVING)
+					# find closest point
+					#print("GL: ", get_global_transform().origin)
+					var road = get_parent().map.get_node(^"nav").get_closest_road(get_global_transform().origin)
+					var top_road = road.get_parent()
+					if " " in road.get_name(): # for goofy reasons, straights have a space, we use that trivia here
+						top_road = road.get_parent().get_parent()
+					print("On road: ", top_road)
+					road.global_to_road_relative(get_global_transform().origin)
+					
 				else:
 					var playr = get_tree().get_nodes_in_group("player")[0]
 					var playr_loc = playr.get_node(^"BODY").get_global_transform().origin
@@ -291,6 +300,11 @@ func _process(delta):
 					else:
 						# stop chase
 						brain.set_state(brain.STATE_DRIVING)
+						# find closest point
+						#print("GL: ", get_global_transform().origin)
+						var road = get_parent().map.get_node(^"nav").get_closest_road(get_global_transform().origin)
+						print("On road: ", road.get_parent())
+						road.global_to_road_relative(get_global_transform().origin)
 						
 						print("[Cop] player escaped!")
 						# notify player

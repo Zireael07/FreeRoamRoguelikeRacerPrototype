@@ -505,6 +505,27 @@ func setup_markers(marker_data):
 		# assign the raceline
 		marker.raceline = nav_path
 
+# ------------------------------------
+func get_closest_road(gl):
+	var roads = get_tree().get_nodes_in_group("roads")
+	var dists = []
+	var targs = []
+	
+	for r in roads:
+		#var dist = r.get_global_position().distance_to(gl)
+		var dist = r.get_global_positions()[1].distance_to(gl)
+		dists.append(dist)
+		targs.append([dist, r])
+
+	dists.sort()
+	#print("Dists sorted: " + str(dists))
+	
+	for t in targs:
+		if t[0] == dists[0]:
+			print("Closest road is : ", t[1].get_name())
+			
+			return t[1]
+
 # ---------------------------------------
 
 # this is governed by map not AI (so that lanes are picked consistently depending on direction of travel)
@@ -544,6 +565,7 @@ func get_lane(road, flip, left_side):
 	print(String(road.get_name()), " rel pos road start-end: ", rel_pos, " angle: ", angle, " ", rad2deg(angle), " deg, quadrant ", quadrant)
 	
 	# this part actually gets the points
+	#TODO: unique nodes
 	var turn1 = road.get_node(^"Road_instance0").get_child(0).get_child(0)
 	var turn2 = road.get_node(^"Road_instance1").get_child(0).get_child(0)
 
