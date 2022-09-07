@@ -53,9 +53,12 @@ func load_game():
 	vehicles = data[3]
 	discovered_roads = data[4]
 	
-	
-	get_tree().set_pause(false)
-	get_tree().set_pause(true)
+	# refresh camera
+	var target =player.get_node("BODY").get_global_transform().origin
+	var pos = player.get_node("BODY").to_global(Vector3(0,3,4)) # a bit behind the player
+	#var pos = player.get_node("BODY").chase_cam.get_global_transform().origin
+	var up = Vector3(0, 1, 0)
+	player.get_node("BODY").chase_cam.look_at_from_position(pos, target, up)
 		
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
