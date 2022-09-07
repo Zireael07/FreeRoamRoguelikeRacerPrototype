@@ -1,5 +1,5 @@
 @tool
-extends "connect_intersections.gd"
+extends "game_map.gd"
 
 # prime candidate for rewriting in something speedier, along with triangulation itself (2dtests/Delaunay2D.gd)
 
@@ -417,6 +417,8 @@ func do_connect(s, end, verbose):
 	# +3 because of helper nodes that come first
 	var ret = connect_intersections(s+3, end+3, verbose)
 	if ret != false:
+		# FIXME: meshing here, should be done later
+		mesh_road_intersections(s+3, end+3, verbose)
 		if verbose:
 			Logger.mapgen_print("We did create a connection... " + str(s) + " to " + str(end))
 		real_edges.append(Vector2(s, end))
@@ -426,6 +428,7 @@ func do_connect(s, end, verbose):
 			#await get_tree().create_timer(1.0).timeout
 			get_node("/root/Control/MapgenVis").line = [s, end]
 			get_node("/root/Control/MapgenVis").redraw()
+	
 
 # drawing
 func pos3d_to_vis_point(pos):
