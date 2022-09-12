@@ -4,7 +4,7 @@
 shader_type spatial;
 
 instance uniform vec2 offset;
-instance uniform vec4 color: hint_color;
+instance uniform vec4 color: source_color;
 
 //pseudo_western
 //const int vMax = 3;

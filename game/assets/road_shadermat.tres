@@ -1,31 +1,26 @@
 [gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://dw68qicraawdi"]
 
-[ext_resource type="Texture2D" uid="uid://ym2vv407rocf" path="res://assets/road2Lane - road.jpg" id="1"]
 [ext_resource type="Shader" path="res://assets/rainroad_shader.gdshader" id="1_4g5bp"]
-[ext_resource type="Texture2D" uid="uid://wc7e74a63v1u" path="res://assets/road2Lane - road M.jpg" id="2"]
+[ext_resource type="Texture2D" uid="uid://ym2vv407rocf" path="res://assets/road2Lane - road.jpg" id="2_8q6pr"]
+[ext_resource type="Texture2D" uid="uid://wc7e74a63v1u" path="res://assets/road2Lane - road M.jpg" id="3_3666y"]
 
-[sub_resource type="FastNoiseLite" id="2"]
-frequency = 0.002
-in_3d_space = true
-fractal_type = 2
-domain_warp_type = 1
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_gteor"]
 
-[sub_resource type="NoiseTexture" id="3"]
-seamless = true
-noise = SubResource( "2" )
+[sub_resource type="NoiseTexture" id="NoiseTexture_ilbjq"]
+noise = SubResource("FastNoiseLite_gteor")
 
 [resource]
 render_priority = 0
-shader = ExtResource( "1_4g5bp" )
-shader_param/albedo = Color(1, 1, 1, 1)
-shader_param/specular = 0.5
-shader_param/metallic = 0.85
-shader_param/roughness = 0.2
-shader_param/emission = Color(0.00769043, 0.0916243, 0.984375, 1)
-shader_param/emission_energy = 4.0
-shader_param/puddle_size = 0.3
-shader_param/roughness_scale = Vector2(0.1, 0.1)
-shader_param/roughness_offset = Vector2(1, 1)
-shader_param/texture_albedo = ExtResource( "1" )
-shader_param/texture_emission = ExtResource( "2" )
-shader_param/reflect_texture = SubResource( "3" )
+shader = ExtResource("1_4g5bp")
+albedo = Color(1, 1, 1, 1)
+emission = Color(0, 0, 1, 1)
+emission_energy = null
+metallic = null
+puddle_size = 0.0
+reflect_texture = SubResource("NoiseTexture_ilbjq")
+roughness = null
+roughness_offset = null
+roughness_scale = null
+specular = null
+texture_albedo = ExtResource("2_8q6pr")
+texture_emission = ExtResource("3_3666y")

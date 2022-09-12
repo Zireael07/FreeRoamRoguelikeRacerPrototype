@@ -4,5 +4,5 @@
 [ext_resource type="Material" uid="uid://c5qul5sib2dvw" path="res://assets/car/car_wheel_shader.tres" id="2"]
 
 [node name="Node3D" type="Node3D"]
-script = ExtResource( "1" )
-material = ExtResource( "2" )
+script = ExtResource("1")
+material = ExtResource("2")

@@ -1,18 +1,18 @@
 shader_type spatial;
 render_mode blend_mix,depth_draw_opaque,cull_disabled,diffuse_lambert,specular_schlick_ggx;
-uniform vec4 albedo : hint_color;
-uniform sampler2D texture_albedo : hint_albedo;
+uniform vec4 albedo : source_color;
+uniform sampler2D texture_albedo : source_color;
 uniform float specular;
 uniform float metallic;
 uniform float roughness : hint_range(0,1);
-uniform sampler2D texture_emission : hint_black_albedo;
-uniform vec4 emission : hint_color;
+uniform sampler2D texture_emission : hint_default_black;
+uniform vec4 emission : source_color;
 uniform float emission_energy;
 uniform float puddle_size : hint_range(0,1);
 uniform vec2 roughness_scale;
 uniform vec2 roughness_offset;
 //uniform vec4 roughness_texture_channel;
-uniform sampler2D reflect_texture: hint_black_albedo;
+uniform sampler2D reflect_texture: hint_default_black;
 varying vec3 uv2_triplanar_pos;
 
 void vertex() {
