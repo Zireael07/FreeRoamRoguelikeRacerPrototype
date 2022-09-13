@@ -887,6 +887,8 @@ func stopping():
 	if speed < 0.3 and stop:
 		# set velocity to 0 to avoid creeping away
 		set_velocity(Vector3(0,0,0))
+		vel = Vector3(0,0,0)
+		acceleration = Vector3(0,0,0) #stop accelerating
 		
 		#print("Have stopped...")
 
