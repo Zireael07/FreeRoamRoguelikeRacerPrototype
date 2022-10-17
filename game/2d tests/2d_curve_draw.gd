@@ -129,26 +129,26 @@ func set_radius(val):
 	last = points_arc[points_arc.size()-1]
 	first = points_arc[0]
 	#draw_circle_arc(Vector2(0,0), radius, angle_from, angle_to)
-	update()
+	queue_redraw()
 	
 func set_angle_from(val):
 	angle_from = val
 	points_arc = get_node("/root/Geom").get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
 	last = points_arc[points_arc.size()-1]
 	first = points_arc[0]
-	update()
+	queue_redraw()
 	
 func set_angle_to(val):
 	angle_to = val
 	points_arc = get_node("/root/Geom").get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
 	last = points_arc[points_arc.size()-1]
 	first = points_arc[0]
-	update()
+	queue_redraw()
 
 func set_right(val):
 	right = val
 	points_arc = get_node("/root/Geom").get_circle_arc(Vector2(0,0), radius, angle_from, angle_to, right)
 	last = points_arc[points_arc.size()-1]
 	first = points_arc[0]
-	update()
+	queue_redraw()
 	

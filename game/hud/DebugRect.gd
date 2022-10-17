@@ -10,7 +10,7 @@ func update_data(interest, danger):
 	#print("data: ", interest, ", ",  danger)
 	data = [interest, danger]
 	# force redraw
-	update()
+	queue_redraw()
 
 #  data[0] is interest, data[1] is danger
 func _draw():

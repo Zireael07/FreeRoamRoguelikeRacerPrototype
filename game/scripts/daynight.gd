@@ -111,9 +111,9 @@ func _process(delta):
 	# TODO: weather should be a fsm and effects should be applied only on weather change
 	# weather
 #	if weather == WEATHER_SUNNY:
-#		player.get_node(^"BODY/skysphere/Skysphere").get_material_override().set_shader_uniform("cloud_cover", 25)
+#		player.get_node(^"BODY/skysphere/Skysphere").get_material_override().set_shader_parameter("cloud_cover", 25)
 #	elif weather == WEATHER_OVERCAST or weather == WEATHER_RAIN:
-#		player.get_node(^"BODY/skysphere/Skysphere").get_material_override().set_shader_uniform("cloud_cover", 85)
+#		player.get_node(^"BODY/skysphere/Skysphere").get_material_override().set_shader_parameter("cloud_cover", 85)
 	
 #	if weather == WEATHER_RAIN:
 #		rain()
@@ -135,7 +135,7 @@ func calculate_rotation(time):
 	var inv_fraction = 1.0-fraction
 	var angle_midnight = 200 # this * 0.5 = ~90, fudged it for the shadows to be more noticeable in the morning/afternoon
 	# set the angle in radians
-	var angle = deg2rad(-(angle_midnight*inv_fraction))
+	var angle = deg_to_rad(-(angle_midnight*inv_fraction))
 	return angle
 	
 func calculate_sun_latitude(time):

@@ -187,7 +187,7 @@ func set_radius(val):
 	inner_side_pts = get_tangs(width_out, false)[0]
 	tangs = get_tangs(width_out, false)[1]
 	#tangs = get_tangs(width_out, true)[1]
-	update()
+	queue_redraw()
 	
 func set_angle_from(val):
 	angle_from = val
@@ -198,7 +198,7 @@ func set_angle_from(val):
 	inner_side_pts = get_tangs(width_out, false)[0]
 	tangs = get_tangs(width_out, false)[1]
 	#tangs = get_tangs(width_out, true)[1]
-	update()
+	queue_redraw()
 	
 func set_angle_to(val):
 	angle_to = val
@@ -209,7 +209,7 @@ func set_angle_to(val):
 	inner_side_pts = get_tangs(width_out, false)[0]
 	tangs = get_tangs(width_out, false)[1]
 	#tangs = get_tangs(width_out, true)[1]
-	update()
+	queue_redraw()
 
 func set_right(val):
 	right = val
@@ -220,7 +220,7 @@ func set_right(val):
 	inner_side_pts = get_tangs(width_out, false)[0]
 	tangs = get_tangs(width_out, false)[1]
 	#tangs = get_tangs(width_out, true)[1]
-	update()
+	queue_redraw()
 	
 func set_width_out(val):
 	width_out = val
@@ -232,7 +232,7 @@ func set_width_out(val):
 	tangs = get_tangs(width_out, false)[1]
 	#tangs = get_tangs(width_out, true)[1]
 	
-	update()
+	queue_redraw()
 
 
 # snap
@@ -243,7 +243,7 @@ func set_width_out(val):
 		
 
 func _on_snap_enabled():
-	update()
+	queue_redraw()
 	if get_parent().get_parent() != null:
 		var target = find_closest()[0]
 		if target != null:

@@ -16,8 +16,8 @@ func _process(delta):
 	var map_rot = player_rot.y
 
 	#this resolves the gimbal lock issues
-	if (player_rot.x < -deg2rad(150) or player_rot.x > deg2rad(150)) and (player_rot.z < - deg2rad(150) or player_rot.z > deg2rad(150)):
-		map_rot = deg2rad(180)+player_rot.y #1.02
+	if (player_rot.x < -deg_to_rad(150) or player_rot.x > deg_to_rad(150)) and (player_rot.z < - deg_to_rad(150) or player_rot.z > deg_to_rad(150)):
+		map_rot = deg_to_rad(180)+player_rot.y #1.02
 
 	set_rotation(map_rot)
 	
@@ -35,8 +35,8 @@ func _process(delta):
 #	var map_rot = -player_rot.y
 #
 #	#this resolves the gimbal lock issues
-#	if (player_rot.x < -deg2rad(150) or player_rot.x > deg2rad(150)) and (player_rot.z < - deg2rad(150) or player_rot.z > deg2rad(150)):
-#		map_rot = deg2rad(180)+player_rot.y #1.02
+#	if (player_rot.x < -deg_to_rad(150) or player_rot.x > deg_to_rad(150)) and (player_rot.z < - deg_to_rad(150) or player_rot.z > deg_to_rad(150)):
+#		map_rot = deg_to_rad(180)+player_rot.y #1.02
 #
 #	set_rotation(map_rot)
 #

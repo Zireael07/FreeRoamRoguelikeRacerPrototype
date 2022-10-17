@@ -140,7 +140,7 @@ func get_arc_angle(center_point, start_point, end_point, angle0, verbose=false):
 	var angles = []
 	
 	# angle between line from center point to angle0 and from center point to start point
-	var angle1 = rad2deg((angle0-center_point).angle_to(start_point-center_point))
+	var angle1 = rad_to_deg((angle0-center_point).angle_to(start_point-center_point))
 	
 	if angle1 < 0:
 		angle1 = 360.0+angle1
@@ -149,7 +149,7 @@ func get_arc_angle(center_point, start_point, end_point, angle0, verbose=false):
 	#angles.append(angle)
 	#Logger.mapgen_print("Angle 1 " + str(angle1))
 	# equivalent angle for the end point
-	var angle2 = rad2deg((angle0-center_point).angle_to(end_point-center_point))
+	var angle2 = rad_to_deg((angle0-center_point).angle_to(end_point-center_point))
 	
 	if angle2 < 0:
 		angle2 = 360.0+angle2
@@ -215,11 +215,11 @@ func get_circle_arc( center, radius, angle_from, angle_to, right, nb_points=32):
 	for i in range(nb_points+1):
 		if right:
 			var angle_point = angle_from + i*(angle_to-angle_from)/nb_points #- 90
-			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
+			var point = center + Vector2( cos(deg_to_rad(angle_point)), sin(deg_to_rad(angle_point)) ) * radius
 			points_arc.push_back( point )
 		else:
 			var angle_point = angle_from - i*(angle_to-angle_from)/nb_points #- 90
-			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
+			var point = center + Vector2( cos(deg_to_rad(angle_point)), sin(deg_to_rad(angle_point)) ) * radius
 			points_arc.push_back( point )
 	
 	return points_arc

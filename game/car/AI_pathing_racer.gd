@@ -94,6 +94,6 @@ func set_our_name():
 		#panel.set_name(romaji)
 		panel.get_node(^"Label").set_text(romaji)
 		
-		#print("AI panel name " + var2str(panel.name))
+		#print("AI panel name " + var_to_str(panel.name))
 		#nameplate.set_name(AI_name)
 		#print("AI nameplate " + nameplate.name)

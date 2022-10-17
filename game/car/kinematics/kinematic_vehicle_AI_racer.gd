@@ -52,7 +52,7 @@ func get_input():
 		var a = angle_dir(-global_transform.basis.z, chosen_dir, transform.basis.y)
 		if reverse:
 			a = -a # flip the sign
-		steer_target = a * deg2rad(steering_limit)
+		steer_target = a * deg_to_rad(steering_limit)
 	else:
 		steer_target = 0
 	$tmpParent/Spatial_FL.rotation.y = steer_angle

@@ -129,7 +129,7 @@ func make_map():
 
 	
 	var exec_time = Time.get_ticks_msec() - start_time
-	print("Minimap generation execution time: " + var2str(exec_time))
+	print("Minimap generation execution time: " + var_to_str(exec_time))
 	
 	##textur = load("res://map_edited.png") #set_data(image)
 	
@@ -141,7 +141,7 @@ func make_map():
 	set_texture(textur)
 	
 	# save for later
-	image.save_png("res://map_edited.png")
+	#image.save_png("res://map_edited.png")
 
 	#register ourselves with the parent
 	#get_parent().get_parent().get_parent().minimap_bg = self

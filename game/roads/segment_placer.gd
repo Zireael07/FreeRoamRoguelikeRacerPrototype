@@ -1,6 +1,6 @@
 @tool
 
-extends Position3D
+extends Marker3D
 
 # class member variables go here, for example:
 # var a = 2
@@ -22,7 +22,7 @@ func place_road():
 			#print("We have a road")
 			
 			var begin = road.start_point
-			Logger.road_print(String(road.get_parent().get_parent().get_name()) + " beginning is " + var2str(begin))
+			Logger.road_print(String(road.get_parent().get_parent().get_name()) + " beginning is " + var_to_str(begin))
 			
 			var locate = Vector3(-begin.x, 0, -begin.z)
 			

@@ -63,7 +63,7 @@ func _on_Area_body_enter( body ):
 				var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 				track_map.points = []
 				# force redraw
-				track_map.update()
+				track_map.queue_redraw()
 				
 				# remove target flag from minimap
 				var minimap = player.get_node(^"Viewport_root/SubViewport/minimap")
@@ -90,7 +90,7 @@ func _on_Area_body_enter( body ):
 					var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 					track_map.points = track_map.vec3s_convert(raceline)
 					# force redraw
-					track_map.update()
+					track_map.queue_redraw()
 					
 					# prompt to turn around if needed
 					var rel_pos = raceline[1] * player.get_global_transform()
@@ -149,7 +149,7 @@ func _on_path_gotten():
 	var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 	track_map.points = track_map.vec3s_convert(raceline)
 	# force redraw
-	track_map.update()
+	track_map.queue_redraw()
 
 func get_AI_position_on_raceline():
 	if not done: return null
@@ -299,7 +299,7 @@ func _on_Area_body_exit( body ):
 					var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 					track_map.points = []
 					# force redraw
-					track_map.update()
+					track_map.queue_redraw()
 					# hide turn tip
 					player.show_nav_tip = false
 				
@@ -342,7 +342,7 @@ func spawn_racer(loc):
 	var local = cars.to_local(get_global_transform().origin)
 	
 	car.look_at(loc, Vector3(0,1,0))
-	car.rotate_y(deg2rad(180))
+	car.rotate_y(deg_to_rad(180))
 	# needs to come AFTER rotations
 	car.set_translation(local+loc)
 	#print("Translation:" + str((local+loc)))

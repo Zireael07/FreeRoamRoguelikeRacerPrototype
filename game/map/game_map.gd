@@ -62,7 +62,7 @@ func initial_road_attempt(one, two, turn_data, loc, node, verbose=false):
 			#if verbose:
 			#	Logger.mapgen_print("Road in normal direction, positive y")
 		else:
-			first_turn.rotate_y(deg2rad(180))
+			first_turn.rotate_y(deg_to_rad(180))
 			#if verbose:
 			#	Logger.mapgen_print("Rotated because we're going back")
 
@@ -88,7 +88,7 @@ func last_turn_attempt(one, two, turn_data, loc, node, verbose=false):
 			#if verbose:
 			#	Logger.mapgen_print("Road in normal direction, positive y")
 		else:
-			last_turn.rotate_y(deg2rad(180))
+			last_turn.rotate_y(deg_to_rad(180))
 			#if verbose:
 			#	Logger.mapgen_print("Rotated because we're going back")
 	
@@ -132,7 +132,7 @@ func set_straight(loc, loc2, node):
 	
 	road_node.look_at(tg, Vector3(0,1,0))
 	# because we're pointing at +Z, sigh...
-	spatial.rotate_y(deg2rad(180))
+	spatial.rotate_y(deg_to_rad(180))
 	return road_node
 	
 func set_curved_road(radius, start_angle, end_angle, index, node, verbose):
@@ -141,7 +141,7 @@ func set_curved_road(radius, start_angle, end_angle, index, node, verbose):
 		return null
 
 	var road_node_right = road.instantiate()
-	road_node_right.set_name("Road_instance"+var2str(index))
+	road_node_right.set_name("Road_instance"+var_to_str(index))
 	#set the radius we wanted
 	road_node_right.get_child(0).get_child(0).radius = radius
 
@@ -206,7 +206,7 @@ func set_straight_slope(loc, rot, node, i):
 	
 	#road_node.look_at(tg, Vector3(0,1,0))
 	# because we're pointing at +Z, sigh...
-	#road_node.rotate_y(deg2rad(180))
+	#road_node.rotate_y(deg_to_rad(180))
 	
 	road_node.rotate_y(rot.y)
 	return road_node

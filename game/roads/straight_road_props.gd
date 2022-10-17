@@ -198,7 +198,7 @@ func setupBuilding(index, base_height):
 			
 			var color = Color.from_hsv(hue, saturation, lightness)
 			
-			build.storefront_mat.set_shader_uniform("modulate", color)
+			build.storefront_mat.set_shader_parameter("modulate", color)
 	else:
 		build.storefront = false
 	
@@ -226,7 +226,7 @@ func setupBuilding(index, base_height):
 	var randi = randi_range(0, 10);
 	var rndf = randf_range(0.0,1.0);
 	var off = Vector2(get_parent().get_global_transform().origin.x + index + rndf, get_parent().get_global_transform().origin.y + index + randi);
-	build.get_node(^"MeshInstance3D").set_instance_shader_uniform("offset", off)
+	build.get_node(^"MeshInstance3D").set_instance_shader_parameter("offset", off)
 		
 	# sign color
 	#var rand_color_r = randf()
@@ -241,8 +241,8 @@ func setupBuilding(index, base_height):
 	
 	#print("Sign color: ", color)
 	
-	#build.get_node(^"MeshInstance3D").get_surface_override_material(0).set_shader_uniform("modulate", color)
-	build.get_node(^"MeshInstance3D").set_instance_shader_uniform("color", color)
+	#build.get_node(^"MeshInstance3D").get_surface_override_material(0).set_shader_parameter("modulate", color)
+	build.get_node(^"MeshInstance3D").set_instance_shader_parameter("color", color)
 	build.get_node("MeshInstance3D/OmniLight3D").light_color = color
 	
 	# vary sign placement height
@@ -253,7 +253,7 @@ func setupBuilding(index, base_height):
 	
 	
 	#build.set_scale(Vector3(2, 2, 2))
-	build.set_name("Skyscraper"+var2str(index))
+	build.set_name("Skyscraper"+var_to_str(index))
 	add_child(build)
 	
 	return build
@@ -262,7 +262,7 @@ func setupBuildingSimple(index):
 	var build = building.instantiate()
 	#var build = building_test.instantiate()
 
-	build.set_name("Skyscraper"+var2str(index))
+	build.set_name("Skyscraper"+var_to_str(index))
 	add_child(build)
 
 	return build
@@ -279,7 +279,7 @@ func placeBuilding(index, base_height, numBuildings):
 		loc = Vector3(roadwidth+buildDistance, base_height, index+buildOffset)
 	
 	build.set_position(loc)
-	build.set_rotation(Vector3(0, deg2rad(180), 0))
+	build.set_rotation(Vector3(0, deg_to_rad(180), 0))
 	
 	build.get_node(^"Node3D").set_position(Vector3(-8, 0,0))
 	if index == numBuildings:
@@ -359,7 +359,7 @@ func placeCable(index, base_height):
 		elif rand > 0.4:
 			cable = cables2.instantiate()
 		
-		cable.set_name("Cable"+var2str(index))
+		cable.set_name("Cable"+var_to_str(index))
 		add_child(cable)
 	
 		# if base_height < 0, we're building for a bridge/elevated road so let's flip the sign
@@ -368,7 +368,7 @@ func placeCable(index, base_height):
 
 func placeLot(index):
 	var lot = parking_lot.instantiate()
-	lot.set_name("Parking"+var2str(index))
+	lot.set_name("Parking"+var_to_str(index))
 	add_child(lot)
 	
 	# random selection
@@ -383,7 +383,7 @@ func placeLot(index):
 		else:
 			loc = Vector3(roadwidth+buildDistance, 0.05, index+buildOffset)
 		
-		lot.set_rotation(Vector3(deg2rad(-90), deg2rad(180), 0))
+		lot.set_rotation(Vector3(deg_to_rad(-90), deg_to_rad(180), 0))
 	else:
 		#right side of the road
 		loc = Vector3(-(roadwidth+buildDistance), 0.05, index+buildOffset)
@@ -399,7 +399,7 @@ func placeLot(index):
 
 func placeTree(index, base_height):
 	var tree = cherry_tree.instantiate()
-	tree.set_name("Tree"+var2str(index))
+	tree.set_name("Tree"+var_to_str(index))
 	add_child(tree)
 
 	#left side of the road
@@ -412,7 +412,7 @@ func placeTree(index, base_height):
 	tree.set_position(loc)
 	
 	tree = cherry_tree.instantiate()
-	tree.set_name("Tree"+var2str(index))
+	tree.set_name("Tree"+var_to_str(index))
 	add_child(tree)
 	
 	#right side of the road
@@ -431,7 +431,7 @@ func placeBamboo(index, base_height):
 	
 	
 	var clump = bamboo_clump.instantiate()
-	clump.set_name("Bamboo"+var2str(index))
+	clump.set_name("Bamboo"+var_to_str(index))
 	add_child(clump)
 
 	#left side of the road
@@ -447,7 +447,7 @@ func placeBamboo(index, base_height):
 	clump.set_position(loc)
 	
 	clump = bamboo_clump.instantiate()
-	clump.set_name("Bamboo"+var2str(index))
+	clump.set_name("Bamboo"+var_to_str(index))
 	add_child(clump)
 	
 	# vary position a bit

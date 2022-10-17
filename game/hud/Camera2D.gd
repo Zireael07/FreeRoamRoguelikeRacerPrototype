@@ -33,8 +33,8 @@ func _physics_process(delta):
 	#print("Map rot: " + str(map_rot))
 	
 	#this resolves the gimbal lock issues
-	#if (player_rot.x < -deg2rad(150) or player_rot.x > deg2rad(150)) and (player_rot.z < - deg2rad(150) or player_rot.z > deg2rad(150)):
-	#	map_rot = deg2rad(180)+player_rot.y #1.02
+	#if (player_rot.x < -deg_to_rad(150) or player_rot.x > deg_to_rad(150)) and (player_rot.z < - deg_to_rad(150) or player_rot.z > deg_to_rad(150)):
+	#	map_rot = deg_to_rad(180)+player_rot.y #1.02
 	
 	# For rotation to work, there must be NO Controls as it's parent/grandparent, in other words up the node tree
 	# siblings are fine
@@ -43,10 +43,10 @@ func _physics_process(delta):
 	
 	# rotate the player arrow
 	#arr_rot = map_rot
-#	if player_rot.y > deg2rad(30) and player_rot.y < deg2rad(120) or player_rot.y > deg2rad(-120) and player_rot.y < deg2rad(-30):
-#		arr_rot = arr_rot+deg2rad(90)
-#	if abs(player_rot.y) < deg2rad(48):
-#		arr_rot = arr_rot+deg2rad(180)
+#	if player_rot.y > deg_to_rad(30) and player_rot.y < deg_to_rad(120) or player_rot.y > deg_to_rad(-120) and player_rot.y < deg_to_rad(-30):
+#		arr_rot = arr_rot+deg_to_rad(90)
+#	if abs(player_rot.y) < deg_to_rad(48):
+#		arr_rot = arr_rot+deg_to_rad(180)
 	
 	#get_node(^"player").set_rotation(arr_rot)
 

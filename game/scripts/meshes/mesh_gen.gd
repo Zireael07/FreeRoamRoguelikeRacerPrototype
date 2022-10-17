@@ -180,7 +180,7 @@ func make_circle(center, segments, radius):
 
 	for i in range(segments+1):
 		var angle_point = angle_from + i*(angle_to-angle_from)/segments - 90
-		var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
+		var point = center + Vector2( cos(deg_to_rad(angle_point)), sin(deg_to_rad(angle_point)) ) * radius
 		points_arc.push_back( point )
 	
 	return points_arc

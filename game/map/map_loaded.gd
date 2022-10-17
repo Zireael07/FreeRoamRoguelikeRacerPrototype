@@ -142,7 +142,7 @@ func set_straight(relative_end, g_loc, _basis, node):
 	
 #	road_node.look_at(tg, Vector3(0,1,0))
 #	# because we're pointing at +Z, sigh...
-#	spatial.rotate_y(deg2rad(180))
+#	spatial.rotate_y(deg_to_rad(180))
 	
 	return road_node
 	
@@ -152,7 +152,7 @@ func set_curved_road(radius, start_angle, end_angle, index, g_loc, _basis, node)
 		return null
 
 	var road_node_right = road.instantiate()
-	road_node_right.set_name("Road_instance"+var2str(index))
+	road_node_right.set_name("Road_instance"+var_to_str(index))
 	#set the radius we wanted
 	road_node_right.get_child(0).get_child(0).radius = radius
 
@@ -208,7 +208,7 @@ func load_data():
 				# skip empty
 				if line == "":
 					continue
-				var _line = str2var(line)
+				var _line = str_to_var(line)
 
 				# skip empty lines and "Spatial" entries
 				if _line.size() > 1 and _line[0].find("Spatial") == -1:

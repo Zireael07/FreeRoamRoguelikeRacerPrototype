@@ -15,11 +15,11 @@ func save_game():
 	
 	var player = get_tree().get_nodes_in_group("player")[0]
 	
-	save_data.store_line(var2str(player.get_node("BODY").global_transform))
-	save_data.store_line(var2str(get_node("scene").time))
-	save_data.store_line(var2str(player.get_node("BODY").distance_int))
-	save_data.store_line(var2str(vehicles))
-	save_data.store_line(var2str(discovered_roads))
+	save_data.store_line(var_to_str(player.get_node("BODY").global_transform))
+	save_data.store_line(var_to_str(get_node("scene").time))
+	save_data.store_line(var_to_str(player.get_node("BODY").distance_int))
+	save_data.store_line(var_to_str(vehicles))
+	save_data.store_line(var_to_str(discovered_roads))
 
 	save_data.close()
 	print("Saved game to file!")

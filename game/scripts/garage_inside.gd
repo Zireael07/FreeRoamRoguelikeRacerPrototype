@@ -64,7 +64,7 @@ func go_back():
 		# rotate & bring to a stop (kinematic)
 		player.set_velocity(Vector3(0,0,0))
 		player.vel = Vector3(0,0,0)
-		player.rotate_y(deg2rad(180))
+		player.rotate_y(deg_to_rad(180))
 		
 		# unhide player
 		player.show()

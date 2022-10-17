@@ -50,7 +50,7 @@ func _process(delta):
 	
 	if timer.time_left > 0:
 		var intens = lerp(0.05, 0.2, timer.time_left)
-		mat.set_shader_uniform("intensity", intens)
+		mat.set_shader_parameter("intensity", intens)
 	
 		
 	# Linear velocity is just difference in positions between two frames.
@@ -77,8 +77,8 @@ func _process(delta):
 	var ang_vel = (cam_rot_diff * 2.0) * cam_rot_conj; 
 	ang_vel = Vector3(ang_vel.x, ang_vel.y, ang_vel.z) # Convert Quaternion to Vector3
 	
-	mat.set_shader_uniform("linear_velocity", velocity)
-	mat.set_shader_uniform("angular_velocity", ang_vel)
+	mat.set_shader_parameter("linear_velocity", velocity)
+	mat.set_shader_parameter("angular_velocity", ang_vel)
 		
 	cam_pos_prev = cam.global_transform.origin
 	cam_rot_prev = Quaternion(cam.global_transform.basis)

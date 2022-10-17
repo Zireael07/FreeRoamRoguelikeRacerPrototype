@@ -17,7 +17,7 @@ func get_circle_arc_simple(center, radius, angle):
 	
 	for i in range(nb_points+1):
 		var angle_point = angle_from + i*(angle_to-angle_from)/nb_points - 90
-		var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
+		var point = center + Vector2( cos(deg_to_rad(angle_point)), sin(deg_to_rad(angle_point)) ) * radius
 		points_arc.push_back( point )
 	
 	#print("Arc length: " + str(points_arc.size()))
@@ -31,11 +31,11 @@ func get_circle_arc( center, radius, angle_from, angle_to, right ):
 	for i in range(nb_points+1):
 		if right:
 			var angle_point = angle_from + i*(angle_to-angle_from)/nb_points - 90
-			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
+			var point = center + Vector2( cos(deg_to_rad(angle_point)), sin(deg_to_rad(angle_point)) ) * radius
 			points_arc.push_back( point )
 		else:
 			var angle_point = angle_from - i*(angle_to-angle_from)/nb_points - 90
-			var point = center + Vector2( cos(deg2rad(angle_point)), sin(deg2rad(angle_point)) ) * radius
+			var point = center + Vector2( cos(deg_to_rad(angle_point)), sin(deg_to_rad(angle_point)) ) * radius
 			points_arc.push_back( point )
 	
 	#print("Arc length: " + str(points_arc.size()))

@@ -49,6 +49,6 @@ func save_to_file():
 
 	for line in data:
 		# Store as a new line in the save file.
-		save_data.store_line(var2str(line))
+		save_data.store_line(var_to_str(line))
 	save_data.close()
 	print("Saved map gen to file!")

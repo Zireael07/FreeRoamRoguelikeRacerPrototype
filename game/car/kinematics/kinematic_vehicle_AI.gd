@@ -262,7 +262,7 @@ func _process(delta):
 			# we only want 2 significant places
 			var interest_disp = []
 			for i in interest:
-				interest_disp.append(str2var(String.num(i,2)))
+				interest_disp.append(str_to_var(String.num(i,2)))
 			hud.update_debug("D: " + str(danger) + "\n I: " + str(interest_disp))
 			hud.update_AI_vis(self)
 
@@ -546,7 +546,7 @@ func get_input():
 		a = angle_dir(-transform.basis.z, chosen_dir, transform.basis.y)
 		if reverse:
 			a = -a # flip the sign
-		steer_target = a * deg2rad(steering_limit)
+		steer_target = a * deg_to_rad(steering_limit)
 	else:
 		steer_target = 0
 	$tmpParent/Spatial_FL.rotation.y = steer_angle

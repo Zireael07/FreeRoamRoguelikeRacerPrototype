@@ -79,7 +79,7 @@ func get_circle_arc_poly(center, radius, angle_from, angle_to):
 
 	for i in range(nb_points+1):
 		var angle_point = angle_from + i*(angle_to-angle_from)/nb_points
-		points_arc.push_back(center + Vector2( cos( deg2rad(angle_point) ), sin( deg2rad(angle_point) ) ) * radius)
+		points_arc.push_back(center + Vector2( cos( deg_to_rad(angle_point) ), sin( deg_to_rad(angle_point) ) ) * radius)
 	
 	# to 3D
 	var points_arc_3d = PackedVector3Array()

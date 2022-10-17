@@ -13,7 +13,7 @@ func _ready():
 	
 	var t = $"../SubViewport".get_texture()
 	#get_material_override().albedo_texture = t
-	get_material_override().set_shader_uniform("refl_tx", t)
+	get_material_override().set_shader_parameter("refl_tx", t)
 	
 	$"../SubViewport".set_update_mode(SubViewport.UPDATE_DISABLED)
 	

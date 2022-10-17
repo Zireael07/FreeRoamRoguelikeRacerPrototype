@@ -333,7 +333,7 @@ func _physics_process(delta):
 		#	print("Setting to target angle: " + str(cockpit_cam.target_angle))
 		#	cockpit_cam.angle = cockpit_cam.target_angle
 
-	cockpit_cam.set_rotation(Vector3(deg2rad(180),deg2rad(cockpit_cam_angle), deg2rad(180)))
+	cockpit_cam.set_rotation(Vector3(deg_to_rad(180),deg_to_rad(cockpit_cam_angle), deg_to_rad(180)))
 
 
 	if stuck:
@@ -403,7 +403,7 @@ func _process(delta):
 	speed_int = round(speed)
 	speed_kph = round(speed*3.6)
 	#speed_text = String(speed_int) + " m/s " + String(speed_kph) + " kph"
-	speed_text = var2str(speed_kph)
+	speed_text = var_to_str(speed_kph)
 	# make speed reading red if above speed limit
 	if speed > 15:
 		hud.update_speed(speed_text, Color(1,0,0))
@@ -417,7 +417,7 @@ func _process(delta):
 	# in-game time
 	var text = " "
 	if (World_node != null):
-		text = var2str(World_node.hour) + " : " + var2str(round(World_node.minute))
+		text = var_to_str(World_node.hour) + " : " + var_to_str(round(World_node.minute))
 
 	hud.update_clock(text)
 
@@ -430,7 +430,7 @@ func _process(delta):
 
 	distance_int = round(distance)
 	#update distance HUD
-	hud.update_distance("Distance: " + var2str(distance_int) + " m")
+	hud.update_distance("Distance: " + var_to_str(distance_int) + " m")
 
 	var disp = get_compass_heading()
 	hud.update_compass(str(disp))
@@ -530,7 +530,7 @@ func _process(delta):
 #	if "light_color" in World_node and World_node.light_color != null:
 #		var color = Vector3(World_node.light_color.r, World_node.light_color.g, World_node.light_color.b)
 #	#print("Color input: " + str(color))
-#		get_node(^"skysphere/Skysphere").get_material_override().set_shader_uniform("light", color) #Color(World_node.light_color.r, World_node.light_color.g, World_node.light_color.b))
+#		get_node(^"skysphere/Skysphere").get_material_override().set_shader_parameter("light", color) #Color(World_node.light_color.r, World_node.light_color.g, World_node.light_color.b))
 #	#print("Shader color: " + str(get_node(^"skysphere/Skysphere").get_material_override().get_shader_param("light")))
 
 	# speed effects
@@ -600,8 +600,8 @@ func _process(delta):
 		gfx.add_child(mark)
 		mark.look_at(pos, Vector3(0,1,0))
 		# flip around because... +Z vs -Z...
-		#mark.rotate_y(deg2rad(180))
-		#mark.rotate_x(deg2rad(-90))
+		#mark.rotate_y(deg_to_rad(180))
+		#mark.rotate_x(deg_to_rad(-90))
 
 		mark = skidmark.instantiate()
 		wh_pos = get_node("wheel4")
@@ -631,8 +631,8 @@ func get_compass_heading():
 	var num_to_dir = {0:"N", 1: "NW", 2:"W", 3: "SW", 4:"S", 5: "SE", 6:"E", 7: "NE", 8:"N"}
 	# map from -180-180 to 0-4
 	#var rot = get_rotation_degrees().y
-	var rot = rad2deg(get_heading())
-	var num_mapping = range_lerp(rot, -180, 180, 0, 8)
+	var rot = rad_to_deg(get_heading())
+	var num_mapping = remap(rot, -180, 180, 0, 8)
 	var disp = num_to_dir[int(round(num_mapping))]
 	
 	return disp
@@ -654,7 +654,7 @@ func get_heading():
 	var rel_loc = (North.get_global_transform() * get_global_transform().origin)
 	#2D angle to target (local coords)
 	var angle = atan2(rel_loc.x, rel_loc.z)
-	#print("Heading: ", rad2deg(angle))
+	#print("Heading: ", rad_to_deg(angle))
 	return angle
 
 #doesn't interact with physics
@@ -783,9 +783,9 @@ func _input(event):
 		# don't care about y
 		car = Vector2(car.x, car.z)
 		var angle = car.angle_to(Vector2(lo.x, lo.z))
-		#print("Angle to loc: ", rad2deg(angle))
+		#print("Angle to loc: ", rad_to_deg(angle))
 		
-		print("Exit is ahead: ", abs(angle)>deg2rad(120))
+		print("Exit is ahead: ", abs(angle)>deg_to_rad(120))
 		
 		#var nav_path = [ closest.get_global_transform().origin + test_locs[2] ]
 		#map.get_node(^"nav").clear_cubes()

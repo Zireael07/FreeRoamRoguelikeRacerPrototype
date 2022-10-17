@@ -86,7 +86,7 @@ func _ready():
 	if Engine.is_editor_hint():
 			sunmoon_angle = calculate_sun_latitude(time)
 			# Godot 4 shader updates automatically
-			sun.set_rotation(Vector3(deg2rad(-sunmoon_angle), 0, 0))
+			sun.set_rotation(Vector3(deg_to_rad(-sunmoon_angle), 0, 0))
 	
 	trigger_count = 2
 	
@@ -173,7 +173,7 @@ func calculate_rotation(time):
 	var inv_fraction = 1.0-fraction
 	var angle_midnight = 200 # this * 0.5 = ~90, fudged it for the shadows to be more noticeable in the morning/afternoon
 	# set the angle in radians
-	var angle = deg2rad(-(angle_midnight*inv_fraction))
+	var angle = deg_to_rad(-(angle_midnight*inv_fraction))
 	return angle
 	
 func calculate_sun_latitude(time):
@@ -296,7 +296,7 @@ func day_night_cycle(time):
 	#print(str(time))
 	sunmoon_angle = calculate_sun_latitude(time)
 	# Godot 4 shader updates automatically
-	sun.set_rotation(Vector3(-deg2rad(sunmoon_angle), 0, 0))
+	sun.set_rotation(Vector3(-deg_to_rad(sunmoon_angle), 0, 0))
 	sunmoon_lat = calculate_sun_height(time)
 	#sunmoon_lat = calculate_sun_latitude(time)
 	

@@ -295,4 +295,4 @@ func _draw():
 		#draw_line(Vector2(e[0][0], e[0][1]), Vector2(e[1][0], e[1][1]), Color(0,0,1))
 	
 	# changing type to CanvasItem fixes this but breaks instancing
-	#update()
+	#queue_redraw()

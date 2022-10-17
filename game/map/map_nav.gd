@@ -470,7 +470,7 @@ func setup_marker(marker, marker_data, begin_id, end_id):
 	var tg = marker.target
 	#print("tg:", tg)
 	var int_path = ast.get_id_path(marker_data[begin_id], marker_data[end_id])
-	print("Intersections path: " + var2str(int_path))
+	print("Intersections path: " + var_to_str(int_path))
 	var raceline = PackedVector3Array()
 	for i in range(0, int_path.size()-1):
 		var lookup_path = path_look[[int_path[i], int_path[i+1]]]
@@ -489,7 +489,7 @@ func setup_markers(marker_data):
 		
 		# circuit marker
 		marker = get_parent().get_marker("circuit_marker")
-		print("Circuit intersections path: " + var2str(marker.cycle))
+		print("Circuit intersections path: " + var_to_str(marker.cycle))
 		var nav_path = PackedVector3Array()
 		for i in range(0, marker.cycle.size()-1):
 			#print("Entry: #", i, ": ", marker.cycle[i])
@@ -562,7 +562,7 @@ func get_lane(road, flip, left_side):
 	
 	var quadrant = get_quadrant(rel_pos)
 		
-	print(String(road.get_name()), " rel pos road start-end: ", rel_pos, " angle: ", angle, " ", rad2deg(angle), " deg, quadrant ", quadrant)
+	print(String(road.get_name()), " rel pos road start-end: ", rel_pos, " angle: ", angle, " ", rad_to_deg(angle), " deg, quadrant ", quadrant)
 	
 	# this part actually gets the points
 	#TODO: unique nodes
@@ -689,7 +689,7 @@ func get_paths(id, exclude=-1):
 		for p in paths:
 			if p[1] == exclude:
 				paths.remove_at(paths.find(p))
-	print("Possible paths for id : " + var2str(id) + " " + var2str(paths))
+	print("Possible paths for id : " + var_to_str(id) + " " + var_to_str(paths))
 	return paths
 
 func get_path_look(id, exclude=-1):
@@ -802,7 +802,7 @@ func debug_lane_lists():
 		var angle = atan2(rel_pos.z, rel_pos.x)
 		var quadrant = get_quadrant(rel_pos)
 		
-		print(String(road.get_name()), " rel pos road start-end: ", rel_pos, " angle: ", angle, " ", rad2deg(angle), " deg, quadrant ", quadrant)
+		print(String(road.get_name()), " rel pos road start-end: ", rel_pos, " angle: ", angle, " ", rad_to_deg(angle), " deg, quadrant ", quadrant)
 		
 		
 		# this part actually gets A* points

@@ -65,7 +65,7 @@ func _on_Area_body_enter( body ):
 				var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 				track_map.points = []
 				# force redraw
-				track_map.update()
+				track_map.queue_redraw()
 				
 				# remove target flag from minimap
 				var minimap = player.get_node(^"Viewport_root/SubViewport/minimap")
@@ -101,7 +101,7 @@ func _on_Area_body_enter( body ):
 				var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 				track_map.points = track_map.vec3s_convert(raceline)
 				# force redraw
-				track_map.update()
+				track_map.queue_redraw()
 				
 		#else:
 		#	print("Area3D entered by a car " + body.get_parent().get_name())
@@ -145,7 +145,7 @@ func _on_Area_body_exit( body ):
 					var track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 					track_map.points = []
 					# force redraw
-					track_map.update()
+					track_map.queue_redraw()
 				
 func spawn_finish(start):
 	print("Should be spawning finish")

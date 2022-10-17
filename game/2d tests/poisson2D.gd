@@ -335,4 +335,4 @@ func _draw():
 	
 
 	# changing type to CanvasItem fixes this but breaks instancing
-	update()
+	queue_redraw()

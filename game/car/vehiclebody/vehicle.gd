@@ -233,7 +233,7 @@ func _integrate_forces(state):
 			# the above somehow results in inverted location, so we do some transformations
 			var tr = Transform3D(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), local)
 			var axis = Vector3(0,1,0)
-			var angle_fix = deg2rad(180)
+			var angle_fix = deg_to_rad(180)
 			local = tr.rotated(axis, angle_fix).origin
 
 		if local != null:

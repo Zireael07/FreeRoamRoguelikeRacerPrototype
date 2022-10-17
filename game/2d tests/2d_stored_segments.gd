@@ -170,7 +170,7 @@ func makeNonFirst(linenum, segment):
 			
 			print("[Straight] Angle to target loc is " + String(rad2deg(angle)) + " degrees")
 			#to point straight, we need to rotate by 180-angle degrees
-			#var rotate = -(deg2rad(180)-angle)
+			#var rotate = -(deg_to_rad(180)-angle)
 			
 			segment.set_rotation(angle)
 			
@@ -329,7 +329,7 @@ func vectors_to_fit_to_straight(segment, prev, curdata, data):
 #
 #	var angle = angle_prev
 #
-#	#var angle = deg2rad(180)-angle_prev
+#	#var angle = deg_to_rad(180)-angle_prev
 #	#print("Angle " + String(angle) + " deg " + String(rad2deg(angle)))
 #
 #	#need relative location of check_loc to start_loc

@@ -63,30 +63,30 @@ func _on_ButtonUp_pressed():
 	pan.y -= 10 
 	cam.offset = pan
 	get_node(^"track").set_position(get_node(^"center").get_position() + mmap_offset - pan)
-	update()
-	get_node(^"track").update()
+	queue_redraw()
+	get_node(^"track").queue_redraw()
 
 
 func _on_ButtonDown_pressed():
 	pan.y += 10 
 	cam.offset = pan
 	get_node(^"track").set_position(get_node(^"center").get_position() + mmap_offset - pan)
-	update()
-	get_node(^"track").update()
+	queue_redraw()
+	get_node(^"track").queue_redraw()
 
 func _on_ButtonLeft_pressed():
 	pan.x -= 10 
 	cam.offset = pan
 	get_node(^"track").set_position(get_node(^"center").get_position() + mmap_offset - pan)
-	update()
-	get_node(^"track").update()
+	queue_redraw()
+	get_node(^"track").queue_redraw()
 
 func _on_ButtonRight_pressed():
 	pan.x += 10 
 	cam.offset = pan
 	get_node(^"track").set_position(get_node(^"center").get_position() + mmap_offset - pan)
-	update()
-	get_node(^"track").update()
+	queue_redraw()
+	get_node(^"track").queue_redraw()
 
 
 # detect clicks
@@ -153,12 +153,12 @@ func get_drawn_path(int_path):
 		var track_map = get_node(^"track")
 		track_map.points = track_map.vec3s_convert(nav_result)
 		# force redraw
-		track_map.update()
+		track_map.queue_redraw()
 		# show on minimap, too
 		var minimap_track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 		minimap_track_map.points = minimap_track_map.vec3s_convert(nav_result)
 		# force redraw
-		minimap_track_map.update()
+		minimap_track_map.queue_redraw()
 
 func player_nav(target):
 	# look up the closest intersection
@@ -197,7 +197,7 @@ func _on_MapView_gui_input(event):
 
 		
 		# draw
-		update()
+		queue_redraw()
 
 func redraw_nav():
 	if nav_result.size() > 0:
@@ -205,4 +205,4 @@ func redraw_nav():
 		var minimap_track_map = player.get_node(^"Viewport_root/SubViewport/minimap/Container/Node2D2/Control_pos/track")
 		minimap_track_map.points = minimap_track_map.vec3s_convert(nav_result)
 		# force redraw
-		minimap_track_map.update()
+		minimap_track_map.queue_redraw()

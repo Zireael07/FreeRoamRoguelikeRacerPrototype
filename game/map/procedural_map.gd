@@ -61,7 +61,7 @@ func mapgen():
 		if has_node("/root/Control/MapgenVis"):
 			await get_tree().process_frame
 			get_node("/root/Control/MapgenVis").get_child(i).show()
-			get_node("/root/Control/MapgenVis").get_child(i).set_text(var2str(i))
+			get_node("/root/Control/MapgenVis").get_child(i).set_text(var_to_str(i))
 			get_node("/root/Control/MapgenVis").get_child(i).position = pos3d_to_vis_point(Vector3(p[0]*mult, 0, p[1]*mult))+Vector2(-15,-15)
 			# draw a rect
 			get_node("/root/Control/MapgenVis").rects.append(pos3d_to_vis_point(Vector3(p[0]*mult, 0, p[1]*mult)))
@@ -153,7 +153,7 @@ func mapgen():
 			if has_node("/root/Control/Label"):
 				await get_tree().process_frame
 				do_connect(e[0], e[1], false)
-				get_node("/root/Control/Label").set_text(String("Connecting intersections " + var2str(e[0]) + " " + var2str(e[1])))
+				get_node("/root/Control/Label").set_text(String("Connecting intersections " + var_to_str(e[0]) + " " + var_to_str(e[1])))
 			else:
 				do_connect(e[0], e[1], false)
 
@@ -244,7 +244,7 @@ func place_pois(elevated_data):
 		# assign correct rotation
 		if rots.has(sel.open_exits[0]):
 			var rot = rots[sel.open_exits[0]]
-			garage_rd.set_rotation(Vector3(rot.x, deg2rad(rot.y), rot.z))
+			garage_rd.set_rotation(Vector3(rot.x, deg_to_rad(rot.y), rot.z))
 		else:
 			# prevent weirdness
 			print("Couldn't find correct rotation for " + str(sel.open_exits[0]))
@@ -266,7 +266,7 @@ func place_pois(elevated_data):
 		# assign correct rotation
 		if rots.has(sel.open_exits[1]):
 			var rot = rots[sel.open_exits[1]]
-			station.set_rotation(Vector3(rot.x, deg2rad(rot.y), rot.z))
+			station.set_rotation(Vector3(rot.x, deg_to_rad(rot.y), rot.z))
 	
 		station.set_name("station")
 		add_child(station)
@@ -283,7 +283,7 @@ func place_pois(elevated_data):
 		# assign correct rotation
 		if rots.has(sel.open_exits[0]):
 			var rot = rots[sel.open_exits[0]]
-			dealer.set_rotation(Vector3(rot.x, deg2rad(rot.y), rot.z))
+			dealer.set_rotation(Vector3(rot.x, deg_to_rad(rot.y), rot.z))
 		
 		dealer.set_name("dealership")
 		add_child(dealer)
@@ -408,7 +408,7 @@ func auto_connect(initial_int, real_edges, verbose=false):
 		if has_node("/root/Control/Label"):
 			await get_tree().process_frame
 			do_connect(initial_int, p[0], verbose)
-			get_node("/root/Control/Label").set_text(String("Connecting intersections " + var2str(initial_int) + " " + var2str(p[0])))
+			get_node("/root/Control/Label").set_text(String("Connecting intersections " + var_to_str(initial_int) + " " + var_to_str(p[0])))
 		else:
 			do_connect(initial_int, p[0], verbose)
 
@@ -453,7 +453,7 @@ func find_road_for_edge(e):
 	#print(var2str(int(e[1]))+"-"+var2str(int(e[0])))
 	for c in get_children():
 		#if "Road " in c.get_name():
-		if (var2str(int(e[0]))+"-"+var2str(int(e[1]))) in c.get_name() or var2str(int(e[1]))+"-"+var2str(int(e[0])) in c.get_name():
+		if (var_to_str(int(e[0]))+"-"+var_to_str(int(e[1]))) in c.get_name() or var_to_str(int(e[1]))+"-"+var_to_str(int(e[0])) in c.get_name():
 				#print("Found road for edge: ", e, " ", c.get_name())
 				return c
 
@@ -466,7 +466,7 @@ func replace_with_bridge(road):
 	# position the other end correctly
 	var end_p_gl = straight.global_transform * (str_len)
 	var end_p = road.get_node(^"Spatial0").to_local(end_p_gl)
-	var slope2 = set_straight_slope(end_p, road.get_node(^"Spatial0/Road_instance 0").get_rotation()+Vector3(0,deg2rad(180),0), road.get_node(^"Spatial0"), 2)
+	var slope2 = set_straight_slope(end_p, road.get_node(^"Spatial0/Road_instance 0").get_rotation()+Vector3(0,deg_to_rad(180),0), road.get_node(^"Spatial0"), 2)
 	# regenerate the straight
 	straight.translate_object_local(Vector3(0, 5, 40))
 	straight.relative_end = Vector3(0,0,str_len.z-80) # because both slopes are 40 m long
@@ -520,7 +520,7 @@ func elevate_outer_loop(loop):
 				var lower_inter_id = i-3
 				print("Found non-elevated intersection, #",lower_inter_id)	
 				#for r in elevated_roads:
-				if var2str(lower_inter_id) in r.get_name():
+				if var_to_str(lower_inter_id) in r.get_name():
 					print("Road ", r.get_name(), " ends at non-elevated intersection!")
 					# adjust the road
 					var turn1 = r.get_node(^"Road_instance0").get_child(0).get_child(0)
@@ -644,7 +644,7 @@ func place_AI(id, lots):
 	# rotate
 	car.get_node("BODY").look_at(pos)
 
-	print("placed AI on a lot #", var2str(id))
+	print("placed AI on a lot #", var_to_str(id))
 
 func get_marker(_name):
 	for c in get_children():

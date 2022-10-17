@@ -217,7 +217,7 @@ func calc():
 	#relative_end = start_point-last 
 	
 	relative_end = global_start - global_end
-	Logger.road_print("Last relative to start is " + var2str(relative_end))
+	Logger.road_print("Last relative to start is " + var_to_str(relative_end))
 	
 	#var mid_loc = points_center[(round(32/2))]
 	#mid_point = Vector3(mid_loc.x, road_height, mid_loc.y)
@@ -401,13 +401,13 @@ func create_road():
 #	if has_node("last_pos"):
 #		get_node(^"last_pos").set_translation(positions[positions.size()-1])
 #		get_node(^"last_pos").set_rotation(Vector3(0,0,0))
-#		get_node(^"last_pos").rotate_object_local(Vector3(0,0,1), deg2rad(end_angle))
+#		get_node(^"last_pos").rotate_object_local(Vector3(0,0,1), deg_to_rad(end_angle))
 #		get_node(^"last_pos").translate_object_local(Vector3(0, 0, lane_width))
 #
 #	if has_node("last_pos2"):
 #		get_node(^"last_pos2").set_translation(positions[positions.size()-1])
 #		get_node(^"last_pos").set_rotation(Vector3(0,0,0))
-#		get_node(^"last_pos2").rotate_object_local(Vector3(0,0,1), deg2rad(end_angle))
+#		get_node(^"last_pos2").rotate_object_local(Vector3(0,0,1), deg_to_rad(end_angle))
 #		get_node(^"last_pos2").translate_object_local(Vector3(0,0, -lane_width))
 #
 #	if has_node("last_pos3"):
@@ -541,7 +541,7 @@ func create_road():
 					pass
 				else:
 					coll.translate(Vector3(0,-1.5, 0))
-				coll.set_rotation(Vector3(deg2rad(90), 0,0))
+				coll.set_rotation(Vector3(deg_to_rad(90), 0,0))
 				get_node("StaticBody3D").add_child(coll)
 				poly = coll.polygon
 			poly = outline
@@ -639,7 +639,7 @@ func placeStreetlight():
 	
 #	# rotations
 #	if (left_turn): #or abs(get_parent().get_parent().get_rotation_degrees().y) > 178:
-#		light.set_rotation(Vector3(0,deg2rad(90),0))
+#		light.set_rotation(Vector3(0,deg_to_rad(90),0))
 #		#get_node(^"Debug").set_rotation_degrees(Vector3(0,90,0))
 #	else:
 #		light.set_rotation(Vector3(0,0,0))
@@ -648,7 +648,7 @@ func placeStreetlight():
 	#debug_cube(mid_point)
 
 	light.look_at(get_global_transform() * mid_point, Vector3(0, 1, 0)) # this looks down -Z
-	light.rotate_y(deg2rad(90)) # ... and we need +X
+	light.rotate_y(deg_to_rad(90)) # ... and we need +X
 
 # visual barrier
 func make_barrier_array(index):
@@ -706,28 +706,28 @@ func send_positions(map):
 func lite_up():
 	#print("Lit up road")
 	var material = get_node(^"plane").get_mesh().surface_get_material(0)
-	material.set_shader_uniform("emission_energy", 3)
-	material.set_shader_uniform("emission", Color(0,0,1))
+	material.set_shader_parameter("emission_energy", 3)
+	material.set_shader_parameter("emission", Color(0,0,1))
 	#material.set_feature(StandardMaterial3D.FEATURE_EMISSION, true)
 	#material.set_emission(Color(0,0,1))
 	
 func reset_lite():
 	#print("Reset lite")
 	var material = get_node(^"plane").get_mesh().surface_get_material(0)
-	material.set_shader_uniform("emission_energy", 0)
+	material.set_shader_parameter("emission_energy", 0)
 	#material.set_feature(StandardMaterial3D.FEATURE_EMISSION, false)
 
 func rain_shine(rain_amount):
 	var material = get_node(^"plane").get_mesh().surface_get_material(0)
-	material.set_shader_uniform("roughness", 0.2)
-	material.set_shader_uniform("metallic", 0.85)
-	material.set_shader_uniform("puddle_size", rain_amount)
+	material.set_shader_parameter("roughness", 0.2)
+	material.set_shader_parameter("metallic", 0.85)
+	material.set_shader_parameter("puddle_size", rain_amount)
 	
 func no_rain():
 	var material = get_node(^"plane").get_mesh().surface_get_material(0)
-	material.set_shader_uniform("roughness", 1.0)
-	material.set_shader_uniform("metallic", 0.0)
-	material.set_shader_uniform("puddle_size", 0.0)
+	material.set_shader_parameter("roughness", 1.0)
+	material.set_shader_parameter("metallic", 0.0)
+	material.set_shader_parameter("puddle_size", 0.0)
 	#material.set_roughness(1.0)
 	#material.set_metallic(0.0)
 	
@@ -799,7 +799,7 @@ func local_to_road_relative_old(loc):
 	#print(rad2deg(end_vec.angle_to(angle0)), " or: ", end_angle)
 
 	#var n = rad2deg(loc.angle_to(angle0))
-	var n = rad2deg(loc.signed_angle_to(angle0, angle0))
+	var n = rad_to_deg(loc.signed_angle_to(angle0, angle0))
 	
 	# check directions (Vec3 signed_angle() does the same cross/dot combo)
 

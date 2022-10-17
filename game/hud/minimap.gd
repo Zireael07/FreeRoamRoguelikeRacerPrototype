@@ -142,8 +142,8 @@ func _process(delta):
 	
 	var calc_offset = calc_panning()
 	
-	minimap_bg.get_material().set_shader_uniform("X", calc_offset[0])
-	minimap_bg.get_material().set_shader_uniform("Y", calc_offset[1])
+	minimap_bg.get_material().set_shader_parameter("X", calc_offset[0])
+	minimap_bg.get_material().set_shader_parameter("Y", calc_offset[1])
 	
 func calc_panning():
 	#print("Minimap offset is " + String(minimap_bg.uv_offset))

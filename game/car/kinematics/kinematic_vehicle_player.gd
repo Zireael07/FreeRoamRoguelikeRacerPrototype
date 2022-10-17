@@ -200,7 +200,7 @@ func on_load_ended():
 func get_input():
 	turn = Input.get_action_strength("steer_left")
 	turn -= Input.get_action_strength("steer_right")
-	steer_target = turn * deg2rad(steering_limit)
+	steer_target = turn * deg_to_rad(steering_limit)
 	#var steer_angle = get_steering_angle(steer_target)
 	$tmpParent/Spatial_FL.rotation.y = steer_angle*2
 	$tmpParent/Spatial_FR.rotation.y = steer_angle*2
@@ -348,13 +348,13 @@ func _physics_process(delta):
 		#	print("Setting to target angle: " + str(cockpit_cam.target_angle))
 		#	cockpit_cam.angle = cockpit_cam.target_angle
 
-	cockpit_cam.set_rotation(Vector3(deg2rad(180),deg2rad(cockpit_cam_angle), deg2rad(180)))
+	cockpit_cam.set_rotation(Vector3(deg_to_rad(180),deg_to_rad(cockpit_cam_angle), deg_to_rad(180)))
 
 	# did we run into ...
 	if get_slide_collision_count():
 		var collision = get_slide_collision(0)
 		# a cardboard box?
-		if collision.get_collider() is RigidDynamicBody3D:
+		if collision.get_collider() is RigidBody3D:
 			var nam = collision.get_collider().get_name()
 			#print(nam)
 			# push on it
@@ -414,7 +414,7 @@ func reset_car():
 	#var tr = get_parent().get_translation()
 	#get_parent().set_translation(Vector3(tr.x, 0.5, tr.z))
 	#global_translate(Vector3(0, 0.5,0))
-	translate_object_local(Vector3(0,0.1,0))
+	translate_object_local(Vector3(0,2,0)) #0.1
 	# solution from https://godotengine.org/qa/56193/how-to-manually-set-the-position-of-a-kinematicbody2d
 	set_velocity(Vector3(0,gravity/10,0))
 	move_and_slide() #
@@ -435,12 +435,22 @@ func _process(delta):
 		hud.update_debug_stuff(data, get_node("occupancy_map").rays, \
 		get_node("occupancy_map").danger, get_node("occupancy_map").interest, 
 		get_node("occupancy_map").chosen_dir)
+		#, \
+		#get_node("occupancy_map").occupancy_map, 10/2) # 10 is occupancy map size
+
+	# more test stuff
+#	var road = map.get_node(^"nav").get_closest_road(get_global_transform().origin)
+#	var top_road = road.get_parent().get_parent().get_parent()
+#	if " " in road.get_name(): # for goofy reasons, straights have a space, we use that trivia here
+#		top_road = road.get_parent().get_parent()
+#	print("On road: ", top_road)
+#	road.global_to_road_relative(get_global_transform().origin)
 
 	#speedometer
 	speed_int = round(speed)
 	speed_kph = round(speed*3.6)
 	#speed_text = String(speed_int) + " m/s " + String(speed_kph) + " kph"
-	speed_text = var2str(int(speed_kph))
+	speed_text = var_to_str(int(speed_kph))
 	# make speed reading red if above speed limit
 	if speed > 15:
 		hud.update_speed(speed_text, Color(1,0,0))
@@ -454,7 +464,7 @@ func _process(delta):
 	# in-game time
 	var text = " "
 	if (World_node != null):
-		text = var2str(int(World_node.hour)) + " : " + var2str(int(round(World_node.minute)))
+		text = var_to_str(int(World_node.hour)) + " : " + var_to_str(int(round(World_node.minute)))
 
 	hud.update_clock(text)
 
@@ -465,7 +475,7 @@ func _process(delta):
 
 	distance_int = round(distance)
 	#update distance HUD
-	hud.update_distance("Distance: " + var2str(distance_int) + " m")
+	hud.update_distance("Distance: " + var_to_str(distance_int) + " m")
 
 	var disp = get_compass_heading()
 	hud.update_compass(str(disp))
@@ -477,10 +487,14 @@ func _process(delta):
 		hud.update_nav_label("")
 
 	hud.update_road(str(data[1]) if data[0] != null else "")
+	# for tests
+	if has_node("occupancy_map"):
+		if data[0] != null:
+			get_node("occupancy_map").road = data[2]
 
 	hud.update_health(health)
 
-	hud.update_battery(battery)
+	#hud.update_battery(battery)
 
 
 	# stop weather particles when in tunnel
@@ -514,8 +528,8 @@ func _process(delta):
 		gfx.add_child(mark)
 		mark.look_at(pos, Vector3(0,1,0))
 		# flip around because... +Z vs -Z...
-		#mark.rotate_y(deg2rad(180))
-		#mark.rotate_x(deg2rad(-90))
+		#mark.rotate_y(deg_to_rad(180))
+		#mark.rotate_x(deg_to_rad(-90))
 
 		mark = skidmark.instantiate()
 		wh_pos = get_node(^"tmpParent/Spatial_RR")
@@ -602,6 +616,7 @@ func driving_on_road():
 	# detect what we're driving on
 	var ray_hit = get_node("RayCast3D").get_collider()
 	var disp_name = ""
+	var road = null
 
 	# don't lose track of area assigned hits
 	if hit and 'length' in hit:
@@ -616,17 +631,18 @@ func driving_on_road():
 		get_node(^"Smoke").set_emitting(false)
 		get_node(^"Smoke2").set_emitting(false)
 		
-		#var road_ = hit.get_parent().get_name().find("Road_")
-		var road = String(hit.get_node(^"../../..").get_name()).find("Road")
+		var road_f = String(hit.get_node(^"../../..").get_name()).find("Road")
 		#var road = hit.get_node(^"../../../../").get_name().find("Road")
 		# straight
 		if 'length' in hit:
 		#if road_ != -1:
-			disp_name = hit.get_node(^"../../").get_name()
+			road = hit
+			disp_name = road.get_node(^"../../").get_name()
 			reached_changed = false
 		# curve
-		elif road != -1:
-			disp_name = hit.get_node(^"../../../../").get_name()
+		elif road_f != -1:
+			road = hit.get_node("..")
+			disp_name = road.get_node(^"../../../").get_name()
 			reached_changed = false
 		# intersection
 		else:
@@ -685,7 +701,7 @@ func driving_on_road():
 				get_node(^"Smoke").set_emitting(true)
 				get_node(^"Smoke2").set_emitting(true)
 
-	return [hit, disp_name]
+	return [hit, disp_name, road]
 
 func mark_road_discovered(disp_name):
 	if "intersection" in disp_name:
@@ -716,8 +732,8 @@ func get_compass_heading():
 	var num_to_dir = {0:"N", 1: "NW", 2:"W", 3: "SW", 4:"S", 5: "SE", 6:"E", 7: "NE", 8:"N"}
 	# map from -180-180 to 0-4
 	#var rot = get_rotation_degrees().y
-	var rot = rad2deg(get_heading())
-	var num_mapping = range_lerp(rot, -180, 180, 0, 8)
+	var rot = rad_to_deg(get_heading())
+	var num_mapping = remap(rot, -180, 180, 0, 8)
 	var disp = num_to_dir[int(round(num_mapping))]
 	
 	return disp

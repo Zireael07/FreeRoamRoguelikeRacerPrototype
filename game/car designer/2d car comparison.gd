@@ -58,7 +58,7 @@ func _ready():
 	set_polygon(trueno)
 	
 	# redraw
-	#update()
+	#queue_redraw()
 	
 	
 	#pass # Replace with function body.

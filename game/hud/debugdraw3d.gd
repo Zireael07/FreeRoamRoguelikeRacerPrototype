@@ -62,7 +62,7 @@ var lines = {}
 func _process(_delta):
 	if not visible:
 		return
-	update()
+	queue_redraw()
 
 func _draw():
 	var camera = get_viewport().get_camera_3d()

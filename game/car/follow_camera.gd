@@ -45,7 +45,7 @@ func _physics_process(dt):
 		
 		# Turn a little up or down
 		var t = get_transform()
-		t.basis = Basis(t.basis[0], deg2rad(angle_v_adjust))*t.basis
+		t.basis = Basis(t.basis[0], deg_to_rad(angle_v_adjust))*t.basis
 		set_transform(t)
 		
 	#debug mode
@@ -63,7 +63,7 @@ func _physics_process(dt):
 	if look_back and not debug:
 		
 		var t = get_transform()
-		t.basis = Basis(t.basis[1], deg2rad(180))*t.basis
+		t.basis = Basis(t.basis[1], deg_to_rad(180))*t.basis
 		set_transform(t)
 		
 
@@ -78,7 +78,7 @@ func _ready():
 	# Find collision exceptions for ray
 	var node = self
 	while(node):
-		if (node is RigidDynamicBody3D):
+		if (node is RigidBody3D):
 			collision_exception.append(node.get_rid())
 			break
 		else:

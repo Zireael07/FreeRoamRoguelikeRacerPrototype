@@ -67,7 +67,7 @@ func look_for_path_initial_parking(id, left):
 	
 	# get road (see the intersection variant, "get road and direction")
 	road = lots[id][0].get_node("../../../..")
-	print("Found road for lot #", var2str(id), ": ", road.get_name())
+	print("Found road for lot #", var_to_str(id), ": ", road.get_name())
 	var flip = false
 	
 	var nav_data = map.get_node(^"nav").get_lane(road, flip, left)
@@ -125,7 +125,7 @@ func look_for_path_initial_parking(id, left):
 	#get_node("BODY").set_physics_process(false)
 	#get_node("BODY").look_at(pos)
 	#print("After look at: ", get_node("BODY").transform)
-	#get_node("BODY").rotate_y(deg2rad(180)) # hackfix
+	#get_node("BODY").rotate_y(deg_to_rad(180)) # hackfix
 	
 	# extract intersection numbers
 	var ret = []
@@ -192,7 +192,7 @@ func look_for_path_initial_intersection(start_ind, left):
 					int_path = t[1]
 			
 			
-	print("[AI] our intersection path: " + var2str(int_path))
+	print("[AI] our intersection path: " + var_to_str(int_path))
 	
 	# paranoia
 	if int_path == null:
@@ -373,7 +373,7 @@ func is_going_straight_across(closest, target):
 	var angle = car.angle_to(Vector2(tg.x, tg.z))
 	#print(get_name(), " angle to target: ", rad2deg(angle))
 	
-	var is_ahead = abs(angle) > deg2rad(120)	
+	var is_ahead = abs(angle) > deg_to_rad(120)	
 	#print("Exit is ahead: ", is_ahead)
 	
 	return is_ahead
@@ -461,7 +461,7 @@ func reduce_path(path):
 		#print("Angle diff " + str(rad2deg(angle)) + " for i: " + str(i))
 		
 		# if angle is the same, remove middle point
-		if rad2deg(angle) < 0.01:
+		if rad_to_deg(angle) < 0.01:
 			#print("Removing point at: " + str(i+1) + " because angle is " + str(rad2deg(angle)))
 			
 			to_remove.append(path[i+1])

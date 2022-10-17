@@ -28,11 +28,11 @@ func _ready():
 	
 	# test changing lanes
 	
-	#loc_tg = (get_parent().forward_vec*lane_change_dist_factor).rotated(deg2rad(lane_change_deg))
+	#loc_tg = (get_parent().forward_vec*lane_change_dist_factor).rotated(deg_to_rad(lane_change_deg))
 	#target = to_global(loc_tg)
 	#marker.set_position(loc_tg)
 	
-	#var loc_tg2 = (get_parent().forward_vec*2).rotated(deg2rad(-30))
+	#var loc_tg2 = (get_parent().forward_vec*2).rotated(deg_to_rad(-30))
 	#ult_tg = loc_tg+loc_tg2
 	
 	# test normal driving
@@ -45,7 +45,7 @@ func _physics_process(delta):
 #	steer = match_velocity_length(10)
 #	# combine two behaviors
 #	# this is global 45 degrees, not local
-#	steer += align(deg2rad(45))
+#	steer += align(deg_to_rad(45))
 #
 #	# use real velocity to decide
 #	# _velocity is rotated by parent's rotation, so we use the one that's rotated to fitt
@@ -151,9 +151,9 @@ func align(target):
 		# early return
 		#return (steering)
 	else:
-		if abs(change) < deg2rad(35): # slow radius
+		if abs(change) < deg_to_rad(35): # slow radius
 			# pretty much the same as arrive but for floats not vectors
-			steering = Vector2(clamp(max_force, -1, 1) * (abs(change) /deg2rad(15)), 0)
+			steering = Vector2(clamp(max_force, -1, 1) * (abs(change) /deg_to_rad(15)), 0)
 			#print("steer: " + str(steering))
 		else:
 			steering = Vector2(max_force, 0)

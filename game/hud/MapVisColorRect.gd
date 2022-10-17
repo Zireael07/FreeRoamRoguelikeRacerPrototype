@@ -8,14 +8,14 @@ func _ready():
 	pass # Replace with function body.
 
 #func _fixed_process():
-#	update() #redraw
+#	queue_redraw() #redraw
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	#count += 1
 	#print("Count: ", count, " d: ", delta)
 	#print("R:", rects)
-	#update()
+	#queue_redraw()
 	pass
 	
 func _draw():
@@ -27,13 +27,13 @@ func _draw():
 
 func redraw():
 	#print("Hello from vis! ", rects)
-	#get_parent().get_node("Label").set_text(var2str(rects)) # test
-	update() # redraw
+	#get_parent().get_node("Label").set_text(var_to_str(rects)) # test
+	queue_redraw() # redraw
 
 func prepare_labels(num):
 	for i in range(num):
 		var l = Label.new()
-		l.set_name(var2str(i))
+		l.set_name(var_to_str(i))
 		add_child(l)
 		l.hide()
 	

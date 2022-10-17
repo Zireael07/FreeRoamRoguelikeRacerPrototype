@@ -10,7 +10,7 @@ func _ready():
 # the rect is 40 px tall, so we start at 40 px
 # the value of 1 is represented by the line all the way to the top (to 0 px)
 func calc_line_end(data_point):
-	var lrp = range_lerp(clamp(data_point, 0,1), 0, 1, 40.0, 1.0) 
+	var lrp = remap(clamp(data_point, 0,1), 0, 1, 40.0, 1.0) 
 	#print("Line end for ", data_point, ": ", lrp)
 	return lrp
 
