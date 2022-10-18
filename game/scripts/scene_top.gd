@@ -10,8 +10,8 @@ func _ready():
 	pass # Replace with function body.
 
 func save_game():
-	var save_data = File.new()
-	save_data.open("res://savegame.txt", File.WRITE)
+	var save_data = FileAccess.new()
+	save_data.open("res://savegame.txt", FileAccess.WRITE)
 	
 	var player = get_tree().get_nodes_in_group("player")[0]
 	
@@ -26,7 +26,7 @@ func save_game():
 	
 func load_game():
 	var data = []
-	var file = File.new()
+	var file = FileAccess.new()
 	var opened = file.open("res://savegame.txt", file.READ)
 	if opened == OK:
 		while !file.eof_reached():
@@ -36,7 +36,7 @@ func load_game():
 				# skip empty
 				if line == "":
 					continue
-				var _line = str2var(line)
+				var _line = str_to_var(line)
 				data.append(_line)
 
 	

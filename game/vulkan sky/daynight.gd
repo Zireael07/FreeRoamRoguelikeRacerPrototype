@@ -70,7 +70,7 @@ func _ready():
 	delay = 0.0;
 	
 	#target 60 fps
-	Engine.set_target_fps(60)
+	Engine.set_max_fps(60)
 	
 	sun = get_node(^"DirectionalLight3D")
 	env = get_node(^"WorldEnvironment").get_environment()
