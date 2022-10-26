@@ -322,7 +322,7 @@ func day_night_cycle(time):
 		#re-enable shadows
 		#sun.set_shadow(true)
 		
-		env.background_energy = 1
+		env.background_energy_multiplier = 1
 	if time >= 18.4 && time < 18.5:
 		pass
 		# no idea what it was needed for, removing it fixes the stutter
@@ -335,7 +335,7 @@ func day_night_cycle(time):
 		#sun.set_shadow(false)
 		#get_tree().get_nodes_in_group("roads")[0].lite_up()
 		# so that emissives light effect is better visible
-		env.background_energy = 0.1
+		env.background_energy_multiplier = 0.1
 		env.glow_hdr_threshold = 2.2
 		print("[DAYNIGHT] switch to night settings")
 		night_fired = true

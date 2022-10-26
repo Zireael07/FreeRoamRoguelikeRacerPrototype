@@ -2,34 +2,37 @@
 
 [ext_resource type="Shader" uid="uid://btotycw2uifv3" path="res://vulkan sky/sky_custom.tres" id="1_jwecp"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_7wnkx"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_8aygs"]
+noise_type = 0
+frequency = 0.05
+fractal_type = 3
 
-[sub_resource type="NoiseTexture" id="NoiseTexture_f3rb0"]
-noise = SubResource( "FastNoiseLite_7wnkx" )
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_bt5hg"]
+noise = SubResource("FastNoiseLite_8aygs")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_n3wus"]
-shader = ExtResource( "1_jwecp" )
-shader_param/COVERAGE = null
-shader_param/clouds_tex = SubResource( "NoiseTexture_f3rb0" )
-shader_param/ground_bottom_color = Color(0.12, 0.12, 0.13, 1)
-shader_param/ground_curve = 0.02
-shader_param/ground_energy = 1.0
-shader_param/ground_horizon_color = Color(0.37, 0.33, 0.31, 1)
-shader_param/sky_curve = 0.09
-shader_param/sky_energy = 1.0
-shader_param/sky_horizon_color = Color(0.55, 0.69, 0.81, 1)
-shader_param/sky_top_color = Color(0.35, 0.46, 0.71, 1)
-shader_param/sun_angle_max = 1.74
-shader_param/sun_curve = 0.05
+shader = ExtResource("1_jwecp")
+shader_parameter/COVERAGE = 0.53
+shader_parameter/clouds_tex = SubResource("NoiseTexture2D_bt5hg")
+shader_parameter/ground_bottom_color = Color(0.12, 0.12, 0.13, 1)
+shader_parameter/ground_curve = 0.02
+shader_parameter/ground_energy = 1.0
+shader_parameter/ground_horizon_color = Color(0.37, 0.33, 0.31, 1)
+shader_parameter/sky_curve = 0.09
+shader_parameter/sky_energy = 1.0
+shader_parameter/sky_horizon_color = Color(0.55, 0.69, 0.81, 1)
+shader_parameter/sky_top_color = Color(0.35, 0.46, 0.71, 1)
+shader_parameter/sun_angle_max = 1.74
+shader_parameter/sun_curve = 0.05
 
 [sub_resource type="Sky" id="Sky_y75us"]
-sky_material = SubResource( "ShaderMaterial_n3wus" )
+sky_material = SubResource("ShaderMaterial_n3wus")
 process_mode = 3
 radiance_size = 0
 
 [resource]
 background_mode = 2
-sky = SubResource( "Sky_y75us" )
+sky = SubResource("Sky_y75us")
 ambient_light_color = Color(1, 1, 1, 1)
 ssr_max_steps = 32
 sdfgi_cascades = 1
@@ -41,4 +44,5 @@ glow_levels/3 = 0.0
 glow_hdr_threshold = 2.2
 fog_enabled = true
 fog_density = 0.002
-fog_aerial_perspective = 0.5
+fog_aerial_perspective = 0.75
+fog_sky_affect = 0.25
