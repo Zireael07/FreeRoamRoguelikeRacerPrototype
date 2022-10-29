@@ -1,4 +1,4 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://df4om03k8hu7l"]
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://df4om03k8hu7l"]
 
 [sub_resource type="Shader" id="Shader_kconu"]
 code = "shader_type spatial;
@@ -69,18 +69,25 @@ void fragment() {
 }
 "
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_kwav3"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture_fr1rr"]
+seamless = true
+noise = SubResource("FastNoiseLite_kwav3")
+
 [resource]
 render_priority = 0
-shader = SubResource( "Shader_kconu" )
-shader_param/albedo = null
-shader_param/metallic = null
-shader_param/metallic_texture_channel = null
-shader_param/point_size = null
-shader_param/roughness = null
-shader_param/roughness_texture_channel = null
-shader_param/specular = null
-shader_param/uv1_blend_sharpness = null
-shader_param/uv1_offset = null
-shader_param/uv1_scale = null
-shader_param/uv2_offset = null
-shader_param/uv2_scale = null
+shader = SubResource("Shader_kconu")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/metallic = null
+shader_parameter/metallic_texture_channel = null
+shader_parameter/point_size = null
+shader_parameter/roughness = null
+shader_parameter/roughness_texture_channel = null
+shader_parameter/specular = null
+shader_parameter/texture_albedo = SubResource("NoiseTexture_fr1rr")
+shader_parameter/uv1_blend_sharpness = null
+shader_parameter/uv1_offset = null
+shader_parameter/uv1_scale = null
+shader_parameter/uv2_offset = null
+shader_parameter/uv2_scale = null

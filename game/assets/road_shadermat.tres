@@ -6,21 +6,21 @@
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_gteor"]
 
-[sub_resource type="NoiseTexture" id="NoiseTexture_ilbjq"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture_ilbjq"]
 noise = SubResource("FastNoiseLite_gteor")
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_4g5bp")
-albedo = Color(1, 1, 1, 1)
-emission = Color(0, 0, 1, 1)
-emission_energy = null
-metallic = null
-puddle_size = 0.0
-reflect_texture = SubResource("NoiseTexture_ilbjq")
-roughness = null
-roughness_offset = null
-roughness_scale = null
-specular = null
-texture_albedo = ExtResource("2_8q6pr")
-texture_emission = ExtResource("3_3666y")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/emission = Color(0, 0, 1, 1)
+shader_parameter/emission_energy = null
+shader_parameter/metallic = null
+shader_parameter/puddle_size = 0.0
+shader_parameter/reflect_texture = SubResource("NoiseTexture_ilbjq")
+shader_parameter/roughness = null
+shader_parameter/roughness_offset = null
+shader_parameter/roughness_scale = null
+shader_parameter/specular = null
+shader_parameter/texture_albedo = ExtResource("2_8q6pr")
+shader_parameter/texture_emission = ExtResource("3_3666y")

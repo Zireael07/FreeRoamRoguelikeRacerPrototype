@@ -154,8 +154,6 @@ _data = {
 "fov": SubResource("6")
 }
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_mb0td"]
-
 [sub_resource type="Shader" id="7"]
 code = "shader_type spatial;
 render_mode unshaded;
@@ -167,13 +165,15 @@ void fragment() {
 	ALBEDO = texture(refl_tx, UV).rgb;
 }"
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_flu7t"]
+
 [sub_resource type="ShaderMaterial" id="9"]
 resource_local_to_scene = true
 render_priority = 0
 shader = SubResource("7")
-refl_tx = SubResource("ViewportTexture_mb0td")
+shader_parameter/refl_tx = SubResource("ViewportTexture_flu7t")
 
-[sub_resource type="QuadMesh" id="10"]
+[sub_resource type="PlaneMesh" id="10"]
 resource_local_to_scene = true
 size = Vector2(0.5, 0.5)
 
@@ -182,8 +182,9 @@ transparency = 1
 shading_mode = 0
 diffuse_mode = 1
 
-[sub_resource type="QuadMesh" id="12"]
+[sub_resource type="PlaneMesh" id="12"]
 resource_local_to_scene = true
+orientation = 2
 
 [sub_resource type="ArrayMesh" id="13"]
 _surfaces = [{
@@ -205,9 +206,10 @@ _surfaces = [{
 diffuse_mode = 1
 roughness = 0.0
 
-[sub_resource type="QuadMesh" id="16"]
+[sub_resource type="PlaneMesh" id="16"]
+orientation = 2
 
-[sub_resource type="QuadMesh" id="17"]
+[sub_resource type="PlaneMesh" id="17"]
 size = Vector2(0.1, 0.5)
 
 [sub_resource type="Shader" id="18"]
@@ -267,7 +269,7 @@ rings = 3
 [sub_resource type="StandardMaterial3D" id="22"]
 shading_mode = 0
 
-[sub_resource type="ParticlesMaterial" id="23"]
+[sub_resource type="ParticleProcessMaterial" id="23"]
 emission_shape = 1
 emission_sphere_radius = 5.0
 direction = Vector3(-1, 0, -1)
@@ -460,16 +462,16 @@ disabled = true
 
 [node name="CameraPositions" type="Node3D" parent="BODY"]
 
-[node name="Position3D" type="Position3D" parent="BODY/CameraPositions"]
+[node name="Position3D" type="Marker3D" parent="BODY/CameraPositions"]
 transform = Transform3D(1, 0, 0, 0, 0.894021, 0.448024, 0, -0.448024, 0.894021, 0, 6.09343, 6.15514)
 
-[node name="Position3D2" type="Position3D" parent="BODY/CameraPositions"]
+[node name="Position3D2" type="Marker3D" parent="BODY/CameraPositions"]
 transform = Transform3D(1, 0, 0, 0, 0.774779, 0.632232, 0, -0.632232, 0.774779, 0, 15.2118, 13.0024)
 
-[node name="Position3D3" type="Position3D" parent="BODY/CameraPositions"]
+[node name="Position3D3" type="Marker3D" parent="BODY/CameraPositions"]
 transform = Transform3D(1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 17.5587, -7.54389)
 
-[node name="Position3D4" type="Position3D" parent="BODY/CameraPositions"]
+[node name="Position3D4" type="Marker3D" parent="BODY/CameraPositions"]
 transform = Transform3D(-1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, -4.11453, 0.430022, 3.54601e-07)
 
 [node name="FrontRay" type="RayCast3D" parent="BODY"]
@@ -500,6 +502,8 @@ size = Vector2i(300, 200)
 render_target_update_mode = 3
 
 [node name="Nametag" parent="BODY/SubViewport" instance=ExtResource("1")]
+layout_mode = 3
+anchors_preset = 0
 
 [node name="cambase" type="Node3D" parent="BODY"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.24017, -1.06042)
@@ -590,6 +594,8 @@ size = Vector2i(400, 150)
 render_target_update_mode = 3
 
 [node name="nameplate" parent="BODY/SubViewport 2" instance=ExtResource("7")]
+layout_mode = 3
+anchors_preset = 0
 
 [node name="MeshInstance2" type="MeshInstance3D" parent="BODY"]
 transform = Transform3D(0.5, 0, 0, 0, 0.25, 0, 0, 0, 1.25, -0.1, 0.646626, 1.18958)

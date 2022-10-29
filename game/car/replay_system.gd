@@ -77,7 +77,7 @@ func save():
 	# prevent races
 	recording = false
 	
-	var dir = Directory.new()
+	var dir = DirAccess.new()
 	dir.make_dir("res://replay")
 	
 	# count frames
