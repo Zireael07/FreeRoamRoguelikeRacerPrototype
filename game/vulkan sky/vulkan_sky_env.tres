@@ -43,6 +43,6 @@ sdfgi_y_scale = 0
 glow_levels/3 = 0.0
 glow_hdr_threshold = 2.2
 fog_enabled = true
-fog_density = 0.002
+fog_density = 0.003
 fog_aerial_perspective = 0.75
 fog_sky_affect = 0.25

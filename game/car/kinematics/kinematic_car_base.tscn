@@ -165,13 +165,13 @@ void fragment() {
 	ALBEDO = texture(refl_tx, UV).rgb;
 }"
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_flu7t"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_2l8ov"]
 
 [sub_resource type="ShaderMaterial" id="9"]
 resource_local_to_scene = true
 render_priority = 0
 shader = SubResource("7")
-shader_parameter/refl_tx = SubResource("ViewportTexture_flu7t")
+shader_parameter/refl_tx = SubResource("ViewportTexture_2l8ov")
 
 [sub_resource type="PlaneMesh" id="10"]
 resource_local_to_scene = true
@@ -311,50 +311,50 @@ tracks/0/keys = {
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("BODY/tmpParent/Spatial_FL:rotation_degrees:x")
+tracks/0/path = NodePath("BODY/tmpParent/Spatial_FL:rotation:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.0, 360.0]
+"values": [0.0, -6.28]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("BODY/tmpParent/Spatial_FR:rotation_degrees:x")
+tracks/1/path = NodePath("BODY/tmpParent/Spatial_FR:rotation:x")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.0, 360.0]
+"values": [0.0, -6.28]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("BODY/tmpParent/Spatial_RR:rotation_degrees:x")
+tracks/2/path = NodePath("BODY/tmpParent/Spatial_RR:rotation:x")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.0, 360.0]
+"values": [0.0, -6.28]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("BODY/tmpParent/Spatial_RL:rotation_degrees:x")
+tracks/3/path = NodePath("BODY/tmpParent/Spatial_RL:rotation:x")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.0, 360.0]
+"values": [0.0, -6.28]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nj4rc"]
@@ -386,28 +386,28 @@ material = ExtResource("10")
 glass_material = ExtResource("22")
 
 [node name="Spatial_FL" type="Node3D" parent="BODY/tmpParent"]
-transform = Transform3D(1, 0, 0, 0, 0.787895, -0.61581, 0, 0.61581, 0.787895, -0.75, 0.261, -0.79)
+transform = Transform3D(1, 0, 0, 0, 0.999995, -0.00318509, 0, 0.00318509, 0.999995, -0.75, 0.261, -0.79)
 
 [node name="Node3D" parent="BODY/tmpParent/Spatial_FL" instance=ExtResource("5")]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0)
 wheel_thick = 0.1
 
 [node name="Spatial_RL" type="Node3D" parent="BODY/tmpParent"]
-transform = Transform3D(1, 0, 0, 0, 0.787895, -0.61581, 0, 0.61581, 0.787895, -0.75, 0.261, 0.733)
+transform = Transform3D(1, 0, 0, 0, 0.999995, -0.00318509, 0, 0.00318509, 0.999995, -0.75, 0.261, 0.733)
 
 [node name="Node3D" parent="BODY/tmpParent/Spatial_RL" instance=ExtResource("5")]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0)
 wheel_thick = 0.1
 
 [node name="Spatial_FR" type="Node3D" parent="BODY/tmpParent"]
-transform = Transform3D(1, 0, 0, 0, 0.787895, -0.61581, 0, 0.61581, 0.787895, 0.48, 0.261, -0.79582)
+transform = Transform3D(1, 0, 0, 0, 0.999995, -0.00318509, 0, 0.00318509, 0.999995, 0.48, 0.261, -0.79582)
 
 [node name="Node3D" parent="BODY/tmpParent/Spatial_FR" instance=ExtResource("5")]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0)
 wheel_thick = 0.1
 
 [node name="Spatial_RR" type="Node3D" parent="BODY/tmpParent"]
-transform = Transform3D(1, 0, 0, 0, 0.787895, -0.61581, 0, 0.61581, 0.787895, 0.48, 0.261, 0.733382)
+transform = Transform3D(1, 0, 0, 0, 0.999995, -0.00318509, 0, 0.00318509, 0.999995, 0.48, 0.261, 0.733382)
 
 [node name="Node3D" parent="BODY/tmpParent/Spatial_RR" instance=ExtResource("5")]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -0.000425994, 0.000285, 0)
@@ -519,7 +519,7 @@ script = ExtResource("24")
 process_priority = -10
 transform = Transform3D(-1, 8.74228e-08, 0, 8.74228e-08, 1, 8.74228e-08, 7.64274e-15, 8.74228e-08, -1, 0, 1.75, -5)
 current = true
-fov = 60.0
+fov = 67.5
 near = 0.1
 far = 200.0
 script = ExtResource("8")
