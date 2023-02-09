@@ -43,8 +43,10 @@ func _ready():
 func make_map():
 	var start_time = Time.get_ticks_msec()
 	#print("Started at " + String(start_time))
-	image = Image.new()
-	image.create(1000, 1000, false, Image.FORMAT_RGBA8)
+	#image = Image.new()
+	image = Image.create(1000, 1000, false, Image.FORMAT_RGBA8)
+	
+	#print("Img size: ", image.get_size())
 	
 	#positions = get_parent().get_parent().get_parent().positions
 	var player = get_tree().get_nodes_in_group("player")[0].get_child(0)

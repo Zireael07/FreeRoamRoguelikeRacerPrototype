@@ -10,8 +10,8 @@ func _ready():
 	pass # Replace with function body.
 
 func save_game():
-	var save_data = FileAccess.new()
-	save_data.open("res://savegame.txt", FileAccess.WRITE)
+	#var save_data = FileAccess.new()
+	var save_data = FileAccess.open("res://savegame.txt", FileAccess.WRITE)
 	
 	var player = get_tree().get_nodes_in_group("player")[0]
 	
@@ -26,9 +26,9 @@ func save_game():
 	
 func load_game():
 	var data = []
-	var file = FileAccess.new()
-	var opened = file.open("res://savegame.txt", file.READ)
-	if opened == OK:
+	#var file = FileAccess.new()
+	var file = FileAccess.open("res://savegame.txt", FileAccess.READ)
+	if file == OK:
 		while !file.eof_reached():
 			#var csv = file.get_csv_line()
 			var line = file.get_line()

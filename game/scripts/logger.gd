@@ -44,8 +44,8 @@ func error_print(string):
 
 		
 func save_to_file():
-	var save_data = FileAccess.new()
-	save_data.open("res://gen_data.txt", FileAccess.WRITE)
+	#var save_data = FileAccess.new()
+	var save_data = FileAccess.open("res://gen_data.txt", FileAccess.WRITE)
 
 	for line in data:
 		# Store as a new line in the save file.

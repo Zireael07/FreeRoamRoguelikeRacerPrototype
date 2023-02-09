@@ -193,7 +193,7 @@ func calc_target_time():
 	return calc*1.4
 
 func play_replay():
-	if FileAccess.new().file_exists("res://replay/replay.tscn"):
+	if FileAccess.file_exists("res://replay/replay.tscn"):
 		print("We have a replay")
 		
 		# find the root of the scene
