@@ -19,7 +19,7 @@ func setup():
 func _process(delta):
 	if car:
 		var loc = to_local(car.global_transform.origin)
-		if car is player_script:
+		if is_instance_of(car, player_script):
 			#print("Loc: ", loc, "dir ", Vector3(-loc.y+10, 0, loc.x+10))
 			#var dir = Vector3(loc).normal()
 			var gl_dir = global_transform * Vector3(-loc.y+10, 0, loc.x+10) # should be rotational

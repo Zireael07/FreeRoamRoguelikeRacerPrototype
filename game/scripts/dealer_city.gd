@@ -68,7 +68,7 @@ func enter_dealer(body):
 func _on_Area_body_entered( body ):
 	print("Area3D triggered")
 	if body is CharacterBody3D:
-		if body is player_script:
+		if is_instance_of(body, player_script):
 			if body.speed < 10:
 				enter_dealer(body)
 			else:

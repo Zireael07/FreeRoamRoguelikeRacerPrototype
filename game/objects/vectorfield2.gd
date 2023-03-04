@@ -21,7 +21,7 @@ func setup():
 func _process(delta):
 	if car:
 		var loc = to_local(car.global_transform.origin)
-		if car is player_script:
+		if is_instance_of(car, player_script):
 			var gl_dir = global_transform * Vector3(loc.x*5, 0, 0)
 			#print("Dir: ", Vector3(loc.x*5, 0, 0))
 			car.map.get_node(^"nav").debug_cube(car.map.to_local(gl_dir), "flip")

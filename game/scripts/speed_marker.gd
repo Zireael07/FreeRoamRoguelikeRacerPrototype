@@ -25,7 +25,7 @@ func _ready():
 
 func _on_Area_body_enter( body ):
 	if body is CharacterBody3D:
-		if body is player_script:
+		if is_instance_of(body, player_script):
 			print("Area3D entered by the player - speed")
 			player = body
 			
@@ -78,7 +78,7 @@ func _on_ok_click():
 
 func _on_Area_body_exit( body ):
 	if body is VehicleBody3D:
-		if body is player_script:
+		if is_instance_of(body, player_script):
 			print("Area3D exited by the player")
 			player = body
 			#var msg = body.get_node(^"Messages")

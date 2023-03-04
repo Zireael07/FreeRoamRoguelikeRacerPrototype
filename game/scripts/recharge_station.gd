@@ -11,7 +11,7 @@ func _ready():
 
 func _on_Area_body_entered(body):
 	if body is VehicleBody3D:
-		if body is player_script:
+		if is_instance_of(body, player_script):
 			print("Charging area entered by the player")
 			player = body
 			charging = true
@@ -23,7 +23,7 @@ func _process(delta):
 
 func _on_Area_body_exited(body):
 	if body is VehicleBody3D:
-		if body is player_script:
+		if is_instance_of(body, player_script):
 			print("Charging area exited by the player")
 			player = body
 			charging = false
